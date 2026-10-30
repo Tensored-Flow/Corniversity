@@ -4,27 +4,136 @@
   "title": "Boundedness from a closed graph",
   "kind": "proof",
   "promptMarkdown": "Let $T:C([0,1])\\to C([0,1])$ be a linear map (sup norm on both sides) with the following property: whenever $f_n\\to f$ uniformly and $Tf_n\\to g$ uniformly, one has $Tf=g$.\n\n1. Prove that $T$ is bounded.\n2. Let $D$ be differentiation, defined on the subspace $C^1_0=\\{g\\in C^1([0,1]):g(0)=0\\}$ with the sup norm, mapping into $C([0,1])$. Show that $D$ has a closed graph (if $g_n\\to g$ and $g_n'\\to h$ uniformly then $g\\in C^1_0$ and $g'=h$), yet $D$ is unbounded (unit 2). Explain precisely why this does not contradict part 1.",
-  "conceptIds": ["open-mapping", "bounded-operator"],
+  "conceptIds": [
+    "open-mapping",
+    "bounded-operator"
+  ],
   "hintLadder": [
     "The stated property says exactly that the graph of $T$ is closed in $C([0,1])\\times C([0,1])$. Which theorem applies, and are its hypotheses satisfied?",
     "For 2: uniform convergence of derivatives together with convergence at one point lets you integrate: $g_n(x)=\\int_0^x g_n'$. Pass to the limit.",
     "The closed graph theorem has two completeness hypotheses. Is $C^1_0$ with the sup norm complete?"
   ],
   "deterministicChecks": [
-    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} },
-    { "id": "cgt-needs-banach", "kind": "requires_hypothesis", "description": "the closed graph theorem needs both spaces complete", "params": { "triggerPatterns": ["closed graph"], "hypothesisPatterns": ["complete", "banach"] } }
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "instances are not a proof",
+      "params": {}
+    },
+    {
+      "id": "cgt-needs-banach",
+      "kind": "requires_hypothesis",
+      "description": "the closed graph theorem needs both spaces complete",
+      "params": {
+        "triggerPatterns": [
+          "closed graph"
+        ],
+        "hypothesisPatterns": [
+          "complete",
+          "banach"
+        ]
+      }
+    }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "graph-closed", "criterion": "Identifies the property as closedness of the graph.", "weight": 0.2, "levels": [{ "label": "met", "description": "Explicit." }, { "label": "partially met", "description": "Implicit." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "apply-cgt", "criterion": "Applies the closed graph theorem with both spaces Banach (C([0,1]) complete, Theorem 16).", "weight": 0.3, "levels": [{ "label": "met", "description": "Hypotheses checked." }, { "label": "partially met", "description": "Hypotheses not checked." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "d-closed-graph", "criterion": "Shows the graph of D is closed using uniform convergence of derivatives and integration from 0.", "weight": 0.3, "levels": [{ "label": "met", "description": "Full argument including g ∈ C¹₀." }, { "label": "partially met", "description": "Sketch." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "no-contradiction", "criterion": "C¹₀ with the sup norm is not complete, so the theorem does not apply; names a Cauchy sequence in C¹₀ with non-C¹ uniform limit or cites unit 2's sequence.", "weight": 0.2, "levels": [{ "label": "met", "description": "Hypothesis failure identified with justification." }, { "label": "partially met", "description": "Asserted." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "graph-closed",
+        "criterion": "Identifies the property as closedness of the graph.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Explicit."
+          },
+          {
+            "label": "partially met",
+            "description": "Implicit."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "apply-cgt",
+        "criterion": "Applies the closed graph theorem with both spaces Banach (C([0,1]) complete, Theorem 16).",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Hypotheses checked."
+          },
+          {
+            "label": "partially met",
+            "description": "Hypotheses not checked."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "d-closed-graph",
+        "criterion": "Shows the graph of D is closed using uniform convergence of derivatives and integration from 0.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Full argument including g ∈ C¹₀."
+          },
+          {
+            "label": "partially met",
+            "description": "Sketch."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "no-contradiction",
+        "criterion": "C¹₀ with the sup norm is not complete, so the theorem does not apply; names a Cauchy sequence in C¹₀ with non-C¹ uniform limit or cites unit 2's sequence.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Hypothesis failure identified with justification."
+          },
+          {
+            "label": "partially met",
+            "description": "Asserted."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 45
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "hypotheses stated",
+      "text": "C([0,1]) with the sup norm is a Banach space, the graph of T is closed by hypothesis, so the closed graph theorem gives boundedness.",
+      "expect": {
+        "cgt-needs-banach": true
+      }
+    },
+    {
+      "label": "hypothesis omitted",
+      "text": "The graph is closed, so by the closed graph theorem T is bounded.",
+      "expect": {
+        "cgt-needs-banach": false
+      }
+    }
+  ]
 }

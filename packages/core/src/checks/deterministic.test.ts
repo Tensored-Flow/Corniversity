@@ -10,9 +10,9 @@ const normChecks: DeterministicCheck[] = [
     description: "sup norm of x^n equals 1",
     params: {
       patterns: [
-        "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|\\|f_n\\|_inf)[^=]{0,80}=1(?![0-9./])",
-        "supnormis1",
-        "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9./])",
+        "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|‖f_n‖_inf)[^=]{0,80}=1(?![0-9]|\\.[0-9]|/)",
+        "supnormis1(?![0-9]|\\.[0-9]|/)",
+        "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9]|\\.[0-9]|/)",
       ],
     },
   },
@@ -44,9 +44,10 @@ const normChecks: DeterministicCheck[] = [
 ];
 
 describe("normaliseMath", () => {
-  it("turns LaTeX fractions and spacing into a canonical form", () => {
+  it("turns LaTeX fractions, double bars and spacing into a canonical form", () => {
     expect(normaliseMath("\\frac{1}{n+1}")).toBe("(1)/(n+1)");
-    expect(normaliseMath("\\|f_n\\|_{\\infty} = 1")).toBe("\\|f_n\\|_inf=1");
+    expect(normaliseMath("\\|f_n\\|_{\\infty} = 1")).toBe("‖f_n‖_inf=1");
+    expect(normaliseMath("||T|| = 1")).toBe("‖t‖=1");
     expect(normaliseMath("$\\dfrac{ 1 }{ n + 1 }$")).toBe("(1)/(n+1)");
   });
 });
@@ -64,6 +65,11 @@ describe("runDeterministicChecks on the x^n norm task", () => {
     expect(results.find((r) => r.checkId === "l1-norm")?.passed).toBe(true);
     expect(results.find((r) => r.checkId === "no-equivalence-claim")?.passed).toBe(true);
     expect(results.find((r) => r.checkId === "examples-only")?.passed).toBe(true);
+  });
+
+  it("accepts a value at the end of a sentence but not a decimal continuation", () => {
+    expect(runDeterministicChecks("The sup norm is 1.", normChecks).find((r) => r.checkId === "sup-norm-one")?.passed).toBe(true);
+    expect(runDeterministicChecks("The sup norm is 1.5 at most.", normChecks).find((r) => r.checkId === "sup-norm-one")?.passed).toBe(false);
   });
 
   it("flags the over-generalisation that all norms are equivalent", () => {

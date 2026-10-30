@@ -13,14 +13,19 @@ export interface CheckResult {
   kind: DeterministicCheck["kind"];
 }
 
+const DOUBLE_BAR = "‖"; // ‖
+
 /**
  * Normalises mathematical text so that equivalent spellings compare equal:
- * lowercase, whitespace removed, \frac{a}{b} → (a)/(b), \left/\right removed, ^{x} → ^x,
- * unicode minus/multiplication signs unified, $ delimiters dropped.
+ * lowercase; $ delimiters dropped; LaTeX \| and ASCII || become the single symbol ‖;
+ * \left/\right removed; \frac{a}{b} → (a)/(b); ^{x} → ^x and _{x} → _x; \infty → inf;
+ * leading backslash dropped from \sup \inf \max \min \lim \int \sum; whitespace removed.
  */
 export function normaliseMath(text: string): string {
   let s = text.toLowerCase();
   s = s.replace(/\$+/g, "");
+  s = s.split("\\|").join(DOUBLE_BAR);
+  s = s.split("||").join(DOUBLE_BAR);
   s = s.replace(/\\left|\\right/g, "");
   s = s.replace(/\\(?:d|t)?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "($1)/($2)");
   s = s.replace(/\\(?:cdot|times)/g, "*");

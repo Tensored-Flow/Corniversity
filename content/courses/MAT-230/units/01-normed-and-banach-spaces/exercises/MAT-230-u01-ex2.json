@@ -4,7 +4,10 @@
   "title": "Completeness fails for the integral norm",
   "kind": "proof",
   "promptMarkdown": "Show that $(C([0,1]),\\|\\cdot\\|_1)$, with $\\|f\\|_1=\\int_0^1|f(x)|\\,dx$, is **not** a Banach space.\n\nThat is, construct a sequence $(f_n)$ of continuous functions on $[0,1]$ which is Cauchy for $\\|\\cdot\\|_1$, and prove that there is no continuous $g$ with $\\|f_n-g\\|_1\\to 0$.\n\nState precisely where continuity of the would-be limit is used.",
-  "conceptIds": ["banach-space", "normed-space"],
+  "conceptIds": [
+    "banach-space",
+    "normed-space"
+  ],
   "hintLadder": [
     "Think of continuous functions that approximate a jump: $0$ on $[0,\\tfrac12]$, rising to $1$ over a short interval, then $1$. Make the interval shrink with $n$.",
     "For $m>n$, where can $f_n$ and $f_m$ differ, and by how much at most? Bound $\\int_0^1|f_n-f_m|$ by the length of that set.",
@@ -12,20 +15,125 @@
     "A continuous function that is $0$ on $[0,\\tfrac12)$ and $1$ on $(\\tfrac12,1]$ has no possible value at $\\tfrac12$. Where exactly does the contradiction appear?"
   ],
   "deterministicChecks": [
-    { "id": "no-completeness-claim", "kind": "forbidden_claim", "description": "C([0,1]) with the integral norm is not complete", "params": { "patterns": ["iscompletewithrespectto(the)?(integral|l1|\\\\|\\\\|·\\\\|\\\\|_1)", "\\\\(c\\\\(\\\\[0,1\\\\]\\\\),\\\\|\\\\|·\\\\|\\\\|_1\\\\)isabanachspace", "is a banach space with the integral norm"] } },
-    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "particular values of n are not a proof", "params": {} }
+    {
+      "id": "no-completeness-claim",
+      "kind": "forbidden_claim",
+      "description": "C([0,1]) with the integral norm is not complete",
+      "params": {
+        "patterns": [
+          "iscompletewithrespectto(the)?(integral|l1|\\|\\|·\\|\\|_1)",
+          "\\(c\\(\\[0,1\\]\\),\\|\\|·\\|\\|_1\\)isabanachspace",
+          "is a banach space with the integral norm"
+        ]
+      }
+    },
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "particular values of n are not a proof",
+      "params": {}
+    }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "construction", "criterion": "An explicit sequence of continuous functions approximating a jump is defined unambiguously.", "weight": 0.25, "levels": [{ "label": "met", "description": "Formula or piecewise description with the shrinking interval explicit." }, { "label": "partially met", "description": "Idea right, definition vague." }, { "label": "not met", "description": "No valid sequence." }] },
-      { "id": "cauchy", "criterion": "The sequence is shown to be Cauchy in ‖·‖₁ with an explicit estimate.", "weight": 0.3, "levels": [{ "label": "met", "description": "An inequality such as ‖f_n − f_m‖₁ ≤ 1/min(n,m) is derived." }, { "label": "partially met", "description": "Cauchy asserted with a sketch." }, { "label": "not met", "description": "Not addressed." }] },
-      { "id": "limit-identification", "criterion": "Any would-be ‖·‖₁-limit g is shown to equal 0 on [0,½) and 1 on (½,1].", "weight": 0.3, "levels": [{ "label": "met", "description": "Both halves argued via integrals tending to 0 and continuity of g on the open intervals." }, { "label": "partially met", "description": "One half argued, or continuity of g not invoked where needed." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "contradiction", "criterion": "The contradiction with continuity of g at ½ is stated precisely.", "weight": 0.15, "levels": [{ "label": "met", "description": "Left and right limits at ½ differ." }, { "label": "partially met", "description": "Contradiction asserted without the limits." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "construction",
+        "criterion": "An explicit sequence of continuous functions approximating a jump is defined unambiguously.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Formula or piecewise description with the shrinking interval explicit."
+          },
+          {
+            "label": "partially met",
+            "description": "Idea right, definition vague."
+          },
+          {
+            "label": "not met",
+            "description": "No valid sequence."
+          }
+        ]
+      },
+      {
+        "id": "cauchy",
+        "criterion": "The sequence is shown to be Cauchy in ‖·‖₁ with an explicit estimate.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "An inequality such as ‖f_n − f_m‖₁ ≤ 1/min(n,m) is derived."
+          },
+          {
+            "label": "partially met",
+            "description": "Cauchy asserted with a sketch."
+          },
+          {
+            "label": "not met",
+            "description": "Not addressed."
+          }
+        ]
+      },
+      {
+        "id": "limit-identification",
+        "criterion": "Any would-be ‖·‖₁-limit g is shown to equal 0 on [0,½) and 1 on (½,1].",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both halves argued via integrals tending to 0 and continuity of g on the open intervals."
+          },
+          {
+            "label": "partially met",
+            "description": "One half argued, or continuity of g not invoked where needed."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "contradiction",
+        "criterion": "The contradiction with continuity of g at ½ is stated precisely.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Left and right limits at ½ differ."
+          },
+          {
+            "label": "partially met",
+            "description": "Contradiction asserted without the limits."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 40
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct Cauchy argument",
+      "text": "Define f_n as the ramp from 0 at x=1/2 to 1 at x=1/2+1/n. For all m>n, f_m-f_n is supported on an interval of length 1/n and bounded by 1, so ‖f_m-f_n‖_1 ≤ 1/n; the sequence is Cauchy. If g were a continuous limit then g=0 on [0,1/2] and g=1 on (1/2,1], impossible at 1/2. So the space is not complete.",
+      "expect": {
+        "no-completeness-claim": true,
+        "examples-only": true
+      }
+    },
+    {
+      "label": "wrong conclusion",
+      "text": "Every Cauchy sequence converges, therefore C([0,1]) is complete with respect to the integral norm.",
+      "expect": {
+        "no-completeness-claim": false
+      }
+    }
+  ]
 }

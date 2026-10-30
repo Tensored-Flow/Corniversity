@@ -14,7 +14,7 @@ image). Documents created; repository initialised.
 
 Gate: coherent build plan, data and privacy boundaries defined, known deployment path.
 
-## Milestone 1 — Design system and real application foundation — in_progress
+## Milestone 1 — Design system and real application foundation — done
 
 - pnpm monorepo, TypeScript 5.9, Next.js 16, Tailwind 4 tokens, fonts, KaTeX + mhchem rendering.
 - Embedded PostgreSQL dev cluster script; Drizzle schema and SQL migrations for every entity
@@ -27,7 +27,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
   onboarding, reload and resume; `pnpm typecheck` and `pnpm test` pass; unauthenticated requests
   to private routes and APIs are refused (test).
 
-## Milestone 2 — The first complete learning loop (Functional Analysis) — todo
+## Milestone 2 — The first complete learning loop (Functional Analysis) — done
 
 - MAT-230 Functional Analysis I: source-verified spine (MIT 18.102 Spring 2021), complete
   syllabus with verified locators, units 1–4 prepared (lesson, exercises, hint ladder, rubric,
@@ -41,7 +41,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journey 2 passes end to end with the fixture provider; feedback persists across
   reload and re-login; assessment retry does not duplicate feedback (test).
 
-## Milestone 3 — Programmes, department breadth, timetabling — todo
+## Milestone 3 — Programmes, department breadth, timetabling — in_progress
 
 - Catalogue from Appendix A with honest readiness; six department halls; named programmes;
   concept-level prerequisite graph with alternatives, bridges, co-requisites, cycle detection,

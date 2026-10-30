@@ -1,3 +1,4 @@
+import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
 import type { ContentBundle, LoadedCourse } from "./schema";
 
 export interface Issue {
@@ -137,6 +138,30 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
         for (const c of exercise.conceptIds) if (!conceptIds.has(c)) err(uwhere, `exercise ${exercise.id} unknown concept ${c}`);
         if (exercise.externalLocatorId && !locatorIds.has(exercise.externalLocatorId)) err(uwhere, `exercise ${exercise.id} external locator missing`);
         if (exercise.origin === "adapted_with_attribution" && !exercise.attribution) err(uwhere, `exercise ${exercise.id} adapted without attribution`);
+        for (const check of exercise.deterministicChecks) {
+          for (const key of ["patterns", "triggerPatterns", "hypothesisPatterns"]) {
+            const raw = check.params[key];
+            if (!Array.isArray(raw)) continue;
+            for (const pattern of raw) {
+              try {
+                new RegExp(String(pattern), "i");
+              } catch (error) {
+                err(uwhere, `exercise ${exercise.id} check ${check.id}: invalid pattern ${JSON.stringify(pattern)} (${(error as Error).message})`);
+              }
+            }
+          }
+        }
+        if (exercise.deterministicChecks.length > 0 && exercise.checkExamples.length === 0 && unit.spec.status === "ready") {
+          warn(uwhere, `exercise ${exercise.id} has automatic checks but no sample texts proving they behave`);
+        }
+        for (const example of exercise.checkExamples) {
+          const results = runDeterministicChecks(example.text, exercise.deterministicChecks);
+          for (const [checkId, expected] of Object.entries(example.expect)) {
+            const result = results.find((r) => r.checkId === checkId);
+            if (!result) err(uwhere, `exercise ${exercise.id} example "${example.label}" expects unknown check ${checkId}`);
+            else if (result.passed !== expected) err(uwhere, `exercise ${exercise.id} example "${example.label}": check ${checkId} ${result.passed ? "passed" : "failed"} but expected ${expected ? "pass" : "fail"} (${result.detail})`);
+          }
+        }
       }
       for (const file of unit.spec.instructorFiles) {
         if (!unit.instructor.some((i) => i.file === file)) err(uwhere, `instructor file ${file} missing`);

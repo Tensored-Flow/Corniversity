@@ -4,27 +4,139 @@
   "title": "Two complete norms that compare are equivalent",
   "kind": "proof",
   "promptMarkdown": "Let $V$ be a vector space carrying two norms $\\|\\cdot\\|_a$ and $\\|\\cdot\\|_b$, and suppose $V$ is complete with respect to **both**. Suppose also that there is $C>0$ with $\\|v\\|_a\\le C\\|v\\|_b$ for all $v\\in V$.\n\n1. Prove that the two norms are equivalent, i.e. there is also $c>0$ with $\\|v\\|_b\\le c\\|v\\|_a$ for all $v$.\n2. State precisely which theorem you used and check each of its hypotheses.\n3. Show by example that the conclusion can fail if completeness in one of the norms is dropped. (Unit 1 contains a suitable pair of norms on $C([0,1])$.)",
-  "conceptIds": ["open-mapping", "equivalent-norms"],
+  "conceptIds": [
+    "open-mapping",
+    "equivalent-norms"
+  ],
   "hintLadder": [
     "Consider the identity map $I:(V,\\|\\cdot\\|_b)\\to(V,\\|\\cdot\\|_a)$. What does the given inequality say about $I$?",
     "$I$ is a bijection. Which theorem gives boundedness of its inverse, and what does that inequality read as?",
     "For part 3: on $C([0,1])$, $\\|f\\|_1\\le\\|f\\|_\\infty$. Which of the two norms makes $C([0,1])$ complete, and which does not?"
   ],
   "deterministicChecks": [
-    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} },
-    { "id": "inverse-needs-banach", "kind": "requires_hypothesis", "description": "the bounded inverse (open mapping) theorem needs both spaces complete", "params": { "triggerPatterns": ["bounded inverse", "open mapping", "inverse mapping theorem"], "hypothesisPatterns": ["complete", "banach"] } }
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "instances are not a proof",
+      "params": {}
+    },
+    {
+      "id": "inverse-needs-banach",
+      "kind": "requires_hypothesis",
+      "description": "the bounded inverse (open mapping) theorem needs both spaces complete",
+      "params": {
+        "triggerPatterns": [
+          "bounded inverse",
+          "open mapping",
+          "inverse mapping theorem"
+        ],
+        "hypothesisPatterns": [
+          "complete",
+          "banach"
+        ]
+      }
+    }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "identity-bounded", "criterion": "Recognises the identity from (V,‖·‖_b) to (V,‖·‖_a) as a bounded bijective linear operator because of the given inequality.", "weight": 0.3, "levels": [{ "label": "met", "description": "Explicit." }, { "label": "partially met", "description": "Implicit." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "theorem-and-hypotheses", "criterion": "Applies the bounded inverse theorem, naming completeness of V in both norms as the hypotheses.", "weight": 0.35, "levels": [{ "label": "met", "description": "Theorem named, both completeness hypotheses checked." }, { "label": "partially met", "description": "Theorem used without checking hypotheses." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "conclusion", "criterion": "Reads boundedness of the inverse as the reverse inequality and concludes equivalence.", "weight": 0.15, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Asserted." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "counterexample", "criterion": "Sup and integral norms on C([0,1]): comparable one way, not equivalent, and the integral norm is not complete.", "weight": 0.2, "levels": [{ "label": "met", "description": "Example with the failed hypothesis identified." }, { "label": "partially met", "description": "Example without identifying which hypothesis fails." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "identity-bounded",
+        "criterion": "Recognises the identity from (V,‖·‖_b) to (V,‖·‖_a) as a bounded bijective linear operator because of the given inequality.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Explicit."
+          },
+          {
+            "label": "partially met",
+            "description": "Implicit."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "theorem-and-hypotheses",
+        "criterion": "Applies the bounded inverse theorem, naming completeness of V in both norms as the hypotheses.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Theorem named, both completeness hypotheses checked."
+          },
+          {
+            "label": "partially met",
+            "description": "Theorem used without checking hypotheses."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "conclusion",
+        "criterion": "Reads boundedness of the inverse as the reverse inequality and concludes equivalence.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Asserted."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "counterexample",
+        "criterion": "Sup and integral norms on C([0,1]): comparable one way, not equivalent, and the integral norm is not complete.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Example with the failed hypothesis identified."
+          },
+          {
+            "label": "partially met",
+            "description": "Example without identifying which hypothesis fails."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 35
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "hypotheses stated",
+      "text": "The identity from (V,‖·‖_b) to (V,‖·‖_a) is bounded and bijective between Banach spaces, so by the bounded inverse theorem its inverse is bounded.",
+      "expect": {
+        "inverse-needs-banach": true,
+        "examples-only": true
+      }
+    },
+    {
+      "label": "hypothesis omitted",
+      "text": "The identity is bounded and bijective, so by the bounded inverse theorem its inverse is bounded and the norms are equivalent.",
+      "expect": {
+        "inverse-needs-banach": false
+      }
+    }
+  ]
 }

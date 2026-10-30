@@ -209,6 +209,16 @@ export const ExerciseSpec = z.object({
   attribution: z.string().optional(),
   externalLocatorId: z.string().optional(),
   estimatedMinutes: z.number().int().positive(),
+  /** Sample texts with the expected outcome of each automatic check; the validator runs them. */
+  checkExamples: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        text: z.string().min(1),
+        expect: z.record(z.string(), z.boolean()),
+      }),
+    )
+    .default([]),
 });
 export type ExerciseSpec = z.infer<typeof ExerciseSpec>;
 

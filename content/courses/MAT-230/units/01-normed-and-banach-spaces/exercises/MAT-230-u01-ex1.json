@@ -21,9 +21,9 @@
       "description": "the sup norm of x^n equals 1",
       "params": {
         "patterns": [
-          "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|\\\\|f_n\\\\|_inf)[^=]{0,80}=1(?![0-9./])",
-          "supnormis1",
-          "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9./])"
+          "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|‖f_n‖_inf)[^=]{0,80}=1(?![0-9]|\\.[0-9]|/)",
+          "supnormis1(?![0-9]|\\.[0-9]|/)",
+          "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9]|\\.[0-9]|/)"
         ]
       }
     },
@@ -33,11 +33,11 @@
       "description": "the integral norm of x^n equals 1/(n+1)",
       "params": {
         "patterns": [
-          "\\\\(1\\\\)/\\\\(n\\\\+1\\\\)",
-          "1/\\\\(n\\\\+1\\\\)",
-          "\\\\(n\\\\+1\\\\)\\\\^\\\\{?-1",
-          "1/\\\\(1\\\\+n\\\\)",
-          "\\\\(1\\\\)/\\\\(1\\\\+n\\\\)"
+          "\\(1\\)/\\(n\\+1\\)",
+          "1/\\(n\\+1\\)",
+          "\\(n\\+1\\)\\^\\{?-1",
+          "1/\\(1\\+n\\)",
+          "\\(1\\)/\\(1\\+n\\)"
         ]
       }
     },
@@ -147,5 +147,40 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 35
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX argument",
+      "text": "Let $f_n(x)=x^n$. Since $x^n$ is increasing, $\\|f_n\\|_\\infty = \\sup_{x\\in[0,1]} x^n = 1$ for all $n$. Also $\\|f_n\\|_1 = \\int_0^1 x^n\\,dx = \\frac{1}{n+1}$. If $\\|f\\|_\\infty \\le C\\|f\\|_1$ held then $n+1 \\le C$ for all $n$, impossible; the norms are not equivalent. The theorem that all norms are equivalent needs finite dimension.",
+      "expect": {
+        "sup-norm-one": true,
+        "l1-norm": true,
+        "no-equivalence-claim": true,
+        "examples-only": true
+      }
+    },
+    {
+      "label": "over-generalisation",
+      "text": "Since all norms are equivalent, the sup norm and the integral norm are comparable on C([0,1]), so the sequence shows nothing special.",
+      "expect": {
+        "no-equivalence-claim": false
+      }
+    },
+    {
+      "label": "instances only",
+      "text": "For n=1 the integral is 1/2, for n=2 it is 1/3, for n=3 it is 1/4. So the claim holds.",
+      "expect": {
+        "examples-only": false
+      }
+    },
+    {
+      "label": "plain-text correct argument",
+      "text": "The sup norm is 1 because x^n <= 1 with equality at x = 1. The integral norm is 1/(n+1). So no constant works and the two norms are not equivalent here; finite dimension was needed.",
+      "expect": {
+        "sup-norm-one": true,
+        "l1-norm": true,
+        "no-equivalence-claim": true
+      }
+    }
+  ]
 }
