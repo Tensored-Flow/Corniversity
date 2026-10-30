@@ -1,24 +1,54 @@
 import { notFound, redirect } from "next/navigation";
 import { ONBOARDING_STEPS, getOnboardingStep } from "@corniversity/core/onboarding/steps";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { StepOneForm } from "./StepOneForm";
 import { saveStepOneAction } from "./actions";
+import { StepInterests } from "./steps/StepInterests";
+import { StepKnowledge } from "./steps/StepKnowledge";
+import { StepStyle } from "./steps/StepStyle";
+import { StepTime } from "./steps/StepTime";
+import { StepRhythm } from "./steps/StepRhythm";
+import { StepPlacement } from "./steps/StepPlacement";
+import { StepPlans } from "./steps/StepPlans";
+import { StepModes } from "./steps/StepModes";
+import { StepTimetable } from "./steps/StepTimetable";
+import { StepConfirm } from "./steps/StepConfirm";
+import { StepMeet } from "./steps/StepMeet";
 
 export const metadata = { title: "Orientation" };
 
-export default async function OnboardingStepPage({ params }: { params: Promise<{ step: string }> }) {
+const ERRORS: Record<string, string> = {
+  choose_department: "Choose at least one department or course before continuing.",
+  choose_plan: "Choose one of the plans to continue.",
+  no_availability: "Add at least one availability window so a timetable can be built.",
+  infeasible: "The proposed timetable does not fit. Adjust your hours or courses, or accept the shortfall.",
+  invalid: "Something in the form was not valid. Please check and try again.",
+};
+
+export default async function OnboardingStepPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ step: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
   const { step } = await params;
+  const { error } = await searchParams;
   const number = Number(step);
   const def = Number.isInteger(number) ? getOnboardingStep(number) : undefined;
   if (!def) notFound();
 
   const session = await requireSession(`/onboarding/${number}`);
   const profile = await ensureProfile(db(), session.user.id);
-  if (profile.onboardingCompletedAt) redirect("/campus");
-  // Steps may be revisited, but not skipped ahead.
-  if (number > profile.onboardingStep) redirect(`/onboarding/${profile.onboardingStep}`);
+  // Step 12 (meet the college) is always open once the plan is confirmed; other steps are
+  // sequential: a learner may revisit earlier steps but not skip ahead.
+  if (profile.onboardingCompletedAt && number < 12) redirect("/campus");
+  if (!profile.onboardingCompletedAt && number > profile.onboardingStep) redirect(`/onboarding/${profile.onboardingStep}`);
+
+  const common = { userId: session.user.id, profile };
 
   return (
     <div className="mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[220px_1fr]">
@@ -31,11 +61,7 @@ export default async function OnboardingStepPage({ params }: { params: Promise<{
                 aria-hidden="true"
                 className={[
                   "mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[0.65rem]",
-                  state === "done"
-                    ? "border-moss bg-moss-soft text-moss"
-                    : state === "current"
-                      ? "border-brass bg-brass-soft text-brass-strong"
-                      : "border-stone-2 text-ink-3",
+                  state === "done" ? "border-moss bg-moss-soft text-moss" : state === "current" ? "border-brass bg-brass-soft text-brass-strong" : "border-stone-2 text-ink-3",
                 ].join(" ")}
               >
                 {s.number}
@@ -51,6 +77,11 @@ export default async function OnboardingStepPage({ params }: { params: Promise<{
         </p>
         <h1 className="mt-1 text-3xl text-ink">{def.title}</h1>
         <p className="mt-2 max-w-prose text-sm text-ink-2">{def.purpose}</p>
+        {error ? (
+          <div className="mt-4">
+            <Notice tone="rust">{ERRORS[error] ?? ERRORS.invalid}</Notice>
+          </div>
+        ) : null}
         <div className="mt-8">
           {number === 1 ? (
             <StepOneForm
@@ -65,12 +96,18 @@ export default async function OnboardingStepPage({ params }: { params: Promise<{
                 accessibilityNotes: profile.accessibility.notes ?? "",
               }}
             />
-          ) : (
-            <div className="rounded-[var(--radius-panel)] border border-dashed border-stone-2 bg-paper-2 p-6 text-sm text-ink-2">
-              This step is being built (Milestone 3). Your progress so far is saved; you can return to it
-              from the Campus page.
-            </div>
-          )}
+          ) : null}
+          {number === 2 ? <StepInterests {...common} /> : null}
+          {number === 3 ? <StepKnowledge {...common} /> : null}
+          {number === 4 ? <StepStyle {...common} /> : null}
+          {number === 5 ? <StepTime {...common} /> : null}
+          {number === 6 ? <StepRhythm {...common} /> : null}
+          {number === 7 ? <StepPlacement {...common} /> : null}
+          {number === 8 ? <StepPlans {...common} /> : null}
+          {number === 9 ? <StepModes {...common} /> : null}
+          {number === 10 ? <StepTimetable {...common} /> : null}
+          {number === 11 ? <StepConfirm {...common} /> : null}
+          {number === 12 ? <StepMeet {...common} /> : null}
         </div>
       </div>
     </div>

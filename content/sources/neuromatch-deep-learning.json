@@ -1,0 +1,506 @@
+{
+  "id": "neuromatch-deep-learning",
+  "title": "Neuromatch Academy: Deep Learning (course ebook)",
+  "authors": [
+    "Neuromatch Academy (course content team; per-tutorial content creators are named on each tutorial page)"
+  ],
+  "institution": "Neuromatch Academy",
+  "kind": "course",
+  "canonicalUrl": "https://deeplearning.neuromatch.io/",
+  "description": "Three-week intensive deep learning course published as a Jupyter Book: per-day chapters (W1D1–W3D5) each with one to three tutorials mixing short videos, text, coding exercises, interactive demos and discussion prompts; a prerequisites page; a daily schedule; project booklets. Content is CC BY 4.0, software BSD-3-Clause.",
+  "rightsNotes": [
+    "Content licence (verified on the ebook footer and in the repository README on 2026-10-30): 'The contents of this repository are shared under under a Creative Commons Attribution 4.0 International License.' Attribution is required; commercial use and derivatives are permitted.",
+    "Code licence is separate: 'Software elements are additionally licensed under the BSD (3-Clause) License.' LICENSE-CODE.md is a BSD 3-Clause licence, copyright 2020 Neuromatch Academy.",
+    "Corniversity cites tutorial pages by URL and section anchor, writes its own lessons and original exercises, and does not redistribute Neuromatch notebooks. Any exercise adapted from a Neuromatch coding exercise must be labelled adapted_with_attribution.",
+    "The ebook is a rolling publication ('under continuous development' per the repository README); pages carry 'Last updated on None', so there is no per-page version stamp. Locators are pinned to the titles and section ids seen on 2026-10-30."
+  ],
+  "codeLicence": "BSD 3-Clause (LICENSE-CODE.md, copyright 2020 Neuromatch Academy)",
+  "currentVersionId": "nma-dl-web-2026",
+  "versions": [
+    {
+      "id": "nma-dl-web-2026",
+      "label": "Online ebook, rolling publication (opened 2026-10-30)",
+      "url": "https://deeplearning.neuromatch.io/tutorials/intro.html",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (content author agent) — opened the introduction, schedule, prerequisites, every cited chapter page and tutorial page with WebFetch, and checked every cited URL returned HTTP 200 with the stated title",
+      "componentsSeen": [
+        "Introduction page (concept map, sponsors, footer licence statement) and sidebar listing W1D1–W3D5 plus Bonus: Deploy Models, wrap-ups and the project booklet",
+        "General schedule page: three weeks; standard day of two 90-minute tutorial blocks plus pod discussions, with three hours of project time per day; W1D5, W3D2 and W3D5 are project/discussion days",
+        "Prerequisites page: Python (variables, lists, dicts, NumPy, SciPy, Matplotlib), linear algebra, basic statistics, calculus including derivatives and ODEs, with named preparatory resources",
+        "Chapter pages for W1D1, W1D2, W1D3, W1D4, W2D1, W2D2, W2D3, W2D5, W3D1, W3D3 (each lists its tutorials; no descriptive text)",
+        "Tutorial pages opened in full or via their contents list: W1D1 T1, W1D2 T1–T3, W1D3 T1–T2, W1D4 T1, W2D1 T1–T2, W2D2 T1, W2D3 T1, W2D5 T2, W3D1 T1, W3D3 T1",
+        "GitHub repository NeuromatchAcademy/course-content-dl: README licence sentences, LICENSE.md (CC BY 4.0) and LICENSE-CODE.md (BSD 3-Clause)"
+      ],
+      "licence": "CC BY 4.0 (content); BSD 3-Clause (software)",
+      "licenceUrl": "https://github.com/NeuromatchAcademy/course-content-dl/blob/main/LICENSE.md",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "deeplearning.neuromatch.io"
+      ],
+      "limitations": [
+        "Rolling publication without version stamps: tutorial section numbering and titles may change; every locator records the title and anchor seen on 2026-10-30 and should be re-verified before each term.",
+        "Embedded lecture videos were not watched; no video locators are recorded. Tutorials are cited by page and section anchor.",
+        "W1D2 Tutorial 2, W2D3 Tutorial 1 and W3D3 Tutorial 1 were confirmed to load with the stated titles, but their full contents were truncated in the fetch; only page-level locators exist for them.",
+        "The Neuromatch schedule is a three-week intensive; it is not an evening-study workload estimate. Corniversity re-paces the material.",
+        "The ebook offers Colab and Kaggle launch buttons; running notebooks requires those third-party services or a local PyTorch installation, which Corniversity does not provide."
+      ],
+      "locators": [
+        {
+          "id": "nmadl-intro",
+          "label": "Introduction page (course landing inside the ebook, with footer licence statement)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/intro.html",
+            "heading": "Introduction"
+          }
+        },
+        {
+          "id": "nmadl-schedule",
+          "label": "General schedule: three-week daily sequence and the standard day structure",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/Schedule/daily_schedules.html",
+            "heading": "General schedule"
+          }
+        },
+        {
+          "id": "nmadl-prereqs",
+          "label": "Prerequisites and preparatory materials (programming; math skills)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/prereqs/DeepLearning.html",
+            "heading": "Prerequisites and preparatory materials for NMA Deep Learning"
+          }
+        },
+        {
+          "id": "nmadl-repo-readme",
+          "label": "Source repository README (licence statements; ebook named as the main access route)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://github.com/NeuromatchAcademy/course-content-dl",
+            "heading": "README"
+          }
+        },
+        {
+          "id": "nmadl-w1d1",
+          "label": "W1D1 chapter page: Basics And Pytorch",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/chapter_title.html",
+            "heading": "Basics And Pytorch"
+          }
+        },
+        {
+          "id": "nmadl-w1d1-t1",
+          "label": "W1D1 Tutorial 1: PyTorch (tensors, operations, GPUs, datasets and dataloaders, a first network)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Tutorial 1: PyTorch"
+          }
+        },
+        {
+          "id": "nmadl-w1d1-t1-s2-1",
+          "label": "W1D1 Tutorial 1, Section 2.1: Creating Tensors (includes the Reproducibility note and set_seed)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Section 2.1: Creating Tensors",
+            "fragment": "section-2-1-creating-tensors"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d1-t1-s2-5",
+          "label": "W1D1 Tutorial 1, Section 2.5: Datasets and Dataloaders (CIFAR10 train=True/False, DataLoader, worker seeding)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Section 2.5: Datasets and Dataloaders",
+            "fragment": "section-2-5-datasets-and-dataloaders"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d1-t1-v8",
+          "label": "W1D1 Tutorial 1, Video 8: Train and Test (the tutorial defers the split discussion to later days)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Video 8: Train and Test",
+            "fragment": "video-8-train-and-test"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30; the video itself was not watched."
+        },
+        {
+          "id": "nmadl-w1d1-t1-s3-2",
+          "label": "W1D1 Tutorial 1, Section 3.2: Create a Simple Neural Network",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Section 3.2: Create a Simple Neural Network",
+            "fragment": "section-3-2-create-a-simple-neural-network"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d1-t1-s3-3",
+          "label": "W1D1 Tutorial 1, Section 3.3: Train Your Neural Network (trains on the full generated dataset; decision boundary plots)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D1_BasicsAndPytorch/student/W1D1_Tutorial1.html",
+            "heading": "Section 3.3: Train Your Neural Network",
+            "fragment": "section-3-3-train-your-neural-network"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2",
+          "label": "W1D2 chapter page: Linear Deep Learning",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/chapter_title.html",
+            "heading": "Linear Deep Learning"
+          }
+        },
+        {
+          "id": "nmadl-w1d2-t1",
+          "label": "W1D2 Tutorial 1: Gradient Descent and AutoGrad",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Tutorial 1: Gradient Descent and AutoGrad"
+          }
+        },
+        {
+          "id": "nmadl-w1d2-t1-s1-1",
+          "label": "W1D2 Tutorial 1, Section 1.1: Gradients & Steepest Ascent (Analytical Exercise 1.1, Coding Exercise 1.1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 1.1: Gradients & Steepest Ascent",
+            "fragment": "section-1-1-gradients-steepest-ascent"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t1-s1-2",
+          "label": "W1D2 Tutorial 1, Section 1.2: Gradient Descent Algorithm (Analytical Exercise 1.2)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 1.2: Gradient Descent Algorithm",
+            "fragment": "section-1-2-gradient-descent-algorithm"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t1-s1-3",
+          "label": "W1D2 Tutorial 1, Section 1.3: Computational Graphs and Backprop (Analytical Exercise 1.3: Chain Rule)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 1.3: Computational Graphs and Backprop",
+            "fragment": "section-1-3-computational-graphs-and-backprop"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t1-s2-1",
+          "label": "W1D2 Tutorial 1, Section 2.1: Forward Propagation (Coding Exercise 2.1: building a computational graph)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 2.1: Forward Propagation",
+            "fragment": "section-2-1-forward-propagation"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t1-s2-2",
+          "label": "W1D2 Tutorial 1, Section 2.2: Backward Propagation (autograd's backward pass)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 2.2: Backward Propagation",
+            "fragment": "section-2-2-backward-propagation"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t1-s3-1",
+          "label": "W1D2 Tutorial 1, Section 3.1: Training loop in PyTorch (Coding Exercise 3.1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial1.html",
+            "heading": "Section 3.1: Training loop in PyTorch",
+            "fragment": "section-3-1-training-loop-in-pytorch"
+          },
+          "note": "Section id read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "nmadl-w1d2-t2",
+          "label": "W1D2 Tutorial 2: Learning Hyperparameters",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial2.html",
+            "heading": "Tutorial 2: Learning Hyperparameters"
+          },
+          "note": "Page loaded with this title on 2026-10-30; its body was truncated in the fetch, so only a page-level locator is recorded."
+        },
+        {
+          "id": "nmadl-w1d2-t3",
+          "label": "W1D2 Tutorial 3: Deep linear neural networks (learning dynamics and SVD, RSA, illusory correlations)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D2_LinearDeepLearning/student/W1D2_Tutorial3.html",
+            "heading": "Tutorial 3: Deep linear neural networks"
+          }
+        },
+        {
+          "id": "nmadl-w1d3",
+          "label": "W1D3 chapter page: Multi Layer Perceptrons",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D3_MultiLayerPerceptrons/chapter_title.html",
+            "heading": "Multi Layer Perceptrons"
+          }
+        },
+        {
+          "id": "nmadl-w1d3-t1",
+          "label": "W1D3 Tutorial 1: Biological vs. Artificial Neural Networks (universal approximation, MLPs in PyTorch, cross entropy, train/eval)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D3_MultiLayerPerceptrons/student/W1D3_Tutorial1.html",
+            "heading": "Tutorial 1: Biological vs. Artificial Neural Networks"
+          }
+        },
+        {
+          "id": "nmadl-w1d3-t2",
+          "label": "W1D3 Tutorial 2: Deep MLPs (wide vs deep, real-world dataloader, initialisation bonus)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D3_MultiLayerPerceptrons/student/W1D3_Tutorial2.html",
+            "heading": "Tutorial 2: Deep MLPs"
+          }
+        },
+        {
+          "id": "nmadl-w1d4",
+          "label": "W1D4 chapter page: Optimization",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D4_Optimization/chapter_title.html",
+            "heading": "Optimization"
+          }
+        },
+        {
+          "id": "nmadl-w1d4-t1",
+          "label": "W1D4 Tutorial 1: Optimization techniques (gradient descent, poor conditioning and momentum, non-convexity, mini-batches, adaptive methods)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W1D4_Optimization/student/W1D4_Tutorial1.html",
+            "heading": "Tutorial 1: Optimization techniques"
+          }
+        },
+        {
+          "id": "nmadl-w2d1",
+          "label": "W2D1 chapter page: Regularization",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D1_Regularization/chapter_title.html",
+            "heading": "Regularization"
+          }
+        },
+        {
+          "id": "nmadl-w2d1-t1",
+          "label": "W2D1 Tutorial 1: Regularization techniques part 1 (shrinkage, overfitting, validation set, memorisation, early stopping)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D1_Regularization/student/W2D1_Tutorial1.html",
+            "heading": "Tutorial 1: Regularization techniques part 1"
+          }
+        },
+        {
+          "id": "nmadl-w2d1-t2",
+          "label": "W2D1 Tutorial 2: Regularization techniques part 2 (L1 and L2, dropout, data augmentation, SGD, hyperparameter tuning)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D1_Regularization/student/W2D1_Tutorial2.html",
+            "heading": "Tutorial 2: Regularization techniques part 2"
+          }
+        },
+        {
+          "id": "nmadl-w2d2",
+          "label": "W2D2 chapter page: Convnets",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D2_Convnets/chapter_title.html",
+            "heading": "Convnets"
+          }
+        },
+        {
+          "id": "nmadl-w2d2-t1",
+          "label": "W2D2 Tutorial 1: Introduction to CNNs (convolution and edge detection, padding and stride, pooling, parameter counts, transfer learning)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D2_Convnets/student/W2D2_Tutorial1.html",
+            "heading": "Tutorial 1: Introduction to CNNs"
+          }
+        },
+        {
+          "id": "nmadl-w2d3",
+          "label": "W2D3 chapter page: Generative Models And Deep Learning Discussion 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D3_GenerativeModelsAndDeepLearningDiscussion1/chapter_title.html",
+            "heading": "Generative Models And Deep Learning Discussion 1"
+          }
+        },
+        {
+          "id": "nmadl-w2d3-t1",
+          "label": "W2D3 Tutorial 1: Introduction to generative models",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D3_GenerativeModelsAndDeepLearningDiscussion1/student/W2D3_Tutorial1.html",
+            "heading": "Tutorial 1: Introduction to generative models"
+          },
+          "note": "Page loaded with this title on 2026-10-30; its body was truncated in the fetch, so only a page-level locator is recorded."
+        },
+        {
+          "id": "nmadl-w2d5",
+          "label": "W2D5 chapter page: Time Series And Natural Language Processing",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D5_TimeSeriesAndNaturalLanguageProcessing/chapter_title.html",
+            "heading": "Time Series And Natural Language Processing"
+          }
+        },
+        {
+          "id": "nmadl-w2d5-t2",
+          "label": "W2D5 Tutorial 2: Natural Language Processing and LLMs (NLP architectures, pipeline, BERT, GPT)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W2D5_TimeSeriesAndNaturalLanguageProcessing/student/W2D5_Tutorial2.html",
+            "heading": "Tutorial 2: Natural Language Processing and LLMs"
+          }
+        },
+        {
+          "id": "nmadl-w3d1",
+          "label": "W3D1 chapter page: Attention And Transformers",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W3D1_AttentionAndTransformers/chapter_title.html",
+            "heading": "Attention And Transformers"
+          }
+        },
+        {
+          "id": "nmadl-w3d1-t1",
+          "label": "W3D1 Tutorial 1: Learn how to work with Transformers (queries, keys, values; multihead attention; positional encoding; training)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W3D1_AttentionAndTransformers/student/W3D1_Tutorial1.html",
+            "heading": "Tutorial 1: Learn how to work with Transformers"
+          }
+        },
+        {
+          "id": "nmadl-w3d3",
+          "label": "W3D3 chapter page: Unsupervised And Self Supervised Learning",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W3D3_UnsupervisedAndSelfSupervisedLearning/chapter_title.html",
+            "heading": "Unsupervised And Self Supervised Learning"
+          }
+        },
+        {
+          "id": "nmadl-w3d3-t1",
+          "label": "W3D3 Tutorial 1: Un/Self-supervised learning methods",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nma-dl-web-2026",
+            "url": "https://deeplearning.neuromatch.io/tutorials/W3D3_UnsupervisedAndSelfSupervisedLearning/student/W3D3_Tutorial1.html",
+            "heading": "Tutorial 1: Un/Self-supervised learning methods"
+          },
+          "note": "Page loaded with this title on 2026-10-30; its body was truncated in the fetch, so only a page-level locator is recorded."
+        }
+      ]
+    }
+  ]
+}

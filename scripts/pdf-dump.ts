@@ -17,7 +17,9 @@ if (!target) {
 async function load(): Promise<Uint8Array> {
   if (/^https?:\/\//.test(target!)) {
     const url = new URL(target!);
-    const allowed = ["ocw.mit.edu", "openstax.org", "compneuro.neuromatch.io", "deeplearning.neuromatch.io"];
+    // www.eftaylor.com: Taylor & Wheeler, Spacetime Physics (2nd ed.), whose page states the book is
+    // "FREE TO DOWNLOAD, PRINT, AND SHARE" under CC BY 4.0 (verified 2026-10-30).
+    const allowed = ["ocw.mit.edu", "openstax.org", "compneuro.neuromatch.io", "deeplearning.neuromatch.io", "www.eftaylor.com"];
     if (!allowed.includes(url.hostname)) throw new Error(`host ${url.hostname} is not in the open-licence allow-list`);
     const res = await fetch(url, { redirect: "follow" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);

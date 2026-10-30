@@ -32,6 +32,7 @@ export interface OnboardingAnswers {
   rhythm?: "term" | "rolling" | "reading_course";
   placement?: Record<string, "passed" | "skipped" | "attempted">;
   chosenPlanId?: string;
+  chosenPlan?: { id: string; title: string; courses: { courseId: string; role: string; mode: string }[] };
   modes?: Record<string, "enrolled" | "audit" | "reading_seminar">;
   peerPersonaIds?: string[];
   termStart?: string; // ISO date

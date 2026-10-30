@@ -16,6 +16,8 @@ export default defineConfig({
   outputDir: "test-results",
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3000",
+    actionTimeout: 20_000,
+    navigationTimeout: 60_000,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
