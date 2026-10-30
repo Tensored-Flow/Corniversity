@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/*
+  Corniversity design tokens. Roles, not raw colours, are used everywhere else.
+  Light mode is primary (warm paper and stone, deep ink, brass accent); the dark reading
+  mode remaps the same roles. See docs/DESIGN_SYSTEM.md.
+*/
+:root {
+  --paper: #f6f1e7;
+  --paper-2: #fcfaf4;
+  --paper-3: #ece5d6;
+  --stone: #d8d0bf;
+  --stone-2: #b9ae98;
+  --ink: #1f1b16;
+  --ink-2: #554d41;
+  --ink-3: #7d745f;
+  --brass: #7d5f28;
+  --brass-strong: #5f4719;
+  --brass-soft: #e8d9b8;
+  --moss: #46633a;
+  --moss-soft: #dbe6d1;
+  --rust: #93452a;
+  --rust-soft: #f0d9cf;
+  --slate: #3b5668;
+  --slate-soft: #d6e1e8;
+  --focus: #b4862f;
+  --shadow: 0 1px 0 var(--stone);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #16140f;
+  --paper-2: #1e1b14;
+  --paper-3: #262219;
+  --stone: #3b3628;
+  --stone-2: #585140;
+  --ink: #ede6d8;
+  --ink-2: #c3baa6;
+  --ink-3: #948b78;
+  --brass: #d6ab55;
+  --brass-strong: #e8c470;
+  --brass-soft: #3a3120;
+  --moss: #9ec47f;
+  --moss-soft: #263121;
+  --rust: #e3896a;
+  --rust-soft: #3a241c;
+  --slate: #93b6cf;
+  --slate-soft: #1f2a32;
+  --focus: #e3bb63;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+  --color-stone: var(--stone);
+  --color-stone-2: var(--stone-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-brass: var(--brass);
+  --color-brass-strong: var(--brass-strong);
+  --color-brass-soft: var(--brass-soft);
+  --color-moss: var(--moss);
+  --color-moss-soft: var(--moss-soft);
+  --color-rust: var(--rust);
+  --color-rust-soft: var(--rust-soft);
+  --color-slate: var(--slate);
+  --color-slate-soft: var(--slate-soft);
+  --color-focus: var(--focus);
+
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, serif;
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, Consolas, monospace;
+
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --spacing-gutter: 16px;
+  --spacing-gutter-lg: 32px;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale, 1));
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  min-height: 100dvh;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  font-variation-settings: "opsz" 72, "SOFT" 30;
+}
+
+.prose-reading {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+.prose-reading h1,
+.prose-reading h2,
+.prose-reading h3 {
+  font-family: var(--font-display);
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+}
+.prose-reading h2 {
+  font-size: 1.5rem;
+}
+.prose-reading h3 {
+  font-size: 1.2rem;
+}
+.prose-reading p,
+.prose-reading ul,
+.prose-reading ol,
+.prose-reading blockquote {
+  margin-bottom: 0.9em;
+}
+.prose-reading ul,
+.prose-reading ol {
+  padding-left: 1.4em;
+}
+.prose-reading ul {
+  list-style: disc;
+}
+.prose-reading ol {
+  list-style: decimal;
+}
+.prose-reading blockquote {
+  border-left: 2px solid var(--stone-2);
+  padding-left: 1em;
+  color: var(--ink-2);
+}
+.prose-reading code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--paper-3);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+.prose-reading pre {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  background: var(--paper-3);
+  border: 1px solid var(--stone);
+  border-radius: var(--radius-panel);
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+.prose-reading pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose-reading a {
+  color: var(--brass);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-reading table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+  font-size: 0.95em;
+}
+.prose-reading th,
+.prose-reading td {
+  border: 1px solid var(--stone);
+  padding: 0.4em 0.6em;
+  text-align: left;
+}
+.prose-reading hr {
+  border: 0;
+  border-top: 1px solid var(--stone);
+  margin: 1.5em 0;
+}
+/* Named mathematical environments produced by our Markdown conventions. */
+.prose-reading .env-block {
+  border: 1px solid var(--stone);
+  border-left: 3px solid var(--brass);
+  border-radius: var(--radius-panel);
+  background: var(--paper-2);
+  padding: 0.8rem 1rem;
+  margin: 1.1em 0;
+}
+.prose-reading .env-block > .env-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 0.3em;
+}
+.prose-reading .env-block.env-definition {
+  border-left-color: var(--slate);
+}
+.prose-reading .env-block.env-definition > .env-title {
+  color: var(--slate);
+}
+.prose-reading .env-block.env-example {
+  border-left-color: var(--moss);
+}
+.prose-reading .env-block.env-example > .env-title {
+  color: var(--moss);
+}
+.prose-reading .env-block.env-warning {
+  border-left-color: var(--rust);
+}
+.prose-reading .env-block.env-warning > .env-title {
+  color: var(--rust);
+}
+
+/* Mathematics: KaTeX MathML output. Display math may scroll horizontally rather than overflow. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+  margin: 0.8em 0;
+}
+math {
+  font-size: 1.08em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  background: var(--paper-2);
+  color: var(--ink);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--stone-2);
+  border-radius: var(--radius-control);
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle paper linework for large empty surfaces; never behind reading text. */
+.paper-lines {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 31px,
+    color-mix(in srgb, var(--stone) 55%, transparent) 31px 32px
+  );
+}

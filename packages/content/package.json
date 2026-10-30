@@ -1,0 +1,23 @@
+{
+  "name": "@corniversity/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "validate": "tsx src/cli.ts validate",
+    "seed": "tsx src/cli.ts seed",
+    "seed:demo": "tsx src/cli.ts seed-demo",
+    "build": "echo 'source package; consumed directly'"
+  },
+  "dependencies": {
+    "@corniversity/core": "workspace:*",
+    "@corniversity/db": "workspace:*",
+    "zod": "^4.6.7"
+  }
+}

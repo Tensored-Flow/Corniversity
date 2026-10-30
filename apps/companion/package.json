@@ -1,0 +1,19 @@
+{
+  "name": "@corniversity/companion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/companion.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@corniversity/core": "workspace:*",
+    "chokidar": "^6.0.0",
+    "commander": "^15.0.0",
+    "unpdf": "^2.1.0",
+    "zod": "^4.6.7"
+  }
+}

@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+  - tests/academic-evals
+
+# Post-install scripts are blocked by default in pnpm. These packages genuinely need theirs:
+# embedded-postgres creates the PostgreSQL binary symlinks; esbuild installs its platform binary.
+allowBuilds:
+  embedded-postgres: true
+  '@embedded-postgres/windows-x64': true
+  esbuild: true
+
+minimumReleaseAgeExclude:
+  - unpdf@2.1.0

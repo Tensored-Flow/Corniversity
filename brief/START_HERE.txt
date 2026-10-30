@@ -1,0 +1,25 @@
+BUILD MERIDIAN — LEON'S PERSONAL UNIVERSITY
+
+Work in a new dedicated project directory, not inside Kalibr, another application, or the Downloads directory itself. The working product name is Meridian; it is a private, independent, non-accredited personal university.
+
+Read UNIVERSITY_BUILD_BRIEF.md completely, including the appendices. Also read VERIFIED_SOURCES.md and COURSE_CATALOGUE_SEED.json. The brief is the authoritative product and acceptance specification; the JSON is a machine-readable starting catalogue, not completed course content.
+
+This is an implementation task. Research the current interfaces you need, design the actual experience, write the application, populate real source-backed academic content, test it, inspect the running UI, repair defects, and deploy it privately when available credentials and permissions permit. Do not stop at a proposal, landing page, empty course catalogue, or mocked AI chat.
+
+The essential product is a complete learning institution: a director of studies adapted from ALTER's roles; six departments; rigorous mathematics and science courses; meaningful onboarding and a first-term welcome; clearly labelled AI teachers and optional classmates; real textbooks and university materials; a timetable; lectures, tutorials, proof work, computational labs, assessment, revision, notes, and academic records. It must work as an actual website after this Codex session ends.
+
+The most important engineering boundaries are real authentication and persistence, authoritative server-side academic state, durable background jobs, source/edition/page-level provenance, honest assessment uncertainty, deterministic conflict-free scheduling, and explicit permissions for textbook storage, AI processing, and embeddings. The desktop library folder requires an actual paired companion/watcher; the cloud server cannot magically access my PC.
+
+Start by inspecting the project environment, applicable instructions, available tools/skills, and authorized deployment options. Create a concise AGENTS.md, docs/PLAN.md, docs/STATUS.md, and the other durable documents required by the brief. Work through milestones, run their checks, fix failures, and update the plan as you go. If context becomes tight, leave a precise checkpoint and resume from it rather than redesigning the project.
+
+Make normal product and engineering decisions without repeatedly asking me. Unknown study preferences belong in the onboarding UI. Inspect current ALTER code/licence and adapt its learning-role contracts; do not assume a Claude plugin is already a hosted backend. Do not bolt multiple full tutoring apps together.
+
+Keep approval controls enabled. Do not expose secrets or private books, modify unrelated repositories, publish a public user-data demo, buy a domain, upgrade paid plans, or initiate unbounded API spending. Missing credentials, owner authentication setup, and billing authorization are genuine blockers: finish the independent work and record the exact minimal action required. Never claim a fixture test, build log, or unverified URL proves a live deployment.
+
+Prioritize a working end-to-end advanced-mathematics learning loop, then expand through the whole planned product. Preserve the requested depth in functional analysis, measure/probability, algebra, geometry, relativity, physics, chemistry, neuroscience, and AI. Distinguish proposed courses, verified syllabi, and prepared teaching units. Do not fabricate textbook chapters, exercise numbers, sources, grades, progress, or accreditation.
+
+The design should feel like a warm, serious collegiate institution: scholarly typography, calm reading and proof spaces, coherent departments, a welcoming induction, and optional campus life. It should not look like a generic analytics dashboard. The learner must be able to switch off social simulation and still have the full academic experience.
+
+Before declaring completion, execute the brief's learner journeys, academic evaluations, security/permission tests, and visual checks. Report the actual deployed URL/status, repository and commit, exact local/companion commands, what is genuinely ready to study, tests performed, screenshots, operating-cost assumptions, and only the unavoidable remaining manual actions.
+
+Begin now by reading the full brief and establishing the implementation plan, then proceed to building.

@@ -1,0 +1,2 @@
+{ "name": "@corniversity/academic-evals", "version": "0.1.0", "private": true, "type": "module",
+  "dependencies": { "@corniversity/core": "workspace:*", "@corniversity/ai": "workspace:*", "zod": "^4.6.7" } }

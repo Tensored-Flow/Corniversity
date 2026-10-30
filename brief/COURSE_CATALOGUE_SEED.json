@@ -1,0 +1,875 @@
+{
+  "schemaVersion": 1,
+  "preparedOn": "2026-10-30",
+  "purpose": "Desired personal-university course catalogue; not verified course content, prerequisite data, or learner achievements.",
+  "authoritativeSpecification": "UNIVERSITY_BUILD_BRIEF.md",
+  "sourceRegistry": "VERIFIED_SOURCES.md",
+  "defaultTimezone": "Europe/London",
+  "departments": [
+    {
+      "id": "mathematics",
+      "title": "Mathematics"
+    },
+    {
+      "id": "physics",
+      "title": "Physics"
+    },
+    {
+      "id": "chemistry",
+      "title": "Chemistry"
+    },
+    {
+      "id": "computer-science-ai",
+      "title": "Computer Science & Artificial Intelligence"
+    },
+    {
+      "id": "neuroscience",
+      "title": "Neuroscience"
+    },
+    {
+      "id": "cognitive-science",
+      "title": "Cognitive Science & Psychology"
+    }
+  ],
+  "courses": [
+    {
+      "id": "MAT-100",
+      "title": "Proof, Quantifiers, and Mathematical Language",
+      "departmentId": "mathematics",
+      "requestedPosition": "Optional readiness bridge",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-110",
+      "title": "Linear Algebra and Multivariable Readiness",
+      "departmentId": "mathematics",
+      "requestedPosition": "Optional targeted bridge",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-201",
+      "title": "Rigorous Real Analysis",
+      "departmentId": "mathematics",
+      "requestedPosition": "Foundation or advanced refresher after placement",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-202",
+      "title": "Complex Analysis",
+      "departmentId": "mathematics",
+      "requestedPosition": "Core analysis pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-210",
+      "title": "Measure and Integration",
+      "departmentId": "mathematics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-220",
+      "title": "Probability from Measure Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "After appropriate measure/integration foundation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-221",
+      "title": "Martingales and Stochastic Processes",
+      "departmentId": "mathematics",
+      "requestedPosition": "Probability pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-230",
+      "title": "Functional Analysis I",
+      "departmentId": "mathematics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "mit-fa-2021",
+        "mit-fa-syllabus",
+        "mit-fa-calendar"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-231",
+      "title": "Functional Analysis II and Operator Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "Advanced continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-240",
+      "title": "Fourier and Harmonic Analysis",
+      "departmentId": "mathematics",
+      "requestedPosition": "Analysis pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-250",
+      "title": "ODEs and Dynamical Systems",
+      "departmentId": "mathematics",
+      "requestedPosition": "Differential-equations pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-251",
+      "title": "Partial Differential Equations",
+      "departmentId": "mathematics",
+      "requestedPosition": "Level-dependent entry and bridges",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-252",
+      "title": "Sobolev Spaces and Weak PDEs",
+      "departmentId": "mathematics",
+      "requestedPosition": "Advanced analysis pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-260",
+      "title": "General Topology",
+      "departmentId": "mathematics",
+      "requestedPosition": "Geometry/topology foundation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-261",
+      "title": "Smooth Manifolds",
+      "departmentId": "mathematics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-262",
+      "title": "Riemannian Geometry",
+      "departmentId": "mathematics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "lee-riemannian"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-263",
+      "title": "Algebraic Topology",
+      "departmentId": "mathematics",
+      "requestedPosition": "Topology pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-264",
+      "title": "Differential Forms and de Rham Cohomology",
+      "departmentId": "mathematics",
+      "requestedPosition": "Cross-listed geometry/topology seminar",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-265",
+      "title": "Lie Groups and Lie Algebras",
+      "departmentId": "mathematics",
+      "requestedPosition": "Cross-listed geometry/algebra",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-270",
+      "title": "Abstract Algebra I: Groups and Structure",
+      "departmentId": "mathematics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "mit-algebra-2010",
+        "mit-algebra-notes-2021"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-271",
+      "title": "Rings, Modules, and Fields",
+      "departmentId": "mathematics",
+      "requestedPosition": "Algebra continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-272",
+      "title": "Galois Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "Algebra continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-273",
+      "title": "Representation Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "Advanced algebra pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-280",
+      "title": "Convex Analysis and Optimization",
+      "departmentId": "mathematics",
+      "requestedPosition": "Pure/applied cross-listing",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-281",
+      "title": "Optimal Transport",
+      "departmentId": "mathematics",
+      "requestedPosition": "Foundational and advanced tracks distinguished",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-282",
+      "title": "Hausdorff Dimension and Geometric Measure Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "Advanced pathway; do not conflate an introductory fractals seminar with full GMT",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-283",
+      "title": "Algebraic Geometry",
+      "departmentId": "mathematics",
+      "requestedPosition": "Optional advanced expansion",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-284",
+      "title": "Category Theory",
+      "departmentId": "mathematics",
+      "requestedPosition": "Optional advanced expansion",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-290",
+      "title": "Numerical Analysis",
+      "departmentId": "mathematics",
+      "requestedPosition": "Cross-listed scientific computing",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-291",
+      "title": "Number Theory and Combinatorics",
+      "departmentId": "mathematics",
+      "requestedPosition": "Elective/recreational-to-rigorous pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "MAT-292",
+      "title": "Formal Proof with Lean",
+      "departmentId": "mathematics",
+      "requestedPosition": "Optional verified-tooling elective",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-100",
+      "title": "Mathematical Methods for Physics",
+      "departmentId": "physics",
+      "requestedPosition": "Targeted bridge, not compulsory repetition",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-201",
+      "title": "Classical Mechanics",
+      "departmentId": "physics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-202",
+      "title": "Electromagnetism",
+      "departmentId": "physics",
+      "requestedPosition": "Core physics",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-210",
+      "title": "Special Relativity and Minkowski Geometry",
+      "departmentId": "physics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-220",
+      "title": "Quantum Mechanics I",
+      "departmentId": "physics",
+      "requestedPosition": "Core physics",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-221",
+      "title": "Advanced Quantum Mechanics",
+      "departmentId": "physics",
+      "requestedPosition": "Advanced continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-230",
+      "title": "Thermodynamics",
+      "departmentId": "physics",
+      "requestedPosition": "Core physics",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-231",
+      "title": "Statistical Physics",
+      "departmentId": "physics",
+      "requestedPosition": "Core/advanced pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-240",
+      "title": "General Relativity I",
+      "departmentId": "physics",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "mit-gr-2020"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-241",
+      "title": "Advanced Relativity and Black Holes",
+      "departmentId": "physics",
+      "requestedPosition": "Advanced continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-250",
+      "title": "Classical and Quantum Field Theory",
+      "departmentId": "physics",
+      "requestedPosition": "Split into separate courses if the verified scope requires it",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "PHY-260",
+      "title": "Cosmology",
+      "departmentId": "physics",
+      "requestedPosition": "Advanced elective",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-101",
+      "title": "Principles of Chemical Science",
+      "departmentId": "chemistry",
+      "requestedPosition": "Launch; diagnostic entry",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "mit-chem-2014",
+        "openstax-chemistry"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-201",
+      "title": "Organic Chemistry I",
+      "departmentId": "chemistry",
+      "requestedPosition": "Core chemistry",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-202",
+      "title": "Organic Mechanisms and Stereochemistry",
+      "departmentId": "chemistry",
+      "requestedPosition": "Continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-210",
+      "title": "Chemical Thermodynamics and Kinetics",
+      "departmentId": "chemistry",
+      "requestedPosition": "Physical chemistry",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-220",
+      "title": "Quantum Chemistry",
+      "departmentId": "chemistry",
+      "requestedPosition": "Physical chemistry",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-230",
+      "title": "Inorganic and Coordination Chemistry",
+      "departmentId": "chemistry",
+      "requestedPosition": "Core/advanced pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-240",
+      "title": "Spectroscopy and Analytical Reasoning",
+      "departmentId": "chemistry",
+      "requestedPosition": "Evidence/data emphasis",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-250",
+      "title": "Computational Chemistry",
+      "departmentId": "chemistry",
+      "requestedPosition": "Computational pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CHE-260",
+      "title": "Biochemistry and Chemical Biology",
+      "departmentId": "chemistry",
+      "requestedPosition": "Optional interdisciplinary route",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-100",
+      "title": "Python for Scientific Work",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Optional readiness bridge",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-110",
+      "title": "Algorithms and Data Structures",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Targeted foundations",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-201",
+      "title": "Machine Learning Foundations",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Core AI",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-210",
+      "title": "Deep Learning Foundations",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "neuromatch-deep-learning"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-220",
+      "title": "Probabilistic Modelling and Bayesian Inference",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Cross-listed cognitive/neural methods",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-230",
+      "title": "Reinforcement Learning",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Advanced continuation",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-240",
+      "title": "Information Theory",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Cross-listed mathematics",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-250",
+      "title": "Language Modelling from Scratch",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Advanced; evaluate Stanford CS336 as a source",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "stanford-cs336"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-260",
+      "title": "ML Systems and Reproducible Research Engineering",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Advanced/practical",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-270",
+      "title": "Agents, Evaluation, and Reliable AI Applications",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Practical, current-source verification essential",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "CSA-280",
+      "title": "Scientific Computing",
+      "departmentId": "computer-science-ai",
+      "requestedPosition": "Coordinate with MAT-290 rather than duplicating it",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "NEU-101",
+      "title": "Neuroscience Foundations",
+      "departmentId": "neuroscience",
+      "requestedPosition": "Domain readiness",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "NEU-201",
+      "title": "Cellular and Biophysical Neuroscience",
+      "departmentId": "neuroscience",
+      "requestedPosition": "Core pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "NEU-210",
+      "title": "Systems Neuroscience",
+      "departmentId": "neuroscience",
+      "requestedPosition": "Core pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "NEU-220",
+      "title": "Computational Neuroscience",
+      "departmentId": "neuroscience",
+      "requestedPosition": "Launch; evaluate Neuromatch as a spine",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "neuromatch-compneuro",
+        "neuromatch-compneuro-schedule"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "NEU-230",
+      "title": "NeuroAI",
+      "departmentId": "neuroscience",
+      "requestedPosition": "Advanced cross-listing with AI",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "neuromatch-neuroai"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-101",
+      "title": "Cognitive Psychology Foundations",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Domain readiness",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-201",
+      "title": "Computational Cognitive Science",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Launch",
+      "initialLaunchCourse": true,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [
+        "mit-cognitive-science"
+      ],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-210",
+      "title": "Experimental Design and Statistics",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Methods pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-220",
+      "title": "Psychometrics and Measurement",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Optional methods pathway, not automatically startup work",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-230",
+      "title": "Learning, Decision-Making, and Cognitive Models",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Core/advanced pathway",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    },
+    {
+      "id": "COG-240",
+      "title": "Causal Inference for Behavioural Science",
+      "departmentId": "cognitive-science",
+      "requestedPosition": "Advanced methods",
+      "initialLaunchCourse": false,
+      "readiness": "proposed",
+      "prerequisitesVerified": false,
+      "candidateSourceIds": [],
+      "learnerHasCompleted": false
+    }
+  ]
+}
