@@ -1,0 +1,65 @@
+{
+  "id": "MAT-230-u07",
+  "courseId": "MAT-230",
+  "sequence": 7,
+  "title": "Measurable functions, simple functions and the integral",
+  "summary": "Measurable functions and their closure properties; simple functions and approximation; the integral of nonnegative functions; monotone convergence and Fatou.",
+  "objectives": [
+    {
+      "id": "u07-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 9–11 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "lebesgue-measure",
+    "sigma-algebra"
+  ],
+  "teachesConceptIds": [
+    "measurable-function",
+    "lebesgue-integral"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 9–11 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec09",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u07-a1",
+      "type": "reading",
+      "title": "Lectures 9–11: Measurable functions, simple functions and the integral",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec09",
+        "fa21-lec10",
+        "fa21-lec11"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

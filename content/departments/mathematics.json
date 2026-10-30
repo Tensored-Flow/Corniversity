@@ -1,0 +1,20 @@
+{
+  "id": "mathematics",
+  "title": "Mathematics",
+  "shortTitle": "Maths",
+  "identity": "Rigorous analysis, probability, geometry, topology and algebra, taught the way mathematicians work: definitions first, examples and non-examples, theorems with their hypotheses in view, and proofs written out in full. Nothing here is a service course; the subject is studied for its own sake, from undergraduate foundations to graduate material.",
+  "emblem": "compass",
+  "paths": [
+    { "title": "Analysis & Probability", "courseIds": ["MAT-201", "MAT-210", "MAT-220", "MAT-221", "MAT-230", "MAT-231", "MAT-240"] },
+    { "title": "Geometry & Topology", "courseIds": ["MAT-260", "MAT-261", "MAT-262", "MAT-263", "MAT-264", "MAT-265"] },
+    { "title": "Algebra & Structure", "courseIds": ["MAT-270", "MAT-271", "MAT-272", "MAT-273", "MAT-283", "MAT-284"] },
+    { "title": "Differential equations & applied analysis", "courseIds": ["MAT-250", "MAT-251", "MAT-252", "MAT-280", "MAT-281", "MAT-282", "MAT-290"] }
+  ],
+  "facultyPersonaIds": ["tamsin-okoro", "halvard-brekke"],
+  "conventions": [
+    "ℕ starts at 1 unless a course says otherwise; ℝ and ℂ are the real and complex fields.",
+    "Norms are written ‖·‖ with a subscript naming the space or the exponent; inner products are ⟨·,·⟩, linear in the first argument.",
+    "A theorem is stated with all its hypotheses before any proof begins; a counterexample is given whenever a hypothesis is dropped.",
+    "Proofs end with a short remark on which hypothesis did the work."
+  ]
+}

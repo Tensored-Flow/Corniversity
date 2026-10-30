@@ -1,0 +1,50 @@
+{
+  "id": "MAT-230",
+  "version": 1,
+  "title": "Functional Analysis I",
+  "departmentIds": ["mathematics"],
+  "level": "advanced",
+  "position": "Launch",
+  "launch": true,
+  "purpose": "Normed and Banach spaces, bounded operators and the four big theorems; Lebesgue measure and integration; Hilbert space and the spectral theorem for compact self-adjoint operators, studied with complete proofs from the MIT 18.102 (Spring 2021) lecture notes and original Corniversity exercises.",
+  "description": "Functional analysis is linear algebra and analysis done in spaces of functions, where the familiar finite-dimensional comforts (all norms equivalent, closed bounded sets compact, every linear map continuous) fail. This course builds the replacements: completeness, the operator norm, Baire category and its consequences (uniform boundedness, open mapping, closed graph), Hahn–Banach, then enough Lebesgue theory to make $L^p$ spaces honest Banach spaces, then Hilbert space, orthonormal bases, the Riesz representation theorem, adjoints, compact operators and the spectral theorem for compact self-adjoint operators, ending with the Dirichlet problem on an interval.\n\n**How this adaptation works.** The spine is the complete set of 23 per-lecture notes from MIT OpenCourseWare 18.102 Introduction to Functional Analysis, Spring 2021 (CC BY-NC-SA 4.0), which follow Richard Melrose's 2020 notes. Corniversity re-paces the 23 lectures as 12 units for a term of ten teaching weeks plus a reading week and a synthesis week, keeps the notes' numbering of definitions and theorems so citations are exact, and sets its own exercises with hint ladders and rubrics. Where an exercise is adapted from the source it says so.\n\n**What is prepared now.** The unit list below shows the exact status of each unit: prepared units have a full lesson, exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "State the definitions of normed, Banach and Hilbert spaces and decide, with proof, whether a given space is complete.", "evidenceExpected": "Proof attempts on completeness exercises, including a counterexample for an incomplete normed space." },
+    { "id": "o2", "description": "Work with bounded linear operators: prove boundedness, compute or bound operator norms, and use the completeness of B(V,W).", "evidenceExpected": "Operator-norm calculations with justification and at least one unboundedness argument." },
+    { "id": "o3", "description": "Apply the Baire category, uniform boundedness, open mapping and closed graph theorems with their hypotheses explicit.", "evidenceExpected": "Proofs that name the completeness hypothesis used and a counterexample when it is dropped." },
+    { "id": "o4", "description": "Use the Hahn–Banach theorem to extend functionals and to separate points, and explain the double dual.", "evidenceExpected": "A written extension argument and an explanation of reflexivity with examples." },
+    { "id": "o5", "description": "Construct Lebesgue measure and the Lebesgue integral and apply the convergence theorems to prove completeness of L^p.", "evidenceExpected": "Convergence-theorem exercises with hypotheses checked; a written account of the Riesz–Fischer argument." },
+    { "id": "o6", "description": "Prove and apply the spectral theorem for compact self-adjoint operators, including to a boundary-value problem on an interval.", "evidenceExpected": "The final synthesis: an exposition applying the spectral theorem to the Dirichlet problem on an interval." }
+  ],
+  "prerequisiteRuleIds": ["MAT-230-analysis-and-linear-algebra", "MAT-230-proof-writing"],
+  "recommendedConceptIds": ["real-analysis-sequences", "metric-spaces", "linear-algebra-vector-spaces", "proof-writing"],
+  "teachesConceptIds": [
+    "normed-space", "equivalent-norms", "banach-space", "bounded-operator", "dual-space", "quotient-space", "baire-category", "uniform-boundedness", "open-mapping", "hahn-banach",
+    "outer-measure", "sigma-algebra", "lebesgue-measure", "measurable-function", "lebesgue-integral", "lp-space",
+    "hilbert-space", "orthonormal-basis", "riesz-representation", "adjoint-operator", "compact-operator", "spectrum", "spectral-theorem-compact"
+  ],
+  "primarySourceIds": ["mit-fa-2021"],
+  "supplementalSourceIds": [],
+  "unitIds": ["MAT-230-u01", "MAT-230-u02", "MAT-230-u03", "MAT-230-u04", "MAT-230-u05", "MAT-230-u06", "MAT-230-u07", "MAT-230-u08", "MAT-230-u09", "MAT-230-u10", "MAT-230-u11", "MAT-230-u12"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "proof_portfolio", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Revision is expected; the portfolio is the record of attempts and revisions, not a single mark.", "weight": 0.5, "rubricSummary": ["statement fidelity", "hypotheses and quantifiers", "logical steps", "boundary cases and counterexamples", "distinction between intuition and proof"] },
+    { "id": "a2", "title": "Mid-course synthesis", "kind": "written_explanation", "description": "After unit 6: a written account connecting completeness, the Baire-category theorems and Hahn–Banach, with one worked application chosen by the learner. Open book, untimed by default.", "weight": 0.25, "rubricSummary": ["correctness", "choice and handling of hypotheses", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: the Dirichlet problem", "kind": "project", "description": "An exposition applying the spectral theorem for compact self-adjoint operators to the Dirichlet problem on an interval, with every analytic step justified. Optional oral explanation to the tutor.", "weight": 0.25, "rubricSummary": ["correct use of the spectral theorem", "completeness of the analytic justification", "exposition"] }
+  ],
+  "workloadHours": { "minimum": 100, "typical": 140, "maximum": 180 },
+  "readiness": "teaching_ready",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "Hand-authored by the build agent from the verified MIT 18.102 Spring 2021 per-lecture notes (PDFs opened and text extracted on 2026-10-30; statement numbers and page indices recorded as locators). Exercises are original unless labelled adapted. Workload estimated from 23 lectures of 1.5 hours plus problem work at roughly 10–12 hours per teaching week.",
+    "verifiedAt": "2026-10-30",
+    "reviewerNotes": [
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The source has no commercial textbook; no acquisition request is needed for this course.",
+      "Lecture videos exist on OCW but individual video locators are not yet verified; the units cite the notes."
+    ]
+  },
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "tamsin-okoro",
+  "tutorPersonaId": "tamsin-okoro",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 18.102 (Spring 2021) materials under CC BY-NC-SA 4.0. The original course ran 23 lectures with weekly homework, a 24-hour take-home midterm and a 48-hour final assignment. Corniversity re-paces it as 12 units, keeps the notes' statement numbering, and sets its own exercises and assessments. This is not an MIT course and confers no credit anywhere."
+}

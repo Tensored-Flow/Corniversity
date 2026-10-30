@@ -4,7 +4,9 @@
   "private": true,
   "description": "Corniversity — Leon's private personal university",
   "packageManager": "pnpm@12.16.1",
-  "engines": { "node": ">=22.12" },
+  "engines": {
+    "node": ">=22.12"
+  },
   "type": "module",
   "scripts": {
     "setup:check": "node scripts/setup-check.mjs",
@@ -39,14 +41,15 @@
     "deploy:railway": "pwsh -File infra/deploy-railway.ps1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@biomejs/biome": "^2.6.4",
     "@playwright/test": "^1.64.1",
-    "@axe-core/playwright": "^4.14.0",
     "@types/node": "^24.0.0",
     "embedded-postgres": "17.10.0-beta.17",
     "esbuild": "^0.28.2",
     "tsx": "^4.23.0",
     "typescript": "5.9.3",
+    "unpdf": "^2.1.0",
     "vitest": "3.2.7"
   }
 }

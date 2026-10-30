@@ -1,0 +1,11 @@
+{
+  "id": "mathematical-physics",
+  "title": "Mathematical Physics",
+  "description": "Mechanics, electromagnetism, quantum mechanics, thermal and statistical physics and relativity, with coherent but not needlessly linear dependencies.",
+  "departmentIds": ["physics", "mathematics"],
+  "stages": [
+    { "title": "First term", "courses": [{ "courseId": "PHY-201", "role": "core" }, { "courseId": "PHY-210", "role": "seminar" }] },
+    { "title": "Second term", "courses": [{ "courseId": "PHY-202", "role": "core" }, { "courseId": "PHY-230", "role": "seminar" }] },
+    { "title": "Later", "courses": [{ "courseId": "PHY-220", "role": "core" }, { "courseId": "PHY-231", "role": "core" }, { "courseId": "PHY-240", "role": "core" }, { "courseId": "PHY-221", "role": "elective" }, { "courseId": "PHY-250", "role": "elective" }, { "courseId": "PHY-260", "role": "elective" }] }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "MAT-230-u06",
+  "courseId": "MAT-230",
+  "sequence": 6,
+  "title": "Outer measure, σ-algebras and Lebesgue measure",
+  "summary": "Lebesgue outer measure on ℝ; σ-algebras; Carathéodory measurability; countable additivity of Lebesgue measure.",
+  "objectives": [
+    {
+      "id": "u06-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 6 (second half), 7, 8 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "real-analysis-sequences",
+    "metric-spaces"
+  ],
+  "teachesConceptIds": [
+    "outer-measure",
+    "sigma-algebra",
+    "lebesgue-measure"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 6 (second half), 7, 8 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec06",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Lectures 6 (second half), 7, 8: Outer measure, σ-algebras and Lebesgue measure",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec06",
+        "fa21-lec07",
+        "fa21-lec08"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

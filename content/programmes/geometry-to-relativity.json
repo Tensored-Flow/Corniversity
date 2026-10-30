@@ -1,0 +1,31 @@
+{
+  "id": "geometry-to-relativity",
+  "title": "Geometry to Relativity",
+  "description": "From smooth manifolds through Riemannian geometry to Lorentzian geometry and general relativity, with special relativity available early and a targeted topology bridge instead of a full topology prerequisite.",
+  "departmentIds": ["mathematics", "physics"],
+  "stages": [
+    {
+      "title": "First term",
+      "courses": [
+        { "courseId": "MAT-261", "role": "core", "note": "Includes a targeted topology bridge in its opening units." },
+        { "courseId": "PHY-210", "role": "seminar", "note": "Special relativity and Minkowski geometry can begin before the full geometry sequence." }
+      ]
+    },
+    {
+      "title": "Second term",
+      "courses": [
+        { "courseId": "MAT-262", "role": "core" },
+        { "courseId": "MAT-264", "role": "seminar" }
+      ]
+    },
+    {
+      "title": "Later",
+      "courses": [
+        { "courseId": "PHY-240", "role": "core", "note": "Requires the tensor/geometry bridge, not algebraic topology." },
+        { "courseId": "PHY-241", "role": "elective" },
+        { "courseId": "MAT-263", "role": "elective" },
+        { "courseId": "MAT-265", "role": "elective" }
+      ]
+    }
+  ]
+}

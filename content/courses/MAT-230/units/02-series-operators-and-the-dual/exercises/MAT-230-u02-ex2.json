@@ -1,0 +1,33 @@
+{
+  "id": "MAT-230-u02-ex2",
+  "sequence": 2,
+  "title": "The Volterra operator",
+  "kind": "proof",
+  "promptMarkdown": "On $C([0,1])$ with the sup norm define $(Tf)(x)=\\int_0^x f(t)\\,dt$.\n\n1. Show that $T$ maps $C([0,1])$ into itself and is linear.\n2. Prove that $T$ is bounded and compute $\\|T\\|$ exactly. Give both the upper bound and a function (or sequence of functions) showing it is sharp.\n3. Show that $T$ is **not** surjective onto $C([0,1])$. (Which functions can be of the form $Tf$?)\n4. Let $D$ denote differentiation on the range of $T$, so that $D(Tf)=f$. Using $f_n(x)=\\sin(n\\pi x)$ or otherwise, show that $D$ is not bounded with respect to the sup norm. Why does this not contradict anything proved in this unit?",
+  "conceptIds": ["bounded-operator", "banach-space"],
+  "hintLadder": [
+    "For $|x|\\le1$, how large can $\\big|\\int_0^x f\\big|$ be in terms of $x$ and $\\|f\\|_\\infty$?",
+    "Try the constant function $f\\equiv1$. What is $Tf$, and what is its sup norm?",
+    "Every $Tf$ is differentiable with $(Tf)'=f$ and $(Tf)(0)=0$. Name a continuous function on $[0,1]$ without one of these properties.",
+    "Compute $\\|T f_n\\|_\\infty$ and $\\|f_n\\|_\\infty$ for $f_n(x)=\\sin(n\\pi x)$, then look at the ratio $\\|D g_n\\|/\\|g_n\\|$ with $g_n=Tf_n$."
+  ],
+  "deterministicChecks": [
+    { "id": "norm-is-one", "kind": "expression_present", "description": "the operator norm equals 1", "params": { "patterns": ["\\\\|\\\\|?t\\\\|\\\\|?=1(?![0-9./])", "‖t‖=1(?![0-9./])", "operatornorm(oft)?(is|equals|=)1(?![0-9./])", "norm(oft)?(is|equals|=)1(?![0-9./])"] } },
+    { "id": "no-surjective-claim", "kind": "forbidden_claim", "description": "T is not surjective", "params": { "patterns": ["tissurjective", "t is surjective", "tisonto", "t is onto"] } },
+    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "well-defined", "criterion": "Tf is continuous (indeed differentiable) and T is linear.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both shown." }, { "label": "partially met", "description": "One shown." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "upper-bound", "criterion": "‖Tf‖_∞ ≤ ‖f‖_∞ derived from |∫₀ˣ f| ≤ x‖f‖_∞ ≤ ‖f‖_∞.", "weight": 0.25, "levels": [{ "label": "met", "description": "Clean estimate." }, { "label": "partially met", "description": "Estimate with a gap." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "sharpness", "criterion": "A function attaining the bound (f ≡ 1 gives Tf = x with sup norm 1) or a sequence approaching it.", "weight": 0.2, "levels": [{ "label": "met", "description": "Correct witness." }, { "label": "partially met", "description": "Witness without the norm computed." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "not-surjective", "criterion": "Range consists of C¹ functions vanishing at 0; a continuous function outside the range is named.", "weight": 0.2, "levels": [{ "label": "met", "description": "Characterisation plus a witness such as f ≡ 1 or |x − ½|." }, { "label": "partially met", "description": "Witness without reason." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "unbounded-inverse", "criterion": "Shows ‖Dg_n‖/‖g_n‖ → ∞ and explains that D is linear but not bounded on a non-Banach domain, so no theorem is contradicted.", "weight": 0.2, "levels": [{ "label": "met", "description": "Computation and explanation." }, { "label": "partially met", "description": "Computation only." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45
+}

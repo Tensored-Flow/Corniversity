@@ -1,0 +1,17 @@
+{
+  "id": "computer-science-ai",
+  "title": "Computer Science & Artificial Intelligence",
+  "shortTitle": "CS & AI",
+  "identity": "Learning systems understood from the inside: the mathematics behind them, the experiments that test them, and the engineering that makes results reproducible. Model behaviour, measurement, evidence and causal claims are kept apart. Fast-moving material carries an explicit currency check.",
+  "emblem": "lattice",
+  "paths": [
+    { "title": "Foundations", "courseIds": ["CSA-100", "CSA-110", "CSA-201", "CSA-240", "CSA-280"] },
+    { "title": "Build & Understand AI", "courseIds": ["CSA-210", "CSA-220", "CSA-230", "CSA-250", "CSA-260", "CSA-270"] }
+  ],
+  "facultyPersonaIds": ["dev-anantharaman"],
+  "conventions": [
+    "Every reported metric names its dataset split, baseline and random seed policy.",
+    "Train, validation and test data never mix; leakage is a correctness error, not a nuance.",
+    "Notebooks are reproducible from a clean environment or they are not results."
+  ]
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "MAT-230-analysis-and-linear-algebra",
+    "courseId": "MAT-230",
+    "strength": "soft",
+    "description": "Functional Analysis I assumes rigorous real analysis (sequences, Cauchy sequences, completeness, uniform convergence) and abstract linear algebra. The source course lists an introductory analysis course and a linear algebra course as prerequisites.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["real-analysis-sequences", "metric-spaces", "linear-algebra-vector-spaces"] },
+      { "label": "Rigorous Real Analysis course", "courseIds": ["MAT-201"] },
+      { "label": "Targeted bridge", "bridgeCourseId": "MAT-110" }
+    ]
+  },
+  {
+    "id": "MAT-230-proof-writing",
+    "courseId": "MAT-230",
+    "strength": "soft",
+    "description": "Comfort writing proofs with explicit quantifiers.",
+    "alternatives": [
+      { "label": "Demonstrated proof writing", "conceptIds": ["proof-writing"] },
+      { "label": "Proof bridge", "bridgeCourseId": "MAT-100" }
+    ]
+  },
+  {
+    "id": "MAT-210-real-analysis",
+    "courseId": "MAT-210",
+    "strength": "soft",
+    "description": "Measure and Integration builds directly on rigorous real analysis.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["real-analysis-sequences", "metric-spaces"] },
+      { "label": "Rigorous Real Analysis course", "courseIds": ["MAT-201"] }
+    ]
+  },
+  {
+    "id": "MAT-220-measure",
+    "courseId": "MAT-220",
+    "strength": "hard",
+    "description": "Probability from measure theory requires the Lebesgue integral and its convergence theorems; without them the course cannot be followed.",
+    "alternatives": [
+      { "label": "Measure and Integration", "courseIds": ["MAT-210"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["measure-and-integration-foundations"] }
+    ]
+  },
+  {
+    "id": "MAT-221-probability",
+    "courseId": "MAT-221",
+    "strength": "hard",
+    "description": "Martingales require measure-theoretic probability.",
+    "alternatives": [
+      { "label": "Probability from Measure Theory", "courseIds": ["MAT-220"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["probability-measure-theoretic"] }
+    ]
+  },
+  {
+    "id": "MAT-231-functional-analysis-i",
+    "courseId": "MAT-231",
+    "strength": "hard",
+    "description": "Operator theory continues directly from Functional Analysis I.",
+    "alternatives": [
+      { "label": "Functional Analysis I", "courseIds": ["MAT-230"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["banach-space", "bounded-operator", "hilbert-space", "compact-operator"] }
+    ]
+  },
+  {
+    "id": "MAT-261-topology-and-multivariable",
+    "courseId": "MAT-261",
+    "strength": "soft",
+    "description": "Smooth Manifolds needs point-set topology and multivariable calculus (inverse function theorem). A targeted topology bridge is offered inside the course rather than requiring all of General Topology.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["topology-general", "multivariable-calculus", "linear-algebra-vector-spaces"] },
+      { "label": "General Topology course", "courseIds": ["MAT-260"] },
+      { "label": "Targeted bridge", "bridgeCourseId": "MAT-110" }
+    ]
+  },
+  {
+    "id": "MAT-262-smooth-manifolds",
+    "courseId": "MAT-262",
+    "strength": "hard",
+    "description": "Riemannian Geometry assumes smooth manifolds, tangent bundles and vector fields.",
+    "alternatives": [
+      { "label": "Smooth Manifolds", "courseIds": ["MAT-261"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["smooth-manifold", "tangent-bundle-vector-fields"] }
+    ]
+  },
+  {
+    "id": "MAT-270-linear-algebra-and-proof",
+    "courseId": "MAT-270",
+    "strength": "soft",
+    "description": "Abstract Algebra I assumes linear algebra and comfort with proof.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["linear-algebra-vector-spaces", "proof-writing"] },
+      { "label": "Proof bridge", "bridgeCourseId": "MAT-100" }
+    ]
+  },
+  {
+    "id": "MAT-271-groups",
+    "courseId": "MAT-271",
+    "strength": "hard",
+    "description": "Rings, modules and fields continue from group theory.",
+    "alternatives": [
+      { "label": "Abstract Algebra I", "courseIds": ["MAT-270"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["group-basics", "quotient-groups"] }
+    ]
+  },
+  {
+    "id": "MAT-272-rings-fields",
+    "courseId": "MAT-272",
+    "strength": "hard",
+    "description": "Galois theory requires rings, polynomial rings and field extensions.",
+    "alternatives": [
+      { "label": "Rings, Modules, and Fields", "courseIds": ["MAT-271"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["rings-fields-basics"] }
+    ]
+  },
+  {
+    "id": "PHY-210-mechanics-or-maths",
+    "courseId": "PHY-210",
+    "strength": "soft",
+    "description": "Special Relativity needs vectors, basic mechanics and comfort with linear algebra; it can begin before the advanced geometry sequence.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus"] },
+      { "label": "Classical Mechanics", "courseIds": ["PHY-201"] },
+      { "label": "Mathematical methods bridge", "bridgeCourseId": "PHY-100" }
+    ]
+  },
+  {
+    "id": "PHY-240-tensor-geometry-bridge",
+    "courseId": "PHY-240",
+    "strength": "soft",
+    "description": "General Relativity I needs special relativity and a tensor/geometry bridge; it does not need algebraic topology or the full Riemannian course.",
+    "alternatives": [
+      { "label": "Special Relativity plus manifolds", "courseIds": ["PHY-210", "MAT-261"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["lorentzian-metric", "smooth-manifold", "multivariable-calculus"] },
+      { "label": "Special Relativity with the in-course tensor bridge", "courseIds": ["PHY-210"] }
+    ]
+  },
+  {
+    "id": "PHY-201-calculus",
+    "courseId": "PHY-201",
+    "strength": "soft",
+    "description": "Classical Mechanics assumes multivariable calculus and basic differential equations.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["multivariable-calculus", "ode-basics"] },
+      { "label": "Mathematical methods bridge", "bridgeCourseId": "PHY-100" }
+    ]
+  }
+]

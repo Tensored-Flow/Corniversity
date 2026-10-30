@@ -1,0 +1,28 @@
+{
+  "id": "MAT-230-u03-ex3",
+  "sequence": 3,
+  "title": "Where completeness enters uniform boundedness",
+  "kind": "explanation",
+  "promptMarkdown": "Let $c_{00}$ be the space of sequences with only finitely many nonzero terms, with the sup norm, and define $T_n:c_{00}\\to\\mathbb{R}$ by $T_n(x)=n\\,x_n$.\n\n1. Show that for each fixed $x\\in c_{00}$, $\\sup_n|T_n(x)|<\\infty$.\n2. Compute $\\|T_n\\|$ and conclude that $\\sup_n\\|T_n\\|=\\infty$.\n3. In under 150 words, explain why this does not contradict the uniform boundedness principle, and say exactly where its proof uses completeness.",
+  "conceptIds": ["uniform-boundedness", "baire-category"],
+  "hintLadder": [
+    "A fixed $x\\in c_{00}$ has $x_n=0$ for all large $n$. What is $T_n(x)$ then?",
+    "Test $T_n$ on the standard basis vector $e_n$.",
+    "In the proof, which sets are shown closed, and which theorem is applied to their union?"
+  ],
+  "deterministicChecks": [
+    { "id": "norm-n", "kind": "expression_present", "description": "the operator norm of T_n equals n", "params": { "patterns": ["\\\\|\\\\|?t_?n\\\\|\\\\|?=n(?![a-z0-9])", "‖t_?n‖=n(?![a-z0-9])", "norm(oft_?n)?(is|equals|=)n(?![a-z0-9])"] } }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "pointwise-bounded", "criterion": "Pointwise boundedness shown from finite support.", "weight": 0.3, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Sketch." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "unbounded-norms", "criterion": "‖T_n‖ = n via e_n and the bound |n x_n| ≤ n‖x‖_∞.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both inequalities." }, { "label": "partially met", "description": "One direction." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "explanation", "criterion": "c_00 is not complete, so the principle's hypothesis fails; completeness is used in applying Baire to the union of the closed sets C_k.", "weight": 0.4, "levels": [{ "label": "met", "description": "Both points." }, { "label": "partially met", "description": "One point." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 20
+}

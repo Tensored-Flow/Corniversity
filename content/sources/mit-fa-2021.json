@@ -1,0 +1,834 @@
+{
+  "id": "mit-fa-2021",
+  "title": "18.102 Introduction to Functional Analysis",
+  "authors": [
+    "Casey Rodriguez (instructor)",
+    "Richard Melrose (2020 lecture notes, followed by the course)"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/",
+  "description": "Undergraduate functional analysis: normed spaces, completeness, functionals, Hahn–Banach, duality, operators; Lebesgue measure and integration, L^p spaces; Hilbert spaces; compact and self-adjoint operators; the spectral theorem. Full set of lecture videos, per-lecture notes, problem sets and exams.",
+  "rightsNotes": [
+    "Content is licensed CC BY-NC-SA 4.0 by MIT OpenCourseWare; attribution and share-alike are required and commercial use is excluded. Corniversity is private and non-commercial.",
+    "Importing the lecture-notes PDFs for personal study and citation is within the licence; the course's problem sets are linked, not copied, and any Corniversity exercise derived from them is labelled adapted_with_attribution.",
+    "The notes follow Richard Melrose's 2020 notes together with notes taken by an MIT student in the 2021 class, as stated on the syllabus page; the notes page itself names no author."
+  ],
+  "currentVersionId": "mit-fa-2021-s21",
+  "versions": [
+    {
+      "id": "mit-fa-2021-s21",
+      "label": "Spring 2021 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the course, syllabus, calendar and lecture-notes pages",
+      "componentsSeen": [
+        "course landing page with description and licence link",
+        "syllabus: prerequisites (18.06/18.700/18.701 and 18.100A/B/P/Q), no assigned textbook, weekly homework 50%, 24-hour take-home midterm 25%, 48-hour final assignment 25%",
+        "calendar: 23 lecture topics with assignment and exam milestones",
+        "lecture notes page: combined PDF plus 23 per-lecture PDFs with absolute URLs and LaTeX sources",
+        "lecture videos gallery (page listed; individual videos not inspected)",
+        "problem sets and exams page (listed; individual files not inspected)"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Individual lecture videos, problem set PDFs and exam PDFs were listed but not opened; their locators are not yet verified.",
+        "The lecture PDFs carry no printed page labels (verified for lecture 1); the physical index is the only page reference.",
+        "Page-level locators exist for lectures 1–4 (statements located in extracted text). Lectures 5–23 have file-level locators only."
+      ],
+      "locators": [
+        {
+          "id": "fa21-syllabus",
+          "label": "Syllabus page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "fa21-calendar",
+          "label": "Calendar page (lecture sequence)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/pages/calendar/",
+            "heading": "Calendar"
+          }
+        },
+        {
+          "id": "fa21-notes-index",
+          "label": "Lecture notes and readings page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/pages/lecture-notes-and-readings/",
+            "heading": "Lecture Notes and Readings"
+          }
+        },
+        {
+          "id": "fa21-videos-index",
+          "label": "Lecture videos gallery",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/video_galleries/lecture-videos/",
+            "heading": "Lecture Videos"
+          },
+          "note": "Gallery listed on the course page; individual videos and timestamps not yet verified."
+        },
+        {
+          "id": "fa21-lec01",
+          "label": "Lecture 1 notes: Basic Banach Space Theory (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "heading": "Lecture 1. Basic Banach Space Theory"
+          }
+        },
+        {
+          "id": "fa21-lec02",
+          "label": "Lecture 2 notes: Bounded Linear Operators (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "heading": "Lecture 2. Bounded Linear Operators"
+          }
+        },
+        {
+          "id": "fa21-lec03",
+          "label": "Lecture 3 notes: Quotient Spaces, Baire Category, Uniform Boundedness (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "heading": "Lecture 3. Quotient Spaces, the Baire Category Theorem and the Uniform Boundedness Theorem"
+          }
+        },
+        {
+          "id": "fa21-lec04",
+          "label": "Lecture 4 notes: Open Mapping and Closed Graph Theorems (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "heading": "Lecture 4. The Open Mapping Theorem and the Closed Graph Theorem"
+          }
+        },
+        {
+          "id": "fa21-lec05",
+          "label": "Lecture 5 notes: Zorn's Lemma and Hahn–Banach (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/06f9cf855f9f5eaa1898f3e684e05cec_MIT18_102s21_lec5.pdf",
+            "heading": "Lecture 5. Zorn's Lemma and the Hahn-Banach Theorem"
+          }
+        },
+        {
+          "id": "fa21-lec06",
+          "label": "Lecture 6 notes: Double Dual; Outer Measure (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/806234baa2feadee4b54cdf679382257_MIT18_102s21_lec6.pdf",
+            "heading": "Lecture 6. The Double Dual and the Outer Measure of a Subset of Real Numbers"
+          }
+        },
+        {
+          "id": "fa21-lec07",
+          "label": "Lecture 7 notes: Sigma Algebras (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/822b1a9ec1fbf16192b5564621d3b387_MIT18_102s21_lec7.pdf",
+            "heading": "Lecture 7. Sigma Algebras"
+          }
+        },
+        {
+          "id": "fa21-lec08",
+          "label": "Lecture 8 notes: Lebesgue Measurable Subsets and Measure (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/1bf275c0667d3e903e4de22b9fb4481b_MIT18_102s21_lec8.pdf",
+            "heading": "Lecture 8. Lebesgue Measurable Subsets and Measure"
+          }
+        },
+        {
+          "id": "fa21-lec09",
+          "label": "Lecture 9 notes: Lebesgue Measurable Functions (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/ede0e9d0812d4b602efafe3ca879b19f_MIT18_102s21_lec9.pdf",
+            "heading": "Lecture 9. Lebesgue Measurable Functions"
+          }
+        },
+        {
+          "id": "fa21-lec10",
+          "label": "Lecture 10 notes: Simple Functions (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/ebbbc59aa40252dff3d4ec766c057451_MIT18_102s21_lec10.pdf",
+            "heading": "Lecture 10. Simple Functions"
+          }
+        },
+        {
+          "id": "fa21-lec11",
+          "label": "Lecture 11 notes: Lebesgue Integral of a Nonnegative Function; Convergence Theorems (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/615c26170233747c081d6dab928f7d91_MIT18_102s21_lec11.pdf",
+            "heading": "Lecture 11. The Lebesgue Integral of a Nonnegative Function and Convergence Theorems"
+          }
+        },
+        {
+          "id": "fa21-lec12",
+          "label": "Lecture 12 notes: Lebesgue Integrable Functions; Dominated Convergence (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/e407e57ea631a29148ee94afecef7d33_MIT18_102s21_lec12.pdf",
+            "heading": "Lecture 12. Lebesgue Integrable Functions, the Lebesgue Integral and the Dominated Convergence Theorem"
+          }
+        },
+        {
+          "id": "fa21-lec13",
+          "label": "Lecture 13 notes: Lp Space Theory (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/aad5fcf3b0f85788519a0324258dd296_MIT18_102s21_lec13.pdf",
+            "heading": "Lecture 13. Lp Space Theory"
+          }
+        },
+        {
+          "id": "fa21-lec14",
+          "label": "Lecture 14 notes: Basic Hilbert Space Theory (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/721d74b7fa9b3b5427779b6905df95ec_MIT18_102s21_lec14.pdf",
+            "heading": "Lecture 14. Basic Hilbert Space Theory"
+          }
+        },
+        {
+          "id": "fa21-lec15",
+          "label": "Lecture 15 notes: Orthonormal Bases and Fourier Series (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/859833f65ee4aec6b0fea35a300d10cd_MIT18_102s21_lec15.pdf",
+            "heading": "Lecture 15. Orthonormal Bases and Fourier Series"
+          }
+        },
+        {
+          "id": "fa21-lec16",
+          "label": "Lecture 16 notes: Fejér's Theorem and Convergence of Fourier Series (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/eb44436072623f60f8f416875d4b2c11_MIT18_102s21_lec16.pdf",
+            "heading": "Lecture 16. Fejer's Theorem and Convergence of Fourier Series"
+          }
+        },
+        {
+          "id": "fa21-lec17",
+          "label": "Lecture 17 notes: Minimizers, Orthogonal Complements, Riesz Representation (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/c97549663746d6bc4a379077e067c55b_MIT18_102s21_lec17.pdf",
+            "heading": "Lecture 17. Minimizers, Orthogonal Complements and the Riesz Representation Theorem"
+          }
+        },
+        {
+          "id": "fa21-lec18",
+          "label": "Lecture 18 notes: The Adjoint on a Hilbert Space (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/7f23bfc43ee2e1efd238a5384e5b9d51_MIT18_102s21_lec18.pdf",
+            "heading": "Lecture 18. The Adjoint of a Bounded Linear Operator on a Hilbert Space"
+          }
+        },
+        {
+          "id": "fa21-lec19",
+          "label": "Lecture 19 notes: Compact Subsets; Finite-Rank Operators (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/39ac233d5d7cbfffcdce8086143688f6_MIT18_102s21_lec19.pdf",
+            "heading": "Lecture 19. Compact Subsets of a Hilbert Space and Finite-Rank Operators"
+          }
+        },
+        {
+          "id": "fa21-lec20",
+          "label": "Lecture 20 notes: Compact Operators and the Spectrum (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/9eaaf363541d01d53c330ee7931fc715_MIT18_102s21_lec20.pdf",
+            "heading": "Lecture 20. Compact Operators and the Spectrum of a Bounded Linear Operator on a Hilbert Space"
+          }
+        },
+        {
+          "id": "fa21-lec21",
+          "label": "Lecture 21 notes: Spectrum of Self-Adjoint Operators; Eigenspaces (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/345c4a5141559a4069aeb3105acd8ef3_MIT18_102s21_lec21.pdf",
+            "heading": "Lecture 21. The Spectrum of Self-Adjoint Operators and the Eigenspaces of Compact Self-Adjoint Operators"
+          }
+        },
+        {
+          "id": "fa21-lec22",
+          "label": "Lecture 22 notes: Spectral Theorem for a Compact Self-Adjoint Operator (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/57596554e180e442c9487f580303147b_MIT18_102s21_lec22.pdf",
+            "heading": "Lecture 22. The Spectral Theorem for a Compact Self-Adjoint Operator"
+          }
+        },
+        {
+          "id": "fa21-lec23",
+          "label": "Lecture 23 notes: The Dirichlet Problem on an Interval (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/9f0f59147c3235d57eacca9157faf834_MIT18_102s21_lec23.pdf",
+            "heading": "Lecture 23. The Dirichlet Problem on an Interval"
+          }
+        },
+        {
+          "id": "fa21-notes-full",
+          "label": "Complete lecture notes (combined PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/8fb8d5c170f1613151aca71de21027bc_MIT18_102s21_full_lec.pdf",
+            "heading": "Complete Lecture Notes"
+          }
+        },
+        {
+          "id": "fa21-l1-def3",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 3 (vector space over ℝ or ℂ), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Definition 3"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-def5",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 5 (finite-dimensional), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Definition 5"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-ex6",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Example 6 (C([0,1]) is infinite-dimensional: x^n independent), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Example 6"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-def7",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 7 (norm: definiteness, homogeneity, triangle inequality), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Definition 7"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-prop8",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Proposition 8 (metric induced by a norm), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Proposition 8"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-ex9",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Example 9 (Euclidean, sup and p-norms on ℝ^n, ℂ^n), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Example 9"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-def10",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 10 (C_∞(X), bounded continuous functions), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 10"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-prop11",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Proposition 11 (sup norm on C_∞(X); convergence is uniform convergence), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Proposition 11"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-def12",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 12 (the ℓ^p spaces), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 12"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-def14",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Definition 14 (Banach space), PDF page 5",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Definition 14"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l1-thm16",
+          "label": "Lecture 1 notes (Basic Banach Space Theory), Theorem 16 (C_∞(X) is complete), PDF page 5",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/4ae9a5af8622dba3aa37461b71d08407_MIT18_102s21_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (Basic Banach Space Theory)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Theorem 16"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-def17",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Definition 17 (summable and absolutely summable series), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Definition 17"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-thm19",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Theorem 19 (Banach iff every absolutely summable series is summable), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Theorem 19"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-ex20",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Example 20 (integral operator with continuous kernel), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Example 20"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-def21",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Definition 21 (linear operator), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Definition 21"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-thm22",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Theorem 22 (linear operator continuous iff bounded), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 22"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-def24",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Definition 24 (B(V,W)), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 24"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-def25",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Definition 25 (operator norm), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 25"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-thm26",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Theorem 26 (operator norm is a norm), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Theorem 26"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-thm27",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Theorem 27 (B(V,W) is Banach when W is), PDF page 5",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Theorem 27"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l2-def28",
+          "label": "Lecture 2 notes (Bounded Linear Operators), Definition 28 (dual space V′ = B(V,K)), PDF page 7",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/22bf2f774fb161776032491568148707_MIT18_102s21_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Bounded Linear Operators)",
+            "physicalPageIndex": 6,
+            "sectionLabel": "Definition 28"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-def29",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Definition 29 (subspace), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Definition 29"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-prop30",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Proposition 30 (subspace of a Banach space is Banach iff closed), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Proposition 30"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-def31",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Definition 31 (quotient space V/W), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Definition 31"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-thm33",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Theorem 33 (seminorm, its null space, quotient norm), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 33"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-thm34",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Theorem 34 (Baire Category Theorem), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Theorem 34"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l3-thm36",
+          "label": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness), Theorem 36 (Uniform Boundedness Theorem), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/f168e97ce4839083e546555a6a994697_MIT18_102s21_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (Quotient Spaces, Baire Category, Uniform Boundedness)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Theorem 36"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-thm37",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Theorem 37 (Open Mapping Theorem), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Theorem 37"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-cor38",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Corollary 38 (bounded inverse), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Corollary 38"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-prop39",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Proposition 39 (product of Banach spaces), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Proposition 39"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-thm40",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Theorem 40 (Closed Graph Theorem), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Theorem 40"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-def42",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Definition 42 (partial order), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 42"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-prop45",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Proposition 45 (Zorn's lemma, taken as an axiom), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Proposition 45"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "fa21-l4-def46",
+          "label": "Lecture 4 notes (Open Mapping and Closed Graph Theorems), Definition 46 (Hamel basis), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-fa-2021-s21",
+            "url": "https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/038fc32ab9c1bb63a4f29bd9d7c97961_MIT18_102s21_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (Open Mapping and Closed Graph Theorems)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Definition 46"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        }
+      ]
+    }
+  ]
+}

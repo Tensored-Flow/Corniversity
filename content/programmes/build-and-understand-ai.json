@@ -1,0 +1,11 @@
+{
+  "id": "build-and-understand-ai",
+  "title": "Build & Understand AI",
+  "description": "Deep learning foundations first, then probabilistic modelling, reinforcement learning, language modelling from scratch, and the engineering of reliable, reproducible systems. Stanford CS336 sits late in the route behind a real prerequisites check.",
+  "departmentIds": ["computer-science-ai"],
+  "stages": [
+    { "title": "First term", "courses": [{ "courseId": "CSA-210", "role": "core" }, { "courseId": "CSA-240", "role": "seminar" }] },
+    { "title": "Second term", "courses": [{ "courseId": "CSA-220", "role": "core" }, { "courseId": "CSA-260", "role": "seminar" }] },
+    { "title": "Later", "courses": [{ "courseId": "CSA-230", "role": "core" }, { "courseId": "CSA-250", "role": "core", "note": "Substantial programming and systems prerequisites; not an introductory module." }, { "courseId": "CSA-270", "role": "elective" }, { "courseId": "NEU-230", "role": "elective" }] }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "algebra-and-structure",
+  "title": "Algebra & Structure",
+  "description": "Groups, then rings, modules and fields, then Galois theory, representation theory and Lie groups, with optional algebraic geometry and category theory at the end.",
+  "departmentIds": ["mathematics"],
+  "stages": [
+    { "title": "First term", "courses": [{ "courseId": "MAT-270", "role": "core" }, { "courseId": "MAT-291", "role": "seminar", "note": "Number theory and combinatorics as a recreational-to-rigorous seminar." }] },
+    { "title": "Second term", "courses": [{ "courseId": "MAT-271", "role": "core" }] },
+    { "title": "Later", "courses": [{ "courseId": "MAT-272", "role": "core" }, { "courseId": "MAT-273", "role": "elective" }, { "courseId": "MAT-265", "role": "elective" }, { "courseId": "MAT-283", "role": "elective" }, { "courseId": "MAT-284", "role": "elective" }] }
+  ]
+}

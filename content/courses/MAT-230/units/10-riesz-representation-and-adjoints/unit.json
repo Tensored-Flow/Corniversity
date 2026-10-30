@@ -1,0 +1,64 @@
+{
+  "id": "MAT-230-u10",
+  "courseId": "MAT-230",
+  "sequence": 10,
+  "title": "Riesz representation and adjoints",
+  "summary": "Minimisers over closed convex sets; orthogonal complements and projections; the Riesz representation theorem; the adjoint of a bounded operator on a Hilbert space.",
+  "objectives": [
+    {
+      "id": "u10-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 17–18 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "hilbert-space",
+    "dual-space"
+  ],
+  "teachesConceptIds": [
+    "riesz-representation",
+    "adjoint-operator"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 17–18 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec17",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u10-a1",
+      "type": "reading",
+      "title": "Lectures 17–18: Riesz representation and adjoints",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec17",
+        "fa21-lec18"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

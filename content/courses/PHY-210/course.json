@@ -1,0 +1,39 @@
+{
+  "id": "PHY-210",
+  "version": 1,
+  "title": "Special Relativity and Minkowski Geometry",
+  "departmentIds": [
+    "physics"
+  ],
+  "level": "intermediate",
+  "position": "Launch",
+  "launch": true,
+  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
+  "description": "Proposed course: Special Relativity and Minkowski Geometry. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [
+    "PHY-210-mechanics-or-maths"
+  ],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ]
+}

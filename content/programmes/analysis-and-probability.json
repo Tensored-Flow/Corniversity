@@ -1,0 +1,31 @@
+{
+  "id": "analysis-and-probability",
+  "title": "Analysis & Probability",
+  "description": "Measure and integration, functional analysis and measure-theoretic probability, in an order where each course supplies exactly the machinery the next one uses. Begins with one demanding core course and a lighter seminar.",
+  "departmentIds": ["mathematics"],
+  "stages": [
+    {
+      "title": "First term",
+      "courses": [
+        { "courseId": "MAT-230", "role": "core", "note": "Normed and Banach spaces through to the spectral theorem for compact self-adjoint operators; the measure-theory middle of the course doubles as preparation for MAT-210 and MAT-220." },
+        { "courseId": "MAT-210", "role": "seminar", "note": "Read alongside as a seminar; promote to enrolled when the functional analysis course reaches Lebesgue measure." }
+      ]
+    },
+    {
+      "title": "Second term",
+      "courses": [
+        { "courseId": "MAT-220", "role": "core" },
+        { "courseId": "MAT-240", "role": "seminar" }
+      ]
+    },
+    {
+      "title": "Later",
+      "courses": [
+        { "courseId": "MAT-221", "role": "core" },
+        { "courseId": "MAT-231", "role": "elective" },
+        { "courseId": "MAT-252", "role": "elective" },
+        { "courseId": "MAT-281", "role": "elective", "note": "Introductory optimal transport can begin from probability and optimisation foundations; the deeper PDE and geometric-measure tracks are separate." }
+      ]
+    }
+  ]
+}

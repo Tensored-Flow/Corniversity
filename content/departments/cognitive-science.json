@@ -1,0 +1,16 @@
+{
+  "id": "cognitive-science",
+  "title": "Cognitive Science & Psychology",
+  "shortTitle": "Cognitive Science",
+  "identity": "Computational models of mind and the experimental methods behind them: probabilistic models of cognition, learning and decision-making, experimental design, measurement and causal inference. Claims about people are held to the standards of the evidence that supports them.",
+  "emblem": "prism",
+  "paths": [
+    { "title": "Mind & Computation", "courseIds": ["COG-101", "COG-201", "COG-230"] },
+    { "title": "Methods", "courseIds": ["COG-210", "COG-220", "COG-240"] }
+  ],
+  "facultyPersonaIds": ["dev-anantharaman"],
+  "conventions": [
+    "Model behaviour, measurement, experimental evidence and causal claims are distinguished explicitly in every explanation.",
+    "Effect sizes and uncertainty accompany every reported result."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "MAT-230-u08",
+  "courseId": "MAT-230",
+  "sequence": 8,
+  "title": "Integrable functions, dominated convergence and L^p",
+  "summary": "Lebesgue integrable functions; the dominated convergence theorem; Hölder and Minkowski; completeness of L^p (Riesz–Fischer).",
+  "objectives": [
+    {
+      "id": "u08-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 12–13 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "measurable-function",
+    "banach-space"
+  ],
+  "teachesConceptIds": [
+    "lebesgue-integral",
+    "lp-space"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 12–13 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec12",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Lectures 12–13: Integrable functions, dominated convergence and L^p",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec12",
+        "fa21-lec13"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

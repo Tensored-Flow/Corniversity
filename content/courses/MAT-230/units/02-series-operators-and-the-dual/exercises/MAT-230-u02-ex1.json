@@ -1,0 +1,29 @@
+{
+  "id": "MAT-230-u02-ex1",
+  "sequence": 1,
+  "title": "Three descriptions of the operator norm",
+  "kind": "proof",
+  "promptMarkdown": "Let $V,W$ be normed spaces and $T\\in B(V,W)$, with $\\|T\\|=\\sup_{\\|v\\|=1}\\|Tv\\|$ as in Definition 25.\n\n1. Prove that $\\|T\\|=\\sup_{v\\neq 0}\\dfrac{\\|Tv\\|}{\\|v\\|}=\\inf\\{C\\ge0 : \\|Tv\\|\\le C\\|v\\| \\text{ for all } v\\in V\\}$.\n2. Deduce that $\\|Tv\\|\\le\\|T\\|\\,\\|v\\|$ for all $v$.\n3. If $S\\in B(W,U)$ for a third normed space $U$, prove $\\|ST\\|\\le\\|S\\|\\,\\|T\\|$.\n\nAssume $V\\neq\\{0\\}$.",
+  "conceptIds": ["bounded-operator"],
+  "hintLadder": [
+    "For $v\\neq0$, the vector $v/\\|v\\|$ has norm $1$. What does homogeneity of the norm and linearity of $T$ give for $\\|T(v/\\|v\\|)\\|$?",
+    "Show that every admissible $C$ in the infimum is at least the supremum, and that the supremum is itself an admissible $C$.",
+    "For part 3, apply part 2 twice: first to $T$, then to $S$ at the vector $Tv$."
+  ],
+  "deterministicChecks": [
+    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "normalisation", "criterion": "Uses homogeneity to pass between unit vectors and arbitrary nonzero vectors.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both directions of the equality of the two suprema." }, { "label": "partially met", "description": "One direction." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "infimum", "criterion": "Shows the supremum is an admissible constant and every admissible constant dominates it.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both inequalities." }, { "label": "partially met", "description": "One inequality." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "basic-inequality", "criterion": "Deduces ‖Tv‖ ≤ ‖T‖‖v‖, handling v = 0 separately or noting it is trivial.", "weight": 0.15, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Asserted." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "submultiplicative", "criterion": "Proves ‖ST‖ ≤ ‖S‖‖T‖ by applying the basic inequality twice and taking a supremum.", "weight": 0.25, "levels": [{ "label": "met", "description": "Clean two-step argument." }, { "label": "partially met", "description": "Right idea, supremum step missing." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 30
+}

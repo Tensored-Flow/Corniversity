@@ -1,0 +1,39 @@
+{
+  "id": "MAT-271",
+  "version": 1,
+  "title": "Rings, Modules, and Fields",
+  "departmentIds": [
+    "mathematics"
+  ],
+  "level": "intermediate",
+  "position": "Algebra continuation",
+  "launch": false,
+  "purpose": "A proposed course concept in the Corniversity catalogue (Algebra continuation). Its purpose statement will be written when the course is sourced.",
+  "description": "Proposed course: Rings, Modules, and Fields. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Algebra continuation. You may register interest; the director will say honestly that this course is not prepared.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [
+    "MAT-271-groups"
+  ],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "physics",
+  "title": "Physics",
+  "shortTitle": "Physics",
+  "identity": "From Lagrangian mechanics to spacetime: derivations carried through, physical assumptions stated, units and limiting cases checked, and interpretation treated as part of the physics rather than an afterthought. Relativity is taught with its geometry; quantum theory with its mathematics.",
+  "emblem": "pendulum",
+  "paths": [
+    { "title": "Mechanics to Relativity", "courseIds": ["PHY-100", "PHY-201", "PHY-210", "PHY-240", "PHY-241"] },
+    { "title": "Fields and Quanta", "courseIds": ["PHY-202", "PHY-220", "PHY-221", "PHY-250"] },
+    { "title": "Thermal and Statistical", "courseIds": ["PHY-230", "PHY-231", "PHY-260"] }
+  ],
+  "facultyPersonaIds": ["ines-valdivia"],
+  "conventions": [
+    "SI units unless a course states natural units; every derived quantity carries its units until the final line.",
+    "Metric signature (−,+,+,+) in relativity courses unless a source using (+,−,−,−) is being read, in which case the switch is announced explicitly.",
+    "Every approximation names what is being neglected and when the neglect fails."
+  ]
+}

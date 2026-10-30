@@ -1,0 +1,65 @@
+{
+  "id": "MAT-230-u09",
+  "courseId": "MAT-230",
+  "sequence": 9,
+  "title": "Hilbert spaces, orthonormal bases and Fourier series",
+  "summary": "Inner products and Cauchy–Schwarz; Hilbert spaces; orthonormal sets, Bessel and Parseval; Fourier series in L²; Fejér's theorem.",
+  "objectives": [
+    {
+      "id": "u09-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 14–16 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "banach-space",
+    "lp-space"
+  ],
+  "teachesConceptIds": [
+    "hilbert-space",
+    "orthonormal-basis"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 14–16 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec14",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u09-a1",
+      "type": "reading",
+      "title": "Lectures 14–16: Hilbert spaces, orthonormal bases and Fourier series",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec14",
+        "fa21-lec15",
+        "fa21-lec16"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

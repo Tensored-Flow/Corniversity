@@ -1,0 +1,151 @@
+{
+  "id": "MAT-230-u01-ex1",
+  "sequence": 1,
+  "title": "Two norms on C([0,1])",
+  "kind": "proof",
+  "promptMarkdown": "On $C([0,1])$ consider the sup norm $\\|f\\|_\\infty=\\sup_{x\\in[0,1]}|f(x)|$ and the integral norm $\\|f\\|_1=\\int_0^1|f(x)|\\,dx$. Let $f_n(x)=x^n$ for $n\\ge 1$.\n\n1. Compute $\\|f_n\\|_\\infty$ and $\\|f_n\\|_1$ for general $n$, with justification.\n2. Decide whether there is a constant $C>0$ such that $\\|f\\|_\\infty\\le C\\,\\|f\\|_1$ for every $f\\in C([0,1])$. Prove your answer.\n3. Explain in one or two sentences what this shows about equivalence of norms, and name the hypothesis of the finite-dimensional theorem that fails here.",
+  "conceptIds": [
+    "normed-space",
+    "equivalent-norms"
+  ],
+  "hintLadder": [
+    "Where on $[0,1]$ does $x^n$ take its largest value, and what is that value?",
+    "Compute $\\int_0^1 x^n\\,dx$ exactly for a general $n$; do not stop at particular values of $n$.",
+    "Suppose a single constant $C$ worked for every continuous $f$. Apply the inequality to $f_n$ and look at what happens as $n\\to\\infty$.",
+    "The theorem that all norms are equivalent has a hypothesis about the dimension of the space. Which of Example 6's facts about $C([0,1])$ is relevant?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "sup-norm-one",
+      "kind": "expression_present",
+      "description": "the sup norm of x^n equals 1",
+      "params": {
+        "patterns": [
+          "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|\\\\|f_n\\\\|_inf)[^=]{0,80}=1(?![0-9./])",
+          "supnormis1",
+          "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9./])"
+        ]
+      }
+    },
+    {
+      "id": "l1-norm",
+      "kind": "expression_present",
+      "description": "the integral norm of x^n equals 1/(n+1)",
+      "params": {
+        "patterns": [
+          "\\\\(1\\\\)/\\\\(n\\\\+1\\\\)",
+          "1/\\\\(n\\\\+1\\\\)",
+          "\\\\(n\\\\+1\\\\)\\\\^\\\\{?-1",
+          "1/\\\\(1\\\\+n\\\\)",
+          "\\\\(1\\\\)/\\\\(1\\\\+n\\\\)"
+        ]
+      }
+    },
+    {
+      "id": "no-equivalence-claim",
+      "kind": "forbidden_claim",
+      "description": "asserting that the sup and integral norms (or all norms) are equivalent on C([0,1]); mentioning the finite-dimensional theorem is fine",
+      "params": {
+        "patterns": [
+          "(since|because|as) all norms are equivalent",
+          "all norms are equivalent[,;]? ?(so|hence|therefore|thus|and so)",
+          "all norms on c\\(\\[0,1\\]\\) are equivalent",
+          "(the|these|both|the two|our) norms are equivalent(?! only| in finite| on finite| when)",
+          "normsareequivalenton(c\\(\\[0,1\\]\\)|thisspace|c\\[0,1\\])",
+          "(since|because|as)allnormsareequivalent"
+        ]
+      }
+    },
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "particular values of n are not a proof for all n",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "sup-norm",
+        "criterion": "The sup norm of x^n is identified as 1 with a reason (monotonicity on [0,1] or the value at x = 1).",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Value and reason given."
+          },
+          {
+            "label": "partially met",
+            "description": "Value stated without justification."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "l1-norm",
+        "criterion": "The integral norm is computed as 1/(n+1) for general n.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "General formula with the integral shown."
+          },
+          {
+            "label": "partially met",
+            "description": "Correct instances only, or formula without computation."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "conclusion",
+        "criterion": "The non-existence of a comparison constant is proved from the unbounded ratio n+1, in the direction that fails.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct direction, explicit limit argument."
+          },
+          {
+            "label": "partially met",
+            "description": "Right conclusion, argument incomplete or direction muddled."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong conclusion or unsupported."
+          }
+        ]
+      },
+      {
+        "id": "finite-dim-contrast",
+        "criterion": "Finite dimensionality is named as the hypothesis of the norm-equivalence theorem that C([0,1]) lacks.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Hypothesis named and connected to Example 6."
+          },
+          {
+            "label": "partially met",
+            "description": "Mentions finite dimensions without connecting."
+          },
+          {
+            "label": "not met",
+            "description": "Absent or claims equivalence."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35
+}

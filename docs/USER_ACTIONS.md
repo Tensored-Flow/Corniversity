@@ -18,3 +18,10 @@ Nothing here is required to run Corniversity on your own computer.
 
 3. Email delivery (optional). Password reset by email needs an SMTP provider.
    Until then, keep your password safe; the recovery command is `pnpm owner:reset-password`.
+
+4. Publish the private GitHub repository (optional; the code is complete and committed locally).
+   Why: the build agent's attempt to create the repository was blocked by your approval
+   controls, which treat repository creation as a sharing action.
+   Step: in PowerShell in the project folder run
+   `gh repo create Corniversity --private --source=. --remote=origin --push`
+   (you are already signed in to GitHub as Tensored-Flow on this machine).

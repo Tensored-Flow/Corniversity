@@ -1,0 +1,11 @@
+{
+  "id": "chemistry",
+  "title": "Chemistry",
+  "description": "A diagnostic entry through Principles of Chemical Science, then physical and organic routes. Advanced mathematics does not establish chemistry readiness; the entry course does.",
+  "departmentIds": ["chemistry"],
+  "stages": [
+    { "title": "First term", "courses": [{ "courseId": "CHE-101", "role": "core", "note": "Diagnostic entry; the placement checks decide how fast to move." }] },
+    { "title": "Second term", "courses": [{ "courseId": "CHE-210", "role": "core" }, { "courseId": "CHE-201", "role": "seminar" }] },
+    { "title": "Later", "courses": [{ "courseId": "CHE-220", "role": "core" }, { "courseId": "CHE-202", "role": "core" }, { "courseId": "CHE-230", "role": "elective" }, { "courseId": "CHE-240", "role": "elective" }, { "courseId": "CHE-250", "role": "elective" }, { "courseId": "CHE-260", "role": "elective" }] }
+  ]
+}

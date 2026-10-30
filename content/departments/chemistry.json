@@ -1,0 +1,17 @@
+{
+  "id": "chemistry",
+  "title": "Chemistry",
+  "shortTitle": "Chemistry",
+  "identity": "A real route from chemical principles to advanced topics: atomic and molecular structure, bonding, thermodynamics and equilibrium, kinetics, then mechanisms, spectroscopy and computation. Models are stated with their assumptions, and experimental evidence is kept distinct from the models that explain it. Everything here is virtual study; nothing is an instruction for a laboratory.",
+  "emblem": "flask",
+  "paths": [
+    { "title": "Principles to Physical Chemistry", "courseIds": ["CHE-101", "CHE-210", "CHE-220", "CHE-240", "CHE-250"] },
+    { "title": "Structure and Mechanism", "courseIds": ["CHE-201", "CHE-202", "CHE-230", "CHE-260"] }
+  ],
+  "facultyPersonaIds": ["mireille-okafor"],
+  "conventions": [
+    "Chemical equations are balanced for mass and charge before any discussion of energetics.",
+    "Equilibrium constants are written with their standard state and temperature.",
+    "Mechanisms are drawn with electron-pushing arrows; intermediates are named."
+  ]
+}

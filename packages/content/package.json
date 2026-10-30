@@ -18,6 +18,8 @@
   "dependencies": {
     "@corniversity/core": "workspace:*",
     "@corniversity/db": "workspace:*",
+    "better-auth": "^1.7.14",
+    "drizzle-orm": "^0.45.4",
     "zod": "^4.6.7"
   }
 }

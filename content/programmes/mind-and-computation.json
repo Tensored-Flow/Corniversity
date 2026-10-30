@@ -1,0 +1,11 @@
+{
+  "id": "mind-and-computation",
+  "title": "Mind & Computation",
+  "description": "Computational neuroscience and computational cognitive science with the statistics and experimental methods behind them, leading towards NeuroAI.",
+  "departmentIds": ["neuroscience", "cognitive-science", "computer-science-ai"],
+  "stages": [
+    { "title": "First term", "courses": [{ "courseId": "NEU-220", "role": "core", "note": "Neuromatch as the spine, repaced for evening study rather than a three-week intensive." }, { "courseId": "COG-201", "role": "seminar" }] },
+    { "title": "Second term", "courses": [{ "courseId": "COG-210", "role": "core" }, { "courseId": "CSA-220", "role": "seminar" }] },
+    { "title": "Later", "courses": [{ "courseId": "NEU-201", "role": "elective" }, { "courseId": "NEU-210", "role": "elective" }, { "courseId": "COG-230", "role": "core" }, { "courseId": "COG-240", "role": "elective" }, { "courseId": "NEU-230", "role": "core" }] }
+  ]
+}

@@ -2,25 +2,38 @@ import { describe, expect, it } from "vitest";
 import type { DeterministicCheck } from "../domain/course";
 import { normaliseMath, runDeterministicChecks } from "./deterministic";
 
-/** The C1 task: f_n(x) = x^n on [0,1]; sup norm 1, L¹ norm 1/(n+1). */
+/** The C1 task: f_n(x) = x^n on [0,1]; sup norm 1, L¹ norm 1/(n+1). Mirrors the authored exercise. */
 const normChecks: DeterministicCheck[] = [
   {
     id: "sup-norm-one",
     kind: "expression_present",
     description: "sup norm of x^n equals 1",
-    params: { patterns: ["(\\|\\|?f_?n\\|\\|?_?(inf|∞|sup)|supnorm|sup_?\\{?x).*=1(?![0-9./])", "sup.*=1(?![0-9./])"] },
+    params: {
+      patterns: [
+        "(_inf|_∞|supnorm|sup_|‖f_n‖_∞|\\|f_n\\|_inf)[^=]{0,80}=1(?![0-9./])",
+        "supnormis1",
+        "(infinity|inf|sup)norm[^=]{0,30}(=|is|equals)1(?![0-9./])",
+      ],
+    },
   },
   {
     id: "l1-norm",
     kind: "expression_present",
     description: "L¹ norm of x^n equals 1/(n+1)",
-    params: { patterns: ["\\(1\\)/\\(n\\+1\\)", "1/\\(n\\+1\\)", "\\(n\\+1\\)\\^-1", "1/\\(1\\+n\\)"] },
+    params: { patterns: ["\\(1\\)/\\(n\\+1\\)", "1/\\(n\\+1\\)", "\\(n\\+1\\)\\^\\{?-1", "1/\\(1\\+n\\)"] },
   },
   {
     id: "no-equivalence-claim",
     kind: "forbidden_claim",
-    description: "norm equivalence does not hold on C([0,1])",
-    params: { patterns: ["all norms (on c\\(\\[0,1\\]\\) )?are equivalent", "norms are equivalent on c\\(\\[0,1\\]\\)"] },
+    description: "asserting that the norms are equivalent on C([0,1])",
+    params: {
+      patterns: [
+        "(since|because|as) all norms are equivalent",
+        "all norms are equivalent[,;]? ?(so|hence|therefore|thus)",
+        "(the|these|both|the two) norms are equivalent(?! only| in finite| on finite)",
+        "normsareequivalenton(c\\(\\[0,1\\]\\)|thisspace)",
+      ],
+    },
   },
   {
     id: "examples-only",
@@ -59,6 +72,13 @@ describe("runDeterministicChecks on the x^n norm task", () => {
     expect(results.find((r) => r.checkId === "no-equivalence-claim")?.passed).toBe(false);
   });
 
+  it("does not flag a learner who mentions the finite-dimensional theorem in order to deny it applies", () => {
+    const text =
+      "The theorem that all norms are equivalent needs finite dimension, and C([0,1]) is infinite-dimensional, so the norms are not equivalent here.";
+    const results = runDeterministicChecks(text, normChecks);
+    expect(results.find((r) => r.checkId === "no-equivalence-claim")?.passed).toBe(true);
+  });
+
   it("flags a list of numerical instances with no general argument", () => {
     const text = "For n=1 the integral is 1/2, for n=2 it is 1/3, for n=3 it is 1/4. So the claim holds.";
     const results = runDeterministicChecks(text, normChecks);
@@ -87,7 +107,10 @@ describe("requires_hypothesis", () => {
     expect(r?.passed).toBe(false);
   });
   it("accepts the claim with the hypothesis", () => {
-    const [r] = runDeterministicChecks("A closed subspace of a Banach space is complete, since Cauchy sequences converge in the ambient space.", [check]);
+    const [r] = runDeterministicChecks(
+      "A closed subspace of a Banach space is complete, since Cauchy sequences converge in the ambient space.",
+      [check],
+    );
     expect(r?.passed).toBe(true);
   });
 });

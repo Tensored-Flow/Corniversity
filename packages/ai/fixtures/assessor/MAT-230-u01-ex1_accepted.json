@@ -1,0 +1,20 @@
+{
+  "note": "Fixture: a correct norm comparison for f_n(x)=x^n (sup norm 1, L1 norm 1/(n+1), non-equivalence concluded, finite-dimensional hypothesis named). Selected when all automatic checks pass.",
+  "object": {
+    "verdict": "accepted",
+    "confidence": 0.82,
+    "summary": "Both norms are computed correctly: $\\|f_n\\|_\\infty = 1$ since $x^n$ is increasing on $[0,1]$ with value 1 at $x=1$, and $\\|f_n\\|_1 = \\int_0^1 x^n\\,dx = \\tfrac{1}{n+1}$. The conclusion is drawn correctly: the ratio $\\|f_n\\|_\\infty / \\|f_n\\|_1 = n+1$ is unbounded, so no constant $C$ satisfies $\\|f\\|_\\infty \\le C\\|f\\|_1$ on $C([0,1])$, and the two norms are not equivalent. The contrast with finite dimensions is stated with the right hypothesis.",
+    "firstGap": null,
+    "checks": [
+      { "criterionId": "sup-norm", "status": "met", "comment": "Supremum identified as 1 with justification (monotonicity on [0,1])." },
+      { "criterionId": "l1-norm", "status": "met", "comment": "Integral computed as 1/(n+1)." },
+      { "criterionId": "conclusion", "status": "met", "comment": "Unbounded ratio used to refute the existence of a comparison constant in the direction that fails." },
+      { "criterionId": "finite-dim-contrast", "status": "met", "comment": "Finite dimensionality named as the hypothesis behind norm equivalence; its failure here is the point." }
+    ],
+    "strengths": ["The direction of the inequality that fails is identified explicitly rather than asserting non-equivalence vaguely."],
+    "nextStep": "Ask whether the reverse inequality $\\|f\\|_1 \\le C\\|f\\|_\\infty$ holds on $C([0,1])$, and with which constant; then ask whether $(C([0,1]), \\|\\cdot\\|_1)$ is complete.",
+    "alternateApproachRecognised": false,
+    "hypothesesChecked": ["finite dimensionality in the norm-equivalence theorem", "f_n continuous on [0,1] so both norms are defined"],
+    "citationTags": ["E1"]
+  }
+}

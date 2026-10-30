@@ -1,0 +1,64 @@
+{
+  "id": "MAT-230-u05",
+  "courseId": "MAT-230",
+  "sequence": 5,
+  "title": "Hahn–Banach and the double dual",
+  "summary": "Extension of bounded functionals via Zorn's lemma; consequences of Hahn–Banach; the canonical embedding into the double dual; reflexivity.",
+  "objectives": [
+    {
+      "id": "u05-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 5–6 (first half) of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "bounded-operator",
+    "dual-space"
+  ],
+  "teachesConceptIds": [
+    "hahn-banach",
+    "dual-space"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 5–6 (first half) of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec05",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Lectures 5–6 (first half): Hahn–Banach and the double dual",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec05",
+        "fa21-lec06"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

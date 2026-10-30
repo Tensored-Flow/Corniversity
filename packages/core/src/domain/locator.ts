@@ -8,6 +8,9 @@ import { z } from "zod";
 export const PdfLocator = z.object({
   kind: z.literal("pdf"),
   sourceVersionId: z.string().min(1),
+  /** The specific PDF when a source version has several (e.g. per-lecture notes). */
+  url: z.string().url().optional(),
+  fileLabel: z.string().optional(),
   physicalPageIndex: z.number().int().min(0),
   printedPageLabel: z.string().optional(),
   sectionLabel: z.string().optional(),
@@ -54,9 +57,8 @@ export function describeLocator(locator: Locator, sourceTitle: string): string {
       const page = locator.printedPageLabel
         ? `p. ${locator.printedPageLabel}`
         : `PDF page ${locator.physicalPageIndex + 1}`;
-      return locator.sectionLabel
-        ? `${sourceTitle}, ${locator.sectionLabel}, ${page}`
-        : `${sourceTitle}, ${page}`;
+      const file = locator.fileLabel ? `${sourceTitle}, ${locator.fileLabel}` : sourceTitle;
+      return locator.sectionLabel ? `${file}, ${locator.sectionLabel}, ${page}` : `${file}, ${page}`;
     }
     case "web":
       return locator.heading ? `${sourceTitle}, ${locator.heading}` : sourceTitle;

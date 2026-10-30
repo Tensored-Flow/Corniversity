@@ -1,0 +1,16 @@
+{
+  "id": "neuroscience",
+  "title": "Neuroscience",
+  "shortTitle": "Neuroscience",
+  "identity": "Cells, circuits and computation: biophysical models of neurons, systems-level organisation, and the computational models that make quantitative predictions. Synthetic teaching data is labelled as synthetic; real recordings are treated as real, with their noise and their limits.",
+  "emblem": "neuron",
+  "paths": [
+    { "title": "Foundations to Systems", "courseIds": ["NEU-101", "NEU-201", "NEU-210"] },
+    { "title": "Computational Neuroscience & NeuroAI", "courseIds": ["NEU-220", "NEU-230"] }
+  ],
+  "facultyPersonaIds": ["dev-anantharaman"],
+  "conventions": [
+    "A model is introduced with its assumptions and the data regime in which it was fit.",
+    "Fitting a model is not understanding it: explain why the model behaves as it does and where it fails."
+  ]
+}

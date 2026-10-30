@@ -1,0 +1,65 @@
+{
+  "id": "MAT-230-u12",
+  "courseId": "MAT-230",
+  "sequence": 12,
+  "title": "The spectral theorem and the Dirichlet problem",
+  "summary": "The spectrum of self-adjoint operators; eigenspaces of compact self-adjoint operators; the spectral theorem; application to the Dirichlet problem on an interval.",
+  "objectives": [
+    {
+      "id": "u12-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 21–23 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "compact-operator",
+    "adjoint-operator"
+  ],
+  "teachesConceptIds": [
+    "spectral-theorem-compact",
+    "spectrum"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 21–23 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec21",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u12-a1",
+      "type": "reading",
+      "title": "Lectures 21–23: The spectral theorem and the Dirichlet problem",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec21",
+        "fa21-lec22",
+        "fa21-lec23"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

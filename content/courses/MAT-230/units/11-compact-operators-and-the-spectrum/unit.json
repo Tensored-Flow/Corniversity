@@ -1,0 +1,64 @@
+{
+  "id": "MAT-230-u11",
+  "courseId": "MAT-230",
+  "sequence": 11,
+  "title": "Compact operators and the spectrum",
+  "summary": "Compact subsets of a Hilbert space; finite-rank operators and their norm limits; compact operators; the spectrum and resolvent of a bounded operator.",
+  "objectives": [
+    {
+      "id": "u11-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 19–20 of the 18.102 notes."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "hilbert-space",
+    "adjoint-operator"
+  ],
+  "teachesConceptIds": [
+    "compact-operator",
+    "spectrum"
+  ],
+  "preparation": [
+    {
+      "description": "Read Lectures 19–20 of the 18.102 Spring 2021 notes.",
+      "locatorId": "fa21-lec19",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u11-a1",
+      "type": "reading",
+      "title": "Lectures 19–20: Compact operators and the spectrum",
+      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "fa21-lec19",
+        "fa21-lec20"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

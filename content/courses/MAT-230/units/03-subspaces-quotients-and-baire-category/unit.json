@@ -1,0 +1,42 @@
+{
+  "id": "MAT-230-u03",
+  "courseId": "MAT-230",
+  "sequence": 3,
+  "title": "Subspaces, quotients and Baire category",
+  "summary": "Closed subspaces of Banach spaces; quotient spaces and the quotient norm; seminorms and their null spaces; the Baire category theorem and its first consequence, the uniform boundedness principle.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Prove that a subspace of a Banach space is itself Banach exactly when it is closed, and exhibit a dense proper subspace." },
+    { "id": "u03-o2", "description": "Define the quotient of a normed space by a closed subspace and explain why the quotient norm is a norm." },
+    { "id": "u03-o3", "description": "State the Baire category theorem precisely and use it to show a Banach space has no countable Hamel basis." },
+    { "id": "u03-o4", "description": "State the uniform boundedness principle with its completeness hypothesis and give an example showing the hypothesis cannot be dropped." }
+  ],
+  "prerequisiteConceptIds": ["banach-space", "bounded-operator", "metric-spaces"],
+  "teachesConceptIds": ["quotient-space", "baire-category", "uniform-boundedness"],
+  "preparation": [
+    { "description": "Read lecture 3 notes page 1: subspaces (Definition 29), Proposition 30 (Banach iff closed) and the quotient space (Definition 31).", "locatorId": "fa21-l3-prop30", "estimatedMinutes": 20 },
+    { "description": "Read Example 32 and Theorem 33 on seminorms and the quotient by the null space (page 2).", "locatorId": "fa21-l3-thm33", "estimatedMinutes": 15 },
+    { "description": "Read Theorem 34 (Baire Category Theorem) with its proof (page 3), then Theorem 36 (Uniform Boundedness) with its proof (page 4).", "locatorId": "fa21-l3-thm34", "estimatedMinutes": 35 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Lecture 3: subspaces, quotients, Baire", "instructions": "Read the lesson with lecture 3 of the notes. After the statement of Baire's theorem, write down in your own words what 'nowhere dense' means before reading the proof.", "estimatedMinutes": 70, "sourceLocatorIds": ["fa21-l3-def29", "fa21-l3-prop30", "fa21-l3-def31", "fa21-l3-thm33", "fa21-l3-thm34", "fa21-l3-thm36"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u03-a2", "type": "proof_workshop", "title": "Tutorial: closed subspaces and Baire category", "instructions": "Attempt exercises 1 and 2. Exercise 2 is the first genuine use of Baire's theorem; be explicit about which sets are closed and why they have empty interior.", "estimatedMinutes": 80, "sourceLocatorIds": ["fa21-l3-prop30", "fa21-l3-thm34"], "exerciseIds": ["MAT-230-u03-ex1", "MAT-230-u03-ex2"], "sessionKind": "tutorial" },
+    { "id": "u03-a3", "type": "explain_back", "title": "Explain: where completeness enters uniform boundedness", "instructions": "Exercise 3, written without the notes.", "estimatedMinutes": 20, "sourceLocatorIds": ["fa21-l3-thm36"], "exerciseIds": ["MAT-230-u03-ex3"], "sessionKind": "oral" }
+  ],
+  "exerciseIds": ["MAT-230-u03-ex1", "MAT-230-u03-ex2", "MAT-230-u03-ex3"],
+  "exitCheck": { "description": "Exercise 2 accepted: Baire's theorem applied correctly to show a Banach space has no countable Hamel basis, with closedness and empty interior of finite-dimensional subspaces justified.", "exerciseId": "MAT-230-u03-ex2" },
+  "commonMisconceptions": [
+    { "claim": "A subspace of a Banach space is automatically complete because the big space is.", "correction": "Only closed subspaces inherit completeness. The polynomials form a dense proper subspace of C([0,1]) and are not complete in the sup norm.", "correctionLocatorIds": ["fa21-l3-prop30"] },
+    { "claim": "Baire's theorem says a complete metric space cannot be a countable union of closed sets.", "correction": "It can (ℝ is a countable union of closed intervals). The theorem says at least one of the closed sets must contain an open ball; equivalently, a countable union of nowhere dense sets has empty interior.", "correctionLocatorIds": ["fa21-l3-thm34"] },
+    { "claim": "Pointwise boundedness of operators always gives uniform boundedness.", "correction": "Only on a Banach domain. On the incomplete space of finitely supported sequences, T_n(x) = n x_n is pointwise bounded but ‖T_n‖ = n.", "correctionLocatorIds": ["fa21-l3-thm36"] }
+  ],
+  "estimatedMinutes": 240,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All six locators opened 2026-10-30; page indices verified against text extracted from MIT18_102s21_lec3.pdf (5 pages, no printed labels): Proposition 30 and Definition 31 on PDF page 1, Theorem 33 on page 2, Theorem 34 on page 3, Theorem 36 on page 4." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: closed-subspace characterisation both ways; density of polynomials via Weierstrass as the non-example; the Baire argument for Hamel bases (finite-dimensional subspaces are closed by equivalence of norms and have empty interior because a ball contains a vector outside them); the counterexample T_n(x) = n x_n on finitely supported sequences." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "Reference reasoning only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "About 4 hours including preparation." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["MAT-230-u03-ex1.reference-solution.md", "MAT-230-u03-ex2.reference-solution.md", "MAT-230-u03-ex3.grading-notes.md"]
+}

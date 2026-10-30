@@ -1,0 +1,31 @@
+{
+  "id": "MAT-230-u03-ex1",
+  "sequence": 1,
+  "title": "Closed subspaces and a dense one",
+  "kind": "proof",
+  "promptMarkdown": "Let $V$ be a Banach space and $W\\subseteq V$ a linear subspace with the inherited norm.\n\n1. Prove that $W$ is a Banach space if and only if $W$ is closed in $V$.\n2. Let $P\\subseteq C([0,1])$ be the subspace of polynomial functions, with the sup norm. Using the Weierstrass approximation theorem (which you may quote), show that $P$ is dense in $C([0,1])$ and that $P\\neq C([0,1])$.\n3. Conclude that $P$ is not complete, and exhibit explicitly a Cauchy sequence in $P$ with no limit in $P$.",
+  "conceptIds": ["banach-space", "quotient-space"],
+  "hintLadder": [
+    "A Cauchy sequence in $W$ is Cauchy in $V$. Where does its limit live, and what property of $W$ puts the limit back inside $W$?",
+    "For the converse: a sequence in $W$ converging in $V$ is Cauchy; use completeness of $W$ and uniqueness of limits.",
+    "Name a continuous function on $[0,1]$ that is not a polynomial (think about how many zeros a nonzero polynomial can have, or about differentiability).",
+    "Partial sums of the Taylor series of $e^x$ are polynomials converging uniformly on $[0,1]$. To which function? Is it in $P$?"
+  ],
+  "deterministicChecks": [
+    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} },
+    { "id": "no-dense-complete-claim", "kind": "forbidden_claim", "description": "a dense proper subspace is never complete", "params": { "patterns": ["p is (complete|a banach space)(?! if| iff| only)", "the polynomials (are complete|form a banach space)"] } }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "closed-implies-banach", "criterion": "Cauchy in W ⇒ convergent in V ⇒ limit in W by closedness.", "weight": 0.25, "levels": [{ "label": "met", "description": "Complete." }, { "label": "partially met", "description": "Sketch." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "banach-implies-closed", "criterion": "Convergent sequence is Cauchy; completeness of W gives a limit in W; uniqueness of limits identifies it.", "weight": 0.25, "levels": [{ "label": "met", "description": "Complete, including uniqueness of limits." }, { "label": "partially met", "description": "Uniqueness not mentioned." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "density-and-proper", "criterion": "Weierstrass quoted correctly for density; a non-polynomial continuous function named with a reason.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "explicit-sequence", "criterion": "An explicit Cauchy sequence of polynomials whose uniform limit is not a polynomial, with the limit identified.", "weight": 0.25, "levels": [{ "label": "met", "description": "Sequence and limit given, Cauchy justified by uniform convergence." }, { "label": "partially met", "description": "Sequence without justification." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35
+}

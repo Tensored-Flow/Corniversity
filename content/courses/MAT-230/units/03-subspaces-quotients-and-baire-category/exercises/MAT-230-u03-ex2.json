@@ -1,0 +1,31 @@
+{
+  "id": "MAT-230-u03-ex2",
+  "sequence": 2,
+  "title": "No countable Hamel basis",
+  "kind": "proof",
+  "promptMarkdown": "A Hamel basis of a vector space is a linearly independent set $H$ such that every vector is a *finite* linear combination of elements of $H$. Let $V$ be an infinite-dimensional Banach space.\n\n1. Show that every finite-dimensional subspace $F\\subseteq V$ is closed. (You may use that all norms on a finite-dimensional space are equivalent, and that finite-dimensional normed spaces are complete.)\n2. Show that a proper closed subspace of a normed space has empty interior.\n3. Suppose, for contradiction, that $V$ has a countable Hamel basis $\\{h_1,h_2,\\dots\\}$. Write $V$ as a countable union of finite-dimensional subspaces and apply the Baire category theorem to reach a contradiction.\n4. Conclude: a Hamel basis of an infinite-dimensional Banach space is uncountable. Does this argument use completeness of $V$? Where?",
+  "conceptIds": ["baire-category", "banach-space"],
+  "hintLadder": [
+    "For 1: a finite-dimensional normed space is complete; now use Proposition 30 in the direction 'complete implies closed'.",
+    "For 2: if a subspace $F$ contained a ball $B(x,r)$, it would contain $B(x,r)-x=B(0,r)$, and then, by scaling, every vector. Why does that force $F=V$?",
+    "For 3: let $F_n=\\operatorname{span}\\{h_1,\\dots,h_n\\}$. Why is $V=\\bigcup_nF_n$? What does Baire say about the closed sets $F_n$?",
+    "For 4: Baire's theorem needs a complete metric space; the finite-dimensional step used completeness of $F$, not of $V$."
+  ],
+  "deterministicChecks": [
+    { "id": "examples-only", "kind": "finite_examples_not_proof", "description": "instances are not a proof", "params": {} },
+    { "id": "baire-needs-completeness", "kind": "requires_hypothesis", "description": "Baire's theorem is applied to V, which must be complete", "params": { "triggerPatterns": ["baire"], "hypothesisPatterns": ["complete", "banach"] } }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "finite-dim-closed", "criterion": "Finite-dimensional subspaces shown closed via completeness (equivalence of norms) and Proposition 30.", "weight": 0.25, "levels": [{ "label": "met", "description": "Argument complete." }, { "label": "partially met", "description": "Asserted with partial reason." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "empty-interior", "criterion": "A proper subspace containing a ball must be the whole space; so proper subspaces have empty interior.", "weight": 0.25, "levels": [{ "label": "met", "description": "Translation and scaling argument given." }, { "label": "partially met", "description": "Asserted." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "baire-application", "criterion": "V written as a countable union of the closed nowhere dense F_n and Baire applied to contradict.", "weight": 0.35, "levels": [{ "label": "met", "description": "Union justified (finite combinations), closedness and empty interior invoked, contradiction stated." }, { "label": "partially met", "description": "Union or contradiction incompletely justified." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "hypothesis-location", "criterion": "Identifies that completeness of V is used exactly in Baire's theorem.", "weight": 0.15, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Vague." }, { "label": "not met", "description": "Missing or wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45
+}

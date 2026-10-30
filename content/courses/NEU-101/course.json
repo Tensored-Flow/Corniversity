@@ -1,0 +1,37 @@
+{
+  "id": "NEU-101",
+  "version": 1,
+  "title": "Neuroscience Foundations",
+  "departmentIds": [
+    "neuroscience"
+  ],
+  "level": "foundation",
+  "position": "Domain readiness",
+  "launch": false,
+  "purpose": "A proposed course concept in the Corniversity catalogue (Domain readiness). Its purpose statement will be written when the course is sourced.",
+  "description": "Proposed course: Neuroscience Foundations. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Domain readiness. You may register interest; the director will say honestly that this course is not prepared.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ]
+}

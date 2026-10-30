@@ -125,6 +125,8 @@ export const attempt = pgTable(
     state: submissionStateEnum("state").notNull().default("draft"),
     hintsUsed: integer("hints_used").notNull().default(0),
     solutionRevealedAt: tz("solution_revealed_at"),
+    /** Unsubmitted work, saved as the learner types, so a closed tab never loses an argument. */
+    draftMarkdown: text("draft_markdown"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },

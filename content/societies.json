@@ -1,0 +1,33 @@
+[
+  {
+    "id": "mathematics-reading-room",
+    "title": "Mathematics Reading Room",
+    "description": "A slow reading group: one chapter or paper at a time, discussed for what it proves and how. Optional, bounded conversations with a chair and at most two classmates.",
+    "departmentId": "mathematics",
+    "cadence": "After any analysis or geometry tutorial, when invited",
+    "chairPersonaId": "tamsin-okoro"
+  },
+  {
+    "id": "physics-colloquium",
+    "title": "Physics Colloquium",
+    "description": "Short talks on one idea in physics and the questions it raises, followed by a bounded discussion. No new material is introduced before the course releases it.",
+    "departmentId": "physics",
+    "cadence": "After a physics unit is completed, when invited",
+    "chairPersonaId": "ines-valdivia"
+  },
+  {
+    "id": "cognitive-science-journal-club",
+    "title": "Cognitive Science Journal Club",
+    "description": "One paper or chapter, read for its claims, its evidence and the gap between them.",
+    "departmentId": "cognitive-science",
+    "cadence": "After a cognitive science or neuroscience unit, when invited",
+    "chairPersonaId": "dev-anantharaman"
+  },
+  {
+    "id": "recreational-problem-circle",
+    "title": "Recreational Problem Circle",
+    "description": "Problems chosen for pleasure rather than syllabus. Attempts are kept in your notebook if you want them; nothing here is assessed.",
+    "cadence": "Any time from the common room",
+    "chairPersonaId": "halvard-brekke"
+  }
+]

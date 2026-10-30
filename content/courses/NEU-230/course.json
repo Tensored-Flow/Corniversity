@@ -1,0 +1,37 @@
+{
+  "id": "NEU-230",
+  "version": 1,
+  "title": "NeuroAI",
+  "departmentIds": [
+    "neuroscience"
+  ],
+  "level": "advanced",
+  "position": "Advanced cross-listing with AI",
+  "launch": false,
+  "purpose": "A proposed course concept in the Corniversity catalogue (Advanced cross-listing with AI). Its purpose statement will be written when the course is sourced.",
+  "description": "Proposed course: NeuroAI. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Advanced cross-listing with AI. You may register interest; the director will say honestly that this course is not prepared.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ]
+}

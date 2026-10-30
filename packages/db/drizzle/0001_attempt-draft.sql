@@ -1,0 +1,1 @@
+ALTER TABLE "attempt" ADD COLUMN "draft_markdown" text;

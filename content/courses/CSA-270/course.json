@@ -1,0 +1,37 @@
+{
+  "id": "CSA-270",
+  "version": 1,
+  "title": "Agents, Evaluation, and Reliable AI Applications",
+  "departmentIds": [
+    "computer-science-ai"
+  ],
+  "level": "intermediate",
+  "position": "Practical, current-source verification essential",
+  "launch": false,
+  "purpose": "A proposed course concept in the Corniversity catalogue (Practical, current-source verification essential). Its purpose statement will be written when the course is sourced.",
+  "description": "Proposed course: Agents, Evaluation, and Reliable AI Applications. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Practical, current-source verification essential. You may register interest; the director will say honestly that this course is not prepared.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ]
+}
