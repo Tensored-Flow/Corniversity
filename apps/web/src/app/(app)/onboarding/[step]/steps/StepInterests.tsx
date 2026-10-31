@@ -1,4 +1,5 @@
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
+import { listProgrammes } from "@corniversity/db/services/programmes";
 import { ReadinessBadge } from "@/components/Readiness";
 import { Badge, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
@@ -6,10 +7,11 @@ import { saveInterestsAction } from "../actions";
 import { Fieldset, StepFooter, type StepProps } from "./shared";
 
 export async function StepInterests({ profile }: StepProps) {
-  const [departments, entries] = await Promise.all([listDepartments(db()), listCatalogue(db())]);
+  const [departments, entries, programmes] = await Promise.all([listDepartments(db()), listCatalogue(db()), listProgrammes(db())]);
   const answers = profile.onboardingAnswers;
   const chosenDepartments = new Set(answers.departmentIds ?? []);
   const chosenCourses = new Set(answers.interestCourseIds ?? []);
+  const chosenProgrammes = new Set(answers.programmeIds ?? []);
   return (
     <form action={saveInterestsAction} className="flex max-w-3xl flex-col gap-8">
       <Fieldset legend="Departments" hint="Choose as many as you like; the director will keep the first term manageable.">
@@ -29,6 +31,32 @@ export async function StepInterests({ profile }: StepProps) {
               <span>
                 <span className="block font-medium text-ink">{d.title}</span>
                 <span className="block text-xs text-ink-2 line-clamp-2">{d.identity}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </Fieldset>
+
+      <Fieldset
+        legend="Programmes that interest you (optional)"
+        hint="A programme is a route through several courses. Following one shows its parts on your academic map; it enrols you in nothing, and you can follow more than one."
+      >
+        <div className="grid gap-2 sm:grid-cols-2">
+          {programmes.map((p) => (
+            <label
+              key={p.id}
+              className="flex items-start gap-3 rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-3 has-[:checked]:border-brass"
+            >
+              <input
+                type="checkbox"
+                name="programmeIds"
+                value={p.id}
+                defaultChecked={chosenProgrammes.has(p.id)}
+                className="mt-1 accent-[var(--brass)]"
+              />
+              <span>
+                <span className="block font-medium text-ink">{p.title}</span>
+                <span className="block text-xs text-ink-2 line-clamp-2">{p.description}</span>
               </span>
             </label>
           ))}

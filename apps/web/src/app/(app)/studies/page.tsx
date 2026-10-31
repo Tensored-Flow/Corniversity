@@ -8,6 +8,7 @@ import { Badge, Card, EmptyState, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { reviewRevisionAction } from "./actions";
+import { ProgrammeMap } from "./ProgrammeMap";
 
 export const metadata = { title: "My Studies" };
 
@@ -148,6 +149,7 @@ export default async function StudiesPage() {
           </ul>
         )}
       </section>
+      <ProgrammeMap ownerId={session.user.id} />
     </div>
   );
 }

@@ -34,11 +34,13 @@ function ticks(min: number, max: number, count = 5): number[] {
 const format = (v: number) =>
   Math.abs(v) >= 1000 || (Math.abs(v) < 0.01 && v !== 0) ? v.toExponential(1) : Number(v.toFixed(3)).toString();
 
+const valueText = (v: number) => (Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : v.toFixed(3)) : "n/a");
+
 /**
  * A small dependency-free SVG chart for the laboratories. Static lines, points and bars with
  * labelled axes; colours come from the design tokens so it reads in both registers. It is a
- * figure, not an interactive widget: the controls live beside it and every value it shows is
- * also printed in a table for screen readers and for the learner's report.
+ * figure, not an interactive widget: the controls live beside it, and every value it shows is
+ * also listed under Values beneath it, for screen readers and for the learner's report.
  */
 export function Plot({ series, width = 560, height = 300, xLabel, yLabel, xDomain, yDomain, title }: Props) {
   const margin = { top: 16, right: 16, bottom: 44, left: 56 };
@@ -142,6 +144,39 @@ export function Plot({ series, width = 560, height = 300, xLabel, yLabel, xDomai
           </li>
         ))}
       </ul>
+      <details className="mt-1 text-xs text-ink-2">
+        <summary className="cursor-pointer">Values</summary>
+        <section
+          className="mt-1 max-h-48 overflow-auto rounded-[var(--radius-control)] border border-stone"
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: the list scrolls and must be reachable by keyboard (axe: scrollable-region-focusable)
+          tabIndex={0}
+          aria-label={`Values: ${title ?? "chart"}`}
+        >
+          {series.map((s) => (
+            <table key={s.label} className="w-full text-left">
+              <caption className="px-2 pt-1 text-left text-ink-3">{s.label}</caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="px-2 py-0.5 font-medium">
+                    {xLabel}
+                  </th>
+                  <th scope="col" className="px-2 py-0.5 font-medium">
+                    {yLabel}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="font-mono">
+                {s.points.map((p, j) => (
+                  <tr key={`${s.label}-${j}`} className="border-t border-stone">
+                    <td className="px-2">{valueText(p.x)}</td>
+                    <td className="px-2">{valueText(p.y)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ))}
+        </section>
+      </details>
     </figure>
   );
 }

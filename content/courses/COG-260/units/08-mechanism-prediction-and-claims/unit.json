@@ -1,0 +1,67 @@
+{
+  "id": "COG-260-u08",
+  "courseId": "COG-260",
+  "sequence": 8,
+  "title": "Mechanism, prediction and warranted claims",
+  "summary": "Human-model and brain-model comparison; mechanistic plausibility against predictive fit; missing observations and privacy in behavioural data; which application claims a held-out result warrants.",
+  "objectives": [
+    {
+      "id": "u08-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-predictive-checks"
+  ],
+  "teachesConceptIds": [
+    "method-scientific-argument"
+  ],
+  "preparation": [
+    {
+      "description": "Read Centaur's alignment of internal representations with brain activity.",
+      "locatorId": "centaur-nat-neural",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Work through the Neuromatch NeuroAI tutorial on statistical inference on representational geometries.",
+      "locatorId": "nmaai-w1d3-t3",
+      "estimatedMinutes": 60
+    }
+  ],
+  "activities": [
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Reading: Mechanism, prediction and warranted claims",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "centaur-nat-neural",
+        "nmaai-w1d3-t3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Binz et al. (2025) and Neuromatch NeuroAI are records verified on 2026-10-31; the unit's privacy and application-claims coverage has no source yet."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

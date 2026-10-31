@@ -1,0 +1,80 @@
+{
+  "id": "COG-260-u04",
+  "courseId": "COG-260",
+  "sequence": 4,
+  "title": "Held-out evaluation across people, tasks and time",
+  "summary": "Held-out trials, people, tasks and later sessions as different generalisation questions, each with its information contract; leave-one-subject-out evaluation of choice models; scoring by log-likelihood and percentage of choices predicted against baselines.",
+  "objectives": [
+    {
+      "id": "u04-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-predictive-checks"
+  ],
+  "teachesConceptIds": [
+    "information-contract",
+    "method-longitudinal-transfer-evaluation"
+  ],
+  "preparation": [
+    {
+      "description": "Read the Action prediction section of Dezfouli et al. (2019).",
+      "locatorId": "dez-action-prediction",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read their model selection by leave-one-out cross-validation over subjects.",
+      "locatorId": "dez-model-selection",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read their performance measures.",
+      "locatorId": "dez-performance-measures",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the study design of Eckstein et al. (2022): three tasks done by the same 291 participants.",
+      "locatorId": "eck-study-design",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u04-a1",
+      "type": "reading",
+      "title": "Reading: Held-out evaluation across people, tasks and time",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "dez-action-prediction",
+        "dez-model-selection",
+        "dez-performance-measures",
+        "eck-study-design"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "The Dezfouli et al. (2019) and Eckstein et al. (2022) locators belong to records verified on 2026-10-31; how each baseline was fitted to the training subjects in Dezfouli et al. was not checked."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

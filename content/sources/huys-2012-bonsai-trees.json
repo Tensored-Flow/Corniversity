@@ -1,0 +1,147 @@
+{
+  "id": "huys-2012-bonsai-trees",
+  "title": "Bonsai Trees in Your Head: How the Pavlovian System Sculpts Goal-Directed Choices by Pruning Decision Trees",
+  "authors": [
+    "Quentin J. M. Huys",
+    "Neir Eshel",
+    "Elizabeth O'Nions",
+    "Luke Sheridan",
+    "Peter Dayan",
+    "Jonathan P. Roiser"
+  ],
+  "institution": "PLoS Computational Biology",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1371/journal.pcbi.1002410",
+  "description": "Empirical modelling paper. Forty-six participants were trained to criterion on a deterministic six-state environment (two buttons, two transitions from each state, a reward or loss on each transition) and then planned sequences of 2 to 8 moves to maximise total reward; three groups differed only in the size of the large loss (-70, -100 or -140 pence). Models compared: full look-ahead tree search, 'Discount' (a fixed probability of stopping the search), 'Pruning' (a separate, higher stopping probability after a large loss), learned Pavlovian values, a pruning-plus-learned model, loss-aversion variants and a habitual SARSA model; fitted by maximum a posteriori estimation with empirical priors (EM) and compared with integrated BIC. Subjects pruned after large losses even when it was costly, and pruning was related to subclinical mood scores.",
+  "rightsNotes": [
+    "PLOS article page and article XML: 'Copyright: © 2012 Huys et al. This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.' The article does not state a licence version; Crossref metadata gives http://creativecommons.org/licenses/by/4.0/."
+  ],
+  "currentVersionId": "huys-2012-plos-vor",
+  "versions": [
+    {
+      "id": "huys-2012-plos-vor",
+      "label": "PLoS Computational Biology 8(3): e1002410, published 8 March 2012 (received 14 September 2011, accepted 18 January 2012)",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the PLOS article page (copyright line, anchors) and the PLOS article XML (metadata, permissions, abstract, structure, Methods sections and figure captions) and the Crossref record",
+      "componentsSeen": [
+        "PLOS page: copyright line; anchors abstract0, s1, s2, s2a, s4, s4a, s4b, s4c, s4e and the Figure 2 anchor",
+        "Article XML: metadata (volume 8, issue 3, e1002410, editor Laurence T. Maloney), permissions, abstract, section and figure structure",
+        "Read in full: Participants (s4a), Task (s4b), Model-based analysis (s4c), Model fitting procedure (s4d), Model comparison (s4e), Figure 2 and Figure 4 captions",
+        "PMCID PMC3297555 and PMID 22412360 from the NCBI ID converter (PMC copy not opened)"
+      ],
+      "licence": "Creative Commons Attribution License (version not stated in the article; Crossref gives CC BY 4.0)",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "journals.plos.org"
+      ],
+      "limitations": [
+        "All equations in the XML are images; none were transcribed. Model descriptions come from the prose.",
+        "Results (s2a-s2d), Introduction and Discussion were not read beyond headings and figure captions; figures were not viewed.",
+        "The article reports in-sample fit (integrated BIC) and says its choice probabilities are predictive 'but not in the machine learning sense'; it is not a held-out evaluation."
+      ],
+      "locators": [
+        {
+          "id": "huys-abstract",
+          "label": "Abstract",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Abstract",
+            "fragment": "abstract0"
+          }
+        },
+        {
+          "id": "huys-figure-2",
+          "label": "Figure 2: six-state task as seen by subjects, deterministic transition matrix, group-specific large losses, effect of pruning on optimal choices",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Figure 2. Task description.",
+            "fragment": "pcbi-1002410-g002"
+          }
+        },
+        {
+          "id": "huys-decision-structure",
+          "label": "Results: decision making structure (Figure 4: model performance and comparison)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Decision making structure",
+            "fragment": "s2a"
+          },
+          "note": "Heading and Figure 4 caption seen; text not read."
+        },
+        {
+          "id": "huys-participants",
+          "label": "Participants: 46 volunteers; groups -70 (15), -100 (16), -140 (15)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Participants",
+            "fragment": "s4a"
+          }
+        },
+        {
+          "id": "huys-task",
+          "label": "Task: training on the transition matrix to criterion; two blocks of 24 episodes of 2-8 moves; second block analysed",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Task",
+            "fragment": "s4b"
+          }
+        },
+        {
+          "id": "huys-models",
+          "label": "Models compared: look-ahead, Discount, Pruning, Learned Pavlovian, pruning plus learned terminal values, loss aversion, habitual SARSA; softmax choice (Equations 1-10, printed as images)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Model-based analysis",
+            "fragment": "s4c"
+          }
+        },
+        {
+          "id": "huys-fitting",
+          "label": "Model fitting: maximum a posteriori estimates with empirical Gaussian priors set by expectation-maximisation",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Model fitting procedure",
+            "fragment": "s4d"
+          },
+          "note": "Anchor id taken from the article XML."
+        },
+        {
+          "id": "huys-model-comparison",
+          "label": "Model comparison: integrated BIC (iBIC) at the group level",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "huys-2012-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002410",
+            "heading": "Model comparison",
+            "fragment": "s4e"
+          }
+        }
+      ]
+    }
+  ]
+}

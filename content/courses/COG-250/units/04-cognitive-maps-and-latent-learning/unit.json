@@ -1,0 +1,79 @@
+{
+  "id": "COG-250-u04",
+  "courseId": "COG-250",
+  "sequence": 4,
+  "title": "Cognitive maps and latent learning",
+  "summary": "Latent learning and spatial orientation in Tolman (1948); the conditions that favour narrow strip maps over comprehensive maps; environment models and latent learning in Sutton and Barto's section 14.5.",
+  "objectives": [
+    {
+      "id": "u04-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "planning-model-based-vs-cached"
+  ],
+  "teachesConceptIds": [
+    "transfer-and-revaluation"
+  ],
+  "preparation": [
+    {
+      "description": "Read Tolman's latent learning experiments (reference-only; read on the host's site).",
+      "locatorId": "tolman-latent-learning",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the spatial orientation experiments.",
+      "locatorId": "tolman-spatial-orientation",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the conditions that favour strip maps over comprehensive maps.",
+      "locatorId": "tolman-strip-vs-comprehensive",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read Sutton and Barto, section 14.5, Cognitive Maps.",
+      "locatorId": "sb-14-5-cognitive-maps",
+      "estimatedMinutes": 15
+    }
+  ],
+  "activities": [
+    {
+      "id": "u04-a1",
+      "type": "reading",
+      "title": "Reading: Cognitive maps and latent learning",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 55,
+      "sourceLocatorIds": [
+        "tolman-latent-learning",
+        "tolman-spatial-orientation",
+        "tolman-strip-vs-comprehensive",
+        "sb-14-5-cognitive-maps"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Tolman (1948) and Sutton and Barto locators belong to records verified on 2026-10-31; Tolman is reference-only and its figures were not viewed."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

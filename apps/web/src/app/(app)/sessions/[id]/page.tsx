@@ -90,11 +90,14 @@ export default async function SessionPage({
   const ASSESSED = new Set(["feedback_ready", "revision_requested", "needs_review", "accepted", "revised"]);
   let revealFormulas = false;
   let labNotes: { id: string; title: string; excerpt: string; when: string }[] = [];
+  let predictionRecorded = false;
   if (labId) {
     for (const exercise of unitDetail.exercises) {
       const attempts = await getAttemptHistory(db(), auth.user.id, exercise.id);
       if (attempts.some((h) => Boolean(h.attempt.solutionRevealedAt) || ASSESSED.has(h.attempt.state))) revealFormulas = true;
     }
+    const predictions = await listEntries(db(), auth.user.id, { unitId: unitDetail.unit.id, tag: "prediction", limit: 20 });
+    predictionRecorded = predictions.some((e) => e.tags.includes(labId));
     labNotes = (await listEntries(db(), auth.user.id, { unitId: unitDetail.unit.id, tag: labId, limit: 5 })).map((e) => ({
       id: e.id,
       title: e.title,
@@ -133,7 +136,7 @@ export default async function SessionPage({
         <div className="flex min-w-0 flex-col gap-6">
           {labId ? (
             <>
-              <LabPanel labId={labId} revealFormulas={revealFormulas} />
+              <LabPanel labId={labId} revealFormulas={revealFormulas} sessionId={id} predictionRecorded={predictionRecorded} />
               <Card>
                 <p className="text-sm text-ink-2">{activity.instructions}</p>
                 <div className="mt-4">

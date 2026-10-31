@@ -1,0 +1,45 @@
+{
+  "id": "NEU-310",
+  "version": 1,
+  "title": "Neural Dynamics",
+  "departmentIds": [
+    "neuroscience"
+  ],
+  "level": "advanced",
+  "position": "Optional advanced elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional advanced elective). Dynamical descriptions of neural activity, stability, population dynamics and their relationship to computational models, coordinated with computational neuroscience and the mathematics department's dynamical-systems material.",
+  "description": "Proposed course: Neural Dynamics. Central question: How do dynamical descriptions explain the activity of neural populations? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "How do dynamical descriptions explain the activity of neural populations?",
+  "prerequisiteGuidance": "NEU-220 units 6 and 8 (linear systems; rate models and Wilson-Cowan networks, in preparation) and ordinary differential equations.",
+  "preparationPath": "Reuse the Neuromatch dynamical-systems days already registered for NEU-220 as the spine once their units are prepared; add one population-dynamics source after verification.",
+  "plannedActivities": [
+    "Investigate a small dynamical model and explain how changes in parameters affect its behaviour within the stated assumptions."
+  ],
+  "sourceCandidates": []
+}

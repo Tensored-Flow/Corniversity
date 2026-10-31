@@ -27,6 +27,7 @@ import {
   teachingUnit,
   term,
 } from "../schema/index";
+import { applyProgrammeProposal } from "./programmes";
 
 export type TermRow = typeof term.$inferSelect;
 export type PlanVersionRow = typeof planVersion.$inferSelect;
@@ -423,6 +424,39 @@ export async function proposeCatchUp(db: DbOrTx, ownerId: string, now = new Date
   return { proposal: proposal!, plan: proposed.plan, diff, result: proposed.result, missed };
 }
 
+/**
+ * Rolling study has no completion date: when its planning horizon runs low the learner can ask
+ * for the next weeks to be planned. The longer horizon is proposed with the plan that fills it
+ * and applied only if the learner confirms; completed sessions stay as history.
+ */
+export async function proposeRollingExtension(db: DbOrTx, ownerId: string, weeks = 10, now = new Date().toISOString()) {
+  const termRow = await getActiveTerm(db, ownerId);
+  if (termRow?.mode !== "rolling") return null;
+  const { DateTime } = await import("luxon");
+  const extended = {
+    ...termRow,
+    teachingWeeks: termRow.teachingWeeks + weeks,
+    endDate: DateTime.fromISO(termRow.endDate).plus({ weeks }).toISODate() ?? termRow.endDate,
+  };
+  const proposed = await proposePlan(db, ownerId, extended, { notBefore: now, keepExisting: true });
+  const [proposal] = await db
+    .insert(changeProposal)
+    .values({
+      ownerId,
+      kind: "timetable",
+      proposedBy: "system",
+      title: `Plan the next ${weeks} weeks of rolling study`,
+      rationale: `Your rolling plan covered ${termRow.teachingWeeks} weeks. This draft schedules the next ${weeks} as well, keeping every planned and completed session where it is; ${proposed.result.unplaced.length} activit${proposed.result.unplaced.length === 1 ? "y does" : "ies do"} not fit. Nothing changes until you confirm, and there is still no completion date.`,
+      diff: {
+        planVersionId: proposed.plan.id,
+        extendTerm: { termId: termRow.id, teachingWeeks: extended.teachingWeeks, endDate: extended.endDate },
+        unplaced: proposed.result.unplaced.length,
+      },
+    })
+    .returning();
+  return proposal!;
+}
+
 export async function decideProposal(db: DbOrTx, ownerId: string, proposalId: string, decision: "confirmed" | "rejected"): Promise<void> {
   const [p] = await db
     .select()
@@ -430,8 +464,17 @@ export async function decideProposal(db: DbOrTx, ownerId: string, proposalId: st
     .where(and(eq(changeProposal.id, proposalId), eq(changeProposal.ownerId, ownerId)))
     .limit(1);
   if (p?.status !== "draft") return;
-  const diff = p.diff as { planVersionId?: string };
-  if (decision === "confirmed" && diff.planVersionId) {
+  const diff = p.diff as { planVersionId?: string; extendTerm?: { termId: string; teachingWeeks: number; endDate: string } };
+  if (p.kind === "programme") {
+    if (decision === "confirmed") await applyProgrammeProposal(db, ownerId, p.diff);
+  } else if (decision === "confirmed" && diff.planVersionId) {
+    if (diff.extendTerm) {
+      // A rolling horizon moves only when the learner accepts the plan that fills it.
+      await db
+        .update(term)
+        .set({ teachingWeeks: diff.extendTerm.teachingWeeks, endDate: diff.extendTerm.endDate })
+        .where(and(eq(term.id, diff.extendTerm.termId), eq(term.ownerId, ownerId), eq(term.mode, "rolling")));
+    }
     await confirmPlan(db, ownerId, diff.planVersionId);
   } else if (diff.planVersionId) {
     await db.delete(planVersion).where(and(eq(planVersion.id, diff.planVersionId), eq(planVersion.status, "proposed")));

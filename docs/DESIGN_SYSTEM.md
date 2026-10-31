@@ -21,11 +21,13 @@ fades only, disabled under `prefers-reduced-motion`; none during scored work.
 ## Components
 
 Wordmark/crest (original SVG), `PageFrame`, `SideNav` (Campus, My Studies, Timetable, Library,
-Notebook, Common Room; Director as a quiet affordance), `CommandSearch`, `Card`, `Button`
+Notebook, Common Room, Catalogue, Programmes; Director as a quiet affordance), `CommandSearch`, `Card`, `Button`
 (primary brass, secondary stone, quiet text), `Field` with accessible errors, `Badge` (readiness,
 AI label, evidence state), `Math` / `Markdown` (KaTeX, sanitised), `SourcePanel`, `HintLadder`,
 `ProofEditor`, `FeedbackCard` (line-localised), `Timetable` (week/agenda), `ReadingRoom`,
-`CampusMap` (SVG with list equivalent), `Toast`, `EmptyState`, `DeniedState`, `OfflineState`.
+`CampusMap` (SVG with list equivalent), `Toast`, `EmptyState`, `DeniedState`, `OfflineState`,
+`PredictionGate` (laboratory results hidden until a prediction is saved), block readiness badges
+(prepared, partly prepared, sources only, proposed) and the programme map on My Studies.
 
 ## Interaction rules
 
@@ -45,4 +47,5 @@ requests `/library/requests`, upload `/library/upload`, item `/library/items/[id
 `/library/sync`, jobs `/library/jobs` · 11 Reading room `/library/read/[id]` · 12 Laboratory
 `/sessions/[id]` (activity with a `labId`; the lab panel sits above the report) · 13 Timetable
 `/timetable` · 14 Common room `/common-room`, discussion `/common-room/[id]` · 15 Notebook
-`/notebook`, entry `/notebook/[id]` · 16 Records `/records` · 17 Settings `/settings`.
+`/notebook`, entry `/notebook/[id]` · 16 Records `/records` · 17 Settings `/settings` · 18 Programmes
+`/programmes`, programme `/programmes/[id]`.

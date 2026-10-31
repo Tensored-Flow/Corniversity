@@ -1,0 +1,47 @@
+{
+  "id": "COG-290",
+  "version": 1,
+  "title": "Independent Research Studio",
+  "departmentIds": [
+    "cognitive-science",
+    "neuroscience",
+    "computer-science-ai"
+  ],
+  "level": "advanced",
+  "position": "Supervised capstone cross-listed with neuroscience and AI",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Supervised capstone cross-listed with neuroscience and AI). Choosing a tractable question, a focused literature review, study or simulation design, a reproducible analysis plan, implementation, model checking, uncertainty, a research notebook, interpretation, limitations, replication, negative results, a written report and an optional oral discussion.",
+  "description": "Proposed course: Independent Research Studio. Central question: Can the learner investigate a question and defend what the evidence supports? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "Can the learner investigate a question and defend what the evidence supports?",
+  "prerequisiteGuidance": "Enough of the programme to frame a question: usually one modelling block (MBI-04 or MBI-11) and one subject block. Conceptual, mathematical, computational, replication and critical-review projects are all admissible.",
+  "preparationPath": "Implement the project workflow (question, sources, plan, provenance, notebook, artefacts, feedback, report, limitations) on top of the existing notebook and records before any project is offered. No participant recruitment, outreach or publication is ever automated.",
+  "plannedActivities": [
+    "A project with a question, motivation, prior sources, proposed methods, dataset or simulation provenance, planned comparisons, compute and time assumptions, notebook entries, intermediate artefacts, feedback, a final report with limitations, and an optional discussion. A well-explained negative result is a success."
+  ],
+  "sourceCandidates": []
+}

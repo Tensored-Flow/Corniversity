@@ -1,0 +1,95 @@
+{
+  "id": "noba-psychology",
+  "title": "Noba textbook series: Psychology (modules)",
+  "authors": [
+    "Module authors named on each module (e.g. Frances Friedrich; Kathleen B. McDermott and Henry L. Roediger III; Gregory Murphy)",
+    "R. Biswas-Diener and E. Diener (series editors, as given in module citations)"
+  ],
+  "institution": "Noba Project, Diener Education Fund",
+  "kind": "book",
+  "canonicalUrl": "https://nobaproject.com/",
+  "description": "Free online psychology modules written by named researchers ('Teach and learn psychology for free.'). The catalogue's Cognition and Language, Learning and Memory, and Sensation and Perception groups include Attention; Categories and Concepts; Consciousness; Language and Language Use; Theory of Mind; The Unconscious; Judgment and Decision Making; Intelligence; Conditioning and Learning; Factors Influencing Learning; Forgetting and Amnesia; Memory (Encoding, Storage, Retrieval); Eyewitness Testimony and Memory Biases; Failures of Awareness: The Case of Inattentional Blindness; Vision; Hearing; Multi-Modal Perception; Sensation and Perception. A Psychology as Science group adds Research Designs, Statistical Thinking, The Replication Crisis in Psychology and related modules. Each module has learning objectives, sections, outside resources, discussion questions, vocabulary and references.",
+  "rightsNotes": [
+    "Each module opened ends with a statement such as 'Attention by Frances Friedrich is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.' The home page states the licence 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License' except where otherwise noted; footer '© 2026 Diener Education Fund'.",
+    "Licence agreement (nobaproject.com/license-agreement, 2026-10-31): 'DEF grants User a Creative Commons Attribution-NonCommercial-Share Alike 4.0 International License.' Users may modify the work consistently with that licence but not on the Noba website itself; DEF may revoke the licence on breach; content may change without notice. No statement on AI, machine learning or text mining was found.",
+    "Corniversity exercises are original; any adaptation of module text is labelled and shared under CC BY-NC-SA. Instructor materials were not examined."
+  ],
+  "currentVersionId": "noba-web-2026",
+  "versions": [
+    {
+      "id": "noba-web-2026",
+      "label": "Modules as published online (module citations dated 2026; '© 2026 Diener Education Fund'; viewed 2026-10-31)",
+      "url": "https://nobaproject.com/browse-content",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the home page, the browse-content catalogue, the licence agreement and the modules Attention, Memory (Encoding, Storage, Retrieval) and Categories and Concepts",
+      "componentsSeen": [
+        "home page: tagline, licence statement, footer",
+        "browse-content catalogue: module titles grouped by topic (cognition, memory, perception and research-methods titles as in the description)",
+        "licence agreement, sections 1-7",
+        "Attention (Frances Friedrich, University of Utah): What is Attention?; Selective Attention (the cocktail party, dichotic listening, models of selective attention: Treisman's attenuation model, late selection models, multimode model; subliminal perception); Divided Attention and Multitasking; cited as 'Friedrich, F. (2026)' in R. Biswas-Diener & E. Diener (Eds), Noba textbook series: Psychology",
+        "Memory (Encoding, Storage, Retrieval) (Kathleen B. McDermott and Henry L. Roediger III, Washington University in St. Louis): Varieties of Memory; Three Stages of the Learning/Memory Process; Encoding; Storage; Retrieval; Putting It All Together",
+        "Categories and Concepts (Gregory Murphy, New York University): Nature of Categories (fuzzy categories, borderline items, typicality); Category Hierarchies; Theories of Concept Representation (prototype and exemplar); Knowledge"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://nobaproject.com/license-agreement",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "nobaproject.com"
+      ],
+      "limitations": [
+        "Introductory modules written for undergraduate survey courses; depth is below a full cognitive-psychology textbook.",
+        "The catalogue has no working-memory module; reasoning appears only through Judgment and Decision Making and Intelligence (not opened).",
+        "Only three modules were opened; the other titles are known from the catalogue.",
+        "Module citation years follow the current site year (2026), not the original writing date; no version history is shown.",
+        "Images and videos inside modules may be third-party ('except where otherwise noted'); they were not audited."
+      ],
+      "locators": [
+        {
+          "id": "noba-catalogue",
+          "label": "Browse-content catalogue (module titles by topic)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "noba-web-2026",
+            "url": "https://nobaproject.com/browse-content",
+            "heading": "Cognition and Language"
+          }
+        },
+        {
+          "id": "noba-attention",
+          "label": "Module: Attention (Frances Friedrich)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "noba-web-2026",
+            "url": "https://nobaproject.com/modules/attention",
+            "heading": "Attention"
+          }
+        },
+        {
+          "id": "noba-memory",
+          "label": "Module: Memory (Encoding, Storage, Retrieval) (Kathleen B. McDermott and Henry L. Roediger III)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "noba-web-2026",
+            "url": "https://nobaproject.com/modules/memory-encoding-storage-retrieval",
+            "heading": "Memory (Encoding, Storage, Retrieval)"
+          }
+        },
+        {
+          "id": "noba-categories",
+          "label": "Module: Categories and Concepts (Gregory Murphy)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "noba-web-2026",
+            "url": "https://nobaproject.com/modules/categories-and-concepts",
+            "heading": "Categories and Concepts"
+          }
+        }
+      ]
+    }
+  ]
+}

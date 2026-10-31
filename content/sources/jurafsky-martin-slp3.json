@@ -1,0 +1,97 @@
+{
+  "id": "jurafsky-martin-slp3",
+  "title": "Speech and Language Processing (3rd ed. draft)",
+  "authors": [
+    "Daniel Jurafsky",
+    "James H. Martin"
+  ],
+  "kind": "book",
+  "canonicalUrl": "https://web.stanford.edu/~jurafsky/slp3/",
+  "description": "Draft third edition of the standard NLP textbook, published chapter by chapter as free PDFs on the author's Stanford page. The August 19, 2026 release has Volume I: Large Language Models (1 Introduction; 2 Words and Tokens; 3 N-gram Language Models; 4 Logistic Regression and Text Classification; 5 Embeddings; 6 Neural Networks; 7 Transformers and Pretraining; 8 Post-training), Volume II: Advanced LLM Topics and Tools (9 Masked Language Models; 10 Interpretability; 11 Information Retrieval and RAG; 12 Agents, not yet written; 13 Machine Translation; 14 RNNs and LSTMs; 15-17 speech), Volume III: Annotating Linguistic Structure (18-26) and web-only appendices A-K.",
+  "rightsNotes": [
+    "Each chapter PDF opened carries the header 'Speech and Language Processing. Daniel Jurafsky & James H. Martin. Copyright © 2026. All rights reserved. Draft of August 19, 2026.'",
+    "The book page gives informal permission for teaching use: 'Feel free to use the draft chapters and slides in your classes' ... ', print it out, whatever, the resulting feedback we get from you makes the book better!' This is not an open licence. Corniversity treats the drafts as reference-only: the learner opens the PDFs from the authors' page, lessons cite chapter and section numbers, and text is not imported or passed to AI roles.",
+    "The book web page itself shows no licence or copyright statement."
+  ],
+  "currentVersionId": "slp3-2026-08-19",
+  "versions": [
+    {
+      "id": "slp3-2026-08-19",
+      "label": "3rd edition draft, August 19, 2026 release",
+      "url": "https://web.stanford.edu/~jurafsky/slp3/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the book page (release line, chapter list, permission sentence) and extracted the text of the Chapter 7 and Chapter 8 PDFs locally with the Corniversity scripts/pdf-dump.ts",
+      "componentsSeen": [
+        "book page: title and authors, 'Here's our August 19, 2026 release!', chapter list with PDF links (1.pdf-26.pdf, A.pdf-K.pdf), Chapter 12 Agents marked '[not written yet]', no print-publication note ('When will the book be finished? Don't ask.')",
+        "Chapter 7 'Transformers and Pretraining' (34 pages): 7.1 Attention; 7.2 Transformer Blocks; 7.3 Parallelizing computation using a single matrix X; 7.4 The input: embeddings for token and position; 7.5 The Language Modeling Head; 7.6 Decoding (greedy, random, temperature, top-k and top-p sampling); 7.7 Pretraining Transformer LLMs with 7.7.1 Evaluating Large Language Models: Perplexity; 7.8 Current models and some numbers; 7.9 Summary; exercises",
+        "Chapter 8 'Post-training' (17 pages): opening names three post-training techniques (instruction tuning, preference alignment, Reinforcement Learning with Verifiable Rewards); 8.1 Instruction Tuning (8.1.1 Instructions as Training Data; 8.1.2 Evaluation of Instruction-Tuned Models); 8.2 Parameter Efficient Fine Tuning; 8.3 Learning from Preferences (8.3.1 LLM Preference Data; 8.3.2 Modeling Preferences; 8.3.3 Learning to Score Preferences); 8.4 LLM Alignment via Preference-Based Learning (8.4.1 PPO; 8.4.2 Direct Preference Optimization; 8.4.3 and 8.4.4 headings only); 8.5 Summary; Historical Notes"
+      ],
+      "licence": "All rights reserved (Copyright © 2026 Jurafsky & Martin, draft); informal permission to use the drafts in classes and print them",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Rolling draft: chapter numbering and content change between releases; this record pins the August 19, 2026 release and locators must be re-checked each term.",
+        "Chapter 8 names RLVR as the third post-training stage but has no RLVR section in this release, and 8.4.3 'Evaluation of Preference-Aligned Models' and 8.4.4 'Limitations of Preference-Based Learning' are headings without body text. Reasoning-oriented training needs another source.",
+        "Chapter 12 Agents is not written, so agent evaluation is not covered.",
+        "Only Chapters 7 and 8 were opened; Chapters 1-6 (the background a lighter route also needs) and 9-11 are known from the chapter list only.",
+        "Chapter PDFs have no PDF page labels; printed page numbers appear in running heads from page 2 and equal physical index + 1."
+      ],
+      "locators": [
+        {
+          "id": "slp3-home",
+          "label": "Book page: August 19, 2026 release, chapter list and PDF links",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "slp3-2026-08-19",
+            "url": "https://web.stanford.edu/~jurafsky/slp3/",
+            "heading": "Speech and Language Processing (3rd ed. draft)"
+          }
+        },
+        {
+          "id": "slp3-7-1",
+          "label": "Chapter 7 Transformers and Pretraining, 7.1 Attention",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "slp3-2026-08-19",
+            "url": "https://web.stanford.edu/~jurafsky/slp3/7.pdf",
+            "fileLabel": "Chapter 7 (7.pdf)",
+            "physicalPageIndex": 2,
+            "printedPageLabel": "3",
+            "sectionLabel": "7.1 Attention"
+          }
+        },
+        {
+          "id": "slp3-7-7",
+          "label": "Chapter 7, 7.7 Pretraining Transformer LLMs (with 7.7.1 perplexity)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "slp3-2026-08-19",
+            "url": "https://web.stanford.edu/~jurafsky/slp3/7.pdf",
+            "fileLabel": "Chapter 7 (7.pdf)",
+            "physicalPageIndex": 24,
+            "printedPageLabel": "25",
+            "sectionLabel": "7.7 Pretraining Transformer LLMs"
+          }
+        },
+        {
+          "id": "slp3-8-1",
+          "label": "Chapter 8 Post-training: the three post-training techniques and 8.1 Instruction Tuning",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "slp3-2026-08-19",
+            "url": "https://web.stanford.edu/~jurafsky/slp3/8.pdf",
+            "fileLabel": "Chapter 8 (8.pdf)",
+            "physicalPageIndex": 1,
+            "printedPageLabel": "2",
+            "sectionLabel": "8.1 Instruction Tuning"
+          }
+        }
+      ]
+    }
+  ]
+}

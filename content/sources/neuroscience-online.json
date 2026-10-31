@@ -1,0 +1,88 @@
+{
+  "id": "neuroscience-online",
+  "title": "Neuroscience Online: An Electronic Textbook for the Neurosciences",
+  "authors": [
+    "Current and former faculty of the Department of Neurobiology and Anatomy, McGovern Medical School (chapter authors named per chapter, e.g. John H. Byrne, Nachum Dafny)"
+  ],
+  "institution": "Department of Neurobiology and Anatomy, McGovern Medical School at UTHealth (The University of Texas Health Science Center at Houston)",
+  "kind": "book",
+  "canonicalUrl": "https://nba.uth.tmc.edu/neuroscience/",
+  "description": "Free online medical-school neuroscience textbook, described on its home page as 'an Open-Access Neuroscience Electronic Textbook'. Section 1 Cellular and Molecular Neurobiology (introduction plus 15 chapters: resting and action potentials, ionic mechanisms, propagation, neuromuscular and central synaptic transmission, transmitter release, synaptic plasticity, cell types, synapse formation, secretion, acetylcholine, biogenic amines, amino acid transmitters, neuropeptides and nitric oxide, genetics and neuronal disease); Section 2 Sensory Systems (15 chapters, opening with an overview of the nervous system and spinal cord anatomy); Section 3 Motor Systems (8 chapters: motor units, spinal reflexes and descending pathways, motor cortex, basal ganglia, cerebellum, disorders, ocular motor system and control); Section 4 Homeostasis and Higher Brain Functions (12 chapters: hypothalamus, autonomic control, feeding, hippocampus, amygdala, learning and memory, language, association and executive processing, ageing and Alzheimer's disease, blood-brain barrier, cell death).",
+  "rightsNotes": [
+    "Footer of the home page and table of contents (2026-10-31): 'Contents © 1997-Present - McGovern Medical School at UTHealth' (Department of Neurobiology and Anatomy). The home page calls the site 'an Open-Access Neuroscience Electronic Textbook' but states no licence and no terms for reproduction or reuse.",
+    "Reference-only under Corniversity's rules: the learner reads chapters on the site; lessons cite section and chapter numbers; text and figures are not imported, stored or passed to AI roles."
+  ],
+  "currentVersionId": "nsonline-web-2026",
+  "versions": [
+    {
+      "id": "nsonline-web-2026",
+      "label": "Online edition (home page 'Last Revision or Edit: 13 January 2026'; chapters carry their own revision dates; viewed 2026-10-31)",
+      "url": "https://nba.uth.tmc.edu/neuroscience/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the home page, the table of contents, Section 1 Chapters 1 and 7 and Section 2 Chapter 1, and an alternative /neuroscience/m/ rendering of Section 1 Chapter 1",
+      "componentsSeen": [
+        "home page: title, institution, 'Last Revision or Edit: 13 January 2026', copyright footer, link to toc.htm",
+        "table of contents: four sections with chapter titles and chapter authors",
+        "Section 1 Chapter 1 'Resting Potentials and Action Potentials' (John H. Byrne; 'Revised January 2026'): 1.1 Introduction to the Action Potential; 1.2 Features of Action Potentials; 1.3 Intracellular Recordings from Neurons; 1.4 Components of the Action Potentials; 1.5 Ionic Mechanisms of Resting Potentials; 1.6 Goldman-Hodgkin and Katz (GHK) Equation; 1.7 Membrane Potential Laboratory; Test Your Knowledge",
+        "Section 1 Chapter 7 'Synaptic Plasticity' (John H. Byrne; 'Revised Summer 2023'): 7.1 Synaptic Plasticity; 7.2 Heterosynaptic Forms of Synaptic Plasticity; 7.3 Long-Term Potentiation (LTP); 7.4 Summary",
+        "Section 2 Chapter 1 'Overview of the Nervous System' (Nachum Dafny; 'Reviewed and revised 07 Oct 2020'): 1.1 The Central Nervous System (CNS); 1.2 The Cerebral Hemispheres; 1.3 The Diencephalon; 1.4 The Brain Stem; 1.5 The Peripheral Nervous System (PNS); 1.6 Orientation to the Central Nervous System"
+      ],
+      "licence": "No licence stated; 'Contents © 1997-Present - McGovern Medical School at UTHealth' (free to read)",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Reference-only: no licence is stated.",
+        "Chapters are revised individually (dates seen from 2020 to 2026). Section 1 Chapter 1 is also served under /neuroscience/m/ with a different stamp ('Revised 17 August 2026'); locators use the paths linked from toc.htm.",
+        "No chapter is devoted to recording, imaging or perturbation methods (intracellular recording appears in Section 1 Chapter 1); methods and their limits need jonas-kording-2017 and further sources.",
+        "Only the chapters listed were opened; embedded lecture videos, animations and quizzes were not checked."
+      ],
+      "locators": [
+        {
+          "id": "nso-toc",
+          "label": "Table of contents (four sections, chapter authors)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nsonline-web-2026",
+            "url": "https://nba.uth.tmc.edu/neuroscience/toc.htm",
+            "heading": "Neuroscience Online: Table of Contents"
+          }
+        },
+        {
+          "id": "nso-s1-ch1",
+          "label": "Section 1 Chapter 1: Resting Potentials and Action Potentials",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nsonline-web-2026",
+            "url": "https://nba.uth.tmc.edu/neuroscience/s1/chapter01.html",
+            "heading": "Chapter 1: Resting Potentials and Action Potentials"
+          }
+        },
+        {
+          "id": "nso-s1-ch7",
+          "label": "Section 1 Chapter 7: Synaptic Plasticity (heterosynaptic plasticity, LTP)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nsonline-web-2026",
+            "url": "https://nba.uth.tmc.edu/neuroscience/s1/chapter07.html",
+            "heading": "Chapter 7: Synaptic Plasticity"
+          }
+        },
+        {
+          "id": "nso-s2-ch1",
+          "label": "Section 2 Chapter 1: Overview of the Nervous System (neuroanatomy orientation)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "nsonline-web-2026",
+            "url": "https://nba.uth.tmc.edu/neuroscience/s2/chapter01.html",
+            "heading": "Chapter 1: Overview of the Nervous System"
+          }
+        }
+      ]
+    }
+  ]
+}

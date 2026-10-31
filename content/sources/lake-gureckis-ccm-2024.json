@@ -1,0 +1,113 @@
+{
+  "id": "lake-gureckis-ccm-2024",
+  "title": "Computational cognitive modeling, Spring 2024 (NYU PSYCH-GA 3405.004 / DS-GA 1016.003)",
+  "authors": [
+    "Brenden Lake",
+    "Todd Gureckis"
+  ],
+  "institution": "New York University",
+  "kind": "course",
+  "canonicalUrl": "https://brendenlake.github.io/CCM-site/",
+  "description": "Archived site and GitHub repository of the Spring 2024 offering co-taught by Brenden Lake and Todd Gureckis (TAs Solim LeGris and Cindy Luo). Fourteen lectures with PDF slides: introduction; neural networks and deep learning (two parts); reinforcement learning (three parts); Bayesian modeling (two parts); model comparison and fitting; categorization; probabilistic graphical models; program induction and language-of-thought models; information sampling and active learning; computational cognitive neuroscience. Also a lab schedule, readings per topic and four homework sets as Jupyter notebooks (homework-NeuralNet, homework-RL, homework-Bayes, homework-Categorization). The repository lists pre-recorded lecture videos from Spring 2022 on Vimeo.",
+  "codeLicence": "MIT License, 'Copyright (c) 2024 Brenden Lake' (repository LICENSE, read 2026-10-31)",
+  "rightsNotes": [
+    "The repository LICENSE is the MIT License ('Copyright (c) 2024 Brenden Lake'). The course site states no separate content licence; its footer says only that it is hosted on GitHub Pages with the Dinky theme.",
+    "The MIT License is written for software and is the only permission statement covering the slide PDFs and notebooks. The lecture 9 slides carry no figure credits or rights notices; any third-party figures in the slides are not the authors' to license, and Corniversity does not reproduce slide figures.",
+    "Homework notebooks may be copied for private study; Corniversity exercises remain original and labelled."
+  ],
+  "currentVersionId": "lake-gureckis-ccm-spring-2024",
+  "versions": [
+    {
+      "id": "lake-gureckis-ccm-spring-2024",
+      "label": "Spring 2024 offering (archived; most recent repository commit 2 May 2024, 'update link')",
+      "url": "https://brendenlake.github.io/CCM-site/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the course site, the GitHub repository page, README.md, LICENSE, previous_videos.md, the homeworks/ folder page, API listings of homeworks/, homeworks/homework-NeuralNet and slides/, and the most recent commit record; extracted the text of slides/lecture-09-modelfit.pdf (80 pages) in memory",
+      "componentsSeen": [
+        "course site: heading 'Computational cognitive modeling - Spring 2024'; prerequisites (linear algebra, calculus and probability; prior Python; Python 3 and Jupyter); grading homeworks 65% and final project 35%; sections Pre-requisites, Grading, Final Project, Lecture schedule, Lab schedule, Readings, Course policies and FAQ, Preconfigured cloud environment",
+        "README.md: lecture schedule from 25 January to 2 May 2024 with slide paths and readings per topic (for example Wilson and Collins 2019 and Pitt and Myung 2002 for model fitting); lab schedule",
+        "slides/: 13 PDFs from lecture-01-introduction.pdf to lecture-14-computational_cognitive_neuroscience.pdf (lectures 7 and 8 share one deck)",
+        "homeworks/: homework-Bayes, homework-Categorization, homework-NeuralNet (notebooks Homework-NeuralNet-A to -E plus data, images and models folders), homework-RL",
+        "slides/lecture-09-modelfit.pdf: 80 pages; title slide 'Lecture 9: Computational Cognitive Modeling ... Model Fitting, Estimation, and Comparison'; slide numbers printed from 1 (physical index + 1); no rights notices in its text",
+        "previous_videos.md: 15 'Spring 2022 - pre-recorded lecture videos' with Vimeo links",
+        "repository: MIT LICENSE, 28 commits, the most recent on 2 May 2024"
+      ],
+      "licence": "MIT License (repository LICENSE); no separate content licence stated",
+      "licenceUrl": "https://raw.githubusercontent.com/brendenlake/CCM-site/main/LICENSE",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "brendenlake.github.io",
+        "github.com",
+        "raw.githubusercontent.com"
+      ],
+      "limitations": [
+        "Archived 2024 offering; the current course is the Fall 2026 site (record gureckis-ccm-2026), whose topics and assessment differ.",
+        "Only the lecture 9 slides were text-extracted; the other twelve decks (several over 30 MB) were seen in the listing only.",
+        "Homework notebooks were listed but not opened or run.",
+        "The Vimeo videos listed in previous_videos.md were not opened; they date from Spring 2022, not 2024.",
+        "Readings were taken from README.md; the reading PDFs were not opened."
+      ],
+      "locators": [
+        {
+          "id": "ccm24-site",
+          "label": "Course site (prerequisites, grading, final project, readings, policies)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lake-gureckis-ccm-spring-2024",
+            "url": "https://brendenlake.github.io/CCM-site/",
+            "heading": "Computational cognitive modeling - Spring 2024"
+          }
+        },
+        {
+          "id": "ccm24-schedule",
+          "label": "Lecture schedule with slide links and readings per topic",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lake-gureckis-ccm-spring-2024",
+            "url": "https://brendenlake.github.io/CCM-site/",
+            "heading": "Lecture schedule"
+          }
+        },
+        {
+          "id": "ccm24-homeworks",
+          "label": "Homework notebooks folder (homework-NeuralNet, homework-RL, homework-Bayes, homework-Categorization)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lake-gureckis-ccm-spring-2024",
+            "url": "https://github.com/brendenlake/CCM-site/tree/main/homeworks",
+            "heading": "homeworks"
+          }
+        },
+        {
+          "id": "ccm24-lec09",
+          "label": "Lecture 9 slides: Model Fitting, Estimation, and Comparison (title slide)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "lake-gureckis-ccm-spring-2024",
+            "url": "https://raw.githubusercontent.com/brendenlake/CCM-site/main/slides/lecture-09-modelfit.pdf",
+            "fileLabel": "slides/lecture-09-modelfit.pdf",
+            "physicalPageIndex": 0,
+            "printedPageLabel": "1",
+            "sectionLabel": "Lecture 9: Model Fitting, Estimation, and Comparison"
+          }
+        },
+        {
+          "id": "ccm24-videos",
+          "label": "List of Spring 2022 pre-recorded lecture videos (Vimeo links; videos not opened)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lake-gureckis-ccm-spring-2024",
+            "url": "https://raw.githubusercontent.com/brendenlake/CCM-site/main/previous_videos.md",
+            "heading": "Spring 2022 - pre-recorded lecture videos - computational cognitive modeling"
+          }
+        }
+      ]
+    }
+  ]
+}

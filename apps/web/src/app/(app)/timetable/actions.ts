@@ -1,9 +1,11 @@
 "use server";
+import { createDeadline, StudyError, withdrawDeadline } from "@corniversity/db/services/study";
 import {
   createCalendarToken,
   decideProposal,
   moveSession,
   proposeCatchUp,
+  proposeRollingExtension,
   revokeCalendarTokens,
   setSessionLock,
   setSessionStatus,
@@ -52,6 +54,10 @@ export async function decideProposalAction(formData: FormData): Promise<void> {
   await decideProposal(db(), session.user.id, String(formData.get("proposalId") ?? ""), decision);
   revalidatePath("/timetable");
   revalidatePath("/campus");
+  revalidatePath("/director");
+  revalidatePath("/studies");
+  const back = String(formData.get("returnTo") ?? "");
+  redirect(back === "/director" ? "/director" : "/timetable");
 }
 
 export async function createCalendarLinkAction(formData: FormData): Promise<void> {
@@ -65,4 +71,43 @@ export async function revokeCalendarLinksAction(): Promise<void> {
   const session = await requireSession("/timetable");
   await revokeCalendarTokens(db(), session.user.id);
   revalidatePath("/timetable");
+}
+
+export async function extendRollingAction(): Promise<void> {
+  const session = await requireSession("/timetable");
+  await proposeRollingExtension(db(), session.user.id);
+  revalidatePath("/timetable");
+  redirect("/timetable#proposals");
+}
+
+/** A deadline the learner sets; assessment and examination kinds only when switched on in Settings. */
+export async function createDeadlineAction(formData: FormData): Promise<void> {
+  const session = await requireSession("/timetable");
+  const kind = String(formData.get("kind") ?? "");
+  const title = String(formData.get("title") ?? "");
+  const due = String(formData.get("dueAt") ?? "");
+  const target = String(formData.get("target") ?? "");
+  if (kind !== "assessment" && kind !== "examination" && kind !== "milestone") redirect("/timetable?error=Unknown%20deadline%20kind.");
+  const [targetKind, enrolmentId, exerciseId] = target.split(":");
+  try {
+    await createDeadline(db(), session.user.id, {
+      kind,
+      title,
+      dueAt: new Date(due),
+      enrolmentId: targetKind === "enrolment" || targetKind === "exercise" ? enrolmentId : undefined,
+      exerciseId: targetKind === "exercise" ? exerciseId : undefined,
+    });
+  } catch (error) {
+    if (error instanceof StudyError) redirect(`/timetable?error=${encodeURIComponent(error.message)}#deadlines-heading`);
+    throw error;
+  }
+  revalidatePath("/timetable");
+  redirect("/timetable#deadlines-heading");
+}
+
+export async function withdrawDeadlineAction(formData: FormData): Promise<void> {
+  const session = await requireSession("/timetable");
+  await withdrawDeadline(db(), session.user.id, String(formData.get("deadlineId") ?? ""));
+  revalidatePath("/timetable");
+  redirect("/timetable#deadlines-heading");
 }

@@ -1,0 +1,134 @@
+{
+  "id": "dezfouli-2019-models-that-learn",
+  "title": "Models that learn how humans learn: The case of decision-making and its disorders",
+  "authors": [
+    "Amir Dezfouli",
+    "Kristi Griffiths",
+    "Fabio Ramos",
+    "Peter Dayan",
+    "Bernard W. Balleine"
+  ],
+  "institution": "PLoS Computational Biology",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1371/journal.pcbi.1006903",
+  "description": "A recurrent neural network trained to predict the next action on a two-armed bandit task (healthy controls n = 34, unipolar depression n = 34, bipolar n = 33) is compared with Q-learning, Q-learning with perseveration, generalised Q-learning and a logistic-regression baseline. Models are compared by leave-one-subject-out cross-validation within each group, using negative log-probability of the withheld subject's actions and percentage of actions predicted; off-policy simulations are used to interpret the network.",
+  "rightsNotes": [
+    "PLOS article page: 'Copyright: © 2019 Dezfouli et al. This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.' The article states no version; Crossref gives http://creativecommons.org/licenses/by/4.0/ for the version of record.",
+    "Data Availability on the article page: 'All data are available within the manuscript and Supporting Information files.' The Supporting Information files were not opened and their terms were not checked."
+  ],
+  "currentVersionId": "dezfouli-2019-plos-vor",
+  "versions": [
+    {
+      "id": "dezfouli-2019-plos-vor",
+      "label": "PLoS Computational Biology 15(6): e1006903, published 11 June 2019",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the PLOS article page (copyright line, data statement, anchors) and the PLOS article XML (metadata, permissions, abstract, structure and four sections), and the Crossref record",
+      "componentsSeen": [
+        "PLOS page: copyright line, Data Availability statement, anchors abstract0, sec005, sec009, sec017, sec021, sec022, sec023",
+        "Article XML: metadata (volume 15, issue 6, e1006903, editor Jakob H Macke), permissions, abstract, section structure; read in full: Baseline models (sec005), Action prediction (sec009), Task (sec017), Model selection (sec023)",
+        "PMCID PMC6588260 and PMID 31185008 from the NCBI ID converter (PMC copy not opened)"
+      ],
+      "licence": "Creative Commons Attribution License (version not stated in the article; Crossref gives CC BY 4.0)",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "journals.plos.org"
+      ],
+      "limitations": [
+        "Only the sections listed were read; the network specification, baseline equations, performance measures, off-policy simulations and diagnostic-label prediction were not read, and figures and Supporting Information were not opened.",
+        "Leave-one-out cross-validation runs within each diagnostic group (34, 34 and 33 folds); how each baseline was fitted to the training subjects was not checked.",
+        "The task differs from the Wilson and Collins example: self-paced 40-s blocks, food rewards, reward probability 0.25, 0.125 or 0.08 on the better action and 0.05 on the other."
+      ],
+      "locators": [
+        {
+          "id": "dez-abstract",
+          "label": "Abstract",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Abstract",
+            "fragment": "abstract0"
+          }
+        },
+        {
+          "id": "dez-baselines",
+          "label": "Baseline models: ql, qlp, gql and lin",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Baseline models",
+            "fragment": "sec005"
+          }
+        },
+        {
+          "id": "dez-action-prediction",
+          "label": "Action prediction: leave-one-subject-out cross-validation; negative log-probability and percent correct (Fig 5)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Action prediction",
+            "fragment": "sec009"
+          }
+        },
+        {
+          "id": "dez-task",
+          "label": "Task: two-button instrumental learning task, 12 blocks of 40 s, reward probabilities by block",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Task",
+            "fragment": "sec017"
+          }
+        },
+        {
+          "id": "dez-baseline-methods",
+          "label": "Baseline methods (equations)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Baseline methods",
+            "fragment": "sec021"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "dez-performance-measures",
+          "label": "Performance measures",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Performance measures",
+            "fragment": "sec022"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "dez-model-selection",
+          "label": "Model selection by leave-one-out cross-validation over subjects",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dezfouli-2019-plos-vor",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006903",
+            "heading": "Model selection",
+            "fragment": "sec023"
+          }
+        }
+      ]
+    }
+  ]
+}

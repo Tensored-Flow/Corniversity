@@ -1,0 +1,76 @@
+{
+  "id": "fischer-karl-2019",
+  "title": "A Primer to (Cross-Cultural) Multi-Group Invariance Testing Possibilities in R",
+  "authors": [
+    "Ronald Fischer",
+    "Johannes A. Karl"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.3389/fpsyg.2019.01507",
+  "description": "Methods article (Front. Psychol. 10:1507, published 18 July 2019) introducing the basic principle of measurement invariance testing, levels of invariance and differential item bias, and what to do when invariance is rejected, with R tutorials for multi-group confirmatory factor analysis (omnibus tests, individual restrictions and partial invariance, dMACS effect sizes), exploratory structural equation modelling, alignment, differential item functioning via ordinal/logistic regression, and EFA/PCA with Procrustes rotation, ending with an overall comparison of methods.",
+  "rightsNotes": [
+    "Article page, Copyright section (2026-10-31): '© 2019 Fischer and Karl. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.'",
+    "Supplementary materials and any external code repository were not opened."
+  ],
+  "currentVersionId": "fischer-karl-2019-frontiers",
+  "versions": [
+    {
+      "id": "fischer-karl-2019-frontiers",
+      "label": "Published article, Frontiers in Psychology 10:1507 (18 July 2019)",
+      "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.01507/full",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the full-text article page on frontiersin.org (headings, copyright section, citation line)",
+      "componentsSeen": [
+        "metadata: Frontiers in Psychology, Sec. Cultural Psychology, article type Methods, 18 July 2019, DOI; citation 'Front. Psychol. 10:1507'",
+        "sections: Introduction; The Basic Principle of Measurement Invariance Testing; Levels of Measurement Invariance and Differential Item Bias (What to Do if Invariance Is Rejected?); Confirmatory Factor Analysis (running a multi-group CFA in R; omnibus test; individual restrictions and partial invariance; dMACS); Exploratory Structural Equation Modeling; Invariance Testing Using Alignment; Differential Item Functioning Using Ordinal Regression (Item Response Theory); Exploratory Factor Analysis (EFA) and Principal Component Analysis (PCA) (Procrustes rotation with two groups); Overall Comparison of Methods; Summary",
+        "copyright section (quoted in rightsNotes)"
+      ],
+      "licence": "CC BY (version not stated in the copyright section)",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "www.frontiersin.org"
+      ],
+      "limitations": [
+        "Advanced: assumes factor analysis and R; it belongs after the reliability and validity material and basic regression.",
+        "Framed for cross-cultural group comparisons; whether it treats invariance across measurement occasions (longitudinal invariance) was not checked.",
+        "Frontiers' site-wide terms were not opened; import rests on the article-level CC BY statement."
+      ],
+      "locators": [
+        {
+          "id": "fk19-principle",
+          "label": "The Basic Principle of Measurement Invariance Testing",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "fischer-karl-2019-frontiers",
+            "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.01507/full",
+            "heading": "The Basic Principle of Measurement Invariance Testing"
+          }
+        },
+        {
+          "id": "fk19-levels",
+          "label": "Levels of Measurement Invariance and Differential Item Bias",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "fischer-karl-2019-frontiers",
+            "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.01507/full",
+            "heading": "Levels of Measurement Invariance and Differential Item Bias"
+          }
+        },
+        {
+          "id": "fk19-mgcfa",
+          "label": "Confirmatory Factor Analysis (multi-group CFA in R; partial invariance)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "fischer-karl-2019-frontiers",
+            "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.01507/full",
+            "heading": "Confirmatory Factor Analysis"
+          }
+        }
+      ]
+    }
+  ]
+}

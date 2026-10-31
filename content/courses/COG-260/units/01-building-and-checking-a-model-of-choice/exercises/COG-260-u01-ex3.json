@@ -1,0 +1,122 @@
+{
+  "id": "COG-260-u01-ex3",
+  "sequence": 3,
+  "title": "The modelling report",
+  "kind": "explanation",
+  "promptMarkdown": "Write a modelling report of 900 to 1,300 words on the loop you ran in the laboratory, under the headings below, then revise it after the tutor's feedback.\n\n1. **Question.** What the models are for, in one or two sentences.\n2. **Task and data.** The design of each case, and the statement that every participant is synthetic.\n3. **Models.** The three models, their parameters and their assumptions, in your own notation.\n4. **Predictions.** The predictions you saved before running the laboratory, quoted from your notebook, and which of them turned out wrong.\n5. **Fitting.** How each model is fitted, with the closed forms where they exist.\n6. **Parameter recovery and model recovery.** The results for both cases, with their seeds.\n7. **Held-out comparison.** For each split you report, its ten-point information contract first, then the numbers, the baseline and chance.\n8. **The ambiguous case.** Why it is inconclusive; what you would change first (the number of trials, the difference between the arms, or the participants' region) and what you predict that change would do to the confusion matrix. Then test the prediction with the laboratory's design controls, which change each of these separately, and report the result and the seed, whether or not it bears the prediction out.\n9. **Limits.** What the report does not show about real people, other tasks or later sessions, with one sentence on what Eckstein et al. (2022) found about learning parameters across tasks.\n\nLabel every result as synthetic; the report contains no real person's data.",
+  "conceptIds": [
+    "information-contract",
+    "method-model-recovery",
+    "method-parameter-recovery",
+    "method-scientific-argument"
+  ],
+  "hintLadder": [
+    "Write the contract for each split before you look at its numbers again; then check every number you quote against the contract it belongs to.",
+    "For section 8, make the prediction specific: which cell of the confusion matrix should change, and in which direction?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "loop-complete",
+        "criterion": "Every stage is present in order, predictions are quoted from the notebook before their results, and every result has its seed.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete and ordered."
+          },
+          {
+            "label": "partially met",
+            "description": "A stage missing or predictions written after the fact."
+          },
+          {
+            "label": "not met",
+            "description": "No loop."
+          }
+        ]
+      },
+      {
+        "id": "contracts",
+        "criterion": "Each held-out number is preceded by a complete ten-point contract; the random split, if reported, is presented only as a leak.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete contracts throughout."
+          },
+          {
+            "label": "partially met",
+            "description": "Points missing from a contract."
+          },
+          {
+            "label": "not met",
+            "description": "Numbers without contracts, or the random split used as evidence."
+          }
+        ]
+      },
+      {
+        "id": "ambiguity",
+        "criterion": "The ambiguous case is reported as inconclusive with its reason, a design change is proposed with a prediction made before any test, and a tested change is reported with its seed.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Honest, explained, predicted."
+          },
+          {
+            "label": "partially met",
+            "description": "Inconclusive stated without reason or prediction."
+          },
+          {
+            "label": "not met",
+            "description": "Over-claimed."
+          }
+        ]
+      },
+      {
+        "id": "limits",
+        "criterion": "No claim goes beyond the contracts; every result is labelled synthetic; the sentence on Eckstein et al. (2022) is accurate.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Limits stated accurately."
+          },
+          {
+            "label": "partially met",
+            "description": "Limits thin."
+          },
+          {
+            "label": "not met",
+            "description": "Claims about real people."
+          }
+        ]
+      },
+      {
+        "id": "revision",
+        "criterion": "The revision changes the text in response to each feedback point.",
+        "weight": 0.1,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Every point answered in the text."
+          },
+          {
+            "label": "partially met",
+            "description": "Some points answered."
+          },
+          {
+            "label": "not met",
+            "description": "No revision."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 90
+}

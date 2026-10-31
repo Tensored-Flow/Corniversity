@@ -1,0 +1,80 @@
+{
+  "id": "COG-260-u07",
+  "courseId": "COG-260",
+  "sequence": 7,
+  "title": "Small models, ablations and what generalisation means",
+  "summary": "Fourteen models from 135M to 14B parameters trained on Centaur's splits; in-distribution performance that barely depends on scale and out-of-distribution performance that does; masking stimuli and feedback as a diagnostic ablation.",
+  "objectives": [
+    {
+      "id": "u07-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-predictive-checks"
+  ],
+  "teachesConceptIds": [
+    "method-scientific-argument",
+    "method-longitudinal-transfer-evaluation"
+  ],
+  "preparation": [
+    {
+      "description": "Read the abstract of Oh and Gobet (2026).",
+      "locatorId": "ohgobet-abs",
+      "estimatedMinutes": 5
+    },
+    {
+      "description": "Read the methods: data, models and training.",
+      "locatorId": "ohgobet-methods",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the out-of-distribution results and the prompt-decomposition diagnostics.",
+      "locatorId": "ohgobet-ood",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the stated limitations.",
+      "locatorId": "ohgobet-limits",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u07-a1",
+      "type": "reading",
+      "title": "Reading: Small models, ablations and what generalisation means",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 50,
+      "sourceLocatorIds": [
+        "ohgobet-abs",
+        "ohgobet-methods",
+        "ohgobet-ood",
+        "ohgobet-limits"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Oh and Gobet (2026) is a record verified on 2026-10-31 from the arXiv version 3; its conference publication is stated by the paper and was not checked against the proceedings."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

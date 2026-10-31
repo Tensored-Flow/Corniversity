@@ -58,12 +58,39 @@ to evidence events with dates. Self-reported confidence is separate. Time spent,
 completed, assistance received and understanding demonstrated are separate facts. No mastery
 percentages.
 
+## Programmes
+
+A programme is a route through several courses, organised in blocks. A block states its central
+question, entry level, coverage, bridges, a source shelf (verified sources, or leads labelled as
+unverified), the course units that serve it, activities, the evidence of understanding and its
+gaps. Its readiness is derived from the mapped units (prepared, partly prepared, sources only,
+proposed) and never authored. A unit that serves several blocks is studied once and assessed
+once. Following a programme enrols in nothing; the director may draft a route (focus blocks and
+suggested courses) that the learner confirms or rejects. A programme also lists its modelling
+methods, with introduced, practised and demonstrated shown separately, its electives and a
+bounded paper seminar. The Mind, Brain and AI programme is described in
+[MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).
+
 ## Workload and timetable
 
-Term template: ten teaching weeks + reading week + synthesis week (editable). Units are content,
-not calendar weeks. Workload estimates are ranges including reading, problems, practice and
-projects. Default first term: one demanding core course plus a lighter seminar; heavier loads
-require an explicit workload preview.
+Defaults for a new learner: rolling, self-paced study with no completion date; one main course
+and at most one lighter exploratory course or reading seminar; weekly study appointments on;
+hard deadlines and examinations off. Each is a choice in Settings, and an explicit choice always
+wins over a default. Term mode (ten teaching weeks, a reading week and a synthesis week,
+editable) is optional and switches on neither examinations nor deadlines. A heavier load needs
+the workload preview first, and every enrolment is an explicit act. Three things stay separate:
+the content sequence (which unit comes next), study appointments (sessions on the timetable) and
+academic deadlines (binding only when the learner has switched them on). A missed appointment is
+never a penalty. Units are content, not calendar weeks; workload estimates are ranges including
+reading, problems, practice and projects.
+
+## Predictive claims
+
+Every predictive exercise and laboratory result states its information contract before any
+number: observed; prediction target; history in training; history at inference; person; task;
+later time periods; unavailable in real use; simplest baseline; claims not tested. A laboratory
+that makes predictions keeps its results hidden until the learner has saved a prediction in the
+notebook; the prediction is a note, never evidence of understanding.
 
 ## Honesty rules
 

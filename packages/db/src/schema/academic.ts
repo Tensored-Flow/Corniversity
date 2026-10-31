@@ -2,11 +2,16 @@ import type {
   Activity,
   AssessmentSpec,
   Blocker,
+  CatalogueNotes,
   DeterministicCheck,
   Misconception,
+  ModellingMethod,
   Outcome,
+  PaperSeminar,
   Preparation,
   PrerequisiteRule as PrerequisiteRuleSpec,
+  ProgrammeBlock,
+  ProgrammeElective,
   Provenance,
   Rubric,
   UnitCheck,
@@ -30,6 +35,8 @@ export const department = pgTable("department", {
 
 export const programme = pgTable("programme", {
   id: text("id").primaryKey(),
+  /** Stable external reference (for example MIND-BRAIN-AI) for the internal id. */
+  referenceId: text("reference_id").unique(),
   title: text("title").notNull(),
   description: text("description").notNull(),
   departmentIds: jsonb("department_ids").$type<string[]>().notNull().default([]),
@@ -42,6 +49,10 @@ export const programme = pgTable("programme", {
     >()
     .notNull()
     .default([]),
+  blocks: jsonb("blocks").$type<ProgrammeBlock[]>().notNull().default([]),
+  electives: jsonb("electives").$type<ProgrammeElective[]>().notNull().default([]),
+  methods: jsonb("methods").$type<ModellingMethod[]>().notNull().default([]),
+  paperSeminar: jsonb("paper_seminar").$type<PaperSeminar>(),
 });
 
 export const concept = pgTable(
@@ -108,6 +119,7 @@ export const courseVersion = pgTable(
     convenorPersonaId: text("convenor_persona_id"),
     tutorPersonaId: text("tutor_persona_id"),
     externalSyllabusNote: text("external_syllabus_note"),
+    catalogueNotes: jsonb("catalogue_notes").$type<CatalogueNotes>().notNull().default({}),
     isCurrent: boolean("is_current").notNull().default(true),
     publishedAt: tz("published_at").notNull().defaultNow(),
   },

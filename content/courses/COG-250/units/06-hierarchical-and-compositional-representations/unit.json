@@ -1,0 +1,51 @@
+{
+  "id": "COG-250-u06",
+  "courseId": "COG-250",
+  "sequence": 6,
+  "title": "Hierarchical and compositional representations",
+  "summary": "Decomposing tasks into subgoals and reusable parts; compositional hypotheses and how they generalise.",
+  "objectives": [
+    {
+      "id": "u06-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "planning-model-based-vs-cached"
+  ],
+  "teachesConceptIds": [],
+  "preparation": [],
+  "activities": [
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Reading: Hierarchical and compositional representations",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 30,
+      "sourceLocatorIds": [],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "needs_review",
+      "evidence": "No verified source yet; the outline names the coverage only, and sources are to be requested through the library."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

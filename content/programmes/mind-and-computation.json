@@ -1,11 +1,1578 @@
 {
   "id": "mind-and-computation",
-  "title": "Mind & Computation",
-  "description": "Computational neuroscience and computational cognitive science with the statistics and experimental methods behind them, leading towards NeuroAI.",
-  "departmentIds": ["neuroscience", "cognitive-science", "computer-science-ai"],
+  "referenceId": "MIND-BRAIN-AI",
+  "title": "Mind, Brain and AI",
+  "description": "An interdisciplinary route through cognitive science, neuroscience and AI in twelve blocks, from what counts as an explanation of a mind to building, comparing and defending models of human behaviour and brains, with eight electives and explicit modelling methods. Following it never enrols you in its courses; each block is served by chosen units of the canonical courses, and a shared unit is studied and assessed once.",
+  "departmentIds": [
+    "cognitive-science",
+    "neuroscience",
+    "computer-science-ai"
+  ],
   "stages": [
-    { "title": "First term", "courses": [{ "courseId": "NEU-220", "role": "core", "note": "Neuromatch as the spine, repaced for evening study rather than a three-week intensive." }, { "courseId": "COG-201", "role": "seminar" }] },
-    { "title": "Second term", "courses": [{ "courseId": "COG-210", "role": "core" }, { "courseId": "CSA-220", "role": "seminar" }] },
-    { "title": "Later", "courses": [{ "courseId": "NEU-201", "role": "elective" }, { "courseId": "NEU-210", "role": "elective" }, { "courseId": "COG-230", "role": "core" }, { "courseId": "COG-240", "role": "elective" }, { "courseId": "NEU-230", "role": "core" }] }
-  ]
+    {
+      "title": "Start with",
+      "courses": [
+        {
+          "courseId": "NEU-220",
+          "role": "core",
+          "note": "Neuromatch as the spine, repaced for evening study; serves MBI-04 and MBI-08 and the model types of MBI-01."
+        },
+        {
+          "courseId": "COG-201",
+          "role": "seminar",
+          "note": "Computational cognitive science read alongside; serves MBI-01 and MBI-04."
+        }
+      ]
+    },
+    {
+      "title": "Then",
+      "courses": [
+        {
+          "courseId": "COG-260",
+          "role": "core",
+          "note": "Models of human behaviour, beginning with the complete modelling loop of unit 1."
+        },
+        {
+          "courseId": "COG-210",
+          "role": "core"
+        },
+        {
+          "courseId": "CSA-220",
+          "role": "seminar"
+        }
+      ]
+    },
+    {
+      "title": "Later",
+      "courses": [
+        {
+          "courseId": "NEU-201",
+          "role": "elective"
+        },
+        {
+          "courseId": "NEU-210",
+          "role": "elective"
+        },
+        {
+          "courseId": "COG-230",
+          "role": "core"
+        },
+        {
+          "courseId": "COG-250",
+          "role": "core"
+        },
+        {
+          "courseId": "COG-240",
+          "role": "elective"
+        },
+        {
+          "courseId": "NEU-230",
+          "role": "core"
+        },
+        {
+          "courseId": "COG-290",
+          "role": "core",
+          "note": "The research studio, when a question is ready."
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": "MBI-01",
+      "sequence": 1,
+      "title": "Explaining Minds and Brains",
+      "centralQuestion": "What counts as an explanation of a mind or brain?",
+      "entryLevel": "Open entry; careful reading and willingness to argue about what a model claims.",
+      "requiredCoverage": [
+        "Computational, algorithmic and implementation-level explanations",
+        "Normative, descriptive and mechanistic models",
+        "Representation and computation",
+        "The scope and limitations of an explanatory model",
+        "Prediction versus explanation",
+        "Explanation versus causal evidence",
+        "Competing accounts of the same observed behaviour",
+        "Experiments or observations that could discriminate between accounts",
+        "How a model can be useful without explaining everything"
+      ],
+      "prerequisiteReasoning": "None. It is the programme's foundation and is kept short so the other blocks can start alongside it; every later block returns to its distinctions.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-02",
+        "MBI-03",
+        "MBI-04",
+        "MBI-08"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-100",
+          "unitIds": [],
+          "contribution": "Canonical course; its units are chosen after its introduction and examples are verified."
+        },
+        {
+          "courseId": "COG-201",
+          "unitIds": [
+            "COG-201-u01"
+          ],
+          "contribution": "Prepared now: computational-level analysis and the distinction between a model and the evidence for it."
+        },
+        {
+          "courseId": "NEU-220",
+          "unitIds": [
+            "NEU-220-u01"
+          ],
+          "contribution": "Prepared now: descriptive, mechanistic and normative ('what, how and why') models of neurons."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "blokpoel-vanrooij-theoretical-modeling",
+          "role": "spine",
+          "note": "Chapter 2: why model, capacities versus effects, Marr's levels kept apart from levels of organisation, and why models that predict need not explain."
+        },
+        {
+          "sourceId": "neuromatch-compneuro",
+          "role": "supplement",
+          "note": "W1D1 'what', 'how' and 'why' models, hands-on; W3D5 on causal versus correlational evidence."
+        },
+        {
+          "sourceId": "jonas-kording-2017",
+          "role": "supplement",
+          "note": "A worked warning: standard neuroscience analyses fail to explain a microprocessor that is fully understood."
+        },
+        {
+          "sourceId": "mit-cocosci-2004",
+          "role": "supplement",
+          "note": "Lectures 1 and 2: Marr's levels and the problem of induction, already used by COG-201 unit 1."
+        },
+        {
+          "sourceId": "gershman-cfcn",
+          "role": "supplement",
+          "note": "Chapter 1, Reverse engineering the brain: the computational, algorithmic and implementation levels, with decision theory and resource rationality (a draft whose chapter files change in place)."
+        },
+        {
+          "sourceId": "gureckis-ccm-2026",
+          "role": "supplement",
+          "note": "Course notes 'Minds and Machines': Marr's levels and what a cognitive model looks like (draft notes of a course in progress)."
+        },
+        {
+          "sourceId": "mit-human-brain-2019",
+          "role": "optional",
+          "note": "MIT 9.13 (Kanwisher, 2019): the experimental-design assignment on the brain basis of intuitive physics, for how a question about the mind becomes an experiment."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Two explanations of one result",
+          "description": "Given two explanations of a behavioural result, state each one's assumptions, the predictions on which they agree, and a condition on which they differ.",
+          "methodIds": [
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "A concise comparison that separates what is observed, what each model assumes, what it predicts, and what evidence would challenge it.",
+      "tutorGuidance": "Ask which explanatory question the learner is answering. An implementation detail does not answer a question about purpose, and predictive fit does not prove a mechanism.",
+      "gaps": [
+        "COG-100 has no prepared unit; prepared units in COG-201 and NEU-220 cover part of the ground.",
+        "What makes something a representation is not treated head-on (deliberately: no philosophy reading list)."
+      ]
+    },
+    {
+      "id": "MBI-02",
+      "sequence": 2,
+      "title": "Foundations of Neuroscience",
+      "centralQuestion": "What biological components and experimental methods are needed to reason about brains?",
+      "entryLevel": "Open entry. Mathematical maturity is not biological knowledge: the vocabulary and experimental context are taught properly, at a quantitative pace.",
+      "requiredCoverage": [
+        "Neurons and their functional components",
+        "Electrical and chemical signalling",
+        "Synapses",
+        "Plasticity",
+        "Basic neuroanatomy and functional organisation",
+        "Cellular, circuit, systems and behavioural descriptions",
+        "What recordings measure",
+        "What imaging measures",
+        "Perturbation and lesion evidence",
+        "Limitations and interpretation of different experimental methods"
+      ],
+      "prerequisiteReasoning": "None for NEU-101; NEU-201 adds biophysics and uses differential equations. It can run in parallel with MBI-01 and MBI-08, and should precede strong biological claims in MBI-11.",
+      "bridges": [
+        {
+          "title": "Quantitative neuron models",
+          "courseId": "NEU-220",
+          "unitIds": [
+            "NEU-220-u07"
+          ],
+          "note": "Integrate-and-fire and synapse models from computational neuroscience (in preparation)."
+        }
+      ],
+      "canStudyAlongside": [
+        "MBI-01",
+        "MBI-03",
+        "MBI-08"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "NEU-101",
+          "unitIds": [],
+          "contribution": "Canonical course for components, anatomy and methods."
+        },
+        {
+          "courseId": "NEU-201",
+          "unitIds": [],
+          "contribution": "Canonical course for cellular and biophysical signalling."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "neuroscience-online",
+          "role": "spine",
+          "note": "Medical-school depth on signalling, synapses, plasticity and organisation. Free to read, no licence: reference-only, so tutors cannot quote it."
+        },
+        {
+          "sourceId": "mit-neural-computation-2018",
+          "role": "supplement",
+          "note": "MIT 9.40: the same biology for the mathematically confident (RC circuit, Nernst, Hodgkin-Huxley, dendrites, synapses), with videos."
+        },
+        {
+          "sourceId": "jonas-kording-2017",
+          "role": "supplement",
+          "note": "What standard analyses can and cannot show."
+        },
+        {
+          "sourceId": "neuromatch-compneuro",
+          "role": "supplement",
+          "note": "W2D4 biological neuron models; W3D5 the logic of perturbation."
+        },
+        {
+          "sourceId": "mit-human-brain-2019",
+          "role": "supplement",
+          "note": "MIT 9.13 The Human Brain (Kanwisher, 2019): 17 recorded lectures with transcripts, weekly primary readings and reading responses on the functional organisation of the human brain; eight lectures have no recording or notes."
+        }
+      ],
+      "activities": [
+        {
+          "title": "One phenomenon at two scales",
+          "description": "Explain a neural phenomenon at two scales, connect each explanation to a type of observation, and identify what remains unresolved.",
+          "methodIds": [
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner distinguishes the measured signal from the biological claim made about it and names a limitation of the evidence.",
+      "tutorGuidance": "Do not let the course become a list of regions or an anatomy quiz; ask what a recording, image or lesion actually measured.",
+      "gaps": [
+        "Recording, imaging and perturbation methods and their limits have no dedicated verified source; MIT 9.13 was verified from its index pages and one lecture's slides, and no lecture was watched.",
+        "The spine is reference-only, and neither canonical course has a prepared unit."
+      ]
+    },
+    {
+      "id": "MBI-03",
+      "sequence": 3,
+      "title": "Cognitive Psychology",
+      "centralQuestion": "How are perception, attention, memory, concepts and reasoning studied?",
+      "entryLevel": "Open entry.",
+      "requiredCoverage": [
+        "Perception",
+        "Attention",
+        "Working memory",
+        "Long-term memory",
+        "Concepts and categorisation",
+        "Language",
+        "Reasoning",
+        "Psychological tasks and experimental comparisons",
+        "Alternative explanations for task performance",
+        "Limits of inferring internal processes from observed outcomes"
+      ],
+      "prerequisiteReasoning": "None. It supplies the tasks that MBI-04, MBI-05 and MBI-11 model and measure, so it is best started early, but it does not have to finish first.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-01",
+        "MBI-02",
+        "MBI-05"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-101",
+          "unitIds": [],
+          "contribution": "Canonical course."
+        },
+        {
+          "courseId": "COG-201",
+          "unitIds": [
+            "COG-201-u04"
+          ],
+          "contribution": "Rational models of categorisation connect the concepts topic to computational modelling (in preparation)."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "noba-psychology",
+          "role": "spine",
+          "note": "Researcher-written modules on attention, memory, categories and concepts, language, judgement and perception."
+        },
+        {
+          "sourceId": "mit-cocosci-2004",
+          "role": "supplement",
+          "note": "Lectures 12 to 16: prototype, exemplar and Bayesian accounts of categorisation, and the number game, as tasks with competing explanations."
+        },
+        {
+          "sourceId": "probmods-v2",
+          "role": "supplement",
+          "note": "Computational accounts of concepts, causal reasoning and social cognition (reference-only)."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Separating two accounts",
+          "description": "Design a comparison that separates two accounts of performance on a cognitive task.",
+          "methodIds": [
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner identifies the manipulation, the outcome, the competing predictions, plausible confounds and the limits of interpretation.",
+      "tutorGuidance": "Connect each task to later computational modelling without implying that every psychological question already has one accepted model.",
+      "gaps": [
+        "No working-memory source yet (MIT 9.00SC and 9.65 were opened and are the next candidates); reasoning is thin; COG-101 has no prepared unit."
+      ]
+    },
+    {
+      "id": "MBI-04",
+      "sequence": 4,
+      "title": "Statistical Learning and Computational Inference",
+      "centralQuestion": "How do observations constrain a computational model?",
+      "entryLevel": "Probability at first-course level; the mathematics department's analysis and probability routes are available but not required.",
+      "requiredCoverage": [
+        "Probability and conditional reasoning",
+        "Likelihood",
+        "Estimation",
+        "Uncertainty",
+        "Bayesian inference",
+        "Hierarchical modelling",
+        "Simulation",
+        "Optimisation",
+        "Computational inference",
+        "Training and validation",
+        "Held-out prediction",
+        "Model comparison",
+        "Parameter identifiability",
+        "Parameter recovery",
+        "Model recovery"
+      ],
+      "prerequisiteReasoning": "Probability is the only hard requirement. The block reuses prepared units from NEU-220, COG-201 and CSA-210 instead of repeating them under three headings, and its complete modelling loop is COG-260 unit 1.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-05",
+        "MBI-06",
+        "MBI-08"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "CSA-201",
+          "unitIds": [],
+          "contribution": "Canonical course for machine-learning foundations."
+        },
+        {
+          "courseId": "CSA-220",
+          "unitIds": [],
+          "contribution": "Canonical course for probabilistic modelling and Bayesian inference."
+        },
+        {
+          "courseId": "COG-210",
+          "unitIds": [],
+          "contribution": "Canonical course; shares its inference units with MBI-05."
+        },
+        {
+          "courseId": "NEU-220",
+          "unitIds": [
+            "NEU-220-u02"
+          ],
+          "contribution": "Prepared now: least squares, likelihood, bootstrap uncertainty and model selection."
+        },
+        {
+          "courseId": "COG-201",
+          "unitIds": [
+            "COG-201-u02"
+          ],
+          "contribution": "Prepared now: Bayesian inference over an inspectable hypothesis space."
+        },
+        {
+          "courseId": "CSA-210",
+          "unitIds": [
+            "CSA-210-u01"
+          ],
+          "contribution": "Prepared now: training, validation and held-out evaluation."
+        },
+        {
+          "courseId": "COG-260",
+          "unitIds": [
+            "COG-260-u01"
+          ],
+          "contribution": "Unit 1: the complete simulate, fit, recover and evaluate loop."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "bayes-rules",
+          "role": "spine",
+          "note": "From Bayes' rule to MCMC, posterior predictive checks, cross-validation and hierarchical models (R and Stan)."
+        },
+        {
+          "sourceId": "neuromatch-compneuro",
+          "role": "supplement",
+          "note": "W1D2: least squares, likelihood, bootstrap, bias-variance, cross-validation in Python."
+        },
+        {
+          "sourceId": "probmods-v2",
+          "role": "supplement",
+          "note": "Bayesian data analysis of cognitive models and the Bayesian Occam's razor."
+        },
+        {
+          "sourceId": "wilson-collins-2019-ten-rules",
+          "role": "supplement",
+          "note": "The modelling loop: simulate, fit, check parameter and model recovery, validate; the two-armed bandit example that COG-260 unit 1 and its laboratory follow (rules numbered in heading order)."
+        },
+        {
+          "sourceId": "lake-gureckis-ccm-2024",
+          "role": "optional",
+          "note": "Lecture 9 slides: model fitting, estimation and comparison (Spring 2024 archive; MIT-licensed repository)."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Inspectable generative model",
+          "description": "Specify and simulate a modest model, fit it, investigate recovery on synthetic data, and evaluate prediction on appropriate held-out data.",
+          "methodIds": [
+            "generative-simulation",
+            "parameter-estimation",
+            "parameter-recovery",
+            "model-recovery",
+            "predictive-checks"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "A short report explaining the objective or likelihood, the fitted parameters and their uncertainty, the recovery results, the evaluation split and a limitation.",
+      "tutorGuidance": "Not 'fit a regression and display accuracy': ask how the assumptions, the simulated observations, the fitted parameters and the predictions relate.",
+      "gaps": [
+        "CSA-201, CSA-220 and COG-210 have no prepared unit; the block is taught today through mapped prepared units, including COG-260 unit 1.",
+        "Identifiability is taught through parameter and model recovery (Wilson and Collins); formal identifiability analysis has no source yet."
+      ]
+    },
+    {
+      "id": "MBI-05",
+      "sequence": 5,
+      "title": "Measurement and Experimental Design",
+      "centralQuestion": "What does a measurement or experiment actually justify?",
+      "entryLevel": "Basic statistics; MBI-04's inference units help.",
+      "requiredCoverage": [
+        "Construct definition",
+        "Operationalisation",
+        "Reliability",
+        "Validity",
+        "Within-person effects",
+        "Between-person differences",
+        "Test-retest evidence",
+        "Practice effects",
+        "Longitudinal change",
+        "Experimental design",
+        "Randomisation",
+        "Confounding",
+        "Statistical uncertainty",
+        "Measurement invariance",
+        "The reliability paradox (reading to verify)"
+      ],
+      "prerequisiteReasoning": "Shares COG-210 with MBI-04; can begin once basic estimation and uncertainty are familiar. Applications to games or talent discovery are optional examples; the block works as measurement science on its own.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-03",
+        "MBI-04"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-210",
+          "unitIds": [],
+          "contribution": "Canonical course for design, randomisation and uncertainty."
+        },
+        {
+          "courseId": "COG-220",
+          "unitIds": [],
+          "contribution": "Canonical course for reliability, validity and invariance."
+        },
+        {
+          "courseId": "CSA-210",
+          "unitIds": [
+            "CSA-210-u01"
+          ],
+          "contribution": "Prepared now: what a held-out evaluation does and does not justify."
+        },
+        {
+          "courseId": "COG-260",
+          "unitIds": [
+            "COG-260-u03"
+          ],
+          "contribution": "Unit 3 (outlined): what a fitted parameter measures, reliability and generalisation."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "jhangiani-research-methods",
+          "role": "spine",
+          "note": "Operational definitions, reliability (test-retest, internal consistency, inter-rater), validity, random assignment, practice effects and counterbalancing."
+        },
+        {
+          "sourceId": "flake-fried-2020",
+          "role": "supplement",
+          "note": "Constructs and operationalisation, critically, with questions for transparent reporting (reference-only)."
+        },
+        {
+          "sourceId": "fischer-karl-2019",
+          "role": "supplement",
+          "note": "Measurement invariance by multi-group factor analysis, alignment and differential item functioning (advanced)."
+        },
+        {
+          "sourceId": "hedge-2018-reliability-paradox",
+          "role": "supplement",
+          "note": "Reliabilities of seven classic tasks ranged from 0 to .82: the intraclass correlation, and why low variance between people helps experiments but harms individual differences."
+        },
+        {
+          "sourceId": "eckstein-2022-parameter-context",
+          "role": "supplement",
+          "note": "Whether learning-model parameters generalise across three tasks done by the same 291 participants: only partly, and only between similar tasks."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Task effect or individual difference",
+          "description": "Compare the evidence needed for an experimental task effect with the evidence needed to rank individuals or to track change within a person.",
+          "methodIds": [
+            "measurement-reliability-validity",
+            "longitudinal-transfer-evaluation"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "A proposed study with a clear construct, operationalisation, sampling or repeated-measures plan, analysis and limitations.",
+      "tutorGuidance": "Keep apart: improving at a particular task, a change in a measured score, a change in the construct of interest, and a claim that the measure is useful in an application.",
+      "gaps": [
+        "Longitudinal change (change scores, growth models, regression to the mean) has no source yet; invariance is covered only at an advanced level.",
+        "Neither canonical course has a prepared unit, and the measurement method has no prepared unit."
+      ]
+    },
+    {
+      "id": "MBI-06",
+      "sequence": 6,
+      "title": "Learning and Decision-Making",
+      "centralQuestion": "How do people learn from experience and choose under uncertainty?",
+      "entryLevel": "Probability and the idea of a value; MBI-04 helps with fitting.",
+      "requiredCoverage": [
+        "Reinforcement learning",
+        "Prediction errors",
+        "Exploration and exploitation",
+        "Model-free and model-based learning",
+        "Bayesian learning",
+        "Generalisation",
+        "Bounded rationality",
+        "Choice models",
+        "Learning dynamics",
+        "Comparison between alternative learning accounts"
+      ],
+      "prerequisiteReasoning": "Shares reinforcement-learning foundations with MBI-10 through CSA-230, taught once. The algorithm's definition and the empirical claim that a person uses it are kept apart throughout.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-04",
+        "MBI-09",
+        "MBI-10"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-230",
+          "unitIds": [],
+          "contribution": "Canonical course for learning and choice models."
+        },
+        {
+          "courseId": "CSA-230",
+          "unitIds": [],
+          "contribution": "Canonical course for reinforcement learning, shared with MBI-10."
+        },
+        {
+          "courseId": "COG-260",
+          "unitIds": [
+            "COG-260-u01"
+          ],
+          "contribution": "Unit 1 compares a learning model with a heuristic and a baseline on choice data."
+        },
+        {
+          "courseId": "COG-250",
+          "unitIds": [
+            "COG-250-u01",
+            "COG-250-u02",
+            "COG-250-u05"
+          ],
+          "contribution": "Unit 1 compares model-based and cached strategies; units 2 and 5 (outlined) treat the two-step task and Dyna."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "sutton-barto-rl-2e",
+          "role": "spine",
+          "note": "Chapter 2 on bandits and soft-max action preferences, sections 6.4 to 6.6 on temporal-difference control including Q-learning, chapter 8 on planning and learning, and section 14.6 on habitual and goal-directed behaviour. CC BY-NC-ND: imported for private study only and never shared in adapted form."
+        },
+        {
+          "sourceId": "wilson-collins-2019-ten-rules",
+          "role": "supplement",
+          "note": "Comparing learning models on choice data, as COG-260 unit 1 does."
+        },
+        {
+          "sourceId": "gershman-cfcn",
+          "role": "supplement",
+          "note": "Chapter 10, Learning to predict: classical conditioning, the Rescorla-Wagner model, temporal-difference learning and the dopamine prediction-error account (draft)."
+        },
+        {
+          "sourceId": "dezfouli-2019-models-that-learn",
+          "role": "supplement",
+          "note": "Recurrent networks fitted to choices against Q-learning baselines, compared by leave-one-subject-out prediction."
+        },
+        {
+          "sourceId": "neuromatch-compneuro",
+          "role": "supplement",
+          "note": "W3D4 reinforcement learning; W3D2 Bayesian decisions."
+        },
+        {
+          "sourceId": "probmods-v2",
+          "role": "supplement",
+          "note": "Rational process models, for bounded rationality."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Two learning accounts",
+          "description": "Compare at least two learning or choice models on labelled synthetic data or permitted public data.",
+          "methodIds": [
+            "model-recovery",
+            "predictive-checks",
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner explains why the models make different predictions, where the data distinguish them, and where they do not.",
+      "tutorGuidance": "A model-free algorithm fitting choices well is not evidence that a person runs that algorithm.",
+      "gaps": [
+        "No verified source yet for choice models as statistical models (logit, random utility, sequential sampling).",
+        "COG-230 and CSA-230 have no prepared unit; COG-260 unit 1 and COG-250 unit 1 carry the block's choice-learning and planning material today."
+      ]
+    },
+    {
+      "id": "MBI-07",
+      "sequence": 7,
+      "title": "Neural Networks and Representations",
+      "centralQuestion": "How do networks learn representations, and how should those representations be investigated?",
+      "entryLevel": "Linear algebra, calculus and Python; no expensive GPU is needed to start.",
+      "requiredCoverage": [
+        "Network components and computation",
+        "Objectives and losses",
+        "Gradients and optimisation",
+        "Training dynamics",
+        "Validation and overfitting",
+        "Generalisation",
+        "Representation learning",
+        "Inductive bias",
+        "Attention",
+        "Transformer foundations",
+        "Methods for comparing representations",
+        "Limits of claims about biological similarity"
+      ],
+      "prerequisiteReasoning": "CSA-210 is a launch course and the block's canonical course; units 1 and 2 are prepared. It precedes MBI-10 and the representation side of MBI-11.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-04",
+        "MBI-08"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "CSA-210",
+          "unitIds": [
+            "CSA-210-u01",
+            "CSA-210-u02",
+            "CSA-210-u03",
+            "CSA-210-u06",
+            "CSA-210-u09",
+            "CSA-210-u10"
+          ],
+          "contribution": "Evidence discipline, gradients, networks, generalisation, attention and representation learning."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "neuromatch-deep-learning",
+          "role": "spine",
+          "note": "The course's existing spine."
+        },
+        {
+          "sourceId": "prince-udl",
+          "role": "supplement",
+          "note": "Understanding Deep Learning (PDF of February 2026): chapters 3 (shallow networks), 7 (gradients and initialisation), 12 (transformers) and 19 (reinforcement learning), with MIT-licensed notebooks. CC BY-NC-ND: adapted text and figures are never shared."
+        },
+        {
+          "sourceId": "neuromatch-neuroai",
+          "role": "supplement",
+          "note": "W1D3: representational geometry, RSA with bootstrap model comparison and dynamical similarity; W1D2 tasks as cost functions."
+        }
+      ],
+      "activities": [
+        {
+          "title": "A small model and an ablation",
+          "description": "Train a small model, examine a representation, and compare a baseline or an ablation.",
+          "methodIds": [
+            "predictive-checks",
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner explains the objective, what changed during training, what the comparison establishes and what it does not.",
+      "tutorGuidance": "An attractive embedding plot is not evidence that a model 'thinks like a brain'.",
+      "gaps": [
+        "Units 3 to 10 of CSA-210 are outlined, not prepared.",
+        "CKA or CCA style representation comparison has no source yet."
+      ]
+    },
+    {
+      "id": "MBI-08",
+      "sequence": 8,
+      "title": "Systems and Computational Neuroscience",
+      "centralQuestion": "How can computation help explain neural systems and behaviour?",
+      "entryLevel": "Calculus, linear algebra and Python; MBI-02 for the biology.",
+      "requiredCoverage": [
+        "Systems-level organisation",
+        "Neural computation",
+        "Encoding and decoding",
+        "Population activity",
+        "Dynamical systems",
+        "Neural responses",
+        "Modelling assumptions",
+        "Simulation and fitting",
+        "Comparison with observations",
+        "Biological interpretation"
+      ],
+      "prerequisiteReasoning": "NEU-220 is a launch course with four prepared units; NEU-210 supplies systems organisation. Synthetic demonstrations are kept distinct from real neural data, and dataset provenance is recorded.",
+      "bridges": [],
+      "canStudyAlongside": [
+        "MBI-02",
+        "MBI-04",
+        "MBI-07"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "NEU-210",
+          "unitIds": [],
+          "contribution": "Canonical course for systems organisation."
+        },
+        {
+          "courseId": "NEU-220",
+          "unitIds": [
+            "NEU-220-u02",
+            "NEU-220-u03",
+            "NEU-220-u04",
+            "NEU-220-u06",
+            "NEU-220-u08"
+          ],
+          "contribution": "Fitting, encoding and decoding, population structure and dynamics."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "neuromatch-compneuro",
+          "role": "spine",
+          "note": "The course's existing spine."
+        },
+        {
+          "sourceId": "mit-neural-computation-2018",
+          "role": "supplement",
+          "note": "Spike trains, receptive fields, PCA, recurrent networks and integrators, with videos."
+        },
+        {
+          "sourceId": "neuroscience-online",
+          "role": "supplement",
+          "note": "Sensory and motor systems for systems organisation (reference-only)."
+        },
+        {
+          "sourceId": "neuromatch-neuroai",
+          "role": "supplement",
+          "note": "Microcircuits and macrocircuits days as the bridge to NeuroAI."
+        },
+        {
+          "sourceId": "gershman-cfcn",
+          "role": "supplement",
+          "note": "Chapter 10, section 7: the neural architecture of reinforcement learning (dopamine prediction errors, stimulus representation, three-factor plasticity) (draft)."
+        }
+      ],
+      "activities": [
+        {
+          "title": "A modest neural-modelling analysis",
+          "description": "Reproduce a modest neural-modelling analysis and explain an assumption, a baseline and a failure case.",
+          "methodIds": [
+            "generative-simulation",
+            "parameter-estimation",
+            "predictive-checks"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "An interpretable analysis with a written explanation, not a notebook whose cells merely ran.",
+      "tutorGuidance": "Ask why the model behaves as it does and what the synthetic data can and cannot say about real neurons.",
+      "gaps": [
+        "NEU-210 has no prepared unit; NEU-220 units 6 and 8 are outlined, not prepared; no population-dynamics reading beyond Neuromatch."
+      ]
+    },
+    {
+      "id": "MBI-09",
+      "sequence": 9,
+      "title": "Planning and Structured Cognition",
+      "centralQuestion": "How do minds represent structure and solve problems across several steps?",
+      "entryLevel": "MBI-06's idea of learned value helps; the first unit introduces what it needs.",
+      "requiredCoverage": [
+        "Search",
+        "Planning",
+        "Hierarchical representations",
+        "Compositional representations",
+        "Causal reasoning",
+        "Structured hypotheses",
+        "Program-like models",
+        "Analogy",
+        "Relational reasoning",
+        "Resource-rational and bounded-rational accounts",
+        "Generalisation",
+        "Transfer",
+        "Distinguishing an observed result from the strategy that produced it"
+      ],
+      "prerequisiteReasoning": "Builds on the model-free versus model-based contrast of MBI-06 but does not require MBI-06 to be finished; the causal and program-like topics connect to COG-201.",
+      "bridges": [
+        {
+          "title": "Causal and program-like models",
+          "courseId": "COG-201",
+          "unitIds": [
+            "COG-201-u07"
+          ],
+          "note": "Causal learning and causal theories (in preparation)."
+        }
+      ],
+      "canStudyAlongside": [
+        "MBI-06",
+        "MBI-11"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-250",
+          "unitIds": [
+            "COG-250-u01",
+            "COG-250-u02",
+            "COG-250-u03",
+            "COG-250-u04",
+            "COG-250-u05",
+            "COG-250-u06",
+            "COG-250-u07",
+            "COG-250-u08"
+          ],
+          "contribution": "Canonical course: unit 1 (planning strategies and transfer) is prepared; units 2 to 8 are outlined."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "sutton-barto-rl-2e",
+          "role": "spine",
+          "note": "Section 8.1 on models and planning, Dyna in section 8.2, the blocking and shortcut mazes of section 8.3 (which compare Dyna-Q with Dyna-Q+), and section 14.6 on habitual and goal-directed behaviour: the basis of COG-250 unit 1."
+        },
+        {
+          "sourceId": "daw-2011-model-based-influences",
+          "role": "supplement",
+          "note": "The two-step task: after a rare transition that is rewarded, model-free learners tend to repeat and model-based learners to switch (author manuscript; read on PubMed Central, not importable)."
+        },
+        {
+          "sourceId": "huys-2012-bonsai-trees",
+          "role": "supplement",
+          "note": "Planning by tree search with pruning below large losses; its model comparison is in-sample."
+        },
+        {
+          "sourceId": "tolman-1948-cognitive-maps",
+          "role": "supplement",
+          "note": "Cognitive maps: latent learning and spatial orientation. Reference-only; the words 'shortcut' and 'short cut' do not occur in it."
+        },
+        {
+          "sourceId": "gershman-cfcn",
+          "role": "optional",
+          "note": "Chapters 1 and 4 on resource rationality and costly inference, for the bounded-rational accounts of COG-250 unit 8 (draft)."
+        },
+        {
+          "sourceId": "probmods-v2",
+          "role": "optional",
+          "note": "Rational process models and the sampling hypothesis (reference-only)."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Two planners and a transfer test",
+          "description": "Compare two planning strategies on a controlled task with an explicit state space and test what happens in a transfer condition.",
+          "methodIds": [
+            "generative-simulation",
+            "longitudinal-transfer-evaluation",
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner specifies the strategies, their assumptions, predicted behaviour, costs or constraints, and the interpretation of the transfer result.",
+      "tutorGuidance": "Longer tasks do not automatically give better evidence about planning; ask which observations distinguish the candidate strategies.",
+      "gaps": [
+        "COG-250 unit 1 is prepared and units 2 to 5 and 8 are outlined with verified sources; hierarchical and compositional representations, analogy and relational reasoning have no verified source yet."
+      ]
+    },
+    {
+      "id": "MBI-10",
+      "sequence": 10,
+      "title": "Modern AI",
+      "centralQuestion": "How do modern learning systems acquire, deploy and test capabilities?",
+      "entryLevel": "MBI-07; for the full implementation route, substantial programming and systems experience (Stanford CS336's stated prerequisites). A conceptual route is offered to learners not yet ready for it.",
+      "requiredCoverage": [
+        "Language modelling",
+        "Transformer-based systems",
+        "Data and training objectives",
+        "Pretraining",
+        "Post-training",
+        "Reasoning-oriented training and evaluation",
+        "Model-based reinforcement learning",
+        "Learned world models",
+        "Agent evaluation",
+        "Failure analysis",
+        "Contamination",
+        "Distribution shift",
+        "Compute-bounded replication",
+        "Comparisons with simpler models"
+      ],
+      "prerequisiteReasoning": "Shares reinforcement learning with MBI-06 through CSA-230. Fast-moving material is taken from dated primary sources; nothing is called the latest.",
+      "bridges": [
+        {
+          "title": "Attention and transformers",
+          "courseId": "CSA-210",
+          "unitIds": [
+            "CSA-210-u09"
+          ],
+          "note": "The transformer foundations (in preparation)."
+        }
+      ],
+      "canStudyAlongside": [
+        "MBI-06",
+        "MBI-07"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "CSA-250",
+          "unitIds": [],
+          "contribution": "Canonical course for language modelling from scratch."
+        },
+        {
+          "courseId": "CSA-270",
+          "unitIds": [],
+          "contribution": "Canonical course for agents, evaluation and reliable applications."
+        },
+        {
+          "courseId": "CSA-230",
+          "unitIds": [],
+          "contribution": "Canonical course for reinforcement learning, shared with MBI-06."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "jurafsky-martin-slp3",
+          "role": "spine",
+          "note": "The conceptual route: transformers, pretraining, instruction tuning and preference learning without a GPU (reference-only; the agents chapter is not yet written)."
+        },
+        {
+          "sourceId": "stanford-cs336",
+          "role": "supplement",
+          "note": "The advanced implementation route, with its stated prerequisites and GPU-hour budgets; its evaluation lecture suits both routes (reference-only)."
+        },
+        {
+          "sourceId": "deepseek-r1",
+          "role": "supplement",
+          "note": "Reinforcement learning for reasoning: R1-Zero trained by reinforcement learning from the base model, group relative policy optimisation, rule-based and model-based rewards, and the authors' account of limitations and reward hacking. The Nature version is CC BY but not importable from its hosts; the arXiv version grants no reuse."
+        },
+        {
+          "sourceId": "hafner-dreamerv3",
+          "role": "supplement",
+          "note": "A learned world model with critic and actor learning, evaluated on benchmarks, Minecraft, ablations and scaling; the CC BY arXiv preprint is the working copy."
+        },
+        {
+          "sourceId": "prince-udl",
+          "role": "optional",
+          "note": "Chapter 12, Transformers, as the prerequisite chapter for the conceptual route."
+        }
+      ],
+      "activities": [
+        {
+          "title": "A component or a careful critique",
+          "description": "Reproduce a small component or critically analyse an accessible experiment with explicit baselines and limitations.",
+          "methodIds": [
+            "predictive-checks",
+            "longitudinal-transfer-evaluation",
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "A component that works with a stated baseline, or a critique that names the evaluation, the contamination and shift risks, and what the result does not show.",
+      "tutorGuidance": "Not API wrappers or prompt tips; a full-scale training run is never required to show serious understanding.",
+      "gaps": [
+        "None of the three canonical courses has a prepared unit; contamination and distribution shift are covered only by CS336's evaluation lecture."
+      ]
+    },
+    {
+      "id": "MBI-11",
+      "sequence": 11,
+      "title": "Models of Human Behaviour and NeuroAI",
+      "centralQuestion": "How should models of human behaviour be built, compared and interpreted?",
+      "entryLevel": "MBI-04 (likelihood and fitting); MBI-07 for the neural-network models.",
+      "requiredCoverage": [
+        "Classical cognitive models",
+        "Small specialised predictive models",
+        "Foundation-model approaches",
+        "Trial sequences and histories",
+        "Individual differences",
+        "Longitudinal observations",
+        "Task-held-out evaluation",
+        "Person-held-out evaluation",
+        "Time-held-out evaluation",
+        "Mechanistic plausibility versus predictive fit",
+        "Human-model comparisons",
+        "Brain-model comparisons",
+        "Transfer limitations",
+        "Missing observations",
+        "Privacy",
+        "Warranted and unwarranted application claims"
+      ],
+      "prerequisiteReasoning": "Every predictive exercise states its information contract first. Random trial splits never stand in for transfer to unseen people or tasks; where a dataset cannot support an evaluation, the course says so.",
+      "bridges": [
+        {
+          "title": "Model fitting",
+          "courseId": "NEU-220",
+          "unitIds": [
+            "NEU-220-u02"
+          ],
+          "note": "Likelihood, bootstrap and model selection (prepared)."
+        }
+      ],
+      "canStudyAlongside": [
+        "MBI-04",
+        "MBI-06",
+        "MBI-09"
+      ],
+      "courseMappings": [
+        {
+          "courseId": "COG-260",
+          "unitIds": [
+            "COG-260-u01",
+            "COG-260-u02",
+            "COG-260-u03",
+            "COG-260-u04",
+            "COG-260-u05",
+            "COG-260-u06",
+            "COG-260-u07",
+            "COG-260-u08"
+          ],
+          "contribution": "Canonical course: unit 1 (the complete modelling loop) is prepared; units 2 to 8 are outlined."
+        },
+        {
+          "courseId": "NEU-230",
+          "unitIds": [],
+          "contribution": "Canonical course for NeuroAI."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "neuromatch-neuroai",
+          "role": "spine",
+          "note": "Verified as current (CC BY 4.0); entry requires the computational neuroscience and deep learning courses or their equivalent."
+        },
+        {
+          "sourceId": "binz-centaur-2025",
+          "role": "supplement",
+          "note": "Centaur and Psych-101: held-out participants within the trained experiments, then separate generalisation tests, and a summary that outruns one non-significant panel; read with Oh and Gobet and the published critiques. The arXiv preprint is the working copy."
+        },
+        {
+          "sourceId": "oh-gobet-small-foundation-models",
+          "role": "supplement",
+          "note": "Fourteen small models (135M to 14B parameters) on Centaur's splits: scale barely matters in distribution and does out of distribution; masking stimuli and feedback removes most of what was learned."
+        },
+        {
+          "sourceId": "wilson-collins-2019-ten-rules",
+          "role": "supplement",
+          "note": "The procedure behind COG-260 unit 1."
+        },
+        {
+          "sourceId": "psych-101",
+          "role": "optional",
+          "note": "The dataset behind Centaur (Apache-2.0, about 859 MB; not imported; its gated test set may not be redistributed)."
+        },
+        {
+          "sourceId": "probmods-v2",
+          "role": "supplement",
+          "note": "Probabilistic models of cognition for the classical side."
+        }
+      ],
+      "activities": [
+        {
+          "title": "Three models, one contract",
+          "description": "Compare an interpretable cognitive model, a simple predictive baseline and another appropriately scoped model on a modest behavioural task.",
+          "methodIds": [
+            "predictive-checks",
+            "longitudinal-transfer-evaluation",
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "The learner explains the evaluation setting, the model assumptions, the information available, the performance with its uncertainty, and the transfer limits.",
+      "tutorGuidance": "Success on a game dataset does not establish general cognitive measurement, hiring validity, medical usefulness or accurate prediction of an unobserved person.",
+      "gaps": [
+        "NEU-230 has no prepared unit, and the plasticity-as-optimisation chapter of Gershman's draft textbook is known by title only.",
+        "COG-260 unit 1 is prepared; units 2 to 8 are outlined, and unit 8's privacy and application-claims coverage has no verified source yet."
+      ]
+    },
+    {
+      "id": "MBI-12",
+      "sequence": 12,
+      "title": "Independent Research Studio",
+      "centralQuestion": "Can the learner investigate a question and defend what the evidence supports?",
+      "entryLevel": "At least one modelling block (usually MBI-04 or MBI-11) and one subject block.",
+      "requiredCoverage": [
+        "Choosing a tractable question",
+        "Focused literature review",
+        "Study or simulation design",
+        "A reproducible analysis plan",
+        "Implementation",
+        "Model checking",
+        "Uncertainty",
+        "A research notebook",
+        "Interpretation",
+        "Limitations",
+        "Replication",
+        "Negative results",
+        "A written report",
+        "An optional oral discussion or defence"
+      ],
+      "prerequisiteReasoning": "Comes last because it uses the others, but a small conceptual or replication project can start early. No participant recruitment, outreach, publication or private business data is ever automated.",
+      "bridges": [],
+      "canStudyAlongside": [],
+      "courseMappings": [
+        {
+          "courseId": "COG-290",
+          "unitIds": [],
+          "contribution": "Canonical course; the project workflow is designed, not yet built."
+        }
+      ],
+      "sourceShelf": [
+        {
+          "sourceId": "turing-way",
+          "role": "spine",
+          "note": "Reproducibility, version control, environments, data management, testing and a project checklist."
+        },
+        {
+          "sourceId": "cruwell-evans-2021",
+          "role": "supplement",
+          "note": "A preregistration template for applying cognitive models, with a worked example (not importable: hosted on PubMed Central)."
+        },
+        {
+          "sourceId": "wilson-collins-2019-ten-rules",
+          "role": "supplement",
+          "note": "Rule 10 on reporting model-based analyses: the standard a project report is judged against."
+        }
+      ],
+      "activities": [
+        {
+          "title": "A defensible investigation",
+          "description": "Reduce an overlarge question to a defensible investigation, run it, and report what the evidence supports, including negative results.",
+          "methodIds": [
+            "scientific-argument"
+          ]
+        }
+      ],
+      "evidenceOfUnderstanding": "A report whose claims match its evidence, with limitations and, where they occur, well-explained negative results.",
+      "tutorGuidance": "Help shrink the question without pretending a toy exercise answers the whole research problem; reward a clear limitation.",
+      "gaps": [
+        "The research-project workflow (proposal, provenance, artefacts, report) is specified but not built.",
+        "No source yet on reporting negative results or on notebook practice."
+      ]
+    }
+  ],
+  "electives": [
+    {
+      "courseId": "COG-310",
+      "connectsToBlockIds": [
+        "MBI-03",
+        "MBI-06",
+        "MBI-11"
+      ],
+      "note": "Emotional and motivational influences on learning, choice and effort."
+    },
+    {
+      "courseId": "COG-320",
+      "connectsToBlockIds": [
+        "MBI-03",
+        "MBI-05",
+        "MBI-06"
+      ],
+      "note": "Confidence, calibration, monitoring and control."
+    },
+    {
+      "courseId": "COG-330",
+      "connectsToBlockIds": [
+        "MBI-06",
+        "MBI-09",
+        "MBI-11"
+      ],
+      "note": "Mental-state inference, coordination and strategic interaction."
+    },
+    {
+      "courseId": "COG-340",
+      "connectsToBlockIds": [
+        "MBI-05",
+        "MBI-11"
+      ],
+      "note": "Measurement models and validation beyond COG-220."
+    },
+    {
+      "courseId": "NEU-310",
+      "connectsToBlockIds": [
+        "MBI-02",
+        "MBI-08"
+      ],
+      "note": "Dynamical descriptions of neural populations."
+    },
+    {
+      "courseId": "CSA-310",
+      "connectsToBlockIds": [
+        "MBI-07",
+        "MBI-10",
+        "MBI-11"
+      ],
+      "note": "What interpretability methods actually establish."
+    },
+    {
+      "courseId": "CSA-320",
+      "connectsToBlockIds": [
+        "MBI-06",
+        "MBI-07",
+        "MBI-10"
+      ],
+      "note": "Meta-learning, adaptation and leakage-aware task splits."
+    },
+    {
+      "courseId": "COG-350",
+      "connectsToBlockIds": [
+        "MBI-01",
+        "MBI-02",
+        "MBI-08"
+      ],
+      "note": "Competing theories and what experiments could decide."
+    }
+  ],
+  "methods": [
+    {
+      "id": "generative-simulation",
+      "section": "9.1",
+      "title": "Generative-model design and simulation",
+      "conceptId": "method-generative-simulation",
+      "learnerShould": [
+        "State assumptions",
+        "Define variables and outputs",
+        "Implement or inspect a simulator",
+        "Generate labelled synthetic observations",
+        "Check the generated behaviour matches the intended task",
+        "Test the implementation"
+      ],
+      "units": [
+        {
+          "courseId": "COG-201",
+          "unitId": "COG-201-u02",
+          "role": "introduces"
+        },
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "practises"
+        }
+      ],
+      "plannedIn": [
+        {
+          "courseId": "COG-260",
+          "note": "Unit 2 (outlined): free simulation of fitted models."
+        }
+      ],
+      "evidence": "A simulator whose output is checked against the model description, with the checks written down."
+    },
+    {
+      "id": "parameter-estimation",
+      "section": "9.2",
+      "title": "Parameter estimation and uncertainty",
+      "conceptId": "method-parameter-estimation",
+      "learnerShould": [
+        "Explain the likelihood or objective",
+        "Identify constraints",
+        "Describe the estimation procedure",
+        "Inspect sensitivity to initialisation",
+        "Report uncertainty or variability",
+        "Identify fitted values that are not uniquely informative"
+      ],
+      "units": [
+        {
+          "courseId": "NEU-220",
+          "unitId": "NEU-220-u02",
+          "role": "practises"
+        },
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "practises"
+        }
+      ],
+      "plannedIn": [
+        {
+          "courseId": "COG-260",
+          "note": "Unit 3 (outlined): what a fitted parameter measures."
+        }
+      ],
+      "evidence": "A fit reported with its objective, constraints, uncertainty and a note on what the parameters cannot tell apart."
+    },
+    {
+      "id": "parameter-recovery",
+      "section": "9.3",
+      "title": "Parameter recovery",
+      "conceptId": "method-parameter-recovery",
+      "learnerShould": [
+        "Generate data with known parameters",
+        "Refit the model",
+        "Compare true and recovered values",
+        "Investigate more than one convenient setting",
+        "Examine the effect of data quantity or task conditions",
+        "Report uncertainty, systematic errors and limitations"
+      ],
+      "units": [
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "assesses"
+        }
+      ],
+      "plannedIn": [],
+      "evidence": "A recovery report across settings that names where parameters are and are not recoverable, without a universal threshold."
+    },
+    {
+      "id": "model-recovery",
+      "section": "9.4",
+      "title": "Model recovery and model comparison",
+      "conceptId": "method-model-recovery",
+      "learnerShould": [
+        "Simulate data from competing models",
+        "Fit the candidates",
+        "Apply an explicitly chosen comparison procedure",
+        "Inspect when models are confused",
+        "Explain what non-discrimination means"
+      ],
+      "units": [
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "assesses"
+        }
+      ],
+      "plannedIn": [],
+      "evidence": "A confusion matrix with an interpretation that treats a failure to distinguish models as a result."
+    },
+    {
+      "id": "predictive-checks",
+      "section": "9.5",
+      "title": "Predictive and simulation checks",
+      "conceptId": "method-predictive-checks",
+      "learnerShould": [
+        "Compare predictions with relevant observed or simulated patterns",
+        "Specify the held-out unit",
+        "Inspect leakage",
+        "Use a meaningful baseline",
+        "Use posterior predictive checks where the Bayesian material supports them"
+      ],
+      "units": [
+        {
+          "courseId": "CSA-210",
+          "unitId": "CSA-210-u01",
+          "role": "practises"
+        },
+        {
+          "courseId": "NEU-220",
+          "unitId": "NEU-220-u02",
+          "role": "practises"
+        },
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "practises"
+        }
+      ],
+      "plannedIn": [
+        {
+          "courseId": "COG-260",
+          "note": "Unit 2 (outlined): validation by simulation."
+        }
+      ],
+      "evidence": "A held-out comparison with a baseline and a stated validation question; never the bare phrase 'validated model'."
+    },
+    {
+      "id": "measurement-reliability-validity",
+      "section": "9.6",
+      "title": "Measurement reliability and validity",
+      "conceptId": "method-measurement-reliability-validity",
+      "learnerShould": [
+        "Distinguish an average experimental effect from ranking people",
+        "Distinguish within-person change and practice effects",
+        "Assess stability across occasions",
+        "Separate the interpretation of a score from its proposed use"
+      ],
+      "units": [],
+      "plannedIn": [
+        {
+          "courseId": "COG-220",
+          "note": "Psychometrics and measurement (proposed)."
+        },
+        {
+          "courseId": "COG-210",
+          "note": "Experimental design (proposed)."
+        },
+        {
+          "courseId": "COG-260",
+          "note": "Unit 3 (outlined): reliability and generalisation of fitted parameters."
+        }
+      ],
+      "evidence": "A study proposal whose measurement claims match the evidence it would collect."
+    },
+    {
+      "id": "longitudinal-transfer-evaluation",
+      "section": "9.7",
+      "title": "Longitudinal and transfer evaluation",
+      "conceptId": "method-longitudinal-transfer-evaluation",
+      "learnerShould": [
+        "Distinguish held-out trials, people, tasks and later periods",
+        "State the information available at prediction time",
+        "Use chronology-aware evaluation",
+        "Never leak later information into an earlier prediction"
+      ],
+      "units": [
+        {
+          "courseId": "CSA-210",
+          "unitId": "CSA-210-u01",
+          "role": "practises"
+        },
+        {
+          "courseId": "COG-260",
+          "unitId": "COG-260-u01",
+          "role": "practises"
+        },
+        {
+          "courseId": "COG-250",
+          "unitId": "COG-250-u01",
+          "role": "introduces"
+        }
+      ],
+      "plannedIn": [
+        {
+          "courseId": "COG-260",
+          "note": "Unit 4 (outlined): held-out people, tasks and later sessions."
+        }
+      ],
+      "evidence": "An evaluation whose split matches the generalisation claim, with the unsupported claims named."
+    },
+    {
+      "id": "scientific-argument",
+      "section": "9.8",
+      "title": "Scientific argument from models",
+      "conceptId": "method-scientific-argument",
+      "learnerShould": [
+        "Distinguish fitting, prediction, mechanism, causal effect and application claims",
+        "Report clear limits",
+        "Value well-supported negative findings"
+      ],
+      "units": [
+        {
+          "courseId": "COG-201",
+          "unitId": "COG-201-u01",
+          "role": "introduces"
+        },
+        {
+          "courseId": "COG-250",
+          "unitId": "COG-250-u01",
+          "role": "practises"
+        }
+      ],
+      "plannedIn": [
+        {
+          "courseId": "COG-260",
+          "note": "Units 6 to 8 (outlined): foundation models, ablations and warranted claims."
+        }
+      ],
+      "evidence": "A report whose conclusions are no stronger than its evidence."
+    }
+  ],
+  "paperSeminar": {
+    "title": "Mind, Brain and AI paper seminar",
+    "description": "A fixed, bounded list of papers read one at a time, each with a structured report and an optional small analysis. It is not a feed: papers enter the list only by a deliberate edit, and the list never exceeds its bound.",
+    "maxPapers": 8,
+    "papers": [
+      {
+        "sourceId": "wilson-collins-2019-ten-rules",
+        "blockIds": [
+          "MBI-04",
+          "MBI-11"
+        ],
+        "focus": "What each rule protects against, and which rule your own last analysis skipped."
+      },
+      {
+        "sourceId": "hedge-2018-reliability-paradox",
+        "blockIds": [
+          "MBI-05"
+        ],
+        "focus": "Why a robust task effect can be a poor measure of individual differences."
+      },
+      {
+        "sourceId": "binz-centaur-2025",
+        "blockIds": [
+          "MBI-11"
+        ],
+        "focus": "Which generalisation the evaluation tests (held-out participants within experiments, then separate tests), where the summary outruns one reported panel, and which application claims it does not support."
+      },
+      {
+        "sourceId": "oh-gobet-small-foundation-models",
+        "blockIds": [
+          "MBI-11"
+        ],
+        "focus": "What it means that small models match a large one in distribution but not out of distribution, and what the ablations remove."
+      },
+      {
+        "sourceId": "deepseek-r1",
+        "blockIds": [
+          "MBI-10"
+        ],
+        "focus": "What reasoning-oriented reinforcement learning was trained with which rewards, what the authors report as its limitations, and whether its evaluation guards against contamination."
+      },
+      {
+        "sourceId": "hafner-dreamerv3",
+        "blockIds": [
+          "MBI-06",
+          "MBI-10"
+        ],
+        "focus": "What a learned world model buys, against which baselines, at what compute."
+      }
+    ],
+    "reportHeadings": [
+      "Question",
+      "Model or method",
+      "Evidence presented",
+      "Evaluation design",
+      "Baselines",
+      "Important limitations",
+      "Connection to earlier material",
+      "Optional small replication or analysis"
+    ]
+  }
 }

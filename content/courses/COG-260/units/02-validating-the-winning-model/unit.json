@@ -1,0 +1,80 @@
+{
+  "id": "COG-260-u02",
+  "courseId": "COG-260",
+  "sequence": 2,
+  "title": "Validating the winning model by simulation",
+  "summary": "Free simulation against history-conditioned prediction; checking a fitted model against model-independent measures of the data; a validation that fails because the fitted model performs too well; analysing latent variables from the winning model only; reporting model selection, fits and recovery.",
+  "objectives": [
+    {
+      "id": "u02-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "choice-learning-models",
+    "method-parameter-estimation"
+  ],
+  "teachesConceptIds": [
+    "method-predictive-checks"
+  ],
+  "preparation": [
+    {
+      "description": "Read Rule 8 of Wilson and Collins (2019): validate by simulating with the fitted parameters.",
+      "locatorId": "wc-rule-08",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Box 7: a failed validation in which the fitted model performs too well.",
+      "locatorId": "wc-box-7",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Rule 9: analysing latent variables and individual differences from the winning model only.",
+      "locatorId": "wc-rule-09",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read Rule 10: what to report about model selection, fits and recovery.",
+      "locatorId": "wc-rule-10",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Reading: Validating the winning model by simulation",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 50,
+      "sourceLocatorIds": [
+        "wc-rule-08",
+        "wc-box-7",
+        "wc-rule-09",
+        "wc-rule-10"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Rules 8 to 10 and Box 7 of Wilson and Collins (2019) are locators of the record verified on 2026-10-31; Rules 8 and 9 and Box 7 were read in full, and Rule 10 was seen as a heading."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

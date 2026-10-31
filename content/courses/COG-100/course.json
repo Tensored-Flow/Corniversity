@@ -1,0 +1,48 @@
+{
+  "id": "COG-100",
+  "version": 1,
+  "title": "Explaining Minds and Brains",
+  "departmentIds": [
+    "cognitive-science",
+    "neuroscience",
+    "computer-science-ai"
+  ],
+  "level": "foundation",
+  "position": "Cross-listed orientation course for Mind, Brain and AI",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Cross-listed orientation course for Mind, Brain and AI). Levels of explanation (computational, algorithmic, implementation), normative, descriptive and mechanistic models, representation and computation, prediction versus explanation versus causal evidence, and how a model can be useful without explaining everything.",
+  "description": "Proposed course: Explaining Minds and Brains. Central question: What counts as an explanation of a mind or brain? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "What counts as an explanation of a mind or brain?",
+  "prerequisiteGuidance": "None beyond careful reading. It is the programme's intellectual foundation, not a motivational introduction, and it is meant to be short so the rest of the programme can begin.",
+  "preparationPath": "Verified introductions to levels of explanation are on the MBI-01 shelf (Blokpoel and van Rooij, chapter 2; Gershman's draft textbook, chapter 1; the Gureckis course notes 'Minds and Machines'); choose the spine among them, verify two or three worked examples of competing explanations of the same behavioural result, and prepare a first unit around the comparison activity below. The prepared units COG-201 unit 1 (computational-level analysis) and NEU-220 unit 1 (models of what, how and why) already serve part of this ground.",
+  "plannedActivities": [
+    "Two explanations of one behavioural result: state each one's assumptions, the predictions on which they agree, and a condition on which they differ.",
+    "Separate what is observed, what a model assumes, what it predicts, and what evidence would challenge it."
+  ],
+  "sourceCandidates": []
+}

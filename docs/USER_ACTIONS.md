@@ -27,3 +27,14 @@ Nothing here is required to run Corniversity on your own computer.
    Step: in PowerShell in the project folder run
    `gh repo create Corniversity --private --source=. --remote=origin --push`
    (you are already signed in to GitHub as Tensored-Flow on this machine).
+
+5. Send the rest of the Mind, Brain and AI update.
+   Why: the message arrived cut off after section 12, at the heading "13. PRODUCT E…". Sections
+   13 onward were not received, so nothing in them is implemented.
+   Step: paste the remaining sections in a new message.
+
+6. Two optional decisions the update raised.
+   - Psych-101, the dataset behind Centaur, is about 859 MB, so it was not downloaded: say if you
+     want a small labelled sample fetched for an exercise.
+   - Library → Books to obtain now lists the sources still missing from the programme you follow
+     (three leads, for COG-250 and COG-260). Add any you want to your list; nothing is fetched.

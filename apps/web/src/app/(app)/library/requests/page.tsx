@@ -161,7 +161,8 @@ export default async function RequestsPage({
             Suggested by the catalogue
           </h2>
           <p className="mt-1 text-sm text-ink-2">
-            Commercial or institutional sources that launch courses name. Everything shown comes from the verified source record.
+            Commercial or institutional sources that launch courses name, which come from their verified source records, and the sources
+            still missing from the programmes you follow, which are leads: no edition is chosen and nothing is verified yet.
           </p>
           <ul className="mt-3 flex flex-col gap-3">
             {suggestions.map((s) => (
@@ -173,7 +174,11 @@ export default async function RequestsPage({
                       {[s.authors, s.edition, s.isbn ? `ISBN ${s.isbn}` : null].filter(Boolean).join(" · ")}
                     </p>
                   </div>
-                  <Badge tone={s.essential ? "rust" : "neutral"}>{s.essential ? "essential" : "optional"}</Badge>
+                  {s.lead ? (
+                    <Badge tone="brass">lead, not yet identified</Badge>
+                  ) : (
+                    <Badge tone={s.essential ? "rust" : "neutral"}>{s.essential ? "essential" : "optional"}</Badge>
+                  )}
                 </div>
                 <p className="mt-2 text-sm text-ink">{s.why}</p>
                 {s.chaptersNeeded.length ? (

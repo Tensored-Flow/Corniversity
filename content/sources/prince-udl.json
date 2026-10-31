@@ -1,0 +1,132 @@
+{
+  "id": "prince-udl",
+  "title": "Understanding Deep Learning",
+  "authors": [
+    "Simon J. D. Prince",
+    "Travis LaCroix (co-author of chapter 21)"
+  ],
+  "institution": "The MIT Press (print edition, 2023); free PDF and notebooks from the author via udlbook.github.io and github.com/udlbook/udlbook",
+  "kind": "book",
+  "canonicalUrl": "https://udlbook.github.io/udlbook/",
+  "description": "Deep-learning textbook in 21 chapters (1 Introduction; 2 Supervised learning; 3 Shallow neural networks; 4 Deep neural networks; 5 Loss functions; 6 Fitting models; 7 Gradients and initialization; 8 Measuring performance; 9 Regularization; 10 Convolutional networks; 11 Residual networks; 12 Transformers; 13 Graph neural networks; 14 Unsupervised learning; 15 Generative adversarial networks; 16 Normalizing flows; 17 Variational autoencoders; 18 Diffusion models; 19 Reinforcement learning; 20 Why does deep learning work?; 21 Deep learning and ethics) with appendices A Notation, B Mathematics and C Probability. The book site lists 68 Python notebook exercises 'with missing code to fill in based on the text' (none for chapter 14), and its source links an answer booklet, errata, interactive figures and a video-lecture playlist.",
+  "isbn": "9780262048644",
+  "codeLicence": "Notebooks/ folder: file 'LICENSE (MIT)', 'Copyright 2023 Simon Prince', standard MIT permission text (read 2026-10-31). The repository root LICENSE is CC BY-NC-ND 4.0.",
+  "rightsNotes": [
+    "PDF title page (v5.0.3): 'Copyright in this work has been licensed exclusively to The MIT Press, https://mitpress.mit.edu, which released the final version to the public in December 2023. Inquiries regarding rights should be addressed to the MIT Press, Rights & Permissions Department. This work is subject to a Creative Commons CC-BY-NC-ND license.' Alternate page footers repeat 'This work is subject to a Creative Commons CC-BY-NC-ND license. (C) MIT Press.'",
+    "Repository root LICENSE: 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License' (full legal code).",
+    "NoDerivatives: Corniversity may copy the PDF for private non-commercial study and cite it, but must not share adapted versions of the book's text or figures; lessons and summaries are Corniversity's own words.",
+    "The notebooks are separately MIT-licensed (see codeLicence); completed notebook exercises remain private study work.",
+    "No restriction on machine processing or AI use was seen on the title page, the repository LICENSE or the notebook licence."
+  ],
+  "currentVersionId": "prince-udl-pdf-2026-02-08",
+  "versions": [
+    {
+      "id": "prince-udl-pdf-2026-02-08",
+      "label": "Free PDF dated 'February 8, 2026' on its title page (GitHub release v5.0.3 'Understanding Deep Learning Chapters 1-21', published 2026-02-09; site link 'Download full PDF (09 Feb 2026)')",
+      "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): read the deployed book site's script bundle for its PDF link; the site source components HeroSection and Notebooks; the GitHub repository page, release list and root LICENSE; the Notebooks folder listing, its 'LICENSE (MIT)' and Info.txt; notebook 1.1; parsed the v5.0.3 PDF in memory (title page, contents, outline, page labels and 17 chapter-opening pages) and the v5.0.2 PDF (title page, outline and 13 pages)",
+      "componentsSeen": [
+        "title page: 'Understanding Deep Learning', 'Simon J.D. Prince', 'February 8, 2026', rights and licence statement; 541 pages",
+        "contents (physical indexes 4-9) and PDF outline: chapter starts from chapter 1 at physical index 14 (page 1) to chapter 21 at index 434 (page 421); appendices A Notation (p. 437), B Mathematics (p. 440), C Probability (p. 449); bibliography p. 463; index p. 513",
+        "chapter-opening pages for chapters 1-13, 19 and 20 checked against the outline; chapter openings print no page number, other pages print it in the running head",
+        "chapter 21 opening (checked in v5.0.2): 'This chapter was written by Travis LaCroix and Simon J.D. Prince'",
+        "Notebooks/: Chap01-Chap13 and Chap15-Chap21, Info.txt ('the Python notebooks referenced in the margins of the main text'), 'LICENSE (MIT)'; notebook 1.1 'Background Mathematics' (Colab badge, TODO exercises)",
+        "releases: v5.0.3 (2026-02-09), v5.0.2 (2025-06-18, PDF dated May 29, 2025), v5.0.1 (2025-03-27), v5.00 (2024-11-21), v4.0.4a (2024-10-17)"
+      ],
+      "licence": "Creative Commons CC-BY-NC-ND (as printed in the PDF); repository LICENSE CC BY-NC-ND 4.0",
+      "licenceUrl": "https://raw.githubusercontent.com/udlbook/udlbook/main/LICENSE",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "github.com"
+      ],
+      "limitations": [
+        "The repository's main-branch site source still labels the download 'Download full PDF (29 May 2025)' (v5.0.2) while the deployed site links v5.0.3; the deployed site and the release list were taken as authoritative. Both PDFs have 541 pages and the same outline page numbers.",
+        "The PDF prints no ISBN; 9780262048644 comes from the MIT Press link on the book site. Both MIT Press pages tried returned HTTP 403 and were not read.",
+        "The PDF's licence line names 'CC-BY-NC-ND' without a version; the repository LICENSE is version 4.0.",
+        "Chapters were checked at their opening pages only. The answer booklet, errata, slides, interactive figures and video lectures were not opened; one notebook was opened and none was run.",
+        "The PDF is about 22 MB and is served from release-assets.githubusercontent.com after a redirect from github.com.",
+        "The importer does not follow redirects, so an import from the github.com release link stops at the redirect and stores nothing; read the PDF in the browser, or upload a copy through the library within its size limit."
+      ],
+      "locators": [
+        {
+          "id": "udl-contents",
+          "label": "Contents (chapters 1-21, appendices A-C)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Contents"
+          },
+          "note": "This page prints no number; the PDF page label is 'iii'."
+        },
+        {
+          "id": "udl-ch03",
+          "label": "Chapter 3: Shallow neural networks (opening page)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+            "physicalPageIndex": 38,
+            "sectionLabel": "Chapter 3 Shallow neural networks"
+          },
+          "note": "Chapter openings print no number; the contents and the PDF page label give page 25."
+        },
+        {
+          "id": "udl-ch07",
+          "label": "Chapter 7: Gradients and initialization (opening page)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+            "physicalPageIndex": 109,
+            "sectionLabel": "Chapter 7 Gradients and initialization"
+          },
+          "note": "Chapter openings print no number; the contents and the PDF page label give page 96."
+        },
+        {
+          "id": "udl-ch12",
+          "label": "Chapter 12: Transformers (opening page)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+            "physicalPageIndex": 220,
+            "sectionLabel": "Chapter 12 Transformers"
+          },
+          "note": "Chapter openings print no number; the contents and the PDF page label give page 207."
+        },
+        {
+          "id": "udl-ch19",
+          "label": "Chapter 19: Reinforcement learning (opening page)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+            "physicalPageIndex": 387,
+            "sectionLabel": "Chapter 19 Reinforcement learning"
+          },
+          "note": "Chapter openings print no number; the contents and the PDF page label give page 374."
+        },
+        {
+          "id": "udl-nb-1-1",
+          "label": "Notebook 1.1: Background Mathematics (Colab exercise with TODO cells)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "prince-udl-pdf-2026-02-08",
+            "url": "https://raw.githubusercontent.com/udlbook/udlbook/main/Notebooks/Chap01/1_1_BackgroundMathematics.ipynb",
+            "heading": "Notebook 1.1 -- Background Mathematics"
+          }
+        }
+      ]
+    }
+  ]
+}

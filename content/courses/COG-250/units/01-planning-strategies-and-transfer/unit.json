@@ -1,0 +1,245 @@
+{
+  "id": "COG-250-u01",
+  "courseId": "COG-250",
+  "sequence": 1,
+  "title": "Planning strategies and transfer",
+  "summary": "A model-based planner and a cached policy compared on a grid with an explicit state space, tested after three kinds of change (a blocked route, a revalued goal, a new shortcut); which observations distinguish the strategies, why averages dilute them, and how the classical and modern sources pose the same question.",
+  "objectives": [
+    {
+      "id": "u01-o1",
+      "description": "State precisely how a known-map planner and a cached Q-learning policy choose moves and learn, and compute their behaviour by hand on a small grid, including the effect of repeated bumps on cached values."
+    },
+    {
+      "id": "u01-o2",
+      "description": "For a change to the world, predict each strategy's first decision, first episode and later episodes, and name the observation that distinguishes them, or explain why none does."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Explain why averaging over episodes after a change dilutes the evidence, and report a transfer result with its discriminating observation and window."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Keep a result apart from the strategy proposed to explain it, and describe how the two-step task builds a discriminating observation into every trial."
+    }
+  ],
+  "prerequisiteConceptIds": [],
+  "teachesConceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation",
+    "method-longitudinal-transfer-evaluation",
+    "method-scientific-argument"
+  ],
+  "preparation": [
+    {
+      "description": "Read Sutton and Barto, section 8.1, Models and Planning: what a model is and what planning means.",
+      "locatorId": "sb-8-1-models-planning",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read section 8.3, When the Model Is Wrong, with Example 8.2 (the blocking maze).",
+      "locatorId": "sb-8-3-model-wrong",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Example 8.3 (the shortcut maze) and Figures 8.4 and 8.5; note which two agents are compared.",
+      "locatorId": "sb-example-8-3-shortcut",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read section 14.6, Habitual and Goal-directed Behavior, to the Figure 14.5 maze.",
+      "locatorId": "sb-14-6-habitual-goal",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the outcome-devaluation experiment of Adams and Dickinson (1981) as section 14.6 describes it.",
+      "locatorId": "sb-devaluation",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the Behavior section of Daw et al. (2011): the two-step task's logic and the predictions after a rare transition (author manuscript, read on PubMed Central).",
+      "locatorId": "daw-behavior",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read Tolman (1948), the spatial orientation experiments (reference-only; read on the host's site).",
+      "locatorId": "tolman-spatial-orientation",
+      "estimatedMinutes": 15
+    }
+  ],
+  "activities": [
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "Models, planning and the change tests with the lesson",
+      "instructions": "Read the lesson alongside the sources. Before reading what each change shows, write in your notebook what you expect each strategy to do on its first decision after it. Note which agents Sutton and Barto's mazes actually compare.",
+      "estimatedMinutes": 50,
+      "sourceLocatorIds": [
+        "sb-8-1-models-planning",
+        "sb-8-3-model-wrong",
+        "sb-example-8-2-blocking",
+        "sb-example-8-3-shortcut",
+        "sb-dyna-q-plus",
+        "sb-14-6-habitual-goal",
+        "sb-model-free-vs-model-based",
+        "sb-devaluation",
+        "daw-behavior",
+        "daw-figure-1",
+        "daw-figure-2",
+        "tolman-spatial-orientation"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "problem",
+      "title": "Tutorial: paths, first moves and the cost of a bump",
+      "instructions": "Attempt exercise 1 before asking for a hint. Trace every move, count bumps as moves, and keep the tie order in view. Submit when complete; revise after feedback.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "sb-8-1-models-planning",
+        "sb-6-5-q-learning"
+      ],
+      "exerciseIds": [
+        "COG-250-u01-ex1"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "lab",
+      "title": "Laboratory: planning strategies after a change",
+      "instructions": "Prediction first: the laboratory keeps its results hidden until you save a prediction in the notebook. For each of the three conditions, write each strategy's expected first move, first-episode moves and later behaviour. Read the transfer test's information contract, then run each condition at the default settings, record the seed, and compare, using the table of every episode. Vary the cached policy's alpha and epsilon once each and say what changes and what does not, and before reading a first move as evidence, check whether the cached policy's training had converged. Everything in the laboratory is synthetic; the agents' strategies are known by construction.",
+      "estimatedMinutes": 60,
+      "sourceLocatorIds": [
+        "sb-example-8-2-blocking",
+        "sb-example-8-3-shortcut",
+        "sb-model-free-vs-model-based"
+      ],
+      "exerciseIds": [
+        "COG-250-u01-ex2"
+      ],
+      "labId": "planning-transfer",
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u01-a4",
+      "type": "discussion",
+      "title": "Seminar: a result is not a strategy",
+      "instructions": "Exercise 3 is a written seminar contribution on an invented report. Find its flaws, propose a discriminating observation, and connect it to the two-step task.",
+      "estimatedMinutes": 50,
+      "sourceLocatorIds": [
+        "daw-behavior",
+        "daw-figure-2",
+        "sb-14-6-habitual-goal"
+      ],
+      "exerciseIds": [
+        "COG-250-u01-ex3"
+      ],
+      "sessionKind": "seminar"
+    },
+    {
+      "id": "u01-a5",
+      "type": "explain_back",
+      "title": "Explain: why the shortcut condition hardly discriminates",
+      "instructions": "Without notes, explain to the tutor in about five minutes why the planner never takes the shortcut, what the cached policy's exploration and its untried values do near the opening, what Dyna-Q+ changes, and how you would make the shortcut condition discriminate.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "sb-example-8-3-shortcut",
+        "sb-dyna-q-plus"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a6",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the unit's definitions",
+      "instructions": "From memory: what a model is and what planning is in Sutton and Barto's sense; the Q-learning update with a cost per move; what each change tests and its discriminating observation; why averages dilute; the two-step task's predictions after a rare rewarded transition.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "sb-8-1-models-planning"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
+  ],
+  "exerciseIds": [
+    "COG-250-u01-ex1",
+    "COG-250-u01-ex2",
+    "COG-250-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 2 accepted: the three conditions reported with their seed and compared with saved predictions, the discriminating observation named for each (none for the shortcut, with the reason), the dilution by averaging explained, and a discriminating variant proposed with predictions.",
+    "exerciseId": "COG-250-u01-ex2"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A planner will always find a new shortcut, because it plans.",
+      "correction": "A planner plans on its model. If its model says the door is a wall and it never tests the wall, the shortcut does not exist for it. Sutton and Barto's Dyna-Q, a planning agent, never switches to the shortcut either; the book's remedy, Dyna-Q+, adds an exploration bonus for transitions not tried for a long time.",
+      "correctionLocatorIds": [
+        "sb-example-8-3-shortcut",
+        "sb-dyna-q-plus"
+      ]
+    },
+    {
+      "claim": "The strategy that takes fewer moves on average after a change is the one that planned.",
+      "correction": "Averages over episodes after a change mix the discriminating first episode with later ones in which a cached policy has partly relearned. The first decision after a revaluation, or the first encounter with a block, carries the evidence.",
+      "correctionLocatorIds": [
+        "sb-model-free-vs-model-based"
+      ]
+    },
+    {
+      "claim": "Sutton and Barto's blocking and shortcut mazes compare a planner with a model-free learner.",
+      "correction": "They compare Dyna-Q with Dyna-Q+, two agents that both learn a model and plan, and their figures plot cumulative reward. The laboratory's known-map planner against a cached policy is this unit's own construction.",
+      "correctionLocatorIds": [
+        "sb-example-8-2-blocking",
+        "sb-example-8-3-shortcut"
+      ]
+    },
+    {
+      "claim": "Tolman showed that rats take shortcuts.",
+      "correction": "The words 'short cut' and 'shortcut' do not occur in Tolman (1948). The relevant evidence is the spatial orientation section: rats running directly across the top of the maze to the goal, and the sun-burst test in which the trained route was blocked and radiating paths added.",
+      "correctionLocatorIds": [
+        "tolman-spatial-orientation"
+      ]
+    }
+  ],
+  "estimatedMinutes": 330,
+  "status": "ready",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Every cited locator belongs to a source record verified on 2026-10-31: Sutton and Barto (2nd ed., RLbook2020.pdf) sections 6.5, 8.1 to 8.4 and 14.4 to 14.6 text-extracted; Daw et al. (2011) Behavior section, Figures 1 and 2 and the methods read on the PMC author manuscript; Tolman (1948) spatial orientation section read in full on the host's transcription."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Re-derived and checked against packages/core/src/labs/planning.ts: shortest paths 8, 16, 16, 8 and 8 by breadth-first search; the planner's 25-move first episode after the block (one bump) and 16 thereafter; the fixed decrement Q(up) ← Q(up) − alpha while up is greedy, giving 5 bumps at alpha 0.5 and 21 at alpha 0.1 with ties to up; P(left) = 0.1 × 1/4 = 0.025. Laboratory values in the instructor files were recomputed at seed 1."
+    },
+    {
+      "name": "information-contract",
+      "result": "pass",
+      "evidence": "The laboratory shows the transfer test's ten points before any result; exercise 2 states them before any number; exercise 3 requires a contract for any proposed predictive comparison."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson describes the routes and each change's logic without counting moves or bumps or giving the planner's episode counts; exercise answers and laboratory values appear only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "100 minutes of preparation and 230 minutes of activities, about 5.5 hours: under one week at the 7 to 10 hours per week budget, which leaves room for revision."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": [
+    "COG-250-u01-ex1.reference-solution.md",
+    "COG-250-u01-ex1.grading-notes.md",
+    "COG-250-u01-ex2.reference-solution.md",
+    "COG-250-u01-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
+}

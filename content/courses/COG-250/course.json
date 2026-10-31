@@ -1,0 +1,141 @@
+{
+  "id": "COG-250",
+  "version": 2,
+  "title": "Planning and Structured Cognition",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "advanced",
+  "position": "Core/advanced Mind, Brain and AI pathway",
+  "launch": false,
+  "purpose": "A core course in the Mind, Brain and AI programme. Search and planning, hierarchical and compositional representations, causal reasoning, structured and program-like hypotheses, analogy and relational reasoning, resource-rational and bounded-rational accounts, generalisation and transfer, and how to tell an observed result from the strategy that produced it.",
+  "description": "How minds represent structure and solve problems across several steps. Unit 1 is prepared: a model-based planner and a cached policy compared on a grid after three kinds of change, with a laboratory. Units 2 to 8 are outlined; units 6 and 7 wait for verified sources.",
+  "outcomes": [
+    {
+      "id": "o1",
+      "description": "State planning and cached-value strategies precisely enough to compute their behaviour, and predict how each responds to a change in the world.",
+      "evidenceExpected": "Hand calculations and laboratory results with saved predictions."
+    },
+    {
+      "id": "o2",
+      "description": "Name the observation that distinguishes two strategies in a design, or show that none does, and design one that would.",
+      "evidenceExpected": "Written analyses of transfer conditions and of the two-step task."
+    },
+    {
+      "id": "o3",
+      "description": "Keep observed results apart from the strategies and structures proposed to explain them, in reading and in writing.",
+      "evidenceExpected": "Seminar contributions that label each claim and find unsupported steps."
+    }
+  ],
+  "prerequisiteRuleIds": [
+    "COG-250-probability"
+  ],
+  "recommendedConceptIds": [
+    "probability-measure-theoretic",
+    "reinforcement-learning-td"
+  ],
+  "teachesConceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation",
+    "method-longitudinal-transfer-evaluation",
+    "method-scientific-argument"
+  ],
+  "primarySourceIds": [
+    "sutton-barto-rl-2e"
+  ],
+  "supplementalSourceIds": [
+    "daw-2011-model-based-influences",
+    "huys-2012-bonsai-trees",
+    "tolman-1948-cognitive-maps",
+    "gershman-cfcn",
+    "probmods-v2"
+  ],
+  "unitIds": [
+    "COG-250-u01",
+    "COG-250-u02",
+    "COG-250-u03",
+    "COG-250-u04",
+    "COG-250-u05",
+    "COG-250-u06",
+    "COG-250-u07",
+    "COG-250-u08"
+  ],
+  "assessmentSpecs": [
+    {
+      "id": "a1",
+      "title": "Problem sets",
+      "kind": "problem_set",
+      "description": "Hand calculations of planning and learning behaviour on small, fully specified tasks, submitted as immutable attempts with line-localised feedback; revision is expected.",
+      "weight": 0.35,
+      "rubricSummary": [
+        "the strategy stated exactly",
+        "every move and update traced",
+        "ties and costs handled as specified"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Laboratory reports",
+      "kind": "lab_report",
+      "description": "Predictions saved before each run, results with their seeds, the discriminating observation named for each condition, and a stated information contract for any transfer test.",
+      "weight": 0.35,
+      "rubricSummary": [
+        "predictions before results",
+        "the discriminating observation, not a convenient average",
+        "non-discrimination reported as a result"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Seminar contributions",
+      "kind": "written_explanation",
+      "description": "Short written analyses that separate results from proposed strategies and propose observations that would decide between them.",
+      "weight": 0.3,
+      "rubricSummary": [
+        "results and mechanisms kept apart",
+        "unsupported steps identified",
+        "a discriminating design proposed"
+      ]
+    }
+  ],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 55,
+    "maximum": 80
+  },
+  "readiness": "source_verified",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "Unit 1 hand-authored on 2026-10-31 from the Sutton and Barto, Daw et al. (2011) and Tolman (1948) records and the course's planning laboratory; every number in the unit was recomputed with the laboratory code at seed 1. Units 2 to 8 are outlines that cite verified sources where they exist.",
+    "verifiedAt": "2026-10-31",
+    "reviewerNotes": [
+      "Sutton and Barto's blocking and shortcut mazes compare Dyna-Q with Dyna-Q+; the laboratory's known-map planner against a cached policy is the unit's own construction and is described as such.",
+      "Tolman (1948) is reference-only: its public-domain status rests on the host's report of what APA officials told it.",
+      "Daw et al. (2011) is cited from the PMC author manuscript and cannot be imported, because PMC forbids automated downloading.",
+      "Units 6 and 7 have no verified source yet; causal learning is prepared in COG-201 and is not duplicated."
+    ]
+  },
+  "modesOffered": [
+    "enrolled",
+    "audit",
+    "reading_seminar"
+  ],
+  "centralQuestion": "How do minds represent structure and solve problems across several steps?",
+  "prerequisiteGuidance": "Comfort with probability and with the idea of a model that makes predictions. Reinforcement-learning basics help but are introduced where needed; a targeted bridge, not a whole preceding course.",
+  "preparationPath": "Unit 1 is prepared: planning strategies compared after changes to the world, with a laboratory. Units 2 to 5 and 8 are outlined with verified sources and are prepared in order; units 6 and 7 wait for sources.",
+  "plannedActivities": [
+    "Compare two planning strategies on a controlled task with an explicit state space and test what happens in a transfer condition, explaining which observations distinguish the strategies."
+  ],
+  "sourceCandidates": [
+    {
+      "name": "Sources on hierarchical and compositional representations",
+      "note": "Lead only, for unit 6; to be requested through the library."
+    },
+    {
+      "name": "Sources on analogy and relational reasoning",
+      "note": "Lead only, for unit 7; to be requested through the library."
+    }
+  ],
+  "convenorPersonaId": "dev-anantharaman",
+  "tutorPersonaId": "dev-anantharaman"
+}

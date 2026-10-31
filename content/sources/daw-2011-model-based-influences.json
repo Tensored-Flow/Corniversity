@@ -1,0 +1,182 @@
+{
+  "id": "daw-2011-model-based-influences",
+  "title": "Model-based influences on humans' choices and striatal prediction errors",
+  "authors": [
+    "Nathaniel D. Daw",
+    "Samuel J. Gershman",
+    "Ben Seymour",
+    "Peter Dayan",
+    "Raymond J. Dolan"
+  ],
+  "institution": "Neuron (Elsevier); author manuscript deposited in PubMed Central",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1016/j.neuron.2011.02.027",
+  "description": "Empirical paper. Seventeen adults performed a 201-trial two-stage Markov decision task during fMRI: a first-stage choice leads to one of two second-stage states with fixed 70 percent common transitions, and second-stage options pay money with probabilities that drift as Gaussian random walks between .25 and .75. Model-free reinforcement predicts only a main effect of the previous reward on repeating the first-stage choice; model-based evaluation predicts a reward-by-transition interaction. Choices showed both. A hybrid of model-based learning and SARSA(lambda), weighted by a free parameter w, was fitted per subject by maximum likelihood and compared with nested models; ventral striatal BOLD reflected both model-free and model-based predictions.",
+  "rightsNotes": [
+    "PMC article page and PMC JATS XML: 'Open Access under CC BY 3.0 license.' (link https://creativecommons.org/licenses/by/3.0/). Header: 'Neuron. Author manuscript; available in PMC: 2012 Mar 24. Published in final edited form as: Neuron. 2011 Mar 24;69(6):1204-1215.' Footnote: 'Publisher's Disclaimer: This is a PDF file of an unedited manuscript that has been accepted for publication.'",
+    "Crossref metadata for the DOI lists http://creativecommons.org/licenses/by/3.0/ for the version of record (from 2013-07-16) and the Elsevier user licence for text-and-data mining. The publisher's page (cell.com, via linkinghub.elsevier.com) returned HTTP 403, so the publisher's own statement was not seen.",
+    "The PMC Copyright Notice forbids systematic or automated downloading from the PMC web site except through its OAI-PMH, FTP and Cloud services. importAllowed is therefore false although the stated licence would permit copying; enabling import would need one of those services (not checked)."
+  ],
+  "currentVersionId": "daw-2011-pmc-am",
+  "versions": [
+    {
+      "id": "daw-2011-pmc-am",
+      "label": "Author manuscript NIHMS280176 in PubMed Central, PMC3077926 (available in PMC 24 March 2012); published in final edited form as Neuron 69(6):1204-1215, 24 March 2011",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the PMC article page and its JATS XML through NCBI E-utilities, the Crossref record and the PMC Copyright Notice; the publisher page and the supplement could not be opened",
+      "componentsSeen": [
+        "PMC page: header, licence line, NIHMSID NIHMS280176, PMID 21435563, anchors abstract1, S1-S10, F1, F2, T1, T2, supplement link",
+        "PMC JATS XML: metadata (volume 69, issue 6, pages 1204-1215), permissions, summary, section structure",
+        "Read in full: Behavior (S3), Participants and behavioral task (S7), Behavioral analyses (S8), Computational model of behavior (S9), Behavioral estimation (S10), Figure 1 and Figure 2 captions, Table 1"
+      ],
+      "licence": "CC BY 3.0 ('Open Access under CC BY 3.0 license.' on the PMC page)",
+      "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "The version of record was not seen (publisher page HTTP 403); the PMC text is the accepted author manuscript.",
+        "The full model equations are in the Supplemental Experimental Procedures (NIHMS280176-supplement-01.pdf), which was not opened: PMC served a 'Preparing to download' script page and Europe PMC returned HTTP 403.",
+        "Parameter p (prior Normal(0,1); median 0.11 in Table 1) is defined in the supplement; its definition was not verified.",
+        "Introduction, Neuroimaging results, Discussion and fMRI methods were not read.",
+        "Import is blocked by the PMC website's ban on automated downloading, not by the licence."
+      ],
+      "locators": [
+        {
+          "id": "daw-summary",
+          "label": "Summary (abstract)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Summary",
+            "fragment": "abstract1"
+          }
+        },
+        {
+          "id": "daw-behavior",
+          "label": "Results, Behavior: task logic; model-free versus model-based predictions after a rare transition; stay-probability regression; hybrid model fits (median model-based weight; lambda); model comparison",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Behavior",
+            "fragment": "S3"
+          }
+        },
+        {
+          "id": "daw-figure-1",
+          "label": "Figure 1: trial timeline and state transition structure (each first-stage choice leads to its common second-stage state 70% of the time)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Figure 1",
+            "fragment": "F1"
+          }
+        },
+        {
+          "id": "daw-figure-2",
+          "label": "Figure 2: stay probabilities by previous reward and transition type: model-free and model-based predictions and the data",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Figure 2",
+            "fragment": "F2"
+          }
+        },
+        {
+          "id": "daw-table-1",
+          "label": "Table 1: best-fitting parameters (beta1, beta2, alpha1, alpha2, lambda, p, w) with -LL and pseudo-r2, median and quartiles",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Table 1",
+            "fragment": "T1"
+          }
+        },
+        {
+          "id": "daw-table-2",
+          "label": "Table 2: model comparisons between the hybrid model and its special cases",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Table 2",
+            "fragment": "T2"
+          },
+          "note": "Caption seen; table body not read."
+        },
+        {
+          "id": "daw-task",
+          "label": "Two-step task description: 201 trials in three blocks of 67; transitions; drifting reward probabilities; instructions and practice",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Participants and behavioral task",
+            "fragment": "S7"
+          }
+        },
+        {
+          "id": "daw-behavioral-analyses",
+          "label": "Behavioral analyses: multilevel logistic regression of stay versus switch on previous reward, transition type and their interaction",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Behavioral analyses",
+            "fragment": "S8"
+          }
+        },
+        {
+          "id": "daw-model",
+          "label": "Computational model of behavior: hybrid of model-based RL and SARSA(lambda) weighted by w (equations in the supplement)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Computational model of behavior",
+            "fragment": "S9"
+          }
+        },
+        {
+          "id": "daw-estimation",
+          "label": "Behavioral estimation: per-subject maximum likelihood; likelihood-ratio tests; Laplace-approximated evidence with stated priors; random-effects model selection",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3077926/",
+            "heading": "Behavioral estimation",
+            "fragment": "S10"
+          }
+        },
+        {
+          "id": "daw-supplement",
+          "label": "Supplemental Experimental Procedures (full model equations, per Section S9)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "daw-2011-pmc-am",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/3077926/bin/NIHMS280176-supplement-01.pdf",
+            "heading": "Supplemental Experimental Procedures"
+          },
+          "note": "Not opened: PMC returned a 'Preparing to download' script page."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "CSA-310",
+  "version": 1,
+  "title": "Interpretability",
+  "departmentIds": [
+    "computer-science-ai"
+  ],
+  "level": "advanced",
+  "position": "Optional advanced elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional advanced elective). Methods for understanding learned representations and mechanisms, and what each method actually supports; an attractive visualisation or a plausible verbal story is not a mechanistic explanation.",
+  "description": "Proposed course: Interpretability. Central question: What do interpretability methods actually establish about a learned model? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "What do interpretability methods actually establish about a learned model?",
+  "prerequisiteGuidance": "CSA-210 Deep Learning Foundations (at least its representation units) and enough programming to train a small model.",
+  "preparationPath": "Resolve primary sources for two contrasting method families (for example probing and causal intervention) with stated limitations; prepare a first unit on a modest model.",
+  "plannedActivities": [
+    "Apply or analyse two interpretability methods on a modest model and compare their conclusions, limitations and robustness."
+  ],
+  "sourceCandidates": []
+}

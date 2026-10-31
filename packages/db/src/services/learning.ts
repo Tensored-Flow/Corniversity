@@ -17,6 +17,7 @@ import {
   teachingUnit,
   unitExercise,
 } from "../schema/index";
+import { markDeadlinesMet } from "./study";
 
 export type LearningSessionRow = typeof learningSession.$inferSelect;
 export type AttemptRow = typeof attempt.$inferSelect;
@@ -294,6 +295,7 @@ export async function submitAttempt(
     assessmentRunId: run.id,
   });
   await enqueue(db, { queue: QUEUES.assessSubmission, kind: "assess-submission", payload });
+  await markDeadlinesMet(db, input.ownerId, a.exerciseId);
   await db.insert(auditEvent).values({
     ownerId: input.ownerId,
     actor: "learner",

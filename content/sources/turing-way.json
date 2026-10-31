@@ -1,0 +1,93 @@
+{
+  "id": "turing-way",
+  "title": "The Turing Way",
+  "authors": [
+    "The Turing Way Community"
+  ],
+  "kind": "book",
+  "canonicalUrl": "https://book.the-turing-way.org/",
+  "description": "'Welcome to The Turing Way handbook to reproducible, ethical and collaborative data science.' Open, community-written handbook not meant to be read start to finish, with Pathways, five guides (Reproducible Research; Project Design; Communication; Collaboration; Ethical Research) and a Community Handbook. The Guide for Reproducible Research has chapters on Overview (with Definitions), Open Research (including Open Notebooks), Version Control, Licensing, Research Data Management, Reproducible Environments, BinderHub, Code Documentation, Code Quality, Code Testing, Code Reviewing Process, Reusable Code, Continuous Integration, Reproducible Research with Make, Research Compendia, Risk Assessment and Case Studies. The Guide for Project Design covers scoping and planning (a Getting Started Checklist, project management frameworks, project repositories), stakeholders, information management, data security and governance, missing data handling and risks of bias.",
+  "codeLicence": "MIT License ('Code License: MIT License (MIT)', site footer, 2026-10-31)",
+  "rightsNotes": [
+    "Footer of every page opened (2026-10-31): 'Content License: Creative Commons Attribution 4.0 International (CC-BY-4.0)' with 'Credit must be given to the creator'; 'Code License: MIT License (MIT)'.",
+    "Illustrations are by Scriberia and credited as used under CC BY 4.0 ('The Turing Way project illustration by Scriberia. Used under a CC-BY 4.0 licence.'); the landing page cites them as 'Illustrations from The Turing Way: Shared under CC-BY 4.0 for reuse', Zenodo, doi 10.5281/zenodo.3332807 (that DOI is for the illustrations, not the book).",
+    "Corniversity credits 'The Turing Way Community' on any unit that uses the handbook."
+  ],
+  "currentVersionId": "turing-way-web-2026",
+  "versions": [
+    {
+      "id": "turing-way-web-2026",
+      "label": "Online handbook, rolling community publication (MyST build; no version number shown; viewed 2026-10-31)",
+      "url": "https://book.the-turing-way.org/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the landing page, the Guide for Reproducible Research (chapter list), Overview of Reproducible Research, Definitions, Open Research, Open Notebooks, the Guide for Project Design and its Getting Started Checklist",
+      "componentsSeen": [
+        "landing page: welcome sentence, list of guides, licence footer, illustration credit",
+        "Guide for Reproducible Research: chapter list with paths (/reproducible-research/overview ... /reproducible-research/case-studies)",
+        "Overview of Reproducible Research: Prerequisites, Summary (why reproducibility matters; mentions sharing negative results, 'helping avoid other researchers wasting time repeating analyses')",
+        "Definitions: 'A result is reproducible when the same analysis steps performed on the same dataset consistently produces the same answer.'; replicable, robust and generalisable defined in the same table; 'Reproducible But Not Open'",
+        "Open Research (sub-chapters Open Data, Open Source Software, Open Hardware, Open Access, Open Notebooks, Open Scholarship, Checklist, Resources) and Open Notebooks (open lab-notebook practice, 'make open what you can')",
+        "Guide for Project Design (introduction mentions 'preregistration of research protocols'; chapter list) and Getting Started Checklist (Aims & Values, Timeline & Milestones, Methodology, Operations, Stakeholders, Community, Outputs, Communications, Maintenance & Archiving, Reporting & Evaluation; mentions data management plans)"
+      ],
+      "licence": "CC BY 4.0 (content); MIT (code)",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "book.the-turing-way.org"
+      ],
+      "limitations": [
+        "No preregistration chapter: the Guide for Project Design names 'preregistration of research protocols' only in its introduction, and the Getting Started Checklist does not mention preregistration or negative results. Preregistration-style planning comes from cruwell-evans-2021.",
+        "No chapter on Jupyter notebooks as such: 'Open Notebooks' concerns open lab-notebook practice; notebook reproducibility falls under Reproducible Environments, BinderHub and Research Compendia, which were seen in the chapter list but not opened.",
+        "Negative results and limitations sections are mentioned only in passing; there is no dedicated chapter.",
+        "Rolling, community-edited publication without a version stamp; page paths observed on 2026-10-31.",
+        "Only the pages listed were opened; other chapters are known from the chapter lists."
+      ],
+      "locators": [
+        {
+          "id": "tw-home",
+          "label": "Landing page: guides, licence footer",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "turing-way-web-2026",
+            "url": "https://book.the-turing-way.org/",
+            "heading": "The Turing Way"
+          }
+        },
+        {
+          "id": "tw-rr-guide",
+          "label": "Guide for Reproducible Research: chapter list",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "turing-way-web-2026",
+            "url": "https://book.the-turing-way.org/reproducible-research/reproducible-research",
+            "heading": "Guide for Reproducible Research"
+          }
+        },
+        {
+          "id": "tw-definitions",
+          "label": "Definitions: reproducible, replicable, robust and generalisable results",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "turing-way-web-2026",
+            "url": "https://book.the-turing-way.org/reproducible-research/overview/overview-definitions",
+            "heading": "Table of Definitions for Reproducibility"
+          }
+        },
+        {
+          "id": "tw-pd-checklist",
+          "label": "Guide for Project Design: Getting Started Checklist",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "turing-way-web-2026",
+            "url": "https://book.the-turing-way.org/project-design/pd-overview/pd-checklist",
+            "heading": "Getting Started Checklist"
+          }
+        }
+      ]
+    }
+  ]
+}

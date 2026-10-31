@@ -7,6 +7,7 @@ import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { catchUpAction, createCalendarLinkAction, decideProposalAction, revokeCalendarLinksAction } from "./actions";
+import { Obligations } from "./Obligations";
 import { SessionActions } from "./SessionActions";
 
 export const metadata = { title: "Timetable" };
@@ -78,6 +79,11 @@ export default async function TimetablePage({
           <p className="mt-1 text-sm text-ink-2">
             Plan version {tt.plan.version} · {zone} · {(tt.plan.summary.plannedMinutes / 60).toFixed(0)} hours planned
           </p>
+          <p className="mt-1 max-w-prose text-xs text-ink-3">
+            These are study appointments: when you intend to read, attend a tutorial or try a problem. Missing one has no academic
+            consequence.
+            {tt.term.mode === "rolling" ? " Rolling study has no completion date." : ""}
+          </p>
         </div>
         <nav aria-label="Timetable views" className="flex gap-2 text-sm">
           {(["week", "agenda", "term"] as const).map((v) => (
@@ -113,8 +119,8 @@ export default async function TimetablePage({
       ) : null}
 
       {proposals.length > 0 ? (
-        <section className="mb-6 flex flex-col gap-3" aria-labelledby="proposals">
-          <h2 id="proposals" className="text-lg text-ink">
+        <section id="proposals" className="mb-6 flex flex-col gap-3" aria-labelledby="proposals-heading">
+          <h2 id="proposals-heading" className="text-lg text-ink">
             Proposed changes awaiting your decision
           </h2>
           {proposals.map((p) => (
@@ -327,6 +333,8 @@ export default async function TimetablePage({
           ) : null}
         </section>
       ) : null}
+
+      <Obligations ownerId={session.user.id} zone={zone} term={tt.term} />
 
       <section className="mt-10" aria-labelledby="calendar-heading">
         <h2 id="calendar-heading" className="text-lg text-ink">

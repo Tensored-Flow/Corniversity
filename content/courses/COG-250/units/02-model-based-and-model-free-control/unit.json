@@ -1,0 +1,85 @@
+{
+  "id": "COG-250-u02",
+  "courseId": "COG-250",
+  "sequence": 2,
+  "title": "Model-based and model-free control in people: the two-step task",
+  "summary": "The two-step task's transition structure; stay probabilities by previous reward and transition type as the model-independent measure; a hybrid model weighting model-based and model-free values; per-subject maximum-likelihood estimation and model comparison.",
+  "objectives": [
+    {
+      "id": "u02-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "choice-learning-models"
+  ],
+  "teachesConceptIds": [
+    "planning-model-based-vs-cached"
+  ],
+  "preparation": [
+    {
+      "description": "Read the participants and task section of Daw et al. (2011).",
+      "locatorId": "daw-task",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the Behavior section: the task logic and the predictions after a rare transition.",
+      "locatorId": "daw-behavior",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Study Figure 2: stay probabilities by reward and transition, predictions and data.",
+      "locatorId": "daw-figure-2",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the computational model of behaviour: the hybrid weighted by w.",
+      "locatorId": "daw-model",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the behavioural estimation section.",
+      "locatorId": "daw-estimation",
+      "estimatedMinutes": 15
+    }
+  ],
+  "activities": [
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Reading: Model-based and model-free control in people: the two-step task",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "daw-task",
+        "daw-behavior",
+        "daw-figure-2",
+        "daw-model",
+        "daw-estimation"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Daw et al. (2011) locators belong to the record verified on 2026-10-31 from the PMC author manuscript; the supplement with the full model equations was not opened."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

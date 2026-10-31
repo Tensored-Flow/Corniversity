@@ -1,0 +1,64 @@
+{
+  "id": "psych-101",
+  "title": "Psych-101",
+  "authors": [
+    "Marcel Binz and co-authors of the Centaur paper (dataset card citation; point of contact Marcel Binz)"
+  ],
+  "institution": "Hugging Face dataset repository marcelbinz/Psych-101",
+  "kind": "dataset",
+  "canonicalUrl": "https://huggingface.co/datasets/marcelbinz/Psych-101",
+  "description": "'A data set of natural language transcripts from human psychological experiments': trial-by-trial data from 160 experiments and 60,092 participants making 10,681,650 choices, one row per participant, with human choices marked by '<<' and '>>' tokens. Training data for Centaur (record binz-centaur-2025).",
+  "rightsNotes": [
+    "Dataset card metadata: license 'apache-2.0'; Licensing Information section: 'Apache License 2.0'. No further terms of use are stated.",
+    "The terms attached to the 160 original experiments' data were not checked; the card states only the Apache-2.0 licence for the transcribed dataset.",
+    "The held-out test set (marcelbinz/Psych-101-test) is a separate gated repository under 'cc-by-nd-4.0' with the instruction 'Do not redistribute outside of this repository'. It is not part of this record and is not accessed."
+  ],
+  "currentVersionId": "psych-101-hf-2026-10-31",
+  "versions": [
+    {
+      "id": "psych-101-hf-2026-10-31",
+      "label": "Hugging Face dataset as listed on 2026-10-31 (one 'train' split, 60,092 rows, 859 MB; no version tag shown)",
+      "url": "https://huggingface.co/datasets/marcelbinz/Psych-101",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the dataset card marcelbinz/Psych-101 and the card of the gated test set marcelbinz/Psych-101-test",
+      "componentsSeen": [
+        "dataset card: description, size category 10K-100K, 60,092 rows, 859 MB, one subset and one train split, Apache-2.0 licence, BibTeX citation of arXiv 2410.20268",
+        "test-set card: gated ('You need to agree to share your Hugging Face information to access this dataset'), licence cc-by-nd-4.0"
+      ],
+      "licence": "Apache-2.0 (dataset card)",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "No data files were downloaded or inspected; contents are described from the card and the paper.",
+        "About 859 MB; a Corniversity exercise should use a small, labelled sample rather than the whole set. Hugging Face may serve file downloads from additional content hosts not listed here.",
+        "No immutable revision id was recorded; the repository can change.",
+        "Not importable here (Corniversity decision, 2026-10-31): the dataset is about 859 MB, so fetching it would be a bulk download, which needs the owner's decision; the library's importer handles PDF locators only."
+      ],
+      "locators": [
+        {
+          "id": "psych101-card",
+          "label": "Dataset card (description, licence, citation)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "psych-101-hf-2026-10-31",
+            "url": "https://huggingface.co/datasets/marcelbinz/Psych-101",
+            "heading": "marcelbinz/Psych-101"
+          }
+        },
+        {
+          "id": "psych101-test-card",
+          "label": "Gated test-set card (licence and redistribution condition)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "psych-101-hf-2026-10-31",
+            "url": "https://huggingface.co/datasets/marcelbinz/Psych-101-test",
+            "heading": "marcelbinz/Psych-101-test"
+          }
+        }
+      ]
+    }
+  ]
+}

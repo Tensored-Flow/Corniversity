@@ -7,12 +7,14 @@ import { AiLabel, Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
 import { requireSession } from "@/lib/session";
+import { decideProposalAction } from "../timetable/actions";
 import { DirectorPanel } from "./DirectorPanel";
 
 export const metadata = { title: "Director of Studies" };
 
-export default async function DirectorPage() {
+export default async function DirectorPage({ searchParams }: { searchParams: Promise<{ proposed?: string }> }) {
   const session = await requireSession("/director");
+  const flash = await searchParams;
   const profile = await ensureProfile(db(), session.user.id);
   const [personas, enrolments, proposals] = await Promise.all([
     listPersonas(db()),
@@ -64,6 +66,9 @@ export default async function DirectorPage() {
           </Card>
           <Card as="aside">
             <h2 className="text-lg text-ink">Proposals</h2>
+            {flash.proposed === "programme" ? (
+              <p className="mt-1 text-xs text-moss">The director drafted a route for the programme; confirm or reject it below.</p>
+            ) : null}
             {proposals.length === 0 ? (
               <p className="mt-2 text-sm text-ink-2">
                 None open. Changes the director suggests become drafts here, and on the timetable page, for you to confirm or reject.
@@ -73,6 +78,27 @@ export default async function DirectorPage() {
                 {proposals.map((p) => (
                   <li key={p.id} className="rounded-[var(--radius-control)] border border-stone bg-paper p-2">
                     <Badge tone="brass">{p.kind}</Badge> <span className="text-ink">{p.title}</span>
+                    <p className="mt-1 text-xs text-ink-2">{p.rationale}</p>
+                    <form action={decideProposalAction} className="mt-2 flex gap-2">
+                      <input type="hidden" name="proposalId" value={p.id} />
+                      <input type="hidden" name="returnTo" value="/director" />
+                      <button
+                        type="submit"
+                        name="decision"
+                        value="confirmed"
+                        className="rounded-[var(--radius-control)] bg-brass px-3 py-1 text-xs text-paper-2 hover:bg-brass-strong"
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        type="submit"
+                        name="decision"
+                        value="rejected"
+                        className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1 text-xs hover:bg-paper-3"
+                      >
+                        Reject
+                      </button>
+                    </form>
                   </li>
                 ))}
               </ul>

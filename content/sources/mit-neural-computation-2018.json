@@ -1,0 +1,91 @@
+{
+  "id": "mit-neural-computation-2018",
+  "title": "9.40 Introduction to Neural Computation (Spring 2018)",
+  "authors": [
+    "Michale Fee",
+    "Daniel Zysman"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/",
+  "description": "Undergraduate MIT Brain and Cognitive Sciences course that 'introduces quantitative approaches to understanding brain and cognitive functions': ionic currents, RC circuit and Nernst potential, integrate-and-fire and Hodgkin-Huxley models, dendrites, synapses, spike trains, receptive fields, time series and spectral analysis, rate models and perceptrons, matrix operations, basis sets, principal components analysis, recurrent networks, neural integrators and Hopfield networks. OCW publishes the syllabus, 20 lecture-note PDFs, 20 lecture videos, problem sets and exam study guides.",
+  "rightsNotes": [
+    "The course page links its Creative Commons licence to https://creativecommons.org/licenses/by-nc-sa/4.0/ (CC BY-NC-SA 4.0); the OCW terms of use apply. Corniversity is private and non-commercial; attribution and share-alike apply to adaptations.",
+    "Third-party images or clips inside the slides and videos were not audited; OCW notes that external sites have their own terms."
+  ],
+  "currentVersionId": "mit-9-40-s18",
+  "versions": [
+    {
+      "id": "mit-9-40-s18",
+      "label": "Spring 2018 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the course home, syllabus, lecture-notes index, lecture-videos gallery, the Lecture 1 notes resource page and the Lecture 4 video page",
+      "componentsSeen": [
+        "course home: instructors Prof. Michale Fee and Daniel Zysman, undergraduate level, description, resource types (Lecture Notes, Lecture Videos, Problem Sets), licence link",
+        "syllabus: prerequisites Physics II (8.02, 8.021 or 8.022), 6.0002 and 9.01 Introduction to Neuroscience, or permission of the instructor; seven homework assignments; homework 50%, two midterms 15% each, final 20%; MATLAB 2017b required; sessions L1 'Course Overview and Ionic Currents' to L21 'Sequence Generation in Songbirds', with recitations",
+        "lecture-notes index: 20 PDFs from Lecture 1 'Overview and Ionic Currents' to Lecture 20 'Hopfield Networks'",
+        "lecture-videos gallery: 20 videos; the Lecture 4 page ('Hodgkin-Huxley Model Part 1': circuit diagram, voltage clamp, potassium current) has an in-page player, an archive.org MP4 download and a transcript download"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Problem sets and course code assume MATLAB 2017b, which OCW does not provide; Corniversity labs would be reimplemented in Python.",
+        "The syllabus lists 21 sessions but the published notes and videos stop at Lecture 20.",
+        "Lecture notes are slide PDFs whose text was not extracted, so only resource-page locators exist; videos were not watched and no timestamps are recorded.",
+        "It is a quantitative course: neuroanatomy and molecular signalling come from neuroscience-online."
+      ],
+      "locators": [
+        {
+          "id": "mit940-home",
+          "label": "Course home (description, resources, licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-9-40-s18",
+            "url": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/",
+            "heading": "Introduction to Neural Computation"
+          }
+        },
+        {
+          "id": "mit940-syllabus",
+          "label": "Syllabus (prerequisites, assessment, MATLAB, session list)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-9-40-s18",
+            "url": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "mit940-notes",
+          "label": "Lecture notes index (20 slide PDFs)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-9-40-s18",
+            "url": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/pages/lecture-notes/",
+            "heading": "Lecture Notes"
+          }
+        },
+        {
+          "id": "mit940-lec01",
+          "label": "Lecture 1 notes: Overview and Ionic Currents (resource page)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-9-40-s18",
+            "url": "https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/resources/mit9_40s18_lec01/",
+            "heading": "Lecture 1: Overview and Ionic Currents"
+          }
+        }
+      ]
+    }
+  ]
+}

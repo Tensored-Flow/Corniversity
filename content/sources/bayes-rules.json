@@ -1,0 +1,91 @@
+{
+  "id": "bayes-rules",
+  "title": "Bayes Rules! An Introduction to Applied Bayesian Modeling",
+  "authors": [
+    "Alicia A. Johnson",
+    "Miles Q. Ott",
+    "Mine Dogucu"
+  ],
+  "kind": "book",
+  "canonicalUrl": "https://www.bayesrulesbook.com/",
+  "description": "Applied Bayesian statistics textbook in R (rstan, rstanarm, bayesplot and the bayesrules package), online edition. Unit I Bayesian Foundations (the Bayesian picture, Bayes' rule, Beta-Binomial model, balance and sequentiality, conjugate families); Unit II Posterior Simulation & Analysis (approximating the posterior, MCMC under the hood, posterior inference and prediction); Unit III Bayesian Regression & Classification (simple normal regression; evaluating regression models with posterior predictive checks, cross-validation and expected log-predictive density; extensions; Poisson and negative binomial; logistic; naive Bayes); Unit IV Hierarchical Bayesian models (complete, no and partial pooling; normal hierarchical models without and with predictors; non-normal hierarchical models; more layers).",
+  "rightsNotes": [
+    "Preface, License section (2026-10-31): 'This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.'",
+    "The home page notes the book is 'now available in print by CRC Press'; the print edition is commercial and was not examined. The preface cautions that some bayesrules package datasets may be biased and are not for rigorous research; the package itself was not audited."
+  ],
+  "currentVersionId": "bayesrules-web-2021-12-01",
+  "versions": [
+    {
+      "id": "bayesrules-web-2021-12-01",
+      "label": "Online edition (build dated 2021-12-01 on the home page)",
+      "url": "https://www.bayesrulesbook.com/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the home page (contents), the preface (licence, audience, software) and Chapters 1, 10 and 15",
+      "componentsSeen": [
+        "home page: title, authors, build date 2021-12-01, contents (Chapters 1-19 in four units), print-edition note",
+        "preface: licence; audience 'familiar with the content covered in a typical undergraduate-level introductory statistics course' with 'some experience with undergraduate-level probability, calculus, and the R statistical software'; software setup (R, RStudio, rstan, bayesrules, rstanarm, tidyverse, bayesplot)",
+        "Chapter 1 The Big (Bayesian) Picture: 1.1 Thinking like a Bayesian; 1.2 A quick history lesson; 1.3 A look ahead; 1.4 Chapter summary; 1.5 Exercises",
+        "Chapter 10 Evaluating Regression Models: 10.1 Is the model fair?; 10.2 How wrong is the model? (posterior predictive checks); 10.3 How accurate are the posterior predictive models? (10.3.2 Cross-validation; 10.3.3 Expected log-predictive density); 10.4 How good is the MCMC simulation vs how good is the model?; exercises; model comparison deferred to Section 11.5",
+        "Chapter 15 Hierarchical Models are Exciting: 15.1 Complete pooling; 15.2 No pooling; 15.3 Hierarchical data; 15.4 Partial pooling with hierarchical models; 15.5 Chapter summary; 15.6 Exercises"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "www.bayesrulesbook.com"
+      ],
+      "limitations": [
+        "Undergraduate applied level ('not written at the graduate level' per the preface); the mathematics is lighter than a mathematically confident learner may want.",
+        "Code and exercises use R and Stan; Corniversity's Python labs need their own implementations.",
+        "Identifiability, parameter recovery and model recovery were not found in the chapters opened; model comparison is introduced through ELPD (10.3.3) and treated in Section 11.5, which was not opened.",
+        "Only Chapters 1, 10 and 15 were opened; the others are known from the contents."
+      ],
+      "locators": [
+        {
+          "id": "br-contents",
+          "label": "Home page: contents (Units I-IV)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "bayesrules-web-2021-12-01",
+            "url": "https://www.bayesrulesbook.com/",
+            "heading": "Bayes Rules! An Introduction to Applied Bayesian Modeling"
+          }
+        },
+        {
+          "id": "br-ch1",
+          "label": "Chapter 1 The Big (Bayesian) Picture",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "bayesrules-web-2021-12-01",
+            "url": "https://www.bayesrulesbook.com/chapter-1",
+            "heading": "Chapter 1 The Big (Bayesian) Picture"
+          }
+        },
+        {
+          "id": "br-ch10-3",
+          "label": "Chapter 10, 10.3 How accurate are the posterior predictive models? (cross-validation, ELPD)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "bayesrules-web-2021-12-01",
+            "url": "https://www.bayesrulesbook.com/chapter-10",
+            "heading": "10.3 How accurate are the posterior predictive models?"
+          }
+        },
+        {
+          "id": "br-ch15",
+          "label": "Chapter 15 Hierarchical Models are Exciting (pooling)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "bayesrules-web-2021-12-01",
+            "url": "https://www.bayesrulesbook.com/chapter-15",
+            "heading": "Chapter 15 Hierarchical Models are Exciting"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "id": "stanford-cs336",
+  "title": "CS336: Language Modeling from Scratch",
+  "authors": [
+    "Tatsunori Hashimoto",
+    "Percy Liang"
+  ],
+  "institution": "Stanford University",
+  "kind": "course",
+  "canonicalUrl": "https://cs336.stanford.edu/",
+  "description": "Stanford's implementation-heavy course on building language models end to end. The Spring 2026 page lists lectures on tokenization, PyTorch and resource accounting, architectures and hyperparameters, attention alternatives and mixture of experts, GPUs and TPUs, kernels and Triton, parallelism, scaling laws, inference, evaluation, data (sources, filtering, deduplication, mixing, synthetic data), mid/post-training (SFT/RLHF), post-training with RLVR, and alignment and multimodality, with five assignments: Basics, Systems, Scaling, Data, and Alignment and Reasoning RL (optional Part 2 on safety alignment such as DPO). Lectures are recorded on a public YouTube playlist; lecture materials are executable Python files (lecture_XX.py) or PDFs in a public GitHub repository; assignment handouts and code are in public GitHub repositories.",
+  "codeLicence": "Assignment code: GitHub labels stanford-cs336/assignment1-basics 'MIT license'; its LICENSE reads 'Copyright 2025 Stanford University' with MIT-style text (read 2026-10-31). The lectures repository shows no LICENSE file.",
+  "rightsNotes": [
+    "The course website shows no licence or copyright notice, and the stanford-cs336/lectures repository (README 'Spring 2026 CS336 lectures') has no LICENSE file (both opened 2026-10-31). Lecture content, slides and handouts are therefore treated as all-rights-reserved and reference-only; the MIT-style licence of the assignment repositories is read as covering their code, not as permission to ingest lecture content.",
+    "AI policy on the course page: prompting LLMs is allowed for low-level programming or high-level conceptual questions, but 'using it directly to solve the problem is prohibited'; students are strongly encouraged to disable AI autocomplete. The Assignment 1 handout repeats this ('Statement on AI tools'). Corniversity's tutor should not solve CS336 assignment problems for the learner.",
+    "Corniversity is not affiliated with Stanford; no Stanford credit or certificate is implied."
+  ],
+  "currentVersionId": "cs336-spring-2026",
+  "versions": [
+    {
+      "id": "cs336-spring-2026",
+      "label": "Spring 2026 offering (course page; Assignment 1 handout 'Version 26.0.3', 'CS336 Staff', 'Spring 2026')",
+      "url": "https://cs336.stanford.edu/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the course page (links, prerequisites wording, schedule), the assignment1-basics repository page and its LICENSE, the lectures repository page, the Assignment 1 handout PDF (text extracted locally with the Corniversity scripts/pdf-dump.ts), and the lecture_01.py and lecture_12.py sources; the interactive lecture trace viewer returned no text",
+      "componentsSeen": [
+        "course page: 'CS336: Language Modeling from Scratch', Spring 2026; instructors Tatsunori Hashimoto and Percy Liang; course assistants; links to the Spring 2025 and Spring 2024 offerings; YouTube playlist; questions in public Slack channels",
+        "prerequisites (verbatim fragments): 'The majority of class assignments will be in Python.'; 'Unlike most other AI classes, students will be given minimal scaffolding.'; 'The amount of code you will write will be at least an order of magnitude greater than for other classes.'; 'We expect students to be able to have a strong familiarity with PyTorch' 'and know basic systems concepts like the memory hierarchy.'; calculus and linear algebra '(e.g. MATH 51, CME 100)'; probability and statistics '(e.g. CS 109 or equivalent)'; machine learning '(e.g. CS221, CS229, CS230, CS124, CS224N)'",
+        "workload: 'Note that this is a 5-unit class. This is a very implementation-heavy class, so please allocate enough time for it.'",
+        "compute: 'If you are following along at home, you can access GPU compute from a cloud provider to complete the assignments.' The page lists Modal (sponsor), Lambda, RunPod, Nebius and Together with pricing links",
+        "schedule: 17 lecture entries (lecture_01-17 as .py or .pdf) and the five assignment releases with GitHub code and handout links",
+        "Assignment 1 handout (47 pages), 'CS336 Assignment 1 (basics): Building a Transformer LM': implement a BPE tokenizer, Transformer LM, cross-entropy loss and AdamW, and the training loop; no torch.nn, torch.nn.functional or torch.optim definitions except torch.nn.Parameter, container classes and the torch.optim.Optimizer base class; 'Low-Resource Tip' boxes (with the staff solution an Apple M4 Max trains a small LM 'in under 5 minutes on Metal GPU (MPS) and about 30 minutes using the CPU'); later problems are budgeted in B200 GPU-hours (e.g. 'Tune the learning rate (2 B200 hrs)')",
+        "lecture_01.py: welcome, why_this_course_exists, current_lm_landscape, what_is_this_program, course_logistics, course_syllabus, tokenization; 'This is a 5-unit class.'; 'Comment from Spring 2024 course evaluation:' 'The entire assignment was approximately the same amount of work as all 5 assignments from CS 224n plus the final project.'; 'No scaffolding code, but we provide unit tests and adapter interfaces to help you check correctness.'",
+        "lecture_12.py (evaluation): what_is_good, perplexity, exam, chat, agentic, pure-reasoning and safety benchmarks, realism, validity, how_to_think_about_evaluation; train-test overlap routes ('Route 3: use fresh evals', 'Route 4: use private evals'); contrasts in-distribution test splits with zero-shot, out-of-distribution evaluation on standard datasets; 'Evaluating agents = evaluating agent scaffold + language model'"
+      ],
+      "licence": "No licence stated for course content (all rights reserved by default); assignment code under an MIT-style licence",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Advanced route only: it presupposes proficient Python and software engineering, strong PyTorch and basic systems knowledge, calculus, linear algebra, probability and statistics, and prior machine-learning and deep-learning courses.",
+        "Workload is stated only as '5-unit' and 'very implementation-heavy', plus the Spring 2024 evaluation comment quoted in lecture 1; no hours-per-week figure is given.",
+        "Compute: later assignments are budgeted in B200 GPU-hours on the course cluster; a self-learner must rent cloud GPUs (the page links providers' pricing) or use the handouts' low-resource CPU/Apple Silicon settings. Costs were not estimated.",
+        "Lecture videos were not opened or watched; lecture sources were read on GitHub because the trace viewer at cs336.stanford.edu/lectures/ returned no text to the fetcher.",
+        "Only the Assignment 1 handout was read; Assignments 2-5 were seen as links only. The optional Assignment 5 Part 2 linked from the 2026 page is a Spring 2025 file (cs336_spring2025_assignment5_supplement_safety_rlhf.pdf).",
+        "Executable lecture files are code with embedded notes, not prose lecture notes."
+      ],
+      "locators": [
+        {
+          "id": "cs336-page",
+          "label": "Course page: prerequisites, coursework and schedule (Spring 2026)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cs336-spring-2026",
+            "url": "https://cs336.stanford.edu/",
+            "heading": "CS336: Language Modeling from Scratch"
+          }
+        },
+        {
+          "id": "cs336-a1-overview",
+          "label": "Assignment 1 handout, 1 Assignment Overview (what you will implement, what you can use, statement on AI tools)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "cs336-spring-2026",
+            "url": "https://raw.githubusercontent.com/stanford-cs336/assignment1-basics/main/cs336_assignment1_basics.pdf",
+            "fileLabel": "cs336_assignment1_basics.pdf (Version 26.0.3)",
+            "physicalPageIndex": 0,
+            "printedPageLabel": "1",
+            "sectionLabel": "1 Assignment Overview"
+          }
+        },
+        {
+          "id": "cs336-lec01",
+          "label": "Lecture 1 source: course logistics (units, assignments, compute) and tokenization",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cs336-spring-2026",
+            "url": "https://raw.githubusercontent.com/stanford-cs336/lectures/main/lecture_01.py",
+            "heading": "course_logistics"
+          }
+        },
+        {
+          "id": "cs336-lec12",
+          "label": "Lecture 12 source: evaluation (benchmarks, train-test overlap, realism, validity, agent evaluation)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cs336-spring-2026",
+            "url": "https://raw.githubusercontent.com/stanford-cs336/lectures/main/lecture_12.py",
+            "heading": "validity"
+          }
+        }
+      ]
+    }
+  ]
+}

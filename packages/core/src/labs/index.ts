@@ -1,8 +1,10 @@
 export * from "./bayesian-concept";
+export * from "./choice-models";
 export * from "./data-leakage";
 export * from "./gradient-descent";
 export * from "./kinetics";
 export * from "./norms";
+export * from "./planning";
 export * from "./random";
 export * from "./sphere-metric";
 export * from "./tuning";
@@ -16,6 +18,8 @@ export const LAB_IDS = [
   "bayesian-concept-learning",
   "neural-tuning-fit",
   "data-leakage-audit",
+  "choice-model-loop",
+  "planning-transfer",
 ] as const;
 export type LabId = (typeof LAB_IDS)[number];
 
@@ -65,6 +69,20 @@ export const LAB_META: Record<LabId, { title: string; department: string; scope:
     department: "computer-science-ai",
     scope:
       "A synthetic predictive-maintenance dataset with deliberate target, preprocessing, temporal and selection leaks; the trivial baseline against the leaky and honest protocols.",
+    synthetic: true,
+  },
+  "choice-model-loop": {
+    title: "Simulate, fit, recover, evaluate: models of choice",
+    department: "cognitive-science",
+    scope:
+      "A two-armed bandit with three candidate models (biased responding, noisy win-stay lose-shift, Rescorla-Wagner with softmax): simulation, maximum-likelihood fits, parameter and model recovery, and held-out comparisons with stated information contracts. All participants are synthetic.",
+    synthetic: true,
+  },
+  "planning-transfer": {
+    title: "A planner, a cached policy and a changed world",
+    department: "cognitive-science",
+    scope:
+      "A model-based planner and a cached Q-learning policy on a small grid, tested after a door closes, a goal moves or a shortcut opens. One grid, deterministic moves; nothing is claimed about any real person's planning.",
     synthetic: true,
   },
 };

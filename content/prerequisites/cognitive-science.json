@@ -5,8 +5,18 @@
     "strength": "soft",
     "description": "Computational Cognitive Science is built on probability: conditional probability, Bayes' rule, expectations, the Beta and binomial distributions, and comfort with sums and integrals over hypothesis spaces. The source course (MIT 9.66J) requires 'a class in probability or statistics'; a measure-theoretic background more than suffices.",
     "alternatives": [
-      { "label": "Demonstrated measure-theoretic probability", "conceptIds": ["probability-measure-theoretic"] },
-      { "label": "Probability from Measure Theory", "courseIds": ["MAT-220"] }
+      {
+        "label": "Demonstrated measure-theoretic probability",
+        "conceptIds": [
+          "probability-measure-theoretic"
+        ]
+      },
+      {
+        "label": "Probability from Measure Theory",
+        "courseIds": [
+          "MAT-220"
+        ]
+      }
     ]
   },
   {
@@ -15,8 +25,56 @@
     "strength": "soft",
     "description": "Labs and the final modelling project implement small Bayesian models in Python; the source course expected programming experience in a high-level language.",
     "alternatives": [
-      { "label": "Demonstrated Python for scientific computing", "conceptIds": ["python-scientific-computing"] },
-      { "label": "Python bridge", "bridgeCourseId": "CSA-100" }
+      {
+        "label": "Demonstrated Python for scientific computing",
+        "conceptIds": [
+          "python-scientific-computing"
+        ]
+      },
+      {
+        "label": "Python bridge",
+        "bridgeCourseId": "CSA-100"
+      }
+    ]
+  },
+  {
+    "id": "COG-260-likelihood",
+    "courseId": "COG-260",
+    "strength": "soft",
+    "description": "The course fits models by maximum likelihood and compares them by information criteria and held-out log-likelihood. You need likelihood and its maximisation; NEU-220 unit 2 teaches estimation, and measure-theoretic probability is more than enough for the mathematics.",
+    "alternatives": [
+      {
+        "label": "Demonstrated maximum-likelihood estimation",
+        "conceptIds": [
+          "maximum-likelihood-estimation"
+        ]
+      },
+      {
+        "label": "Demonstrated measure-theoretic probability",
+        "conceptIds": [
+          "probability-measure-theoretic"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "COG-250-probability",
+    "courseId": "COG-250",
+    "strength": "soft",
+    "description": "Comfort with probability and with a model that makes predictions. Reinforcement-learning basics help but are introduced where they are needed.",
+    "alternatives": [
+      {
+        "label": "Demonstrated measure-theoretic probability",
+        "conceptIds": [
+          "probability-measure-theoretic"
+        ]
+      },
+      {
+        "label": "Computational Cognitive Science",
+        "courseIds": [
+          "COG-201"
+        ]
+      }
     ]
   }
 ]

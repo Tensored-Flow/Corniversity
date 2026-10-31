@@ -81,6 +81,17 @@ export function EnrolControls({
         })}
       </fieldset>
       {enrolState.error ? <Notice tone="rust">{enrolState.error}</Notice> : null}
+      {enrolState.preview ? (
+        <Notice tone="brass" title="Workload preview">
+          {enrolState.preview.reason} Your active courses come to about {enrolState.preview.currentHours} hours a week; this one adds about{" "}
+          {enrolState.preview.addedHours}, for about {enrolState.preview.totalHours}
+          {enrolState.preview.ceiling ? ` against the ${enrolState.preview.ceiling}-hour ceiling you set` : ""}. Choose the mode again and
+          confirm below to take it anyway.
+          <label className="mt-2 flex items-center gap-2 text-sm text-ink">
+            <input type="checkbox" name="loadPreviewSeen" /> I have read this preview and want the heavier load
+          </label>
+        </Notice>
+      ) : null}
       <Button type="submit" disabled={enrolling}>
         {enrolling ? "Saving…" : "Take this course"}
       </Button>

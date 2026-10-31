@@ -1,0 +1,206 @@
+{
+  "id": "COG-250-u01-ex1",
+  "sequence": 1,
+  "title": "Paths, first moves and the cost of a bump",
+  "kind": "calculation",
+  "promptMarkdown": "The grid of the lesson (5 rows by 9 columns; `#` wall, `S` start, `G` goal, `B` the door):\n\n```\n........G\n.######..\n.######B#\n.######.#\n....S...#\n```\n\nIn the shortcut condition the agents train in this layout, with the door closed, and then the door at (2,7) opens:\n\n```\n........G\n.######.#\n.#######.\n.######.#\n....S...#\n```\n\nWrite cells as (row, column), counting from 0 at the top left. A move costs 1; a bump (a move into a wall or off the grid) leaves the agent where it is and also costs 1.\n\n1. Give the length of the shortest path from `S` to the goal (a) in the first layout, (b) after the block closes the door, (c) in the shortcut condition before the door opens, (d) after it opens, and (e) to the new goal (0,0) in the revaluation condition.\n2. The planner was given the map of the first layout and is not told about the block. Trace its first episode after the block: where does it bump, and how many moves, bumps included, does the episode take? How many on the next episode?\n3. The cached policy ($\\alpha=0.5$, cost 1 per move including bumps, no discounting) stands at (3,7), the cell below the closed door, with $Q(\\text{up})=-4$ and $Q(\\text{down})=-6$; its other two moves have values below $-7$. It acts greedily ($\\varepsilon=0$) and breaks ties in the order up, right, down, left. Show that each bump lowers $Q(\\text{up})$ by exactly $\\alpha$ while up is the greedy move, and find how many bumps occur before it first moves down. Repeat with $\\alpha=0.1$.\n4. In the revaluation condition, what is each strategy's first move after the announcement? With $\\varepsilon=0.1$ (with probability $\\varepsilon$ a move chosen uniformly from all four), what is the probability that the cached policy's first move is left?",
+  "conceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation"
+  ],
+  "hintLadder": [
+    "Count the right-hand route and the left-hand route separately, and check which cells each change opens or closes.",
+    "The planner learns a wall only when it bumps into it, then replans from where it stands. Count the bump as a move.",
+    "While up is greedy, the bump returns the agent to (3,7), so the target is $-1+Q(\\text{up})$. What does the update then do to $Q(\\text{up})$?",
+    "Exploration picks uniformly among all four moves, including the greedy one."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "planner-25",
+      "kind": "expression_present",
+      "description": "the planner's first episode after the block takes 25 moves",
+      "params": {
+        "patterns": [
+          "(?<![0-9.])25(moves|steps)"
+        ]
+      }
+    },
+    {
+      "id": "bumps-alpha-05",
+      "kind": "expression_present",
+      "description": "the cached policy moves down after 5 bumps when alpha = 0.5",
+      "params": {
+        "patterns": [
+          "(?<![0-9.])5bumps",
+          "fivebumps",
+          "(?<![0-9.])5thbump",
+          "fifthbump",
+          "bumps(5|five)times"
+        ]
+      }
+    },
+    {
+      "id": "bumps-alpha-01",
+      "kind": "expression_present",
+      "description": "21 bumps when alpha = 0.1",
+      "params": {
+        "patterns": [
+          "(?<![0-9.])21bumps",
+          "(?<![0-9.])21stbump",
+          "twenty-onebumps",
+          "bumps21times"
+        ]
+      }
+    },
+    {
+      "id": "p-left",
+      "kind": "expression_present",
+      "description": "the probability 0.025 (2.5%, 1/40) that the cached policy's first move is left",
+      "params": {
+        "patterns": [
+          "(?<![0-9.])0\\.025(?![0-9])",
+          "(?<![0-9.])2\\.5%",
+          "(?<![0-9/])1/40(?![0-9])"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "paths",
+        "criterion": "Shortest paths 8, 16, 16, 8 and 8, each with its route.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All five with routes."
+          },
+          {
+            "label": "partially met",
+            "description": "Four right, or routes missing."
+          },
+          {
+            "label": "not met",
+            "description": "Fewer right."
+          }
+        ]
+      },
+      {
+        "id": "planner-trace",
+        "criterion": "The planner bumps at the door from (3,7) on its fifth move, replans along the long route, and takes 25 moves including the bump; 16 on the next episode.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Trace and both counts."
+          },
+          {
+            "label": "partially met",
+            "description": "Counts right without the trace, or the bump not counted."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "bump-arithmetic",
+        "criterion": "Each bump lowers Q(up) by alpha because the target is −1 + Q(up); the tie at −6 goes to up, so the switch comes after 5 bumps (alpha 0.5) and 21 bumps (alpha 0.1).",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Argument and both counts."
+          },
+          {
+            "label": "partially met",
+            "description": "Counts right without the argument, or ties broken the wrong way."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "revaluation",
+        "criterion": "Planner left, cached policy right; P(left) = 0.1 × 1/4 = 0.025, with the first move named as the diagnostic observation.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Moves, probability and why it is diagnostic."
+          },
+          {
+            "label": "partially met",
+            "description": "Moves right, probability wrong."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "complete solution",
+      "text": "Shortest paths: 8, 16, 16, 8 and 8. The planner walks to (3,7), bumps into the door on its fifth move and replans along the long route: 25 moves including 1 bump, then 16 on the next episode. Each bump lowers Q(up) by alpha, so Q(up) = -4 - 0.5k; it ties with down at k = 4 and the tie goes to up, so the policy moves down after 5 bumps; with alpha = 0.1 it takes 21 bumps. Revaluation: the planner moves left, the cached policy right; P(left) = 0.1/4 = 0.025.",
+      "expect": {
+        "planner-25": true,
+        "bumps-alpha-05": true,
+        "bumps-alpha-01": true,
+        "p-left": true
+      }
+    },
+    {
+      "label": "tie and exploration mistakes",
+      "text": "The planner needs 24 moves. The cached policy switches after 4 bumps, or 20 with alpha = 0.1. The probability of left is 0.1.",
+      "expect": {
+        "planner-25": false,
+        "bumps-alpha-05": false,
+        "bumps-alpha-01": false,
+        "p-left": false
+      }
+    },
+    {
+      "label": "a different count ending in 5",
+      "text": "With alpha = 0.5 the policy moves down after 15 bumps.",
+      "expect": {
+        "bumps-alpha-05": false
+      }
+    },
+    {
+      "label": "a 25% that is not a count of moves",
+      "text": "In part 4 each move has probability 1/4 = 25% under exploration.",
+      "expect": {
+        "planner-25": false
+      }
+    },
+    {
+      "label": "the wrong tie-break with alpha 0.1",
+      "text": "With alpha = 0.1 it bumps 20 times and moves down on its 21st move.",
+      "expect": {
+        "bumps-alpha-01": false,
+        "bumps-alpha-05": false
+      }
+    },
+    {
+      "label": "the right answers in other words",
+      "text": "With alpha = 0.5 it bumps 5 times; with alpha = 0.1 it moves down after the 21st bump. P(left) = 2.5%, that is 1/40.",
+      "expect": {
+        "bumps-alpha-05": true,
+        "bumps-alpha-01": true,
+        "p-left": true
+      }
+    }
+  ]
+}

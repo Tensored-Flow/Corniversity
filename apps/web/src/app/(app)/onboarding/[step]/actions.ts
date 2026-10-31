@@ -3,6 +3,8 @@ import { learnerConceptOverride, learnerProfile, peerMembership, prerequisiteRul
 import { enrol, listEnrolments, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
 import { completeOnboarding, saveOnboardingStep, saveStepOne } from "@corniversity/db/services/onboarding";
 import { candidatePlans, ensureTerm, saveAvailability, setConceptSelfReport } from "@corniversity/db/services/programme";
+import { followProgramme } from "@corniversity/db/services/programmes";
+import { updateStudyPreferences } from "@corniversity/db/services/study";
 import { confirmPlan, discardProposedPlans, proposePlan } from "@corniversity/db/services/timetable";
 import { and, eq, inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
@@ -66,17 +68,24 @@ export async function saveInterestsAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/2");
   const departmentIds = all(formData, "departmentIds");
   const interestCourseIds = all(formData, "interestCourseIds").filter((id) => /^[A-Z]{3}-\d{3}$/.test(id));
+  const programmeIds = all(formData, "programmeIds").filter((id) => /^[a-z0-9][a-z0-9-]{0,80}$/.test(id));
   const goalsText = String(formData.get("goalsText") ?? "")
     .trim()
     .slice(0, 4000);
-  if (departmentIds.length === 0 && interestCourseIds.length === 0) redirect("/onboarding/2?error=choose_department");
+  if (departmentIds.length === 0 && interestCourseIds.length === 0 && programmeIds.length === 0)
+    redirect("/onboarding/2?error=choose_department");
   // Courses imply their departments.
   if (interestCourseIds.length) {
     const { course } = await import("@corniversity/db/schema/index");
     const rows = await db().select({ d: course.primaryDepartmentId }).from(course).where(inArray(course.id, interestCourseIds));
     for (const r of rows) if (!departmentIds.includes(r.d)) departmentIds.push(r.d);
   }
-  await saveOnboardingStep(db(), session.user.id, 2, { departmentIds, interestCourseIds, goalsText }, { goalsText });
+  if (programmeIds.length) {
+    const { programme } = await import("@corniversity/db/schema/index");
+    const rows = await db().select({ d: programme.departmentIds }).from(programme).where(inArray(programme.id, programmeIds));
+    for (const r of rows) for (const d of r.d) if (!departmentIds.includes(d)) departmentIds.push(d);
+  }
+  await saveOnboardingStep(db(), session.user.id, 2, { departmentIds, interestCourseIds, programmeIds, goalsText }, { goalsText });
   redirect("/onboarding/3");
 }
 
@@ -150,11 +159,25 @@ export async function saveTimeAction(formData: FormData): Promise<void> {
 
 export async function saveRhythmAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/6");
-  const rhythm = String(formData.get("rhythm") ?? "term");
+  const rhythm = String(formData.get("rhythm") ?? "rolling");
   const termStart = String(formData.get("termStart") ?? "");
   if (!["term", "rolling", "reading_course"].includes(rhythm) || !/^\d{4}-\d{2}-\d{2}$/.test(termStart))
     redirect("/onboarding/6?error=invalid");
-  await saveOnboardingStep(db(), session.user.id, 6, { rhythm: rhythm as never, termStart }, { studyRhythm: rhythm as never });
+  // Submitting this step is an explicit choice of rhythm, deadlines and examinations.
+  const hardDeadlines = formData.get("hardDeadlines") === "on";
+  const examinations = formData.get("examinations") === "on";
+  await saveOnboardingStep(
+    db(),
+    session.user.id,
+    6,
+    { rhythm: rhythm as never, termStart, hardDeadlines, examinations },
+    { studyRhythm: rhythm as never },
+  );
+  await updateStudyPreferences(db(), session.user.id, {
+    rhythm: rhythm as "term" | "rolling" | "reading_course",
+    hardDeadlines,
+    examinations,
+  });
   redirect("/onboarding/7");
 }
 
@@ -278,7 +301,11 @@ export async function confirmPlanAction(formData: FormData): Promise<void> {
   if (!planId) redirect("/onboarding/10?error=invalid");
   await db().transaction(async (tx) => {
     await confirmPlan(tx, session.user.id, planId);
-    await saveOnboardingStep(tx, session.user.id, 11, {});
+    const updated = await saveOnboardingStep(tx, session.user.id, 11, {});
+    // Programmes chosen in orientation are followed; following one enrols in nothing.
+    for (const programmeId of updated.onboardingAnswers.programmeIds ?? []) {
+      await followProgramme(tx, session.user.id, programmeId, "onboarding").catch(() => undefined);
+    }
     await completeOnboarding(tx, session.user.id);
   });
   redirect("/welcome");

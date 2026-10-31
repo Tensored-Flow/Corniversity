@@ -1,0 +1,361 @@
+{
+  "id": "sutton-barto-rl-2e",
+  "title": "Reinforcement Learning: An Introduction (second edition)",
+  "authors": [
+    "Richard S. Sutton",
+    "Andrew G. Barto"
+  ],
+  "institution": "The MIT Press (Adaptive Computation and Machine Learning series); full PDF hosted by the authors at incompleteideas.net",
+  "kind": "book",
+  "canonicalUrl": "http://incompleteideas.net/book/the-book-2nd.html",
+  "description": "Textbook. Part I, tabular solution methods: multi-armed bandits (including soft-max action preferences and gradient bandit algorithms), finite Markov decision processes, dynamic programming, Monte Carlo methods, temporal-difference learning (Sarsa, Q-learning, Expected Sarsa), n-step bootstrapping, and planning and learning with tabular methods (models and planning, Dyna, changing environments, prioritized sweeping, decision-time planning, Monte Carlo tree search). Part II, approximate solution methods. Part III: psychology (including cognitive maps and habitual versus goal-directed behaviour), neuroscience, applications and frontiers.",
+  "isbn": "9780262039246",
+  "rightsNotes": [
+    "Copyright page (PDF physical page index 3): '© 2018, 2020 Richard S. Sutton and Andrew G. Barto. All rights reserved. No part of this book may be reproduced in any form by any electronic or mechanical means (including photocopying, recording, or information storage and retrieval) without permission in writing from the copyright holder. This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 2.0 Generic License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/2.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.'",
+    "The 'All rights reserved' sentence and the CC BY-NC-ND 2.0 sentence stand side by side. This record treats the Creative Commons licence as the operative permission for a private, non-commercial study copy and flags the juxtaposition for owner review.",
+    "NonCommercial and NoDerivs: Corniversity may hold and cite the unmodified PDF for private study; Corniversity lessons are original text that cites the book, never adapted or translated book text.",
+    "The book page http://incompleteideas.net/book/the-book-2nd.html states no licence; it links 'Full Pdf' (RLbook2020.pdf), 'Without Margins' (RLbook2020trimmed.pdf), errata, code, solutions and teaching aids.",
+    "Coordinator's decision (2026-10-31): the copyright page prints 'All rights reserved' and, in the same block, 'This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 2.0 Generic License'. The licence is read as the permission it grants: copying for private, non-commercial study with attribution and no derivative works. Corniversity stores and indexes it for the owner only and redistributes nothing."
+  ],
+  "currentVersionId": "sutton-barto-2e-rlbook2020-pdf",
+  "versions": [
+    {
+      "id": "sutton-barto-2e-rlbook2020-pdf",
+      "label": "Second edition (MIT Press, 2018), author-hosted full PDF RLbook2020.pdf: copyright page '© 2018, 2020'; 548 PDF pages; PDF creation date 2022-04-26 (server Last-Modified 26 Apr 2022)",
+      "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the book page the-book-2nd.html and parsed RLbook2020.pdf in memory (page tree, bookmarks, document information, text of the pages listed in componentsSeen, keyword searches across all 548 pages); no file was saved",
+      "componentsSeen": [
+        "Book page: title, authors, 'Second Edition', 'MIT Press, Cambridge, MA, 2018', links to Full Pdf, Without Margins, errata, code, solutions, slides and teaching aids; no licence statement",
+        "PDF structure: 548 pages; bookmark outline with destinations; document information Creator 'LaTeX with hyperref', Producer 'macOS Version 12.3.1 (Build 21E258) Quartz PDFContext', CreationDate 2022-04-26; HTTP headers Content-Length 73129769, Last-Modified Tue, 26 Apr 2022",
+        "Text of physical pages 0-14 (title, copyright and licence page, contents, preface), 44-67 (Part I opening and Chapter 2, including Section 2.8 and the Chapter 2 remarks), 150-155 (Sections 6.4-6.6), 178-192 (end of Chapter 7 to Section 8.4), 382-389 (Sections 14.4-14.6)",
+        "Keyword searches across all pages for 'blocking maze', 'shortcut maze', 'soft-max', 'softmax', 'Tolman' and section headings"
+      ],
+      "licence": "Creative Commons Attribution-NonCommercial-NoDerivs 2.0 Generic (CC BY-NC-ND 2.0), as stated on the copyright page, which also carries an 'All rights reserved' notice",
+      "licenceUrl": "http://creativecommons.org/licenses/by-nc-nd/2.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "incompleteideas.net"
+      ],
+      "limitations": [
+        "Text was extracted programmatically; several glyphs did not decode (Greek letters such as gamma and kappa, arrows, minus signs, some ligatures). Equations are given in the report with reconstructed symbols marked; check the page image before quoting one.",
+        "Chapter-opening pages (physical indices 46 and 180) print no page number; their labels come from the Contents and agree with the running heads of the following pages.",
+        "Only RLbook2020.pdf was examined. RLbook2020trimmed.pdf and the printed MIT Press edition were not opened; their physical page indices may differ.",
+        "HTTPS to incompleteideas.net failed certificate verification from this client; the http URLs worked.",
+        "The blocking and shortcut maze examples compare Dyna-Q with Dyna-Q+ (both learn a model and plan), not a known-map planner with a model-free TD learner, and their figures show cumulative reward over time steps rather than first choices after the change. The nonplanning (n = 0, one-step tabular Q-learning) agent appears only in the Dyna maze of Example 8.1.",
+        "Figures were not viewed as images; axis values were read from text embedded in the graphics."
+      ],
+      "locators": [
+        {
+          "id": "sb-book-page",
+          "label": "Book page: links to the full PDF, the margin-free PDF, errata, code, solutions and teaching aids",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/the-book-2nd.html",
+            "heading": "Reinforcement Learning: An Introduction"
+          }
+        },
+        {
+          "id": "sb-copyright-licence",
+          "label": "Copyright page: '© 2018, 2020', 'All rights reserved', CC BY-NC-ND 2.0 licence statement, ISBN 9780262039246",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Copyright page"
+          },
+          "note": "No page number is printed on this page."
+        },
+        {
+          "id": "sb-contents-ch8",
+          "label": "Contents page listing Chapter 8 (159), 8.1 (159), 8.2 (161) and 8.3 (166)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 8,
+            "printedPageLabel": "ix",
+            "sectionLabel": "Contents"
+          }
+        },
+        {
+          "id": "sb-ch2-start",
+          "label": "Chapter 2 Multi-armed Bandits, opening page",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 46,
+            "printedPageLabel": "25",
+            "sectionLabel": "Chapter 2 Multi-armed Bandits"
+          },
+          "note": "No number is printed on the chapter-opening page; 25 is the Contents entry, and physical index 47 is printed 26."
+        },
+        {
+          "id": "sb-2-8-softmax",
+          "label": "Section 2.8 Gradient Bandit Algorithms: soft-max (Gibbs or Boltzmann) distribution over action preferences, equation (2.11), and the preference update (2.12)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 58,
+            "printedPageLabel": "37",
+            "sectionLabel": "Section 2.8 Gradient Bandit Algorithms"
+          }
+        },
+        {
+          "id": "sb-ch2-softmax-remark",
+          "label": "Chapter 2 bibliographical remarks: the term soft-max is due to Bridle (1990); the rule appears to have been first proposed by Luce (1959)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 66,
+            "printedPageLabel": "45",
+            "sectionLabel": "Chapter 2, Bibliographical and Historical Remarks (running head '2.10. Summary')"
+          }
+        },
+        {
+          "id": "sb-6-5-q-learning",
+          "label": "Section 6.5 Q-learning: Off-policy TD Control: update (6.8) and the procedural algorithm box",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 152,
+            "printedPageLabel": "131",
+            "sectionLabel": "Section 6.5 Q-learning: Off-policy TD Control"
+          }
+        },
+        {
+          "id": "sb-ch8-start",
+          "label": "Chapter 8 Planning and Learning with Tabular Methods, opening page (model-based versus model-free methods)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 180,
+            "printedPageLabel": "159",
+            "sectionLabel": "Chapter 8 Planning and Learning with Tabular Methods"
+          },
+          "note": "No number is printed on the chapter-opening page; 159 is the Contents entry, and physical index 181 is printed 160."
+        },
+        {
+          "id": "sb-8-1-models-planning",
+          "label": "Section 8.1 Models and Planning: distribution and sample models; definition of planning (continues on physical index 181, p. 160)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 180,
+            "printedPageLabel": "159",
+            "sectionLabel": "Section 8.1 Models and Planning"
+          },
+          "note": "Heading is on the chapter-opening page, which prints no number; 159 from the Contents."
+        },
+        {
+          "id": "sb-8-2-dyna",
+          "label": "Section 8.2 Dyna: Integrated Planning, Acting, and Learning",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 182,
+            "printedPageLabel": "161",
+            "sectionLabel": "Section 8.2 Dyna: Integrated Planning, Acting, and Learning"
+          }
+        },
+        {
+          "id": "sb-dyna-q-example-8-1",
+          "label": "Tabular Dyna-Q algorithm box (steps a-f) and Example 8.1: Dyna Maze (47 states; n = 0, 5, 50 planning steps)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 185,
+            "printedPageLabel": "164",
+            "sectionLabel": "Section 8.2, Tabular Dyna-Q and Example 8.1: Dyna Maze"
+          }
+        },
+        {
+          "id": "sb-fig-8-2-8-3",
+          "label": "Figure 8.2 (Dyna maze learning curves by number of planning steps) and Figure 8.3 (policies with and without planning)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 186,
+            "printedPageLabel": "165",
+            "sectionLabel": "Section 8.2, Figures 8.2 and 8.3"
+          }
+        },
+        {
+          "id": "sb-8-3-model-wrong",
+          "label": "Section 8.3 When the Model Is Wrong: why models are wrong; optimistic errors are discovered and corrected",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 187,
+            "printedPageLabel": "166",
+            "sectionLabel": "Section 8.3 When the Model Is Wrong"
+          }
+        },
+        {
+          "id": "sb-example-8-2-blocking",
+          "label": "Example 8.2: Blocking Maze (short path blocked after 1000 time steps; longer path opened on the left)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 187,
+            "printedPageLabel": "166",
+            "sectionLabel": "Section 8.3, Example 8.2: Blocking Maze"
+          },
+          "note": "Its Figure 8.4 is on the next page (physical index 188, p. 167)."
+        },
+        {
+          "id": "sb-example-8-3-shortcut",
+          "label": "Example 8.3: Shortcut Maze (shorter path opened on the right after 3000 steps; Dyna-Q never switches); Figures 8.4 and 8.5",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 188,
+            "printedPageLabel": "167",
+            "sectionLabel": "Section 8.3, Example 8.3: Shortcut Maze"
+          }
+        },
+        {
+          "id": "sb-dyna-q-plus",
+          "label": "Dyna-Q+ exploration bonus for long-untried transitions; footnote on two further changes; Exercises 8.2-8.5; start of Section 8.4",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 189,
+            "printedPageLabel": "168",
+            "sectionLabel": "Section 8.3 (end): Dyna-Q+"
+          }
+        },
+        {
+          "id": "sb-14-5-cognitive-maps",
+          "label": "Section 14.5 Cognitive Maps: environment models, latent learning, Tolman (continues on p. 364)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 384,
+            "printedPageLabel": "363",
+            "sectionLabel": "Section 14.5 Cognitive Maps"
+          }
+        },
+        {
+          "id": "sb-14-6-habitual-goal",
+          "label": "Section 14.6 Habitual and Goal-directed Behavior: the model-free and model-based distinction in psychology",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 385,
+            "printedPageLabel": "364",
+            "sectionLabel": "Section 14.6 Habitual and Goal-directed Behavior"
+          }
+        },
+        {
+          "id": "sb-fig-14-5",
+          "label": "Figure 14.5 page (maze with model-free and model-based strategies; credit line 'Adapted from Trends in Cognitive Science, volume 10, number 8, Y. Niv, D. Joel, and P. Dayan')",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 386,
+            "printedPageLabel": "365",
+            "sectionLabel": "Section 14.6, Figure 14.5"
+          },
+          "note": "The figure label itself was not captured in the extracted text; identified from the credit line and the references to Figure 14.5 on the next page."
+        },
+        {
+          "id": "sb-model-free-vs-model-based",
+          "label": "Section 14.6: cached action values or policy versus a state-transition and reward model in the Figure 14.5 maze; a changed goal-box reward must be re-experienced by the model-free agent",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 387,
+            "printedPageLabel": "366",
+            "sectionLabel": "Section 14.6 Habitual and Goal-directed Behavior"
+          }
+        },
+        {
+          "id": "sb-devaluation",
+          "label": "Section 14.6: outcome devaluation experiment of Adams and Dickinson (1981)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020.pdf",
+            "fileLabel": "RLbook2020.pdf",
+            "physicalPageIndex": 388,
+            "printedPageLabel": "367",
+            "sectionLabel": "Section 14.6 Habitual and Goal-directed Behavior"
+          }
+        },
+        {
+          "id": "sb-trimmed-pdf",
+          "label": "Margin-free PDF variant RLbook2020trimmed.pdf",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "sutton-barto-2e-rlbook2020-pdf",
+            "url": "http://incompleteideas.net/book/RLbook2020trimmed.pdf",
+            "heading": "Without Margins"
+          },
+          "note": "Linked from the book page; only its HTTP headers were read (Content-Length 73228123, Last-Modified 7 Mar 2023). Not opened; physical indices above apply to RLbook2020.pdf only."
+        }
+      ]
+    }
+  ]
+}

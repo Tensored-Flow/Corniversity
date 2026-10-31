@@ -1,0 +1,103 @@
+{
+  "id": "COG-250-u01-ex2",
+  "sequence": 2,
+  "title": "Which observation tells the strategies apart?",
+  "kind": "model_interpretation",
+  "promptMarkdown": "Use the laboratory *A planner, a cached policy and a changed world* in this unit's lab session, at its default settings and seed 1 unless you say otherwise, and record the seed with every number. Save your predictions for all three conditions in the notebook before running; the laboratory keeps results hidden until you do.\n\n**The information contract for this transfer test.**\n\n1. **Observed:** the moves of two synthetic agents on the grid, during training and after one change to the world.\n2. **Prediction target:** each agent's behaviour after the change: its first move, and its moves and bumps in each episode; an episode stops at 300 moves.\n3. **History in training:** 60 training episodes in the world before the change; the cached policy learns its values from them, and the planner is given that world's map.\n4. **History at inference:** what each agent carries from training (the cached values; the planner's map) and its own experience since the change; in the revaluation condition the planner is also told the new goal.\n5. **Person:** there are no persons; each agent is the same agent before and after the change.\n6. **Task:** changed; the world after the change differs from the training world by exactly one stated change.\n7. **Later time periods:** yes; every test episode comes after training.\n8. **Unavailable in real use:** the planner's map is given, not learned; a real agent would have to build it.\n9. **Simplest baseline:** the shortest-path length after the change, and the other strategy.\n10. **Claims not tested:** anything about people or animals, other environments, and mixtures of the two strategies.\n\n**Tasks.**\n\n1. For each condition, report the shortest path before and after the change, each strategy's first move, its moves and bumps in the first three test episodes, and the mean gap (cached minus planner) over the first 1, 2, 3 and 12 episodes. Compare each with your saved prediction.\n2. For each condition, name the observation that best tells the strategies apart, or say that none does, and explain why in terms of what each strategy knows and how it learns.\n3. Describe how the averaged gap changes as the window grows in each condition, explain why it shrinks in the block and revaluation conditions, and say what that implies for how a result after a change should be reported.\n4. Propose a variant of the shortcut condition in which the two strategies would differ, predict what each would do, and say which earlier condition your variant resembles.",
+  "conceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation",
+    "method-longitudinal-transfer-evaluation"
+  ],
+  "hintLadder": [
+    "For each condition, ask what the planner knows immediately after the change and what the cached policy can only learn by moving.",
+    "In the shortcut condition, how could either strategy ever learn that the door is open?",
+    "The cached policy keeps learning during the test episodes. What does that do to its later episodes, and so to an average over them?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "results",
+        "criterion": "All requested quantities reported for the three conditions with the seed, and compared with the saved predictions.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete, with predictions compared."
+          },
+          {
+            "label": "partially met",
+            "description": "Some quantities or the comparison missing."
+          },
+          {
+            "label": "not met",
+            "description": "Not reported."
+          }
+        ]
+      },
+      {
+        "id": "discrimination",
+        "criterion": "Revaluation: the first move, provided the cached policy's training converged; block: the first encounter and the next episode's route; shortcut: no clean discriminating observation, because the planner cannot learn that a wall has gone and the cached policy reaches the opening only by exploration, drawn on by its untried values, so whatever gap appears there reflects exploration, not planning.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three right with reasons."
+          },
+          {
+            "label": "partially met",
+            "description": "Two right, or reasons thin."
+          },
+          {
+            "label": "not met",
+            "description": "The shortcut read as favouring the planner."
+          }
+        ]
+      },
+      {
+        "id": "averaging",
+        "criterion": "In the block and revaluation conditions the averaged gap shrinks because the cached policy relearns, while in the shortcut condition it can rise before it falls; a result after a change is reported for the discriminating observation with its window, not as a long average.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Mechanism and reporting rule."
+          },
+          {
+            "label": "partially met",
+            "description": "Mechanism only."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "variant",
+        "criterion": "A discriminating variant (for example announcing the opening to the planner) with each strategy's predicted behaviour, related to the revaluation condition; or a third-strategy variant correctly identified as such.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Variant, predictions and relation."
+          },
+          {
+            "label": "partially met",
+            "description": "Variant without predictions."
+          },
+          {
+            "label": "not met",
+            "description": "No variant."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60
+}

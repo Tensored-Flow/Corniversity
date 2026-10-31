@@ -45,21 +45,27 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 `importOpenResource`, `createAnnotation`, `proposeReschedule`, `applyReschedule`,
 `requestExport`, `buildRecordsBundle`, `openDiscussion`, `recordDiscussionTurn`,
 `setPeerMembership`, `updateProfileSettings`, `saveProviderSetting`, `saveBudgetLimits`,
-`deletePersonaMemory`. UI and model tools both call these; models never write. (`prepareUnit`
+`deletePersonaMemory`, `followProgramme`, `setParticipationStatus`, `proposeProgrammeRoute`,
+`applyProgrammeProposal`, `updateStudyPreferences`, `previewCourseLoad`, `createDeadline`,
+`withdrawDeadline`, `markDeadlinesMet`, `proposeRollingExtension`, `recordLabPrediction`. UI and model tools both call these; models never write. (`prepareUnit`
 is reserved for the content pipeline; units are currently prepared in `content/` and validated.)
 
 ## Data model (areas → tables)
 
 - **Identity/consent**: `user`, `session`, `account`, `verification` (better-auth); `learner_profile`,
   `budget_setting`, `provider_setting`, `consent_record`, `device_pairing`, `pairing_code`.
-- **Academic structure**: `department`, `programme`, `course`, `course_version`, `course_department`
+- **Academic structure**: `department`, `programme` (reference id, blocks, electives, methods and paper
+  seminar as versioned content), `course`, `course_version` (with catalogue notes), `course_department`
   (cross-listing), `concept`, `course_concept`, `prerequisite_rule`, `teaching_unit`, `unit_exercise`,
   `rubric`, `instructor_artifact`.
 - **Library**: `source`, `source_version`, `locator`, `resource_asset`, `asset_blob`,
   `processing_permission`, `extracted_page`, `passage` (FTS `tsvector`), `passage_embedding`
   (created only if pgvector exists), `annotation`, `resource_request`.
 - **Study/planning**: `term`, `enrolment`, `availability_window`, `commitment`, `day_off`,
-  `plan_version`, `scheduled_session`, `change_proposal`, `calendar_token`.
+  `plan_version`, `scheduled_session`, `change_proposal`, `calendar_token`, `programme_participation`
+  (following, paused or left; never an enrolment), `academic_deadline` (assessment, examination or
+  milestone; binding only when the learner switched deadlines on). Study preferences live on
+  `learner_profile.study_preferences` and hold only the learner's explicit choices.
 - **Learning**: `learning_session`, `conversation`, `message`, `attempt`, `submission_version`,
   `assessment_run`, `feedback_review`, `evidence_event`, `concept_state`, `misconception_record`,
   `revision_item`, `notebook_entry`, `portfolio_artifact`.
@@ -119,3 +125,13 @@ device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); upl
    everything else, including OpenStax Chemistry 2e (CC BY-NC-SA with an AI-ingestion
    restriction) and unlicensed author-hosted notes, is reference-only unless the owner grants
    permissions per item.
+8. Programme blocks reference course units instead of copying them; block readiness, shared work
+   items and method coverage are computed from the mapped units (`packages/core/src/programme`),
+   so a programme can never claim more than the catalogue holds.
+9. Study preferences store only explicit choices and apply defaults in code, so later defaults
+   never overwrite an earlier choice; appointments, deadlines and the content sequence are
+   separate records with separate rules (`packages/core/src/planning`).
+10. Host terms decide imports as well as licences: PubMed Central and nature.com are never import
+    hosts, and an import fetches only an exact verified PDF locator, without following redirects.
+11. `pnpm dev` runs Next's webpack development server, because the Turbopack development server
+    reloads pages in a loop in this monorepo layout on the build machine.

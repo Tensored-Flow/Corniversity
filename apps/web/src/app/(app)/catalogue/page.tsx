@@ -29,6 +29,8 @@ export default async function CataloguePage({
     (a, b) =>
       READINESS_ORDER.indexOf(a.version.readiness) - READINESS_ORDER.indexOf(b.version.readiness) || a.course.id.localeCompare(b.course.id),
   );
+  // Courses that are not fully prepared but already have a unit that can be studied.
+  const firstUnitOnly = entries.filter((e) => e.version.readiness !== "teaching_ready" && e.readyUnitCount > 0).length;
   const counts = entries.reduce<Record<string, number>>((acc, e) => {
     acc[e.version.readiness] = (acc[e.version.readiness] ?? 0) + 1;
     return acc;
@@ -40,9 +42,14 @@ export default async function CataloguePage({
         <p className="text-sm uppercase tracking-[0.18em] text-brass">Catalogue</p>
         <h1 className="mt-1 text-3xl text-ink">Courses</h1>
         <p className="mt-2 max-w-prose text-sm text-ink-2">
-          Every course shows the readiness it has actually earned. {counts.teaching_ready ?? 0} of {entries.length} have prepared teaching
-          units; the rest are source-verified, syllabus-ready or still proposals. You can register interest in any of them, and audit
-          anything that is prepared.
+          Every course shows the readiness it has actually earned. {counts.teaching_ready ?? 0} of {entries.length} are fully prepared
+          {firstUnitOnly ? `, and ${firstUnitOnly} more ${firstUnitOnly === 1 ? "has" : "have"} a first prepared unit` : ""}; the rest are
+          source-verified, syllabus-ready or still proposals. You can register interest in any of them, and audit anything that is prepared.
+          Routes through several courses are in the{" "}
+          <Link href="/programmes" className="text-brass underline underline-offset-4">
+            programme catalogue
+          </Link>
+          .
         </p>
       </header>
       {unknownDepartment ? (

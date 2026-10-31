@@ -3,8 +3,12 @@
   "sequence": 2,
   "title": "Decoding choices: logistic regression, regularisation and honest evaluation",
   "kind": "model_interpretation",
-  "promptMarkdown": "W1D3 Tutorial 2 decodes the animal's choice from population spike counts in the Steinmetz data (recorded; 276 trials, 691 neurons) with logistic regression $P(y = 1 \\mid \\mathbf{x}) = \\sigma(\\boldsymbol\\theta^\\top\\mathbf{x})$, $\\sigma(z) = 1/(1 + e^{-z})$.\n\n1. Show that the model makes the log-odds $\\ln[p/(1 - p)]$ linear in $\\mathbf{x}$. Derive the negative log-likelihood (cross-entropy) for $N$ independent trials and its gradient $\\sum_i(\\sigma(\\boldsymbol\\theta^\\top\\mathbf{x}_i) - y_i)\\mathbf{x}_i$.\n2. Add the L2 penalty $\\frac{\\beta}{2}\\|\\boldsymbol\\theta\\|^2$. Show how the gradient changes and explain in one sentence why this shrinks the weights. Explain, with a sketch or an argument about the penalty's geometry, why the L1 penalty $\\frac{\\beta}{2}\\sum_i|\\theta_i|$ sets many weights exactly to zero while L2 does not.\n3. A decoder is evaluated on 60 held-out trials, 30 of each choice (numbers constructed for this exercise, not the tutorial's): it classifies 27 of the 30 'left' trials and 21 of the 30 'right' trials correctly. Compute the accuracy as a fraction and a percentage, state the majority-class baseline, and explain what a label-shuffle control adds that the baseline does not.\n4. Explain why each of the following inflates or misstates accuracy: (a) selecting the 50 most choice-correlated neurons using all trials, then cross-validating; (b) a class imbalance of 90:10; (c) choosing $\\beta$ by the test-set accuracy.\n5. A learner writes: 'the decoder reaches 80%, so these neurons drive the choice'. Rewrite the sentence so that it says only what the result supports, and say what kind of experiment would be needed for the original claim.",
-  "conceptIds": ["logistic-regression-decoding", "regularisation-sparsity", "model-selection-cross-validation"],
+  "promptMarkdown": "W1D3 Tutorial 2 decodes the animal's choice from population spike counts in the Steinmetz data (recorded; 276 trials, 691 neurons) with logistic regression $P(y = 1 \\mid \\mathbf{x}) = \\sigma(\\boldsymbol\\theta^\\top\\mathbf{x})$, $\\sigma(z) = 1/(1 + e^{-z})$.\n\n1. Show that the model makes the log-odds $\\ln[p/(1 - p)]$ linear in $\\mathbf{x}$. Derive the negative log-likelihood (cross-entropy) for $N$ independent trials and its gradient $\\sum_i(\\sigma(\\boldsymbol\\theta^\\top\\mathbf{x}_i) - y_i)\\mathbf{x}_i$.\n2. Add the L2 penalty $\\frac{\\beta}{2}\\|\\boldsymbol\\theta\\|^2$. Show how the gradient changes and explain in one sentence why this shrinks the weights. Explain, with a sketch or an argument about the penalty's geometry, why the L1 penalty $\\frac{\\beta}{2}\\sum_i|\\theta_i|$ sets many weights exactly to zero while L2 does not.\n3. A decoder is evaluated on 60 held-out trials, 30 of each choice (numbers constructed for this exercise, not the tutorial's): it classifies 27 of the 30 'left' trials and 21 of the 30 'right' trials correctly. Compute the accuracy as a fraction and a percentage, state the majority-class baseline, and explain what a label-shuffle control adds that the baseline does not.\n4. Explain why each of the following inflates or misstates accuracy: (a) selecting the 50 most choice-correlated neurons using all trials, then cross-validating; (b) a class imbalance of 90:10; (c) choosing $\\beta$ by the test-set accuracy.\n5. A learner writes: 'the decoder reaches 80%, so these neurons drive the choice'. Rewrite the sentence so that it says only what the result supports, and say what kind of experiment would be needed for the original claim.\n\n**The information contract for part 3 (the numbers are constructed for this exercise).**\n\n1. **Observed:** population spike counts on recorded trials of one session, and the animal's choice on each.\n2. **Prediction target:** the choice on each of the 60 held-out trials, 30 of each choice.\n3. **History in training:** the session's other trials; the regularisation strength and any selection of neurons use those trials only.\n4. **History at inference:** the held-out trial's spike counts.\n5. **Person:** familiar; the same animal and session.\n6. **Task:** familiar; the same task.\n7. **Later time periods:** not tested; the held-out trials were set aside at random, not taken from the end of the session.\n8. **Unavailable in real use:** none, provided nothing about the held-out trials reached training; part 4 asks what happens when it does.\n9. **Simplest baseline:** the majority class, with a label-shuffle control.\n10. **Claims not tested:** other sessions or animals, later trials, and any causal role of these neurons (part 5).",
+  "conceptIds": [
+    "logistic-regression-decoding",
+    "regularisation-sparsity",
+    "model-selection-cross-validation"
+  ],
   "hintLadder": [
     "Solve $p = \\sigma(z)$ for $z$. For the likelihood, each trial contributes $p^{y}(1 - p)^{1 - y}$; take logs and sum. Use $\\sigma' = \\sigma(1 - \\sigma)$.",
     "The derivative of $\\frac{\\beta}{2}\\|\\boldsymbol\\theta\\|^2$ is $\\beta\\boldsymbol\\theta$: a force towards the origin proportional to the weight. The L1 penalty's derivative is $\\pm\\beta/2$ regardless of size, so a small weight is pushed all the way to zero; the L1 ball has corners on the axes.",
@@ -16,35 +20,146 @@
       "id": "accuracy-percent",
       "kind": "numeric_value",
       "description": "accuracy 80%",
-      "params": { "expected": 80, "tolerance": 0.5 }
+      "params": {
+        "expected": 80,
+        "tolerance": 0.5
+      }
     },
     {
       "id": "accuracy-fraction",
       "kind": "numeric_value",
       "description": "accuracy 0.80 as a fraction",
-      "params": { "expected": 0.8, "tolerance": 0.001 }
+      "params": {
+        "expected": 0.8,
+        "tolerance": 0.001
+      }
     },
     {
       "id": "chance-control",
       "kind": "expression_present",
       "description": "chance, majority baseline or a shuffle/permutation control is discussed",
-      "params": { "patterns": ["chance", "majority", "shuffle", "permut"] }
+      "params": {
+        "patterns": [
+          "chance",
+          "majority",
+          "shuffle",
+          "permut"
+        ]
+      }
     },
     {
       "id": "no-causal-claim",
       "kind": "forbidden_claim",
       "description": "claiming that the decoder shows the neurons cause or drive the choice",
-      "params": { "patterns": ["neurons? (cause|causes|drive|drives|determine|determines) (the )?choice", "neurons?(cause|causes|drive|drives|determine|determines)(the)?choice", "causes the (mouse|animal) to choose", "(proves|shows|demonstrates) that (the |these )?neurons? (cause|drive|encode)", "(proves|shows|demonstrates)that(the|these)?neurons?(cause|drive|encode)"] }
+      "params": {
+        "patterns": [
+          "neurons? (cause|causes|drive|drives|determine|determines) (the )?choice",
+          "neurons?(cause|causes|drive|drives|determine|determines)(the)?choice",
+          "causes the (mouse|animal) to choose",
+          "(proves|shows|demonstrates) that (the |these )?neurons? (cause|drive|encode)",
+          "(proves|shows|demonstrates)that(the|these)?neurons?(cause|drive|encode)"
+        ]
+      }
     }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "model-and-loss", "criterion": "Log-odds θᵀx; negative log-likelihood Σ[−y ln σ − (1 − y) ln(1 − σ)]; gradient Σ(σ(θᵀx_i) − y_i)x_i derived using σ' = σ(1 − σ).", "weight": 0.25, "levels": [{ "label": "met", "description": "All derived." }, { "label": "partially met", "description": "Loss right, gradient asserted." }, { "label": "not met", "description": "Wrong." }] },
-      { "id": "regularisation", "criterion": "L2 adds βθ to the gradient, a restoring force proportional to θ; L1's constant-magnitude subgradient (or the corners of the L1 ball) drives small weights exactly to zero.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both with a correct argument." }, { "label": "partially met", "description": "L2 right, L1 asserted." }, { "label": "not met", "description": "Wrong." }] },
-      { "id": "evaluation", "criterion": "48/60 = 0.80 = 80%; majority baseline 50%; the shuffle control gives the distribution of accuracies obtainable by chance on this data with this pipeline, exposing optimistic bias the fixed baseline cannot.", "weight": 0.2, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "Accuracy and baseline only." }, { "label": "not met", "description": "Wrong accuracy." }] },
-      { "id": "pitfalls", "criterion": "(a) feature selection outside the CV loop leaks test information; (b) 90:10 imbalance makes 90% the baseline, so accuracy must be read against it (or use balanced accuracy); (c) tuning β on the test set makes the test set part of training.", "weight": 0.2, "levels": [{ "label": "met", "description": "All three explained." }, { "label": "partially met", "description": "Two." }, { "label": "not met", "description": "Fewer." }] },
-      { "id": "causation", "criterion": "Rewrite as 'choice can be decoded from this population at 80% against a 50% baseline on held-out trials'; a causal claim needs intervention (perturbing the neurons and observing the choice).", "weight": 0.15, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "Rewrite without the intervention point." }, { "label": "not met", "description": "Keeps the causal claim." }] }
+      {
+        "id": "model-and-loss",
+        "criterion": "Log-odds θᵀx; negative log-likelihood Σ[−y ln σ − (1 − y) ln(1 − σ)]; gradient Σ(σ(θᵀx_i) − y_i)x_i derived using σ' = σ(1 − σ).",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All derived."
+          },
+          {
+            "label": "partially met",
+            "description": "Loss right, gradient asserted."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "regularisation",
+        "criterion": "L2 adds βθ to the gradient, a restoring force proportional to θ; L1's constant-magnitude subgradient (or the corners of the L1 ball) drives small weights exactly to zero.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both with a correct argument."
+          },
+          {
+            "label": "partially met",
+            "description": "L2 right, L1 asserted."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "evaluation",
+        "criterion": "48/60 = 0.80 = 80%; majority baseline 50%; the shuffle control gives the distribution of accuracies obtainable by chance on this data with this pipeline, exposing optimistic bias the fixed baseline cannot.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three."
+          },
+          {
+            "label": "partially met",
+            "description": "Accuracy and baseline only."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong accuracy."
+          }
+        ]
+      },
+      {
+        "id": "pitfalls",
+        "criterion": "(a) feature selection outside the CV loop leaks test information; (b) 90:10 imbalance makes 90% the baseline, so accuracy must be read against it (or use balanced accuracy); (c) tuning β on the test set makes the test set part of training.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three explained."
+          },
+          {
+            "label": "partially met",
+            "description": "Two."
+          },
+          {
+            "label": "not met",
+            "description": "Fewer."
+          }
+        ]
+      },
+      {
+        "id": "causation",
+        "criterion": "Rewrite as 'choice can be decoded from this population at 80% against a 50% baseline on held-out trials'; a causal claim needs intervention (perturbing the neurons and observing the choice).",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both."
+          },
+          {
+            "label": "partially met",
+            "description": "Rewrite without the intervention point."
+          },
+          {
+            "label": "not met",
+            "description": "Keeps the causal claim."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -55,12 +170,21 @@
     {
       "label": "correct answer",
       "text": "From p = σ(z), z = ln(p/(1 − p)) = θᵀx: the log-odds are linear. NLL = −Σ[y_i ln σ_i + (1 − y_i) ln(1 − σ_i)]; using σ' = σ(1 − σ) the gradient is Σ(σ(θᵀx_i) − y_i)x_i. Adding (β/2)‖θ‖² adds βθ to the gradient, a restoring force proportional to the weight, so weights shrink towards zero; the L1 penalty has subgradient ±β/2 whatever the weight's size, so small weights are pushed exactly to zero (the L1 ball has corners on the axes). Accuracy: (27 + 21)/60 = 48/60 = 0.80 = 80%; the majority-class baseline is 50% since classes are balanced; a label-shuffle control shows the spread of accuracies this pipeline achieves by chance on this data, catching optimistic bias a fixed baseline cannot. (a) Selecting neurons on all trials leaks test information into training; (b) with 90:10 imbalance the baseline is 90%, so 80% would be worse than guessing the majority; (c) choosing β on the test set makes the test set part of training. Rewrite: 'choice can be decoded from this population with 80% accuracy against a 50% baseline on held-out trials'; a causal claim would need an intervention on the neurons.",
-      "expect": { "accuracy-percent": true, "accuracy-fraction": true, "chance-control": true, "no-causal-claim": true }
+      "expect": {
+        "accuracy-percent": true,
+        "accuracy-fraction": true,
+        "chance-control": true,
+        "no-causal-claim": true
+      }
     },
     {
       "label": "causal over-reading",
       "text": "Accuracy was 90%, which proves that the neurons cause the choice; no baseline is needed because the model is regularised.",
-      "expect": { "no-causal-claim": false, "accuracy-percent": false, "chance-control": false }
+      "expect": {
+        "no-causal-claim": false,
+        "accuracy-percent": false,
+        "chance-control": false
+      }
     }
   ]
 }

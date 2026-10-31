@@ -1,3 +1,4 @@
+import type { ExplicitStudyPreferences } from "@corniversity/core";
 import { boolean, index, integer, jsonb, numeric, pgTable, real, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, immersionEnum, tz, updatedAt } from "./_shared";
 import { user } from "./auth";
@@ -6,6 +7,8 @@ export type LearningStyle = "proof_led" | "conceptual" | "computational" | "expe
 
 export interface OnboardingAnswers {
   departmentIds?: string[];
+  /** Programmes of interest chosen in orientation; following one never enrols in its courses. */
+  programmeIds?: string[];
   interestCourseIds?: string[];
   goalsText?: string;
   priorKnowledge?: Record<string, string>; // concept or topic -> self-report text
@@ -20,6 +23,9 @@ export interface OnboardingAnswers {
     protected: boolean;
   }[];
   rhythm?: "term" | "rolling" | "reading_course";
+  /** Assessment choices made with the rhythm; both off unless the learner switches them on. */
+  hardDeadlines?: boolean;
+  examinations?: boolean;
   placement?: Record<string, "passed" | "skipped" | "attempted">;
   chosenPlanId?: string;
   chosenPlan?: { id: string; title: string; courses: { courseId: string; role: string; mode: string }[] };
@@ -42,6 +48,8 @@ export const learnerProfile = pgTable("learner_profile", {
   learningStyles: jsonb("learning_styles").$type<Record<string, LearningStyle>>().notNull().default({}),
   weeklyHoursCeiling: integer("weekly_hours_ceiling"),
   studyRhythm: text("study_rhythm").$type<"term" | "rolling" | "reading_course">(),
+  /** Only the study preferences the learner has explicitly chosen; defaults are applied in code. */
+  studyPreferences: jsonb("study_preferences").$type<ExplicitStudyPreferences>().notNull().default({}),
   goalsText: text("goals_text"),
   socialLayerEnabled: boolean("social_layer_enabled").notNull().default(true),
   notifications: jsonb("notifications").$type<{ inApp: boolean; email: boolean }>().notNull().default({ inApp: true, email: false }),

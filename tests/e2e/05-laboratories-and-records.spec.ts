@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap } from "./helpers";
+import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journeys 3 and 4 (laboratory side) and the records surfaces.
@@ -20,13 +20,7 @@ test.describe.configure({ mode: "serial" });
 const run = Date.now().toString(36);
 
 async function enrol(page: import("@playwright/test").Page, courseId: string) {
-  await page.goto(`/courses/${courseId}`);
-  const take = page.getByRole("button", { name: /take this course/i });
-  if (await take.isVisible().catch(() => false)) {
-    await page.getByLabel(/^Enrolled/).check();
-    await take.click();
-  }
-  await expect(page.getByText("Enrolled", { exact: true }).first()).toBeVisible();
+  await takeCourse(page, courseId);
 }
 
 async function startLab(page: import("@playwright/test").Page, courseId: string, unitLinkName: RegExp, labTitle: RegExp) {

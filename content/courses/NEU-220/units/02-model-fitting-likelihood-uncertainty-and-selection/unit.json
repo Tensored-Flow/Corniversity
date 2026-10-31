@@ -5,45 +5,240 @@
   "title": "Model fitting: least squares, likelihood, uncertainty and model selection",
   "summary": "Neuromatch W1D2 re-paced for a week: least squares and the design matrix, maximum likelihood and its equivalence to least squares under Gaussian noise, weighted least squares, bootstrap confidence intervals, the bias–variance decomposition and cross-validation; then Corniversity's laboratory, fitting a tuning-curve model to explicitly synthetic spike counts against a constant-rate baseline on held-out trials, with a constructed failure case.",
   "objectives": [
-    { "id": "u02-o1", "description": "Derive the least-squares estimator from the mean squared error and the normal equations from a design matrix, and derive the maximum-likelihood estimator under Gaussian noise, showing when the two coincide and how heteroscedastic noise changes the answer." },
-    { "id": "u02-o2", "description": "Prove the bias–variance decomposition of expected squared error and explain how a bootstrap percentile interval is formed, what it assumes and how it fails." },
-    { "id": "u02-o3", "description": "Choose model complexity using held-out error or cross-validation rather than training error, and explain why." },
-    { "id": "u02-o4", "description": "Write and maximise a Poisson log-likelihood for spike counts, fit a tuning-curve model to synthetic data, compare it with a baseline out of sample, interpret the parameters with uncertainty and diagnose a failure case, labelling the data as synthetic throughout." }
+    {
+      "id": "u02-o1",
+      "description": "Derive the least-squares estimator from the mean squared error and the normal equations from a design matrix, and derive the maximum-likelihood estimator under Gaussian noise, showing when the two coincide and how heteroscedastic noise changes the answer."
+    },
+    {
+      "id": "u02-o2",
+      "description": "Prove the bias–variance decomposition of expected squared error and explain how a bootstrap percentile interval is formed, what it assumes and how it fails."
+    },
+    {
+      "id": "u02-o3",
+      "description": "Choose model complexity using held-out error or cross-validation rather than training error, and explain why."
+    },
+    {
+      "id": "u02-o4",
+      "description": "Write and maximise a Poisson log-likelihood for spike counts, fit a tuning-curve model to synthetic data, compare it with a baseline out of sample, interpret the parameters with uncertainty and diagnose a failure case, labelling the data as synthetic throughout."
+    }
   ],
-  "prerequisiteConceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "applied-statistics-basics", "python-scientific-computing", "neural-spiking-basics"],
-  "teachesConceptIds": ["model-fitting-least-squares", "maximum-likelihood-estimation", "bootstrap-confidence-intervals", "model-selection-cross-validation", "tuning-curves-encoding"],
+  "prerequisiteConceptIds": [
+    "linear-algebra-vector-spaces",
+    "multivariable-calculus",
+    "applied-statistics-basics",
+    "python-scientific-computing",
+    "neural-spiking-basics"
+  ],
+  "teachesConceptIds": [
+    "model-fitting-least-squares",
+    "maximum-likelihood-estimation",
+    "bootstrap-confidence-intervals",
+    "model-selection-cross-validation",
+    "tuning-curves-encoding",
+    "method-parameter-estimation",
+    "method-predictive-checks"
+  ],
   "preparation": [
-    { "description": "W1D2 Tutorial 1, Linear regression with MSE: synthetic data with true slope 1.2, MSE, the closed-form least-squares slope.", "locatorId": "nma-w1d2-t1", "estimatedMinutes": 40 },
-    { "description": "W1D2 Tutorial 2, Linear regression with MLE: Gaussian noise, likelihood, the MLE coincides with least squares.", "locatorId": "nma-w1d2-t2", "estimatedMinutes": 40 },
-    { "description": "W1D2 Tutorial 3, Confidence intervals and bootstrapping (simulated data).", "locatorId": "nma-w1d2-t3", "estimatedMinutes": 35 },
-    { "description": "W1D2 Tutorial 4, Multiple linear and polynomial regression: design matrix, ordinary least squares, fit quality.", "locatorId": "nma-w1d2-t4", "estimatedMinutes": 45 },
-    { "description": "W1D2 Tutorial 5, Bias–variance trade-off: train versus test error; the bonus proof of the decomposition is the subject of exercise 2, so attempt it unaided first.", "locatorId": "nma-w1d2-t5", "estimatedMinutes": 40 },
-    { "description": "W1D2 Tutorial 6, Cross-validation (k-fold; bonus AIC).", "locatorId": "nma-w1d2-t6", "estimatedMinutes": 30 }
+    {
+      "description": "W1D2 Tutorial 1, Linear regression with MSE: synthetic data with true slope 1.2, MSE, the closed-form least-squares slope.",
+      "locatorId": "nma-w1d2-t1",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "W1D2 Tutorial 2, Linear regression with MLE: Gaussian noise, likelihood, the MLE coincides with least squares.",
+      "locatorId": "nma-w1d2-t2",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "W1D2 Tutorial 3, Confidence intervals and bootstrapping (simulated data).",
+      "locatorId": "nma-w1d2-t3",
+      "estimatedMinutes": 35
+    },
+    {
+      "description": "W1D2 Tutorial 4, Multiple linear and polynomial regression: design matrix, ordinary least squares, fit quality.",
+      "locatorId": "nma-w1d2-t4",
+      "estimatedMinutes": 45
+    },
+    {
+      "description": "W1D2 Tutorial 5, Bias–variance trade-off: train versus test error; the bonus proof of the decomposition is the subject of exercise 2, so attempt it unaided first.",
+      "locatorId": "nma-w1d2-t5",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "W1D2 Tutorial 6, Cross-validation (k-fold; bonus AIC).",
+      "locatorId": "nma-w1d2-t6",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u02-a1", "type": "reading", "title": "Lesson: estimation, uncertainty and complexity", "instructions": "Read the lesson before the notebooks. Write the three estimators (least squares, MLE, weighted least squares) side by side in the notebook and note under what noise assumption each is the right one. Note that every dataset in W1D2 is simulated with a known truth, which is what makes the tutorials' comparisons possible.", "estimatedMinutes": 45, "sourceLocatorIds": ["nma-w1d2", "nma-w1d2-t1", "nma-w1d2-t2", "nma-w1d2-t4", "nma-w1d2-t5"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u02-a2", "type": "problem", "title": "Work through the W1D2 tutorials (Neuromatch notebooks)", "instructions": "Run Tutorials 1–6 in the Neuromatch book (Colab or Kaggle from the page; code BSD-3 licensed). Complete the coding exercises before revealing solutions. For Tutorials 5 and 6 record the training and test errors you obtained for each polynomial order and keep the table for the laboratory. Neuromatch allots about three hours of pod time to this day; alone, expect longer.", "estimatedMinutes": 150, "sourceLocatorIds": ["nma-w1d2-t1", "nma-w1d2-t2", "nma-w1d2-t3", "nma-w1d2-t4", "nma-w1d2-t5", "nma-w1d2-t6"], "exerciseIds": [], "sessionKind": "lab" },
-    { "id": "u02-a3", "type": "problem", "title": "Tutorial: estimators and the bias–variance decomposition", "instructions": "Attempt exercises 1 and 2 before asking for hints. Derive first, then substitute numbers; the numerical parts are small by design.", "estimatedMinutes": 90, "sourceLocatorIds": ["nma-w1d2-t1", "nma-w1d2-t2", "nma-w1d2-t3", "nma-w1d2-t5"], "exerciseIds": ["NEU-220-u02-ex1", "NEU-220-u02-ex2"], "sessionKind": "tutorial" },
-    { "id": "u02-a4", "type": "lab", "title": "Laboratory: fitting a tuning curve to synthetic spike counts", "instructions": "The laboratory generates synthetic spike counts from a known tuning model and labels them synthetic on every screen; nothing in it is a recording. Derive the Poisson log-likelihood and the baseline estimator first (exercise 3, part 1), then fit the tuning model and the baseline on the training trials, compare them on the held-out trials, bootstrap the parameters, run the failure-case dataset and write the report. Every sentence that mentions the data must say it is synthetic.", "estimatedMinutes": 120, "sourceLocatorIds": ["nma-w1d2-t2", "nma-w1d2-t3", "nma-w1d2-t5", "nma-w1d2-t6"], "exerciseIds": ["NEU-220-u02-ex3"], "labId": "neural-tuning-fit", "sessionKind": "lab" },
-    { "id": "u02-a5", "type": "explain_back", "title": "Explain: why training error is not enough", "instructions": "Without the notes, write five sentences in the notebook on why a model's error on the data it was fitted to overstates its quality, what held-out data buys, and what cross-validation adds over a single split. Compare with Tutorials 5–6.", "estimatedMinutes": 15, "sourceLocatorIds": ["nma-w1d2-t5", "nma-w1d2-t6"], "exerciseIds": [], "sessionKind": "oral" },
-    { "id": "u02-a6", "type": "retrieval_practice", "title": "Retrieval: the unit's formulas", "instructions": "From memory: the MSE and the least-squares slope; the normal equations; the Gaussian log-likelihood; the weighted least-squares estimator; the bias–variance decomposition; the bootstrap percentile interval; the Poisson log-likelihood for counts.", "estimatedMinutes": 10, "sourceLocatorIds": ["nma-w1d2-t1", "nma-w1d2-t2", "nma-w1d2-t4"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Lesson: estimation, uncertainty and complexity",
+      "instructions": "Read the lesson before the notebooks. Write the three estimators (least squares, MLE, weighted least squares) side by side in the notebook and note under what noise assumption each is the right one. Note that every dataset in W1D2 is simulated with a known truth, which is what makes the tutorials' comparisons possible.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "nma-w1d2",
+        "nma-w1d2-t1",
+        "nma-w1d2-t2",
+        "nma-w1d2-t4",
+        "nma-w1d2-t5"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u02-a2",
+      "type": "problem",
+      "title": "Work through the W1D2 tutorials (Neuromatch notebooks)",
+      "instructions": "Run Tutorials 1–6 in the Neuromatch book (Colab or Kaggle from the page; code BSD-3 licensed). Complete the coding exercises before revealing solutions. For Tutorials 5 and 6 record the training and test errors you obtained for each polynomial order and keep the table for the laboratory. Neuromatch allots about three hours of pod time to this day; alone, expect longer.",
+      "estimatedMinutes": 150,
+      "sourceLocatorIds": [
+        "nma-w1d2-t1",
+        "nma-w1d2-t2",
+        "nma-w1d2-t3",
+        "nma-w1d2-t4",
+        "nma-w1d2-t5",
+        "nma-w1d2-t6"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u02-a3",
+      "type": "problem",
+      "title": "Tutorial: estimators and the bias–variance decomposition",
+      "instructions": "Attempt exercises 1 and 2 before asking for hints. Derive first, then substitute numbers; the numerical parts are small by design.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "nma-w1d2-t1",
+        "nma-w1d2-t2",
+        "nma-w1d2-t3",
+        "nma-w1d2-t5"
+      ],
+      "exerciseIds": [
+        "NEU-220-u02-ex1",
+        "NEU-220-u02-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u02-a4",
+      "type": "lab",
+      "title": "Laboratory: fitting a tuning curve to synthetic spike counts",
+      "instructions": "The laboratory generates synthetic spike counts from a known tuning model and labels them synthetic on every screen; nothing in it is a recording. Derive the Poisson log-likelihood and the baseline estimator first (exercise 3, part 1), then fit the tuning model and the baseline on the training trials, compare them on the held-out trials, bootstrap the parameters, run the failure-case dataset and write the report. Every sentence that mentions the data must say it is synthetic.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nma-w1d2-t2",
+        "nma-w1d2-t3",
+        "nma-w1d2-t5",
+        "nma-w1d2-t6"
+      ],
+      "exerciseIds": [
+        "NEU-220-u02-ex3"
+      ],
+      "labId": "neural-tuning-fit",
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u02-a5",
+      "type": "explain_back",
+      "title": "Explain: why training error is not enough",
+      "instructions": "Without the notes, write five sentences in the notebook on why a model's error on the data it was fitted to overstates its quality, what held-out data buys, and what cross-validation adds over a single split. Compare with Tutorials 5–6.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "nma-w1d2-t5",
+        "nma-w1d2-t6"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u02-a6",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the unit's formulas",
+      "instructions": "From memory: the MSE and the least-squares slope; the normal equations; the Gaussian log-likelihood; the weighted least-squares estimator; the bias–variance decomposition; the bootstrap percentile interval; the Poisson log-likelihood for counts.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "nma-w1d2-t1",
+        "nma-w1d2-t2",
+        "nma-w1d2-t4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": ["NEU-220-u02-ex1", "NEU-220-u02-ex2", "NEU-220-u02-ex3"],
-  "exitCheck": { "description": "Exercise 3 (the laboratory report) accepted: Poisson likelihood and baseline derived, held-out comparison against the baseline reported, parameters interpreted with bootstrap uncertainty, the failure case diagnosed, and the data labelled synthetic throughout with no claim about biological neurons; plus exercise 1 accepted with the least-squares, MLE and weighted estimators derived.", "exerciseId": "NEU-220-u02-ex3" },
+  "exerciseIds": [
+    "NEU-220-u02-ex1",
+    "NEU-220-u02-ex2",
+    "NEU-220-u02-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 3 (the laboratory report) accepted: Poisson likelihood and baseline derived, held-out comparison against the baseline reported, parameters interpreted with bootstrap uncertainty, the failure case diagnosed, and the data labelled synthetic throughout with no claim about biological neurons; plus exercise 1 accepted with the least-squares, MLE and weighted estimators derived.",
+    "exerciseId": "NEU-220-u02-ex3"
+  },
   "commonMisconceptions": [
-    { "claim": "Maximum likelihood and least squares are different methods that happen to agree.", "correction": "Under independent Gaussian noise of constant variance the log-likelihood is a negative multiple of the sum of squared residuals plus a constant, so they are the same optimisation; with unequal variances the MLE becomes weighted least squares, and with Poisson counts it is something else again.", "correctionLocatorIds": ["nma-w1d2-t2"] },
-    { "claim": "A lower training error means a better model.", "correction": "Training error falls monotonically with model complexity; held-out error falls and then rises as variance takes over. Model choice must use data the fit did not see.", "correctionLocatorIds": ["nma-w1d2-t5", "nma-w1d2-t6"] },
-    { "claim": "A 95% bootstrap interval means the true parameter lies in it with 95% probability.", "correction": "The interval is a statement about the procedure: across repeated samples, intervals built this way cover the true value about 95% of the time, if the bootstrap's assumptions (independent, representative samples) hold. In the synthetic tutorials the true slope is known, so the statement can be checked; with real data it cannot.", "correctionLocatorIds": ["nma-w1d2-t3"] },
-    { "claim": "A tuning curve fitted to spike counts tells us what the neuron represents.", "correction": "It summarises how the mean count depends on the stimulus variable in that dataset under the model's assumptions; it does not identify the variable the neuron 'cares about', the mechanism, or whether downstream circuits read it. In this unit the counts are synthetic and the fitted curve says nothing about any biological neuron.", "correctionLocatorIds": ["nma-w1d2-t4", "nma-w1d2-t5"] }
+    {
+      "claim": "Maximum likelihood and least squares are different methods that happen to agree.",
+      "correction": "Under independent Gaussian noise of constant variance the log-likelihood is a negative multiple of the sum of squared residuals plus a constant, so they are the same optimisation; with unequal variances the MLE becomes weighted least squares, and with Poisson counts it is something else again.",
+      "correctionLocatorIds": [
+        "nma-w1d2-t2"
+      ]
+    },
+    {
+      "claim": "A lower training error means a better model.",
+      "correction": "Training error falls monotonically with model complexity; held-out error falls and then rises as variance takes over. Model choice must use data the fit did not see.",
+      "correctionLocatorIds": [
+        "nma-w1d2-t5",
+        "nma-w1d2-t6"
+      ]
+    },
+    {
+      "claim": "A 95% bootstrap interval means the true parameter lies in it with 95% probability.",
+      "correction": "The interval is a statement about the procedure: across repeated samples, intervals built this way cover the true value about 95% of the time, if the bootstrap's assumptions (independent, representative samples) hold. In the synthetic tutorials the true slope is known, so the statement can be checked; with real data it cannot.",
+      "correctionLocatorIds": [
+        "nma-w1d2-t3"
+      ]
+    },
+    {
+      "claim": "A tuning curve fitted to spike counts tells us what the neuron represents.",
+      "correction": "It summarises how the mean count depends on the stimulus variable in that dataset under the model's assumptions; it does not identify the variable the neuron 'cares about', the mechanism, or whether downstream circuits read it. In this unit the counts are synthetic and the fitted curve says nothing about any biological neuron.",
+      "correctionLocatorIds": [
+        "nma-w1d2-t4",
+        "nma-w1d2-t5"
+      ]
+    }
   ],
   "estimatedMinutes": 660,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "W1D2 chapter page and Tutorials 1–6 opened 2026-10-30; objectives, section structure, models and data statements recorded (Tutorial 1: y = θx + ε, true slope 1.2, 30 samples, synthetic; Tutorial 2: Gaussian likelihood and MLE = least squares; Tutorial 3: simulated data, bootstrap; Tutorial 4: design matrix and normal equations; Tutorial 5: noisy generated data, bonus proof of the decomposition; Tutorial 6: simulated train/test data, k-fold, AIC bonus)." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived: least-squares slope Σxy/Σx²; Gaussian MLE identical; weighted estimator Σ(x_i y_i/σ_i²)/Σ(x_i²/σ_i²); for data (1, 1.1), (2, 2.3), (3, 3.1): θ̂ = 15/14 = 1.0714, residuals 0.029, 0.157, −0.114, SSR 0.0386, σ̂²_MLE = 0.0129 (unbiased 0.0193); weighted with σ = 0.1, 0.2, 0.3 gives 1.094. Bias–variance: E[(y − f̂)²] = σ² + Bias² + Var at fixed x with independent training set. Entropy and Poisson algebra: Poisson log-likelihood Σ(n ln λ − λ − ln n!), constant-rate MLE = mean count/T. Lesson example θ̂ = 60.7/30 = 2.023." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson states the estimators and the decomposition but leaves their derivations and proofs to exercises 1–2; its numerical example (x = 1..4, y = 2.0, 4.1, 5.9, 8.2) differs from exercise 1's data; it states the Poisson log-likelihood but leaves the baseline MLE and the report to exercise 3. Reference reasoning only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "230 minutes of notebook preparation, 45 of lesson, 150 of tutorial work, 90 of derivations, 120 of laboratory, 25 of explanation and retrieval ≈ 11 hours: the heaviest unit, at the top of the 8–12 hour week; the laboratory report may be finished in the following week's first evening." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "W1D2 chapter page and Tutorials 1–6 opened 2026-10-30; objectives, section structure, models and data statements recorded (Tutorial 1: y = θx + ε, true slope 1.2, 30 samples, synthetic; Tutorial 2: Gaussian likelihood and MLE = least squares; Tutorial 3: simulated data, bootstrap; Tutorial 4: design matrix and normal equations; Tutorial 5: noisy generated data, bonus proof of the decomposition; Tutorial 6: simulated train/test data, k-fold, AIC bonus)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Content agent re-derived: least-squares slope Σxy/Σx²; Gaussian MLE identical; weighted estimator Σ(x_i y_i/σ_i²)/Σ(x_i²/σ_i²); for data (1, 1.1), (2, 2.3), (3, 3.1): θ̂ = 15/14 = 1.0714, residuals 0.029, 0.157, −0.114, SSR 0.0386, σ̂²_MLE = 0.0129 (unbiased 0.0193); weighted with σ = 0.1, 0.2, 0.3 gives 1.094. Bias–variance: E[(y − f̂)²] = σ² + Bias² + Var at fixed x with independent training set. Entropy and Poisson algebra: Poisson log-likelihood Σ(n ln λ − λ − ln n!), constant-rate MLE = mean count/T. Lesson example θ̂ = 60.7/30 = 2.023."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson states the estimators and the decomposition but leaves their derivations and proofs to exercises 1–2; its numerical example (x = 1..4, y = 2.0, 4.1, 5.9, 8.2) differs from exercise 1's data; it states the Poisson log-likelihood but leaves the baseline MLE and the report to exercise 3. Reference reasoning only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "230 minutes of notebook preparation, 45 of lesson, 150 of tutorial work, 90 of derivations, 120 of laboratory, 25 of explanation and retrieval ≈ 11 hours: the heaviest unit, at the top of the 8–12 hour week; the laboratory report may be finished in the following week's first evening."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["NEU-220-u02-ex1.reference-solution.md", "NEU-220-u02-ex2.reference-solution.md", "NEU-220-u02-ex3.reference-solution.md", "NEU-220-u02-ex3.grading-notes.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "NEU-220-u02-ex1.reference-solution.md",
+    "NEU-220-u02-ex2.reference-solution.md",
+    "NEU-220-u02-ex3.reference-solution.md",
+    "NEU-220-u02-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
 }

@@ -1,0 +1,189 @@
+{
+  "id": "COG-260-u01-ex1",
+  "sequence": 1,
+  "title": "Likelihoods, estimates and BIC by hand",
+  "kind": "calculation",
+  "promptMarkdown": "Work by hand and show each step. Give probabilities as decimals with a leading zero, to at least three places. The models are those of the lesson: biased responding with parameter $b$; noisy win-stay lose-shift with parameter $\\varepsilon$; and Rescorla-Wagner learning with softmax choice, with parameters $\\alpha$ and $\\beta$, values starting at $Q_0=Q_1=0.5$ and only the chosen arm updated.\n\n1. A participant makes $T=201$ choices. On the $n=200$ trials that have a previous trial, $c=170$ choices follow the win-stay lose-shift rule. Write the session's log-likelihood under noisy win-stay lose-shift as a function of $\\varepsilon$, derive the maximum-likelihood estimate in terms of $n$ and $c$ (including the case $c<n/2$), and evaluate it.\n2. A Rescorla-Wagner learner with $\\alpha=0.5$ chooses arm 1 on trials 1, 2 and 3 and receives rewards 1, 0 and 1. Give $Q_1$ after each trial, and $Q_0$ after trial 3.\n3. With $\\beta=4$, compute the probability that this learner chooses arm 1 on trial 4.\n4. Fitted to one session of $T=200$ trials, Rescorla-Wagner reaches a minimised negative log-likelihood of $120.5$ and win-stay lose-shift one of $124.0$. Compute both BIC values with $\\mathrm{BIC}=2\\,\\mathrm{NLL}+k\\ln T$, and say which model BIC prefers.\n5. In two or three sentences: what does the difference in part 4 license you to say about this participant, and what would you run before saying more?",
+  "conceptIds": [
+    "choice-learning-models",
+    "method-parameter-estimation"
+  ],
+  "hintLadder": [
+    "Each of the 200 later trials follows the rule with probability $1-\\varepsilon/2$ and breaks it with probability $\\varepsilon/2$; the first trial contributes $\\ln\\frac12$ whatever $\\varepsilon$ is.",
+    "Differentiate $c\\ln(1-\\varepsilon/2)+(n-c)\\ln(\\varepsilon/2)$, set it to zero and solve; then ask where the estimate falls when $c<n/2$, given $\\varepsilon\\in[0,1]$.",
+    "Only the chosen arm is updated: $Q\\leftarrow Q+\\alpha(r-Q)$. Arm 0 is never chosen, so its value never changes.",
+    "With two arms the softmax is a logistic function of $\\beta(Q_1-Q_0)$, and $\\beta$ is the inverse temperature: multiply, do not divide.",
+    "$\\ln 200\\approx5.2983$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "eps-hat",
+      "kind": "numeric_value",
+      "description": "the win-stay lose-shift estimate 0.3 appears",
+      "params": {
+        "expected": 0.3,
+        "tolerance": 0.001
+      }
+    },
+    {
+      "id": "q-after-3",
+      "kind": "numeric_value",
+      "description": "the value 0.6875 after trial 3 appears",
+      "params": {
+        "expected": 0.6875,
+        "tolerance": 0.0005
+      }
+    },
+    {
+      "id": "p-choose-1",
+      "kind": "numeric_value",
+      "description": "the choice probability 0.6792 appears",
+      "params": {
+        "expected": 0.6792,
+        "tolerance": 0.001
+      }
+    },
+    {
+      "id": "bic-rw",
+      "kind": "numeric_value",
+      "description": "the Rescorla-Wagner BIC 251.60 appears",
+      "params": {
+        "expected": 251.6,
+        "tolerance": 0.05
+      }
+    },
+    {
+      "id": "bic-wsls",
+      "kind": "numeric_value",
+      "description": "the win-stay lose-shift BIC 253.30 appears",
+      "params": {
+        "expected": 253.3,
+        "tolerance": 0.05
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "wsls-estimate",
+        "criterion": "The log-likelihood is written with the first trial as a constant term; the derivative gives the estimate 2(n − c)/n = 0.30; the boundary case c < n/2 (estimate 1) is stated.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Derivation, value and boundary case."
+          },
+          {
+            "label": "partially met",
+            "description": "Value right, boundary case or derivation missing."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong model or value."
+          }
+        ]
+      },
+      {
+        "id": "rw-values",
+        "criterion": "Values 0.75, 0.375 and 0.6875 with Q0 unchanged at 0.5, and P(arm 1) = 1/(1 + e^(−0.75)) = 0.6792 with beta as an inverse temperature.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All values right."
+          },
+          {
+            "label": "partially met",
+            "description": "Values right, but the probability computed with beta as a temperature."
+          },
+          {
+            "label": "not met",
+            "description": "Both arms updated, or another wrong update rule."
+          }
+        ]
+      },
+      {
+        "id": "bic",
+        "criterion": "BIC 251.60 for Rescorla-Wagner and 253.30 for win-stay lose-shift; Rescorla-Wagner preferred by 1.70.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both values and the comparison."
+          },
+          {
+            "label": "partially met",
+            "description": "One value right or the penalty misapplied."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "interpretation",
+        "criterion": "The difference is in-sample and small; it ranks prediction of this session after a complexity penalty, not the generating mechanism; model recovery in this design (and validation by simulation or a held-out comparison) is named as the next step.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Caveat and next check both explicit."
+          },
+          {
+            "label": "partially met",
+            "description": "Caveat or next check missing."
+          },
+          {
+            "label": "not met",
+            "description": "Claims the mechanism is identified."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "complete solution",
+      "text": "Part 1: l(eps) = ln(1/2) + c ln(1 - eps/2) + (n - c) ln(eps/2); setting the derivative to zero gives eps = 2(n - c)/n, so eps = 2*30/200 = 0.3, and if c < n/2 the estimate is 1. Part 2: Q1 becomes 0.75, then 0.375, then 0.6875; Q0 stays 0.5. Part 3: p = 1/(1 + e^(-0.75)) = 0.6792. Part 4: BIC for Rescorla-Wagner is 241 + 2 ln 200 = 251.60 and for win-stay lose-shift 248 + ln 200 = 253.30, so BIC prefers Rescorla-Wagner. Part 5: the difference is in sample and small; model recovery in this design comes first.",
+      "expect": {
+        "eps-hat": true,
+        "q-after-3": true,
+        "p-choose-1": true,
+        "bic-rw": true,
+        "bic-wsls": true
+      }
+    },
+    {
+      "label": "temperature and penalty mistakes",
+      "text": "Treating beta as a temperature gives p = 1/(1 + e^(-0.1875/4)) = 0.5117. Without the penalty the two BIC values are 241 and 248. The estimate of eps is 0.15.",
+      "expect": {
+        "eps-hat": false,
+        "q-after-3": false,
+        "p-choose-1": false,
+        "bic-rw": false,
+        "bic-wsls": false
+      }
+    },
+    {
+      "label": "both arms updated",
+      "text": "Updating both arms gives Q0 = Q1 = 0.6875 after trial 3, so the probability of arm 1 on trial 4 is 0.5.",
+      "expect": {
+        "q-after-3": true,
+        "p-choose-1": false
+      }
+    },
+    {
+      "label": "the probability rounded to two places",
+      "text": "The probability of arm 1 on trial 4 is about 0.68.",
+      "expect": {
+        "p-choose-1": true
+      }
+    }
+  ]
+}

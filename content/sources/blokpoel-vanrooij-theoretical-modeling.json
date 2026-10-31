@@ -1,0 +1,78 @@
+{
+  "id": "blokpoel-vanrooij-theoretical-modeling",
+  "title": "Theoretical modeling for cognitive science and psychology",
+  "authors": [
+    "Mark Blokpoel",
+    "Iris van Rooij"
+  ],
+  "kind": "book",
+  "canonicalUrl": "https://computationalcognitivescience.github.io/lovelace/home",
+  "description": "'Welcome to this open and interactive textbook on theoretical modeling for cognitive science and psychology.' Part I Intro (Chapter 1 Introduction; Chapter 2 Conceptual foundations), Part II Formalizing (Chapter 3 Math concepts and notation; 4 Formal proofs; 5 Subset choice; 6 Coherence), Part III Simulating (Chapter 8 Simulating in Scala; 9 Scala and mathlib; 10 Subset choice). Chapter 2 covers why scientists model, explaining capacities rather than effects, Marr's computational, algorithmic and implementational levels (distinguished from levels of organisation) and the point that 'models that predict need not explain, and vice versa'.",
+  "codeLicence": "Scala software: 'released under an UGN GPL v3 license or any later version' (as printed on the home page; read as GNU GPL v3 or later)",
+  "rightsNotes": [
+    "Home page, License section (2026-10-31): 'This open textbook is released under a CC-BY 4.0 license' 'and the Scala software used herein is released under an UGN GPL v3 license or any later version.' (wording as printed).",
+    "The home page shows '© 2025' and a suggested citation dated 2021-2025."
+  ],
+  "currentVersionId": "lovelace-web-2025",
+  "versions": [
+    {
+      "id": "lovelace-web-2025",
+      "label": "Online edition (© 2025; citation dated 2021-2025; no version number; viewed 2026-10-31)",
+      "url": "https://computationalcognitivescience.github.io/lovelace/home",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the home page (contents and licence), Chapter 1 Introduction and Chapter 2 Conceptual foundations",
+      "componentsSeen": [
+        "home page: title, authors, contents (Parts I-III), licence section, © 2025, citation",
+        "Chapter 1 Introduction: For whom is this book?; What this book is (not) about; Approach; Tools for Theory; Scala; Further Reading. Audience: students and researchers in cognitive science or psychology, including those with little or no training in theory or modelling; not a survey of existing models and not training in a specific architecture such as ACT-R or neural networks",
+        "Chapter 2 Conceptual foundations: Why do scientists model?; Explaining capacities; Further Reading. Marr's three levels with a sorting example; 'models that predict need not explain, and vice versa' (tide-table example); 'Models that explain can be seen as answering 'why' and 'how' questions.'; capacities as primary explananda and effects as secondary"
+      ],
+      "licence": "CC BY 4.0 (text); Scala code GPL v3 or later (printed as 'UGN GPL v3')",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "computationalcognitivescience.github.io"
+      ],
+      "limitations": [
+        "Chapter 7 is absent from the contents (numbering runs 6 to 8); Parts II and III were not opened.",
+        "Simulation chapters use Scala, not Python.",
+        "Strong on the computational level and on prediction versus explanation; normative versus descriptive versus mechanistic model types and causal evidence come from neuromatch-compneuro (W1D1 'what', 'how' and 'why' models; W3D5 Network Causality) and jonas-kording-2017.",
+        "The home-page citation contains an unfilled 'Retrieved [DATE]' placeholder; no DOI or version number was seen."
+      ],
+      "locators": [
+        {
+          "id": "lovelace-home",
+          "label": "Home page: contents and licence",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lovelace-web-2025",
+            "url": "https://computationalcognitivescience.github.io/lovelace/home",
+            "heading": "Theoretical modeling for cognitive science and psychology"
+          }
+        },
+        {
+          "id": "lovelace-ch1",
+          "label": "Chapter 1 Introduction (audience, approach)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lovelace-web-2025",
+            "url": "https://computationalcognitivescience.github.io/lovelace/part_i/intro",
+            "heading": "Chapter 1 - Introduction"
+          }
+        },
+        {
+          "id": "lovelace-ch2",
+          "label": "Chapter 2 Conceptual foundations (why model; explaining capacities; Marr's levels; prediction versus explanation)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "lovelace-web-2025",
+            "url": "https://computationalcognitivescience.github.io/lovelace/part_i/foundations",
+            "heading": "Chapter 2 - Conceptual foundations"
+          }
+        }
+      ]
+    }
+  ]
+}

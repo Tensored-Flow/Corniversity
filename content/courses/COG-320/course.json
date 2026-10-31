@@ -1,0 +1,45 @@
+{
+  "id": "COG-320",
+  "version": 1,
+  "title": "Metacognition",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "intermediate",
+  "position": "Optional elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional elective). Confidence, calibration, monitoring and control, and the relationship between subjective reports and task performance, separating confidence, accuracy and measurement quality.",
+  "description": "Proposed course: Metacognition. Central question: How do people monitor and control their own thinking, and how should confidence be measured? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "How do people monitor and control their own thinking, and how should confidence be measured?",
+  "prerequisiteGuidance": "Signal-detection basics and the measurement block (MBI-05). The reliability-paradox reading in MBI-05 is directly relevant to confidence measures.",
+  "preparationPath": "Resolve a primary source on metacognitive sensitivity and calibration measures and a permitted dataset with confidence ratings; prepare a first unit around the analysis activity below.",
+  "plannedActivities": [
+    "Analyse confidence and correctness on an appropriate dataset, explain what the chosen measures capture, and identify an interpretation they do not justify."
+  ],
+  "sourceCandidates": []
+}

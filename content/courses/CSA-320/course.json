@@ -1,0 +1,45 @@
+{
+  "id": "CSA-320",
+  "version": 1,
+  "title": "Learning to Learn",
+  "departmentIds": [
+    "computer-science-ai"
+  ],
+  "level": "advanced",
+  "position": "Optional advanced elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional advanced elective). Meta-learning, adaptation, transfer and evaluation across tasks, with explicit attention to how an evaluation distinguishes meaningful adaptation from memorised task overlap or leakage.",
+  "description": "Proposed course: Learning to Learn. Central question: How can a system adapt to new tasks, and how do we know the adaptation is real? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "How can a system adapt to new tasks, and how do we know the adaptation is real?",
+  "prerequisiteGuidance": "CSA-210 Deep Learning Foundations; the hierarchical-models unit of COG-201 (unit 6, in preparation) gives the Bayesian view of learning to learn.",
+  "preparationPath": "Resolve one primary meta-learning source and one on task-split construction; prepare a first unit around the evaluation activity below.",
+  "plannedActivities": [
+    "Evaluate adaptation on a small family of tasks with a documented training and test construction and a simpler baseline."
+  ],
+  "sourceCandidates": []
+}

@@ -1,0 +1,134 @@
+{
+  "id": "gershman-cfcn",
+  "title": "Computational Foundations of Cognitive Neuroscience",
+  "authors": [
+    "Samuel J. Gershman"
+  ],
+  "institution": "Draft textbook self-published at gershmanlab.com (the lecture slides give the author's affiliation as Harvard University)",
+  "kind": "book",
+  "canonicalUrl": "https://gershmanlab.com/textbook.html",
+  "description": "Draft open textbook that 'provides an introduction to computational cognitive neuroscience' and 'attempts to unify many aspects of neural computation through the lens of decision theory'. Fifteen chapters, each a separate PDF: 1 Reverse engineering the brain; 2 Neural primitives of thought; 3 Principles of perceptual representation; 4 The Bayesian brain; 5 Approximate inference; 6 Attention; 7 Perceptual decisions; 8 Object categorization; 9 Plasticity as optimization; 10 Learning to predict; 11 Learning to act; 12 Predictive maps; 13 Simulation and planning with mental models; 14 Memory systems; 15 Generalization, geometry, and causality. The chapters opened end with study questions or references. Companion pages offer 15 lecture slide decks (PDF), 24 mini-project PDFs and five Python notebooks (for chapters 3, 4, 5, 6 and 9).",
+  "codeLicence": "MIT License, 'Copyright (c) 2026 sjgershm' (github.com/sjgershm/CFCN: efficient_coding, costly_inference, neural_gibbs, attentional_cueing and backprop notebooks with requirements.txt; 13 commits)",
+  "rightsNotes": [
+    "Textbook page: '© 2025 Samuel J. Gershman (CC-BY license)', the link pointing to https://creativecommons.org/licenses/by/4.0/ (read in the page HTML on 2026-10-31). The chapter PDFs print no licence of their own (chapter 1 checked).",
+    "The lectures, mini-projects and code pages carry no licence statement (their HTML was searched on 2026-10-31). Corniversity treats the lecture slides and mini-project PDFs as reference-only and imports only the textbook chapters (gershmanlab.com/textbook/chapterN.pdf).",
+    "CC BY 4.0 requires attribution: credit Samuel J. Gershman, link the licence and indicate changes.",
+    "The companion notebooks are MIT-licensed code (see codeLicence)."
+  ],
+  "currentVersionId": "gershman-cfcn-draft-2026-10-05",
+  "versions": [
+    {
+      "id": "gershman-cfcn-draft-2026-10-05",
+      "label": "Draft, 'Last update: 10/05/2026' as printed on the textbook page (opened 2026-10-31)",
+      "url": "https://gershmanlab.com/textbook.html",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the textbook, lectures, mini-projects and code pages and searched their HTML for licence text; extracted the text of chapter1.pdf (15 pages), chapter4.pdf (22 pages), chapter10.pdf (20 pages) and lectures/lecture1.pdf (78 pages); opened the GitHub repository sjgershm/CFCN and its LICENSE",
+      "componentsSeen": [
+        "textbook page: title, draft notice ('This is a draft and subject to change!'), last-update line, table of contents with 15 chapter PDF links, acknowledgements, copyright line with CC BY link",
+        "chapter 1 'Reverse engineering the brain' (15 pages): 1 The computational level (1.1 Decision theory, 1.2 The optimal policy, 1.3 Why be Bayesian?), 2 The algorithmic level (2.1 Complexity, efficiency, tractability; 2.2 Resource rationality; 2.3 Algorithmic design principles), 3 The implementation level, 4 Conclusion, Study questions, References",
+        "chapter 4 'The Bayesian brain' (22 pages): 1 Is behavior Bayesian? (1.1 The urn task, 1.2 Magnitude estimation), 2 Explaining deviations from Bayesian inference (2.1 resource-rational analysis of costly inference to 2.6 Weber's law), 3 Conclusion, Study questions, References",
+        "chapter 10 'Learning to predict' (20 pages): 1 Classical conditioning, 2 The Rescorla-Wagner model, 3 Learning in the absence of stimuli, 4 A probabilistic view, 5 Long-range prediction, 6 Putting it all together, 7 The neural architecture of reinforcement learning (7.1 Dopamine signaling of prediction errors to 7.4 A neural implementation of probabilistic TD learning), 8 Conclusion, References",
+        "lecture 1 slides 'Lecture 1: Reverse engineering the brain' (Samuel Gershman, Harvard University; 78 pages)",
+        "lectures page (15 lecture PDFs, one per chapter), mini-projects page (24 project PDFs, for example 'Temporal difference learning' and 'Policy compression'), code page (five notebooks in sjgershm/CFCN)"
+      ],
+      "licence": "CC BY 4.0 (textbook page)",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "gershmanlab.com"
+      ],
+      "limitations": [
+        "A draft 'subject to change': chapter files are replaced in place at the same URLs, so page locators can drift between updates. No publisher or print edition is named.",
+        "The date '10/05/2026' has no stated format; read in US order it is 5 October 2026.",
+        "Only chapters 1, 4 and 10 and lecture 1 were text-extracted; the other chapters are known by title only. The mini-project PDFs were not opened and the notebooks were not run.",
+        "Each chapter PDF is paginated from 1, with the running head 'chapter N <page>' from its second page; the first page of a chapter prints no page number.",
+        "The same pages are mirrored at gershmanlab.opalstacked.com; gershmanlab.com is the canonical host.",
+        "Import is limited to the textbook chapters: the lecture slides and mini-projects on the same host carry no licence statement."
+      ],
+      "locators": [
+        {
+          "id": "cfcn-toc",
+          "label": "Textbook page: contents, draft notice, CC BY statement",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook.html",
+            "heading": "Computational Foundations of Cognitive Neuroscience"
+          }
+        },
+        {
+          "id": "cfcn-ch01",
+          "label": "Chapter 1: Reverse engineering the brain (chapter opening and summary)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook/chapter1.pdf",
+            "fileLabel": "chapter1.pdf",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Chapter 1: Reverse engineering the brain"
+          },
+          "note": "The chapter's first page prints no page number."
+        },
+        {
+          "id": "cfcn-ch01-s1",
+          "label": "Chapter 1, section 1 The computational level (decision theory, the optimal policy, why be Bayesian)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook/chapter1.pdf",
+            "fileLabel": "chapter1.pdf",
+            "physicalPageIndex": 3,
+            "printedPageLabel": "4",
+            "sectionLabel": "1 The computational level"
+          }
+        },
+        {
+          "id": "cfcn-ch04",
+          "label": "Chapter 4: The Bayesian brain (opening; section 1 Is behavior Bayesian?)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook/chapter4.pdf",
+            "fileLabel": "chapter4.pdf",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Chapter 4: The Bayesian brain"
+          },
+          "note": "The chapter's first page prints no page number."
+        },
+        {
+          "id": "cfcn-ch10",
+          "label": "Chapter 10: Learning to predict (opening; section 1 Classical conditioning)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook/chapter10.pdf",
+            "fileLabel": "chapter10.pdf",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Chapter 10: Learning to predict"
+          },
+          "note": "The chapter's first page prints no page number."
+        },
+        {
+          "id": "cfcn-ch10-s7",
+          "label": "Chapter 10, section 7 The neural architecture of reinforcement learning (dopamine prediction errors, stimulus representation, three-factor plasticity, probabilistic TD)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "gershman-cfcn-draft-2026-10-05",
+            "url": "https://gershmanlab.com/textbook/chapter10.pdf",
+            "fileLabel": "chapter10.pdf",
+            "physicalPageIndex": 8,
+            "printedPageLabel": "9",
+            "sectionLabel": "7 The neural architecture of reinforcement learning"
+          }
+        }
+      ]
+    }
+  ]
+}

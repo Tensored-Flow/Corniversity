@@ -47,7 +47,7 @@ test.describe("orientation to a confirmed first term", () => {
       await screenshot(page, "10-onboarding-time");
       await page.goto("/onboarding/6");
 
-      // Step 6: rhythm (defaults: term, next Monday)
+      // Step 6: rhythm (a new learner's default is rolling study; a stored choice is kept), next Monday
       await page.getByRole("button", { name: /continue/i }).click();
       await expect(page).toHaveURL(/\/onboarding\/7/);
 

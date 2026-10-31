@@ -1,0 +1,85 @@
+{
+  "id": "COG-260-u03",
+  "courseId": "COG-260",
+  "sequence": 3,
+  "title": "What a fitted parameter measures: reliability and generalisation",
+  "summary": "Test-retest reliability as an intraclass correlation and why low variance between people makes robust experimental effects poor measures of individual differences; whether learning-model parameters generalise across tasks done by the same people; what a parameter would need before it is read as a property of a person.",
+  "objectives": [
+    {
+      "id": "u03-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-parameter-recovery"
+  ],
+  "teachesConceptIds": [
+    "method-measurement-reliability-validity"
+  ],
+  "preparation": [
+    {
+      "description": "Read Hedge, Powell and Sumner (2018) on the two meanings of 'reliable' and the intraclass correlation.",
+      "locatorId": "hedge-paradox",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the variance components behind the reliabilities (Fig. 4).",
+      "locatorId": "hedge-variance",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Part I of Eckstein et al. (2022): parameter generalisability.",
+      "locatorId": "eck-part-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the comparison with the generalisability ceiling.",
+      "locatorId": "eck-ceiling",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the stated limitations.",
+      "locatorId": "eck-limitations",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u03-a1",
+      "type": "reading",
+      "title": "Reading: What a fitted parameter measures: reliability and generalisation",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "hedge-paradox",
+        "hedge-variance",
+        "eck-part-1",
+        "eck-ceiling",
+        "eck-limitations"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Hedge, Powell and Sumner (2018) and Eckstein et al. (2022) are records verified on 2026-10-31; the cited sections were read, with the limits each record lists."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

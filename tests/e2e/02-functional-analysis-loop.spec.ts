@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap } from "./helpers";
+import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 2: enrol in Functional Analysis I, open unit 1, start the tutorial, write an original
@@ -15,12 +15,7 @@ test.describe("functional analysis learning loop", () => {
     await page.goto("/courses/MAT-230");
     await expect(page.getByRole("heading", { level: 1, name: "Functional Analysis I" })).toBeVisible();
     await expect(page.getByText("Teaching ready").first()).toBeVisible();
-    const takeButton = page.getByRole("button", { name: /take this course/i });
-    if (await takeButton.isVisible().catch(() => false)) {
-      await page.getByLabel(/^Enrolled/).check();
-      await takeButton.click();
-    }
-    await expect(page.getByText("Enrolled", { exact: true }).first()).toBeVisible();
+    await takeCourse(page, "MAT-230");
     await screenshot(page, "03-course-foyer");
 
     await page.getByRole("link", { name: "Normed and Banach spaces" }).click();

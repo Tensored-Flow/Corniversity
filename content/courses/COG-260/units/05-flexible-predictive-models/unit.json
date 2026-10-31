@@ -1,0 +1,79 @@
+{
+  "id": "COG-260-u05",
+  "courseId": "COG-260",
+  "sequence": 5,
+  "title": "Flexible predictive models: recurrent networks against cognitive models",
+  "summary": "A recurrent network fitted to choices against Q-learning variants and a linear baseline on a two-button learning task, compared by leave-one-subject-out prediction; what flexibility buys in prediction and what it costs in interpretation.",
+  "objectives": [
+    {
+      "id": "u05-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-predictive-checks"
+  ],
+  "teachesConceptIds": [
+    "choice-learning-models"
+  ],
+  "preparation": [
+    {
+      "description": "Read the abstract of Dezfouli et al. (2019).",
+      "locatorId": "dez-abstract",
+      "estimatedMinutes": 5
+    },
+    {
+      "description": "Read the task: a two-button instrumental learning task with reward probabilities changing by block.",
+      "locatorId": "dez-task",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the baseline models (ql, qlp, gql and lin).",
+      "locatorId": "dez-baselines",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the baseline methods.",
+      "locatorId": "dez-baseline-methods",
+      "estimatedMinutes": 15
+    }
+  ],
+  "activities": [
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Reading: Flexible predictive models: recurrent networks against cognitive models",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "dez-abstract",
+        "dez-task",
+        "dez-baselines",
+        "dez-baseline-methods"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Dezfouli et al. (2019) locators verified on 2026-10-31 for the abstract, task, baselines and baseline methods; the network specification, off-policy simulations and figures were not read."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

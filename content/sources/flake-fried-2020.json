@@ -1,0 +1,68 @@
+{
+  "id": "flake-fried-2020",
+  "title": "Measurement Schmeasurement: Questionable Measurement Practices and How to Avoid Them",
+  "authors": [
+    "Jessica Kay Flake",
+    "Eiko I. Fried"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1177/2515245920952393",
+  "description": "General Article in Advances in Methods and Practices in Psychological Science (2020) defining questionable measurement practices as 'decisions researchers make that raise doubts about the validity of the measures, and ultimately the validity of study conclusions', reviewing evidence that measurement reporting is poor, and offering six questions for transparent reporting of measurement (Table 1), beginning 'What is your construct?', 'Why and how did you select your measure?' and 'What measure did you use to operationalize the construct?'.",
+  "rightsNotes": [
+    "The author-hosted PDF opened (media.eiko-fried.com) prints '© The Author(s) 2020' and 'Article reuse guidelines: sagepub.com/journals-permissions'; no Creative Commons statement was found in its extracted text. Free to read, reference-only.",
+    "The author's publications page says full-text PDFs are shared under open-access licences (citing the Taverne Amendment where applicable), and its footer reads '2026, Eiko Fried' 'CC-BY-4.0' for the website. Neither grants Corniversity a licence to copy or AI-process this article.",
+    "The publisher page (journals.sagepub.com) returned HTTP 403 to the fetcher and was not opened."
+  ],
+  "currentVersionId": "flake-fried-2020-ampps",
+  "versions": [
+    {
+      "id": "flake-fried-2020-ampps",
+      "label": "Published article (author-hosted PDF; pages 1-10; received 1/17/19, revision accepted 6/21/20)",
+      "url": "https://media.eiko-fried.com/publications/2020-flake-advances-in-methods-and-practices-in-psychological-scie-measurement-schmeasurement-questionable-measurement-practices-and-how-to-av.pdf",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the author's publications page (entry 102) and extracted the text of the author-hosted PDF locally with the Corniversity scripts/pdf-dump.ts",
+      "componentsSeen": [
+        "PDF page 1: DOI, journal name, '1 –10', '© The Author(s) 2020', abstract, keywords (construct validity, validity, psychometrics, replication, p-hacking), received and accepted dates",
+        "Table 1 'Six Questions to Promote Transparent Reporting of Measurement Practices' on printed page 4",
+        "sections including 'How to use these questions' and 'Transparency'",
+        "author's publications page entry: 'Advances in Methods and Practices in Psychological Science, 3(4), 1–10'"
+      ],
+      "licence": "© The Author(s) 2020; no open licence found (SAGE reuse guidelines)",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Reference-only.",
+        "The publisher's version of record was not opened; the PDF's pagination (1-10) may differ from the issue pagination.",
+        "A short position paper with reporting recommendations; it does not teach how to estimate reliability or gather validity evidence."
+      ],
+      "locators": [
+        {
+          "id": "ff20-abstract",
+          "label": "Abstract and introduction (definition of questionable measurement practices)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "flake-fried-2020-ampps",
+            "url": "https://media.eiko-fried.com/publications/2020-flake-advances-in-methods-and-practices-in-psychological-scie-measurement-schmeasurement-questionable-measurement-practices-and-how-to-av.pdf",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Abstract"
+          }
+        },
+        {
+          "id": "ff20-table1",
+          "label": "Table 1: Six Questions to Promote Transparent Reporting of Measurement Practices",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "flake-fried-2020-ampps",
+            "url": "https://media.eiko-fried.com/publications/2020-flake-advances-in-methods-and-practices-in-psychological-scie-measurement-schmeasurement-questionable-measurement-practices-and-how-to-av.pdf",
+            "physicalPageIndex": 3,
+            "printedPageLabel": "4",
+            "sectionLabel": "Table 1. Six Questions to Promote Transparent Reporting of Measurement Practices"
+          }
+        }
+      ]
+    }
+  ]
+}

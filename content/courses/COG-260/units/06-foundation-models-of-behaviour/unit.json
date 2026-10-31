@@ -1,0 +1,80 @@
+{
+  "id": "COG-260-u06",
+  "courseId": "COG-260",
+  "sequence": 6,
+  "title": "Foundation models of human behaviour: Centaur and Psych-101",
+  "summary": "Centaur, a language model fine-tuned on Psych-101's trial-by-trial transcripts from 160 experiments; held-out participants within experiments against held-out experiments; the out-of-distribution tests; where the summary claims outrun one reported test; what the evaluation does and does not license.",
+  "objectives": [
+    {
+      "id": "u06-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "method-predictive-checks"
+  ],
+  "teachesConceptIds": [
+    "method-scientific-argument",
+    "information-contract"
+  ],
+  "preparation": [
+    {
+      "description": "Read the article and its abstract (published version, on PubMed Central; read in the browser).",
+      "locatorId": "centaur-nat-abstract",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the evaluation metric: negative log-likelihood on held-out participants.",
+      "locatorId": "centaur-nat-eval",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the generalisation section, with its six further paradigms.",
+      "locatorId": "centaur-nat-generalization",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the Psych-101 dataset card.",
+      "locatorId": "psych101-card",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Reading: Foundation models of human behaviour: Centaur and Psych-101",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 55,
+      "sourceLocatorIds": [
+        "centaur-nat-abstract",
+        "centaur-nat-eval",
+        "centaur-nat-generalization",
+        "psych101-card"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Binz et al. (2025) and the Psych-101 card are records verified on 2026-10-31; the supplementary information and the last part of the PMC text were not read."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

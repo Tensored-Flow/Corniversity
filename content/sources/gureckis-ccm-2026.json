@@ -1,0 +1,121 @@
+{
+  "id": "gureckis-ccm-2026",
+  "title": "Computational Cognitive Modeling (NYU DS-GA 1016 / PSYCH-GA 3405.004), Fall 2026 course site and notes",
+  "authors": [
+    "Todd M. Gureckis"
+  ],
+  "institution": "New York University",
+  "kind": "course",
+  "canonicalUrl": "https://teaching.gureckislab.org/ccm/",
+  "description": "Graduate course site for the Fall 2026 offering taught by Todd Gureckis (lectures on Thursdays, labs on Mondays). It surveys computational frameworks for human cognition: neural networks and deep learning; reinforcement learning (introduction; exploration, generalisation and deep RL; planning and model-based RL); Bayesian models and approximate inference; model comparison and fitting; categories and concepts; structured models of reasoning; symbolic models and the language of thought; curiosity and active learning; physical and social reasoning. The site holds the syllabus, lecture and lab schedules, draft course-note chapters by Todd M. Gureckis, interactive tools (including Conway's Game of Life, an IAC model, a neuron sandbox and a Bayesian number game), lab slides and final-project guidance. The four Python homeworks are distributed only through the NYU JupyterHub.",
+  "codeLicence": "MIT License, 'Copyright (c) 2024 Todd Gureckis' (github.com/gureckis/CCM-public, which holds eight lab folders; LICENSE read 2026-10-31)",
+  "rightsNotes": [
+    "Licence page 'License for this website content': the site content 'is released under CC BY-NC-SA 4.0' 'unless otherwise noted', covering 'text, figures, slides, images, videos, and interactive elements'. Course-note pages carry the footer 'CC BY-NC-SA unless otherwise noted'. Read 2026-10-31.",
+    "Third-party material: the licence page says some figures are reproduced from journals and other publishers and 'stay under the license named there rather than the one above'. Corniversity does not import or reproduce credited third-party figures.",
+    "Non-commercial and share-alike: any Corniversity adaptation of the notes must credit Todd M. Gureckis, link the licence and stay under CC BY-NC-SA 4.0. Corniversity is private and non-commercial.",
+    "The licence page states no restriction on AI or machine processing; it discloses that AI assistance was used in preparing parts of the site and that all content was reviewed by the author.",
+    "Homework notebooks, the JupyterHub, Ed Discussion and Gradescope require NYU logins (institutional) and are never accessed."
+  ],
+  "currentVersionId": "gureckis-ccm-fall-2026",
+  "versions": [
+    {
+      "id": "gureckis-ccm-fall-2026",
+      "label": "Fall 2026 offering, live site (course-note chapters marked DRAFT; chapter 'Updated' dates seen: October 1, 26 and 30, 2026)",
+      "url": "https://teaching.gureckislab.org/ccm/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the home page, syllabus, schedule, licence page, course-videos page and retrieving-homework page; the course-note pages Minds and Machines, Introduction to Reinforcement Learning and Inductive Inference and Bayesian Models of Cognition (the last two truncated by the fetcher); the teaching index at www.gureckislab.org/teaching; the GitHub repository gureckis/CCM-public, its LICENSE and its labs/ listing; and checked the HTTP status of one lab slide deck",
+      "componentsSeen": [
+        "home page: 'Computational Cognitive Modeling', 'Fall 2026', Prof Todd M Gureckis; navigation to syllabus, schedule, Ed Discussion, JupyterHub, Gradescope and 'How to cite'",
+        "syllabus: DS-GA 1016 and PSYCH-GA 3405.004; instructor Todd Gureckis, TA Wentao Wang; lectures Thursday 2:45-4:45pm, labs Monday 1:30-2:20pm (recorded); prerequisites: undergraduate linear algebra, calculus and probability (or the psychology department's Math Tools sequence) and Python; assignments in Python 3 and Jupyter; grading: four in-class exams 50%, four homeworks 15%, final project 30%, attendance 5%; final-project poster session on 17 December 2026",
+        "schedule: lectures from 3 September to 17 December 2026, with a course-note reading listed for each lecture up to 22 October; labs including PyTorch, neural-network and RL reviews, model comparison and fitting (9 November) and a guest lab 'LLMs for cognitive modeling' (7 December); four exams",
+        "course notes 'Minds and Machines' (DRAFT; Todd M. Gureckis, adapted from earlier work with Hillary Raab; updated October 26, 2026; about 45 minutes' reading; 18 sections from 'Introduction' to 'How to cite this chapter', including Marr's levels of analysis and 'What Does a Cognitive Model Actually Look Like?')",
+        "course notes 'Introduction to Reinforcement Learning' (DRAFT; updated October 1, 2026; sections seen: Introduction, The Problem of RL, The Bellman Equation)",
+        "course notes 'Inductive Inference and Bayesian Models of Cognition' (DRAFT; updated October 30, 2026; sections seen up to 'Concept Learning: The Number Game')",
+        "licence page; course-videos page (introductions to Jupyter notebooks and to Python only); retrieving-homework page (homework copied from a shared folder on the NYU JupyterHub and submitted to Gradescope)",
+        "GitHub gureckis/CCM-public: 'Materials for CCM class', 2 commits, labs/ folders week-introduction, week-pytorch, week-H1review, week-RL-review, week-tictactoeRL, week-HW2review, week-probability, week-HW3review; MIT LICENSE"
+      ],
+      "licence": "CC BY-NC-SA 4.0 unless otherwise noted (site content)",
+      "licenceUrl": "https://teaching.gureckislab.org/ccm/pages/license.html",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "teaching.gureckislab.org"
+      ],
+      "limitations": [
+        "The course is in progress: lectures from 29 October 2026 onward list no reading, and every course-note chapter opened is marked 'DRAFT' and says it 'should not be considered complete or accurate'. Content may change at the same URLs.",
+        "No lecture slides or recordings are linked from the schedule. Lab slides are linked for three labs; the PDF of the model-fitting lab returned HTTP 404 on 2026-10-31 while its HTML slide page returned 200.",
+        "This offering's homework notebooks are not public. Public homework notebooks exist for the Spring 2024 offering (record lake-gureckis-ccm-2024).",
+        "Only three of the eleven course-note chapters were opened, two of them only in part; the others are known by title only.",
+        "A separate undergraduate course, Computational Cognitive Science (PSYCH-UA 300-011, Spring 2026, co-taught with Mark Ho), lives at teaching.gureckislab.org/compcogsci/; only its syllabus was opened and it is not part of this record."
+      ],
+      "locators": [
+        {
+          "id": "ccm26-syllabus",
+          "label": "Syllabus (course numbers, staff, prerequisites, grading, final project, readings)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/pages/syllabus.html",
+            "heading": "Computational cognitive modeling - Fall 2026"
+          }
+        },
+        {
+          "id": "ccm26-schedule",
+          "label": "Lecture and lab schedule (readings, homework releases, exams)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/pages/schedule.html",
+            "heading": "Lecture schedule"
+          }
+        },
+        {
+          "id": "ccm26-minds-machines",
+          "label": "Course notes: Minds and Machines (lecture 1 reading; Marr's levels; what a cognitive model looks like)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/readings/minds-and-machines.html",
+            "heading": "Minds and Machines"
+          }
+        },
+        {
+          "id": "ccm26-intro-rl",
+          "label": "Course notes: Introduction to Reinforcement Learning (the problem of RL; the Bellman equation)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/readings/intro-to-rl.html",
+            "heading": "Introduction to Reinforcement Learning"
+          }
+        },
+        {
+          "id": "ccm26-bayes",
+          "label": "Course notes: Inductive Inference and Bayesian Models of Cognition (probability and Bayes' rule; the number game)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/readings/bayes.html",
+            "heading": "Inductive Inference and Bayesian Models of Cognition"
+          }
+        },
+        {
+          "id": "ccm26-license",
+          "label": "Licence page (CC BY-NC-SA 4.0; third-party figure exception; credits; AI-assistance disclosure)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "gureckis-ccm-fall-2026",
+            "url": "https://teaching.gureckislab.org/ccm/pages/license.html",
+            "heading": "License for this website content"
+          }
+        }
+      ]
+    }
+  ]
+}

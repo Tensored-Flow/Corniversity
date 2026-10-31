@@ -17,6 +17,7 @@ import {
   updateExperienceAction,
   updateProfileAction,
 } from "./actions";
+import { StudyPreferences } from "./StudyPreferences";
 
 export const metadata = { title: "Settings" };
 
@@ -110,13 +111,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
                 defaultValue={profile.weeklyHoursCeiling ?? ""}
               />
             </Field>
-            <Field label="Study rhythm" htmlFor="studyRhythm">
-              <Select id="studyRhythm" name="studyRhythm" defaultValue={profile.studyRhythm ?? "term"}>
-                <option value="term">Terms with a reading week</option>
-                <option value="rolling">Rolling, course by course</option>
-                <option value="reading_course">Reading course, lighter rhythm</option>
-              </Select>
-            </Field>
             <div className="sm:col-span-2">
               <Field label="Goals, in your words" htmlFor="goalsText">
                 <Textarea id="goalsText" name="goalsText" rows={3} defaultValue={profile.goalsText ?? ""} />
@@ -130,6 +124,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
             </div>
           </form>
         </Card>
+
+        <StudyPreferences ownerId={ownerId} />
 
         <Card as="section" aria-labelledby="experience-heading" id="experience">
           <h2 id="experience-heading" className="text-lg text-ink">

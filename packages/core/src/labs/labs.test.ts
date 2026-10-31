@@ -27,6 +27,7 @@ import {
   mulberry32,
   normsEquivalentWitness,
   normTable,
+  ORIENTATIONS,
   optimalStep,
   parallelLengthFromEmbedding,
   parallelLengthFromMetric,
@@ -213,6 +214,14 @@ describe("synthetic neural tuning fit", () => {
     expect(result.tuning.kappa).toBeGreaterThan(0.8);
     expect(result.heldOutAdvantagePerTrial).toBeGreaterThan(0);
     close(fitBaseline(train, 1).b, train.reduce((s, t) => s + t.count, 0) / train.length);
+  });
+  it("holds out new trials of every orientation, never whole orientations", () => {
+    const { train, test } = splitTrials(generateTrials(truth, 30, 1, 42));
+    for (const theta of ORIENTATIONS) {
+      expect(train.filter((t) => t.thetaDegrees === theta).length).toBeGreaterThan(0);
+      expect(test.filter((t) => t.thetaDegrees === theta).length).toBe(7);
+    }
+    expect(train.length + test.length).toBe(30 * ORIENTATIONS.length);
   });
   it("does not favour the tuning model out of sample when the neuron is untuned", () => {
     const flat = generateTrials({ b: 6, A: 0, kappa: 1, thetaPref: 0 }, 30, 1, 7);

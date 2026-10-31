@@ -1,0 +1,45 @@
+{
+  "id": "COG-330",
+  "version": 1,
+  "title": "Social and Multiplayer Cognition",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "intermediate",
+  "position": "Optional elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional elective). Mental-state inference, cooperation, coordination, communication and strategic interaction, how social information changes decisions, and how competing accounts can be tested. A subject in its own right, not a game-design assignment.",
+  "description": "Proposed course: Social and Multiplayer Cognition. Central question: How do people infer others' mental states and coordinate, communicate and compete with them? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "How do people infer others' mental states and coordinate, communicate and compete with them?",
+  "prerequisiteGuidance": "Learning and decision-making (MBI-06); the social-cognition unit of COG-201 (unit 9, in preparation) is a natural bridge.",
+  "preparationPath": "Resolve a primary source on theory-of-mind models (for example inverse planning) and one on coordination games; prepare a first unit around the comparison activity below.",
+  "plannedActivities": [
+    "Compare strategies or models in a small coordination or communication task."
+  ],
+  "sourceCandidates": []
+}

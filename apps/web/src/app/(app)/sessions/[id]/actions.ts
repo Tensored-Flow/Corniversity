@@ -178,6 +178,35 @@ export async function recordLabInterpretationAction(_prev: ActionResult, formDat
   return { ok: true };
 }
 
+/**
+ * Saves the learner's prediction before a laboratory shows its results. It is a notebook note,
+ * tagged as a prediction; it records no evidence, because a prediction is not understanding.
+ */
+export async function recordLabPredictionAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const auth = await requireSession();
+  const sessionId = String(formData.get("sessionId") ?? "");
+  const labId = String(formData.get("labId") ?? "");
+  const text = String(formData.get("prediction") ?? "").trim();
+  if (!/^[0-9a-f-]{36}$/.test(sessionId) || !/^[a-z0-9-]{1,60}$/.test(labId)) return { ok: false, error: "Invalid session." };
+  if (text.length < 40) return { ok: false, error: "Write your prediction in a sentence or two: what you expect, and why." };
+  const session = await getSession(db(), auth.user.id, sessionId);
+  if (!session) return { ok: false, error: "Session not found." };
+  const unitDetail = await getUnitDetail(db(), session.unitId);
+  const activity = unitDetail?.unit.activities.find((a) => a.id === session.activityId);
+  if (!unitDetail || activity?.labId !== labId) return { ok: false, error: "This session has no such laboratory." };
+  await createEntry(db(), auth.user.id, {
+    title: `Prediction before running: ${activity.title}`,
+    bodyMarkdown: text.slice(0, 10_000),
+    kind: "note",
+    tags: ["lab", "prediction", labId, unitDetail.course.id],
+    sourceLinks: [],
+    courseId: unitDetail.course.id,
+    unitId: unitDetail.unit.id,
+  });
+  revalidatePath(`/sessions/${sessionId}`);
+  return { ok: true };
+}
+
 export async function completeSessionAction(formData: FormData): Promise<void> {
   const auth = await requireSession();
   const sessionId = String(formData.get("sessionId") ?? "");

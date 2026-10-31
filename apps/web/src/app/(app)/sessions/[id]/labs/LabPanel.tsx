@@ -1,10 +1,12 @@
 import { LAB_META, type LabId } from "@corniversity/core/labs/index";
 import { Badge, Card, Notice } from "@/components/ui";
 import { BayesianConceptLab } from "./BayesianConceptLab";
+import { ChoiceModelLab } from "./ChoiceModelLab";
 import { DataLeakageLab } from "./DataLeakageLab";
 import { GradientDescentLab } from "./GradientDescentLab";
 import { KineticsLab } from "./KineticsLab";
 import { NormComparisonLab } from "./NormComparisonLab";
+import { PlanningLab } from "./PlanningLab";
 import { SphereMetricLab } from "./SphereMetricLab";
 import { TuningFitLab } from "./TuningFitLab";
 
@@ -13,7 +15,17 @@ import { TuningFitLab } from "./TuningFitLab";
  * in the browser; no learner code is executed and no model is consulted. Unknown ids render an
  * honest notice rather than a placeholder that looks like a lab.
  */
-export function LabPanel({ labId, revealFormulas }: { labId: string; revealFormulas: boolean }) {
+export function LabPanel({
+  labId,
+  revealFormulas,
+  sessionId,
+  predictionRecorded,
+}: {
+  labId: string;
+  revealFormulas: boolean;
+  sessionId: string;
+  predictionRecorded: boolean;
+}) {
   const meta = (LAB_META as Record<string, (typeof LAB_META)[LabId] | undefined>)[labId];
   if (!meta) {
     return (
@@ -43,6 +55,8 @@ export function LabPanel({ labId, revealFormulas }: { labId: string; revealFormu
         {labId === "bayesian-concept-learning" ? <BayesianConceptLab /> : null}
         {labId === "neural-tuning-fit" ? <TuningFitLab /> : null}
         {labId === "data-leakage-audit" ? <DataLeakageLab /> : null}
+        {labId === "choice-model-loop" ? <ChoiceModelLab sessionId={sessionId} predictionRecorded={predictionRecorded} /> : null}
+        {labId === "planning-transfer" ? <PlanningLab sessionId={sessionId} predictionRecorded={predictionRecorded} /> : null}
       </div>
     </Card>
   );

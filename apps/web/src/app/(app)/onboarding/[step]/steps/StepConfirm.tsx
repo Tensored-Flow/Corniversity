@@ -28,9 +28,18 @@ export async function StepConfirm({ userId, profile }: StepProps) {
       <Card>
         <h2 className="text-lg text-ink">{termRow.title}</h2>
         <p className="mt-1 text-sm text-ink-2">
-          {start.toFormat("d LLLL yyyy")} to {end.toFormat("d LLLL yyyy")} · {termRow.teachingWeeks} teaching weeks
-          {termRow.readingWeek ? " + reading week" : ""}
-          {termRow.synthesisWeek ? " + synthesis week" : ""} · {profile.timezone}
+          {termRow.mode === "rolling" ? (
+            <>
+              From {start.toFormat("d LLLL yyyy")}, planned {termRow.teachingWeeks} weeks ahead and extended as you go; there is no
+              completion date · {profile.timezone}
+            </>
+          ) : (
+            <>
+              {start.toFormat("d LLLL yyyy")} to {end.toFormat("d LLLL yyyy")} · {termRow.teachingWeeks} teaching weeks
+              {termRow.readingWeek ? " + reading week" : ""}
+              {termRow.synthesisWeek ? " + synthesis week" : ""} · {profile.timezone}
+            </>
+          )}
         </p>
         <ul className="mt-4 flex flex-col gap-2">
           {enrolments.map((e) => (

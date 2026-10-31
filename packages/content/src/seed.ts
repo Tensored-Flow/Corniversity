@@ -232,13 +232,22 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
       report.societies++;
     }
     for (const p of bundle.programmes) {
-      await tx
-        .insert(programme)
-        .values(p)
-        .onConflictDoUpdate({
-          target: programme.id,
-          set: { title: p.title, description: p.description, departmentIds: p.departmentIds, stages: p.stages },
-        });
+      // Upsert by the stable internal id: a programme that gains blocks keeps its id, so nothing
+      // that refers to it (participation, proposals) is lost.
+      const values = {
+        id: p.id,
+        referenceId: p.referenceId ?? null,
+        title: p.title,
+        description: p.description,
+        departmentIds: p.departmentIds,
+        stages: p.stages,
+        blocks: p.blocks ?? [],
+        electives: p.electives ?? [],
+        methods: p.methods ?? [],
+        paperSeminar: p.paperSeminar ?? null,
+      };
+      const { id: _id, ...set } = values;
+      await tx.insert(programme).values(values).onConflictDoUpdate({ target: programme.id, set });
       report.programmes++;
     }
 
@@ -319,6 +328,13 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
           convenorPersonaId: spec.convenorPersonaId ?? null,
           tutorPersonaId: spec.tutorPersonaId ?? null,
           externalSyllabusNote: spec.externalSyllabusNote ?? null,
+          catalogueNotes: {
+            centralQuestion: spec.centralQuestion,
+            prerequisiteGuidance: spec.prerequisiteGuidance,
+            preparationPath: spec.preparationPath,
+            plannedActivities: spec.plannedActivities,
+            sourceCandidates: spec.sourceCandidates,
+          },
           isCurrent: true,
         })
         .returning({ id: courseVersion.id });

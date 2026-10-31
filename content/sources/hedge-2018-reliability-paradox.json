@@ -1,0 +1,217 @@
+{
+  "id": "hedge-2018-reliability-paradox",
+  "title": "The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences",
+  "authors": [
+    "Craig Hedge",
+    "Georgina Powell",
+    "Petroc Sumner"
+  ],
+  "institution": "School of Psychology, Cardiff University (affiliation as printed); journal Behavior Research Methods (Springer)",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.3758/s13428-017-0935-1",
+  "description": "Empirical methods paper. Three studies (50, 62 and 42 undergraduates recruited) measured the test-retest reliability, over two sessions three weeks apart, of seven classic tasks: Eriksen flanker, Stroop, stop-signal, go/no-go, Posner cueing, Navon and SNARC, using ICC(2,1) and the standard error of measurement. Reliabilities ranged from 0 to .82. The paper explains the paradox that tasks become robust and popular because between-participant variability is low, which is what makes them unreliable for individual differences; it decomposes variance, examines difference scores, corrects correlations for attenuation and discusses statistical power.",
+  "rightsNotes": [
+    "Springer article page, 'Rights and permissions': 'Open Access This article is distributed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits unrestricted use, distribution, and reproduction in any medium, provided you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.' Page metadata dc.rights: '2017 The Author(s)'. The PMC copy (PMC5990556) carries '© The Author(s) 2017' and the same statement; Crossref lists CC BY 4.0.",
+    "PMC Copyright Notice (https://pmc.ncbi.nlm.nih.gov/about/copyright/), read 2026-10-31: 'Systematic downloading of batches of articles from the main PMC web site, in any way, is prohibited because of copyright restrictions'; automated retrieval is limited to the PMC OAI-PMH, FTP and Cloud services. PMC is therefore not listed as an import host; the Springer page is.",
+    "The paper says summary and raw data are on the Open Science Framework (https://osf.io/cwzds/); not opened, terms unknown."
+  ],
+  "currentVersionId": "hedge-2018-brm-vor",
+  "versions": [
+    {
+      "id": "hedge-2018-brm-vor",
+      "label": "Behavior Research Methods 50(3), 1166-1186 (publication date 2018/06 in the Springer metadata); published online 19 July 2017",
+      "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the Springer article page (citation metadata, rights statement, section anchors), the PMC copy PMC5990556 (page, licence panel, anchors) and its JATS XML through NCBI E-utilities, the PMC Copyright Notice and the Crossref record",
+      "componentsSeen": [
+        "Springer page: citation metadata (volume 50, issue 3, pages 1166-1186, publication date 2018/06, online date 2017/07/19, DOI), 'Rights and permissions', dc.rights, anchors Abs1, Sec1, Sec6, Sec10, Sec13, Sec14, Sec15, Sec20",
+        "PMC copy PMC5990556 (PMID 28726177): licence panel; anchors Abs1, Sec1, FPar1, Sec2, Sec5, Sec6, Sec9, FPar12, FPar14, Sec10, Sec13, Sec14, Sec15, Sec19, Sec20",
+        "Read in full: abstract; 'The reliability of experimental effects' with 'Different meanings of reliability' (ICC formula); Present study; Participants; Design and procedure; Data analysis; Studies 1 and 2 reliability results with part of Table 1; 'How many trials should be administered?'; 'What happens to variance in within-subject effects?' with the Fig. 4 caption; 'Translating experimental effects to correlational studies'; Conclusions"
+      ],
+      "licence": "CC BY 4.0 (Creative Commons Attribution 4.0 International License)",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "link.springer.com"
+      ],
+      "limitations": [
+        "Supplementary Materials A-E were not opened, including Supplementary Material D on the relationship between reliability and trial numbers, to which the main text defers.",
+        "The OSF data repository was not opened.",
+        "Sections on difference scores, statistical power, cognitive neuroscience and clinical research, state dependence, other populations and future directions were seen as headings only; Table 1 was read in part and Tables 2-5 were not read.",
+        "The paper concerns reaction-time and error measures from seven attention and inhibition tasks, not learning-model parameters or bandit or planning tasks; applying its argument to fitted model parameters is an inference and must be stated as one."
+      ],
+      "locators": [
+        {
+          "id": "hedge-abstract",
+          "label": "Abstract: reliabilities of seven tasks ranged from 0 to .82, attributed to low variance between individuals",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "Abstract",
+            "fragment": "Abs1"
+          }
+        },
+        {
+          "id": "hedge-paradox",
+          "label": "The two meanings of 'reliable', the ICC formula, and why homogeneity helps experiments but harms correlational reliability",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "The reliability of experimental effects",
+            "fragment": "Sec1"
+          }
+        },
+        {
+          "id": "hedge-meanings",
+          "label": "Subsection with the ICC formula: variance between individuals over the sum of variance between individuals, error variance and variance between sessions",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "Different meanings of reliability",
+            "fragment": "FPar1"
+          }
+        },
+        {
+          "id": "hedge-present-study",
+          "label": "Present study: three studies, seven tasks",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "Present study",
+            "fragment": "Sec2"
+          }
+        },
+        {
+          "id": "hedge-design",
+          "label": "Design and procedure: two 90-min sessions three weeks apart at the same time of day, same task order in both sessions",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "Design and procedure",
+            "fragment": "Sec5"
+          }
+        },
+        {
+          "id": "hedge-test-retest",
+          "label": "Test-retest analysis: exclusions, ICC(2,1) two-way random effects for absolute agreement, standard error of measurement, OSF data link",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "Data analysis",
+            "fragment": "Sec6"
+          }
+        },
+        {
+          "id": "hedge-task-reliabilities",
+          "label": "Task reliabilities: Studies 1 and 2 (Table 1) and Study 3 (Table 2)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "Task reliabilities",
+            "fragment": "Sec9"
+          }
+        },
+        {
+          "id": "hedge-trials",
+          "label": "How many trials should be administered? (defers to Supplementary Material D)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "How many trials should be administered?",
+            "fragment": "FPar14"
+          }
+        },
+        {
+          "id": "hedge-variance",
+          "label": "Variance components behind the ICC (Fig. 4): standard subtractions do not improve the between-participant signal",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "What happens to variance in within-subject effects?",
+            "fragment": "Sec10"
+          }
+        },
+        {
+          "id": "hedge-translating",
+          "label": "Translating experimental effects to correlational studies",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "Translating experimental effects to correlational studies",
+            "fragment": "Sec13"
+          }
+        },
+        {
+          "id": "hedge-difference-scores",
+          "label": "Difficulties with difference scores",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "Difficulties with difference scores",
+            "fragment": "Sec14"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "hedge-power",
+          "label": "Reliability and statistical power (Table 5)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "The impact of reliability on statistical power – is “good” good enough?",
+            "fragment": "Sec15"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "hedge-conclusions",
+          "label": "Conclusions",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://link.springer.com/article/10.3758/s13428-017-0935-1",
+            "heading": "Conclusions",
+            "fragment": "Sec20"
+          }
+        },
+        {
+          "id": "hedge-pmc",
+          "label": "PubMed Central copy PMC5990556 (same article, CC BY 4.0; not an import host)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "hedge-2018-brm-vor",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5990556/",
+            "heading": "The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences"
+          }
+        }
+      ]
+    }
+  ]
+}

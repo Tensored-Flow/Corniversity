@@ -1,0 +1,157 @@
+{
+  "id": "COG-260",
+  "version": 2,
+  "title": "Models of Human Behaviour",
+  "departmentIds": [
+    "cognitive-science",
+    "neuroscience",
+    "computer-science-ai"
+  ],
+  "level": "advanced",
+  "position": "Advanced cross-listing with NeuroAI and computational modelling",
+  "launch": false,
+  "purpose": "An advanced course in the Mind, Brain and AI programme, cross-listed with NeuroAI and computational modelling. Classical cognitive models, small specialised predictive models and foundation-model approaches; trial sequences, individual differences and longitudinal observations; task-, person- and time-held-out evaluation; mechanistic plausibility versus predictive fit; human-model and brain-model comparison; missing observations, privacy, and warranted versus unwarranted application claims.",
+  "description": "How to build, compare and interpret models of human behaviour. Unit 1 is prepared: a complete simulate, fit, recover and evaluate loop on a two-armed bandit with synthetic participants, ending in a report with information contracts. Units 2 to 8 are outlined with their verified sources and cannot be started until they are prepared.",
+  "outcomes": [
+    {
+      "id": "o1",
+      "description": "Build the full modelling loop for a behavioural task: state competing models, simulate them, fit them by maximum likelihood, and check parameter and model recovery before interpreting any fit.",
+      "evidenceExpected": "A laboratory report with recovery results, a confusion matrix and the seed of every run."
+    },
+    {
+      "id": "o2",
+      "description": "Evaluate predictive claims under a stated information contract (what is observed and predicted, what history is available, whether people, tasks or periods are new) against an appropriate baseline.",
+      "evidenceExpected": "Held-out comparisons with all ten contract points stated before any number."
+    },
+    {
+      "id": "o3",
+      "description": "Distinguish predictive fit from mechanistic support, and say what a fitted parameter does and does not measure about a person.",
+      "evidenceExpected": "Written interpretations that label each claim and name the evidence that would change it."
+    },
+    {
+      "id": "o4",
+      "description": "Assess the claims made for flexible predictive and foundation models of behaviour, and say which application claims their evaluations warrant.",
+      "evidenceExpected": "Paper-seminar reports under the programme's headings."
+    }
+  ],
+  "prerequisiteRuleIds": [
+    "COG-260-likelihood"
+  ],
+  "recommendedConceptIds": [
+    "maximum-likelihood-estimation",
+    "probability-measure-theoretic",
+    "reinforcement-learning-td"
+  ],
+  "teachesConceptIds": [
+    "choice-learning-models",
+    "information-contract",
+    "method-generative-simulation",
+    "method-parameter-estimation",
+    "method-parameter-recovery",
+    "method-model-recovery",
+    "method-predictive-checks",
+    "method-measurement-reliability-validity",
+    "method-longitudinal-transfer-evaluation",
+    "method-scientific-argument"
+  ],
+  "primarySourceIds": [
+    "wilson-collins-2019-ten-rules"
+  ],
+  "supplementalSourceIds": [
+    "dezfouli-2019-models-that-learn",
+    "eckstein-2022-parameter-context",
+    "huys-2012-bonsai-trees",
+    "hedge-2018-reliability-paradox",
+    "binz-centaur-2025",
+    "oh-gobet-small-foundation-models",
+    "psych-101",
+    "neuromatch-neuroai"
+  ],
+  "unitIds": [
+    "COG-260-u01",
+    "COG-260-u02",
+    "COG-260-u03",
+    "COG-260-u04",
+    "COG-260-u05",
+    "COG-260-u06",
+    "COG-260-u07",
+    "COG-260-u08"
+  ],
+  "assessmentSpecs": [
+    {
+      "id": "a1",
+      "title": "Modelling problem sets",
+      "kind": "problem_set",
+      "description": "Derivations and calculations (likelihoods, closed-form estimates, information criteria) submitted as immutable attempts with line-localised feedback; revision is expected.",
+      "weight": 0.3,
+      "rubricSummary": [
+        "the model stated exactly, including initial conditions",
+        "exact numbers with working",
+        "boundary cases named",
+        "conclusions limited to what the calculation shows"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Laboratory reports with information contracts",
+      "kind": "lab_report",
+      "description": "Each predictive result is reported with its ten-point information contract, its baseline, its seed and its limits; predictions are saved before the runs they concern. Revision after feedback is expected.",
+      "weight": 0.4,
+      "rubricSummary": [
+        "predictions before results",
+        "complete contracts",
+        "inconclusive results reported as such",
+        "everything synthetic labelled synthetic"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Paper-seminar reports",
+      "kind": "written_explanation",
+      "description": "Structured reports on the programme seminar's papers under its headings: question, model or method, evidence presented, evaluation design, baselines, important limitations, connection to earlier material, and an optional small analysis.",
+      "weight": 0.3,
+      "rubricSummary": [
+        "the evaluation design stated as a contract",
+        "claims separated from evidence",
+        "limitations from the paper and from its critics",
+        "no claim beyond the evidence"
+      ]
+    }
+  ],
+  "workloadHours": {
+    "minimum": 45,
+    "typical": 60,
+    "maximum": 85
+  },
+  "readiness": "source_verified",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "Unit 1 hand-authored on 2026-10-31 from the Wilson and Collins (2019) record and the course's laboratory; every number in the unit was recomputed with the laboratory code at its default seed. Units 2 to 8 are outlines that cite verified sources where they exist. Workload is estimated from unit 1 (about 6.8 hours) and the outlines.",
+    "verifiedAt": "2026-10-31",
+    "reviewerNotes": [
+      "Wilson and Collins (2019) is the spine. Its text and code differ in three ways that change numbers (initial values, the update of unchosen options, beta called a temperature in Box 4); the unit follows the code and says so.",
+      "The paper's model comparison and recovery are in-sample; the unit adds held-out comparison under an information contract, which the paper only mentions.",
+      "Centaur is cited from its Nature version of record; the CC BY arXiv preprint is the working copy that can be imported. Oh and Gobet (2026) was identified from its authors and topic; the plan that first named it was not available to the verifier.",
+      "Unit 8's coverage of missing observations, privacy and application claims has no verified source yet."
+    ]
+  },
+  "modesOffered": [
+    "enrolled",
+    "audit",
+    "reading_seminar"
+  ],
+  "centralQuestion": "How should models of human behaviour be built, compared, and interpreted?",
+  "prerequisiteGuidance": "Probability, likelihood and basic model fitting (NEU-220 unit 2 or an equivalent bridge). Every predictive exercise states its information contract before any number is reported.",
+  "preparationPath": "Unit 1 is prepared: the complete loop on a choice task, with its laboratory. Units 2 to 8 are outlined with their verified sources and are prepared in order; unit 8 waits for sources on privacy and application claims.",
+  "plannedActivities": [
+    "Compare an interpretable cognitive model, a simple predictive baseline and a further appropriately scoped model on a modest behavioural task, stating the evaluation setting, available information, performance, uncertainty and transfer limits."
+  ],
+  "sourceCandidates": [
+    {
+      "name": "A source on missing observations, privacy and application claims in behavioural modelling",
+      "note": "Lead only, for unit 8; to be requested through the library before the unit is prepared."
+    }
+  ],
+  "convenorPersonaId": "dev-anantharaman",
+  "tutorPersonaId": "dev-anantharaman"
+}

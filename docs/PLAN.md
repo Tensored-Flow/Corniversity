@@ -95,8 +95,27 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journeys 9 and 10 (when deployment is possible); visual QA screenshots at
   1440×900 and 390×844; truthful deployment status recorded.
 
-## Milestone 8 — Independent review and repair — in_progress
+## Milestone 8 — Independent review and repair — done
 
 - Review passes as sceptical learner, academic assessor and production engineer (subagents
   where available); findings investigated, repaired, re-tested; remaining limitations listed.
 - Acceptance: QA_REPORT.md complete; handoff written; USER_ACTIONS.md minimal.
+
+## Milestone 9 — Mind, Brain and AI update — done for sections 1 to 12
+
+- The owner's in-place curriculum and programme update, applied to the running application
+  without resetting content or learner records. The message was truncated after section 12;
+  sections 13 onward were not received.
+- The MIND-BRAIN-AI programme (twelve blocks mapped to existing and new courses, derived block
+  readiness, shared units, eight modelling methods, eight proposed electives, a bounded paper
+  seminar); programme catalogue, page, following, director routes and the programme map.
+- Study defaults (rolling study, one main and one exploratory course, weekly appointments, no
+  deadlines or examinations unless chosen, a workload preview before heavier loads) with content
+  sequence, appointments and deadlines kept apart.
+- Twelve new catalogue records (86 courses); COG-250 and COG-260 each with a prepared unit and a
+  laboratory (planning transfer; the complete choice-modelling loop with information contracts).
+- 32 new source records from three verification passes; missing sources routed to the library's
+  request list as leads.
+- Acceptance: content validator clean; seeding idempotent; unit, integration and journey suites
+  pass at both viewports; an independent review of the two new units, with its findings repaired;
+  the requirement classification in [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).

@@ -1,0 +1,114 @@
+{
+  "id": "oh-gobet-small-foundation-models",
+  "title": "Small Foundation Models of Human Cognition and Behaviour",
+  "authors": [
+    "Nick Oh",
+    "Fernand Gobet"
+  ],
+  "institution": "socius labs, London; London School of Economics and Political Science (affiliations as printed)",
+  "kind": "web",
+  "canonicalUrl": "https://arxiv.org/abs/2608.05224",
+  "description": "Paper that fine-tunes fourteen base language models from 135M to 14B parameters (Qwen3-Base, Llama-3, SmolLM2 and SmolLM3, OLMo-2 and OLMo-3) with rank-stabilised LoRA on Psych-101, using Centaur's train-test splits and prompt templates without modification, and compares them with a reproduced Centaur-70B. It reports that in-distribution (held-out participants) 'scale barely matters' and '0.6B to 1B parameters suffice to match a 70B baseline', while on the eighteen held-out experiments of Psych-201-RT larger models generalise better. Diagnostics strip four prompt channels (task instructions, stimuli, outcome feedback, choice history) across 27 experiments and permute trial order. The authors propose such models as noise-ceiling estimators whose 'scope remains bounded by the paradigms seen in training'.",
+  "codeLicence": "github.com/socius-org/Centauri: MIT License, 'Copyright (c) 2026 Nick Oh'; the README says fine-tuned weights inherit the licences of their base models",
+  "rightsNotes": [
+    "arXiv licence: CC BY 4.0 (abstract-page licence link, read 2026-10-31).",
+    "LoRA adapters (Hugging Face collection socius/centauri, 14 adapter collections) show no licence tags on the collection page; per the repository README they inherit their base models' licences, which were not checked. Corniversity does not download them."
+  ],
+  "currentVersionId": "oh-gobet-arxiv-v3",
+  "versions": [
+    {
+      "id": "oh-gobet-arxiv-v3",
+      "label": "arXiv:2608.05224v3 (11 August 2026; v1 5 August, v2 9 August 2026); pages headed 'Published as a conference paper at COLM 2026'",
+      "url": "https://arxiv.org/abs/2608.05224v3",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the arXiv abstract page and the v3 HTML (the first 200,000 of about 220,000 characters); parsed the v3 PDF (87 pages) in memory for the abstract, Methods, the out-of-distribution section, the Reproducibility Statement and section pages; opened the GitHub repository socius-org/Centauri and its LICENSE, and the Hugging Face collection socius/centauri",
+      "componentsSeen": [
+        "abstract page: authors Nick Oh and Fernand Gobet, three versions, subjects cs.AI and cs.CY, comment 'published as a conference paper at COLM'26', CC BY 4.0",
+        "structure: 1 Introduction; 2 Related work; 3 Methods; 4 Experiments (4.1 Cognitive benchmark performance: 4.1.1 Psych-101 in-distribution, 4.1.2 Psych-201 out-of-distribution; 4.2 Prompt decomposition and diagnostic testing: 4.2.1 to 4.2.3); 5 Discussion; 6 Limitations and future work; 7 Conclusion; Ethics and Reproducibility Statements; Appendices A to F",
+        "Methods (p. 3): Psych-101 with Centaur's splits and templates; six task types; fourteen base models; supervised fine-tuning with loss masked to human response tokens; rank-stabilised LoRA on all linear layers, one epoch, AdamW at 5e-5, bf16, one A100 80GB GPU",
+        "results: on Psych-101 eight matched models span 0.509 to 0.537 nats, a band containing the Centaur-70B reproduction; on Psych-201-RT (18 held-out experiments) they span 0.788 to 1.033",
+        "diagnostics: instruction-ablated, content-masked and history-only conditions; masking stimulus and feedback content 'destroys 75.7% of learned information'; 50 random trial-order permutations, THINGS odd-one-out versus intertemporal choice",
+        "Reproducibility Statement (p. 11): code at github.com/socius-org/Centauri, LoRA adapters on Hugging Face, Psych-101 from Binz et al. (2025) with the same splits and templates",
+        "PDF: 87 pages; printed page numbers equal physical index + 1"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "arxiv.org"
+      ],
+      "limitations": [
+        "COLM 2026 publication is stated by the paper's running header and the arXiv comment; it was not checked against COLM's own proceedings.",
+        "Appendix F.1 ('Ablation conditions in prior critiques') and the last ~20,000 characters of the HTML were not read.",
+        "The out-of-distribution benchmark Psych-201 (cited as Binz et al., 2026) was not opened.",
+        "The earlier plan that named this lead was not available; the identification rests on the author names and the topic (small cognition models compared with Centaur)."
+      ],
+      "locators": [
+        {
+          "id": "ohgobet-abs",
+          "label": "arXiv abstract page (versions, comment, licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "oh-gobet-arxiv-v3",
+            "url": "https://arxiv.org/abs/2608.05224v3",
+            "heading": "Small Foundation Models of Human Cognition and Behaviour"
+          }
+        },
+        {
+          "id": "ohgobet-methods",
+          "label": "3 Methods (data, models, training)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "oh-gobet-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2608.05224v3",
+            "physicalPageIndex": 2,
+            "printedPageLabel": "3",
+            "sectionLabel": "3 Methods"
+          }
+        },
+        {
+          "id": "ohgobet-experiments",
+          "label": "4 Experiments; 4.1 Cognitive benchmark performance (in-distribution)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "oh-gobet-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2608.05224v3",
+            "physicalPageIndex": 3,
+            "printedPageLabel": "4",
+            "sectionLabel": "4 Experiments"
+          }
+        },
+        {
+          "id": "ohgobet-ood",
+          "label": "4.1.2 Psych-201 (out-of-distribution performance) and 4.2 Prompt decomposition and diagnostic testing",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "oh-gobet-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2608.05224v3",
+            "physicalPageIndex": 4,
+            "printedPageLabel": "5",
+            "sectionLabel": "4.1.2 Psych-201 (out-of-distribution performance)"
+          }
+        },
+        {
+          "id": "ohgobet-limits",
+          "label": "6 Limitations and future work",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "oh-gobet-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2608.05224v3",
+            "physicalPageIndex": 9,
+            "printedPageLabel": "10",
+            "sectionLabel": "6 Limitations and future work"
+          }
+        }
+      ]
+    }
+  ]
+}

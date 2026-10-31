@@ -1,6 +1,6 @@
 import { boolean, date, index, integer, jsonb, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, learningModeEnum, tz, updatedAt } from "./_shared";
-import { courseVersion, teachingUnit } from "./academic";
+import { courseVersion, programme, teachingUnit, unitExercise } from "./academic";
 import { user } from "./auth";
 
 export const term = pgTable(
@@ -187,4 +187,54 @@ export const calendarToken = pgTable(
     revokedAt: tz("revoked_at"),
   },
   (t) => [index("calendar_token_owner_idx").on(t.ownerId)],
+);
+
+/**
+ * A learner's relationship to a programme. Following a programme shows its blocks on the
+ * academic map; it never enrols the learner in any of its courses. A learner may follow several.
+ */
+export const programmeParticipation = pgTable(
+  "programme_participation",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    ownerId: text("owner_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    programmeId: text("programme_id")
+      .notNull()
+      .references(() => programme.id),
+    status: text("status").$type<"following" | "paused" | "left">().notNull().default("following"),
+    source: text("source").$type<"onboarding" | "learner" | "director_proposal">().notNull(),
+    /** Blocks the learner is concentrating on now, in order; empty means no focus chosen. */
+    focusBlockIds: jsonb("focus_block_ids").$type<string[]>().notNull().default([]),
+    startedAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex("programme_participation_owner_programme").on(t.ownerId, t.programmeId)],
+);
+
+/**
+ * Academic deadlines, kept apart from study appointments. They exist only when the learner
+ * creates them, and assessment or examination deadlines only when those modes are switched on.
+ * Milestones are optional targets and never binding.
+ */
+export const academicDeadline = pgTable(
+  "academic_deadline",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    ownerId: text("owner_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    enrolmentId: uuid("enrolment_id").references(() => enrolment.id, { onDelete: "cascade" }),
+    exerciseId: text("exercise_id").references(() => unitExercise.id),
+    kind: text("kind").$type<"assessment" | "examination" | "milestone">().notNull(),
+    title: text("title").notNull(),
+    dueAt: tz("due_at").notNull(),
+    binding: boolean("binding").notNull(),
+    status: text("status").$type<"open" | "met" | "withdrawn">().notNull().default("open"),
+    createdBy: text("created_by").$type<"learner">().notNull().default("learner"),
+    metAt: tz("met_at"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("academic_deadline_owner_idx").on(t.ownerId, t.status)],
 );

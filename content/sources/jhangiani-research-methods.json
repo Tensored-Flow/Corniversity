@@ -1,0 +1,94 @@
+{
+  "id": "jhangiani-research-methods",
+  "title": "Research Methods in Psychology (Jhangiani, Chiang, Cuttler, and Leighton)",
+  "authors": [
+    "Rajiv S. Jhangiani",
+    "I-Chant A. Chiang",
+    "Carrie Cuttler",
+    "Dana C. Leighton"
+  ],
+  "institution": "LibreTexts remix of the Kwantlen Polytechnic University Pressbooks edition",
+  "kind": "book",
+  "canonicalUrl": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)",
+  "description": "Open undergraduate research-methods textbook: 1 The Science of Psychology; 2 Overview of the Scientific Method; 3 Research Ethics; 4 Psychological Measurement (understanding measurement; reliability and validity; practical strategies); 5 Experimental Research (experiment basics; experimental design; experimentation and validity; practical considerations); 6 Non-Experimental Research; 7 Survey Research; 8 Quasi-Experimental Research; 9 Factorial Designs; 10 Single-Subject Research; 11 Presenting Your Research; 12 Descriptive Statistics; 13 Inferential Statistics.",
+  "rightsNotes": [
+    "LibreTexts book and section pages (2026-10-31): 'is shared under a CC BY-NC-SA 4.0 license and was authored, remixed, and/or curated by Rajiv S. Jhangiani, I-Chant A. Chiang, Carrie Cuttler, and Dana C. Leighton via source content that was edited to the style and standards of the LibreTexts platform.' The book page's source tag is https://kpu.pressbooks.pub/psychmethods4e (the KPU fourth edition).",
+    "LibreTexts terms of service (effective 10/15/2020): 'Content can be downloaded or copied consistent with the licensing of the material.' They say nothing about AI or automated access.",
+    "The KPU Pressbooks original returned HTTP 403 to the fetcher and was not opened; this record verifies the LibreTexts remix only."
+  ],
+  "currentVersionId": "jhangiani-rmp-libretexts",
+  "versions": [
+    {
+      "id": "jhangiani-rmp-libretexts",
+      "label": "LibreTexts remix of the KPU fourth edition (book page last modified 15 Aug 2024)",
+      "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the LibreTexts book page, the Chapter 4 and Chapter 5 index pages, Sections 4.3 and 5.3, and the LibreTexts terms of service",
+      "componentsSeen": [
+        "book page: authors and affiliations, source tag, licence, last modified 15 Aug 2024, contents (Chapters 1-13 with front and back matter)",
+        "Chapter 4 index: 4.1 Prelude; 4.2 Understanding Psychological Measurement; 4.3 Reliability and Validity of Measurement; 4.4 Practical Strategies for Psychological Measurement; 4.5 Summary",
+        "Section 4.3 (last modified 11 Nov 2022): Reliability (Test-Retest Reliability; Internal Consistency; Interrater Reliability); Validity (Face, Content, Criterion and Discriminant Validity); learning objectives",
+        "Chapter 5 index: 5.1 Prelude; 5.2 Experiment Basics; 5.3 Experimental Design; 5.4 Experimentation and Validity; 5.5 Practical Considerations; 5.6 Summary",
+        "Section 5.3: Between-Subjects Experiments (Random Assignment; Matched Groups); Within-Subjects Experiments (Carryover Effects and Counterbalancing; Simultaneous Within-Subjects Designs); Between-Subjects or Within-Subjects?"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "socialsci.libretexts.org"
+      ],
+      "limitations": [
+        "A LibreTexts remix 'edited to the style and standards of the LibreTexts platform': wording and numbering may differ from the KPU original; cite the LibreTexts section numbers.",
+        "Undergraduate level: measurement invariance, latent-variable models and models of longitudinal change were not found in the chapters opened.",
+        "Only Sections 4.3 and 5.3 were opened in full; the remaining sections are known from chapter index pages.",
+        "LibreTexts pages carry their own modification dates and may change."
+      ],
+      "locators": [
+        {
+          "id": "rmp-contents",
+          "label": "Book page: contents and licence",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jhangiani-rmp-libretexts",
+            "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)",
+            "heading": "Research Methods in Psychology (Jhangiani, Chiang, Cuttler, and Leighton)"
+          }
+        },
+        {
+          "id": "rmp-ch4",
+          "label": "Chapter 4 Psychological Measurement (section list)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jhangiani-rmp-libretexts",
+            "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)/04%3A_Psychological_Measurement",
+            "heading": "4: Psychological Measurement"
+          }
+        },
+        {
+          "id": "rmp-4-3",
+          "label": "4.3 Reliability and Validity of Measurement (test-retest, internal consistency, interrater; face, content, criterion, discriminant validity)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jhangiani-rmp-libretexts",
+            "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)/04%3A_Psychological_Measurement/4.03%3A_Reliability_and_Validity_of_Measurement",
+            "heading": "4.3: Reliability and Validity of Measurement"
+          }
+        },
+        {
+          "id": "rmp-5-3",
+          "label": "5.3 Experimental Design (random assignment, matched groups, carryover effects and counterbalancing)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jhangiani-rmp-libretexts",
+            "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Research_Methods_and_Statistics/Research_Methods_in_Psychology_(Jhangiani_Chiang_Cuttler_and_Leighton)/05%3A_Experimental_Research/5.03%3A_Experimental_Design",
+            "heading": "5.3: Experimental Design"
+          }
+        }
+      ]
+    }
+  ]
+}

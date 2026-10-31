@@ -50,11 +50,37 @@ export async function signInOrBootstrap(page: Page): Promise<void> {
   await page.getByLabel("Email").fill(owner.email);
   await page.getByLabel("Password", { exact: true }).fill(owner.password);
   await page.getByRole("button", { name: /^sign in$/i }).click();
-  await expect(page).not.toHaveURL(/\/sign-in/);
+  // A development server compiles the authentication route on first use, which can take longer
+  // than the default wait.
+  await expect(page).not.toHaveURL(/\/sign-in/, { timeout: 60_000 });
 }
 
 export async function screenshot(page: Page, name: string): Promise<void> {
   const viewport = page.viewportSize();
   const suffix = viewport && viewport.width < 600 ? "mobile" : "desktop";
   await page.screenshot({ path: `docs/qa/screenshots/${name}-${suffix}.png`, fullPage: true });
+}
+
+/**
+ * Takes a course in full from its page. When the course goes beyond the learner's chosen load
+ * the page shows a workload preview first; the journey reads it and confirms, as a learner would.
+ */
+export async function takeCourse(page: Page, courseId: string): Promise<void> {
+  await page.goto(`/courses/${courseId}`);
+  const take = page.getByRole("button", { name: /take this course/i });
+  // Only an enrolment shows a Withdraw button; the word "Enrolled" is also the label of a mode
+  // option, so it cannot tell whether the enrolment happened.
+  const withdraw = page.getByRole("button", { name: "Withdraw", exact: true });
+  if (await take.isVisible().catch(() => false)) {
+    await page.getByLabel(/^Enrolled/).check();
+    await take.click();
+    const preview = page.getByText("Workload preview").first();
+    await expect(preview.or(withdraw).first()).toBeVisible({ timeout: 30_000 });
+    if (await preview.isVisible().catch(() => false)) {
+      await page.getByLabel(/^Enrolled/).check();
+      await page.getByLabel(/I have read this preview/).check();
+      await page.getByRole("button", { name: /take this course/i }).click();
+    }
+  }
+  await expect(withdraw).toBeVisible({ timeout: 30_000 });
 }

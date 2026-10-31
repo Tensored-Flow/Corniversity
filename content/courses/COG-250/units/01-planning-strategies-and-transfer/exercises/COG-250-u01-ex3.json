@@ -1,0 +1,103 @@
+{
+  "id": "COG-250-u01-ex3",
+  "sequence": 3,
+  "title": "A result is not a strategy",
+  "kind": "explanation",
+  "promptMarkdown": "The following report is **invented for this exercise**; it describes no real study.\n\n> *Twenty participants learned a grid maze over 40 episodes. Then a door on the short route was closed without warning. Averaged over the 20 episodes after the closure, participants took 3.1 fewer moves per episode than a Q-learning model fitted to their training data. Therefore the participants planned with a map of the maze.*\n\nIn 400 to 600 words:\n\n1. Identify every step in the report that does not support its conclusion, and say why.\n2. Propose the observation, or the design, that would distinguish planning with a map from cached values in this experiment, and say what each strategy predicts for it.\n3. If your proposal compares models on held-out choices, state its ten-point information contract before anything else.\n4. Say how the two-step task of Daw et al. (2011) builds the discriminating observation into every trial, and what a model-free and a model-based learner each predict after a rare transition that is rewarded.",
+  "conceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation",
+    "method-scientific-argument"
+  ],
+  "hintLadder": [
+    "Which episode after the closure carries the evidence, and what happens to it in an average over twenty?",
+    "What does training in an unchanging maze tell you about how fast a learner relearns after a change, and what would the planner have predicted for the same episodes?",
+    "In the two-step task, which first-stage choice most reliably reaches the second-stage state that was just rewarded after a rare transition?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "flaws",
+        "criterion": "All three flaws found: the average over 20 episodes dilutes the first-encounter evidence and mixes it with relearning; a single Q-learner fitted to the training episodes is not a test of strategy, because training in an unchanging maze barely constrains how fast a model-free learner relearns after a change, no planner prediction is set beside it, and one fitted model-free learner does not stand for all of them; and the step from a result to a mechanism, without an observation the alternative could not produce.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three with reasons."
+          },
+          {
+            "label": "partially met",
+            "description": "Two."
+          },
+          {
+            "label": "not met",
+            "description": "One or none."
+          }
+        ]
+      },
+      {
+        "id": "proposal",
+        "criterion": "A discriminating observation or design (first-encounter bumps and the next episode's route; the first move after an announced revaluation; or a two-step design) with each strategy's prediction.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Observation with both predictions."
+          },
+          {
+            "label": "partially met",
+            "description": "Observation without predictions."
+          },
+          {
+            "label": "not met",
+            "description": "None."
+          }
+        ]
+      },
+      {
+        "id": "contract",
+        "criterion": "Any proposed predictive comparison is preceded by a complete ten-point contract; otherwise the answer says no predictive comparison is proposed.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete or correctly absent."
+          },
+          {
+            "label": "partially met",
+            "description": "Incomplete."
+          },
+          {
+            "label": "not met",
+            "description": "Predictive claim without a contract."
+          }
+        ]
+      },
+      {
+        "id": "two-step",
+        "criterion": "After a rare rewarded transition a model-free learner tends to repeat its first-stage choice and a model-based learner tends to switch; stay probabilities split by reward and transition type are the model-independent measure.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both predictions and the measure."
+          },
+          {
+            "label": "partially met",
+            "description": "Predictions only."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50
+}

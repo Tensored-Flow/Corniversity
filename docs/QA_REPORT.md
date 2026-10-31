@@ -36,7 +36,7 @@ with the ARIA `role` attribute; several test-only issues (shared sign-in state l
 
 ## Academic evaluations
 
-`pnpm eval:academic` — 13 cases pass. They cover: the expected `x^n` norm values; a correct proof in
+`pnpm eval:academic` — 19 cases pass (31 October 2026). They cover, among others: the expected `x^n` norm values; a correct proof in
 different words passing the same deterministic checks as the reference; a finite collection of
 examples failing; the over-generalised equivalence claim triggering the objection and the
 over-generalisation fixture; every authored check example for MAT-230, PHY-240 (signature
@@ -191,6 +191,62 @@ here with what was repaired; nothing below was taken on trust from the build its
   stored key unreadable and the app falls back to fixtures (re-enter the key in Settings); base
   images use floating `node:22-alpine` tags and the Dockerfiles have not been built here.
 
+## Milestone 9: the Mind, Brain and AI update
+
+All runs on 31 October 2026, Windows 11, local embedded PostgreSQL, fixture AI provider, webpack
+development server. The requirement-by-requirement classification is in
+[MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).
+
+| Check | Result |
+|---|---|
+| Content validation | 0 errors, 0 warnings: 86 courses (12 launch, all teaching_ready; COG-250 and COG-260 source_verified), 141 units (33 prepared), 99 exercises, 59 sources, 1121 verified locators, 7 programmes, 12 programme blocks, 8 electives; every authored check example behaves as declared |
+| Seeding | the first seed after the update created the new course versions and a second seed created none; the worker's seed test proves this against the real catalogue and keeps enrolments and programme participation |
+| Type check, lint | pass in all 7 packages; Biome clean |
+| Unit tests (`pnpm test`) | 143 pass in 19 files, including the two new laboratories, study preferences and obligations, block readiness and shared units, the seed test and the new validator rule |
+| Integration tests (`pnpm test:integration`) | 46 pass in 8 files, including programme participation and study preferences against PostgreSQL |
+| Academic evaluations (`pnpm eval:academic`) | 19 pass |
+| Journeys, desktop 1440×900 | 35 pass in 2.6 minutes, including the five journeys of spec 09 and the axe accessibility checks on twelve main pages |
+| Journeys, mobile 390×844 | 35 pass in 2.9 minutes, including spec 09 and the accessibility checks |
+| Production build (`pnpm build`) | pass |
+
+**Journey environment.** The journeys ran against a freshly started webpack development server
+whose routes had been visited once. On a development server that had hot-reloaded for hours,
+pages took 10 to 20 seconds to compile and were discarded again after a minute, so three
+navigations per run outlasted the journeys' 10-second waits. A fresh server compiles each page in
+0.5 to 5 seconds, and `next.config.ts` now keeps compiled pages for the whole session.
+
+**Journey spec 09** covers the update end to end:
+
+- discovering, inspecting and following the programme without enrolling;
+- the director's route confirmed with a focus set and no enrolment;
+- COG-260's laboratory refusing a one-line prediction and keeping results hidden until a prediction is saved, then running model recovery and a held-out comparison whose contract is shown;
+- COG-250's laboratory after an announced revaluation;
+- deadlines kept apart from appointments, a milestone that is not binding, and switched-off deadline kinds that cannot be chosen.
+
+**Independent review of the two new units.** A fresh reviewer read both units, their laboratories and the seven source records cold. It reproduced every number with the library code and ran sample answers through the real checker. It reported 3 blocking findings, 15 to fix and a list of minor ones. All blocking and should-fix findings were repaired:
+
+- **Biased responding.** The lesson's prediction for biased responding was false: split by reward alone, its repeat probabilities differ whenever $b\neq\frac12$. The laboratory now reports the split by previous arm as well.
+- **Episode values.** COG-250's exit exercise asked for values the laboratory showed only as plot lines. Every plot now lists its values, and the planning laboratory prints every episode.
+- **Exercise 3 rubric.** It misread its own invented report as an in-sample comparison.
+- **Contract order.** The held-out contract appeared after its numbers; it is now shown before anything is run.
+- **Missing controls.** Validation by simulation and design changes were asked for but could not be run; the laboratory now has both.
+- **The ambiguous case.** The lesson credited it to the short session and close arms. Model recovery shows the participants' region drives it. Over seeds 1 to 5, Rescorla-Wagner was recovered as itself 19 times in 100 as built, 13 with arms 0.2 and 0.8, 42 with 300 trials and 79 with the informative region.
+- **Default participant.** The ambiguous case's default participant was not ambiguous.
+- **Leaked results.** The lesson stated results before learners predicted them.
+- **Shortcut claims.** They were too strong: the cached policy can find the opening by exploration, drawn in by its untried values.
+- **Converged training.** The first-move diagnostic needs converged training, and the unit now says so.
+- **Automatic checks.** Two of COG-250's checks marked a wrong tie-break right and rejected "2.5%".
+- **Smaller errors.** A grading note's arithmetic, a tolerance that rejected 0.68, and two lists that rendered as one were corrected.
+
+**Defects found and fixed during the milestone.**
+
+- **Choice laboratory.** Its held-out comparison drew the ambiguous case's participants from the broad region (test added).
+- **Tuning laboratory (NEU-220).** It held out two fixed orientations rather than trials of every orientation, so its held-out comparison was an extrapolation test (test added). Its instructor margin, an estimate of 0.5 to 1 nats, was replaced by the computed 11.9.
+- **Course helper.** The journeys' take-course helper never completed an enrolment that needed the workload preview, because the word it waited for is also a radio label.
+- **Reading-room race.** The reading-room journey selected text before the page had hydrated.
+- **Catalogue count.** The catalogue counted only teaching-ready courses as having prepared units.
+- **Method mapping.** NEU-220 unit 2 was mapped to a method it does not teach. The validator now refuses a method mapped to a unit that does not teach its concept.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -204,3 +260,11 @@ here with what was repaired; nothing below was taken on trust from the build its
 - The timetable-slot linking added in the review was exercised by hand (campus → open the
   material → mark as read → the slot reads completed) and by the service-level logic; no journey
   test covers it yet.
+- Sections 13 onward of the Mind, Brain and AI update were not received, so nothing in them is
+  implemented.
+- COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
+  COG-100 has none. Method 9.6 (measurement, reliability and validity) has no prepared unit.
+- Choosing a programme during orientation is tested at the service level only; journey spec 09
+  follows the programme from its own page.
+- One saved prediction opens a laboratory for its whole unit, so the choice-model activity asks
+  for both cases' predictions before saving rather than enforcing one per case.

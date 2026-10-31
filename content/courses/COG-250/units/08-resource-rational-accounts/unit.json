@@ -1,0 +1,73 @@
+{
+  "id": "COG-250-u08",
+  "courseId": "COG-250",
+  "sequence": 8,
+  "title": "Resource-rational and bounded-rational accounts",
+  "summary": "Rationality under limited computation: the algorithmic level and resource rationality; explaining deviations from Bayesian inference by the cost of inference; rational process models and the sampling hypothesis.",
+  "objectives": [
+    {
+      "id": "u08-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "bayesian-inference-cognition"
+  ],
+  "teachesConceptIds": [
+    "method-scientific-argument"
+  ],
+  "preparation": [
+    {
+      "description": "Read chapter 1 of Gershman's draft textbook, Reverse engineering the brain, including its section on resource rationality.",
+      "locatorId": "cfcn-ch01",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "Read chapter 4, The Bayesian brain, on explaining deviations from Bayesian inference.",
+      "locatorId": "cfcn-ch04",
+      "estimatedMinutes": 45
+    },
+    {
+      "description": "Read the Probabilistic Models of Cognition chapter on rational process models (reference-only; read on the book's site).",
+      "locatorId": "pm2-ch-process-models",
+      "estimatedMinutes": 30
+    }
+  ],
+  "activities": [
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Reading: Resource-rational and bounded-rational accounts",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 115,
+      "sourceLocatorIds": [
+        "cfcn-ch01",
+        "cfcn-ch04",
+        "pm2-ch-process-models"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Gershman's chapters 1 and 4 were text-extracted on 2026-10-31 from the draft dated 10/05/2026; the Probabilistic Models of Cognition chapter is a verified reference-only locator."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -10,6 +10,7 @@ export const NAV_ITEMS: { href: string; label: string; mobileOnly?: boolean }[] 
   { href: "/notebook", label: "Notebook" },
   { href: "/common-room", label: "Common Room" },
   { href: "/catalogue", label: "Catalogue" },
+  { href: "/programmes", label: "Programmes" },
   // The sidebar has its own director card on wider screens; phones get the plain link.
   { href: "/director", label: "Director", mobileOnly: true },
 ];

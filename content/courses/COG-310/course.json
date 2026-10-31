@@ -1,0 +1,45 @@
+{
+  "id": "COG-310",
+  "version": 1,
+  "title": "Affect and Motivation",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "intermediate",
+  "position": "Optional elective",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional elective). Emotional and motivational influences on learning, decision-making, effort allocation and behaviour, with candidate explanations compared against evidence; not productivity advice and not biological slogans.",
+  "description": "Proposed course: Affect and Motivation. Central question: How do emotional and motivational states shape learning, decisions, effort and behaviour? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "How do emotional and motivational states shape learning, decisions, effort and behaviour?",
+  "prerequisiteGuidance": "Cognitive psychology foundations (COG-101) and the learning and decision-making block (MBI-06) help; the choice-model unit of COG-260 is a useful bridge for effort and value models.",
+  "preparationPath": "Resolve a primary source on effort allocation and one on affective influences on choice; prepare a first unit around comparing explanations of an effort-allocation result.",
+  "plannedActivities": [
+    "Compare explanations of an effort-allocation result and identify an experiment or observation that could distinguish them."
+  ],
+  "sourceCandidates": []
+}

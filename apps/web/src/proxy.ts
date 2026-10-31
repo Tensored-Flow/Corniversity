@@ -48,6 +48,7 @@ export const config = {
     "/settings/:path*",
     "/labs/:path*",
     "/director/:path*",
+    "/programmes/:path*",
     "/api/auth/:path*",
     "/api/companion/:path*",
   ],

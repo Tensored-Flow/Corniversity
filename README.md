@@ -4,7 +4,8 @@ A private, independent, non-accredited personal university for one learner: six 
 AI faculty and optional classmates (all labelled), real university materials with exact source
 locators, proof feedback, deterministic timetabling and a durable academic record.
 
-Specification: [`brief/UNIVERSITY_BUILD_BRIEF.md`](brief/UNIVERSITY_BUILD_BRIEF.md). Agent manual:
+Specification: [`brief/UNIVERSITY_BUILD_BRIEF.md`](brief/UNIVERSITY_BUILD_BRIEF.md), extended by the
+owner's Mind, Brain and AI update ([`docs/MIND_BRAIN_AI.md`](docs/MIND_BRAIN_AI.md)). Agent manual:
 [`AGENTS.md`](AGENTS.md). Current state: [`docs/STATUS.md`](docs/STATUS.md).
 
 ## Run it locally (Windows, PowerShell)
@@ -25,6 +26,9 @@ pnpm db:migrate           # applies SQL migrations
 pnpm db:seed              # loads departments, catalogue, sources and personas from content/
 pnpm dev                  # starts the web app (http://localhost:3000) and the worker
 ```
+
+`pnpm dev` uses Next's webpack development server: the Turbopack one reloads pages in a loop in
+this monorepo layout.
 
 Open http://localhost:3000, choose **Create your course of study**, and enter the owner email
 and the one-time bootstrap code from your `.env` (`OWNER_BOOTSTRAP_CODE`). Sign-up closes after

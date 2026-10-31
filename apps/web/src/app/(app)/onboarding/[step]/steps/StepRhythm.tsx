@@ -5,11 +5,15 @@ import { Fieldset, StepFooter, type StepProps } from "./shared";
 
 const RHYTHMS = [
   {
-    value: "term",
-    title: "Term-based",
-    body: "Ten teaching weeks, a reading week, a synthesis week. A clear arc with an end-of-term review.",
+    value: "rolling",
+    title: "Rolling, self-paced (the default)",
+    body: "No completion date. Weekly appointments, a next class and a current unit keep the shape; the plan extends as you go.",
   },
-  { value: "rolling", title: "Rolling, self-paced", body: "No fixed end; units are scheduled continuously at your weekly pace." },
+  {
+    value: "term",
+    title: "Formal terms",
+    body: "Ten teaching weeks, a reading week and a synthesis week, with an end-of-term review. Deadlines and examinations stay off unless you switch them on below.",
+  },
   {
     value: "reading_course",
     title: "A focused reading course",
@@ -33,7 +37,7 @@ export function StepRhythm({ profile }: StepProps) {
                 type="radio"
                 name="rhythm"
                 value={r.value}
-                defaultChecked={(answers.rhythm ?? "term") === r.value}
+                defaultChecked={(answers.rhythm ?? "rolling") === r.value}
                 className="mt-1 accent-[var(--brass)]"
               />
               <span>
@@ -43,6 +47,29 @@ export function StepRhythm({ profile }: StepProps) {
             </label>
           ))}
         </div>
+      </Fieldset>
+      <Fieldset
+        legend="Deadlines and examinations"
+        hint="Both are off by default. Missing a study appointment is never the same as missing a deadline; deadlines exist only if you set them."
+      >
+        <label className="flex items-start gap-3 text-sm text-ink">
+          <input
+            type="checkbox"
+            name="hardDeadlines"
+            defaultChecked={answers.hardDeadlines === true}
+            className="mt-1 accent-[var(--brass)]"
+          />
+          <span>Hard deadlines: I want binding due dates for assessed work, which I set myself.</span>
+        </label>
+        <label className="flex items-start gap-3 text-sm text-ink">
+          <input
+            type="checkbox"
+            name="examinations"
+            defaultChecked={answers.examinations === true}
+            className="mt-1 accent-[var(--brass)]"
+          />
+          <span>Examinations as part of assessment.</span>
+        </label>
       </Fieldset>
       <Fieldset legend="Start date" hint="Defaults to next Monday in your timezone. External course dates never apply here.">
         <label htmlFor="termStart" className="sr-only">

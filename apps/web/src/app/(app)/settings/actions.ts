@@ -5,6 +5,7 @@ import { deletePersonaMemory, purgePersonaMemory } from "@corniversity/db/servic
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { getBudgetLimits, saveBudgetLimits, saveProviderSetting } from "@corniversity/db/services/provider-config";
 import { updateProfileSettings } from "@corniversity/db/services/settings";
+import { StudyError, updateStudyPreferences } from "@corniversity/db/services/study";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -106,4 +107,30 @@ export async function purgeMemoryAction(form: FormData): Promise<void> {
     ["academic", "preference", "social"].includes(kind) ? (kind as "academic" | "preference" | "social") : undefined,
   );
   done("memory");
+}
+
+/** Saves study preferences as explicit choices; a heavier load needs the workload preview ticked. */
+export async function updateStudyPreferencesAction(form: FormData): Promise<void> {
+  const session = await requireSession("/settings");
+  const rhythm = text(form, "rhythm");
+  const change = {
+    rhythm: ["term", "rolling", "reading_course"].includes(rhythm) ? (rhythm as "term" | "rolling" | "reading_course") : undefined,
+    weeklyAppointments: form.get("weeklyAppointments") === "on",
+    hardDeadlines: form.get("hardDeadlines") === "on",
+    examinations: form.get("examinations") === "on",
+    mainCourseLimit: Number(text(form, "mainCourseLimit")) || undefined,
+    exploratoryLimit: text(form, "exploratoryLimit") === "" ? undefined : Number(text(form, "exploratoryLimit")),
+    heavierLoadPreviewedAt: form.get("previewSeen") === "on" ? new Date().toISOString() : undefined,
+  };
+  try {
+    await updateStudyPreferences(db(), session.user.id, change);
+  } catch (error) {
+    if (error instanceof StudyError) {
+      revalidatePath("/settings");
+      redirect(`/settings?section=study&error=${encodeURIComponent(error.message)}#study`);
+    }
+    throw error;
+  }
+  revalidatePath("/timetable");
+  done("study");
 }

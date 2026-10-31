@@ -21,6 +21,9 @@ export interface ValidationReport {
     sources: number;
     verifiedLocators: number;
     personas: number;
+    programmes: number;
+    programmeBlocks: number;
+    programmeElectives: number;
   };
 }
 
@@ -75,9 +78,62 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
       if (alt.bridgeCourseId && !courseIds.has(alt.bridgeCourseId)) err(`prerequisites/${rule.id}`, `unknown bridge ${alt.bridgeCourseId}`);
     }
   }
+  const unitsByCourse = new Map(bundle.courses.map((c) => [c.spec.id, new Set(c.units.map((u) => u.spec.id))]));
+  const unitSpecs = new Map(bundle.courses.flatMap((c) => c.units.map((u) => [u.spec.id, u.spec] as const)));
+  const referenceIds = new Set<string>();
   for (const programme of bundle.programmes) {
+    const pwhere = `programmes/${programme.id}`;
     for (const stage of programme.stages) {
-      for (const c of stage.courses) if (!courseIds.has(c.courseId)) err(`programmes/${programme.id}`, `unknown course ${c.courseId}`);
+      for (const c of stage.courses) if (!courseIds.has(c.courseId)) err(pwhere, `unknown course ${c.courseId}`);
+    }
+    if (programme.referenceId) {
+      if (referenceIds.has(programme.referenceId)) err(pwhere, `duplicate reference id ${programme.referenceId}`);
+      referenceIds.add(programme.referenceId);
+    }
+    const blockIds = new Set<string>();
+    const methodIds = new Set((programme.methods ?? []).map((m) => m.id));
+    for (const block of programme.blocks ?? []) {
+      const bwhere = `${pwhere}/blocks/${block.id}`;
+      if (blockIds.has(block.id)) err(bwhere, `duplicate block id`);
+      blockIds.add(block.id);
+      for (const m of block.courseMappings) {
+        if (!courseIds.has(m.courseId)) err(bwhere, `maps unknown course ${m.courseId}`);
+        for (const u of m.unitIds) if (!unitsByCourse.get(m.courseId)?.has(u)) err(bwhere, `maps unknown unit ${u} of ${m.courseId}`);
+      }
+      for (const b of block.bridges) {
+        if (b.courseId && !courseIds.has(b.courseId)) err(bwhere, `bridge names unknown course ${b.courseId}`);
+        for (const u of b.unitIds) if (b.courseId && !unitsByCourse.get(b.courseId)?.has(u)) err(bwhere, `bridge names unknown unit ${u}`);
+      }
+      for (const s of block.sourceShelf)
+        if (s.sourceId && !sourceById.has(s.sourceId)) err(bwhere, `shelf names unregistered source ${s.sourceId}`);
+      for (const a of block.activities)
+        for (const id of a.methodIds) if (!methodIds.has(id)) err(bwhere, `activity "${a.title}" names unknown method ${id}`);
+    }
+    for (const block of programme.blocks ?? [])
+      for (const other of block.canStudyAlongside)
+        if (!blockIds.has(other)) err(`${pwhere}/blocks/${block.id}`, `canStudyAlongside names unknown block ${other}`);
+    for (const e of programme.electives ?? []) {
+      if (!courseIds.has(e.courseId)) err(pwhere, `elective names unknown course ${e.courseId}`);
+      for (const b of e.connectsToBlockIds) if (!blockIds.has(b)) err(pwhere, `elective ${e.courseId} connects to unknown block ${b}`);
+    }
+    for (const m of programme.methods ?? []) {
+      if (!conceptIds.has(m.conceptId)) err(pwhere, `method ${m.id} names unknown concept ${m.conceptId}`);
+      for (const u of m.units) {
+        if (!unitsByCourse.get(u.courseId)?.has(u.unitId)) err(pwhere, `method ${m.id} names unknown unit ${u.unitId}`);
+        // A learner's state for the method moves only through units that teach its concept.
+        else if (!unitSpecs.get(u.unitId)?.teachesConceptIds.includes(m.conceptId))
+          err(pwhere, `method ${m.id} maps ${u.unitId}, which does not teach ${m.conceptId}`);
+      }
+      for (const p of m.plannedIn) if (!courseIds.has(p.courseId)) err(pwhere, `method ${m.id} plans unknown course ${p.courseId}`);
+    }
+    if (programme.paperSeminar) {
+      const seminar = programme.paperSeminar;
+      if (seminar.papers.length > seminar.maxPapers)
+        err(pwhere, `paper seminar lists ${seminar.papers.length} papers, above its bound of ${seminar.maxPapers}`);
+      for (const p of seminar.papers) {
+        if (p.sourceId && !sourceById.has(p.sourceId)) err(pwhere, `paper seminar names unregistered source ${p.sourceId}`);
+        for (const b of p.blockIds) if (!blockIds.has(b)) err(pwhere, `paper seminar names unknown block ${b}`);
+      }
     }
   }
   for (const department of bundle.departments) {
@@ -245,6 +301,9 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
       sources: bundle.sources.length,
       verifiedLocators,
       personas: bundle.personas.length,
+      programmes: bundle.programmes.length,
+      programmeBlocks: bundle.programmes.reduce((n, p) => n + (p.blocks?.length ?? 0), 0),
+      programmeElectives: bundle.programmes.reduce((n, p) => n + (p.electives?.length ?? 0), 0),
     },
   };
 }
@@ -269,6 +328,7 @@ export function formatReport(report: ValidationReport): string {
   lines.push(
     `units ${s.units} (ready ${s.unitsReady}) · exercises ${s.exercises} · sources ${s.sources} · verified locators ${s.verifiedLocators} · personas ${s.personas}`,
   );
+  lines.push(`programmes ${s.programmes} · programme blocks ${s.programmeBlocks} · programme electives ${s.programmeElectives}`);
   lines.push(`${errors.length} error(s), ${warnings.length} warning(s)`);
   return lines.join("\n");
 }

@@ -2,36 +2,132 @@
   "id": "CSA-210",
   "version": 2,
   "title": "Deep Learning Foundations",
-  "departmentIds": ["computer-science-ai"],
+  "departmentIds": [
+    "computer-science-ai"
+  ],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
   "purpose": "The mathematics of deep learning (gradient descent, backpropagation as the chain rule on computational graphs, regularisation and generalisation, convolution as a linear operator, attention) together with the evidence discipline that makes a reported result mean something (train/validation/test separation, leakage, baselines, seeds), studied with the Neuromatch Academy Deep Learning tutorials as the spine and original Corniversity exercises.",
   "description": "Deep learning is function fitting at scale: compose simple differentiable maps, measure error on data, follow the gradient. Almost everything interesting about it lives in the details that slogan hides: why gradient descent converges or diverges, what backpropagation actually computes and what it costs, why a network that can memorise random labels still generalises, which operations convolution and attention really are, and, above all, when a number produced by a training run is evidence of anything. This course teaches those details properly, with derivations, and treats evaluation as a correctness problem rather than a reporting convention.\n\n**How this adaptation works.** The spine is the Neuromatch Academy Deep Learning ebook (content CC BY 4.0; code BSD-3-Clause), a three-week intensive whose days W1D1–W3D3 are re-paced here as ten units for an evening-study term of ten teaching weeks plus a reading week and a synthesis week. Each unit names the exact tutorial pages and sections it draws on; Corniversity writes its own lessons, which supply the mathematics the tutorials gesture at, and sets its own exercises with hint ladders and rubrics. Labs are Corniversity's own implementations, not the Neuromatch notebooks. Neuromatch's pod discussions, project time and Colab workflow are not reproduced.\n\n**Currency check (2026-10-30).** The ebook is a rolling publication without version stamps. On 2026-10-30 every cited chapter and tutorial page was opened and returned the title recorded in the source record; the syllabus seen runs through diffusion models, LLMs, transformers and reinforcement learning. Fast-moving material (large language models, diffusion) is cited where the tutorials stand today and is not presented as the state of the art; the mathematical core of this course (optimisation, backpropagation, generalisation, convolution, attention) is stable. Re-verify the locators before each term.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
   "outcomes": [
-    { "id": "o1", "description": "Derive and analyse gradient descent and backpropagation: step-size conditions and rates on quadratics, the descent lemma for smooth functions, and gradients through a computational graph by the chain rule, by hand and in code.", "evidenceExpected": "Hand derivations with numerical checks, a step-size analysis with the divergence threshold proved, and an explanation of reverse- versus forward-mode cost." },
-    { "id": "o2", "description": "Apply the evidence discipline: separate train, validation and test data, identify leakage in a described pipeline, compare against baselines, and quantify the uncertainty of a reported metric.", "evidenceExpected": "A leakage audit that names each leak and explains why the reported metric is not evidence; a calculation of the sampling error of an accuracy estimate; notebooks that report splits, baselines and seeds." },
-    { "id": "o3", "description": "Explain overfitting and generalisation in overparameterised networks and use early stopping, L1/L2 penalties, dropout and augmentation with their trade-offs stated.", "evidenceExpected": "Learning-curve interpretation, regularisation experiments with validation-based selection, and a written account of what each regulariser changes in the optimisation problem." },
-    { "id": "o4", "description": "Describe convolution and attention as linear operators with their structural assumptions (translation equivariance, parameter sharing, content-based weighting), compute output shapes and parameter counts, and justify architecture choices.", "evidenceExpected": "Shape and parameter calculations, a written derivation of convolution's linearity and equivariance, and an attention computation on a small example." },
-    { "id": "o5", "description": "Produce a reproducible computational notebook that trains a model, reports a baseline, states the split and seed policy, examines failure cases and explains the model's behaviour.", "evidenceExpected": "The final project notebook and its written explanation, assessed against the department's reporting conventions." }
+    {
+      "id": "o1",
+      "description": "Derive and analyse gradient descent and backpropagation: step-size conditions and rates on quadratics, the descent lemma for smooth functions, and gradients through a computational graph by the chain rule, by hand and in code.",
+      "evidenceExpected": "Hand derivations with numerical checks, a step-size analysis with the divergence threshold proved, and an explanation of reverse- versus forward-mode cost."
+    },
+    {
+      "id": "o2",
+      "description": "Apply the evidence discipline: separate train, validation and test data, identify leakage in a described pipeline, compare against baselines, and quantify the uncertainty of a reported metric.",
+      "evidenceExpected": "A leakage audit that names each leak and explains why the reported metric is not evidence; a calculation of the sampling error of an accuracy estimate; notebooks that report splits, baselines and seeds."
+    },
+    {
+      "id": "o3",
+      "description": "Explain overfitting and generalisation in overparameterised networks and use early stopping, L1/L2 penalties, dropout and augmentation with their trade-offs stated.",
+      "evidenceExpected": "Learning-curve interpretation, regularisation experiments with validation-based selection, and a written account of what each regulariser changes in the optimisation problem."
+    },
+    {
+      "id": "o4",
+      "description": "Describe convolution and attention as linear operators with their structural assumptions (translation equivariance, parameter sharing, content-based weighting), compute output shapes and parameter counts, and justify architecture choices.",
+      "evidenceExpected": "Shape and parameter calculations, a written derivation of convolution's linearity and equivariance, and an attention computation on a small example."
+    },
+    {
+      "id": "o5",
+      "description": "Produce a reproducible computational notebook that trains a model, reports a baseline, states the split and seed policy, examines failure cases and explains the model's behaviour.",
+      "evidenceExpected": "The final project notebook and its written explanation, assessed against the department's reporting conventions."
+    }
   ],
-  "prerequisiteRuleIds": ["CSA-210-mathematics", "CSA-210-programming"],
-  "recommendedConceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "python-scientific-computing", "applied-statistics-basics", "probability-measure-theoretic"],
+  "prerequisiteRuleIds": [
+    "CSA-210-mathematics",
+    "CSA-210-programming"
+  ],
+  "recommendedConceptIds": [
+    "linear-algebra-vector-spaces",
+    "multivariable-calculus",
+    "python-scientific-computing",
+    "applied-statistics-basics",
+    "probability-measure-theoretic"
+  ],
   "teachesConceptIds": [
-    "supervised-learning-generalisation", "data-leakage", "evaluation-discipline", "tensors-and-autodiff",
-    "gradient-descent", "backpropagation", "multilayer-perceptron", "deep-linear-network-dynamics",
-    "optimisation-methods-dl", "overfitting-and-early-stopping", "regularisation-dl", "convolution-operator",
-    "attention-transformers", "representation-learning-unsupervised"
+    "supervised-learning-generalisation",
+    "data-leakage",
+    "evaluation-discipline",
+    "tensors-and-autodiff",
+    "gradient-descent",
+    "backpropagation",
+    "multilayer-perceptron",
+    "deep-linear-network-dynamics",
+    "optimisation-methods-dl",
+    "overfitting-and-early-stopping",
+    "regularisation-dl",
+    "convolution-operator",
+    "attention-transformers",
+    "representation-learning-unsupervised",
+    "method-predictive-checks",
+    "method-longitudinal-transfer-evaluation"
   ],
-  "primarySourceIds": ["neuromatch-deep-learning"],
+  "primarySourceIds": [
+    "neuromatch-deep-learning"
+  ],
   "supplementalSourceIds": [],
-  "unitIds": ["CSA-210-u01", "CSA-210-u02", "CSA-210-u03", "CSA-210-u04", "CSA-210-u05", "CSA-210-u06", "CSA-210-u07", "CSA-210-u08", "CSA-210-u09", "CSA-210-u10"],
-  "assessmentSpecs": [
-    { "id": "a1", "title": "Problem sets and notebooks", "kind": "computational_notebook", "description": "Each unit's exercises (derivations, calculations, short code) are submitted as immutable attempts and assessed with line-localised feedback. Every notebook states its data split, baseline and seed policy; a notebook without them is returned unassessed.", "weight": 0.4, "rubricSummary": ["correctness of derivations", "numerical checks performed", "split, baseline and seed policy stated", "code read and explained, not only run"] },
-    { "id": "a2", "title": "Evidence audit", "kind": "written_explanation", "description": "After unit 6: a written audit of one described or published training pipeline (a labelled synthetic case is provided if none is chosen), identifying leakage, baseline and variance problems and stating what the reported metric does and does not show. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["every leak named with its mechanism", "baseline and sampling-error reasoning", "corrected protocol proposed", "claims limited to what the evidence supports"] },
-    { "id": "a3", "title": "Final project: train, break and explain", "kind": "project", "description": "A reproducible notebook on a small dataset (synthetic data must be labelled synthetic): baseline, model, validation protocol, seeds, failure-case analysis and a written explanation of why the model behaves as it does, with an out-of-sample or counterexample check. Optional oral explanation to the tutor.", "weight": 0.4, "rubricSummary": ["reproducible from a clean environment", "baseline and protocol correct", "failure cases examined", "explanation of behaviour supported by evidence"] }
+  "unitIds": [
+    "CSA-210-u01",
+    "CSA-210-u02",
+    "CSA-210-u03",
+    "CSA-210-u04",
+    "CSA-210-u05",
+    "CSA-210-u06",
+    "CSA-210-u07",
+    "CSA-210-u08",
+    "CSA-210-u09",
+    "CSA-210-u10"
   ],
-  "workloadHours": { "minimum": 80, "typical": 110, "maximum": 150 },
+  "assessmentSpecs": [
+    {
+      "id": "a1",
+      "title": "Problem sets and notebooks",
+      "kind": "computational_notebook",
+      "description": "Each unit's exercises (derivations, calculations, short code) are submitted as immutable attempts and assessed with line-localised feedback. Every notebook states its data split, baseline and seed policy; a notebook without them is returned unassessed.",
+      "weight": 0.4,
+      "rubricSummary": [
+        "correctness of derivations",
+        "numerical checks performed",
+        "split, baseline and seed policy stated",
+        "code read and explained, not only run"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Evidence audit",
+      "kind": "written_explanation",
+      "description": "After unit 6: a written audit of one described or published training pipeline (a labelled synthetic case is provided if none is chosen), identifying leakage, baseline and variance problems and stating what the reported metric does and does not show. Open book, untimed by default.",
+      "weight": 0.2,
+      "rubricSummary": [
+        "every leak named with its mechanism",
+        "baseline and sampling-error reasoning",
+        "corrected protocol proposed",
+        "claims limited to what the evidence supports"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Final project: train, break and explain",
+      "kind": "project",
+      "description": "A reproducible notebook on a small dataset (synthetic data must be labelled synthetic): baseline, model, validation protocol, seeds, failure-case analysis and a written explanation of why the model behaves as it does, with an out-of-sample or counterexample check. Optional oral explanation to the tutor.",
+      "weight": 0.4,
+      "rubricSummary": [
+        "reproducible from a clean environment",
+        "baseline and protocol correct",
+        "failure cases examined",
+        "explanation of behaviour supported by evidence"
+      ]
+    }
+  ],
+  "workloadHours": {
+    "minimum": 80,
+    "typical": 110,
+    "maximum": 150
+  },
   "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
@@ -44,7 +140,11 @@
       "Labs (data-leakage-audit, gradient-descent-surface) are Corniversity implementations referenced by id; they must exist in the application before the unit is taught."
     ]
   },
-  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "modesOffered": [
+    "enrolled",
+    "audit",
+    "reading_seminar"
+  ],
   "convenorPersonaId": "dev-anantharaman",
   "tutorPersonaId": "dev-anantharaman",
   "externalSyllabusNote": "Adapted study path using Neuromatch Academy Deep Learning materials (content CC BY 4.0; code BSD-3-Clause). The original course is a three-week intensive (days W1D1–W3D5 with pods, daily projects and a final presentation). Corniversity re-paces W1D1–W3D3 as ten units over an evening-study term, writes its own lessons and exercises, and omits the pod, project-time and Colab workflow. This is not a Neuromatch course and confers no certificate from Neuromatch."

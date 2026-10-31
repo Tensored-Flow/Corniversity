@@ -1,0 +1,169 @@
+{
+  "id": "tolman-1948-cognitive-maps",
+  "title": "Cognitive maps in rats and men",
+  "authors": [
+    "Edward C. Tolman"
+  ],
+  "institution": "Web transcription at Classics in the History of Psychology (Christopher D. Green, York University); original in Psychological Review",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1037/h0061626",
+  "description": "Classic paper, first given as the 34th Annual Faculty Research Lecture at Berkeley in March 1947, arguing against a stimulus-response account of maze learning: rats build a 'tentative, cognitive-like map of the environment'. It reviews five groups of experiments (latent learning, vicarious trial and error, searching for the stimulus, hypotheses, spatial orientation), contrasts narrow strip maps with comprehensive maps, and closes by applying the idea to human social behaviour.",
+  "rightsNotes": [
+    "The article page carries no copyright or licence statement (its text contains no occurrence of 'copyright'). Header: 'Classics in the History of Psychology. An internet resource developed by Christopher D. Green, York University, Toronto, Ontario'; 'First published in The Psychological Review, 55(4), 189-208.'",
+    "Site-wide 'A Note About Copyright' (http://psychclassics.yorku.ca/copyright.htm, Christopher D. Green, 20 February 1999, last modified 16 October 2004): 'officials at the American Psychological Association have informed me that any article published prior to 1963 (save some 1962 issues of Psychological Monographs) in any journal owned by the APA are in the public domain' and 'I have tried to ensure that all of the documents posted on this site are in the public domain.'",
+    "The public-domain status is the host's statement relaying APA officials; APA's record (doi.org/10.1037/h0061626, resolving to psycnet.apa.org) returned HTTP 403 and was not seen. importAllowed is set on the host's public-domain statement; the owner may prefer reference-only until APA's position is confirmed first-hand."
+  ],
+  "currentVersionId": "tolman-1948-chp",
+  "versions": [
+    {
+      "id": "tolman-1948-chp",
+      "label": "Web transcription at Classics in the History of Psychology (original: Psychological Review 55(4), 189-208, 1948; original page breaks marked [p.190] to [p.208])",
+      "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the article page and the site's index, copyright note and 'What is CHP?' pages; checked the DOI metadata in Crossref",
+      "componentsSeen": [
+        "Article page: header, full text with original page markers [p.190]-[p.208], 19 figure images (not viewed), footnotes",
+        "Read closely: the list of five experiment groups, the opening of the latent learning section (Blodgett), the spatial orientation section in full (pp. 203-205), the strip-map and comprehensive-map passages, footnote 1",
+        "Site pages: index, 'A Note About Copyright', 'What is CHP?'",
+        "Crossref record for doi 10.1037/h0061626: Psychological Review 55(4), 189-208, 1948"
+      ],
+      "licence": "Public domain, as stated in the host's site-wide copyright note (no statement on the article page)",
+      "licenceUrl": "http://psychclassics.yorku.ca/copyright.htm",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Public-domain status rests on the host's note relaying APA officials; APA's own record returned HTTP 403.",
+        "The page is a transcription and was not compared with the original journal pages; figures were not viewed.",
+        "The words 'short cut' and 'shortcut' do not occur in this text. The relevant material is the spatial orientation section: Lashley's rats running 'directly across the top to the goal-box', and the Ritchie and Kalish sun-burst test in which the trained route is blocked and radiating paths are added.",
+        "Sections on vicarious trial and error, searching for the stimulus and hypotheses were located but not read in full.",
+        "The closing section applies the idea to human social life in 1948 language; a unit quoting it should give that context.",
+        "Set to reference-only by the coordinator on 2026-10-31: the public-domain statement is the host's report of what APA officials told it, not a statement seen from APA, so the project's rule (unknown licence means reference-only) applies until it is confirmed first-hand."
+      ],
+      "locators": [
+        {
+          "id": "tolman-page",
+          "label": "Full text (transcription)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "COGNITIVE MAPS IN RATS AND MEN"
+          }
+        },
+        {
+          "id": "tolman-cognitive-like-map",
+          "label": "The 'tentative, cognitive-like map of the environment' passage",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "COGNITIVE MAPS IN RATS AND MEN",
+            "passageId": "p.192"
+          }
+        },
+        {
+          "id": "tolman-five-groups",
+          "label": "The five groups of experiments listed; first contrast of strip maps and comprehensive maps",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "COGNITIVE MAPS IN RATS AND MEN",
+            "passageId": "p.193"
+          }
+        },
+        {
+          "id": "tolman-latent-learning",
+          "label": "Latent learning experiments (Blodgett 1929: three groups in a six-unit alley maze)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "(1) \"Latent Learning\" Experiments.",
+            "passageId": "p.194"
+          }
+        },
+        {
+          "id": "tolman-vte",
+          "label": "Vicarious trial and error experiments",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "(2) \"Vicarious Trial and Error\" or \"VTE.\"",
+            "passageId": "p.196"
+          },
+          "note": "Located; not read in full."
+        },
+        {
+          "id": "tolman-searching",
+          "label": "Searching for the stimulus",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "(3) \"Searching for the Stimulus.\"",
+            "passageId": "p.200"
+          },
+          "note": "Located; not read in full."
+        },
+        {
+          "id": "tolman-hypotheses",
+          "label": "Hypothesis experiments",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "(4) The \"Hypothesis\" Experiments.",
+            "passageId": "p.201"
+          },
+          "note": "Located; not read in full."
+        },
+        {
+          "id": "tolman-spatial-orientation",
+          "label": "Spatial orientation experiments: Lashley's rats crossing the maze top; Ritchie and Kalish elevated maze and sun-burst test (Figs. 15-17); Ritchie's rotated T test (Figs. 18-20)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "(5) \"Spatial Orientation\" Experiments.",
+            "passageId": "p.203-205"
+          }
+        },
+        {
+          "id": "tolman-strip-vs-comprehensive",
+          "label": "Conditions that favour narrow strip maps over broad comprehensive maps",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/Tolman/Maps/maps.htm",
+            "heading": "COGNITIVE MAPS IN RATS AND MEN",
+            "passageId": "p.205"
+          },
+          "note": "Opening of this discussion read; the rest not read in full."
+        },
+        {
+          "id": "tolman-copyright-note",
+          "label": "Host's site-wide copyright note (public-domain statement)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tolman-1948-chp",
+            "url": "http://psychclassics.yorku.ca/copyright.htm",
+            "heading": "A Note About Copyright"
+          }
+        }
+      ]
+    }
+  ]
+}

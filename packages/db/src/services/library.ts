@@ -17,6 +17,8 @@ import {
   pairingCode,
   passage,
   processingPermission,
+  programme,
+  programmeParticipation,
   readingProgress,
   resourceAsset,
   resourceRequest,
@@ -903,13 +905,17 @@ export interface SuggestedRequest {
   destinationFolder: string;
   caveats: string;
   minPermission: string;
+  /** A source still to be identified, named by a course as a lead; it has no verified record. */
+  lead?: boolean;
 }
 
 /**
  * Books the launch catalogue depends on but cannot fetch: commercial or institutional sources
- * named by a launch course's current version. Everything in a suggestion comes from the
+ * named by a launch course's current version. Everything in such a suggestion comes from the
  * verified source record; sections are listed only where a verified book-reference locator
- * names them. Titles already on the owner's list are not suggested again.
+ * names them. Then the sources still missing from the programmes the owner follows: the leads
+ * that courses mapped by those programmes name, labelled as leads, with nothing presented as a
+ * citation. Titles already on the owner's list are not suggested again.
  */
 export async function suggestedRequests(db: DbOrTx, ownerId: string): Promise<SuggestedRequest[]> {
   const registry = await listSourceRegistry(db);
@@ -955,6 +961,48 @@ export async function suggestedRequests(db: DbOrTx, ownerId: string): Promise<Su
           " ",
         ),
         minPermission: "local_read",
+      });
+    }
+  }
+  out.push(...(await programmeLeads(db, ownerId, existingTitles)));
+  return out;
+}
+
+/** Leads named by the courses that the owner's followed programmes map to their blocks. */
+async function programmeLeads(db: DbOrTx, ownerId: string, existingTitles: Set<string>): Promise<SuggestedRequest[]> {
+  const followed = await db
+    .select({ blocks: programme.blocks })
+    .from(programmeParticipation)
+    .innerJoin(programme, eq(programme.id, programmeParticipation.programmeId))
+    .where(and(eq(programmeParticipation.ownerId, ownerId), eq(programmeParticipation.status, "following")));
+  const courseIds = [...new Set(followed.flatMap((p) => p.blocks.flatMap((b) => b.courseMappings.map((m) => m.courseId))))];
+  if (courseIds.length === 0) return [];
+  const versions = await db
+    .select({ courseId: course.id, title: course.title, departmentId: course.primaryDepartmentId, notes: courseVersion.catalogueNotes })
+    .from(courseVersion)
+    .innerJoin(course, eq(course.id, courseVersion.courseId))
+    .where(and(eq(courseVersion.isCurrent, true), inArray(courseVersion.courseId, courseIds)))
+    .orderBy(asc(course.id));
+  const out: SuggestedRequest[] = [];
+  for (const v of versions) {
+    for (const lead of v.notes.sourceCandidates ?? []) {
+      if (existingTitles.has(lead.name.trim().toLowerCase())) continue;
+      out.push({
+        key: `lead:${v.courseId}:${lead.name}`,
+        title: lead.name,
+        authors: "",
+        edition: "To be identified",
+        courseId: v.courseId,
+        why: `Lead named by ${v.title} (${v.courseId}): ${lead.note}`,
+        essential: false,
+        chaptersNeeded: [],
+        links: [],
+        acceptedFormats: ["pdf"],
+        destinationFolder: `inbox/${v.departmentId}`,
+        caveats:
+          "Lead only: no edition has been chosen and no source record is verified, so nothing here is a citation. Identify an edition through legitimate channels and register it in the source registry before any unit cites it.",
+        minPermission: "local_read",
+        lead: true,
       });
     }
   }

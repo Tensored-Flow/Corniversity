@@ -1,0 +1,45 @@
+{
+  "id": "COG-340",
+  "version": 1,
+  "title": "Advanced Psychometrics",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "advanced",
+  "position": "Optional advanced continuation of COG-220",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional advanced continuation of COG-220). Advanced measurement models and validation questions, with exact scope chosen after source review; topics to evaluate include latent-variable and item-response models, measurement invariance, longitudinal measurement and model-based interpretation of scores. A sophisticated model around a task does not by itself settle the validity of its intended use.",
+  "description": "Proposed course: Advanced Psychometrics. Central question: When does a measurement model justify a particular interpretation and use of scores? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "When does a measurement model justify a particular interpretation and use of scores?",
+  "prerequisiteGuidance": "COG-220 Psychometrics and Measurement (or its MBI-05 units) and comfort with likelihood-based model fitting.",
+  "preparationPath": "Choose a primary text after reviewing open and commercial options; prepare a first unit comparing two measurement models on a permitted dataset.",
+  "plannedActivities": [
+    "Compare candidate measurement models and defend an interpretation while reporting fit limitations and assumptions."
+  ],
+  "sourceCandidates": []
+}

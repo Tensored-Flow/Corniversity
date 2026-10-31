@@ -1,0 +1,122 @@
+{
+  "id": "mit-human-brain-2019",
+  "title": "9.13 The Human Brain (Spring 2019)",
+  "authors": [
+    "Nancy Kanwisher (instructor)"
+  ],
+  "institution": "MIT OpenCourseWare (MIT Department of Brain and Cognitive Sciences)",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/",
+  "description": "Undergraduate survey of the core perceptual and cognitive abilities of the human mind and how the brain implements them (face recognition, navigation, number, language, music, social cognition), with emphasis on the methods of human cognitive neuroscience and what each can and cannot show. OCW publishes the syllabus, a 25-lecture calendar, weekly readings (journal articles linked by DOI), 17 lecture videos (MP4 on archive.org, with transcripts), 17 lecture-slide PDFs, eight reading-response assignments, an experimental design assignment and an Instructor Insights page with a Chalk Radio podcast episode.",
+  "rightsNotes": [
+    "Course pages link CC BY-NC-SA 4.0. The OCW terms give 'Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)' and require: 'You must give appropriate credit, provide a link to the license, and indicate if changes were made.' Read 2026-10-31.",
+    "The OCW terms state that 'OCW content may be used to train, develop, and improve artificial intelligence and machine learning models', with attribution and non-commercial conditions. Corniversity is private and non-commercial.",
+    "Third-party figures in the lecture PDFs are marked, for example, 'All rights reserved. This content is excluded from our Creative Commons license. See https://ocw.mit.edu/fairuse' (lecture 2 PDF). Corniversity does not reproduce these figures.",
+    "Readings are journal articles on publishers' sites linked by DOI; OCW warns that 'external sites may have terms and conditions, including license rights, that differ from ours'. Readings are reference-only and not imported."
+  ],
+  "currentVersionId": "mit-human-brain-2019-s19",
+  "versions": [
+    {
+      "id": "mit-human-brain-2019-s19",
+      "label": "Spring 2019 (OCW publication; footer © 2001–2026 Massachusetts Institute of Technology)",
+      "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the course home, syllabus, calendar, readings, lecture videos, lecture notes, assignments, Assignment 1, Experimental Design Assignment, Instructor Insights and Lecture 1 resource pages, the Lecture 2 notes resource page and the OCW terms of use; extracted the text of the Lecture 2 notes PDF (19 pages)",
+      "componentsSeen": [
+        "home: Prof. Nancy Kanwisher; undergraduate; as taught in Spring 2019; resource types Instructor Insights, Lecture Notes, Lecture Videos, Podcasts, Written Assignments",
+        "syllabus: two 1.5-hour lectures a week; prerequisites 9.00 Introduction to Psychology or 9.01 Introduction to Neuroscience, or permission; 'There is no textbook for this course', about two papers a week; grading midterm 25%, final 25%, written assignments 25%, eight quizzes 10%, experimental design assignment 15%",
+        "calendar: 25 lectures over 14 weeks plus midterm and final, including guest sessions (human brain dissection, brain-machine interfaces), MEG decoding and RSA, and deep networks",
+        "readings: weekly journal articles from Kanwisher (2010, PNAS) and Marr (1982, Vision: general introduction and chapter 1) onward, linked by DOI",
+        "lecture videos: 17 recorded lectures (1, 2, 4-11, 13, 15, 16, 18, 20, 21, 24) as MP4 files on archive.org; the Lecture 1 page offers a transcript PDF",
+        "lecture notes: 17 PDFs matching the recorded lectures",
+        "Lecture 2 notes PDF (Neuroanatomy): 19 pages; slide numbers printed from 1 (physical index + 1); several third-party figures marked as excluded from the Creative Commons licence",
+        "assignments: Reading Response Assignments 1-8 (Assignment 1: three short questions on Tootell et al. 1995) and the Experimental Design Assignment (two linked experiments on the brain basis of intuitive physics)"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Lectures 3, 12, 14, 17, 19, 22, 23 and 25 have no video or notes (not recorded, unavailable or class cancelled); the lecture notes page says the video and notes for lecture 23 'will be added soon'. Lecture 11 is the 2018 recording.",
+        "Videos were not watched and no timestamps are recorded. Only the Lecture 2 PDF was text-extracted.",
+        "Quizzes, the midterm and the final are not published, and no assignment solutions are listed.",
+        "The readings page prints one DOI without its leading '1' (0.1126/science.1063414).",
+        "Material dates from 2019."
+      ],
+      "locators": [
+        {
+          "id": "humanbrain-syllabus",
+          "label": "Syllabus (prerequisites, goals, no textbook, grading)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "humanbrain-videos",
+          "label": "Lecture Videos index (17 recorded lectures)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/pages/lecture-videos/",
+            "heading": "Lecture Videos"
+          }
+        },
+        {
+          "id": "humanbrain-lec01",
+          "label": "Lecture 1: Introduction (video page with transcript)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/resources/lecture-1-introduction/",
+            "heading": "Lecture 1: Introduction"
+          }
+        },
+        {
+          "id": "humanbrain-lec02-pdf",
+          "label": "Lecture 2 notes: Neuroanatomy (title and outline slide)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/6d88ebb643b7b460f08ed5382a0b9898_MIT9_13S19_L02.pdf",
+            "fileLabel": "MIT9_13S19_L02.pdf",
+            "physicalPageIndex": 0,
+            "printedPageLabel": "1",
+            "sectionLabel": "Lecture 2: Outline for Today"
+          }
+        },
+        {
+          "id": "humanbrain-readings",
+          "label": "Readings by week (journal articles linked by DOI)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/pages/readings/",
+            "heading": "Readings"
+          }
+        },
+        {
+          "id": "humanbrain-expdesign",
+          "label": "Experimental Design Assignment (two linked experiments on the brain basis of intuitive physics)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-human-brain-2019-s19",
+            "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/pages/assignments/experimental-design-assignment/",
+            "heading": "Experimental Design Assignment"
+          }
+        }
+      ]
+    }
+  ]
+}

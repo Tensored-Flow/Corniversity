@@ -3,8 +3,14 @@
   "sequence": 1,
   "title": "A leak in a tidy pipeline",
   "kind": "model_interpretation",
-  "promptMarkdown": "*The scenario and all its numbers are synthetic, invented for this exercise; no real organisation or dataset is described.*\n\nA team wants to predict whether a machine will fail during the coming week. They have 5,000 weekly records from 250 machines (20 consecutive weeks each) with the label `fails_next_week`, whose base rate is 6%. Their pipeline:\n\n1. Impute missing sensor values and standardise every column using the mean and standard deviation computed over all 5,000 records.\n2. Add the feature `ticket_opened_this_week`: 1 if an engineer opened a maintenance ticket during the week. Tickets are opened after a fault is detected, usually in the week the failure occurs or the week before.\n3. Shuffle the 5,000 records uniformly at random and split them 80/20 into training and test sets.\n4. Train a two-layer MLP on the training set.\n5. Try 30 hyperparameter configurations (hidden width, learning rate, weight decay) and keep the one with the highest test accuracy.\n6. Report: \"test accuracy 97.4%\".\n\n**(a)** Identify every distinct problem in steps 1–5 and classify each with the unit's taxonomy (target, preprocessing, duplicate, temporal, group, selection). For each, say in one or two sentences what information flows where it should not.\n\n**(b)** Explain why 97.4% is not evidence that the model can predict failures. Your explanation must compute the trivial baseline and must address at least two of the leaks separately: which would inflate the number, and roughly how badly.\n\n**(c)** Rank the problems by how much you expect each to inflate the reported accuracy, with a one-line justification each. Judgement is expected; defend it.\n\n**(d)** Write a corrected protocol in at most ten lines: which records go where, when preprocessing statistics are fitted, which features are admissible, how configurations are chosen, how many times the test set is touched, and what is reported alongside the final number (seeds, baseline, uncertainty).",
-  "conceptIds": ["data-leakage", "evaluation-discipline", "supervised-learning-generalisation"],
+  "promptMarkdown": "*The scenario and all its numbers are synthetic, invented for this exercise; no real organisation or dataset is described.*\n\nA team wants to predict whether a machine will fail during the coming week. They have 5,000 weekly records from 250 machines (20 consecutive weeks each) with the label `fails_next_week`, whose base rate is 6%. Their pipeline:\n\n1. Impute missing sensor values and standardise every column using the mean and standard deviation computed over all 5,000 records.\n2. Add the feature `ticket_opened_this_week`: 1 if an engineer opened a maintenance ticket during the week. Tickets are opened after a fault is detected, usually in the week the failure occurs or the week before.\n3. Shuffle the 5,000 records uniformly at random and split them 80/20 into training and test sets.\n4. Train a two-layer MLP on the training set.\n5. Try 30 hyperparameter configurations (hidden width, learning rate, weight decay) and keep the one with the highest test accuracy.\n6. Report: \"test accuracy 97.4%\".\n\n**(a)** Identify every distinct problem in steps 1–5 and classify each with the unit's taxonomy (target, preprocessing, duplicate, temporal, group, selection). For each, say in one or two sentences what information flows where it should not.\n\n**(b)** Explain why 97.4% is not evidence that the model can predict failures. Your explanation must compute the trivial baseline and must address at least two of the leaks separately: which would inflate the number, and roughly how badly.\n\n**(c)** Rank the problems by how much you expect each to inflate the reported accuracy, with a one-line justification each. Judgement is expected; defend it.\n\n**(d)** Write a corrected protocol in at most ten lines: which records go where, when preprocessing statistics are fitted, which features are admissible, how configurations are chosen, how many times the test set is touched, and what is reported alongside the final number (seeds, baseline, uncertainty). Then, separately, state the corrected protocol's information contract in the programme's ten points: observed, prediction target, history in training, history at inference, person, task, later time periods, unavailable in real use, simplest baseline, claims not tested.",
+  "conceptIds": [
+    "data-leakage",
+    "evaluation-discipline",
+    "supervised-learning-generalisation",
+    "method-predictive-checks",
+    "method-longitudinal-transfer-evaluation"
+  ],
   "hintLadder": [
     "For each feature, ask: at the moment the prediction would be used (the start of the week), is this value known yet? If not, how did it get into the training data?",
     "The label for machine $m$ in week $t$ is whether $m$ fails in week $t+1$. Which other record in the dataset contains exactly that information, and could it be in the training set while week $t$ is in the test set?",
@@ -17,13 +23,25 @@
       "id": "names-ticket-leak",
       "kind": "expression_present",
       "description": "the maintenance-ticket feature is named",
-      "params": { "patterns": ["ticket"] }
+      "params": {
+        "patterns": [
+          "ticket"
+        ]
+      }
     },
     {
       "id": "baseline-94",
       "kind": "expression_present",
       "description": "the majority baseline of 94% is computed",
-      "params": { "patterns": ["94%", "0\\.94(?![0-9])", "94percent", "94/100", "94outof100"] }
+      "params": {
+        "patterns": [
+          "94%",
+          "0\\.94(?![0-9])",
+          "94percent",
+          "94/100",
+          "94outof100"
+        ]
+      }
     },
     {
       "id": "no-leak-denial",
@@ -42,10 +60,82 @@
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "target-leak", "criterion": "The ticket feature is identified as target leakage with its mechanism (opened after fault detection, so unavailable at prediction time and nearly a copy of the label).", "weight": 0.25, "levels": [{ "label": "met", "description": "Named, classified and mechanism explained." }, { "label": "partially met", "description": "Named without the mechanism or misclassified." }, { "label": "not met", "description": "Missed." }] },
-      { "id": "split-leaks", "criterion": "The random shuffle is identified as producing group leakage (same machine in both splits) and temporal leakage (later weeks, including the record that carries the test label, in training); selection on the test set in step 5 is identified; standardisation on all records is noted as a mild preprocessing leak.", "weight": 0.25, "levels": [{ "label": "met", "description": "Group, temporal and selection leaks all identified; preprocessing leak noted." }, { "label": "partially met", "description": "Two of the three major leaks identified." }, { "label": "not met", "description": "At most one identified." }] },
-      { "id": "why-not-evidence", "criterion": "The 94% baseline is computed and the argument explains that the leaks and the test-set selection inflate the number, so 97.4% estimates neither risk nor skill; the inadequacy of accuracy alone on a 6% base rate is noted.", "weight": 0.25, "levels": [{ "label": "met", "description": "Baseline computed, at least two leaks' effects discussed, selection bias on the test set explained." }, { "label": "partially met", "description": "Baseline computed but the inflation argument is thin." }, { "label": "not met", "description": "No baseline or no argument." }] },
-      { "id": "corrected-protocol", "criterion": "A protocol with group- and time-aware splitting, preprocessing fitted on training data only, inadmissible features removed, a validation split for selection, the test set touched once, and reporting of seeds, baseline and uncertainty.", "weight": 0.25, "levels": [{ "label": "met", "description": "All elements present and consistent." }, { "label": "partially met", "description": "Most elements present; one major gap (e.g. still tunes on test)." }, { "label": "not met", "description": "Missing or still leaky." }] }
+      {
+        "id": "target-leak",
+        "criterion": "The ticket feature is identified as target leakage with its mechanism (opened after fault detection, so unavailable at prediction time and nearly a copy of the label).",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Named, classified and mechanism explained."
+          },
+          {
+            "label": "partially met",
+            "description": "Named without the mechanism or misclassified."
+          },
+          {
+            "label": "not met",
+            "description": "Missed."
+          }
+        ]
+      },
+      {
+        "id": "split-leaks",
+        "criterion": "The random shuffle is identified as producing group leakage (same machine in both splits) and temporal leakage (later weeks, including the record that carries the test label, in training); selection on the test set in step 5 is identified; standardisation on all records is noted as a mild preprocessing leak.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Group, temporal and selection leaks all identified; preprocessing leak noted."
+          },
+          {
+            "label": "partially met",
+            "description": "Two of the three major leaks identified."
+          },
+          {
+            "label": "not met",
+            "description": "At most one identified."
+          }
+        ]
+      },
+      {
+        "id": "why-not-evidence",
+        "criterion": "The 94% baseline is computed and the argument explains that the leaks and the test-set selection inflate the number, so 97.4% estimates neither risk nor skill; the inadequacy of accuracy alone on a 6% base rate is noted.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Baseline computed, at least two leaks' effects discussed, selection bias on the test set explained."
+          },
+          {
+            "label": "partially met",
+            "description": "Baseline computed but the inflation argument is thin."
+          },
+          {
+            "label": "not met",
+            "description": "No baseline or no argument."
+          }
+        ]
+      },
+      {
+        "id": "corrected-protocol",
+        "criterion": "A protocol with group- and time-aware splitting, preprocessing fitted on training data only, inadmissible features removed, a validation split for selection, the test set touched once, and reporting of seeds, baseline and uncertainty, followed by its ten-point information contract.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All elements present and consistent."
+          },
+          {
+            "label": "partially met",
+            "description": "Most elements present; one major gap (e.g. still tunes on test)."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or still leaky."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -56,17 +146,26 @@
     {
       "label": "complete audit",
       "text": "The ticket_opened_this_week feature is target leakage: tickets are opened after a fault is detected, so the feature encodes the label and is not available at the start of the week. Standardising on all 5,000 records is preprocessing leakage, probably mild. The random shuffle puts the same machine and later weeks in both splits, so there is group leakage and temporal leakage; the record for week t+1 even contains the test label for week t. Choosing among 30 configurations by test accuracy is selection leakage. The majority baseline is 94% (base rate 6%), so 97.4% is barely above predicting no failure, and after the leaks it is not evidence of skill.",
-      "expect": { "names-ticket-leak": true, "baseline-94": true, "no-leak-denial": true }
+      "expect": {
+        "names-ticket-leak": true,
+        "baseline-94": true,
+        "no-leak-denial": true
+      }
     },
     {
       "label": "denial of the problem",
       "text": "There is no leak in this pipeline; the pipeline is sound and 97.4% shows strong predictive skill.",
-      "expect": { "no-leak-denial": false, "baseline-94": false }
+      "expect": {
+        "no-leak-denial": false,
+        "baseline-94": false
+      }
     },
     {
       "label": "baseline written as a proportion",
       "text": "A model that never predicts a failure has accuracy 0.94 on this data, so the reported figure must be judged against that.",
-      "expect": { "baseline-94": true }
+      "expect": {
+        "baseline-94": true
+      }
     }
   ]
 }

@@ -1,0 +1,186 @@
+{
+  "id": "deepseek-r1",
+  "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+  "authors": [
+    "DeepSeek-AI (corporate author; the arXiv record lists the individual authors)"
+  ],
+  "institution": "DeepSeek-AI",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1038/s41586-025-09422-z",
+  "description": "Nature article (arXiv title 'DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning') reporting that 'the reasoning abilities of LLMs can be incentivized through pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories'. DeepSeek-R1-Zero is trained from DeepSeek-V3-Base with Group Relative Policy Optimization (GRPO) and rule-based rewards; DeepSeek-R1 adds a multistage pipeline (cold-start data, RL, rejection sampling and supervised fine-tuning, and a second RL stage with model-based helpfulness and safety rewards). The paper reports benchmark results, an ethics and safety statement, limitations (structured output and tool use, token efficiency, language mixing, prompting, software-engineering tasks, reward hacking) and distillation into smaller dense models.",
+  "codeLicence": "github.com/deepseek-ai/DeepSeek-R1: MIT License, 'Copyright (c) 2023 DeepSeek'. The repository holds a README, figures and a PDF, not training code; the paper says the inference script is in the DeepSeek-V3 repository.",
+  "rightsNotes": [
+    "Nature version: 'This article is licensed under a Creative Commons Attribution 4.0 International License' (PMC copy and nature.com 'Rights and permissions', read 2026-10-31).",
+    "arXiv version: arXiv's non-exclusive distribution licence (nonexclusive-distrib/1.0) only, which grants no reuse rights; it is read-only reference.",
+    "Host terms: nature.com's Website Terms prohibit access 'by any means other than through a normal web browser in the generally-accepted manner', and PMC prohibits automated article downloads outside its OAI-PMH, FTP and Cloud services. The CC BY version is cited, not imported.",
+    "Weights: the README and the Hugging Face card state 'This code repository and the model weights are licensed under the MIT License'; the distilled models derive from Qwen2.5 (originally Apache 2.0) and from Llama 3.1 and 3.3 (Llama licences). Data samples (rejection-sampling and RL prompts) are in the GitHub repository, archived on Zenodo (doi 10.5281/zenodo.15753193, 'deepseek-ai/DeepSeek-R1: v1.0.0', 2025-06-27, MIT License). Corniversity does not download or run the models."
+  ],
+  "currentVersionId": "deepseek-r1-nature-2025",
+  "versions": [
+    {
+      "id": "deepseek-r1-nature-2025",
+      "label": "Nature 645(8081), 633–638 (2025); received 14 February 2025, accepted 17 July 2025, published 17 September 2025, issue date 18 September 2025",
+      "url": "https://www.nature.com/articles/s41586-025-09422-z",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): read the article on nature.com after its cookie redirect ('Open access' label, 'Rights and permissions', 'About this article') and the PMC copy PMC12443585 (the first 100,000 of about 105,000 characters: summary, section headings, data and code availability); opened nature.com's Website Terms and the PMC copyright page",
+      "componentsSeen": [
+        "nature.com: 'Open access' label; CC BY 4.0 under 'Rights and permissions'; received, accepted, published and issue dates; DOI; peer-review acknowledgement",
+        "PMC: volume, issue and pages; PMID 40962978; CC BY 4.0 statement; sections Main (DeepSeek-R1-Zero; DeepSeek-R1; Ethics and safety statement; Conclusion, limitation and future work, with six limitation headings) and Methods (GRPO; Reward design, with rule-based and model-based rewards; Training details of DeepSeek-R1-Zero and of the first and second RL stages)",
+        "Data availability: data samples for rejection sampling and RL prompts in the GitHub repository and on Zenodo; Code availability: 'Trained weights of DeepSeek-R1-Zero and DeepSeek-R1 are available under an MIT license'"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Not imported from its hosts (nature.com terms; PMC automated-download rule); the PMC OA web service was not tested. The arXiv version cannot stand in for import because its licence grants no reuse rights.",
+        "The supplementary information and the peer-review file were not opened, and no benchmark figure was checked against the tables.",
+        "A later checkpoint, DeepSeek-R1-0528, exists on Hugging Face (MIT licence tag; described there as 'a minor version upgrade'); this paper does not describe it."
+      ],
+      "locators": [
+        {
+          "id": "r1-nat-landing",
+          "label": "Article page (abstract, Rights and permissions, About this article)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-nature-2025",
+            "url": "https://www.nature.com/articles/s41586-025-09422-z",
+            "heading": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning"
+          }
+        },
+        {
+          "id": "r1-nat-zero",
+          "label": "Main text: DeepSeek-R1-Zero (pure-RL training from DeepSeek-V3-Base)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12443585/",
+            "heading": "DeepSeek-R1-Zero"
+          }
+        },
+        {
+          "id": "r1-nat-limits",
+          "label": "Main text: Conclusion, limitation and future work (including reward hacking)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12443585/",
+            "heading": "Conclusion, limitation and future work"
+          }
+        },
+        {
+          "id": "r1-nat-grpo",
+          "label": "Methods: GRPO",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12443585/",
+            "heading": "GRPO"
+          }
+        },
+        {
+          "id": "r1-nat-reward",
+          "label": "Methods: Reward design (rule-based and model-based rewards)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12443585/",
+            "heading": "Reward design"
+          }
+        }
+      ]
+    },
+    {
+      "id": "deepseek-r1-arxiv-v2",
+      "label": "arXiv:2501.12948v2 (4 January 2026; v1 22 January 2025)",
+      "url": "https://arxiv.org/abs/2501.12948v2",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the arXiv abstract page and the v2 HTML table of contents; parsed the v2 PDF (86 pages) in memory to locate section pages",
+      "componentsSeen": [
+        "abstract page: DeepSeek-AI and individual authors, two versions, subjects cs.CL, cs.AI and cs.LG, journal-ref 'Nature volume 645, pages 633-638 (2025)', related DOI 10.1038/s41586-025-09422-z, licence nonexclusive-distrib/1.0",
+        "v2 structure: 1 Introduction; 2 DeepSeek-R1-Zero (2.1 Group Relative Policy Optimization, 2.2 Reward Design, 2.3 Incentivize Reasoning Capability in LLMs); 3 DeepSeek-R1 (3.1 Model-based Rewards, 3.2 Training Details); 4 Experiment; 5 Ethics and Safety Statement; 6 Conclusion, Limitation, and Future Work; Appendices A to J (including A.3 a comparison of GRPO and PPO, B.5 Reward Hacking, F DeepSeek-R1 Distillation, G.2 Unsuccessful Attempts, I Open Weights, Code, and Data)",
+        "PDF: printed page numbers equal physical index + 1"
+      ],
+      "licence": "arXiv non-exclusive licence to distribute (http://arxiv.org/licenses/nonexclusive-distrib/1.0/)",
+      "licenceUrl": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "v1 (January 2025) is the original technical report; v2's main sections mirror the Nature article's, with supplementary material as appendices. The versions were not compared in detail.",
+        "The HTML rendering stopped during Appendix B; later appendices were located only by PDF page search."
+      ],
+      "locators": [
+        {
+          "id": "r1-arx-abs",
+          "label": "arXiv abstract page (versions, journal reference, licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "deepseek-r1-arxiv-v2",
+            "url": "https://arxiv.org/abs/2501.12948v2",
+            "heading": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"
+          }
+        },
+        {
+          "id": "r1-arx-grpo",
+          "label": "2 DeepSeek-R1-Zero; 2.1 Group Relative Policy Optimization",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "deepseek-r1-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2501.12948v2",
+            "physicalPageIndex": 1,
+            "printedPageLabel": "2",
+            "sectionLabel": "2.1 Group Relative Policy Optimization"
+          }
+        },
+        {
+          "id": "r1-arx-reward",
+          "label": "2.2 Reward Design",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "deepseek-r1-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2501.12948v2",
+            "physicalPageIndex": 2,
+            "printedPageLabel": "3",
+            "sectionLabel": "2.2 Reward Design"
+          }
+        },
+        {
+          "id": "r1-arx-limits",
+          "label": "5 Ethics and Safety Statement; 6 Conclusion, Limitation, and Future Work",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "deepseek-r1-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2501.12948v2",
+            "physicalPageIndex": 9,
+            "printedPageLabel": "10",
+            "sectionLabel": "6 Conclusion, Limitation, and Future Work"
+          }
+        },
+        {
+          "id": "r1-arx-open",
+          "label": "Appendix I: Open Weights, Code, and Data",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "deepseek-r1-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2501.12948v2",
+            "physicalPageIndex": 64,
+            "printedPageLabel": "65",
+            "sectionLabel": "I. Open Weights, Code, and Data"
+          }
+        }
+      ]
+    }
+  ]
+}

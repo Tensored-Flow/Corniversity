@@ -1,0 +1,173 @@
+{
+  "id": "eckstein-2022-parameter-context",
+  "title": "The interpretation of computational model parameters depends on the context",
+  "authors": [
+    "Maria Katharina Eckstein",
+    "Sarah L Master",
+    "Liyu Xia",
+    "Ronald E Dahl",
+    "Linda Wilbrecht",
+    "Anne GE Collins"
+  ],
+  "institution": "eLife",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.7554/eLife.75474",
+  "description": "291 participants aged 8 to 30 completed three reinforcement-learning tasks in one session; RL models were fitted to each task, and the paper tests whether the parameters (noise/exploration, positive and negative learning rates, forgetting) generalise between tasks (absolute values, rank order, age trajectories, cross-task prediction, comparison with a generalisability ceiling) and whether they are interpretable (principal components, cross-validated ridge regression). Some parameters generalised partly, only between sufficiently similar tasks; others did not.",
+  "rightsNotes": [
+    "eLife JATS XML permissions: '© 2022, Eckstein et al'; licence link http://creativecommons.org/licenses/by/4.0/; 'This article is distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use and redistribution provided that the original author and source are credited.' Crossref lists CC BY 4.0 for the version of record, accepted manuscript and text-and-data mining."
+  ],
+  "currentVersionId": "eckstein-2022-elife-vor",
+  "versions": [
+    {
+      "id": "eckstein-2022-elife-vor",
+      "label": "eLife 11:e75474, published 4 November 2022",
+      "url": "https://elifesciences.org/articles/75474",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the eLife article page (anchors) and its JATS XML (metadata, permissions, abstract, structure and four sections), and the Crossref record",
+      "componentsSeen": [
+        "eLife page anchors: abstract, s2-1, s2-1-4, s2-1-5, s2-1-6, s3-1, s4-3, s4-4, s4-6",
+        "JATS XML: metadata, permissions, abstract, section structure; read: Predicting age trajectories (s2-1-4), Summary part I: Generalizability (s2-1-6, first part), Study design (s4-1), Ridge regression (s4-6, first part)"
+      ],
+      "licence": "CC BY 4.0 (Creative Commons Attribution License)",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "elifesciences.org"
+      ],
+      "limitations": [
+        "Most Results, the Discussion and Limitations, the task and model specifications and the data-availability section were not read; figures and tables were not viewed.",
+        "Generalisation is tested between three tasks done by the same participants in one session; it is not held-out-person or later-period prediction of choices.",
+        "Anchor s4-1 is taken from the XML; the other anchors were checked on the page."
+      ],
+      "locators": [
+        {
+          "id": "eck-abstract",
+          "label": "Abstract",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Abstract",
+            "fragment": "abstract"
+          }
+        },
+        {
+          "id": "eck-part-1",
+          "label": "Part I: parameter generalizability",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Part I: parameter generalizability",
+            "fragment": "s2-1"
+          },
+          "note": "Heading and subheadings seen."
+        },
+        {
+          "id": "eck-predicting",
+          "label": "Predicting a parameter in one task from the same parameter in another task, controlling for age",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Predicting age trajectories",
+            "fragment": "s2-1-4"
+          }
+        },
+        {
+          "id": "eck-ceiling",
+          "label": "Statistical comparison to the generalizability ceiling",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Statistical comparison to generalizability ceiling",
+            "fragment": "s2-1-5"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "eck-summary-1",
+          "label": "Summary of Part I: absolute values differ between tasks; partial generalisation of noise/exploration and alpha+ only between similar tasks; none for alpha-",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Summary part I: Generalizability",
+            "fragment": "s2-1-6"
+          }
+        },
+        {
+          "id": "eck-limitations",
+          "label": "Limitations",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Limitations",
+            "fragment": "s3-1"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "eck-study-design",
+          "label": "Study design: 291 participants, three tasks and how they differ",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Study design",
+            "fragment": "s4-1"
+          },
+          "note": "Anchor id taken from the article XML."
+        },
+        {
+          "id": "eck-tasks",
+          "label": "Task design (tasks A, B and C)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Task design",
+            "fragment": "s4-3"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "eck-models",
+          "label": "Computational models",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Computational models",
+            "fragment": "s4-4"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "eck-ridge",
+          "label": "Ridge regression with repeated cross-validated grid search",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "eckstein-2022-elife-vor",
+            "url": "https://elifesciences.org/articles/75474",
+            "heading": "Ridge regression",
+            "fragment": "s4-6"
+          }
+        }
+      ]
+    }
+  ]
+}

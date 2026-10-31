@@ -1,0 +1,256 @@
+{
+  "id": "COG-260-u01",
+  "courseId": "COG-260",
+  "sequence": 1,
+  "title": "Building and checking a model of choice behaviour",
+  "summary": "A complete modelling loop on a two-armed bandit with synthetic participants: three candidate models (biased responding, noisy win-stay lose-shift, Rescorla-Wagner learning with softmax choice), predictions saved before any run, maximum-likelihood fitting, parameter recovery, model recovery with a confusion matrix, a held-out comparison under a stated information contract, and an informative case set against an ambiguous one.",
+  "objectives": [
+    {
+      "id": "u01-o1",
+      "description": "Write the likelihood of a choice sequence under each of the three models, derive the closed-form estimates for biased responding and noisy win-stay lose-shift, and compute Rescorla-Wagner values and softmax choice probabilities by hand."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Run parameter recovery and model recovery for a stated design and parameter region, read a confusion matrix in the right direction, and say what poor recovery prevents you from claiming."
+    },
+    {
+      "id": "u01-o3",
+      "description": "State the ten points of an information contract for a held-out comparison, recognise a split that leaks later information, and compare models against a baseline and chance on held-out log-likelihood."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Report an ambiguous result as inconclusive, explain why the models make nearly the same predictions in that design, and propose and predict the effect of a more informative design."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "maximum-likelihood-estimation"
+  ],
+  "teachesConceptIds": [
+    "choice-learning-models",
+    "information-contract",
+    "method-generative-simulation",
+    "method-parameter-estimation",
+    "method-parameter-recovery",
+    "method-model-recovery",
+    "method-predictive-checks",
+    "method-longitudinal-transfer-evaluation"
+  ],
+  "preparation": [
+    {
+      "description": "Read the introduction of Wilson and Collins (2019): the four uses of models and the overview of the ten rules.",
+      "locatorId": "wc-intro",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the worked example (the two-armed bandit) and Box 1, Models 1 to 5; this unit uses Models 1, 2 and 3. Note the initial values Box 1 states and compare them with the lesson.",
+      "locatorId": "wc-box-1",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read Rule 3 (simulate before fitting; model-independent measures) and Box 2.",
+      "locatorId": "wc-rule-03",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Rule 5 (parameter recovery) and Box 4.",
+      "locatorId": "wc-rule-05",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read Rule 6 (model comparison and model recovery) and Box 5, including the inversion matrix.",
+      "locatorId": "wc-rule-06",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the Action prediction section of Dezfouli et al. (2019): leave-one-subject-out evaluation of models of real choice data.",
+      "locatorId": "dez-action-prediction",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the Summary of Part I of Eckstein et al. (2022): whether learning parameters generalise between tasks done by the same people.",
+      "locatorId": "eck-summary-1",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "The ten rules and Box 1 with the lesson",
+      "instructions": "Read the lesson alongside the paper. Write the three models' choice probabilities in your notebook before reading how they are fitted, and mark the places where the paper's text and its code differ (Box 1's initial values, Equation 3's update, the meaning of beta in Box 4, the printed form of Equation 10).",
+      "estimatedMinutes": 60,
+      "sourceLocatorIds": [
+        "wc-intro",
+        "wc-bandit-task",
+        "wc-box-1",
+        "wc-rule-03",
+        "wc-box-2",
+        "wc-rule-04",
+        "wc-box-3",
+        "wc-rule-05",
+        "wc-box-4",
+        "wc-rule-06",
+        "wc-box-5",
+        "wc-appendix-3",
+        "wc-rule-08",
+        "wc-box-7",
+        "wc-code-repo",
+        "huys-model-comparison"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "problem",
+      "title": "Tutorial: likelihoods, estimates and BIC by hand",
+      "instructions": "Attempt exercise 1 before asking for a hint. Derive the win-stay lose-shift estimate in general before putting numbers in, and keep beta an inverse temperature throughout. Submit when complete; revise after feedback.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "wc-box-1",
+        "wc-rule-04",
+        "wc-rule-06"
+      ],
+      "exerciseIds": [
+        "COG-260-u01-ex1"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "lab",
+      "title": "Laboratory: the complete loop, informative case then ambiguous case",
+      "instructions": "Prediction first: the laboratory keeps its results hidden until you save a prediction in the notebook, and one saved prediction opens it for the whole unit, so write it for both cases before saving. For each case, say which model you expect to fit the default participant best, what the models predict for the model-independent measures, how well you expect alpha and beta to be recovered, and whether you expect the confusion matrix to be diagonal. Then run, in order: the fit of one synthetic participant and its model-independent measures; validation of the winning model by simulation (informative case); parameter recovery; model recovery; and the held-out comparison with each of the three splits, reading each split's information contract before you run it. In the ambiguous case, change one design feature at a time (trials, reward probabilities, the participants' region) and record what each does. Keep the seed with every number. Everything in the laboratory is synthetic and labelled so; none of it measures a person.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "wc-rule-05",
+        "wc-box-4",
+        "wc-rule-06",
+        "wc-box-5",
+        "wc-rule-08"
+      ],
+      "exerciseIds": [
+        "COG-260-u01-ex2"
+      ],
+      "labId": "choice-model-loop",
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u01-a4",
+      "type": "project",
+      "title": "Report: the loop written up, with its information contracts",
+      "instructions": "Exercise 3. Write the report from your notebook, contracts first, then revise it after the tutor's feedback. The report is the unit's exit check.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "wc-rule-10",
+        "eck-summary-1"
+      ],
+      "exerciseIds": [
+        "COG-260-u01-ex3"
+      ],
+      "sessionKind": "project"
+    },
+    {
+      "id": "u01-a5",
+      "type": "explain_back",
+      "title": "Explain: why the ambiguous case is inconclusive",
+      "instructions": "Without notes, explain to the tutor in about five minutes why the three models make nearly the same predictions in the ambiguous case, what its confusion matrix shows, and which change of design you would make first and why.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "wc-rule-06",
+        "wc-box-5"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a6",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the loop's definitions",
+      "instructions": "From memory: the three models' choice probabilities; the win-stay lose-shift estimate; the Rescorla-Wagner update; BIC; the difference between parameter recovery and model recovery; the direction of a confusion matrix; the ten points of an information contract; the split that leaks and why.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "wc-rule-06"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
+  ],
+  "exerciseIds": [
+    "COG-260-u01-ex1",
+    "COG-260-u01-ex2",
+    "COG-260-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 3 accepted: the report states every point of the information contract before its numbers, compares against the baseline and chance, and reports the ambiguous case as inconclusive with a proposed design and its predicted effect.",
+    "exerciseId": "COG-260-u01-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "The model with the lowest BIC is the mechanism that generated the data.",
+      "correction": "BIC ranks models on the data at hand, in sample, after a complexity penalty. Model recovery shows how often that ranking picks the generating model in a given design and parameter region; where it seldom does, the ranking says little even about prediction, and it never by itself demonstrates a mechanism.",
+      "correctionLocatorIds": [
+        "wc-rule-06",
+        "wc-box-5"
+      ]
+    },
+    {
+      "claim": "If parameters can be recovered from simulated data, they will be recovered from real data.",
+      "correction": "Recovery is a best case: the simulated data were produced by the model being fitted, with no misspecification. It is necessary before interpreting parameters, not sufficient.",
+      "correctionLocatorIds": [
+        "wc-rule-05"
+      ]
+    },
+    {
+      "claim": "A random 70/30 split of trials tests prediction of future behaviour.",
+      "correction": "Trials after a held-out trial are in the training set, so the fitted parameters already reflect later behaviour. No real forecast has that information; the information contract makes the leak visible.",
+      "correctionLocatorIds": [
+        "wc-rule-06"
+      ]
+    },
+    {
+      "claim": "A recoverable learning rate is a stable trait of the person.",
+      "correction": "Eckstein et al. (2022) found that absolute parameter values differ between tasks done by the same participants and that only some parameters partly generalise, between similar tasks. Recovery within one task says nothing about generalisation across tasks.",
+      "correctionLocatorIds": [
+        "eck-summary-1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 410,
+  "status": "ready",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Every cited locator belongs to a source record verified on 2026-10-31: Wilson and Collins (2019), read in full for the abstract, introduction, worked example, Box 1, Rules 3 to 9 and Boxes 2 to 7 (Rules 1 and 10, Rule 2 outside Box 1, and Appendices 1 and 3 to 5 seen as headings); Dezfouli et al. (2019), Action prediction; Eckstein et al. (2022), Summary of Part I; Huys et al. (2012), model comparison by integrated BIC. Rule numbering follows heading order, as the source record explains."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Re-derived: b-hat = n1/T; the win-stay lose-shift estimate 2(n − c)/n with the boundary case c < n/2; the Rescorla-Wagner values 0.75, 0.375 and 0.6875 and P = 1/(1 + e^(−0.75)) = 0.6792; BIC = 2 NLL + k ln T giving 251.60 and 253.30. Laboratory values in the instructor files were recomputed with packages/core/src/labs/choice-models.ts at seed 42."
+    },
+    {
+      "name": "information-contract",
+      "result": "pass",
+      "evidence": "The laboratory shows each split's ten points before the comparison is run; exercise 2 states the later-trials contract and asks for the contract of participants left out of the fit before that split is run; exercise 3 requires a contract for every split it reports."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson states the models and the closed form for biased responding, leaves the win-stay lose-shift derivation to exercise 1, and describes the ambiguous case's design and region without its results; exercise answers and laboratory values appear only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "115 minutes of preparation and 295 minutes of activities, about 6.8 hours: a little under one week at the 7 to 10 hours per week budget, which leaves room for revision."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": [
+    "COG-260-u01-ex1.reference-solution.md",
+    "COG-260-u01-ex1.grading-notes.md",
+    "COG-260-u01-ex2.reference-solution.md",
+    "COG-260-u01-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
+}

@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap } from "./helpers";
+import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 import { makePdf } from "./pdf";
 
 /**
@@ -153,12 +153,7 @@ test.describe("library, companion and reading room", () => {
     expect(file.status()).toBe(404);
 
     // A tutor conversation that names the book carries the university's note.
-    await page.goto("/courses/MAT-230");
-    const takeButton = page.getByRole("button", { name: /take this course/i });
-    if (await takeButton.isVisible().catch(() => false)) {
-      await page.getByLabel(/^Enrolled/).check();
-      await takeButton.click();
-    }
+    await takeCourse(page, "MAT-230");
     await page.getByRole("link", { name: "Normed and Banach spaces" }).click();
     const lectureCard = page.locator("li", { hasText: "Lecture 1" }).first();
     const start = lectureCard.getByRole("button", { name: /start|resume|continue/i }).first();
@@ -242,22 +237,25 @@ test.describe("library, companion and reading room", () => {
     await expect(page.locator("#page-text")).toContainText("Cauchy sequence");
     await screenshot(page, "23-reading-room");
 
-    // Select the page text and ask; the answer cites the exact place.
-    await page.evaluate(() => {
-      const element = document.getElementById("page-text")!;
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      const selection = window.getSelection()!;
-      selection.removeAllRanges();
-      selection.addRange(range);
-      document.dispatchEvent(new Event("mouseup"));
-    });
-    await expect(
-      page
-        .getByText("Selected passage")
-        .locator("..")
-        .getByText(/Banach space/),
-    ).toBeVisible();
+    // Select the page text and ask; the answer cites the exact place. The reader attaches its
+    // selection listener when the page hydrates, so a selection made before then is repeated.
+    await expect(async () => {
+      await page.evaluate(() => {
+        const element = document.getElementById("page-text")!;
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const selection = window.getSelection()!;
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.dispatchEvent(new Event("mouseup"));
+      });
+      await expect(
+        page
+          .getByText("Selected passage")
+          .locator("..")
+          .getByText(/Banach space/),
+      ).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 30_000 });
     await page.getByLabel(/Question for/).fill("What hypotheses does this definition rely on?");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     await expect(page.getByText("Recent answers")).toBeVisible({ timeout: 60_000 });

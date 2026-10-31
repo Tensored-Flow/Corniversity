@@ -5,40 +5,189 @@
   "title": "Learning from data: tensors, splits and the evidence discipline",
   "summary": "Supervised learning as risk minimisation; why a held-out set estimates generalisation and training error does not; the three splits and their jobs; a taxonomy of leakage; baselines; seeds and the sampling error of a metric; tensors, datasets and dataloaders in PyTorch.",
   "objectives": [
-    { "id": "u01-o1", "description": "State the supervised learning problem (risk, empirical risk) and prove why a held-out set gives an unbiased estimate of the risk of a trained model while the training error does not." },
-    { "id": "u01-o2", "description": "Identify every leak in a described pipeline and classify each as target, preprocessing, duplicate, temporal, group or selection leakage." },
-    { "id": "u01-o3", "description": "Compute a majority baseline and the standard error of an accuracy estimate, and use them to judge whether a reported difference is evidence." },
-    { "id": "u01-o4", "description": "Work with tensors, datasets and dataloaders in PyTorch and state a seed policy for a run." }
+    {
+      "id": "u01-o1",
+      "description": "State the supervised learning problem (risk, empirical risk) and prove why a held-out set gives an unbiased estimate of the risk of a trained model while the training error does not."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Identify every leak in a described pipeline and classify each as target, preprocessing, duplicate, temporal, group or selection leakage."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Compute a majority baseline and the standard error of an accuracy estimate, and use them to judge whether a reported difference is evidence."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Work with tensors, datasets and dataloaders in PyTorch and state a seed policy for a run."
+    }
   ],
-  "prerequisiteConceptIds": ["python-scientific-computing", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["supervised-learning-generalisation", "data-leakage", "evaluation-discipline", "tensors-and-autodiff"],
+  "prerequisiteConceptIds": [
+    "python-scientific-computing",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "supervised-learning-generalisation",
+    "data-leakage",
+    "evaluation-discipline",
+    "tensors-and-autodiff",
+    "method-predictive-checks",
+    "method-longitudinal-transfer-evaluation"
+  ],
   "preparation": [
-    { "description": "Read W1D1 Tutorial 1, Section 2.1 (Creating Tensors), including the Reproducibility note and the set_seed helper.", "locatorId": "nmadl-w1d1-t1-s2-1", "estimatedMinutes": 20 },
-    { "description": "Read Section 2.5 (Datasets and Dataloaders): CIFAR10 loaded with train=True and train=False, the DataLoader, and the worker-seeding note. Note where the tutorial defers the train/test discussion.", "locatorId": "nmadl-w1d1-t1-s2-5", "estimatedMinutes": 20 },
-    { "description": "Skim Section 3.3 (Train Your Neural Network) and note that the tiny network is trained on the full generated dataset with no split.", "locatorId": "nmadl-w1d1-t1-s3-3", "estimatedMinutes": 15 }
+    {
+      "description": "Read W1D1 Tutorial 1, Section 2.1 (Creating Tensors), including the Reproducibility note and the set_seed helper.",
+      "locatorId": "nmadl-w1d1-t1-s2-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read Section 2.5 (Datasets and Dataloaders): CIFAR10 loaded with train=True and train=False, the DataLoader, and the worker-seeding note. Note where the tutorial defers the train/test discussion.",
+      "locatorId": "nmadl-w1d1-t1-s2-5",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Skim Section 3.3 (Train Your Neural Network) and note that the tiny network is trained on the full generated dataset with no split.",
+      "locatorId": "nmadl-w1d1-t1-s3-3",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u01-a1", "type": "reading", "title": "Lesson with W1D1 Tutorial 1, Sections 2–3", "instructions": "Read the lesson, then work through the tutorial's Sections 2 and 3 with two questions open in the notebook: where does randomness enter, and does anything computed from test data ever reach training? Write your answers before the tutorial.", "estimatedMinutes": 75, "sourceLocatorIds": ["nmadl-w1d1-t1", "nmadl-w1d1-t1-s2-1", "nmadl-w1d1-t1-s2-5", "nmadl-w1d1-t1-v8", "nmadl-w1d1-t1-s3-2", "nmadl-w1d1-t1-s3-3"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u01-a2", "type": "lab", "title": "Lab: the leakage audit", "instructions": "In the data-leakage laboratory (synthetic predictive-maintenance records: 250 machines over 20 weeks, failure rate near 6%), write down your predicted held-out accuracy before each run. Run the honest pipeline first (later weeks held out, standardisation statistics from the training rows, no ticket feature), then each leak the lab offers in turn: the ticket feature that is opened when a fault is detected, standardising on every row, and a random split that puts a machine's later weeks into training. Record the accuracy of each protocol, the majority baseline, the seed and the gaps in your notebook, and say which leak is target leakage and which is preprocessing leakage.", "estimatedMinutes": 60, "sourceLocatorIds": ["nmadl-w1d1-t1-s2-5"], "exerciseIds": [], "labId": "data-leakage-audit", "sessionKind": "lab" },
-    { "id": "u01-a3", "type": "problem", "title": "Tutorial: a leak in a tidy pipeline; how much a seed moves a number", "instructions": "Attempt exercise 1 before asking for any hint; it is the unit's central exercise. Then exercise 2. Submit each attempt when you believe it is complete and revise after feedback.", "estimatedMinutes": 70, "sourceLocatorIds": ["nmadl-w1d1-t1-s2-5", "nmadl-w1d1-t1-v8", "nmadl-w1d1-t1-s2-1"], "exerciseIds": ["CSA-210-u01-ex1", "CSA-210-u01-ex2"], "sessionKind": "tutorial" },
-    { "id": "u01-a4", "type": "explain_back", "title": "Explain: why a held-out set estimates generalisation", "instructions": "Write exercise 3 without the lesson open, then compare with the lesson's Model (the held-out estimate).", "estimatedMinutes": 15, "sourceLocatorIds": ["nmadl-w1d1-t1-v8"], "exerciseIds": ["CSA-210-u01-ex3"], "sessionKind": "oral" },
-    { "id": "u01-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's definitions", "instructions": "From memory: risk and empirical risk; the independence condition for an unbiased held-out estimate; the six kinds of leakage; the standard error of an accuracy estimate.", "estimatedMinutes": 10, "sourceLocatorIds": ["nmadl-w1d1-t1-s2-1"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "Lesson with W1D1 Tutorial 1, Sections 2–3",
+      "instructions": "Read the lesson, then work through the tutorial's Sections 2 and 3 with two questions open in the notebook: where does randomness enter, and does anything computed from test data ever reach training? Write your answers before the tutorial.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "nmadl-w1d1-t1",
+        "nmadl-w1d1-t1-s2-1",
+        "nmadl-w1d1-t1-s2-5",
+        "nmadl-w1d1-t1-v8",
+        "nmadl-w1d1-t1-s3-2",
+        "nmadl-w1d1-t1-s3-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "lab",
+      "title": "Lab: the leakage audit",
+      "instructions": "In the data-leakage laboratory (synthetic predictive-maintenance records: 250 machines over 20 weeks, failure rate near 6%), write down your predicted held-out accuracy before each run. Run the honest pipeline first (later weeks held out, standardisation statistics from the training rows, no ticket feature), then each leak the lab offers in turn: the ticket feature that is opened when a fault is detected, standardising on every row, and a random split that puts a machine's later weeks into training. Record the accuracy of each protocol, the majority baseline, the seed and the gaps in your notebook, and say which leak is target leakage and which is preprocessing leakage.",
+      "estimatedMinutes": 60,
+      "sourceLocatorIds": [
+        "nmadl-w1d1-t1-s2-5"
+      ],
+      "exerciseIds": [],
+      "labId": "data-leakage-audit",
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u01-a3",
+      "type": "problem",
+      "title": "Tutorial: a leak in a tidy pipeline; how much a seed moves a number",
+      "instructions": "Attempt exercise 1 before asking for any hint; it is the unit's central exercise. Then exercise 2. Submit each attempt when you believe it is complete and revise after feedback.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "nmadl-w1d1-t1-s2-5",
+        "nmadl-w1d1-t1-v8",
+        "nmadl-w1d1-t1-s2-1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u01-ex1",
+        "CSA-210-u01-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a4",
+      "type": "explain_back",
+      "title": "Explain: why a held-out set estimates generalisation",
+      "instructions": "Write exercise 3 without the lesson open, then compare with the lesson's Model (the held-out estimate).",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "nmadl-w1d1-t1-v8"
+      ],
+      "exerciseIds": [
+        "CSA-210-u01-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a5",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the unit's definitions",
+      "instructions": "From memory: risk and empirical risk; the independence condition for an unbiased held-out estimate; the six kinds of leakage; the standard error of an accuracy estimate.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "nmadl-w1d1-t1-s2-1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": ["CSA-210-u01-ex1", "CSA-210-u01-ex2", "CSA-210-u01-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: the target leak, the split leaks and the selection leak named with their mechanisms, the 94% baseline computed, and a corrected protocol written.", "exerciseId": "CSA-210-u01-ex1" },
+  "exerciseIds": [
+    "CSA-210-u01-ex1",
+    "CSA-210-u01-ex2",
+    "CSA-210-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 1 accepted: the target leak, the split leaks and the selection leak named with their mechanisms, the 94% baseline computed, and a corrected protocol written.",
+    "exerciseId": "CSA-210-u01-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "A high test accuracy means the model has learned the task.", "correction": "Only if the test set was independent of every decision in training and no leak connects it to the model. With a 94% base rate, 97% accuracy is three points above predicting the majority class; with a leaked label proxy it is evidence of the leak, not of skill.", "correctionLocatorIds": ["nmadl-w1d1-t1-v8"] },
-    { "claim": "Fixing the random seed makes results trustworthy.", "correction": "A seed makes a run repeatable, including its bugs and leaks. Trustworthiness comes from the protocol; representativeness comes from running several seeds and reporting the spread.", "correctionLocatorIds": ["nmadl-w1d1-t1-s2-1"] },
-    { "claim": "Standardising features before splitting is harmless because it does not use the labels.", "correction": "It is a preprocessing leak: test statistics enter training. It is usually mild, but label-aware preprocessing (feature selection by correlation with the label) is catastrophic, and the only way to know the size of a leak is to rerun without it.", "correctionLocatorIds": ["nmadl-w1d1-t1-s2-5"] }
+    {
+      "claim": "A high test accuracy means the model has learned the task.",
+      "correction": "Only if the test set was independent of every decision in training and no leak connects it to the model. With a 94% base rate, 97% accuracy is three points above predicting the majority class; with a leaked label proxy it is evidence of the leak, not of skill.",
+      "correctionLocatorIds": [
+        "nmadl-w1d1-t1-v8"
+      ]
+    },
+    {
+      "claim": "Fixing the random seed makes results trustworthy.",
+      "correction": "A seed makes a run repeatable, including its bugs and leaks. Trustworthiness comes from the protocol; representativeness comes from running several seeds and reporting the spread.",
+      "correctionLocatorIds": [
+        "nmadl-w1d1-t1-s2-1"
+      ]
+    },
+    {
+      "claim": "Standardising features before splitting is harmless because it does not use the labels.",
+      "correction": "It is a preprocessing leak: test statistics enter training. It is usually mild, but label-aware preprocessing (feature selection by correlation with the label) is catastrophic, and the only way to know the size of a leak is to rerun without it.",
+      "correctionLocatorIds": [
+        "nmadl-w1d1-t1-s2-5"
+      ]
+    }
   ],
   "estimatedMinutes": 285,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All cited locators opened 2026-10-30: W1D1 Tutorial 1 page (HTTP 200, title 'Tutorial 1: PyTorch') and its section ids section-2-1-creating-tensors, section-2-5-datasets-and-dataloaders, video-8-train-and-test, section-3-2-create-a-simple-neural-network and section-3-3-train-your-neural-network read from the page HTML." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Content author re-derived: unbiasedness of the held-out estimate conditional on the fitted model; SE of an accuracy at p = 0.9, n = 200 is sqrt(0.09/200) = 0.02121; n ≥ 0.09/0.005² = 3600 for SE ≤ 0.005; majority baseline 94% at a 6% base rate; extreme-value approximation sqrt(2 ln p / n) = 0.43 for p = 10^4, n = 100 derived only; the unit's laboratory audits a different leak and does not run this experiment." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The 94% baseline, the SE value and the leak inventory for the exercise scenario appear only in instructor/; the lesson's examples use different numbers (92% base rate, 91% accuracy) and the prompt does not state the answers." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "75 + 60 + 70 + 15 + 10 minutes of activities plus 55 minutes of preparation ≈ 4.75 hours, within the 8–12 hours per week budget alongside unit 2." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All cited locators opened 2026-10-30: W1D1 Tutorial 1 page (HTTP 200, title 'Tutorial 1: PyTorch') and its section ids section-2-1-creating-tensors, section-2-5-datasets-and-dataloaders, video-8-train-and-test, section-3-2-create-a-simple-neural-network and section-3-3-train-your-neural-network read from the page HTML."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Content author re-derived: unbiasedness of the held-out estimate conditional on the fitted model; SE of an accuracy at p = 0.9, n = 200 is sqrt(0.09/200) = 0.02121; n ≥ 0.09/0.005² = 3600 for SE ≤ 0.005; majority baseline 94% at a 6% base rate; extreme-value approximation sqrt(2 ln p / n) = 0.43 for p = 10^4, n = 100 derived only; the unit's laboratory audits a different leak and does not run this experiment."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The 94% baseline, the SE value and the leak inventory for the exercise scenario appear only in instructor/; the lesson's examples use different numbers (92% base rate, 91% accuracy) and the prompt does not state the answers."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "75 + 60 + 70 + 15 + 10 minutes of activities plus 55 minutes of preparation ≈ 4.75 hours, within the 8–12 hours per week budget alongside unit 2."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["CSA-210-u01-ex1.reference-solution.md", "CSA-210-u01-ex1.grading-notes.md", "CSA-210-u01-ex2.reference-solution.md", "CSA-210-u01-ex3.grading-notes.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "CSA-210-u01-ex1.reference-solution.md",
+    "CSA-210-u01-ex1.grading-notes.md",
+    "CSA-210-u01-ex2.reference-solution.md",
+    "CSA-210-u01-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
 }

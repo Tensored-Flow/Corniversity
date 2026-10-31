@@ -31,9 +31,21 @@ export default async function WelcomePage() {
         <div className="prose-reading mt-6 text-ink-2">
           <p>
             Your programme is confirmed: {active.map((e) => `${e.course.title} (${e.enrolment.mode.replace("_", " ")})`).join("; ")}. It
-            begins on {termStart.toFormat("cccc d LLLL yyyy")} and runs for {tt.term.teachingWeeks} teaching weeks
-            {tt.term.readingWeek ? ", a reading week" : ""}
-            {tt.term.synthesisWeek ? " and a synthesis week" : ""}.
+            begins on {termStart.toFormat("cccc d LLLL yyyy")}
+            {tt.term.mode === "rolling" ? (
+              <>
+                {" "}
+                and runs at your own pace: the timetable plans {tt.term.teachingWeeks} weeks ahead and extends as you go, with no completion
+                date and no deadlines unless you choose them.
+              </>
+            ) : (
+              <>
+                {" "}
+                and runs for {tt.term.teachingWeeks} teaching weeks
+                {tt.term.readingWeek ? ", a reading week" : ""}
+                {tt.term.synthesisWeek ? " and a synthesis week" : ""}.
+              </>
+            )}
           </p>
           <p>
             The first week is deliberately light: one reading, one tutorial, one attempt at a real problem, a source-backed response, and a

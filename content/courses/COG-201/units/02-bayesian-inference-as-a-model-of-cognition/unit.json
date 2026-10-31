@@ -5,41 +5,242 @@
   "title": "Bayesian inference as a model of cognition: coins and the number game",
   "summary": "Degrees of belief as probabilities (Cox, Dutch book); Bayes' rule and the odds form; hypotheses as generative processes for coin flips; Beta–Bernoulli learning, conjugacy and the posterior predictive; hierarchical priors and where priors come from; Bayesian concept learning in the number game: the size principle from strong sampling, hypothesis averaging, graded versus rule-like generalisation; model behaviour versus measurement.",
   "objectives": [
-    { "id": "u02-o1", "description": "State Bayes' rule with its four terms, derive the odds form, and use it to compare hypotheses about coins, including the dependence of the conclusion on the prior." },
-    { "id": "u02-o2", "description": "Prove Beta–Bernoulli conjugacy, derive the posterior predictive (N_H + F_H)/(N + F), interpret the prior as fictitious observations, and explain why a flat prior is not the absence of assumptions." },
-    { "id": "u02-o3", "description": "Explain a hierarchical prior (fair or unfair coin) and compute how evidence at the bottom level changes beliefs at the top level." },
-    { "id": "u02-o4", "description": "Derive the size principle from the strong-sampling assumption, compute posteriors and hypothesis-averaged generalisation in the number game, and explain when generalisation is graded and when rule-like, keeping model behaviour, measurement, evidence and causal claims apart." }
+    {
+      "id": "u02-o1",
+      "description": "State Bayes' rule with its four terms, derive the odds form, and use it to compare hypotheses about coins, including the dependence of the conclusion on the prior."
+    },
+    {
+      "id": "u02-o2",
+      "description": "Prove Beta–Bernoulli conjugacy, derive the posterior predictive (N_H + F_H)/(N + F), interpret the prior as fictitious observations, and explain why a flat prior is not the absence of assumptions."
+    },
+    {
+      "id": "u02-o3",
+      "description": "Explain a hierarchical prior (fair or unfair coin) and compute how evidence at the bottom level changes beliefs at the top level."
+    },
+    {
+      "id": "u02-o4",
+      "description": "Derive the size principle from the strong-sampling assumption, compute posteriors and hypothesis-averaged generalisation in the number game, and explain when generalisation is graded and when rule-like, keeping model behaviour, measurement, evidence and causal claims apart."
+    }
   ],
-  "prerequisiteConceptIds": ["probability-measure-theoretic", "inductive-inference-cognition", "computational-level-analysis"],
-  "teachesConceptIds": ["bayesian-inference-cognition", "bayesian-concept-learning", "generative-models-cognition", "model-evidence-distinction"],
+  "prerequisiteConceptIds": [
+    "probability-measure-theoretic",
+    "inductive-inference-cognition",
+    "computational-level-analysis"
+  ],
+  "teachesConceptIds": [
+    "bayesian-inference-cognition",
+    "bayesian-concept-learning",
+    "generative-models-cognition",
+    "model-evidence-distinction",
+    "method-generative-simulation"
+  ],
   "preparation": [
-    { "description": "Read lecture 8 slides 16–22 (Bayes' rule, its origin, why probabilities, Cox axioms, what makes a good argument, conditionalization) and 32–44 (hypotheses in coin flipping, graphical notation, comparing two simple hypotheses, odds form, the role of theories).", "locatorId": "cocosci04-l8-bayes-rule", "estimatedMinutes": 25 },
-    { "description": "Read lecture 11 slides 3–7, 12–18, 28–33 and 37–39 (infinitely many hypotheses; likelihood and prior; fictitious trials; Beta shapes; Beta–Bernoulli learning; conjugate priors; examples; origin of prior knowledge; a simple theory; hierarchical priors; summary).", "locatorId": "cocosci04-l11-beta-bernoulli", "estimatedMinutes": 25 },
-    { "description": "Read lecture 13 slides 11–44 (Tenenbaum 2000; the number game; the Bayesian model; the size principle; the subset principle; the prior; the posterior; Bayesian Occam's razor; hypothesis averaging; human generalisation versus model; summary).", "locatorId": "cocosci04-l13-number-game-task", "estimatedMinutes": 30 },
-    { "description": "Read in Probabilistic Models of Cognition: Conditioning → Bayes Rule; Learning as conditional inference → Example: Learning About Coins; Occam's Razor → The Size Principle. Reference-only: read on the book's site.", "locatorId": "pm2-lci-learning-about-coins", "estimatedMinutes": 25 }
+    {
+      "description": "Read lecture 8 slides 16–22 (Bayes' rule, its origin, why probabilities, Cox axioms, what makes a good argument, conditionalization) and 32–44 (hypotheses in coin flipping, graphical notation, comparing two simple hypotheses, odds form, the role of theories).",
+      "locatorId": "cocosci04-l8-bayes-rule",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read lecture 11 slides 3–7, 12–18, 28–33 and 37–39 (infinitely many hypotheses; likelihood and prior; fictitious trials; Beta shapes; Beta–Bernoulli learning; conjugate priors; examples; origin of prior knowledge; a simple theory; hierarchical priors; summary).",
+      "locatorId": "cocosci04-l11-beta-bernoulli",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read lecture 13 slides 11–44 (Tenenbaum 2000; the number game; the Bayesian model; the size principle; the subset principle; the prior; the posterior; Bayesian Occam's razor; hypothesis averaging; human generalisation versus model; summary).",
+      "locatorId": "cocosci04-l13-number-game-task",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Read in Probabilistic Models of Cognition: Conditioning → Bayes Rule; Learning as conditional inference → Example: Learning About Coins; Occam's Razor → The Size Principle. Reference-only: read on the book's site.",
+      "locatorId": "pm2-lci-learning-about-coins",
+      "estimatedMinutes": 25
+    }
   ],
   "activities": [
-    { "id": "u02-a1", "type": "reading", "title": "Lectures 8, 11 and 13 with the lesson", "instructions": "Read the lesson alongside the slides. Re-derive the odds form, the Beta–Bernoulli posterior and the size principle on paper before reading the lesson's proofs. Label every paragraph of your notes with one of the four claim types.", "estimatedMinutes": 80, "sourceLocatorIds": ["cocosci04-l8-bayes-rule", "cocosci04-l8-origin", "cocosci04-l8-why-probabilities", "cocosci04-l8-cox", "cocosci04-l8-good-argument", "cocosci04-l8-conditionalization", "cocosci04-l8-coin-hypotheses", "cocosci04-l8-graphical-models", "cocosci04-l8-three-comparisons", "cocosci04-l8-two-hypotheses", "cocosci04-l8-odds-form", "cocosci04-l8-hhtht", "cocosci04-l8-role-of-theories", "cocosci04-l11-infinitely-many", "cocosci04-l11-future-like-past", "cocosci04-l11-likelihood-prior", "cocosci04-l11-fictitious-trials", "cocosci04-l11-beta-shapes", "cocosci04-l11-beta-bernoulli", "cocosci04-l11-conjugate", "cocosci04-l11-examples", "cocosci04-l11-thumbtacks", "cocosci04-l11-origin-prior", "cocosci04-l11-simple-empiricism", "cocosci04-l11-simple-theory", "cocosci04-l11-hierarchical", "cocosci04-l11-summary", "cocosci04-l13-tenenbaum-2000", "cocosci04-l13-number-game-task", "cocosci04-l13-phenomena", "cocosci04-l13-hypothesis-space", "cocosci04-l13-bayesian-model", "cocosci04-l13-size-principle", "cocosci04-l13-illustrating-size", "cocosci04-l13-subset-principle", "cocosci04-l13-prior", "cocosci04-l13-posterior", "cocosci04-l13-bayesian-occam", "cocosci04-l13-hypothesis-averaging", "cocosci04-l13-human-generalization", "cocosci04-l13-summary", "pm2-conditioning-bayes-rule", "pm2-lci-learning-about-coins", "pm2-occam-size-principle"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u02-a2", "type": "lab", "title": "Lab: Bayesian concept learning", "instructions": "Prediction first: write down the generalisation profiles you expect for the example sets {16} and {16, 8, 2, 64} on the lab's hypothesis space. Then run the model; weaken the size principle to |h|^-1 and record what changes; add an unnatural hypothesis with a non-negligible prior and record what changes. The lab's comparison profile is synthetic and labelled as such; do not describe it as human data.", "estimatedMinutes": 50, "sourceLocatorIds": ["cocosci04-l13-size-principle", "cocosci04-l13-hypothesis-averaging", "cocosci04-l13-prior", "pm2-occam-size-principle"], "exerciseIds": [], "labId": "bayesian-concept-learning", "sessionKind": "lab" },
-    { "id": "u02-a3", "type": "problem", "title": "Tutorial: coins and the number game", "instructions": "Attempt exercise 1 (coins) and then exercise 2 (the number game) before asking for hints. Exact numbers are expected where asked; show the working. Submit when you believe each is complete and revise after feedback.", "estimatedMinutes": 90, "sourceLocatorIds": ["cocosci04-l8-odds-form", "cocosci04-l11-beta-bernoulli", "cocosci04-l11-hierarchical", "cocosci04-l13-size-principle", "cocosci04-l13-hypothesis-averaging"], "exerciseIds": ["COG-201-u02-ex1", "COG-201-u02-ex2"], "sessionKind": "tutorial" },
-    { "id": "u02-a4", "type": "explain_back", "title": "Explain: what the fit shows and what it does not", "instructions": "Exercise 3, written without the lesson open.", "estimatedMinutes": 20, "sourceLocatorIds": ["cocosci04-l13-human-generalization", "cocosci04-l13-summary"], "exerciseIds": ["COG-201-u02-ex3"], "sessionKind": "oral" },
-    { "id": "u02-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's statements", "instructions": "From memory: Bayes' rule and the odds form; the Beta–Bernoulli posterior and predictive; the hierarchical fair/unfair model; the size principle and its assumption; hypothesis averaging; when generalisation is graded versus rule-like.", "estimatedMinutes": 10, "sourceLocatorIds": ["cocosci04-l13-summary"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Lectures 8, 11 and 13 with the lesson",
+      "instructions": "Read the lesson alongside the slides. Re-derive the odds form, the Beta–Bernoulli posterior and the size principle on paper before reading the lesson's proofs. Label every paragraph of your notes with one of the four claim types.",
+      "estimatedMinutes": 80,
+      "sourceLocatorIds": [
+        "cocosci04-l8-bayes-rule",
+        "cocosci04-l8-origin",
+        "cocosci04-l8-why-probabilities",
+        "cocosci04-l8-cox",
+        "cocosci04-l8-good-argument",
+        "cocosci04-l8-conditionalization",
+        "cocosci04-l8-coin-hypotheses",
+        "cocosci04-l8-graphical-models",
+        "cocosci04-l8-three-comparisons",
+        "cocosci04-l8-two-hypotheses",
+        "cocosci04-l8-odds-form",
+        "cocosci04-l8-hhtht",
+        "cocosci04-l8-role-of-theories",
+        "cocosci04-l11-infinitely-many",
+        "cocosci04-l11-future-like-past",
+        "cocosci04-l11-likelihood-prior",
+        "cocosci04-l11-fictitious-trials",
+        "cocosci04-l11-beta-shapes",
+        "cocosci04-l11-beta-bernoulli",
+        "cocosci04-l11-conjugate",
+        "cocosci04-l11-examples",
+        "cocosci04-l11-thumbtacks",
+        "cocosci04-l11-origin-prior",
+        "cocosci04-l11-simple-empiricism",
+        "cocosci04-l11-simple-theory",
+        "cocosci04-l11-hierarchical",
+        "cocosci04-l11-summary",
+        "cocosci04-l13-tenenbaum-2000",
+        "cocosci04-l13-number-game-task",
+        "cocosci04-l13-phenomena",
+        "cocosci04-l13-hypothesis-space",
+        "cocosci04-l13-bayesian-model",
+        "cocosci04-l13-size-principle",
+        "cocosci04-l13-illustrating-size",
+        "cocosci04-l13-subset-principle",
+        "cocosci04-l13-prior",
+        "cocosci04-l13-posterior",
+        "cocosci04-l13-bayesian-occam",
+        "cocosci04-l13-hypothesis-averaging",
+        "cocosci04-l13-human-generalization",
+        "cocosci04-l13-summary",
+        "pm2-conditioning-bayes-rule",
+        "pm2-lci-learning-about-coins",
+        "pm2-occam-size-principle"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u02-a2",
+      "type": "lab",
+      "title": "Lab: Bayesian concept learning",
+      "instructions": "Prediction first: write down the generalisation profiles you expect for the example sets {16} and {16, 8, 2, 64} on the lab's hypothesis space. Then run the model; weaken the size principle to |h|^-1 and record what changes; add an unnatural hypothesis with a non-negligible prior and record what changes. The lab's comparison profile is synthetic and labelled as such; do not describe it as human data.",
+      "estimatedMinutes": 50,
+      "sourceLocatorIds": [
+        "cocosci04-l13-size-principle",
+        "cocosci04-l13-hypothesis-averaging",
+        "cocosci04-l13-prior",
+        "pm2-occam-size-principle"
+      ],
+      "exerciseIds": [],
+      "labId": "bayesian-concept-learning",
+      "sessionKind": "lab"
+    },
+    {
+      "id": "u02-a3",
+      "type": "problem",
+      "title": "Tutorial: coins and the number game",
+      "instructions": "Attempt exercise 1 (coins) and then exercise 2 (the number game) before asking for hints. Exact numbers are expected where asked; show the working. Submit when you believe each is complete and revise after feedback.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "cocosci04-l8-odds-form",
+        "cocosci04-l11-beta-bernoulli",
+        "cocosci04-l11-hierarchical",
+        "cocosci04-l13-size-principle",
+        "cocosci04-l13-hypothesis-averaging"
+      ],
+      "exerciseIds": [
+        "COG-201-u02-ex1",
+        "COG-201-u02-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u02-a4",
+      "type": "explain_back",
+      "title": "Explain: what the fit shows and what it does not",
+      "instructions": "Exercise 3, written without the lesson open.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "cocosci04-l13-human-generalization",
+        "cocosci04-l13-summary"
+      ],
+      "exerciseIds": [
+        "COG-201-u02-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u02-a5",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the unit's statements",
+      "instructions": "From memory: Bayes' rule and the odds form; the Beta–Bernoulli posterior and predictive; the hierarchical fair/unfair model; the size principle and its assumption; hypothesis averaging; when generalisation is graded versus rule-like.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "cocosci04-l13-summary"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": ["COG-201-u02-ex1", "COG-201-u02-ex2", "COG-201-u02-ex3"],
-  "exitCheck": { "description": "Exercise 2 accepted: the size principle derived from strong sampling, the posteriors and generalisation probabilities for {60} and {60, 80, 10, 30} computed exactly, and the shift from graded to rule-like generalisation explained through the breadth of the posterior.", "exerciseId": "COG-201-u02-ex2" },
+  "exerciseIds": [
+    "COG-201-u02-ex1",
+    "COG-201-u02-ex2",
+    "COG-201-u02-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 2 accepted: the size principle derived from strong sampling, the posteriors and generalisation probabilities for {60} and {60, 80, 10, 30} computed exactly, and the shift from graded to rule-like generalisation explained through the breadth of the posterior.",
+    "exerciseId": "COG-201-u02-ex2"
+  },
   "commonMisconceptions": [
-    { "claim": "The size principle is a prior preference for simple hypotheses.", "correction": "It is a property of the likelihood under the strong-sampling assumption: a hypothesis with a larger extension assigns each observed example a smaller probability. The prior is still needed to rule out unnatural hypotheses.", "correctionLocatorIds": ["cocosci04-l13-size-principle", "cocosci04-l13-prior", "pm2-occam-size-principle"] },
-    { "claim": "A uniform prior means the model makes no assumptions.", "correction": "The hypothesis space is itself a strong prior, Beta(1,1) is a definite claim about weights, and the empty prior predicts 100% heads after two heads. There is no assumption-free learner.", "correctionLocatorIds": ["cocosci04-l11-thumbtacks", "cocosci04-l13-prior"] },
-    { "claim": "Because the Bayesian model matches people's generalisation judgements, people compute posterior distributions.", "correction": "The match is evidence at the computational level. Several process models (and simpler similarity models for single examples) produce the same profiles; mechanistic claims need process-level evidence.", "correctionLocatorIds": ["cocosci04-l13-human-generalization", "cocosci04-l13-summary"] }
+    {
+      "claim": "The size principle is a prior preference for simple hypotheses.",
+      "correction": "It is a property of the likelihood under the strong-sampling assumption: a hypothesis with a larger extension assigns each observed example a smaller probability. The prior is still needed to rule out unnatural hypotheses.",
+      "correctionLocatorIds": [
+        "cocosci04-l13-size-principle",
+        "cocosci04-l13-prior",
+        "pm2-occam-size-principle"
+      ]
+    },
+    {
+      "claim": "A uniform prior means the model makes no assumptions.",
+      "correction": "The hypothesis space is itself a strong prior, Beta(1,1) is a definite claim about weights, and the empty prior predicts 100% heads after two heads. There is no assumption-free learner.",
+      "correctionLocatorIds": [
+        "cocosci04-l11-thumbtacks",
+        "cocosci04-l13-prior"
+      ]
+    },
+    {
+      "claim": "Because the Bayesian model matches people's generalisation judgements, people compute posterior distributions.",
+      "correction": "The match is evidence at the computational level. Several process models (and simpler similarity models for single examples) produce the same profiles; mechanistic claims need process-level evidence.",
+      "correctionLocatorIds": [
+        "cocosci04-l13-human-generalization",
+        "cocosci04-l13-summary"
+      ]
+    }
   ],
   "estimatedMinutes": 340,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All cited slide locators verified 2026-10-30 against text extracted with scripts/pdf-dump.ts: oct_5_2004_final.pdf (44 pp., printed labels = index + 1; Bayes' rule at index 15, odds form at 38, HHTHT at 39, role of theories at 43), oct_14_2004_fin.pdf (67 pp., no labels; Beta–Bernoulli at 13, conjugate priors at 17, examples at 27–28, hierarchical priors at 36), oct_21_2004_fin.pdf (49 pp., printed labels = index + 1; number game at 12 and 17, size principle at 25, posterior at 35, hypothesis averaging at 38, human generalization at 42, summary at 43). The probmods sections Bayes Rule, Learning About Coins and The Size Principle returned HTTP 200 with the stated heading ids." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Content author re-derived: odds form; Beta–Bernoulli conjugacy and predictive mean; lecture examples 1004/2010, 7/16, 6/9, 2/2; the hierarchical odds for 25 heads (1/26 versus ∏(1000+i)/(2000+i) ≈ 1.16·2^-25, giving ≈ 9 × 10^-5 as on the slide); size principle from i.i.d. uniform sampling; the four-hypothesis example ({16}: 50/56 ≈ 0.893; {16, 8, 2, 64}: ≈ 0.9998); exercise values (1.9^7/999 → P(trick) = 0.082; n = 11; Beta(5,9) with mean 5/14, mode 1/3, SD 0.124; {60}: 0.0948/0.4741/0.4310, P(70) = 0.569, P(52) = 0.526, P(55) = 0.431; {60, 80, 10, 30}: 0.9984)." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's worked number-game example uses the example sets {16} and {16, 8, 2, 64}; the exercises use {60} and {60, 80, 10, 30} and different coin parameters (7 heads, Beta(2,2) with 3 heads and 7 tails). Exercise answers appear only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "80 + 50 + 90 + 20 + 10 minutes of activities plus 105 minutes of preparation ≈ 5.7 hours; with unit 1 this is the first teaching week at about 10 hours, the upper end of the budget for a seminar-weight course and acceptable because the two units carry the course's mathematical core." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All cited slide locators verified 2026-10-30 against text extracted with scripts/pdf-dump.ts: oct_5_2004_final.pdf (44 pp., printed labels = index + 1; Bayes' rule at index 15, odds form at 38, HHTHT at 39, role of theories at 43), oct_14_2004_fin.pdf (67 pp., no labels; Beta–Bernoulli at 13, conjugate priors at 17, examples at 27–28, hierarchical priors at 36), oct_21_2004_fin.pdf (49 pp., printed labels = index + 1; number game at 12 and 17, size principle at 25, posterior at 35, hypothesis averaging at 38, human generalization at 42, summary at 43). The probmods sections Bayes Rule, Learning About Coins and The Size Principle returned HTTP 200 with the stated heading ids."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Content author re-derived: odds form; Beta–Bernoulli conjugacy and predictive mean; lecture examples 1004/2010, 7/16, 6/9, 2/2; the hierarchical odds for 25 heads (1/26 versus ∏(1000+i)/(2000+i) ≈ 1.16·2^-25, giving ≈ 9 × 10^-5 as on the slide); size principle from i.i.d. uniform sampling; the four-hypothesis example ({16}: 50/56 ≈ 0.893; {16, 8, 2, 64}: ≈ 0.9998); exercise values (1.9^7/999 → P(trick) = 0.082; n = 11; Beta(5,9) with mean 5/14, mode 1/3, SD 0.124; {60}: 0.0948/0.4741/0.4310, P(70) = 0.569, P(52) = 0.526, P(55) = 0.431; {60, 80, 10, 30}: 0.9984)."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson's worked number-game example uses the example sets {16} and {16, 8, 2, 64}; the exercises use {60} and {60, 80, 10, 30} and different coin parameters (7 heads, Beta(2,2) with 3 heads and 7 tails). Exercise answers appear only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "80 + 50 + 90 + 20 + 10 minutes of activities plus 105 minutes of preparation ≈ 5.7 hours; with unit 1 this is the first teaching week at about 10 hours, the upper end of the budget for a seminar-weight course and acceptable because the two units carry the course's mathematical core."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["COG-201-u02-ex1.reference-solution.md", "COG-201-u02-ex1.grading-notes.md", "COG-201-u02-ex2.reference-solution.md", "COG-201-u02-ex3.grading-notes.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "COG-201-u02-ex1.reference-solution.md",
+    "COG-201-u02-ex1.grading-notes.md",
+    "COG-201-u02-ex2.reference-solution.md",
+    "COG-201-u02-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
 }

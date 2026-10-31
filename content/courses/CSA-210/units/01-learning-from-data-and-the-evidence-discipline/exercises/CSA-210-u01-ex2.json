@@ -3,8 +3,12 @@
   "sequence": 2,
   "title": "How much does a seed move a number?",
   "kind": "calculation",
-  "promptMarkdown": "A classifier is evaluated on a held-out test set of $n=200$ items and gets 180 right, an observed accuracy of $\\hat p=0.90$. Treat the test items as independent draws and the model's true accuracy $p$ as fixed.\n\n1. Model the number of correct predictions as a binomial random variable. Derive the standard error of $\\hat p$ and evaluate it at $p=0.9$, $n=200$ (three significant figures). Give an approximate 95% interval for $p$.\n2. A second model, trained from a different random seed, gets 183 right ($0.915$). Can this test set distinguish the two models? Answer using the standard error from part 1. Then explain why a *paired* comparison (which items each model gets right) can be more informative than comparing the two accuracies, and name the quantity you would compute instead.\n3. How large must a test set be for the standard error of an accuracy near $0.9$ to be at most $0.005$? Show the inequality you solve.\n4. In two or three sentences: why does the same architecture trained from five different seeds give five different test accuracies on a fixed test set, and what must a report contain so that a reader can tell signal from seed noise?",
-  "conceptIds": ["evaluation-discipline", "supervised-learning-generalisation"],
+  "promptMarkdown": "A classifier is evaluated on a held-out test set of $n=200$ items and gets 180 right, an observed accuracy of $\\hat p=0.90$. Treat the test items as independent draws and the model's true accuracy $p$ as fixed.\n\n1. Model the number of correct predictions as a binomial random variable. Derive the standard error of $\\hat p$ and evaluate it at $p=0.9$, $n=200$ (three significant figures). Give an approximate 95% interval for $p$.\n2. A second model, trained from a different random seed, gets 183 right ($0.915$). Can this test set distinguish the two models? Answer using the standard error from part 1. Then explain why a *paired* comparison (which items each model gets right) can be more informative than comparing the two accuracies, and name the quantity you would compute instead.\n3. How large must a test set be for the standard error of an accuracy near $0.9$ to be at most $0.005$? Show the inequality you solve.\n4. In two or three sentences: why does the same architecture trained from five different seeds give five different test accuracies on a fixed test set, and what must a report contain so that a reader can tell signal from seed noise?\n\n**The information contract for this evaluation.**\n\n1. **Observed:** one trained classifier's predictions for 200 held-out test items, with their labels.\n2. **Prediction target:** the label of each test item.\n3. **History in training:** the classifier was trained without any of the 200 test items.\n4. **History at inference:** each test item's own features.\n5. **Person:** not applicable; every test item is unseen in training.\n6. **Task:** familiar; the test items are drawn from the same distribution as the training items.\n7. **Later time periods:** not tested; the items are treated as independent draws, so nothing here concerns later data.\n8. **Unavailable in real use:** none, provided the test set is used once; choosing among models by it would leak, as in exercise 1.\n9. **Simplest baseline:** the majority class; part 2 compares two trained models instead.\n10. **Claims not tested:** accuracy under another distribution, on later data, or for any model other than the one evaluated.",
+  "conceptIds": [
+    "evaluation-discipline",
+    "supervised-learning-generalisation",
+    "method-predictive-checks"
+  ],
   "hintLadder": [
     "If $K\\sim\\mathrm{Binomial}(n,p)$ then $\\operatorname{Var}(K)=np(1-p)$. What is $\\operatorname{Var}(K/n)$?",
     "A difference of accuracies between two models evaluated on the same items is not the difference of two independent estimates. Which items carry information about the difference: those both models get right, or those where they disagree?",
@@ -16,23 +20,124 @@
       "id": "se-value",
       "kind": "expression_present",
       "description": "the standard error 0.0212 (about 2.1 percentage points) appears",
-      "params": { "patterns": ["0\\.0212", "0\\.021(?![0-9])", "2\\.1(%|percent)"] }
+      "params": {
+        "patterns": [
+          "0\\.0212",
+          "0\\.021(?![0-9])",
+          "2\\.1(%|percent)"
+        ]
+      }
     },
     {
       "id": "n-3600",
       "kind": "expression_present",
       "description": "the required test-set size 3600 appears",
-      "params": { "patterns": ["3600", "3,600"] }
+      "params": {
+        "patterns": [
+          "3600",
+          "3,600"
+        ]
+      }
     }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "se-derivation", "criterion": "Standard error derived from the binomial variance as sqrt(p(1−p)/n) and evaluated as 0.0212.", "weight": 0.3, "levels": [{ "label": "met", "description": "Derivation and value correct." }, { "label": "partially met", "description": "Value correct without derivation, or derivation with an arithmetic slip." }, { "label": "not met", "description": "Missing or wrong." }] },
-      { "id": "interval", "criterion": "An approximate 95% interval of about 0.90 ± 0.04 (normal approximation), stated with its approximation named.", "weight": 0.1, "levels": [{ "label": "met", "description": "Correct interval and approximation named." }, { "label": "partially met", "description": "Interval correct, approximation unstated." }, { "label": "not met", "description": "Missing or wrong." }] },
-      { "id": "comparison-and-pairing", "criterion": "Concludes the 1.5-point gap is well within noise (under one standard error of a single estimate; the difference of two has SE about 0.03), then explains that a paired analysis uses only the discordant items (McNemar-type count or a binomial test on disagreements) and is more informative.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both the noise conclusion and the pairing argument are correct." }, { "label": "partially met", "description": "Noise conclusion correct; pairing vague." }, { "label": "not met", "description": "Claims the second model is better, or no pairing argument." }] },
-      { "id": "sample-size", "criterion": "Solves sqrt(0.09/n) ≤ 0.005 to get n ≥ 3600.", "weight": 0.2, "levels": [{ "label": "met", "description": "Inequality shown and solved." }, { "label": "partially met", "description": "Correct n without the inequality." }, { "label": "not met", "description": "Missing or wrong." }] },
-      { "id": "seeds-report", "criterion": "Names the seed-dependent sources of variation and requires reports to give the number of seeds, mean and spread, and the test-set standard error, never a best-of-k seed.", "weight": 0.15, "levels": [{ "label": "met", "description": "Sources and reporting requirements both correct." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "se-derivation",
+        "criterion": "Standard error derived from the binomial variance as sqrt(p(1−p)/n) and evaluated as 0.0212.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Derivation and value correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Value correct without derivation, or derivation with an arithmetic slip."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "interval",
+        "criterion": "An approximate 95% interval of about 0.90 ± 0.04 (normal approximation), stated with its approximation named.",
+        "weight": 0.1,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct interval and approximation named."
+          },
+          {
+            "label": "partially met",
+            "description": "Interval correct, approximation unstated."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "comparison-and-pairing",
+        "criterion": "Concludes the 1.5-point gap is well within noise (under one standard error of a single estimate; the difference of two has SE about 0.03), then explains that a paired analysis uses only the discordant items (McNemar-type count or a binomial test on disagreements) and is more informative.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both the noise conclusion and the pairing argument are correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Noise conclusion correct; pairing vague."
+          },
+          {
+            "label": "not met",
+            "description": "Claims the second model is better, or no pairing argument."
+          }
+        ]
+      },
+      {
+        "id": "sample-size",
+        "criterion": "Solves sqrt(0.09/n) ≤ 0.005 to get n ≥ 3600.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Inequality shown and solved."
+          },
+          {
+            "label": "partially met",
+            "description": "Correct n without the inequality."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or wrong."
+          }
+        ]
+      },
+      {
+        "id": "seeds-report",
+        "criterion": "Names the seed-dependent sources of variation and requires reports to give the number of seeds, mean and spread, and the test-set standard error, never a best-of-k seed.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Sources and reporting requirements both correct."
+          },
+          {
+            "label": "partially met",
+            "description": "One of the two."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -43,17 +148,26 @@
     {
       "label": "correct calculation",
       "text": "K ~ Binomial(200, p), so Var(K/n) = p(1-p)/n and SE = sqrt(0.9·0.1/200) = sqrt(0.00045) = 0.0212. The 95% interval is about 0.90 ± 1.96·0.0212 = 0.90 ± 0.042. For SE ≤ 0.005 we need 0.09/n ≤ 0.000025, i.e. n ≥ 3600.",
-      "expect": { "se-value": true, "n-3600": true }
+      "expect": {
+        "se-value": true,
+        "n-3600": true
+      }
     },
     {
       "label": "wrong variance",
       "text": "The standard error is 0.0045 and the test set must have at least 360 items.",
-      "expect": { "se-value": false, "n-3600": false }
+      "expect": {
+        "se-value": false,
+        "n-3600": false
+      }
     },
     {
       "label": "percentage form",
       "text": "The standard error is about 2.1 percentage points, so a one-point gap is noise. A test set of 3,600 items brings it down to half a point.",
-      "expect": { "se-value": true, "n-3600": true }
+      "expect": {
+        "se-value": true,
+        "n-3600": true
+      }
     }
   ]
 }

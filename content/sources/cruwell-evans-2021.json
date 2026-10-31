@@ -1,0 +1,87 @@
+{
+  "id": "cruwell-evans-2021",
+  "title": "Preregistration in diverse contexts: a preregistration template for the application of cognitive models",
+  "authors": [
+    "Sophia Crüwell",
+    "Nathan J. Evans"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1098/rsos.210155",
+  "description": "Article (R. Soc. Open Sci. 8(10): 210155, 13 October 2021) arguing that preregistration, designed largely for simple experimental designs, needs adapting to cognitive modelling. It catalogues researcher degrees of freedom in model application (motivations and justifications, model parameterisations, parameter estimation, secondary data analysis, outliers and power analysis, robustness checks, well-documented code), presents a preregistration template for model application (Section 4.1, with sections on the cognitive model, the method of parameter estimation, robustness checks and sensitivity analyses, and contingency plans), and works through an example application with results, discussion, limitations and future directions.",
+  "rightsNotes": [
+    "PMC article page (2026-10-31): '© 2021 The Authors.' 'Published by the Royal Society under the terms of the Creative Commons Attribution License' 'http://creativecommons.org/licenses/by/4.0/, which permits unrestricted use, provided the original author and source are credited.'",
+    "PMC copyright notice (pmc.ncbi.nlm.nih.gov/about/copyright/, 2026-10-31): 'Systematic downloading of batches of articles from the main PMC web site, in any way, is prohibited'; automated retrieval is allowed only through PMC's OAI-PMH, FTP and Cloud services. The publisher page (royalsocietypublishing.org) returned HTTP 403 to the fetcher.",
+    "So importAllowed is false although the licence permits copying: Corniversity links to the article, and the owner may import a copy by hand or through PMC's permitted services."
+  ],
+  "currentVersionId": "cruwell-evans-2021-rsos",
+  "versions": [
+    {
+      "id": "cruwell-evans-2021-rsos",
+      "label": "Published article, Royal Society Open Science 8(10): 210155 (13 October 2021), PMC8511762",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511762/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the PMC full-text page (metadata, licence, headings) and PMC's copyright notice; the publisher page returned HTTP 403",
+      "componentsSeen": [
+        "metadata: R Soc Open Sci. 2021 Oct 13;8(10):210155; DOI 10.1098/rsos.210155; PMCID PMC8511762; PMID 34659776; licence statement",
+        "sections: 1 Introduction; 2 Preregistration (2.1 Cognitive modelling); 3 Researcher degrees of freedom in model application (3.1.1-3.1.7); 4 A template for preregistration in model application (4.1 Preregistration template); 5 Example application (5.1-5.5); 6 General discussion (6.1 Limitations; 6.2 Future directions); Supplementary Material; Data accessibility",
+        "template section headings in 4.1: 'A. Cognitive model', 'B. Method of parameter estimation', 'C. Robustness checks and sensitivity analyses', 'D. Contingency Plans'"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Targets model application (fitting an existing cognitive model to data), not model development or model-comparison studies.",
+        "About two-thirds of the PMC page was read (through 'Authors' contributions'); the full wording of the template prompts was not transcribed and the Supplementary Material was not opened.",
+        "Import is blocked by host terms, not by the licence (see rightsNotes)."
+      ],
+      "locators": [
+        {
+          "id": "ce21-article",
+          "label": "Article (abstract and introduction)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cruwell-evans-2021-rsos",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511762/",
+            "heading": "1. Introduction"
+          }
+        },
+        {
+          "id": "ce21-dof",
+          "label": "3. Researcher degrees of freedom in model application",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cruwell-evans-2021-rsos",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511762/",
+            "heading": "3. Researcher degrees of freedom in model application"
+          }
+        },
+        {
+          "id": "ce21-template",
+          "label": "4.1. Preregistration template",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cruwell-evans-2021-rsos",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511762/",
+            "heading": "4.1. Preregistration template"
+          }
+        },
+        {
+          "id": "ce21-limitations",
+          "label": "6.1. Limitations (example of stating the limits of a modelling study)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cruwell-evans-2021-rsos",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511762/",
+            "heading": "6.1. Limitations"
+          }
+        }
+      ]
+    }
+  ]
+}

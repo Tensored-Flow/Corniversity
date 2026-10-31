@@ -1,0 +1,86 @@
+{
+  "id": "COG-250-u05",
+  "courseId": "COG-250",
+  "sequence": 5,
+  "title": "Learning and planning together: Dyna",
+  "summary": "Integrating planning, acting and learning; the Dyna maze with and without planning steps; when the model is wrong: the blocking and shortcut mazes and Dyna-Q+'s exploration bonus.",
+  "objectives": [
+    {
+      "id": "u05-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "planning-model-based-vs-cached"
+  ],
+  "teachesConceptIds": [
+    "planning-model-based-vs-cached",
+    "transfer-and-revaluation"
+  ],
+  "preparation": [
+    {
+      "description": "Read section 8.2, Dyna: Integrated Planning, Acting, and Learning.",
+      "locatorId": "sb-8-2-dyna",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the Dyna-Q algorithm and Example 8.1, the Dyna maze.",
+      "locatorId": "sb-dyna-q-example-8-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Study Figures 8.2 and 8.3.",
+      "locatorId": "sb-fig-8-2-8-3",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read section 8.3, When the Model Is Wrong.",
+      "locatorId": "sb-8-3-model-wrong",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the Dyna-Q+ exploration bonus.",
+      "locatorId": "sb-dyna-q-plus",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Reading: Learning and planning together: Dyna",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "sb-8-2-dyna",
+        "sb-dyna-q-example-8-1",
+        "sb-fig-8-2-8-3",
+        "sb-8-3-model-wrong",
+        "sb-dyna-q-plus"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Sutton and Barto sections 8.2 and 8.3 belong to the record verified on 2026-10-31; text extracted programmatically, with some symbols undecoded."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

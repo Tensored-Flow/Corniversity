@@ -17,7 +17,11 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
   if (!detail) notFound();
   const enrolment = await getEnrolmentForCourse(db(), session.user.id, id);
   const { course, version } = detail;
-  const prepared = version.readiness === "teaching_ready";
+  // A course can be taken in full as soon as it has a prepared unit; its readiness badge still says
+  // how much of the course is prepared, and unprepared units cannot be started.
+  const teachingReady = version.readiness === "teaching_ready";
+  const preparedUnits = detail.units.filter((u) => u.status === "ready").length;
+  const prepared = teachingReady || preparedUnits > 0;
 
   return (
     <div className="mx-auto w-full max-w-6xl">
@@ -46,6 +50,54 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
             <div className="mt-3">
               <Markdown source={version.description} />
             </div>
+            {version.catalogueNotes.centralQuestion || version.catalogueNotes.prerequisiteGuidance ? (
+              <dl className="mt-4 grid gap-3 rounded-[var(--radius-panel)] border border-stone bg-paper p-4 text-sm">
+                {version.catalogueNotes.centralQuestion ? (
+                  <div>
+                    <dt className="font-medium text-ink">Central question</dt>
+                    <dd className="text-ink-2">{version.catalogueNotes.centralQuestion}</dd>
+                  </div>
+                ) : null}
+                {version.catalogueNotes.prerequisiteGuidance ? (
+                  <div>
+                    <dt className="font-medium text-ink">Before it</dt>
+                    <dd className="text-ink-2">{version.catalogueNotes.prerequisiteGuidance}</dd>
+                  </div>
+                ) : null}
+                {version.catalogueNotes.plannedActivities?.length ? (
+                  <div>
+                    <dt className="font-medium text-ink">Planned assessed activities</dt>
+                    <dd className="text-ink-2">
+                      <ul className="list-disc pl-5">
+                        {version.catalogueNotes.plannedActivities.map((a) => (
+                          <li key={a}>{a}</li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                ) : null}
+                {version.catalogueNotes.preparationPath ? (
+                  <div>
+                    <dt className="font-medium text-ink">How it would be prepared</dt>
+                    <dd className="text-ink-2">{version.catalogueNotes.preparationPath}</dd>
+                  </div>
+                ) : null}
+                {version.catalogueNotes.sourceCandidates?.length ? (
+                  <div>
+                    <dt className="font-medium text-ink">Leads, not yet verified sources</dt>
+                    <dd className="text-ink-2">
+                      <ul className="list-disc pl-5">
+                        {version.catalogueNotes.sourceCandidates.map((c) => (
+                          <li key={c.name}>
+                            {c.name}: {c.note}
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+            ) : null}
             {version.externalSyllabusNote ? (
               <Notice tone="slate" title="Adapted study path">
                 {version.externalSyllabusNote}
@@ -151,9 +203,11 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
               />
             </div>
             <p className="mt-3 text-xs text-ink-3">
-              {prepared
+              {teachingReady
                 ? `Workload about ${version.workload.typical} hours over the course (${version.workload.minimum}–${version.workload.maximum}).`
-                : "Workload will be estimated when the syllabus is prepared; the figure in the catalogue is a placeholder."}
+                : prepared
+                  ? `${preparedUnits} of ${detail.units.length} units are prepared; about ${version.workload.typical} hours is the estimate for the outlined syllabus, and only the prepared units can be studied now.`
+                  : "Workload will be estimated when the syllabus is prepared; the figure in the catalogue is a placeholder."}
             </p>
           </Card>
 

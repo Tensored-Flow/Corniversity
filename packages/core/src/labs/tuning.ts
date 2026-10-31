@@ -54,13 +54,21 @@ export function generateBimodalTrials(trialsPerOrientation: number, windowSecond
   return trials;
 }
 
-/** Deterministic interleaved split: every k-th trial is held out. */
+/**
+ * Deterministic interleaved split: every k-th repetition of each orientation is held out, so
+ * both sets contain every orientation and the held-out trials are new trials of familiar
+ * stimuli. (Counting trials in generation order would hold out whole orientations whenever k
+ * divides the number of orientations, which tests extrapolation to unseen stimuli instead.)
+ */
 export function splitTrials(trials: Trial[], holdOutEvery = 4): { train: Trial[]; test: Trial[] } {
   const train: Trial[] = [];
   const test: Trial[] = [];
-  trials.forEach((t, i) => {
-    (i % holdOutEvery === holdOutEvery - 1 ? test : train).push(t);
-  });
+  const repetition = new Map<number, number>();
+  for (const t of trials) {
+    const r = repetition.get(t.thetaDegrees) ?? 0;
+    repetition.set(t.thetaDegrees, r + 1);
+    (r % holdOutEvery === holdOutEvery - 1 ? test : train).push(t);
+  }
   return { train, test };
 }
 

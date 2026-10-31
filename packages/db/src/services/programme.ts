@@ -211,12 +211,15 @@ export async function candidatePlans(
       warnings: [],
     });
   }
-  // Named programme suggestion, when a programme's first stage matches the interests.
-  for (const p of programmes) {
+  // Named programme suggestion: a programme the learner chose, else one whose first stage
+  // matches the course interests.
+  const chosenProgrammes = answers.programmeIds ?? [];
+  const ordered = [...programmes].sort((a, b) => Number(chosenProgrammes.includes(b.id)) - Number(chosenProgrammes.includes(a.id)));
+  for (const p of ordered) {
     const first = p.stages[0];
     if (!first) continue;
     const ids = first.courses.map((c) => c.courseId);
-    if (!ids.some((id) => interestIds.includes(id))) continue;
+    if (!chosenProgrammes.includes(p.id) && !ids.some((id) => interestIds.includes(id))) continue;
     const courses = [];
     for (const c of first.courses) {
       const inf = info.get(c.courseId);
@@ -228,7 +231,7 @@ export async function candidatePlans(
     if (courses.length) {
       plans.push({
         id: `programme-${p.id}`,
-        title: `${p.title}: first term`,
+        title: `${p.title}: first courses`,
         description: p.description,
         courses,
         estimatedWeeklyHours: hoursPerWeek(courses),
@@ -280,7 +283,10 @@ export async function ensureTerm(db: DbOrTx, ownerId: string, answers: Onboardin
     .limit(1);
   if (existing[0]) return existing[0];
   const start = answers.termStart ? DateTime.fromISO(answers.termStart, { zone: timezone }) : nextMonday(timezone);
-  const rhythm = answers.rhythm ?? "term";
+  // A learner who never chose a rhythm studies on a rolling basis. A rolling "term" is only the
+  // planning horizon the scheduler fills; it has no reading or synthesis week and its end is not
+  // a completion date (the timetable extends it as the learner goes).
+  const rhythm = answers.rhythm ?? "rolling";
   const teachingWeeks = rhythm === "reading_course" ? 8 : 10;
   const [created] = await db
     .insert(term)
@@ -294,7 +300,7 @@ export async function ensureTerm(db: DbOrTx, ownerId: string, answers: Onboardin
           .minus({ days: 1 })
           .toISODate() ?? "",
       teachingWeeks,
-      readingWeek: rhythm !== "reading_course",
+      readingWeek: rhythm === "term",
       synthesisWeek: rhythm === "term",
       mode: rhythm,
       timezone,

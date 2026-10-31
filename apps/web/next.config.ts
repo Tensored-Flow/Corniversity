@@ -28,10 +28,13 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Browser console forwarding writes a log under .next on every page load; on this monorepo
-  // layout each write invalidates the page and the client reloads it, endlessly. Off until the
-  // underlying watcher behaviour is fixed upstream.
+  // Browser console forwarding writes a log under .next on every page load, which invalidated the
+  // page on this monorepo layout; it stays off. Turbopack's development server still reloads
+  // pages in a loop here, so `pnpm dev` runs the webpack development server instead.
   experimental: { browserDebugInfoInTerminal: false },
+  // Development server only: keep compiled pages for the session instead of discarding all but a
+  // few after a minute, which made every return to a page a fresh compile of many seconds.
+  onDemandEntries: { maxInactiveAge: 60 * 60 * 1000, pagesBufferLength: 200 },
   transpilePackages: ["@corniversity/core", "@corniversity/db", "@corniversity/ai", "@corniversity/content"],
   serverExternalPackages: ["pg", "pg-boss", "@anthropic-ai/sdk", "unpdf"],
   poweredByHeader: false,

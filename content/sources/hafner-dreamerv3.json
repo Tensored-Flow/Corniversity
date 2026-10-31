@@ -1,0 +1,183 @@
+{
+  "id": "hafner-dreamerv3",
+  "title": "Mastering diverse control tasks through world models (DreamerV3)",
+  "authors": [
+    "Danijar Hafner",
+    "Jurgis Pasukonis",
+    "Jimmy Ba",
+    "Timothy Lillicrap"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1038/s41586-025-08744-2",
+  "description": "Nature article (arXiv title 'Mastering Diverse Domains through World Models') presenting DreamerV3, a model-based reinforcement-learning algorithm that learns a world model of the environment and improves its behaviour by imagining future scenarios. The learning algorithm comprises world model learning, critic learning, actor learning and 'robust predictions' techniques, run with one fixed configuration across Atari (57 games), ProcGen (16), DMLab (30), Atari100k (26), the Proprio Control and Visual Control suites (20 tasks each), BSuite (23 environments) and Minecraft, where it is reported as the first algorithm to collect diamonds from scratch without human data or curricula. The evaluation also covers ablations and scaling properties.",
+  "codeLicence": "github.com/danijar/dreamerv3: MIT License (GitHub licence API spdx MIT; LICENSE 'Copyright (c) 2024 Danijar Hafner'). A JAX implementation; its README states it is based on the DreamerV2 codebase and is unrelated to Google or DeepMind.",
+  "rightsNotes": [
+    "Nature version: 'This article is licensed under a Creative Commons Attribution 4.0 International License' (PMC copy, read 2026-10-31). The Crossref record lists CC BY 4.0 for the version of record and for text and data mining from 2025-04-02.",
+    "arXiv version: CC BY 4.0 (abstract-page licence link).",
+    "Host terms: nature.com's Website Terms prohibit non-browser access and PMC prohibits automated article downloads outside its OA services, so the Nature version is cited, not imported; arXiv v2 may be imported from arxiv.org.",
+    "The code repository is MIT-licensed; the paper's data availability statement says the algorithm generates its own experience data by interacting with simulated environments.",
+    "Corniversity decision (2026-10-31): the CC BY arXiv preprint is the working copy, because it may be imported for private study; the Nature article is the version of record, read in the browser and cited for the published results. The two texts were not compared line by line."
+  ],
+  "currentVersionId": "dreamerv3-arxiv-v2",
+  "versions": [
+    {
+      "id": "dreamerv3-nature-2025",
+      "label": "Nature 640(8059), 647–653 (2025); received 5 April 2024, accepted 5 February 2025, published online 2 April 2025 (print 17 April 2025 per Crossref)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): read the PMC copy PMC12003158 (licence, dates, section and subsection headings, benchmarks, data and code availability), the Crossref record of the DOI and the project page danijar.com/project/dreamerv3; opened the PMC copyright page and nature.com's Website Terms",
+      "componentsSeen": [
+        "PMC: title, authors, Nature 640(8059):647-653, received, accepted and published dates, CC BY 4.0 statement",
+        "sections: Learning algorithm (World model learning; Critic learning; Actor learning; Robust predictions); Evaluation (Benchmarks; Minecraft; Ablations; Scaling properties); Previous work; Conclusion; Methods (Baselines; Benchmarks; Previous generations; Implementation; Minecraft)",
+        "benchmarks named: Atari 57 games, ProcGen 16 games, DMLab 30 tasks, Atari100k 26 games, Proprio Control Suite 20 tasks, Visual Control Suite 20 tasks, BSuite 23 environments (468 configurations), Minecraft",
+        "Data availability (self-generated experience in simulated environments) and Code availability ('Source code for Dreamer and all presented experiments is available under an open-source license', github.com/danijar/dreamerv3)",
+        "Crossref: published online 2025-04-02, published in print 2025-04-17, CC BY 4.0 licence entries",
+        "project page: title, authors, links to the Nature paper and the code"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Not imported from its hosts (nature.com terms; PMC automated-download rule); the PMC OA web service was not tested. Import arXiv v2 instead and cite this version.",
+        "Only headings, the licence, dates and the availability statements were read from the PMC copy; results and figures were not checked against the arXiv version.",
+        "The nature.com page for this article was not opened; the published pages were read at PMC."
+      ],
+      "locators": [
+        {
+          "id": "dv3-nat-landing",
+          "label": "Article and abstract (PMC copy of the Nature article)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dreamerv3-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+            "heading": "Mastering diverse control tasks through world models"
+          }
+        },
+        {
+          "id": "dv3-nat-algorithm",
+          "label": "Learning algorithm (world model learning, critic learning, actor learning, robust predictions)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dreamerv3-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+            "heading": "Learning algorithm"
+          }
+        },
+        {
+          "id": "dv3-nat-evaluation",
+          "label": "Evaluation (benchmarks, Minecraft, ablations, scaling properties)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dreamerv3-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+            "heading": "Evaluation"
+          }
+        },
+        {
+          "id": "dv3-nat-methods",
+          "label": "Methods (baselines, benchmark protocols, previous generations, implementation, Minecraft)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dreamerv3-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12003158/",
+            "heading": "Methods"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dreamerv3-arxiv-v2",
+      "label": "arXiv:2301.04104v2 (17 April 2024; v1 10 January 2023), 'Mastering Diverse Domains through World Models'",
+      "url": "https://arxiv.org/abs/2301.04104v2",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the arXiv abstract page and the v2 HTML (main text; the Methods appendix did not render beyond 'Baselines'); parsed the v2 PDF (40 pages) in memory to locate section pages",
+      "componentsSeen": [
+        "abstract page: four authors, two versions, subjects cs.AI, cs.LG and stat.ML, comment linking the project website, CC BY 4.0 licence link",
+        "v2 structure: Introduction; Learning algorithm (World model learning; Critic learning; Actor learning; Robust predictions); Results (Benchmarks; Minecraft; Ablations; Scaling properties); Previous work; Conclusion; Methods (Baselines; Benchmarks with Protocols; Minecraft with Game description) and supplementary material",
+        "PDF: 40 pages; printed page numbers equal physical index + 1"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "arxiv.org"
+      ],
+      "limitations": [
+        "v2 predates acceptance at Nature (accepted 5 February 2025); its results heading is 'Results' where the Nature article has 'Evaluation', and differences between the two were not checked.",
+        "Methods pages were located by PDF page search only."
+      ],
+      "locators": [
+        {
+          "id": "dv3-arx-abs",
+          "label": "arXiv abstract page (versions, licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "dreamerv3-arxiv-v2",
+            "url": "https://arxiv.org/abs/2301.04104v2",
+            "heading": "Mastering Diverse Domains through World Models"
+          }
+        },
+        {
+          "id": "dv3-arx-algorithm",
+          "label": "Learning algorithm (world model learning first)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "dreamerv3-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2301.04104v2",
+            "physicalPageIndex": 2,
+            "printedPageLabel": "3",
+            "sectionLabel": "Learning algorithm"
+          }
+        },
+        {
+          "id": "dv3-arx-results",
+          "label": "Results: Benchmarks",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "dreamerv3-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2301.04104v2",
+            "physicalPageIndex": 7,
+            "printedPageLabel": "8",
+            "sectionLabel": "Results"
+          }
+        },
+        {
+          "id": "dv3-arx-methods",
+          "label": "Methods: Baselines",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "dreamerv3-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2301.04104v2",
+            "physicalPageIndex": 16,
+            "printedPageLabel": "17",
+            "sectionLabel": "Methods: Baselines"
+          }
+        },
+        {
+          "id": "dv3-arx-minecraft",
+          "label": "Methods: Minecraft (game description)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "dreamerv3-arxiv-v2",
+            "url": "https://arxiv.org/pdf/2301.04104v2",
+            "physicalPageIndex": 21,
+            "printedPageLabel": "22",
+            "sectionLabel": "Minecraft: Game description"
+          }
+        }
+      ]
+    }
+  ]
+}

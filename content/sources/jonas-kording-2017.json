@@ -1,0 +1,76 @@
+{
+  "id": "jonas-kording-2017",
+  "title": "Could a Neuroscientist Understand a Microprocessor?",
+  "authors": [
+    "Eric Jonas",
+    "Konrad Paul Kording"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1371/journal.pcbi.1005268",
+  "description": "Research article (PLOS Computational Biology 13(1): e1005268, published January 12, 2017) that treats a simulated classic microprocessor, a system that is complex and fully understood at every level, as a model organism and applies popular neuroscience analyses to it: connectomics, lesioning single transistors, tuning curves, pairwise and global correlations, local field potentials, Granger causality and dimensionality reduction. It asks whether these analyses recover how the processor works and discusses what understanding a system should mean.",
+  "rightsNotes": [
+    "Article page (2026-10-31): 'Copyright: © 2017 Jonas, Kording. This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.'"
+  ],
+  "currentVersionId": "jonas-kording-2017-plos",
+  "versions": [
+    {
+      "id": "jonas-kording-2017-plos",
+      "label": "Published version, PLOS Computational Biology 13(1): e1005268 (January 12, 2017)",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005268",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the article page on journals.plos.org (metadata, copyright statement, abstract, section headings)",
+      "componentsSeen": [
+        "metadata: title, authors, journal, volume/issue/article number, date, DOI; copyright and licence statement",
+        "Author Summary; Introduction (An engineered model organism; What does it mean to understand a system; What would a satisfying understanding of the processor look like?)",
+        "Results: Connectomics; Lesion a single transistor at a time; Analyzing tuning properties of individual transistors; The correlational structure exhibits weak pairwise and strong global correlations; Analyzing local field potentials; Granger causality to describe functional connectivity; Dimensionality reduction reveals global dynamics independent of behavior",
+        "Discussion; Methods (netlist acquisition, simulation and behaviors, lesion studies, connectomic analysis, spiking, tuning curves, spike-word analysis, local field potential, Granger causality, whole brain recording, dimensionality reduction)"
+      ],
+      "licence": "Creative Commons Attribution License (version not stated in the copyright line)",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "journals.plos.org"
+      ],
+      "limitations": [
+        "A critique of analysis methods on a fully known system, not a tutorial on how recording, imaging or perturbation techniques work.",
+        "The last ~14,000 characters of the page (late references) were not read; Supporting Information was not opened.",
+        "PLOS site-wide terms were not opened; import rests on the article-level CC BY statement."
+      ],
+      "locators": [
+        {
+          "id": "jk17-article",
+          "label": "Article: abstract, author summary and introduction (what it means to understand a system)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jonas-kording-2017-plos",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005268",
+            "heading": "What does it mean to understand a system"
+          }
+        },
+        {
+          "id": "jk17-lesions",
+          "label": "Results: Lesion a single transistor at a time (lesion logic and its limits)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jonas-kording-2017-plos",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005268",
+            "heading": "Lesion a single transistor at a time"
+          }
+        },
+        {
+          "id": "jk17-discussion",
+          "label": "Discussion",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "jonas-kording-2017-plos",
+            "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005268",
+            "heading": "Discussion"
+          }
+        }
+      ]
+    }
+  ]
+}

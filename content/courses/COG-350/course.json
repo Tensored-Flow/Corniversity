@@ -1,0 +1,45 @@
+{
+  "id": "COG-350",
+  "version": 1,
+  "title": "Consciousness",
+  "departmentIds": [
+    "cognitive-science"
+  ],
+  "level": "advanced",
+  "position": "Optional critical research seminar",
+  "launch": false,
+  "purpose": "A proposed course in the Corniversity catalogue (Optional critical research seminar). A critical reading seminar on competing theories, concepts, experimental proposals and unresolved questions, distinguishing definitions, theoretical commitments, empirical predictions, available evidence, philosophical arguments and unresolved disagreements. No contested position is presented as settled.",
+  "description": "Proposed course: Consciousness. Central question: What do competing theories of consciousness claim, and what would evidence decide between them? Source verification and syllabus design have not been completed, so no teaching material exists yet. You may register interest or ask the director about it; nothing is prepared on request.",
+  "outcomes": [],
+  "prerequisiteRuleIds": [],
+  "recommendedConceptIds": [],
+  "teachesConceptIds": [],
+  "primarySourceIds": [],
+  "supplementalSourceIds": [],
+  "unitIds": [],
+  "assessmentSpecs": [],
+  "workloadHours": {
+    "minimum": 40,
+    "typical": 60,
+    "maximum": 90
+  },
+  "readiness": "proposed",
+  "blockers": [],
+  "provenance": {
+    "authoringMethod": "catalogue extension (owner's Mind, Brain and AI update, 2026-10-31); workload is a placeholder range pending a syllabus",
+    "reviewerNotes": [
+      "Not yet sourced. Workload is a generic placeholder and is shown as such.",
+      "prerequisitesVerified: false; initialLaunchCourse: false; no source is attached until one is verified."
+    ]
+  },
+  "modesOffered": [
+    "audit"
+  ],
+  "centralQuestion": "What do competing theories of consciousness claim, and what would evidence decide between them?",
+  "prerequisiteGuidance": "Explaining Minds and Brains (MBI-01) and systems neuroscience (MBI-08) help; the seminar is reading-led and needs no mathematics beyond the programme's.",
+  "preparationPath": "Resolve a small, balanced reading list (two theories with stated empirical commitments and one adversarial-collaboration or comparison paper); run it as a bounded seminar.",
+  "plannedActivities": [
+    "Compare two accounts, explain where their empirical commitments differ, and identify what an experiment would and would not decide."
+  ],
+  "sourceCandidates": []
+}

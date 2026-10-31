@@ -1,0 +1,404 @@
+{
+  "id": "wilson-collins-2019-ten-rules",
+  "title": "Ten simple rules for the computational modeling of behavioral data",
+  "authors": [
+    "Robert C Wilson",
+    "Anne GE Collins"
+  ],
+  "institution": "eLife (Review Article, Neuroscience); authors at the University of Arizona and the University of California, Berkeley",
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.7554/eLife.49547",
+  "description": "Review article giving ten rules, as unnumbered section headings, for computational modelling of behavioural data: design a good experiment; design good models; simulate; fit the parameters (maximum likelihood); check parameter recovery; check model recovery (confusion and inversion matrices, BIC); run the experiment and analyse the data model-independently; validate the winning model by simulation; analyse the winning model; report. Illustrated with a two-armed bandit example (random responding with bias, noisy win-stay-lose-shift, Rescorla-Wagner with softmax, choice kernel, Rescorla-Wagner plus choice kernel; T = 1000 trials; reward probabilities 0.2 and 0.8) and MATLAB code. Appendices cover the theory of model fitting and model comparison, the inversion matrix, a working-memory model and a validation example.",
+  "codeLicence": "MIT License, 'Copyright (c) 2019 Anne Collins' (LICENSE file of github.com/AnneCollins/TenSimpleRulesModeling, read 2026-10-31)",
+  "rightsNotes": [
+    "Article licence, from the permissions block of the eLife JATS XML: '© 2019, Wilson and Collins'; licence link http://creativecommons.org/licenses/by/4.0/; 'This article is distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use and redistribution provided that the original author and source are credited.' The article page's dc.rights metadata carries the same sentence. Crossref lists CC BY 4.0 for the version of record, the accepted manuscript and text-and-data mining.",
+    "Code licence, recorded separately: MIT License, 'Copyright (c) 2019 Anne Collins', in the LICENSE file of github.com/AnneCollins/TenSimpleRulesModeling (the GitHub API also reports MIT). The archived copy at github.com/elifesciences-publications/TenSimpleRulesModeling named in the paper was not opened.",
+    "CC BY requires attribution: any Corniversity material that reproduces or adapts the article's text, equations or figures credits Wilson and Collins (2019), eLife 8:e49547."
+  ],
+  "currentVersionId": "wilson-collins-2019-elife-vor",
+  "versions": [
+    {
+      "id": "wilson-collins-2019-elife-vor",
+      "label": "Version of Record, eLife 8:e49547, published 26 November 2019 (received 26 June 2019, accepted 9 October 2019; PDF file elife-49547-v2.pdf)",
+      "url": "https://elifesciences.org/articles/49547",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the eLife article page and its JATS XML and read the metadata, licence, abstract, sections s1, s3, s5-s11, Boxes 1-7 and Appendix 2 in full; opened the GitHub repository AnneCollins/TenSimpleRulesModeling (API metadata, file list, README, LICENSE, three figure scripts and the simulation, likelihood and fitting functions)",
+      "componentsSeen": [
+        "Metadata from the JATS XML: DOI 10.7554/eLife.49547, volume 8, elocation e49547, published 26 November 2019, received 26 June 2019, accepted 9 October 2019, article type review-article, subject Neuroscience; PMID 31769410 and PMCID PMC6879303 from the NCBI ID converter (PMC copy not opened)",
+        "Licence block of the XML and the dc.rights metadata of the article page",
+        "Section and box structure with anchor ids (s1-s14, box1-box7, appendices s16-s20), checked on the article page",
+        "Read in full: abstract; s1; s3 (example task); Box 1 (Models 1-5, Equations 1-7); s5 and Box 2; s6 and Box 3 (Equation 8); s7 and Box 4 (Equation 9); s8 and Box 5 (Equation 10, prior table); s9 and Box 6 (Equation 11); s10 and Box 7; s11; s17 (Appendix 2, Equations 16-18 and likelihood per trial)",
+        "Headings only: s2, s4 outside Box 1, s12-s14, Appendices 1 and 3-5",
+        "Code repository: GitHub API metadata (MATLAB; created 2019-01-04; last push 2019-12-09), file list, README, LICENSE, Figure4_ParameterRecovery.m, Figure5_confusionMatrix.m, Figure5_both.m, choose.m, simulate_M1 to simulate_M5, lik_M1 to lik_M3, fit_M1 to fit_M3 and fit_all_v1.m"
+      ],
+      "licence": "CC BY 4.0 (Creative Commons Attribution License)",
+      "licenceUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "elifesciences.org",
+        "cdn.elifesciences.org"
+      ],
+      "limitations": [
+        "The ten rules are unnumbered headings. Numbering here follows heading order (rule 1 = s2 to rule 10 = s12; s3 is the worked example, not a rule). The text calls them '10 simple steps (Figure 1)' and cross-refers to 'Step 2' for model design, which matches heading order, but says 'see Step 9' for validating the winning model, which is the eighth heading. The Figure 1 schematic is an image and was not inspected.",
+        "Equation 10 is printed as 'BIC = -2 log LL^ + k_m log(T)' with LL^ described as 'the log-likelihood value at the best fitting parameter settings'; read literally this takes the log of a log-likelihood (Appendix Equation 18 has the same form). The repository computes BIC = k log(T) + 2 NegLL, that is -2 times the maximised log-likelihood plus k log T.",
+        "Box 1 states that the initial values Q_0^k are zero; the repository's simulate and likelihood functions for Models 3 and 5 initialise Q = [0.5 0.5]. Box 6 states Q_1 = 0.5 for its own simulation.",
+        "Equation 3 is printed for 'the value of option k' without restricting the update to the chosen option; the repository updates only the chosen option.",
+        "Equation 2 gives no rule for the first trial; the repository uses p = [0.5 0.5] when there is no previous trial.",
+        "Exp(10) and Exp(1) are not defined as rate or mean in the paper; the repository draws exprnd(10) and 1+exprnd(1), and MATLAB documentation (mathworks.com/help/stats/exprnd.html, opened 2026-10-31) defines the argument of exprnd as the mean.",
+        "Box 4 calls beta the 'softmax temperature', whereas Box 1 defines beta as the inverse temperature.",
+        "Box 1 says that with alpha_c = 1 the choice-kernel model is 'very similar to model 2 (win-stay-lose-shift)'; the choice kernel as printed does not use reward, so this sentence needs care in teaching.",
+        "Model comparison and model recovery in the examples are in-sample (BIC on the fitted data); cross-validation on held-out data is mentioned only as an alternative. The paper gives no held-out evaluation protocol.",
+        "Equations were transcribed from the MathML in the JATS XML; the typeset PDF was not compared. Figure images were not viewed; confusion-matrix values come from the matrices hard-coded in Figure5_both.m.",
+        "The README calls the paper 'Ten Simple Rules for Computational Modeling of Psychological Data', which differs from the published title."
+      ],
+      "locators": [
+        {
+          "id": "wc-abstract",
+          "label": "Abstract",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Abstract",
+            "fragment": "abstract"
+          }
+        },
+        {
+          "id": "wc-intro",
+          "label": "Introduction: simulation, parameter estimation, model comparison and latent variable inference; the '10 simple steps (Figure 1)'",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "What is computational modeling of behavioral data?",
+            "fragment": "s1"
+          }
+        },
+        {
+          "id": "wc-rule-01",
+          "label": "Rule 1 (heading order): design a good experiment",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Design a good experiment!",
+            "fragment": "s2"
+          },
+          "note": "Heading and subheadings seen; section text not read."
+        },
+        {
+          "id": "wc-bandit-task",
+          "label": "Worked example task: T choices between K slot machines; here T = 1000, K = 2, reward probabilities 0.2 and 0.8, fixed over time; link to the code",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "An illustrative example: the multi-armed bandit task",
+            "fragment": "s3"
+          }
+        },
+        {
+          "id": "wc-rule-02",
+          "label": "Rule 2 (heading order): design good models",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Design good models",
+            "fragment": "s4"
+          },
+          "note": "Section text outside Box 1 not read."
+        },
+        {
+          "id": "wc-box-1",
+          "label": "Box 1: Models 1-5 for the bandit task with Equations 1-7 (random responding with bias b; noisy win-stay-lose-shift with epsilon; Rescorla-Wagner with softmax, alpha and beta; choice kernel, alpha_c and beta_c; Rescorla-Wagner plus choice kernel)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 1. Example: Modeling behavior in the multi-armed bandit task.",
+            "fragment": "box1"
+          }
+        },
+        {
+          "id": "wc-rule-03",
+          "label": "Rule 3 (heading order): model-independent measures; simulate across parameter values; compare the simulated behaviour of different models",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Simulate, simulate, simulate!",
+            "fragment": "s5"
+          }
+        },
+        {
+          "id": "wc-box-2",
+          "label": "Box 2: simulating the bandit task; p(stay) by previous reward and p(correct) in the first and last 10 trials; example parameter values for Models 1-5",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 2. Example: simulating behavior in the bandit task.",
+            "fragment": "box2"
+          }
+        },
+        {
+          "id": "wc-rule-04",
+          "label": "Rule 4 (heading order): maximum-likelihood fitting; Equation 8 log-likelihood; finite initial log-likelihoods; rounding; constraints; local minima and multiple starts",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Fit the parameters",
+            "fragment": "s6"
+          }
+        },
+        {
+          "id": "wc-box-3",
+          "label": "Box 3: multiple local maxima in a simplified reinforcement-learning and working-memory model",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 3. Example: contending with multiple local maxima.",
+            "fragment": "box3"
+          }
+        },
+        {
+          "id": "wc-rule-05",
+          "label": "Rule 5 (heading order): parameter recovery; simulation ranges; plotting simulated against recovered values; induced parameter correlations; best-case caveat",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Check that you can recover your parameters",
+            "fragment": "s7"
+          }
+        },
+        {
+          "id": "wc-box-4",
+          "label": "Box 4: parameter recovery for Model 3 (mu1 = 0.2, mu2 = 0.8, T = 1000; alpha ~ U(0,1), beta ~ Exp(10), Equation 9; maximum likelihood; 1000 repetitions)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 4. Example: parameter recovery in the reinforcement learning model.",
+            "fragment": "box4"
+          }
+        },
+        {
+          "id": "wc-rule-06",
+          "label": "Rule 6 (heading order): model comparison with BIC (Equation 10), cross-validation remark, model recovery, confusion matrix p(fit model | simulated model), inversion matrix",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Can you arbitrate between different models?",
+            "fragment": "s8"
+          }
+        },
+        {
+          "id": "wc-box-5",
+          "label": "Box 5: confusion and inversion matrices for the five bandit models (BIC; 100 repetitions; prior table; softmax parameters increased by 1 in panel B)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 5. Example: confusion matrices in the bandit task.",
+            "fragment": "box5"
+          }
+        },
+        {
+          "id": "wc-rule-07",
+          "label": "Rule 7 (heading order): model-independent analysis of the real data first; check fitted parameter ranges against the recovery ranges",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Run the experiment and analyze the actual data",
+            "fragment": "s9"
+          }
+        },
+        {
+          "id": "wc-box-6",
+          "label": "Box 6: modelling an 'unimportant' side bias B (Equation 11; 10 bandits in successive 50-trial blocks; Q_1 = 0.5)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 6. Example: improving parameter recovery by modeling unimportant parameters.",
+            "fragment": "box6"
+          }
+        },
+        {
+          "id": "wc-rule-08",
+          "label": "Rule 8 (heading order): validate by simulating with the fitted parameters; history-conditioned prediction versus free simulation; the Palminteri et al. (2017) example",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Validate (at least) the winning model",
+            "fragment": "s10"
+          }
+        },
+        {
+          "id": "wc-box-7",
+          "label": "Box 7: failed validation where the fitted model performs too well (blind and state-based agents)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Box 7. Example: model validation where the fit model performs too well.",
+            "fragment": "box7"
+          }
+        },
+        {
+          "id": "wc-rule-09",
+          "label": "Rule 9 (heading order): latent variables and individual differences, from the winning model only",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Analyze the winning model",
+            "fragment": "s11"
+          }
+        },
+        {
+          "id": "wc-rule-10",
+          "label": "Rule 10 (heading order): reporting model selection, parameter fits and recovery; sharing data and code",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Reporting model-based analyses",
+            "fragment": "s12"
+          },
+          "note": "Subheadings seen; only the opening of 'Share your data and code!' was read."
+        },
+        {
+          "id": "wc-appendix-2",
+          "label": "Appendix 2: theory of model comparison (Bayesian evidence, Equations 16-17; BIC, Equation 18; likelihood per trial)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "The theory of model comparison",
+            "fragment": "s17"
+          }
+        },
+        {
+          "id": "wc-appendix-3",
+          "label": "Appendix 3: computing the inversion matrix from the confusion matrix",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547",
+            "heading": "Computing the inversion matrix from the confusion matrix",
+            "fragment": "s18"
+          },
+          "note": "Heading only seen."
+        },
+        {
+          "id": "wc-jats-xml",
+          "label": "JATS XML of the article (source of the equation transcriptions)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://elifesciences.org/articles/49547.xml",
+            "heading": "Ten simple rules for the computational modeling of behavioral data"
+          }
+        },
+        {
+          "id": "wc-code-repo",
+          "label": "Code repository: MATLAB scripts for the paper's figures and functions for Models 1-5 (MIT licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://github.com/AnneCollins/TenSimpleRulesModeling",
+            "heading": "TenSimpleRulesModeling"
+          }
+        },
+        {
+          "id": "wc-code-licence",
+          "label": "Code LICENSE: MIT License, Copyright (c) 2019 Anne Collins",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://raw.githubusercontent.com/AnneCollins/TenSimpleRulesModeling/master/LICENSE",
+            "heading": "MIT License"
+          }
+        },
+        {
+          "id": "wc-code-parameter-recovery",
+          "label": "Figure4_ParameterRecovery.m: T = 1000, mu = [0.2 0.8], rng(2), 1000 runs with alpha = rand and beta = exprnd(10), fitted with fit_M3RescorlaWagner_v1",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://raw.githubusercontent.com/AnneCollins/TenSimpleRulesModeling/master/Figure4_ParameterRecovery.m",
+            "heading": "Figure4_ParameterRecovery.m"
+          }
+        },
+        {
+          "id": "wc-code-model-recovery",
+          "label": "Figure5_confusionMatrix.m: 100 runs simulating each of Models 1-5 and fitting all five with fit_all_v1 (minimum BIC); softmax parameters drawn as 1 + exprnd(1)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://raw.githubusercontent.com/AnneCollins/TenSimpleRulesModeling/master/Figure5_confusionMatrix.m",
+            "heading": "Figure5_confusionMatrix.m"
+          }
+        },
+        {
+          "id": "wc-code-confusion-values",
+          "label": "Figure5_both.m: hard-coded confusion matrices CM1 and CM2 and their column-normalised inversion matrices",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://raw.githubusercontent.com/AnneCollins/TenSimpleRulesModeling/master/Figure5_both.m",
+            "heading": "Figure5_both.m"
+          }
+        },
+        {
+          "id": "wc-code-fit-all",
+          "label": "fit_all_v1.m: fits Models 1-5 and returns the minimum-BIC model; each fit_M* function uses fmincon on the negative log-likelihood with bounds and BIC = k log(T) + 2 NegLL",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "wilson-collins-2019-elife-vor",
+            "url": "https://raw.githubusercontent.com/AnneCollins/TenSimpleRulesModeling/master/FittingFunctions/fit_all_v1.m",
+            "heading": "fit_all_v1.m"
+          }
+        }
+      ]
+    }
+  ]
+}

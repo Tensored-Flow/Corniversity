@@ -22,6 +22,13 @@
       "when": 1793386960010,
       "tag": "0002_reading-progress",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793462787583,
+      "tag": "0003_mind-brain-ai-and-study-defaults",
+      "breakpoints": true
     }
   ]
 }

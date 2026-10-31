@@ -1,0 +1,85 @@
+{
+  "id": "COG-250-u03",
+  "courseId": "COG-250",
+  "sequence": 3,
+  "title": "Planning as tree search, and pruning",
+  "summary": "A task with deterministic transitions and large losses; models of look-ahead, discounting and pruning below large losses; in-sample comparison by integrated BIC, and what it does and does not show about planning.",
+  "objectives": [
+    {
+      "id": "u03-o1",
+      "description": "Objectives for this unit will be finalised when it is prepared; the outline below names its scope and sources."
+    }
+  ],
+  "prerequisiteConceptIds": [
+    "choice-learning-models"
+  ],
+  "teachesConceptIds": [
+    "planning-model-based-vs-cached"
+  ],
+  "preparation": [
+    {
+      "description": "Read the abstract of Huys et al. (2012).",
+      "locatorId": "huys-abstract",
+      "estimatedMinutes": 5
+    },
+    {
+      "description": "Study Figure 2: the six-state task and the effect of pruning on optimal choices.",
+      "locatorId": "huys-figure-2",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read the task section.",
+      "locatorId": "huys-task",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Read the models compared.",
+      "locatorId": "huys-models",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read the model comparison by integrated BIC.",
+      "locatorId": "huys-model-comparison",
+      "estimatedMinutes": 10
+    }
+  ],
+  "activities": [
+    {
+      "id": "u03-a1",
+      "type": "reading",
+      "title": "Reading: Planning as tree search, and pruning",
+      "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows what the unit will cover.",
+      "estimatedMinutes": 60,
+      "sourceLocatorIds": [
+        "huys-abstract",
+        "huys-figure-2",
+        "huys-task",
+        "huys-models",
+        "huys-model-comparison"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    }
+  ],
+  "exerciseIds": [],
+  "exitCheck": {
+    "description": "To be defined when the unit is prepared."
+  },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Huys et al. (2012) locators belong to the record verified on 2026-10-31; the equations were not transcribed and the figures were not viewed."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "needs_review",
+      "evidence": "Not yet prepared; no lesson or exercises to review."
+    }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

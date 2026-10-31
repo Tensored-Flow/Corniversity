@@ -1,0 +1,233 @@
+{
+  "id": "binz-centaur-2025",
+  "title": "A foundation model to predict and capture human cognition (Centaur)",
+  "authors": [
+    "Marcel Binz",
+    "Elif Akata",
+    "Matthias Bethge",
+    "Franziska Brändle",
+    "Fred Callaway",
+    "Julian Coda-Forno",
+    "Peter Dayan",
+    "Can Demircan",
+    "Maria K. Eckstein",
+    "Noémi Éltető",
+    "Thomas L. Griffiths",
+    "Susanne Haridi",
+    "Akshay K. Jagadish",
+    "Li Ji-An",
+    "Alexander Kipnis",
+    "Sreejan Kumar",
+    "Tobias Ludwig",
+    "Marvin Mathony",
+    "Marcelo Mattar",
+    "Alireza Modirshanechi",
+    "Surabhi S. Nath",
+    "Joshua C. Peterson",
+    "Milena Rmus",
+    "Evan M. Russek",
+    "Tankred Saanum",
+    "Johannes A. Schubert",
+    "Luca M. Schulze Buschoff",
+    "Nishad Singhi",
+    "Xin Sui",
+    "Mirko Thalmann",
+    "Fabian J. Theis",
+    "Vuong Truong",
+    "Vishaal Udandarao",
+    "Konstantinos Voudouris",
+    "Robert Wilson",
+    "Kristin Witte",
+    "Shuchen Wu",
+    "Dirk U. Wulff",
+    "Huadong Xiong",
+    "Eric Schulz"
+  ],
+  "kind": "web",
+  "canonicalUrl": "https://doi.org/10.1038/s41586-025-09215-4",
+  "description": "Nature article introducing Centaur: Llama 3.1 70B fine-tuned with QLoRA (rank-8 adapters on all non-embedding layers, about 0.15% added parameters, one epoch, loss on human-response tokens only) on Psych-101, natural-language transcripts of trial-by-trial data from 160 experiments (60,092 participants, 10,681,650 choices). Reported evaluation: negative log-likelihood on held-out participants (90% of participants per experiment for training, 10% for testing) against the un-fine-tuned base model and 14 domain-specific cognitive models; open-loop simulations (horizon task, two-step task); a test on economic-game responses of humans and of artificial agents; out-of-distribution tests with a modified cover story (two-step task), a modified problem structure (Maggie's farm, a three-armed bandit) and a new domain (logical reasoning), plus six further paradigms outside the training data; alignment of internal representations with fMRI data (two-step task; sentence reading); and a model-guided discovery case study. The arXiv preprint is titled 'Centaur: a foundation model of human cognition'.",
+  "codeLicence": "github.com/marcelbinz/Llama-3.1-Centaur-70B (fine-tuning, evaluation and analysis scripts): Apache-2.0 (GitHub licence API, 2026-10-31)",
+  "rightsNotes": [
+    "Published article: 'This article is licensed under a Creative Commons Attribution 4.0 International License' (PMC copy, read 2026-10-31). The arXiv preprint is also CC BY 4.0 (abstract-page licence link).",
+    "Host terms: nature.com's Website Terms prohibit access 'by any means other than through a normal web browser in the generally-accepted manner', and the PMC copyright page says 'Do not use any other automated processes for downloading articles' beyond its OAI-PMH, FTP and Cloud services. The published version is cited, not imported; the CC BY arXiv v3 may be imported from arxiv.org.",
+    "Model weights (Hugging Face marcelbinz/Llama-3.1-Centaur-70B-adapter and the merged marcelbinz/Llama-3.1-Centaur-70B): licence tag 'llama3.1' (Llama 3.1 Community License Agreement). The adapter card says running it needs about 80 GB of GPU memory. Corniversity does not download or run the models.",
+    "Training data Psych-101: Apache-2.0 on Hugging Face (record psych-101). Test set marcelbinz/Psych-101-test: 'cc-by-nd-4.0', gated, 'Private test set for Psych-101. Do not redistribute outside of this repository.' Not accessed.",
+    "Corniversity decision (2026-10-31): the CC BY arXiv preprint is the working copy, because it may be imported for private study; the Nature article is the version of record, read in the browser and cited for the published results. The two texts were not compared line by line."
+  ],
+  "currentVersionId": "binz-centaur-arxiv-v3",
+  "versions": [
+    {
+      "id": "binz-centaur-nature-2025",
+      "label": "Nature 644(8078), 1002–1009 (2025); received 26 October 2024, accepted 29 May 2025, published 2 July 2025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): read the PMC copy PMC12390832 (the first 100,000 of about 114,000 characters, in targeted passes over the results, Methods, Discussion and the data and code availability statements), the PMC copyright page and nature.com's Website Terms; nature.com redirected the article URL to a cookie check and was not read for this article",
+      "componentsSeen": [
+        "title, 40 authors, citation, dates, DOI 10.1038/s41586-025-09215-4, PMID 40604288, CC BY 4.0 statement",
+        "sections: Main; Model overview; Centaur captures human behaviour; Probing generalization abilities; Alignment to human neural activity; Model-guided scientific discovery; Discussion; Conclusion; Methods (Data collection; Fine-tuning procedure; Evaluation metric; Domain-specific cognitive models; Neural alignment; Model-guided scientific discovery)",
+        "held-out evaluation: '90% of participants for training and retained 10% for testing'; metric: negative log-likelihood averaged over responses",
+        "out-of-distribution tests: cover story, problem structure, new domain, and six more paradigms 'not part of the training data in any shape or form'; Extended Data Fig. 4f reports the deep sequential decision task as t(6092) = −1.06, p = 0.144",
+        "economic games: 'Centaur accurately predicted human responses (64% accuracy) but struggled to predict artificial responses (35% accuracy'",
+        "neural alignment: two-step task fMRI from a previous study of 94 participants making 300 choices each; sentence-reading fMRI from five participants who each read 1,000 sentences",
+        "Discussion: bias toward a Western, educated, industrialized, rich and democratic (WEIRD) population and against experiments that cannot be expressed in natural language",
+        "data and code availability statements with Hugging Face and GitHub URLs"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Not imported from its hosts: nature.com's terms restrict non-browser access and PMC restricts automated downloading to its OA services (the PMC OA web service was not tested). Import arXiv v3 instead and cite this version.",
+        "The last ~14,000 characters of the PMC text (mostly references and extended-data material) and the supplementary information were not read.",
+        "Held-out-participant tests are within the trained experiments; transfer to unseen experiments is tested only in the generalisation section. The authors' summary that Centaur 'robustly captured human behaviour' in the six further paradigms sits beside one non-significant panel (p = 0.144).",
+        "Critiques found (not part of this record): Xie and Zhu, PsyArXiv preprint, 2025 (doi 10.31234/osf.io/u7z4t_v2); Namazova et al., arXiv 2508.07887 (2025); Orr et al., arXiv 2510.03311 (2025); Liu and Ding, National Science Open 5(1), 20250053 (doi 10.1360/nso/20250053; publisher page returned 403, bibliographic data from Crossref); Oh and Gobet, arXiv 2608.05224 (2026). No Nature Matters Arising was found."
+      ],
+      "locators": [
+        {
+          "id": "centaur-nat-abstract",
+          "label": "Article and abstract (PMC copy of the Nature article)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+            "heading": "A foundation model to predict and capture human cognition"
+          }
+        },
+        {
+          "id": "centaur-nat-generalization",
+          "label": "Results: Probing generalization abilities (cover story, problem structure, new domain; six further paradigms in Extended Data Fig. 4)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+            "heading": "Probing generalization abilities"
+          }
+        },
+        {
+          "id": "centaur-nat-neural",
+          "label": "Results: Alignment to human neural activity (two-step task and sentence-reading fMRI)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+            "heading": "Alignment to human neural activity"
+          }
+        },
+        {
+          "id": "centaur-nat-finetune",
+          "label": "Methods: Fine-tuning procedure (Llama 3.1 70B, QLoRA r = 8, one epoch)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+            "heading": "Fine-tuning procedure"
+          }
+        },
+        {
+          "id": "centaur-nat-eval",
+          "label": "Methods: Evaluation metric (negative log-likelihood averaged over responses)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-nature-2025",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12390832/",
+            "heading": "Evaluation metric"
+          }
+        }
+      ]
+    },
+    {
+      "id": "binz-centaur-arxiv-v3",
+      "label": "arXiv:2410.20268v3 (28 April 2025), 'Centaur: a foundation model of human cognition' (v1 26 October 2024; v2 18 November 2024)",
+      "url": "https://arxiv.org/abs/2410.20268v3",
+      "verifiedAt": "2026-10-31",
+      "verifiedBy": "Claude (research agent): opened the arXiv abstract page (versions, licence) and the v3 HTML (first 100,000 of about 169,000 characters, for the section structure); parsed the v3 PDF (149 pages) in memory to locate section pages",
+      "componentsSeen": [
+        "abstract page: 40 authors, three versions, subject cs.LG, CC BY 4.0 licence link",
+        "v3 structure: Introduction; Results (Model overview; Centaur predicts human behavior better than domain-specific cognitive models; Probing increasingly complex generalization abilities; Internal representations become more aligned to human neural activity; Model-guided scientific discovery using Psych-101 and Centaur); Discussion; Conclusion; Methods (Data collection; Finetuning procedure; Evaluation metric; Domain-specific cognitive models; Neural alignment; Model-guided scientific discovery; Data availability; Code availability); Supplementary Information including Minitaur (a Llama 3.1 8B version), further out-of-distribution evaluations and a noise ceiling analysis",
+        "PDF: printed page numbers equal physical index + 1"
+      ],
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "arxiv.org"
+      ],
+      "limitations": [
+        "Preprint, not the version of record: its title and section titles differ from the Nature article, and the two texts were not compared line by line.",
+        "Only the abstract page, the HTML section structure and page-location searches of the PDF were read."
+      ],
+      "locators": [
+        {
+          "id": "centaur-arx-abs",
+          "label": "arXiv abstract page (versions, licence)",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "binz-centaur-arxiv-v3",
+            "url": "https://arxiv.org/abs/2410.20268v3",
+            "heading": "Centaur: a foundation model of human cognition"
+          }
+        },
+        {
+          "id": "centaur-arx-generalization",
+          "label": "Results: Probing increasingly complex generalization abilities",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "binz-centaur-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2410.20268v3",
+            "physicalPageIndex": 5,
+            "printedPageLabel": "6",
+            "sectionLabel": "Probing increasingly complex generalization abilities"
+          }
+        },
+        {
+          "id": "centaur-arx-methods",
+          "label": "Methods: Data collection and Finetuning procedure",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "binz-centaur-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2410.20268v3",
+            "physicalPageIndex": 13,
+            "printedPageLabel": "14",
+            "sectionLabel": "Methods: Data collection; Finetuning procedure"
+          }
+        },
+        {
+          "id": "centaur-arx-eval",
+          "label": "Methods: Evaluation metric and Neural alignment",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "binz-centaur-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2410.20268v3",
+            "physicalPageIndex": 14,
+            "printedPageLabel": "15",
+            "sectionLabel": "Methods: Evaluation metric; Neural alignment"
+          }
+        },
+        {
+          "id": "centaur-arx-noise",
+          "label": "Supplementary Information: Noise ceiling analysis",
+          "verifiedAt": "2026-10-31",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "binz-centaur-arxiv-v3",
+            "url": "https://arxiv.org/pdf/2410.20268v3",
+            "physicalPageIndex": 22,
+            "printedPageLabel": "23",
+            "sectionLabel": "Noise ceiling analysis"
+          }
+        }
+      ]
+    }
+  ]
+}
