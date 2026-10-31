@@ -1,0 +1,31 @@
+{
+  "id": "PHY-210-u10",
+  "courseId": "PHY-210",
+  "sequence": 10,
+  "title": "The edge of special relativity: tides, free fall and the road to curvature",
+  "summary": "Free fall as the free-float frame; the local character of inertial frames and tidal accelerations; the parable of the two travellers; gravitation as curvature announced as a preview of PHY-240; gravitational time dilation and light bending as equivalence-principle consequences; what special relativity has established and under what hypotheses.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 9 and Section 2.3, and MIT 8.20 Week 4 (Lectures 12.1–12.6)." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "spacetime-causal-structure", "newtonian-mechanics"],
+  "teachesConceptIds": ["equivalence-principle"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 9 Gravity: Curved Spacetime in Action (pp. 275–298), treating 9.7–9.9 as orientation only.", "locatorId": "stp-ch9", "estimatedMinutes": 60 },
+    { "description": "Re-read Chapter 2, Section 2.3 Local Character of Free-Float Frame (pp. 30–34).", "locatorId": "stp-ch2", "estimatedMinutes": 15 },
+    { "description": "Optional: MIT 8.20 Week 4 videos, Lectures 12.1–12.6 (equivalence principle, gravitational time dilation, light bending, redshift tests, general relativity, experimental evidence).", "locatorId": "sr21-week4", "estimatedMinutes": 50 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Reading: the edge of special relativity", "instructions": "Read the listed material for this unit, keeping a written list of every statement that goes beyond flat spacetime; the prepared lesson will label each as a preview of PHY-240. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["stp-ch9", "stp-ch2", "sr21-week4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapters 2 and 9 PDFs listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; MIT 8.20 Week 4 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

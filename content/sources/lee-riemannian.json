@@ -1,0 +1,59 @@
+{
+  "id": "lee-riemannian",
+  "title": "Introduction to Riemannian Manifolds (Second Edition)",
+  "authors": ["John M. Lee"],
+  "institution": "Springer (Graduate Texts in Mathematics 176); author page at the University of Washington",
+  "kind": "book",
+  "canonicalUrl": "https://sites.math.washington.edu/~lee/Books/RM/",
+  "description": "Graduate textbook on Riemannian geometry (second edition, 2018; originally 'Riemannian Manifolds: An Introduction to Curvature', 1997): what curvature is; Riemannian metrics (including pseudo-Riemannian metrics); model Riemannian manifolds; connections; the Levi-Civita connection; geodesics and distance; curvature; Riemannian submanifolds; the Gauss–Bonnet theorem; Jacobi fields; comparison theory; curvature and topology; appendices reviewing smooth manifolds, tensors and Lie groups. Named by the owner as the candidate textbook for MAT-262.",
+  "isbn": "978-3-319-91754-2 (print), 978-3-319-91755-9 (eBook)",
+  "rightsNotes": [
+    "Commercial book. The author's page provides only the front matter (title page, preface, table of contents) and an errata PDF; it states that the book can be read online only by those affiliated with a university that subscribes to Springer's GTM series. Reference-only: no text is imported, embedded or sent to a model.",
+    "Chapter locators below are book_reference locators built from the table of contents in the author-hosted front matter; chapter contents were not inspected. They let lessons point the learner to the right chapter if the book is acquired.",
+    "Acquisition request: a legitimate copy (print or eBook) is needed before any unit can assign reading from this book; until then MAT-262 reads from open sources and lists this book as recommended."
+  ],
+  "currentVersionId": "lee-riemannian-2e-2018",
+  "versions": [
+    {
+      "id": "lee-riemannian-2e-2018",
+      "label": "2nd edition (2018), Springer GTM 176",
+      "url": "https://sites.math.washington.edu/~lee/Books/RM/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the author's book page and the linked front-matter PDF (title page, copyright page, preface, table of contents); did not open the book itself",
+      "componentsSeen": [
+        "author page: 'Introduction to Riemannian Manifolds, Second Edition', © 2018, described as adapted, expanded and retitled from 'Riemannian Manifolds: An Introduction to Curvature'; textbook for a one- or two-semester graduate course; links: front matter PDF, corrections PDF (updated 7/25/26), 'read the book online' (Springer, for subscribers), first-edition errata; no licence statement",
+        "front matter PDF (11 pages, no printed labels in metadata): title page; copyright page with ISBNs 978-3-319-91754-2 / 978-3-319-91755-9, DOI 10.1007/978-3-319-91755-9, GTM, 'All rights are reserved by the Publisher'; preface (pp. v–x) with prerequisites (topological and smooth manifolds as in the author's other texts) and chapter descriptions; contents (pp. xi–xiii) with chapter titles and starting pages"
+      ],
+      "licence": "All rights reserved (Springer International Publishing AG 2018); commercial",
+      "accessStatus": "commercial",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Only the author page and the front matter were seen; no chapter text was inspected, so no page-level locators inside chapters exist.",
+        "Contents page numbers are those printed in the front matter; chapter end pages are inferred from the next chapter's start.",
+        "The Springer link was seen on the author page but not opened."
+      ],
+      "locators": [
+        { "id": "lee-rm-page", "label": "Author's book page (edition, availability, links)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "lee-riemannian-2e-2018", "url": "https://sites.math.washington.edu/~lee/Books/RM/", "heading": "Introduction to Riemannian Manifolds, Second Edition" } },
+        { "id": "lee-rm-front-matter", "label": "Front matter PDF (title page, preface, table of contents)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "lee-riemannian-2e-2018", "url": "https://sites.math.washington.edu/~lee/Books/RM/front-matter.pdf", "heading": "Front matter" } },
+        { "id": "lee-rm-errata", "label": "Corrections to the second edition (PDF, listed as updated 7/25/26; not opened)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "lee-riemannian-2e-2018", "url": "https://sites.math.washington.edu/~lee/Books/RM/errata.pdf", "heading": "Corrections to the book" }, "note": "Link seen on the author page; file not opened." },
+        { "id": "lee-rm-preface", "label": "Preface (prerequisites; chapter-by-chapter description; exercises and problems), front matter PDF pages 3–8", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "lee-riemannian-2e-2018", "url": "https://sites.math.washington.edu/~lee/Books/RM/front-matter.pdf", "fileLabel": "front-matter.pdf", "physicalPageIndex": 2, "printedPageLabel": "v", "sectionLabel": "Preface" } },
+        { "id": "lee-rm-contents", "label": "Contents, front matter PDF pages 9–11", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "lee-riemannian-2e-2018", "url": "https://sites.math.washington.edu/~lee/Books/RM/front-matter.pdf", "fileLabel": "front-matter.pdf", "physicalPageIndex": 8, "printedPageLabel": "xi", "sectionLabel": "Contents" } },
+        { "id": "lee-rm-ch1", "label": "Chapter 1 What Is Curvature? (pp. 1–8)", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 1 What Is Curvature?" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch2", "label": "Chapter 2 Riemannian Metrics (pp. 9–54): Definitions; Methods for Constructing Riemannian Metrics; Basic Constructions; Lengths and Distances; Pseudo-Riemannian Metrics (p. 40); Other Generalizations", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 2 Riemannian Metrics" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch2-pseudo", "label": "Chapter 2, section 'Pseudo-Riemannian Metrics' (p. 40)", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 2, Pseudo-Riemannian Metrics" }, "note": "From the table of contents; section not inspected." },
+        { "id": "lee-rm-ch3", "label": "Chapter 3 Model Riemannian Manifolds (pp. 55–84): Euclidean spaces, spheres, hyperbolic spaces, invariant metrics on Lie groups, model pseudo-Riemannian manifolds", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 3 Model Riemannian Manifolds" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch4", "label": "Chapter 4 Connections (pp. 85–114): connections on vector bundles, covariant derivatives, vector fields along curves, geodesics, parallel transport", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 4 Connections" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch5", "label": "Chapter 5 The Levi-Civita Connection (pp. 115–150): the exponential map, normal coordinates, geodesics of the model spaces", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 5 The Levi-Civita Connection" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch6", "label": "Chapter 6 Geodesics and Distance (pp. 151–192): minimizing curves, uniformly normal neighborhoods, completeness, distance functions", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 6 Geodesics and Distance" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch7", "label": "Chapter 7 Curvature (pp. 193–224): the curvature tensor, flat manifolds, symmetries, Ricci identities, Ricci and scalar curvatures, the Weyl tensor", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 7 Curvature" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch8", "label": "Chapter 8 Riemannian Submanifolds (pp. 225–262): second fundamental form, hypersurfaces, sectional curvatures", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 8 Riemannian Submanifolds" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch9", "label": "Chapter 9 The Gauss–Bonnet Theorem (pp. 263–282)", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 9 The Gauss–Bonnet Theorem" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch10", "label": "Chapter 10 Jacobi Fields (pp. 283–318): the Jacobi equation, conjugate points, second variation, cut points", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 10 Jacobi Fields" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch11", "label": "Chapter 11 Comparison Theory (pp. 319–344)", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 11 Comparison Theory" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-ch12", "label": "Chapter 12 Curvature and Topology (pp. 345–370): constant curvature, nonpositive curvature, positive curvature", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Chapter 12 Curvature and Topology" }, "note": "From the table of contents; chapter not inspected." },
+        { "id": "lee-rm-appA", "label": "Appendix A Review of Smooth Manifolds (pp. 371–…): topological preliminaries, smooth manifolds and maps, tangent vectors, submanifolds, vector bundles, the tangent bundle and vector fields", "verifiedAt": "2026-10-30", "locator": { "kind": "book_reference", "sourceVersionId": "lee-riemannian-2e-2018", "edition": "2nd edition (2018)", "sectionLabel": "Appendix A Review of Smooth Manifolds" }, "note": "From the table of contents; appendix not inspected." }
+      ]
+    }
+  ]
+}

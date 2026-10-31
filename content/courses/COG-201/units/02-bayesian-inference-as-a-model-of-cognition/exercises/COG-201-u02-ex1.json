@@ -1,0 +1,59 @@
+{
+  "id": "COG-201-u02-ex1",
+  "sequence": 1,
+  "title": "Coins: from odds to a hierarchical prior",
+  "kind": "calculation",
+  "promptMarkdown": "1. A friend's coin comes up heads seven times in a row. Compare $H_{\\text{fair}}$ ($P(\\text{H})=0.5$) with $H_{\\text{trick}}$ ($P(\\text{H})=0.95$) under a prior $P(H_{\\text{trick}})=1/1000$. Compute the likelihood ratio, the posterior odds and $P(H_{\\text{trick}}\\mid D)$ to three significant figures.\n2. What is the smallest number $n$ of consecutive heads after which the trick coin becomes more probable than the fair coin under this prior? Show the inequality you solve and check it with the integers on either side.\n3. Now treat the weight $\\theta$ as unknown with prior $\\theta\\sim\\mathrm{Beta}(2,2)$ and observe 3 heads and 7 tails. Give the posterior distribution, the posterior predictive probability of heads on the next flip, the posterior mode, and the posterior standard deviation; compare the predictive with the maximum-likelihood estimate and explain the direction of the difference.\n4. Hierarchical prior: $P(\\text{fair})=0.99$; $\\theta\\mid\\text{fair}\\sim\\mathrm{Beta}(1000,1000)$; $\\theta\\mid\\text{unfair}\\sim\\mathrm{Beta}(1,1)$. For $D$ = 25 heads in a row, compute $P(D\\mid\\text{unfair})$ exactly, explain why $P(D\\mid\\text{fair})\\approx2^{-25}$, and obtain an approximate posterior odds for fairness. The lecture reports about $9\\times10^{-5}$; state whether your approximation is above or below the exact value and why.",
+  "conceptIds": ["bayesian-inference-cognition", "probability-measure-theoretic"],
+  "hintLadder": [
+    "Each head multiplies the odds by $P(\\text{H}\\mid\\text{trick})/P(\\text{H}\\mid\\text{fair})=1.9$. Posterior odds = likelihood ratio × prior odds, and prior odds are $1:999$.",
+    "For part 2 solve $1.9^n>999$ with logarithms, then check $n$ and $n-1$ directly.",
+    "The Beta posterior has parameters (prior heads + observed heads, prior tails + observed tails). Its mean is $\\alpha/(\\alpha+\\beta)$, its mode $(\\alpha-1)/(\\alpha+\\beta-2)$, its variance $\\alpha\\beta/\\big((\\alpha+\\beta)^2(\\alpha+\\beta+1)\\big)$.",
+    "$P(D\\mid\\text{unfair})=\\int_0^1\\theta^{25}\\,d\\theta$. For the fair branch, $\\mathrm{Beta}(1000,1000)$ is concentrated very near $\\tfrac12$; the exact value is $\\prod_{i=0}^{24}\\frac{1000+i}{2000+i}$, and each factor is slightly above $\\tfrac12$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "posterior-trick",
+      "kind": "expression_present",
+      "description": "the posterior probability of the trick coin after seven heads, about 0.082",
+      "params": { "patterns": ["0\\.082", "8\\.2(%|percent)", "0\\.0821"] }
+    },
+    {
+      "id": "beta-posterior",
+      "kind": "expression_present",
+      "description": "the posterior Beta(5, 9) is identified",
+      "params": { "patterns": ["beta\\(5,9\\)", "beta\\(5;9\\)", "beta\\(\\\\alpha=5,\\\\beta=9\\)"] }
+    },
+    {
+      "id": "predictive",
+      "kind": "expression_present",
+      "description": "the posterior predictive 5/14 ≈ 0.357 appears",
+      "params": { "patterns": ["5/14", "0\\.357", "35\\.7(%|percent)"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "odds-calculation", "criterion": "Likelihood ratio 1.9^7 ≈ 89.4, posterior odds ≈ 0.0895, P(trick | D) ≈ 0.082, with the prior odds used correctly.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three values with working." }, { "label": "partially met", "description": "Likelihood ratio right, prior mishandled." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "threshold-n", "criterion": "Solves 1.9^n > 999 to get n = 11 and checks n = 10 fails.", "weight": 0.15, "levels": [{ "label": "met", "description": "Correct with the check." }, { "label": "partially met", "description": "Correct n without the check." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "beta-bernoulli", "criterion": "Posterior Beta(5, 9); predictive 5/14 ≈ 0.357; mode 1/3; SD ≈ 0.124; predictive above the MLE 0.3 because the prior pulls towards 1/2.", "weight": 0.3, "levels": [{ "label": "met", "description": "All quantities and the explanation." }, { "label": "partially met", "description": "Posterior and predictive right; mode, SD or explanation missing." }, { "label": "not met", "description": "Wrong posterior." }] },
+      { "id": "hierarchical", "criterion": "P(D | unfair) = 1/26; P(D | fair) ≈ 2^-25 because Beta(1000,1000) is concentrated near 1/2; Bayes factor ≈ 26 · 2^-25 ≈ 7.7 × 10^-7; posterior odds ≈ 7.7 × 10^-5, below the exact 9 × 10^-5 because the exact integral ∏(1000+i)/(2000+i) exceeds 2^-25.", "weight": 0.3, "levels": [{ "label": "met", "description": "All steps and the direction of the approximation error." }, { "label": "partially met", "description": "Odds right, direction unexplained." }, { "label": "not met", "description": "Wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct values",
+      "text": "LR = 1.9^7 = 89.39; posterior odds = 89.39/999 = 0.0895; P(trick|D) = 0.0895/1.0895 = 0.082. Trick wins once 1.9^n > 999, i.e. n = 11 (1.9^10 = 613 < 999 < 1.9^11 = 1165). Posterior Beta(5,9): predictive 5/14 = 0.357, mode 4/12 = 0.333, variance 45/(196·15) = 0.0153, SD 0.124.",
+      "expect": { "posterior-trick": true, "beta-posterior": true, "predictive": true }
+    },
+    {
+      "label": "prior ignored and wrong posterior",
+      "text": "P(trick|D) = 89.4/90.4 = 0.989. The posterior is Beta(3,7) with mean 0.3.",
+      "expect": { "posterior-trick": false, "beta-posterior": false, "predictive": false }
+    }
+  ]
+}

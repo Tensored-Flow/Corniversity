@@ -1,0 +1,31 @@
+{
+  "id": "MAT-262-u10",
+  "courseId": "MAT-262",
+  "sequence": 10,
+  "title": "Curvature and topology: constant curvature, Cartan–Hadamard and Myers",
+  "summary": "Spaces of constant curvature and the form of their curvature tensor (Theorem 8.29); completeness and geodesics between points (Theorem 7.34); the distance comparison of Theorem 9.18 as the model for comparison arguments; statements and proof outlines of the Cartan–Hadamard theorem (nonpositive curvature) and Myers's theorem (positive Ricci curvature), with Riemannian submersions (Appendix C, Sternberg §9.3) as a source of examples; the synthesis project.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson Theorems 7.34, 8.29 and 9.18 with Appendix C, Sternberg §9.3, and Lee chapter 12 as the commercial reference. Cartan–Hadamard and Myers are not proved in the open sources recorded here; the prepared lesson will prove them independently and label the proofs as Corniversity's." }
+  ],
+  "prerequisiteConceptIds": ["jacobi-fields-comparison", "riemannian-distance-completeness", "curvature"],
+  "teachesConceptIds": ["curvature-and-topology"],
+  "preparation": [
+    { "description": "Re-read Gudmundsson Theorem 8.29 (constant curvature, p. 119) and Theorem 7.34 (p. 105), then Theorem 9.18 (p. 135) as the template for comparison arguments.", "locatorId": "gud-thm8-29", "estimatedMinutes": 40 },
+    { "description": "Read Gudmundsson Appendix C (Riemannian submersions, p. 145) and Sternberg §9.3 (curvature of submersions, O'Neill formulas) for examples of positively curved spaces.", "locatorId": "gud-appC", "estimatedMinutes": 40 },
+    { "description": "Optional, if you have the book: Lee chapter 12 (manifolds of constant, nonpositive and positive curvature).", "locatorId": "lee-rm-ch12", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Curvature and topology", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover and which theorems the open sources do not prove.", "estimatedMinutes": 120, "sourceLocatorIds": ["gud-thm8-29", "gud-thm7-34", "gud-thm9-18", "gud-appC", "stb-s9-3", "lee-rm-ch12"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson Theorem 7.34 (p. 105), Theorem 8.29 (p. 119), Theorem 9.18 (p. 135) and Appendix C (p. 145) verified against extracted text of Riemann.pdf (v1.438) on 2026-10-30; Sternberg §9.3 (p. 186, index 185) verified likewise; Lee chapter 12 is a table-of-contents pointer." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review. Cartan–Hadamard and Myers have no proof in the recorded open sources; this is noted in the objectives." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

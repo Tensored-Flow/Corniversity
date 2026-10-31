@@ -1,0 +1,46 @@
+{
+  "id": "PHY-201-u01",
+  "courseId": "PHY-201",
+  "sequence": 1,
+  "title": "From Newton to Lagrange: the principle of stationary action",
+  "summary": "Why Newton's law is awkward in curvilinear coordinates and with constraints; generalized coordinates and the Lagrangian; Hamilton's principle and the derivation of the Euler–Lagrange equations by one integration by parts; covariance under point transformations; worked examples in polar coordinates and in a cone; the non-uniqueness of L.",
+  "objectives": [
+    { "id": "u01-o1", "description": "Derive the Euler–Lagrange equations from Hamilton's principle, stating where the fixed endpoints and the independence of the coordinates are used." },
+    { "id": "u01-o2", "description": "Prove that the Euler–Lagrange equations keep their form under an invertible point transformation, using the identities ∂Q̇/∂q̇ = ∂Q/∂q and d(∂Q/∂q)/dt = ∂Q̇/∂q." },
+    { "id": "u01-o3", "description": "Write the Lagrangian of a particle on a frictionless surface of revolution under gravity by eliminating the constrained coordinate, derive the equations of motion, and check units and a limiting case." },
+    { "id": "u01-o4", "description": "Decide which alterations of a Lagrangian (adding a total time derivative, rescaling, adding a function of q) leave the equations of motion unchanged, with proof." }
+  ],
+  "prerequisiteConceptIds": ["newtonian-mechanics", "multivariable-calculus", "ode-basics"],
+  "teachesConceptIds": ["lagrangian-mechanics"],
+  "preparation": [
+    { "description": "Read Section 1.2, Newtonian Mechanics (PDF pages 1–2): the two forms of Newton's second law, inertial frames and Galilean transformations.", "locatorId": "cm3-c1-newton", "estimatedMinutes": 10 },
+    { "description": "Read PDF page 3: polar coordinates as 'non-inertial coordinates' (Eqs. 1.1–1.2), the Lagrangian L(q, q̇, t) and the Euler–Lagrange equations (Eqs. 1.3–1.4).", "locatorId": "cm3-c1-polar", "estimatedMinutes": 15 },
+    { "description": "Read PDF pages 4–5: Hamilton's principle (Eq. 1.5), the advantages of the Lagrangian formulation, and the proof of covariance under point transformations (Eqs. 1.6–1.13). Work through the proof with pen and paper.", "locatorId": "cm3-c1-hamilton-principle", "estimatedMinutes": 25 },
+    { "description": "Read Section 1.5, Calculus of Variations (PDF page 22, Eqs. 1.76–1.78), which supplies the integration-by-parts step the lesson uses.", "locatorId": "cm3-c1-variations", "estimatedMinutes": 15 },
+    { "description": "Optional second account: Tong, Classical Dynamics, Section 2.1 The Principle of Least Action (reference-only; read on the author's page).", "locatorId": "tong-cd-ch2-s1", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "reading", "title": "Lecture: Hamilton's principle and the Euler–Lagrange equations", "instructions": "Read the lesson alongside Section 1.2 of the 8.09 Chapter 1 notes. Reproduce the integration by parts in the derivation without looking, then check it. For the polar-coordinate example, verify every unit stated in the lesson.", "estimatedMinutes": 60, "sourceLocatorIds": ["cm3-c1-newton", "cm3-c1-polar", "cm3-c1-hamilton-principle", "cm3-c1-examples", "cm3-c1-cone", "cm3-c1-variations"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "problem", "title": "Tutorial: a surface of revolution and the freedom in L", "instructions": "Attempt exercise 1 before asking for any hint; write the Lagrangian, both equations of motion, the circular-orbit condition, units and the flat-surface limit. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 85, "sourceLocatorIds": ["cm3-c1-cone", "cm3-c1-examples", "cm3-c1-hamilton-principle"], "exerciseIds": ["PHY-201-u01-ex1", "PHY-201-u01-ex2"], "sessionKind": "tutorial" },
+    { "id": "u01-a3", "type": "explain_back", "title": "Explain: what the action principle buys", "instructions": "Write exercise 3 without the notes open, then compare with the list of advantages in Section 1.2.", "estimatedMinutes": 15, "sourceLocatorIds": ["cm3-c1-hamilton-principle"], "exerciseIds": ["PHY-201-u01-ex3"], "sessionKind": "oral" },
+    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the definition of the action; the statement of Hamilton's principle; the Euler–Lagrange equations; the two identities used in the covariance proof; the canonical momentum.", "estimatedMinutes": 10, "sourceLocatorIds": ["cm3-c1-polar", "cm3-c1-hamilton-principle"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-201-u01-ex1", "PHY-201-u01-ex2", "PHY-201-u01-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: Lagrangian on the paraboloid written with the constraint eliminated, both Euler–Lagrange equations derived, the circular-orbit angular velocity found and shown independent of radius, units checked, and the flat-surface limit interpreted.", "exerciseId": "PHY-201-u01-ex1" },
+  "commonMisconceptions": [
+    { "claim": "The Euler–Lagrange equation for r in polar coordinates gives m r̈ = F_r.", "correction": "It gives m r̈ − m r θ̇² = F_r (notes Eq. 1.16). The centripetal term is part of the acceleration in these coordinates; the notes call them 'non-inertial coordinates' for this reason.", "correctionLocatorIds": ["cm3-c1-polar", "cm3-c1-examples"] },
+    { "claim": "Hamilton's principle says the action is minimised.", "correction": "It says the action is stationary. For a harmonic oscillator over more than half a period the physical path is a saddle point of S; the derivation of the Euler–Lagrange equations uses only δS = 0.", "correctionLocatorIds": ["cm3-c1-hamilton-principle", "cm3-c1-variations"] },
+    { "claim": "The Lagrangian of a system is unique, so two different Lagrangians describe different physics.", "correction": "Adding the total time derivative of any F(q, t), or multiplying by a nonzero constant, changes the action by a boundary term or a factor and leaves the equations of motion unchanged (exercise 2).", "correctionLocatorIds": ["cm3-c1-hamilton-principle"] },
+    { "claim": "Once a constraint is used to eliminate a coordinate, the Euler–Lagrange equations can still be applied to the original, larger set of coordinates.", "correction": "The derivation requires the variations δq_i to be independent. Either eliminate the constrained coordinates first, as in the cone example, or keep them and add Lagrange multipliers (unit 2).", "correctionLocatorIds": ["cm3-c1-cone", "cm3-c1-variations"] }
+  ],
+  "estimatedMinutes": 255,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All nine Chapter 1 locators used by this unit opened 2026-10-30 and page indices verified against text extracted from MIT8_09F14_Chapter_1.pdf (29 pages; no PDF labels, printed numbers at the page foot): Eqs. 1.1–1.4 on PDF page 3 (index 2), Eq. 1.5 and the covariance proof on pages 4–5 (indices 3–4), the cone example on page 7 (index 6), the calculus of variations on page 22 (index 21). Tong Section 2.1 heading verified in clas2.pdf." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: the Euler–Lagrange equations from δS = 0 with the boundary term vanishing at fixed endpoints; the covariance identities ∂Q̇/∂q̇ = ∂Q/∂q and d(∂Q/∂q)/dt = ∂Q̇/∂q; the polar equations m r̈ − m r θ̇² = −∂V/∂r and d(m r² θ̇)/dt = −∂V/∂θ with units N and N m; the cone Lagrangian with 1 + cot²α = 1/sin²α and the α → π/2 limit; for the paraboloid exercise, θ̇² = g/a for every circular orbit, r₀ = (ℓ² a/(m² g))^{1/4}, radial oscillation frequency 2√(g/a)/√(1 + r₀²/a²)." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson works the cone, not the paraboloid; the circular-orbit result and the total-derivative proof appear only in instructor/ files, and the exercise prompts state no final formulas." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "60 + 85 + 15 + 10 minutes of activities plus about 85 minutes of preparation ≈ 4.2 hours, within the 9–13 hours per week budget alongside unit 2." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-201-u01-ex1.reference-solution.md", "PHY-201-u01-ex2.reference-solution.md", "PHY-201-u01-ex3.grading-notes.md", "lesson-notes.md"]
+}

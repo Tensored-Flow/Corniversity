@@ -1,0 +1,7 @@
+## Outline: Differentiation of the integral
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 22–24 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** The question of when $\frac{d}{dx}\int_a^xf=f(x)$ for a Lebesgue integrable $f$; the Vitali covering theorem for balls; the Hardy–Littlewood maximal function $Mf$ and the weak-type estimate $\lambda(\{Mf>t\})\le C\|f\|_1/t$; Lebesgue's differentiation theorem (averages of $f$ over shrinking balls converge to $f$ almost everywhere) and the Lebesgue set of an $L^1$ function; the resulting fundamental theorem of calculus for the Lebesgue integral; the generalised Minkowski inequality, a second proof of Young's inequality, distribution functions, and Marcinkiewicz interpolation giving $L^p$ boundedness of the maximal operator for $1<p\le\infty$. This is the natural synthesis unit for the course and the basis of the final project.
+
+**What preparation will add.** A full lesson with the covering argument written out, examples (a continuous function differentiable nowhere is not the issue; an integrable function with a dense set of non-Lebesgue points is), original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

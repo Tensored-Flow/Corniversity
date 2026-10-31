@@ -1,0 +1,71 @@
+{
+  "id": "CHE-101-u01-ex3",
+  "sequence": 3,
+  "title": "Atoms, isotopes and a dilution",
+  "kind": "calculation",
+  "promptMarkdown": "Three short checks on atoms, isotopes and solutions.\n\n1. For the ion $\\ce{^{37}_{17}Cl^-}$ state the numbers of protons, neutrons and electrons.\n2. Chlorine has two stable isotopes: $\\ce{^{35}Cl}$ (mass 34.969 u, abundance 75.76%) and $\\ce{^{37}Cl}$ (mass 36.966 u, abundance 24.24%). Compute the average atomic mass and explain in one sentence why no single chlorine atom has this mass.\n3. $5.85\\ \\text{g}$ of $\\ce{NaCl}$ ($M = 58.44\\ \\text{g mol}^{-1}$) is dissolved in water and made up to $250.0\\ \\text{mL}$ of solution. Compute the molarity. Then $50.0\\ \\text{mL}$ of this solution is diluted to $200.0\\ \\text{mL}$: compute the new molarity of $\\ce{NaCl}$ and the concentration of chloride ions in the diluted solution. State the assumption about volumes that a dilution calculation makes.",
+  "conceptIds": ["chemical-formulas-nomenclature", "mole-and-molar-mass", "solution-molarity"],
+  "hintLadder": [
+    "In $\\ce{^{A}_{Z}X^{q}}$ the lower-left number is the proton count, the upper-left number counts protons plus neutrons, and the charge tells you how many electrons were gained or lost.",
+    "An average atomic mass is an abundance-weighted mean: multiply each isotopic mass by its fractional abundance and add.",
+    "Molarity is moles of solute per litre of final solution; convert millilitres to litres.",
+    "Dilution conserves the amount of solute: $c_1V_1 = c_2V_2$. Then ask how many chloride ions each formula unit of $\\ce{NaCl}$ supplies."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "neutrons-20",
+      "kind": "numeric_value",
+      "description": "20 neutrons (advisory: the number 20 must appear)",
+      "params": { "expected": 20, "tolerance": 0 }
+    },
+    {
+      "id": "electrons-18",
+      "kind": "numeric_value",
+      "description": "18 electrons (advisory: the number 18 must appear)",
+      "params": { "expected": 18, "tolerance": 0 }
+    },
+    {
+      "id": "average-mass",
+      "kind": "numeric_value",
+      "description": "the average atomic mass is about 35.45 u",
+      "params": { "expected": 35.45, "tolerance": 0.02 }
+    },
+    {
+      "id": "molarity",
+      "kind": "numeric_value",
+      "description": "the stock molarity is 0.400 M",
+      "params": { "expected": 0.4, "tolerance": 0.0025 }
+    },
+    {
+      "id": "diluted",
+      "kind": "numeric_value",
+      "description": "the diluted molarity is 0.100 M",
+      "params": { "expected": 0.1, "tolerance": 0.0015 }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "symbol", "criterion": "Protons 17, neutrons 20, electrons 18, with the reasoning from A, Z and charge.", "weight": 0.2, "levels": [{ "label": "met", "description": "All three correct with reasoning." }, { "label": "partially met", "description": "Two correct." }, { "label": "not met", "description": "Fewer." }] },
+      { "id": "average-mass", "criterion": "Weighted mean computed correctly (35.45 u) and explained as an average over isotopes that no single atom possesses.", "weight": 0.25, "levels": [{ "label": "met", "description": "Value and explanation." }, { "label": "partially met", "description": "Value without explanation, or unweighted mean with explanation." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "molarity", "criterion": "Stock molarity 0.400 M computed with the volume of solution in litres.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct with units." }, { "label": "partially met", "description": "Correct method, unit or arithmetic slip." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "dilution", "criterion": "Diluted molarity 0.100 M, chloride 0.100 M, and the assumption (amount of solute conserved; final volume as stated) given.", "weight": 0.3, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "Two of three." }, { "label": "not met", "description": "Fewer." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "17 protons, 20 neutrons (37 − 17), 18 electrons (17 + 1 for the negative charge). Average mass = 0.7576(34.969) + 0.2424(36.966) = 35.45 u; it is a weighted mean over the two isotopes, so no atom has it. n = 5.85/58.44 = 0.1001 mol; c = 0.1001/0.2500 = 0.400 M. Diluted: 0.400 × 50.0/200.0 = 0.100 M NaCl, and [Cl−] = 0.100 M since each formula unit gives one chloride. The dilution assumes the amount of solute is conserved and the final solution volume is the 200.0 mL stated.",
+      "expect": { "neutrons-20": true, "electrons-18": true, "average-mass": true, "molarity": true, "diluted": true }
+    },
+    {
+      "label": "mass number read as neutrons and solvent volume used",
+      "text": "17 protons, 37 neutrons, 17 electrons. Average 35.97 u. Molarity 0.0234 M.",
+      "expect": { "neutrons-20": false, "electrons-18": false, "average-mass": false, "molarity": false }
+    }
+  ]
+}

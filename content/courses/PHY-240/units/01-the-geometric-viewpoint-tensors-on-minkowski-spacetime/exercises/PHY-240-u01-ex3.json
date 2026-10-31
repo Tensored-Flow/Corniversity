@@ -1,0 +1,25 @@
+{
+  "id": "PHY-240-u01-ex3",
+  "sequence": 3,
+  "title": "Why multilinear maps",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words, and without the notes open, explain why this course defines tensors as multilinear maps on vectors and one-forms rather than as 'arrays of numbers with indices'. Say what frame independence buys for physics, using the number-flux 4-vector and its conservation law $\\partial_\\mu N^\\mu = 0$ as the example, and state one thing that the component definition gets right that beginners often miss.",
+  "conceptIds": ["tensor-calculus-spacetime"],
+  "hintLadder": [
+    "If a law is written as an equation between tensors and holds in one inertial frame, what can you conclude about other frames?",
+    "What does $N^\\mu$ mean geometrically, and what do its components mean to a particular observer?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "geometric-object", "criterion": "Explains that a tensor is a single geometric object whose components are its values on basis vectors/one-forms, so a tensor equation true in one frame is true in all (frame independence of physical laws).", "weight": 0.45, "levels": [ { "label": "met", "description": "Clear and correct." }, { "label": "partially met", "description": "Gestures at it." }, { "label": "not met", "description": "Confused." } ] },
+      { "id": "example", "criterion": "N^μ = n u^μ: n and u^μ are geometric; N⁰ and N^i are what an observer calls density and flux; ∂_μ N^μ = 0 is one scalar equation that every observer reads as a continuity equation.", "weight": 0.35, "levels": [ { "label": "met", "description": "Correct with the component reading." }, { "label": "partially met", "description": "Example named without the reading." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "component-insight", "criterion": "Names a correct insight of the component definition: the transformation law is the content (four numbers do not make a vector), or index placement encodes which argument slot is meant.", "weight": 0.2, "levels": [ { "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Vague." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 20
+}

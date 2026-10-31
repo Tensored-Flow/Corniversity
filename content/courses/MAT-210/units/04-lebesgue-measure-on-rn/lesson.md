@@ -1,0 +1,7 @@
+## Outline: Lebesgue measure on R^n
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 6–7 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** The construction of Lebesgue measure on $\mathbb R^n$ in the notes' order: the measure of special rectangles and special polygons; the measure of open sets by approximation from within by polygons and of compact sets by approximation from outside by open sets; outer and inner measures; Lebesgue measurability for sets of finite outer measure (inner measure equals outer measure) and the removal of the finiteness restriction; the proof that the Lebesgue measurable sets form a σ-algebra $\mathcal L$ and that $\lambda$ is countably additive on it, so that $(\mathbb R^n,\mathcal L,\lambda)$ is a measure space to which units 2–3 apply.
+
+**What preparation will add.** A full lesson with the construction laid out as a sequence of lemmas with their hypotheses, examples (measure of a countable set, of an interval, of a countable union of intervals) and non-examples, original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

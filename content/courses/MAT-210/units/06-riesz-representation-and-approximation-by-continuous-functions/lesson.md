@@ -1,0 +1,7 @@
+## Outline: Riesz representation and approximation by continuous functions
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 10–12 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** Integration against a measure as a positive linear functional on compactly supported continuous functions, and the Riesz representation theorem producing a regular Borel measure from any such functional; the sense in which the Lebesgue integral is the completion of the Riemann integral; Lusin's theorem (a measurable function agrees with a continuous one off a set of small measure) and the Vitali–Carathéodory theorem (approximation from above and below by semicontinuous functions); approximation of measurable and integrable functions by continuous functions; convergence almost everywhere and the statement of the monotone and dominated convergence theorems under almost-everywhere hypotheses; countable additivity of $E\mapsto\int_Ef\,d\mu$.
+
+**What preparation will add.** A full lesson with the theorems stated with hypotheses in full (local compactness, regularity), examples and non-examples (a measurable function with no continuous a.e.-representative), original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

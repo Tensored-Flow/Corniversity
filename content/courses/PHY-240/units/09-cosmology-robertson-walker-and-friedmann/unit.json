@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u09",
+  "courseId": "PHY-240",
+  "sequence": 9,
+  "title": "Cosmology: Robertson–Walker spacetimes and the Friedmann equations",
+  "summary": "Maximally symmetric spaces; the Robertson–Walker metric with k = −1, 0, +1; the Friedmann equations, critical density and equations of state; redshift via a Killing tensor; cosmological distances; the flatness and horizon problems and inflation.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 18–19 (Lecture Guide pages 5–8) and Carroll Chapter 8." }
+  ],
+  "prerequisiteConceptIds": ["einstein-field-equation", "stress-energy-tensor", "covariant-derivative"],
+  "teachesConceptIds": ["frw-cosmology"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopsis of Lecture 18 (PDF page 5): maximally symmetric spaces, the Robertson–Walker metric and comoving coordinates.", "locatorId": "gr20-g-lec17-18", "estimatedMinutes": 15 },
+    { "description": "Read the continuation of Lecture 18 (PDF page 6): k = −1, 0, +1, the scale factor a(t), the Friedmann equations, Ω and the critical density, equations of state.", "locatorId": "gr20-g-lec18-friedmann", "estimatedMinutes": 20 },
+    { "description": "Read the Lecture Guide's synopsis of Lecture 19 (PDF pages 7–8): redshift via a Killing tensor, distance measures, the flatness and horizon problems, inflation.", "locatorId": "gr20-g-lec19", "estimatedMinutes": 20 },
+    { "description": "Watch Lectures 18 and 19 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Optional: Carroll, Chapter 8 Cosmology (reference-only; 1997 observational statements are historical).", "locatorId": "carroll-ch8", "estimatedMinutes": 50 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "lecture", "title": "Lectures 18–19: cosmology", "instructions": "Watch or read the transcripts of the listed lectures and the supplement. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec17-18", "gr20-g-lec18-friedmann", "gr20-g-lec19", "gr20-videos", "gr20-summaries", "carroll-ch8"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 470,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 5–8 (Lectures 18–19) located in the extracted PDF text on 2026-10-30, including the Friedmann equations and the redshift argument; video gallery and lecture summaries pages opened; Carroll Chapter 8 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

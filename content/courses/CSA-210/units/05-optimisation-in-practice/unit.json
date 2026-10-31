@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u05",
+  "courseId": "CSA-210",
+  "sequence": 5,
+  "title": "Optimisation in practice: conditioning, momentum, mini-batches and adaptive methods",
+  "summary": "Poor conditioning and the momentum method; non-convex landscapes and overparameterisation; the cost and variance of mini-batch gradients; adaptive methods (RMSprop, Adam); choosing and reporting optimiser hyperparameters.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W1D4 Tutorial 1 (Optimization techniques) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["gradient-descent", "multilayer-perceptron"],
+  "teachesConceptIds": ["optimisation-methods-dl"],
+  "preparation": [
+    { "description": "Read W1D4 Tutorial 1: the MLP case study, high-dimensional search, poor conditioning and momentum, non-convexity, mini-batches, adaptive methods.", "locatorId": "nmadl-w1d4-t1", "estimatedMinutes": 70 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "W1D4: Optimization", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w1d4", "nmadl-w1d4-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Optimization techniques'; section list through 'Section 7: Adaptive methods' recorded from the page's contents list)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

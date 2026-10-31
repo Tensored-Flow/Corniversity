@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u06",
+  "courseId": "CSA-210",
+  "sequence": 6,
+  "title": "Generalisation, overfitting and early stopping",
+  "summary": "Big networks as adaptive basis functions; memorisation versus generalisation; train, validation and test curves; fitting randomised labels; regularisation as shrinkage; early stopping chosen on the validation set.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D1 Tutorial 1 (Regularization techniques part 1) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["supervised-learning-generalisation", "multilayer-perceptron"],
+  "teachesConceptIds": ["overfitting-and-early-stopping"],
+  "preparation": [
+    { "description": "Read W2D1 Tutorial 1: regularisation as shrinkage, overfitting and its visualisation, the validation dataset, memorisation, early stopping, and the bonus on training with randomised labels.", "locatorId": "nmadl-w2d1-t1", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "W2D1 Tutorial 1: Regularization techniques part 1", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d1", "nmadl-w2d1-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Regularization techniques part 1'; sections including 'Section 2.2: Overfitting on Test Dataset', 'Validation Dataset', 'Section 4: Early Stopping' and the randomised-labels bonus recorded)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

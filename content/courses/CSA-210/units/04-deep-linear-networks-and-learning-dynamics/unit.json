@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u04",
+  "courseId": "CSA-210",
+  "sequence": 4,
+  "title": "Deep linear networks: learning dynamics through the SVD",
+  "summary": "Deep linear networks compute a product of matrices yet learn in stages; gradient flow analysed through the singular value decomposition of the input–output correlation; representational similarity analysis; illusory correlations during training; learning rates and other hyperparameters as a preview.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W1D2 Tutorial 3 (Deep linear neural networks) with Tutorial 2 (Learning Hyperparameters) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["gradient-descent", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["deep-linear-network-dynamics"],
+  "preparation": [
+    { "description": "Read W1D2 Tutorial 3: deep linear neural nets, the SVD section, representational similarity analysis and illusory correlations; skim Tutorial 2 on learning hyperparameters.", "locatorId": "nmadl-w1d2-t3", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "W1D2 Tutorial 3: Deep linear neural networks", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w1d2", "nmadl-w1d2-t3", "nmadl-w1d2-t2"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Tutorial 3 page opened 2026-10-30 (HTTP 200; title 'Tutorial 3: Deep linear neural networks'; section list recorded); Tutorial 2 page loaded with its title, body truncated in the fetch." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

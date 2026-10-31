@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u06",
+  "courseId": "MAT-261",
+  "sequence": 6,
+  "title": "Sard's theorem and stratified spaces",
+  "summary": "Sets of measure zero in manifolds; the measure-zero criterion; Sard's theorem that the critical values of a smooth map form a set of measure zero, with proof; consequences (regular values are dense); stratifications of spaces by manifolds.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 10–12 of the 18.965 notes (Theorems 12.1 and 12.3; Definition 13.1) with Hitchin §10.5 for the special case of Sard's theorem." }
+  ],
+  "prerequisiteConceptIds": ["inverse-function-theorem-manifolds", "tangent-bundle-vector-fields", "real-analysis-sequences"],
+  "teachesConceptIds": ["sard-theorem"],
+  "preparation": [
+    { "description": "Read lectures 10–11: §12 Sard's theorem, Theorem 12.1 (measure-zero criterion) and Theorem 12.3 (Sard) with proof.", "locatorId": "gm04-l10-sard", "estimatedMinutes": 60 },
+    { "description": "Read lecture 12: Definition 13.1 and the examples of stratified spaces.", "locatorId": "gm04-lec12", "estimatedMinutes": 30 },
+    { "description": "Read Hitchin appendix §10.5 (Sard's theorem, special case) for the short proof in the equidimensional case.", "locatorId": "hit14-s10-5", "estimatedMinutes": 15 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Lectures 10–12: Sard's theorem and stratified spaces", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec10-11", "gm04-lec12", "gm04-l10-sard", "hit14-s10-5"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lectures 10–11 and 12 PDFs downloaded and text-extracted 2026-10-30: §12 with Theorems 12.1 and 12.3 begins on PDF page 1 of lecture10_11.pdf; §13 Definition 13.1 on page 1 of lecture12.pdf. Hitchin §10.5 on printed p. 93 (PDF index 92)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

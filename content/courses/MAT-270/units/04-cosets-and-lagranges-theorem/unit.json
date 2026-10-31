@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u04",
+  "courseId": "MAT-270",
+  "sequence": 4,
+  "title": "Cosets and Lagrange's theorem",
+  "summary": "Left and right cosets and the partition they induce; the index of a subgroup; Lagrange's theorem and its corollaries (orders of elements divide the group order, groups of prime order are cyclic, multiplicativity of the index); the converse fails (A_4 has no subgroup of order 6); Fermat's little theorem and Euler's theorem.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 6 of Judson (Sections 6.1–6.3)." }
+  ],
+  "prerequisiteConceptIds": ["group-basics", "cyclic-groups", "permutation-groups"],
+  "teachesConceptIds": ["cosets-lagrange"],
+  "preparation": [
+    { "description": "Read Sections 6.1 and 6.3 from the chapter page: cosets and the partition of G; Fermat's and Euler's theorems.", "locatorId": "aata-ch06", "estimatedMinutes": 50 },
+    { "description": "Read Section 6.2: Proposition 6.2.1, Lagrange's theorem (Theorem 6.2.2), Corollaries 6.2.3–6.2.5, Proposition 6.2.7 (A_4 has no subgroup of order 6), Theorem 6.2.8.", "locatorId": "aata-s6-2", "estimatedMinutes": 50 },
+    { "description": "Optional supplement: MIT student notes, lecture 4 (Isomorphisms and Cosets).", "locatorId": "an21-lec04", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Chapter 6: cosets and Lagrange", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch06", "aata-s6-2", "an21-lec04"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 6 page and Section 6.2 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 6.2). MIT student-notes lecture 4 PDF URL recorded from its resource page; the file was not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

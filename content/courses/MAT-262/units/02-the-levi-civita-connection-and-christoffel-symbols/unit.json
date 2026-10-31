@@ -1,0 +1,46 @@
+{
+  "id": "MAT-262-u02",
+  "courseId": "MAT-262",
+  "sequence": 2,
+  "title": "The Levi-Civita connection and Christoffel symbols",
+  "summary": "Why vector fields have no canonical derivative; the directional derivative on Euclidean space and its five properties; connections on vector bundles, torsion and metric compatibility; the Koszul formula, uniqueness and the fundamental theorem of Riemannian geometry; Christoffel symbols, their formula, symmetry and non-tensorial transformation, with the polar-coordinate example; the tangential connection and second fundamental form of a submanifold.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Define connections, torsion and metric compatibility, derive the Koszul formula and prove existence and uniqueness of the Levi-Civita connection." },
+    { "id": "u02-o2", "description": "Compute Christoffel symbols from the metric coefficients, with the index conventions stated, and check torsion-freeness and metric compatibility on an example." },
+    { "id": "u02-o3", "description": "Explain why Christoffel symbols are not tensor components and read coordinate blow-ups (cot θ at the poles, 1/r at the origin) as coordinate artefacts." },
+    { "id": "u02-o4", "description": "Prove that the tangential projection of the ambient Levi-Civita connection is the Levi-Civita connection of a submanifold and compute it for the round sphere." }
+  ],
+  "prerequisiteConceptIds": ["riemannian-metric", "metric-coefficients-charts", "tangent-bundle-vector-fields"],
+  "teachesConceptIds": ["levi-civita-connection", "connections-geodesics"],
+  "preparation": [
+    { "description": "Read Gudmundsson chapter 6, pp. 77–78: the directional derivative and Proposition 6.1; Definition 6.2 (connection) and Definition 6.3 (torsion).", "locatorId": "gud-def6-2", "estimatedMinutes": 20 },
+    { "description": "Read p. 79: Definition 6.4 (metric connection), Observation 6.5 (Koszul formula) and Definition 6.6; then pp. 80–81: Remark 6.7, Proposition 6.8 and Theorem 6.9 with their proofs.", "locatorId": "gud-obs6-5", "estimatedMinutes": 35 },
+    { "description": "Read pp. 82–83: Proposition 6.12 (Lie groups) and Example 6.13 (Christoffel symbols and their formula).", "locatorId": "gud-prop6-12", "estimatedMinutes": 20 },
+    { "description": "Read pp. 84–86: Definitions 6.14–6.19 (extensions, tangential and normal parts, second fundamental form), Theorem 6.20, Proposition 6.21, Example 6.23.", "locatorId": "gud-thm6-20", "estimatedMinutes": 25 },
+    { "description": "Open-licensed alternative reading: Sternberg chapter 3, §3.1 (linear connections) and §3.2 (Christoffel symbols), and §3.9 (Levi-Civita's theorem); Wendl §1.1 for the motivation.", "locatorId": "stb-ch3", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Chapter 6 with the lesson: connections and the Koszul formula", "instructions": "Read the lesson alongside Gudmundsson chapter 6. After Observation 6.5, close the notes and re-derive the Koszul formula yourself from the two conditions before reading on. Recompute the polar-coordinate Christoffel symbols by hand.", "estimatedMinutes": 80, "sourceLocatorIds": ["gud-prop6-1", "gud-def6-2", "gud-obs6-5", "gud-prop6-8", "gud-thm6-9", "gud-prop6-12", "gud-def6-19", "gud-thm6-20", "gud-ex6-23", "wen-s1-1", "wen-s3-3", "stb-ch3", "stb-s3-2", "stb-s3-9", "lee-rm-ch4", "lee-rm-ch5"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "proof_workshop", "title": "Tutorial: Christoffel symbols of the sphere; the tangential connection", "instructions": "Attempt exercise 1 first, stating the index convention before computing; show the work for every non-zero symbol and check one metric-compatibility identity. Then attempt exercise 2, organising the proof around the fundamental theorem. Submit each attempt when complete; revise after feedback.", "estimatedMinutes": 100, "sourceLocatorIds": ["gud-obs6-5", "gud-thm6-9", "gud-prop6-12", "gud-thm6-20"], "exerciseIds": ["MAT-262-u02-ex1", "MAT-262-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a3", "type": "explain_back", "title": "Explain: what torsion-free and metric each buy", "instructions": "Exercise 3, written without the notes, then compared with Theorem 6.9 and its proof.", "estimatedMinutes": 15, "sourceLocatorIds": ["gud-thm6-9"], "exerciseIds": ["MAT-262-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: definitions and formulas", "instructions": "From memory: the three axioms of a connection; torsion; metric compatibility; the Koszul formula; the Christoffel formula with index placement; the statement of Theorem 6.20.", "estimatedMinutes": 10, "sourceLocatorIds": ["gud-def6-2", "gud-obs6-5", "gud-prop6-12"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["MAT-262-u02-ex1", "MAT-262-u02-ex2", "MAT-262-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: inverse metric computed; Γ^θ_φφ = −sinθ cosθ and Γ^φ_θφ = Γ^φ_φθ = cotθ derived with all other symbols shown to vanish; one metric-compatibility identity checked; the blow-up of cotθ at the poles explained as a coordinate artefact; independence of R proved.", "exerciseId": "MAT-262-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "Christoffel symbols are the components of a tensor, so if they vanish at a point in one chart they vanish in every chart.", "correction": "Their transformation law has an inhomogeneous second-derivative term. Normal coordinates make them vanish at a point; polar coordinates on the flat plane make them non-zero everywhere.", "correctionLocatorIds": ["gud-prop6-12"] },
+    { "claim": "Γ^φ_θφ = cotθ blows up at the poles, so the Levi-Civita connection of the sphere is singular there.", "correction": "The connection is the tangential projection of the Euclidean directional derivative (Theorem 6.20), manifestly smooth on the whole sphere; the blow-up reflects the degeneration of the spherical chart, as in unit 1.", "correctionLocatorIds": ["gud-thm6-20", "gud-prop6-12"] },
+    { "claim": "Metric compatibility alone determines the connection.", "correction": "Adding to a metric connection any tensor A with g(A(X,Y),Z) antisymmetric in (Y,Z) gives another metric connection; torsion-freeness is what removes the freedom. Exercise 3 asks for examples.", "correctionLocatorIds": ["gud-obs6-5", "gud-thm6-9"] },
+    { "claim": "The directional derivative of a tangent field along a surface in R³ is tangent to the surface.", "correction": "In general it has a normal component, the second fundamental form B(X,Y); only its tangential part is the surface's covariant derivative. For the sphere of radius R, B(X,Y) = −R^{-2}⟨X,Y⟩p is never zero for X = Y ≠ 0.", "correctionLocatorIds": ["gud-def6-19", "gud-thm6-20"] }
+  ],
+  "estimatedMinutes": 335,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All Gudmundsson chapter-6 locators verified against text extracted from Riemann.pdf (v1.438) on 2026-10-30: Proposition 6.1 on p. 77 (PDF index 78), Definitions 6.2–6.3 on p. 78, Definition 6.4, Observation 6.5 and Definition 6.6 on p. 79, Remark 6.7 and Proposition 6.8 on p. 80, Theorem 6.9 on p. 81, Proposition 6.12 and Example 6.13 on pp. 82–83, Definition 6.19 on p. 84, Theorem 6.20 and Proposition 6.21 on p. 85, Example 6.23 on p. 86. Sternberg §3.1 (p. 57), §3.2 (p. 58), §3.9 (p. 65) and Wendl §1.1 (p. 1), §3.3 (p. 75) verified against extracted text; Lee chapters 4–5 are chapter-level pointers from the table of contents." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: the Koszul formula from the three permuted compatibility identities; polar symbols Γ^r_θθ = −r, Γ^θ_rθ = 1/r checked against the Cartesian directional derivative; sphere symbols from g = R²(dθ² + sin²θ dφ²): g^θθ = R^{-2}, g^φφ = (R² sin²θ)^{-1}, Γ^θ_φφ = −sinθ cosθ, Γ^φ_θφ = cotθ, others zero, with ∂_θ g_φφ = 2 g(∇_∂θ ∂φ, ∂φ) = 2R² sinθ cosθ verified; independence of R from the Koszul formula; tangential connection: C^∞-linearity and Leibniz via linearity of ⊤, torsion-freeness via tangency of brackets of tangent fields (slice-chart argument), metric compatibility via h(∇_X Y, Z) = h((∇_X Y)^⊤, Z) for Z tangent; sphere: ⟨∂_X Y, p⟩ = −⟨X, Y⟩ hence ∇̃_X Y = ∂_X Y + R^{-2}⟨X,Y⟩p and B(X,Y) = −R^{-2}⟨X,Y⟩p; the examples ∂ + X × Y (metric, torsion) and ∂ + X(f)Y + Y(f)X (torsion-free, not metric)." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson works the polar-coordinate example and states Theorem 6.20 but does not compute the sphere's symbols, prove the theorem or give the sphere's tangential formula or the exercise-3 examples; those live only in instructor/ files." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "80 + 100 + 15 + 10 minutes of activities plus 130 minutes of preparation ≈ 5.6 hours; with unit 1 this is the first teaching week at about 10.5 hours, within the 10–14 hour budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["MAT-262-u02-ex1.reference-solution.md", "MAT-262-u02-ex2.reference-solution.md", "MAT-262-u02-ex3.grading-notes.md"]
+}

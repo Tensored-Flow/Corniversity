@@ -1,0 +1,30 @@
+{
+  "id": "MAT-261-u03",
+  "courseId": "MAT-261",
+  "sequence": 3,
+  "title": "Inverse and implicit function theorems; submanifolds",
+  "summary": "The inverse function theorem with its contraction-mapping proof; the implicit function theorem in Banach form; critical points and regular values; submanifolds and the regular-value theorem; the orthogonal group as a manifold; existence and uniqueness for ODEs via the inverse function theorem.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 4–5 of the 18.965 notes (Theorems 5.1–5.2, Definition 5.3, Corollary 5.4, §6) with Hitchin §10.1 as a second proof of the inverse function theorem." }
+  ],
+  "prerequisiteConceptIds": ["smooth-maps-diffeomorphisms", "multivariable-calculus", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["inverse-function-theorem-manifolds"],
+  "preparation": [
+    { "description": "Read lecture 4: Theorem 5.1 (inverse function theorem) and its contraction-mapping proof, Theorem 5.2 (implicit function theorem), Definition 5.3 (submanifold), Corollary 5.4.", "locatorId": "gm04-l4-thm5-1", "estimatedMinutes": 45 },
+    { "description": "Read lecture 5 §6: O(n) as the preimage of a regular value; the ODE existence argument. Compare with Hitchin's appendix §10.1.", "locatorId": "gm04-l5-orthogonal-group", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Lectures 4–5: inverse and implicit function theorems", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec04", "gm04-lec05", "gm04-l4-thm5-1", "gm04-l4-thm5-2", "gm04-l4-def5-3", "gm04-l5-orthogonal-group", "hit14-s10-1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 4 and 5 PDFs downloaded and text-extracted 2026-10-30: Theorem 5.1 on PDF page 1, Theorem 5.2 on page 3, Definition 5.3 and Corollary 5.4 on page 4 of lecture4.pdf; §6 on page 1 of lecture5.pdf. Hitchin §10.1 on printed p. 86 (PDF index 85)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

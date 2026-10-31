@@ -1,0 +1,91 @@
+{
+  "id": "PHY-201-u02-ex2",
+  "sequence": 2,
+  "title": "A helical symmetry",
+  "kind": "proof",
+  "promptMarkdown": "A particle of mass $m$ moves in three dimensions in a potential that, in cylindrical coordinates $(r,\\theta,z)$, has the form $V = U(r,\\ \\theta - kz)$ for a smooth function $U$ and a constant $k>0$ with units of $\\mathrm{rad\\,m^{-1}}$. (The potential is invariant along a helix: screwing the configuration by angle $\\epsilon$ while advancing $\\epsilon/k$ along the axis leaves it unchanged.)\n\n1. Write the Lagrangian and show that the infinitesimal transformation $\\theta\\to\\theta+\\epsilon$, $z\\to z+\\epsilon/k$, $r\\to r$ leaves $L$ invariant to first order.\n2. Apply Noether's theorem to obtain the conserved quantity $Q$. Then verify directly from the Euler–Lagrange equations that $dQ/dt = 0$.\n3. Show that neither $p_\\theta$ nor $p_z$ is conserved on its own unless $U$ is independent of its second argument. What is the limit $k\\to 0$ of your result, and does it agree with what you expect in that limit?\n4. Is the Hamiltonian conserved? Is it equal to the energy? State the hypotheses you use.",
+  "conceptIds": ["noether-symmetry", "lagrangian-mechanics"],
+  "hintLadder": [
+    "Under the transformation, how does the combination $\\theta - kz$ change? How do $\\dot r,\\dot\\theta,\\dot z$ change?",
+    "Noether's theorem for $q_i\\to q_i+\\epsilon K_i$ gives the conserved quantity $\\sum_i p_iK_i$. Here $K_\\theta = 1$, $K_z = 1/k$, $K_r = 0$.",
+    "For the direct check compute $\\dot p_\\theta = \\partial L/\\partial\\theta$ and $\\dot p_z = \\partial L/\\partial z$ with the chain rule on $U$; write $U_2$ for the derivative of $U$ with respect to its second argument.",
+    "For part 4 look at the explicit time dependence of $L$ and at the structure of $T$ and $V$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "charge",
+      "kind": "expression_present",
+      "description": "the conserved quantity p_θ + p_z/k (or k p_θ + p_z, or in terms of m r² θ̇ and m ż) appears",
+      "params": {
+        "patterns": [
+          "p_\\\\?(θ|theta)\\+p_z/k",
+          "p_\\\\?(θ|theta)\\+\\(p_z\\)/\\(k\\)",
+          "kp_\\\\?(θ|theta)\\+p_z",
+          "p_z\\+kp_\\\\?(θ|theta)",
+          "l_z\\+p_z/k",
+          "mr\\^2\\\\?dot\\{?\\\\?(θ|theta)\\}?\\+m\\\\?dot\\{?z\\}?/k",
+          "mr\\^2(θ|θ̇)\\+mż/k",
+          "mr\\^2\\\\?(θ|theta)'\\+mz'/k"
+        ]
+      }
+    },
+    {
+      "id": "h-equals-e-hypothesis",
+      "kind": "requires_hypothesis",
+      "description": "a claim that H equals the energy must name a hypothesis (kinetic energy quadratic/homogeneous in velocities, potential velocity-independent, or no explicit time dependence)",
+      "params": {
+        "triggerPatterns": [
+          "h\\s*=\\s*e\\b",
+          "hamiltonian (is|equals|is equal to) (the )?(total )?energy",
+          "h is the energy"
+        ],
+        "hypothesisPatterns": [
+          "quadratic",
+          "homogeneous",
+          "velocity[- ]independent",
+          "independent of (the )?velocit",
+          "does not depend on (the )?velocit",
+          "no explicit time",
+          "time[- ]independent",
+          "not depend explicitly on t",
+          "no explicit t\\b"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "invariance", "criterion": "L is written correctly and the invariance is shown: θ − kz is unchanged, the velocities are unchanged, so δL = 0.", "weight": 0.2, "levels": [ { "label": "met", "description": "Complete." }, { "label": "partially met", "description": "Invariance asserted." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "noether", "criterion": "Q = p_θ + p_z/k (equivalently k m r² θ̇ + m ż) is obtained from Noether and verified directly: ṗ_θ = −U₂, ṗ_z = kU₂, so Q̇ = 0.", "weight": 0.4, "levels": [ { "label": "met", "description": "Both routes complete." }, { "label": "partially met", "description": "Q right, direct check incomplete or a sign slip." }, { "label": "not met", "description": "Q wrong." } ] },
+      { "id": "separate-momenta", "criterion": "Shows p_θ and p_z are not separately conserved unless U₂ = 0, and that k → 0 recovers z-translation symmetry with p_z conserved (kQ → p_z).", "weight": 0.2, "levels": [ { "label": "met", "description": "Both parts." }, { "label": "partially met", "description": "One part." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "hamiltonian", "criterion": "H is conserved because L has no explicit time dependence, and H = E because T is homogeneous of degree two in the velocities and V is velocity independent; hypotheses named.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both conclusions with hypotheses." }, { "label": "partially met", "description": "Conclusions right, hypotheses missing." }, { "label": "not met", "description": "Wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX solution",
+      "text": "Under $\\theta\\to\\theta+\\epsilon$, $z\\to z+\\epsilon/k$ the argument $\\theta - kz$ is unchanged and the velocities are unchanged, so $\\delta L = 0$. Noether gives $Q = p_\\theta + p_z/k$. Directly, $\\dot p_\\theta = -U_2$ and $\\dot p_z = kU_2$, so $\\dot Q = 0$. As $k\\to 0$, $kQ \\to p_z$, which is conserved because z becomes cyclic. Since L has no explicit time dependence H is conserved, and H = E because T is quadratic in the velocities and V is velocity-independent.",
+      "expect": { "charge": true, "h-equals-e-hypothesis": true }
+    },
+    {
+      "label": "plain-text charge",
+      "text": "The conserved quantity is k p_θ + p_z, i.e. k m r² θ̇ + m ż.",
+      "expect": { "charge": true }
+    },
+    {
+      "label": "H = E without hypothesis",
+      "text": "The Hamiltonian is the total energy, so H = E and it is conserved.",
+      "expect": { "h-equals-e-hypothesis": false }
+    },
+    {
+      "label": "no charge found",
+      "text": "I could show the Lagrangian is invariant but did not find the conserved quantity.",
+      "expect": { "charge": false }
+    }
+  ]
+}

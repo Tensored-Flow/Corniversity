@@ -1,0 +1,32 @@
+{
+  "id": "PHY-240-u07",
+  "courseId": "PHY-240",
+  "sequence": 7,
+  "title": "Linearised gravity and the Newtonian limit",
+  "summary": "Linearisation about flat spacetime; gauge transformations and gauge invariance of the linearised curvature; the trace-reversed perturbation and the wave equation; the static limit and the Newtonian metric; gauge-invariant degrees of freedom.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 14–15 (Lecture Guide page 4), Tong Chapter 5 and Carroll Chapter 6." }
+  ],
+  "prerequisiteConceptIds": ["einstein-field-equation", "spacetime-curvature"],
+  "teachesConceptIds": ["linearised-gravity"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopses of Lectures 14 and 15 (PDF page 4): linearisation, gauge, trace reversal, the Newtonian limit; radiative Green's function and gauge-invariant degrees of freedom.", "locatorId": "gr20-g-lec14-16", "estimatedMinutes": 20 },
+    { "description": "Watch Lectures 14 and 15 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Chapter 5 When Gravity is Weak (reference-only), the sections on linearised gravity and the Newtonian limit.", "locatorId": "tong-gr-ch5", "estimatedMinutes": 50 },
+    { "description": "Optional: Carroll, Chapter 6 Weak Fields and Gravitational Radiation (first half), reference-only.", "locatorId": "carroll-ch6", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "lecture", "title": "Lectures 14–15: linearised gravity", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec14-16", "gr20-videos", "gr20-summaries", "tong-gr-ch5", "carroll-ch6"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 450,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide page 4 (Lectures 14–16) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Chapter 5 listed on the notes page; Carroll Chapter 6 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

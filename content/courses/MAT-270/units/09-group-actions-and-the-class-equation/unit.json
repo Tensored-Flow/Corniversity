@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u09",
+  "courseId": "MAT-270",
+  "sequence": 9,
+  "title": "Group actions and the class equation",
+  "summary": "Groups acting on sets; orbits and stabilisers and the orbit–stabiliser relation; the action by conjugation, conjugacy classes and centralisers; the class equation; p-groups have nontrivial centre and groups of order p² are abelian; Burnside's counting theorem with geometric and switching-function examples.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 14 of Judson (Sections 14.1–14.3) with MIT student notes lectures 17–19 as a supplement." }
+  ],
+  "prerequisiteConceptIds": ["cosets-lagrange", "group-homomorphisms", "permutation-groups"],
+  "teachesConceptIds": ["group-actions"],
+  "preparation": [
+    { "description": "Read Section 14.1 (groups acting on sets, orbits, stabilisers) and Section 14.3 (Burnside's counting theorem) from the chapter page.", "locatorId": "aata-ch14", "estimatedMinutes": 60 },
+    { "description": "Read Section 14.2: the class equation, Theorem 14.2.4 (p-groups have nontrivial centre) and Corollary 14.2.5 (groups of order p² are abelian).", "locatorId": "aata-s14-2", "estimatedMinutes": 40 },
+    { "description": "Optional supplement: MIT student notes, lectures 17–19 (Group Actions; Stabilizer; Group Actions on G).", "locatorId": "an21-lec17", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Chapter 14: group actions and the class equation", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["aata-ch14", "aata-s14-2", "an21-lec17", "an21-lec18", "an21-lec19"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 14 page and Section 14.2 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 14.2). MIT student-notes lecture 17–19 PDF URLs recorded from their resource pages; the files were not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,0 +1,354 @@
+{
+  "id": "probmods-v2",
+  "title": "Probabilistic Models of Cognition (2nd edition)",
+  "authors": [
+    "Noah D. Goodman",
+    "Joshua B. Tenenbaum",
+    "The ProbMods Contributors (Daphna Buchsbaum, Joshua Hartshorne, Robert Hawkins, Timothy J. O'Donnell, Michael Henry Tessler, and others named on the site)"
+  ],
+  "institution": "probmods.org (open-source book project; source on GitHub, probmods/probmods2)",
+  "kind": "book",
+  "canonicalUrl": "http://probmods.org/",
+  "description": "Web book on probabilistic generative models of cognition written around runnable WebPPL programs: generative models, conditioning, dependence, social cognition, Bayesian data analysis, inference algorithms, process models, learning as conditional inference, hierarchical models, Occam's razor, mixture models and more. Cited by the site as N. D. Goodman, J. B. Tenenbaum and The ProbMods Contributors (2016), Probabilistic Models of Cognition (2nd ed.).",
+  "rightsNotes": [
+    "No licence is stated anywhere inspected on 2026-10-30: the site index says only 'This book is an open source project. We welcome content contributions'; the probmods/probmods2 repository shows no LICENSE file and its README contains no licence sentence. Under Corniversity's rules an unknown licence means reference-only: the book is read on its own site, cited by chapter URL and heading, never imported, embedded or sent to an external model.",
+    "The site serves over plain HTTP. On 2026-10-30 the HTTPS endpoint presented a certificate for *.github.io that does not cover probmods.org, so verification used http://probmods.org/ (HTTP 200, Server: GitHub.com, Last-Modified 2023-06-05) and the chapter headings were cross-checked against the GitHub source.",
+    "The first edition (Goodman & Tenenbaum, Church-based) remains at https://v1.probmods.org/ with a different chapter list; it is not used here."
+  ],
+  "currentVersionId": "probmods-v2-web",
+  "versions": [
+    {
+      "id": "probmods-v2-web",
+      "label": "2nd edition, web (cited as 2016; server Last-Modified 2023-06-05; opened 2026-10-30)",
+      "url": "http://probmods.org/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (content author agent) — opened the index and 13 chapter pages over HTTP (each HTTP 200 with the stated title and h1 headings) and read the chapter sources and _config.yml in the probmods/probmods2 repository",
+      "componentsSeen": [
+        "index page: title 'Probabilistic Models of Cognition - 2nd Edition', authors line, 'This book is an open source project' statement, citation and BibTeX, links to 17 chapter pages",
+        "chapter pages (HTTP): Introduction; Generative models; Conditioning; Causal and statistical dependence; Conditional dependence; Social cognition; Interlude - Bayesian data analysis; Interlude - Algorithms for inference; Rational process models; Learning as conditional inference; Hierarchical models; Occam's Razor; Mixture models",
+        "repository probmods/probmods2 (branch master): chapters/ folder listing, front matter and headings of the chapters above, _config.yml (url: http://probmods.org), README (no licence statement)"
+      ],
+      "licence": "Not stated (site: 'This book is an open source project'); treated as all-rights-reserved reference-only",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Licence unknown: reference-only. The tutor may discuss and cite the chapters; the worker must not ingest them.",
+        "Runnable WebPPL code boxes require JavaScript in the learner's own browser on the book's site; Corniversity labs are separate implementations and do not depend on WebPPL.",
+        "HTTPS is not correctly served for the custom domain (certificate mismatch on 2026-10-30); links use http://.",
+        "Chapters 'Function learning', 'Learning with a language of thought', 'Non-parametric models', 'Agents as programs' and 'Sequential decisions' were listed on the index but not opened; no locators for them.",
+        "The chapter_num front matter is non-sequential in the source (e.g. Bayesian data analysis is 6.5); Corniversity orders chapters by its own syllabus, not the book's numbering."
+      ],
+      "locators": [
+        {
+          "id": "pm2-index",
+          "label": "Book index: title, authors, open-source statement, citation, chapter list",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/",
+            "heading": "Probabilistic Models of Cognition - 2nd Edition"
+          }
+        },
+        {
+          "id": "pm2-repo",
+          "label": "Source repository probmods/probmods2 (chapters as Markdown; no licence file)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "https://github.com/probmods/probmods2",
+            "heading": "probmods2 repository"
+          }
+        },
+        {
+          "id": "pm2-ch-introduction",
+          "label": "Chapter: Introduction (the generative approach; probabilistic programming languages)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/introduction.html",
+            "heading": "Introduction"
+          }
+        },
+        {
+          "id": "pm2-ch-generative-models",
+          "label": "Chapter: Generative models",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/generative-models.html",
+            "heading": "Generative models"
+          }
+        },
+        {
+          "id": "pm2-gm-models-simulation",
+          "label": "Generative models, section 'Models, simulation, and degrees of belief'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/generative-models.html",
+            "heading": "Models, simulation, and degrees of belief",
+            "fragment": "models-simulation-and-degrees-of-belief"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-gm-rules-of-probability",
+          "label": "Generative models, section 'The rules of probability' (product rule, sum rule)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/generative-models.html",
+            "heading": "The rules of probability",
+            "fragment": "the-rules-of-probability"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-ch-conditioning",
+          "label": "Chapter: Conditioning",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/conditioning.html",
+            "heading": "Conditioning"
+          }
+        },
+        {
+          "id": "pm2-conditioning-cognition",
+          "label": "Conditioning, section 'Cognition and conditioning'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/conditioning.html",
+            "heading": "Cognition and conditioning",
+            "fragment": "cognition-and-conditioning"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-conditioning-bayes-rule",
+          "label": "Conditioning, subsection 'Bayes Rule' (under Conditional Distributions)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/conditioning.html",
+            "heading": "Bayes Rule",
+            "fragment": "bayes-rule"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-ch-dependence",
+          "label": "Chapter: Causal and statistical dependence",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/dependence.html",
+            "heading": "Causal and statistical dependence"
+          }
+        },
+        {
+          "id": "pm2-ch-conditional-dependence",
+          "label": "Chapter: Conditional dependence (screening off, explaining away, blickets and blocking)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/conditional-dependence.html",
+            "heading": "Conditional dependence"
+          }
+        },
+        {
+          "id": "pm2-ch-social-cognition",
+          "label": "Chapter: Social cognition (inference about inference)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/social-cognition.html",
+            "heading": "Social cognition"
+          }
+        },
+        {
+          "id": "pm2-ch-bayesian-data-analysis",
+          "label": "Chapter: Interlude - Bayesian data analysis (parameters and predictives, model selection, BDA of cognitive models)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/bayesian-data-analysis.html",
+            "heading": "Interlude - Bayesian data analysis"
+          }
+        },
+        {
+          "id": "pm2-ch-inference-algorithms",
+          "label": "Chapter: Interlude - Algorithms for inference (rejection sampling, MCMC, particle filters, variational inference)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/inference-algorithms.html",
+            "heading": "Interlude - Algorithms for inference"
+          }
+        },
+        {
+          "id": "pm2-ch-process-models",
+          "label": "Chapter: Rational process models (the sampling hypothesis; resource-rational analysis)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/process-models.html",
+            "heading": "Rational process models"
+          }
+        },
+        {
+          "id": "pm2-ch-learning-as-conditional-inference",
+          "label": "Chapter: Learning as conditional inference",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/learning-as-conditional-inference.html",
+            "heading": "Learning as conditional inference"
+          }
+        },
+        {
+          "id": "pm2-lci-learning-about-coins",
+          "label": "Learning as conditional inference, section 'Example: Learning About Coins' (fair vs trick coin, prior 1/1000, learning trajectory)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/learning-as-conditional-inference.html",
+            "heading": "Example: Learning About Coins",
+            "fragment": "example-learning-about-coins"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-lci-ideal-learners",
+          "label": "Learning as conditional inference, subsection 'Ideal learners'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/learning-as-conditional-inference.html",
+            "heading": "Ideal learners",
+            "fragment": "ideal-learners"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-lci-continuous-parameter",
+          "label": "Learning as conditional inference, section 'Learning a Continuous Parameter'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/learning-as-conditional-inference.html",
+            "heading": "Learning a Continuous Parameter",
+            "fragment": "learning-a-continuous-parameter"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-ch-hierarchical-models",
+          "label": "Chapter: Hierarchical models (shared prototypes, the blessing of abstraction, overhypotheses, shape bias)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/hierarchical-models.html",
+            "heading": "Hierarchical models"
+          }
+        },
+        {
+          "id": "pm2-ch-occams-razor",
+          "label": "Chapter: Occam's Razor",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/occams-razor.html",
+            "heading": "Occam's Razor"
+          }
+        },
+        {
+          "id": "pm2-occam-size-principle",
+          "label": "Occam's Razor, section 'The Size Principle' (Big vs Small hypotheses; implicit negative evidence; subset principle)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/occams-razor.html",
+            "heading": "The Size Principle",
+            "fragment": "the-size-principle"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-occam-rectangle-game",
+          "label": "Occam's Razor, subsection 'Example: The Rectangle Game'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/occams-razor.html",
+            "heading": "Example: The Rectangle Game",
+            "fragment": "example-the-rectangle-game"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-occam-bayes-occam",
+          "label": "Occam's Razor, section 'Generalizing the Size Principle: Bayes Occam's Razor'",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/occams-razor.html",
+            "heading": "Generalizing the Size Principle: Bayes Occam's Razor",
+            "fragment": "generalizing-the-size-principle-bayes-occams-razor"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-occam-model-selection",
+          "label": "Occam's Razor, section 'Model selection with the Bayesian Occam's Razor' (fair or unfair coin; unused parameters; curve fitting)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/occams-razor.html",
+            "heading": "Model selection with the Bayesian Occam's Razor",
+            "fragment": "model-selection-with-the-bayesian-occams-razor"
+          },
+          "note": "Heading id read from the rendered page on 2026-10-30."
+        },
+        {
+          "id": "pm2-ch-mixture-models",
+          "label": "Chapter: Mixture models (learning categories; unknown numbers of categories)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "probmods-v2-web",
+            "url": "http://probmods.org/chapters/mixture-models.html",
+            "heading": "Mixture models"
+          }
+        }
+      ]
+    }
+  ]
+}

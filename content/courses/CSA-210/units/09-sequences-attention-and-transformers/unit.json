@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u09",
+  "courseId": "CSA-210",
+  "sequence": 9,
+  "title": "Sequences, attention and transformers",
+  "summary": "From sequence processing and the NLP pipeline to attention: queries, keys and values; scaled dot-product and multi-head attention as content-dependent linear maps; positional encoding; the transformer block; training transformers; BERT and GPT as pretraining recipes, cited as the tutorials present them.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D5 Tutorial 2 (Natural Language Processing and LLMs) and W3D1 Tutorial 1 (Learn how to work with Transformers) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["multilayer-perceptron", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["attention-transformers"],
+  "preparation": [
+    { "description": "Read W3D1 Tutorial 1 (attention overview; queries, keys and values; multihead attention; transformer overview; positional encoding; training) and W2D5 Tutorial 2 (NLP architectures and pipeline, BERT, GPT).", "locatorId": "nmadl-w3d1-t1", "estimatedMinutes": 80 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "W2D5 Tutorial 2 and W3D1 Tutorial 1", "instructions": "Read the tutorials for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["nmadl-w2d5", "nmadl-w2d5-t2", "nmadl-w3d1", "nmadl-w3d1-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Both chapter pages and both tutorial pages opened 2026-10-30 (HTTP 200; titles 'Tutorial 2: Natural Language Processing and LLMs' and 'Tutorial 1: Learn how to work with Transformers'; section lists recorded in the source record)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

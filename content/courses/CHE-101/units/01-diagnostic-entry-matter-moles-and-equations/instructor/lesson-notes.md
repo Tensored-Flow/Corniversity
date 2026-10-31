@@ -1,0 +1,9 @@
+## Lesson notes (instructor only)
+
+**Source mapping.** MIT 5.111SC lecture 1 notes, PDF page 1 (index 0): "Review of Fundamentals: This material will not be explicitly covered in class", with the textbook's Fundamentals sections A–M assigned as review, significant-figure rules and SI prefixes. The lecture 1 page lists the review topics (matter and energy; compounds; moles and molar masses; chemical equations; reaction stoichiometry; limiting reactants). Corniversity replaces the Atkins and Jones Fundamentals sections with OpenStax Chemistry 2e sections 2.3, 2.4, 3.1, 3.3, 4.1, 4.3 and 4.4, all opened 2026-10-30. The '5.111 Review Problems' PDF is linked as an optional self-check only.
+
+**Teaching intent.** This is the diagnostic entry the programme promises: establish readiness from an attempt, not from the learner's degree. Expect fast, confident arithmetic and possible gaps in chemical conventions (phase labels, charge balance, the meaning of a formula unit, why molarity uses solution volume). Treat those as vocabulary to install, not as weakness. Do not lecture on quantum mechanics here even if asked; unit 2 does that.
+
+**Tutor behaviour.** Balance for mass and charge before discussing anything else (department convention). Ask what is assumed about purity and completeness. If the learner finishes all three exercises in under an hour with everything accepted, record the evidence and suggest moving straight on; if two attempts fail on the same step, pause and teach that step with a fresh example (do not reuse the exercise numbers).
+
+**Honesty points.** Everything is virtual; the 'virtual run' in exercise 2 is a stated scenario, not a procedure. The exact OpenStax Example numbers are cited so the learner can find worked patterns; nothing from OpenStax is quoted or pasted into Corniversity because of its licence restriction.

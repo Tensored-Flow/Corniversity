@@ -1,0 +1,52 @@
+{
+  "id": "NEU-220-u03-ex3",
+  "sequence": 3,
+  "title": "Explain: what a fitted filter is evidence of",
+  "kind": "explanation",
+  "promptMarkdown": "In under 300 words and without the notes open:\n\n1. Explain the difference between an encoding model and a decoding model, with the two W1D3 tutorials as examples.\n2. The temporal filter fitted to the retinal ganglion cell in Tutorial 1 (recorded data, Uzzell and Chichilnisky 2004, provided for tutorial purposes) has a biphasic shape. Say what that filter is evidence of, and list two things it is not evidence of.\n3. Say why neither a good encoding fit nor a good decoding accuracy is a causal statement, and what kind of experiment would be.\n4. Say how the interpretation of a fitted weight changes when an L1 penalty is used.",
+  "conceptIds": ["poisson-glm-encoding", "logistic-regression-decoding", "regularisation-sparsity"],
+  "hintLadder": [
+    "Encoding predicts responses from stimuli; decoding predicts a variable from responses. Which direction does each tutorial fit?",
+    "A filter summarises a statistical dependence under the model's assumptions in one recording; it does not identify a mechanism or generalise by itself.",
+    "Correlation in a recording is compatible with several causal structures; only changing the system and watching the result distinguishes them."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "causal-language-qualified",
+      "kind": "requires_hypothesis",
+      "description": "if causal words are used, the limits of correlational evidence must be stated",
+      "params": { "triggerPatterns": ["causal", "cause", "causes"], "hypothesisPatterns": ["correlat", "cannot", "not (imply|establish|show|prove)", "intervention", "no causal", "perturb"] }
+    },
+    {
+      "id": "no-causal-over-reading",
+      "kind": "forbidden_claim",
+      "description": "claiming that the fit or decoder shows the neurons cause the response or choice",
+      "params": { "patterns": ["(shows|proves|demonstrates) that (the |these )?neurons? (cause|drive)", "(shows|proves|demonstrates)that(the|these)?neurons?(cause|drive)", "the filter (shows|proves) the mechanism", "thefilter(shows|proves)themechanism"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "encoding-decoding", "criterion": "Encoding: stimulus → response (Tutorial 1, RGC filter); decoding: response → variable (Tutorial 2, choice). Direction of prediction, not of causation.", "weight": 0.25, "levels": [{ "label": "met", "description": "Clear with both examples." }, { "label": "partially met", "description": "Definitions without examples." }, { "label": "not met", "description": "Confused." }] },
+      { "id": "evidence", "criterion": "The filter is evidence of a statistical dependence of this cell's firing on stimulus history in this recording under the model's assumptions (linear exponent, conditional independence, stationarity); it is not evidence of mechanism, of other cells, or of the cell's dynamics the model omits.", "weight": 0.3, "levels": [{ "label": "met", "description": "Evidence stated with assumptions and two non-claims." }, { "label": "partially met", "description": "Evidence stated, non-claims thin." }, { "label": "not met", "description": "Filter read as mechanism." }] },
+      { "id": "causation", "criterion": "Fits and decoders are correlational; several causal structures produce the same dependence; intervention (perturbing neurons and observing the outcome) is needed.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both points." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Treats accuracy as causal." }] },
+      { "id": "l1", "criterion": "With L1 the weights reflect a sparsity prior: a zero weight does not mean the neuron carries no information, and a nonzero weight may stand in for a correlated group.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both consequences." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct explanation",
+      "text": "An encoding model predicts responses from stimuli, as Tutorial 1 does for the retinal ganglion cell; a decoding model predicts a variable from responses, as Tutorial 2 does for the choice. The biphasic filter is evidence that this cell's firing in this recording depends on the recent stimulus history in a way the exponential-linear model captures, assuming conditional independence of bins and stationarity; it is not evidence of the mechanism inside the cell, nor of how other cells respond. Neither fit is a causal statement: the dependence is correlational and several causal structures could produce it, so only an intervention, perturbing the neurons and observing the outcome, could establish cause. With an L1 penalty a zero weight reflects the sparsity prior, not an absence of information, and a nonzero weight may stand in for a correlated group of neurons.",
+      "expect": { "causal-language-qualified": true, "no-causal-over-reading": true }
+    },
+    {
+      "label": "causal over-reading",
+      "text": "The decoder shows that these neurons cause the choice, and the filter shows the mechanism of the retinal cell.",
+      "expect": { "no-causal-over-reading": false, "causal-language-qualified": false }
+    }
+  ]
+}

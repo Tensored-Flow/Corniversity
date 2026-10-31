@@ -1,0 +1,29 @@
+{
+  "id": "NEU-220-u05",
+  "courseId": "NEU-220",
+  "sequence": 5,
+  "title": "Deep networks for decoding and encoding",
+  "summary": "Neuromatch W1D5: multilayer networks as decoders of neural responses, convolutional networks, and deep networks as normative encoding models of visual responses, with the same evaluation discipline as units 2–3 (held-out data, baselines, interpretation separated from accuracy).",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W1D5 (Tutorials 1–3 and the bonus tutorial)." }
+  ],
+  "prerequisiteConceptIds": ["logistic-regression-decoding", "regularisation-sparsity", "model-selection-cross-validation"],
+  "teachesConceptIds": ["neural-decoding-deep-networks"],
+  "preparation": [
+    { "description": "W1D5 Deep Learning chapter page: Tutorial 1 Decoding Neural Responses, Tutorial 2 Convolutional Neural Networks, Tutorial 3 Building and Evaluating Normative Encoding Models, bonus tutorial on decoding and encoding.", "locatorId": "nma-w1d5", "estimatedMinutes": 180 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "problem", "title": "W1D5 tutorials (Neuromatch notebooks)", "instructions": "Work through the W1D5 tutorials from the chapter page. The prepared lesson, derivations and exercises are not yet written; this outline shows exactly what the unit will cover. The individual tutorial pages have not yet been opened by Corniversity, so the chapter page is the verified locator.", "estimatedMinutes": 180, "sourceLocatorIds": ["nma-w1d5"], "exerciseIds": [], "sessionKind": "lab" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 360,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W1D5 chapter page opened 2026-10-30 with its tutorial list (Tutorials 1–3, bonus Tutorial 4, intro, outro, further reading, day summary). Tutorial pages not yet opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

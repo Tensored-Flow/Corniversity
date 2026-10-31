@@ -1,0 +1,30 @@
+{
+  "id": "MAT-210-u03",
+  "courseId": "MAT-210",
+  "sequence": 3,
+  "title": "Integrable functions, dominated convergence and null sets",
+  "summary": "L^1(μ) and the integral of real and complex functions; linearity and |∫ f| ≤ ∫ |f|; the dominated convergence theorem via Fatou; sets of measure zero, almost-everywhere equality, completion of a measure space; the Riemann integral compared with the Lebesgue integral (Riemann integrable iff continuous almost everywhere).",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lecture 5 and the first page of lecture 3 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["lebesgue-integral", "convergence-theorems"],
+  "teachesConceptIds": ["convergence-theorems", "almost-everywhere", "riemann-lebesgue-comparison"],
+  "preparation": [
+    { "description": "Read lecture 5 (5 PDF pages): L^1, complex integrals, linearity, |∫ f| ≤ ∫ |f|, the dominated convergence theorem, sets of measure zero, completion.", "locatorId": "mi03-lec05", "estimatedMinutes": 60 },
+    { "description": "Read lecture 3, PDF page 1: measure-zero subsets of R and Theorem 0.1 (Riemann integrable iff continuous almost everywhere), stated without proof in the notes.", "locatorId": "mi03-l3-thm01", "estimatedMinutes": 15 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Lecture 5 and lecture 3 (page 1): integrable functions, dominated convergence, null sets", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["mi03-lec05", "mi03-l5-l1-def", "mi03-l5-thm03", "mi03-l5-prop04", "mi03-l5-thm06", "mi03-l3-thm01"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 5 and lecture 3 PDFs downloaded and text-extracted 2026-10-30; statement-level page indices recorded in the source record (DCT on lecture 5 PDF page 3, completion on page 4, Riemann criterion on lecture 3 PDF page 1)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,0 +1,65 @@
+{
+  "id": "NEU-220-u02-ex1",
+  "sequence": 1,
+  "title": "Least squares, maximum likelihood and weighted least squares on the same model",
+  "kind": "derivation",
+  "promptMarkdown": "Consider $y_i = \\theta x_i + \\epsilon_i$, $i = 1, \\dots, N$, as in W1D2 Tutorials 1–2.\n\n1. Derive the least-squares estimator $\\hat\\theta_{LS}$ by minimising $\\sum_i (y_i - \\theta x_i)^2$. Check that your stationary point is a minimum.\n2. Assume $\\epsilon_i \\sim \\mathcal{N}(0, \\sigma^2)$ independently with $\\sigma$ unknown. Write the log-likelihood $\\ell(\\theta, \\sigma^2)$ and show that the MLE of $\\theta$ equals $\\hat\\theta_{LS}$. Derive the MLE of $\\sigma^2$ and say whether it is unbiased.\n3. Now assume $\\epsilon_i \\sim \\mathcal{N}(0, \\sigma_i^2)$ with known, unequal $\\sigma_i$. Derive the MLE of $\\theta$ and explain in one sentence what it does that $\\hat\\theta_{LS}$ does not.\n4. Synthetic data (constructed for this exercise, not measured): $(x, y) = (1, 1.1), (2, 2.3), (3, 3.1)$. Compute $\\hat\\theta_{LS}$ as an exact fraction and as a decimal, the residuals, and $\\hat\\sigma^2_{MLE}$. Then recompute $\\hat\\theta$ with $\\sigma_i = 0.1, 0.2, 0.3$ and comment on which point moved the estimate and why.",
+  "conceptIds": ["model-fitting-least-squares", "maximum-likelihood-estimation"],
+  "hintLadder": [
+    "Differentiate the sum of squares with respect to $\\theta$ and set it to zero; the second derivative is $2\\sum x_i^2 > 0$.",
+    "The Gaussian log-density of $y_i$ is $-\\tfrac12\\ln(2\\pi\\sigma^2) - (y_i - \\theta x_i)^2/(2\\sigma^2)$; sum over $i$ and note which terms depend on $\\theta$.",
+    "With unequal variances each squared residual is divided by its own $\\sigma_i^2$; the weights $1/\\sigma_i^2$ carry through the derivative.",
+    "For the small dataset, $\\sum x_iy_i = 1.1 + 4.6 + 9.3$ and $\\sum x_i^2 = 14$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "ls-fraction",
+      "kind": "expression_present",
+      "description": "the least-squares slope 15/14 appears",
+      "params": { "patterns": ["15/14", "\\(15\\)/\\(14\\)", "1\\.0714"] }
+    },
+    {
+      "id": "ls-decimal",
+      "kind": "numeric_value",
+      "description": "θ̂ = 1.071",
+      "params": { "expected": 1.0714, "tolerance": 0.0015 }
+    },
+    {
+      "id": "weighted-form",
+      "kind": "expression_present",
+      "description": "weights 1/σ_i² appear in the heteroscedastic estimator",
+      "params": { "patterns": ["σ_i\\^?2", "sigma_i\\^?2", "σ_i²", "1/σ", "w_i", "weight"] }
+    },
+    {
+      "id": "general-derivation",
+      "kind": "finite_examples_not_proof",
+      "description": "the estimators must be derived for general N, not read off the three points",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "least-squares", "criterion": "θ̂_LS = Σx_iy_i/Σx_i² from the first-order condition, with the second derivative 2Σx_i² > 0 confirming a minimum.", "weight": 0.2, "levels": [{ "label": "met", "description": "Derived with the minimum check." }, { "label": "partially met", "description": "Derived without the check." }, { "label": "not met", "description": "Quoted or wrong." }] },
+      { "id": "mle", "criterion": "ℓ = −(N/2)ln(2πσ²) − Σ(y_i − θx_i)²/(2σ²); ∂ℓ/∂θ = 0 gives θ̂_LS; σ̂²_MLE = SSR/N, biased (E = σ²(N − 1)/N here since one parameter is fitted).", "weight": 0.3, "levels": [{ "label": "met", "description": "All, including the bias statement." }, { "label": "partially met", "description": "θ equivalence shown, σ² or bias wrong." }, { "label": "not met", "description": "Not shown." }] },
+      { "id": "weighted", "criterion": "θ̂_W = Σ(x_iy_i/σ_i²)/Σ(x_i²/σ_i²): precise points weigh more; ordinary least squares treats all points as equally reliable.", "weight": 0.2, "levels": [{ "label": "met", "description": "Derived and interpreted." }, { "label": "partially met", "description": "Formula without interpretation." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "numbers", "criterion": "θ̂ = 15/14 = 1.0714; residuals 0.029, 0.157, −0.114; σ̂² = 0.0386/3 = 0.0129; weighted θ̂ = 1.094, pulled towards the first point (slope 1.1), which has the smallest σ.", "weight": 0.3, "levels": [{ "label": "met", "description": "All values with the comment." }, { "label": "partially met", "description": "Slope right, others with slips." }, { "label": "not met", "description": "Slope wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct derivation",
+      "text": "For general N, d/dθ Σ(y_i − θx_i)² = −2Σx_i(y_i − θx_i) = 0 gives θ̂_LS = Σx_iy_i/Σx_i², a minimum since the second derivative 2Σx_i² > 0. Log-likelihood ℓ = −(N/2)ln(2πσ²) − Σ(y_i − θx_i)²/(2σ²); the only θ-dependence is through the sum of squares, so the MLE of θ is θ̂_LS; ∂ℓ/∂σ² = 0 gives σ̂² = SSR/N, which is biased (expected value σ²(N−1)/N). With known σ_i, ℓ = const − Σ(y_i − θx_i)²/(2σ_i²), so θ̂_W = Σ(x_iy_i/σ_i²)/Σ(x_i²/σ_i²): precise points count more, which plain least squares ignores. Numbers: Σxy = 15.0, Σx² = 14, θ̂ = 15/14 = 1.0714; residuals 0.029, 0.157, −0.114; SSR = 0.0386, σ̂² = 0.0129. Weighted: θ̂ = 1.094, pulled towards the first point, whose slope y/x = 1.1 and whose σ = 0.1 gives it weight 100.",
+      "expect": { "ls-fraction": true, "ls-decimal": true, "weighted-form": true, "general-derivation": true }
+    },
+    {
+      "label": "slope by eye and no weighting",
+      "text": "Looking at the points the slope is about 1.5. The variances do not matter because least squares is always the best estimator.",
+      "expect": { "ls-fraction": false, "ls-decimal": false, "weighted-form": false }
+    }
+  ]
+}

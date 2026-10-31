@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u10",
+  "courseId": "CSA-210",
+  "sequence": 10,
+  "title": "Representation learning without labels; synthesis project",
+  "summary": "Generative models as density estimation and sampling; self-supervised objectives and what they learn; how representations are evaluated honestly; the course synthesis: a reproducible train-break-explain project with baseline, protocol, seeds and failure cases.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D3 Tutorial 1 (Introduction to generative models) and W3D3 Tutorial 1 (Un/Self-supervised learning methods) of the Neuromatch Deep Learning ebook, with the course's final project (assessment a3)." }
+  ],
+  "prerequisiteConceptIds": ["convolution-operator", "regularisation-dl", "evaluation-discipline"],
+  "teachesConceptIds": ["representation-learning-unsupervised"],
+  "preparation": [
+    { "description": "Read W2D3 Tutorial 1 (introduction to generative models) and W3D3 Tutorial 1 (unsupervised and self-supervised learning methods).", "locatorId": "nmadl-w3d3-t1", "estimatedMinutes": 80 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "W2D3 Tutorial 1 and W3D3 Tutorial 1", "instructions": "Read the tutorials for this unit. The prepared lesson, project brief and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["nmadl-w2d3", "nmadl-w2d3-t1", "nmadl-w3d3", "nmadl-w3d3-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Both chapter pages and both tutorial pages opened 2026-10-30 (HTTP 200; titles 'Tutorial 1: Introduction to generative models' and 'Tutorial 1: Un/Self-supervised learning methods'); the two tutorial bodies were truncated in the fetch, so only page-level locators exist." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

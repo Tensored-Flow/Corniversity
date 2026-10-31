@@ -1,0 +1,57 @@
+{
+  "id": "tong-classical-dynamics",
+  "title": "Classical Dynamics (lecture notes)",
+  "authors": ["David Tong"],
+  "institution": "University of Cambridge, DAMTP (Part II Mathematical Tripos)",
+  "kind": "notes",
+  "canonicalUrl": "https://davidtong.org/teaching/classical-dynamics/",
+  "description": "Second course in classical mechanics for final-year mathematics undergraduates: Newtonian mechanics, the Lagrangian formulation (least action, constraints, Noether's theorem, applications, small oscillations), rigid bodies, and the Hamiltonian formulation. About 130 pages, four chapters, four problem sheets, plus an HTML version.",
+  "rightsNotes": [
+    "The notes page states no licence and no copyright or reuse terms; the chapters and the full set 'can be downloaded here' for reading. Author copyright is assumed. Corniversity therefore treats the notes as reference-only: cite and link, do not copy or ingest.",
+    "The historic DAMTP address https://www.damtp.cam.ac.uk/user/tong/dynamics.html returned a 301 redirect to davidtong.org on 2026-10-30; the davidtong.org page is the live canonical location.",
+    "An expanded version exists as a commercial textbook (linked from the page as 'Classical Mechanics'); Corniversity does not require it."
+  ],
+  "currentVersionId": "tong-cd-web",
+  "versions": [
+    {
+      "id": "tong-cd-web",
+      "label": "Web edition on davidtong.org (undated; HTML version generated 2022-03-24)",
+      "url": "https://davidtong.org/teaching/classical-dynamics/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the notes page and the HTML table of contents; read the text of the Chapter 2 PDF to verify its section headings",
+      "componentsSeen": [
+        "notes page: course description, 'Full Lecture Notes' link (clas.pdf, about 130 pages), chapter PDFs 1–4, problem sheets 1–4, HTML version link, textbook link; footer 'David Tong, Professor of Theoretical Physics, University of Cambridge'",
+        "HTML version table of contents: 1 Newton's Laws of Motion, 2 The Lagrangian Formalism, 3 The Motion of Rigid Bodies, 4 The Hamiltonian Formalism",
+        "Chapter 2 PDF (clas2.pdf, 35 pages): sections 2.1 The Principle of Least Action, 2.2 Changing Coordinate Systems, 2.3 Constraints and Generalised Coordinates, 2.4 Noether's Theorem and Symmetries, 2.5 Applications (bead on a rotating hoop, double pendulum, spherical pendulum, two body problem, restricted three body problem, purely kinetic Lagrangians, particles in electromagnetic fields), 2.6 Small Oscillations and Stability"
+      ],
+      "licence": "No licence stated; author copyright (free to read on the author's page)",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Chapters 1, 3 and 4 and the problem sheets were listed on the page but their PDFs were not opened; locators to them are file-level.",
+        "The PDFs carry no PDF page labels; the notes print their own page numbers at the foot of each page. No page-level locators are recorded because the material is reference-only.",
+        "No year is stated on the page."
+      ],
+      "locators": [
+        { "id": "tong-cd-index", "label": "Classical Dynamics notes page", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/teaching/classical-dynamics/", "heading": "Classical Dynamics" } },
+        { "id": "tong-cd-html", "label": "HTML version (table of contents)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/teaching/classical-dynamics/dynhtml/dyn.html", "heading": "Classical Dynamics (HTML)" } },
+        { "id": "tong-cd-full", "label": "Full lecture notes (PDF, about 130 pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas.pdf", "heading": "Full Lecture Notes" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-ch1", "label": "Chapter 1: Newtonian Mechanics (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas1.pdf", "heading": "1. Newtonian Mechanics" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-ch2", "label": "Chapter 2: The Lagrangian Formulation (PDF, 35 pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2. The Lagrangian Formulation" }, "note": "Opened; section headings verified from the PDF text." },
+        { "id": "tong-cd-ch2-s1", "label": "Chapter 2, Section 2.1 The Principle of Least Action", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.1 The Principle of Least Action" } },
+        { "id": "tong-cd-ch2-s2", "label": "Chapter 2, Section 2.2 Changing Coordinate Systems (rotating and hyperbolic coordinates)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.2 Changing Coordinate Systems" } },
+        { "id": "tong-cd-ch2-s3", "label": "Chapter 2, Section 2.3 Constraints and Generalised Coordinates (holonomic, non-holonomic)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.3 Constraints and Generalised Coordinates" } },
+        { "id": "tong-cd-ch2-s4", "label": "Chapter 2, Section 2.4 Noether's Theorem and Symmetries", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.4 Noether's Theorem and Symmetries" } },
+        { "id": "tong-cd-ch2-s5", "label": "Chapter 2, Section 2.5 Applications (including 2.5.4 Two Body Problem and 2.5.7 Particles in Electromagnetic Fields)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.5 Applications" } },
+        { "id": "tong-cd-ch2-s6", "label": "Chapter 2, Section 2.6 Small Oscillations and Stability", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas2.pdf", "heading": "2.6 Small Oscillations and Stability" } },
+        { "id": "tong-cd-ch3", "label": "Chapter 3: The Motion of Rigid Bodies (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas3.pdf", "heading": "3. The Motion of Rigid Bodies" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-ch4", "label": "Chapter 4: The Hamiltonian Formulation (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/clas4.pdf", "heading": "4. The Hamiltonian Formulation" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-sheet1", "label": "Problem Sheet 1: Lagrangian Formulation (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/mf1.pdf", "heading": "Problem Sheet 1: Lagrangian Formulation" }, "note": "Linked from the notes page; file not opened. Linked for optional practice only; Corniversity exercises are its own." },
+        { "id": "tong-cd-sheet2", "label": "Problem Sheet 2: Normal Modes, Inertia Tensors and Rotations (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/mf2.pdf", "heading": "Problem Sheet 2: Normal Modes, Inertia Tensors and Rotations" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-sheet3", "label": "Problem Sheet 3: Euler's Equations and Euler Angles (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/mf3.pdf", "heading": "Problem Sheet 3: Euler's Equations and Euler Angles" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-cd-sheet4", "label": "Problem Sheet 4: Hamiltonian Formulation (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-cd-web", "url": "https://davidtong.org/pdfs/teaching/classical-dynamics/mf4.pdf", "heading": "Problem Sheet 4: Hamiltonian Formulation" }, "note": "Linked from the notes page; file not opened." }
+      ]
+    }
+  ]
+}

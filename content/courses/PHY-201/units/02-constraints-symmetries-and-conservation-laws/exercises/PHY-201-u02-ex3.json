@@ -1,0 +1,25 @@
+{
+  "id": "PHY-201-u02-ex3",
+  "sequence": 3,
+  "title": "The Hamiltonian versus the energy",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words, and without the notes open, explain the difference between the statements 'the Hamiltonian is conserved' and 'the energy is conserved'. State the hypotheses under which $H = T + V$, and give one example (the spring on a moving cart from the lesson, or one of your own) in which the two statements come apart, saying in words where the energy goes or comes from.",
+  "conceptIds": ["noether-symmetry", "hamiltonian-mechanics"],
+  "hintLadder": [
+    "What single property of $L$ decides whether $H$ is conserved? Is that the same property that decides whether $H = T + V$?",
+    "In the cart example, what external agent is acting on the system, and does it do work?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "two-statements", "criterion": "Distinguishes H conserved (∂L/∂t = 0) from E conserved, and recognises they are logically independent.", "weight": 0.4, "levels": [ { "label": "met", "description": "Clear and correct." }, { "label": "partially met", "description": "Distinction made but the condition for H conserved misstated." }, { "label": "not met", "description": "Treats the statements as the same." } ] },
+      { "id": "hypotheses", "criterion": "Names the hypotheses for H = T + V: T homogeneous of degree two in the velocities (time-independent coordinate transformation) and V independent of velocities.", "weight": 0.3, "levels": [ { "label": "met", "description": "Both hypotheses." }, { "label": "partially met", "description": "One hypothesis." }, { "label": "not met", "description": "None." } ] },
+      { "id": "example", "criterion": "Gives a correct example where the statements come apart and explains the energy bookkeeping (e.g. the agent moving the cart does work, so E is not conserved in the wall frame; H′ in the cart coordinate is conserved but is the cart-frame energy shifted by a constant).", "weight": 0.3, "levels": [ { "label": "met", "description": "Correct example with bookkeeping." }, { "label": "partially met", "description": "Example right, bookkeeping vague." }, { "label": "not met", "description": "No valid example." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

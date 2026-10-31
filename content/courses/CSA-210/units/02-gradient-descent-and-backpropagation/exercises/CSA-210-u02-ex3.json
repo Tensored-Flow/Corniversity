@@ -1,0 +1,26 @@
+{
+  "id": "CSA-210-u02-ex3",
+  "sequence": 3,
+  "title": "Why reverse mode",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words and without the lesson open: explain why backpropagation computes the gradient of a scalar loss with respect to all $N$ parameters in a single backward sweep costing a small constant multiple of the forward pass, why forward-mode differentiation would need about $N$ sweeps for the same gradient, and exactly where the chain rule enters. Name one situation in which forward mode is the better choice.",
+  "conceptIds": ["backpropagation", "tensors-and-autodiff"],
+  "hintLadder": [
+    "What does each sweep propagate: a sensitivity *of* the output to one input direction, or a sensitivity of one output *to* everything upstream?",
+    "Count edges. The reverse sweep touches each edge once; a forward sweep from one parameter also touches each edge once but answers a question about only that parameter.",
+    "Think about a function with few inputs and many outputs, or about computing a Jacobian–vector product $J\\,\\dot v$ rather than $J^\\top\\bar v$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "reverse-cost", "criterion": "Explains that the adjoint of every node is obtained from its children by the chain rule in reverse topological order, each edge visited once, so one sweep yields all parameter derivatives at roughly the forward cost.", "weight": 0.45, "levels": [{ "label": "met", "description": "Mechanism and cost both right." }, { "label": "partially met", "description": "Mechanism right, cost argument vague." }, { "label": "not met", "description": "Missing or confuses with symbolic differentiation." }] },
+      { "id": "forward-cost", "criterion": "Explains that forward mode propagates one input direction per sweep, so the full gradient of a scalar in N parameters needs N sweeps.", "weight": 0.3, "levels": [{ "label": "met", "description": "Clear." }, { "label": "partially met", "description": "Gestures at the asymmetry." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "forward-wins", "criterion": "Names a correct case for forward mode: few inputs and many outputs, Jacobian–vector products, or directional derivatives.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct case with the reason." }, { "label": "partially met", "description": "Case named without reason." }, { "label": "not met", "description": "None or wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

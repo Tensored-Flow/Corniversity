@@ -1,0 +1,71 @@
+{
+  "id": "PHY-201-u01-ex2",
+  "sequence": 2,
+  "title": "How much freedom is there in a Lagrangian?",
+  "kind": "proof",
+  "promptMarkdown": "Let $L(q,\\dot q,t)$ be a Lagrangian with one degree of freedom.\n\n1. Let $F(q,t)$ be any twice continuously differentiable function and $L' = L + \\dfrac{dF}{dt}$, where $\\dfrac{dF}{dt} = \\dfrac{\\partial F}{\\partial q}\\dot q + \\dfrac{\\partial F}{\\partial t}$. Prove by direct computation that $L$ and $L'$ give the same Euler–Lagrange equation. Then give a second, one-line argument using the action.\n2. A free particle of mass $m$ on a line has $L_1 = \\tfrac12 m\\dot x^2$. Decide, with proof, whether each of\n   $$L_2 = \\tfrac12 m\\dot x^2 + c\\,x\\dot x, \\qquad L_3 = \\tfrac12 m\\dot x^2 + c\\,x^2$$\n   ($c$ a nonzero constant) describes the same motion as $L_1$. State the SI units $c$ must have in each case.\n3. Show that $L\\to\\lambda L$ for a nonzero constant $\\lambda$, and $L\\to L + \\text{const}$, leave the equation of motion unchanged. Is $L \\to L + G(q)$ for a non-constant function $G$ harmless? Justify.",
+  "conceptIds": ["lagrangian-mechanics"],
+  "hintLadder": [
+    "Compute $\\partial(dF/dt)/\\partial\\dot q$ first; it is a familiar object. Then take its total time derivative and compare with $\\partial(dF/dt)/\\partial q$. Where do mixed partial derivatives enter?",
+    "For the action argument: what is $\\int_{t_1}^{t_2}\\frac{dF}{dt}\\,dt$, and does it depend on the path or only on its endpoints?",
+    "Is $c\\,x\\dot x$ a total time derivative of something? Is $c\\,x^2$?",
+    "For part 3, write the Euler–Lagrange equation for $L + G(q)$ and see which term survives."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "boundary-term",
+      "kind": "expression_present",
+      "description": "the action argument mentions a total derivative, boundary or endpoint term",
+      "params": {
+        "patterns": [
+          "total(time)?derivative",
+          "boundaryterm",
+          "endpoints?",
+          "surfaceterm",
+          "exactderivative"
+        ]
+      }
+    },
+    {
+      "id": "l3-not-free",
+      "kind": "forbidden_claim",
+      "description": "claiming that L_3 describes the same motion as the free particle",
+      "params": {
+        "patterns": [
+          "l_?\\{?3\\}?(?![^.]*\\bnot\\b)[^.]{0,80}same (motion|dynamics|equation)",
+          "l_?\\{?3\\}?(?![^.]*\\bnot\\b)[^.]{0,80}(equivalent|also) (to|describes) (l_?\\{?1\\}?|the free particle)"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "direct-proof", "criterion": "The direct computation is complete: ∂(dF/dt)/∂q̇ = ∂F/∂q, its time derivative equals ∂(dF/dt)/∂q by equality of mixed partials, so the extra contribution to the Euler–Lagrange expression vanishes.", "weight": 0.3, "levels": [ { "label": "met", "description": "All steps shown, mixed partials named." }, { "label": "partially met", "description": "Right idea, a step asserted." }, { "label": "not met", "description": "Missing or wrong." } ] },
+      { "id": "action-argument", "criterion": "The action argument is given: the actions differ by F(q(t₂), t₂) − F(q(t₁), t₁), fixed under variations with fixed endpoints, so stationary paths coincide.", "weight": 0.2, "levels": [ { "label": "met", "description": "Correct and complete." }, { "label": "partially met", "description": "Boundary term mentioned without the fixed-endpoint reason." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "examples", "criterion": "L₂ is identified as L₁ plus d(cx²/2)/dt (same motion); L₃ is shown to give m ẍ = 2cx (different motion); the units of c (kg s⁻¹ and kg s⁻², i.e. N m⁻¹) are stated.", "weight": 0.35, "levels": [ { "label": "met", "description": "Both decisions proved, units correct." }, { "label": "partially met", "description": "Decisions right, a proof or the units missing." }, { "label": "not met", "description": "A decision wrong." } ] },
+      { "id": "part3", "criterion": "Rescaling and adding a constant are shown harmless; adding G(q) is shown to add −G′(q) to the equation of motion (a force), hence not harmless unless G is constant.", "weight": 0.15, "levels": [ { "label": "met", "description": "All three handled." }, { "label": "partially met", "description": "G(q) case not justified." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct argument",
+      "text": "Since $\\partial(dF/dt)/\\partial\\dot q = \\partial F/\\partial q$ and $\\frac{d}{dt}\\partial F/\\partial q = \\partial(dF/dt)/\\partial q$ by symmetry of mixed partials, the Euler-Lagrange expression of $dF/dt$ vanishes. Alternatively the action changes by the boundary term $F(q_2,t_2)-F(q_1,t_1)$, fixed when the endpoints are fixed. $L_2 = L_1 + d(cx^2/2)/dt$ gives the same motion; $L_3$ does not give the same motion, since it yields $m\\ddot x = 2cx$.",
+      "expect": { "boundary-term": true, "l3-not-free": true }
+    },
+    {
+      "label": "wrong decision on L3",
+      "text": "L_3 differs from L_1 by a function of x only, so L_3 describes the same motion as the free particle.",
+      "expect": { "l3-not-free": false }
+    },
+    {
+      "label": "no action argument",
+      "text": "I computed the Euler-Lagrange equations of L and L' and they agree.",
+      "expect": { "boundary-term": false }
+    }
+  ]
+}

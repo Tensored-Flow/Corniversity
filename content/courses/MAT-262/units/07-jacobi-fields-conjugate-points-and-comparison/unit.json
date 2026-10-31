@@ -1,0 +1,31 @@
+{
+  "id": "MAT-262-u07",
+  "courseId": "MAT-262",
+  "sequence": 7,
+  "title": "Jacobi fields, conjugate points and comparison",
+  "summary": "Variations through geodesics (Definition 9.1); the Jacobi equation ∇_X∇_X J + R(J,X)X = 0 (Definition 9.3) and existence and uniqueness of Jacobi fields (Proposition 9.5); Jacobi fields in constant curvature and on the sphere (Examples 9.11–9.13); conjugate points and the differential of the exponential map; the distance comparison with a constant-curvature model (Theorem 9.18).",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson chapter 9 (Definitions 9.1, 9.3; Propositions 9.2, 9.5; Examples 9.10–9.16; Lemma 9.17; Theorem 9.18) with Wendl §6.4 and Lee chapters 10–11 as the commercial reference." }
+  ],
+  "prerequisiteConceptIds": ["curvature", "connections-geodesics", "riemannian-distance-completeness"],
+  "teachesConceptIds": ["jacobi-fields-comparison"],
+  "preparation": [
+    { "description": "Read Gudmundsson chapter 9, pp. 125–127: Definition 9.1 (variations of geodesics), Proposition 9.2, Definition 9.3 (Jacobi fields), Example 9.4, Proposition 9.5.", "locatorId": "gud-def9-3", "estimatedMinutes": 40 },
+    { "description": "Read pp. 128–135: Jacobi fields in the plane, the sphere and the hyperbolic disc (Examples 9.10–9.13), Example 9.16 and Lemma 9.17, Theorem 9.18 (distance comparison).", "locatorId": "gud-thm9-18", "estimatedMinutes": 50 },
+    { "description": "Open-licensed alternative: Wendl §6.4 (geodesics, arc length and sectional curvature).", "locatorId": "wen-s6-4", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Chapter 9: Jacobi fields and comparison", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["gud-ch9", "gud-def9-3", "gud-thm9-18", "wen-s6-4", "lee-rm-ch10", "lee-rm-ch11"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson chapter 9 locators verified against extracted text of Riemann.pdf (v1.438) on 2026-10-30: chapter start p. 125, Definition 9.3 and Proposition 9.5 p. 126, Theorem 9.18 p. 135. Wendl §6.4 (p. 153) verified likewise; Lee chapters 10–11 are table-of-contents pointers." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

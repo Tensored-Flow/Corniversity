@@ -1,0 +1,31 @@
+{
+  "id": "CHE-101-u06",
+  "courseId": "CHE-101",
+  "sequence": 6,
+  "title": "Acid–base equilibria",
+  "summary": "Brønsted–Lowry acids and bases and conjugate pairs; the autoionisation of water and pH; Ka, Kb and the strength of acids and bases; weak-acid and weak-base equilibrium calculations; salt hydrolysis, buffers and the Henderson–Hasselbalch relation; titration curves and indicators.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 20–24 of 5.111SC (Unit III) with OpenStax chapter 14." }
+  ],
+  "prerequisiteConceptIds": ["chemical-equilibrium-constant", "le-chatelier"],
+  "teachesConceptIds": ["acid-base-equilibria"],
+  "preparation": [
+    { "description": "OCW Unit III page: lectures 20 (solubility and acid–base equilibrium), 21 (is MIT water safe to drink?), 22 (salt solutions and buffers), 23–24 (titrations), each with notes, problems and solutions.", "locatorId": "chem14-unit3", "estimatedMinutes": 60 },
+    { "description": "OpenStax 14.1 Brønsted-Lowry Acids and Bases, 14.2 pH and pOH, 14.3 Relative Strengths of Acids and Bases.", "locatorId": "ox-14-1", "estimatedMinutes": 60 },
+    { "description": "OpenStax 14.6 Buffers and 14.7 Acid-Base Titrations.", "locatorId": "ox-14-6", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Lectures 20–24 and OpenStax chapter 14: acid–base equilibria", "instructions": "Read the lecture pages and the OpenStax sections for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["chem14-unit3", "ox-14-intro", "ox-14-1", "ox-14-2", "ox-14-3", "ox-14-6", "ox-14-7"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit III page opened 2026-10-30 (lectures 20–24 listed with their page URLs); OpenStax chapter 14 introduction and sections 14.1, 14.2, 14.3, 14.6, 14.7 opened. Individual lecture pages 20–24 and their notes PDFs are not yet opened; the unit page is the verified locator." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

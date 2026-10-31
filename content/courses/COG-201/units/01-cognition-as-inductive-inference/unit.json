@@ -1,0 +1,45 @@
+{
+  "id": "COG-201-u01",
+  "courseId": "COG-201",
+  "sequence": 1,
+  "title": "Cognition as inductive inference",
+  "summary": "The problem of induction (Mill, Hume, Goodman); Marr's three levels and what a computational-level theory claims; concept learning as search with two success criteria (identification in the limit, PAC) and the sample-complexity bound for a finite hypothesis space; inductive bias and where it might come from; the department's four-way labelling of claims.",
+  "objectives": [
+    { "id": "u01-o1", "description": "State Marr's three levels and say precisely what a computational-level model of a cognitive capacity does and does not claim." },
+    { "id": "u01-o2", "description": "Formulate concept learning as search over a hypothesis space, state identification in the limit and PAC learnability, and prove the sample-complexity bound N ≥ (1/ε)(ln|H| + ln(1/δ)) for a finite hypothesis space." },
+    { "id": "u01-o3", "description": "Count hypothesis spaces (conjunctions, all Boolean concepts) and explain why learning without inductive bias is impossible." },
+    { "id": "u01-o4", "description": "Explain Goodman's new riddle, why syntactic simplicity does not resolve it, and what entrenchment and causal theories add; label statements as model behaviour, measurement, experimental evidence or causal claim." }
+  ],
+  "prerequisiteConceptIds": ["probability-measure-theoretic", "proof-writing"],
+  "teachesConceptIds": ["computational-level-analysis", "inductive-inference-cognition", "model-evidence-distinction"],
+  "preparation": [
+    { "description": "Read lecture 1 slides 10–18 (the problem of induction; induction versus deduction; Mill; the two ingredients) and 23–27 (induction in everyday reasoning).", "locatorId": "cocosci04-l1-problem-of-induction", "estimatedMinutes": 20 },
+    { "description": "Read lecture 1 slide 43 (Marr's three levels) and slides 48–53 and 70 (Hume, PAC as a modern answer, Goodman's problem, responses, entrenchment).", "locatorId": "cocosci04-l1-marr", "estimatedMinutes": 20 },
+    { "description": "Read lecture 2 slides 26–30 (inductive learning as search; the level-1 and level-2 questions; conjunctive concepts) and 42–65 (identification in the limit, PAC, inductive bias, what this does not tell us, summary).", "locatorId": "cocosci04-l2-learning-as-search", "estimatedMinutes": 30 },
+    { "description": "Read the Introduction of Probabilistic Models of Cognition (the generative approach; probabilistic programming languages). Reference-only: read on the book's site.", "locatorId": "pm2-ch-introduction", "estimatedMinutes": 15 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "reading", "title": "Lectures 1–2 with the lesson", "instructions": "Read the lesson alongside the slides. The slides are terse; where the lesson supplies a definition or proof the slides only name, write the statement in your own words in the notebook before reading on. Label each paragraph of your notes with one of the four claim types.", "estimatedMinutes": 70, "sourceLocatorIds": ["cocosci04-l1-problem-of-induction", "cocosci04-l1-induction-vs-deduction", "cocosci04-l1-inductive-reasoning", "cocosci04-l1-mill", "cocosci04-l1-two-ingredients", "cocosci04-l1-cognition-as-inductive-inference", "cocosci04-l1-everyday-induction", "cocosci04-l1-diagnosis", "cocosci04-l1-marr", "cocosci04-l1-hume", "cocosci04-l1-pac-answer", "cocosci04-l1-goodman", "cocosci04-l1-responses-to-goodman", "cocosci04-l1-plato-matlab", "cocosci04-l1-entrenchment", "cocosci04-l2-learning-as-search", "cocosci04-l2-marr", "cocosci04-l2-level-questions", "cocosci04-l2-computational-theory", "cocosci04-l2-representation", "cocosci04-l2-identification-in-limit", "cocosci04-l2-pac-intuition", "cocosci04-l2-pac-theorem", "cocosci04-l2-inductive-bias", "cocosci04-l2-open-questions", "cocosci04-l2-summary", "pm2-ch-introduction"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "proof_workshop", "title": "Tutorial: sample complexity of a finite hypothesis space", "instructions": "Attempt exercise 1 before asking for any hint. Write the union-bound proof in full, then do the counting and the numbers. Submit when you believe it is complete; revise after feedback.", "estimatedMinutes": 50, "sourceLocatorIds": ["cocosci04-l2-pac-theorem", "cocosci04-l2-inductive-bias", "cocosci04-l2-representation"], "exerciseIds": ["COG-201-u01-ex1"], "sessionKind": "tutorial" },
+    { "id": "u01-a3", "type": "discussion", "title": "Seminar: grue, simplicity and entrenchment", "instructions": "Exercise 2 is a written seminar contribution. Take a position and defend it; the tutor will press on the symmetry argument.", "estimatedMinutes": 30, "sourceLocatorIds": ["cocosci04-l1-goodman", "cocosci04-l1-responses-to-goodman", "cocosci04-l1-entrenchment"], "exerciseIds": ["COG-201-u01-ex2"], "sessionKind": "seminar" },
+    { "id": "u01-a4", "type": "explain_back", "title": "Explain: four claims, kept apart", "instructions": "Exercise 3, written without the lesson open: label the statements in the given paragraph and say which inference is not licensed.", "estimatedMinutes": 20, "sourceLocatorIds": ["cocosci04-l1-marr"], "exerciseIds": ["COG-201-u01-ex3"], "sessionKind": "oral" },
+    { "id": "u01-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's definitions", "instructions": "From memory: Marr's three levels; identification in the limit; the PAC bound and its assumption; the size of the space of conjunctions over k features; Goodman's riddle in one sentence; the four claim types.", "estimatedMinutes": 10, "sourceLocatorIds": ["cocosci04-l2-marr"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["COG-201-u01-ex1", "COG-201-u01-ex2", "COG-201-u01-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the sample-complexity bound proved by the union bound with the i.i.d. assumption named, the two hypothesis spaces counted, and the numerical sample sizes computed.", "exerciseId": "COG-201-u01-ex1" },
+  "commonMisconceptions": [
+    { "claim": "PAC learning theory solves Hume's problem: it justifies induction without assumptions.", "correction": "The bound assumes training and future examples are drawn independently from the same distribution. That is the uniformity-of-nature assumption in modern dress; the slide says so explicitly.", "correctionLocatorIds": ["cocosci04-l1-pac-answer", "cocosci04-l2-pac-theorem"] },
+    { "claim": "Preferring the simpler (shorter) hypothesis settles Goodman's riddle.", "correction": "Green and grue have the same form; which is shorter depends on which predicates are primitive. Simplicity relative to a representation is a bias, and the question is where the representation comes from.", "correctionLocatorIds": ["cocosci04-l1-responses-to-goodman", "cocosci04-l1-entrenchment"] },
+    { "claim": "If a computational-level model fits people's judgements, people must be carrying out that computation.", "correction": "A level-1 fit is evidence about the problem being solved and how well, not about the algorithm or mechanism. Mechanistic claims need level-2 or level-3 evidence.", "correctionLocatorIds": ["cocosci04-l1-marr", "cocosci04-l2-level-questions"] }
+  ],
+  "estimatedMinutes": 265,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All cited slide locators verified 2026-10-30 against text extracted from sept_9_2004.pdf (72 pages) and sept_14_2004.pdf (65 pages) with scripts/pdf-dump.ts: Mill quotation at index 16, Marr's levels at index 42, Goodman's problem at index 49, entrenchment at index 69 (lecture 1); learning as search at index 25, PAC theorem at index 50, inductive bias at index 57, summary at index 64 (lecture 2). The probmods Introduction page returned HTTP 200 with h1 'Introduction' and its source text was read from the GitHub repository." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Content author re-derived: the union-bound proof of N ≥ (1/ε)(ln|H| + ln(1/δ)) via (1−ε)^N ≤ e^{−εN}; the identification-in-the-limit mistake bound of k for conjunctions; |H| = 3^k for conjunctions and 2^{2^k} for all Boolean concepts; exercise values 10·(10 ln 3 + ln 20) = 139.8 → N ≥ 140 and 10·(1024 ln 2 + ln 20) = 7127.8 → N ≥ 7128." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson proves the bound in general and counts the spaces symbolically; the exercise's numerical answers and the model paragraph's labelling appear only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 50 + 30 + 20 + 10 minutes of activities plus 85 minutes of preparation ≈ 4.4 hours; with unit 2 this is the first teaching week within the 7–10 hours per week budget for a seminar-weight course." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["COG-201-u01-ex1.reference-solution.md", "COG-201-u01-ex1.grading-notes.md", "COG-201-u01-ex2.grading-notes.md", "COG-201-u01-ex3.reference-solution.md", "lesson-notes.md"]
+}

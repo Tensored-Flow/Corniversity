@@ -1,0 +1,31 @@
+{
+  "id": "PHY-201-u09",
+  "courseId": "PHY-201",
+  "sequence": 9,
+  "title": "Hamilton–Jacobi theory and action–angle variables",
+  "summary": "The Hamilton–Jacobi equation, principal and characteristic functions, separation of variables; action–angle variables, frequencies and degeneracy; integrable systems and invariant tori; adiabatic invariants.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 4 (Hamilton-Jacobi equations and action-angle variables; 8.09 lectures 9–13 on the calendar) and Tong, Classical Dynamics, Chapter 4." }
+  ],
+  "prerequisiteConceptIds": ["hamiltonian-mechanics", "canonical-transformations", "central-force-motion"],
+  "teachesConceptIds": ["canonical-transformations"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 4 (PDF), the sections on the Hamilton-Jacobi equation and action-angle variables.", "locatorId": "cm3-ch4", "estimatedMinutes": 70 },
+    { "description": "Read Tong, Classical Dynamics, Chapter 4 (reference-only), the sections on Hamilton-Jacobi theory and action-angle variables.", "locatorId": "tong-cd-ch4", "estimatedMinutes": 40 },
+    { "description": "Consult the 8.09 calendar for the placement of this material in lectures 9–13 and the associated problem-set milestones.", "locatorId": "cm3-calendar", "estimatedMinutes": 5 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Reading: Hamilton–Jacobi and action–angle variables", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 130, "sourceLocatorIds": ["cm3-ch4", "tong-cd-ch4", "cm3-calendar"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 4 resource page and direct PDF link opened 2026-10-30 (PDF text not yet extracted); the 8.09 calendar page opened; Tong's Classical Dynamics page listing Chapter 4 opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

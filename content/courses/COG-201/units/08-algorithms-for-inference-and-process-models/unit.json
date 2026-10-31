@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u08",
+  "courseId": "COG-201",
+  "sequence": 8,
+  "title": "Algorithms for inference and rational process models",
+  "summary": "From the computational level to algorithms: exact enumeration, rejection sampling, Markov chain Monte Carlo (Gibbs, Metropolis–Hastings), particle filters and variational inference; the sampling hypothesis and resource-rational analysis as ways of turning an inference algorithm into a psychological process model.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lecture 11's MCMC section (Gibbs sampling, Metropolis–Hastings), lecture 10's sampling slides, and the web book's chapters Interlude - Algorithms for inference and Rational process models." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-inference-cognition", "graphical-models-dependence"],
+  "teachesConceptIds": ["inference-algorithms-process-models"],
+  "preparation": [
+    { "description": "Read OCW lecture 11 slides 51–66 (Markov chain Monte Carlo; Gibbs sampling; Metropolis–Hastings; relation to simulated annealing; why MCMC is important) and lecture 10's 'Sampling possible worlds' slides.", "locatorId": "cocosci04-lec11", "estimatedMinutes": 50 },
+    { "description": "Read the web book's Interlude - Algorithms for inference and Rational process models. Reference-only.", "locatorId": "pm2-ch-inference-algorithms", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Lecture 11 (MCMC) and the web book's algorithms and process chapters", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["cocosci04-lec11", "cocosci04-lec10", "pm2-ch-inference-algorithms", "pm2-ch-process-models"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 11 text extracted 2026-10-30 (MCMC slides at PDF pages 51–66: 'Markov chain Monte Carlo', 'Gibbs sampling', 'Metropolis-Hastings algorithm', 'Why MCMC is important'); lecture 10 extracted ('Sampling possible worlds' at PDF page 46). Web book chapters Interlude - Algorithms for inference and Rational process models returned HTTP 200 with the stated h1 headings." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

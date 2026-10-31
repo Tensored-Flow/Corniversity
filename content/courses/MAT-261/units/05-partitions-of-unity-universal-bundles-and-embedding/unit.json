@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u05",
+  "courseId": "MAT-261",
+  "sequence": 5,
+  "title": "Connections on bundles, partitions of unity and embedding in Euclidean space",
+  "summary": "Connections on vector bundles as generalised directional derivatives (a first look, taken up again in MAT-262); smooth partitions of unity and why second countability makes them exist; every finite-type bundle is pulled back from a Grassmannian; the easiest Whitney embedding theorem: a compact manifold embeds in some R^N.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 8–9 of the 18.965 notes (§8–§10, Theorem 10.1, Theorem 11.1) with Hitchin §6.2 and §10.4 on partitions of unity." }
+  ],
+  "prerequisiteConceptIds": ["vector-bundles", "tangent-bundle-vector-fields", "manifold-topology-bridge"],
+  "teachesConceptIds": ["partitions-of-unity", "whitney-embedding"],
+  "preparation": [
+    { "description": "Read lecture 8: §8 connections as generalised directional derivatives, §9 partitions of unity, §10 Theorem 10.1 (the Grassmannian is universal) with proof.", "locatorId": "gm04-l8-partitions", "estimatedMinutes": 35 },
+    { "description": "Read lecture 9: Theorem 11.1 (Whitney embedding, easiest version) with proof.", "locatorId": "gm04-l9-thm11-1", "estimatedMinutes": 20 },
+    { "description": "Read Hitchin §6.2 (partitions of unity) and appendix §10.4 (partitions of unity on general manifolds) for the proof of existence.", "locatorId": "hit14-s10-4", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Lectures 8–9: partitions of unity and embeddings", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec08", "gm04-lec09", "gm04-l8-connections", "gm04-l8-partitions", "gm04-l9-thm11-1", "hit14-s6-2", "hit14-s10-4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 8 and 9 PDFs downloaded and text-extracted 2026-10-30: §8 on PDF page 1, §9 and Theorem 10.1 on pages 2–3 of lecture8.pdf; Theorem 11.1 on the single page of lecture9.pdf. Hitchin §6.2 (p. 39) and §10.4 (p. 92) verified against extracted text." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

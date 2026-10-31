@@ -1,0 +1,69 @@
+{
+  "id": "PHY-210-u01-ex1",
+  "sequence": 1,
+  "title": "Two sparks, three separations",
+  "kind": "calculation",
+  "promptMarkdown": "In a laboratory frame two sparks, $A$ and $B$, are recorded $6.00\\ \\mathrm m$ apart along the $x$-axis and $33.36\\ \\mathrm{ns}$ apart in time, $B$ later than $A$. Take $c = 0.299\\,792\\,458\\ \\mathrm{m\\,ns^{-1}}$ and state your sign convention for the interval at the start.\n\n1. Express the time separation in metres of light-travel time, compute the interval $\\Delta s^2$ with units, and classify the pair of events.\n2. Find the speed (as a fraction of $c$) of the inertial frame in which both sparks occur at the same place, and the time between the sparks in that frame, in metres and in nanoseconds. Which name does this time have?\n3. Is there an inertial frame in which $A$ and $B$ are simultaneous? Justify from the interval alone.\n4. Repeat the classification, and parts 2–3 as far as they make sense, if the spatial separation were instead (a) $10.0\\ \\mathrm m$, (b) $12.0\\ \\mathrm m$ with the same $33.36\\ \\mathrm{ns}$. For case (b) find the speed of the frame in which the sparks are simultaneous and their separation in that frame.",
+  "conceptIds": ["minkowski-spacetime"],
+  "hintLadder": [
+    "Multiply the time in nanoseconds by $c$ in metres per nanosecond. The result should be a round number of metres to three significant figures.",
+    "In the frame where both sparks are at the same place, a single clock is present at both. How is the clock's reading related to the interval? And how fast must that clock move in the laboratory to be at $A$ and then at $B$?",
+    "Simultaneity in some frame would make $\\Delta t' = 0$ there. What sign would $\\Delta s^2$ then have?",
+    "For case (b), look for a frame moving at speed $v$ with $\\Delta t' = 0$. From unit 2 you will have the Lorentz transformation; for now use that $\\Delta s^2$ is invariant and that in such a frame $\\Delta s^2 = \\Delta x'^2$, together with $v = c^2\\Delta t/\\Delta x$ from the lesson."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "proper-time-eight",
+      "kind": "numeric_value",
+      "description": "the proper time between the sparks is 8.00 m of light-travel time",
+      "params": { "expected": 8, "tolerance": 0.005 }
+    },
+    {
+      "id": "speed-point-six",
+      "kind": "numeric_value",
+      "description": "the co-moving frame has speed 0.600 c",
+      "params": { "expected": 0.6, "tolerance": 0.0005 }
+    },
+    {
+      "id": "interval-invariant",
+      "kind": "forbidden_claim",
+      "description": "asserting that the interval depends on the frame or differs between observers",
+      "params": {
+        "patterns": [
+          "interval[^.]{0,40}(depends on|differs between|is different in|changes with|varies with) (the )?(frame|observer)",
+          "(different|disagree)[^.]{0,30}(about|on) the (spacetime )?interval"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "interval", "criterion": "Convention stated; cΔt = 10.0 m; Δs² = −64.0 m² (or +64 m² in the opposite convention, stated); pair classified as timelike.", "weight": 0.3, "levels": [ { "label": "met", "description": "All with units." }, { "label": "partially met", "description": "Right numbers, convention or units missing." }, { "label": "not met", "description": "Wrong interval or classification." } ] },
+      { "id": "comoving-frame", "criterion": "Speed 0.600c from Δx/Δt; proper time 8.00 m = 26.7 ns identified as the proper (wristwatch) time, with the invariance argument.", "weight": 0.3, "levels": [ { "label": "met", "description": "Speed, time in both units, name." }, { "label": "partially met", "description": "One element missing." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "simultaneity", "criterion": "No simultaneous frame for the timelike pair, argued from the sign of Δs² (simultaneity would force Δs² ≥ 0).", "weight": 0.15, "levels": [ { "label": "met", "description": "Correct with reason." }, { "label": "partially met", "description": "Correct without reason." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "variants", "criterion": "(a) lightlike: no co-moving frame, the sparks can be joined by light; (b) spacelike: no co-moving frame, simultaneous in the frame with v = (10/12)c ≈ 0.833c, separation √44 m ≈ 6.63 m (proper distance).", "weight": 0.25, "levels": [ { "label": "met", "description": "Both cases correct." }, { "label": "partially met", "description": "One case correct." }, { "label": "not met", "description": "Both wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct solution",
+      "text": "Convention (−,+,+,+). cΔt = 33.36 ns × 0.299792458 m/ns = 10.0 m, so Δs² = −100 + 36 = −64 m²: timelike. The frame in which both sparks are at the same place moves at v = 6.00/10.0 c = 0.600 c; there a single clock reads the proper time τ = √64 m = 8.00 m = 26.7 ns. No frame makes them simultaneous because that would need Δs² ≥ 0. The interval is the same for every observer.",
+      "expect": { "proper-time-eight": true, "speed-point-six": true, "interval-invariant": true }
+    },
+    {
+      "label": "frame-dependent interval",
+      "text": "The interval depends on the frame, so Mary and John get different values.",
+      "expect": { "interval-invariant": false }
+    },
+    {
+      "label": "missing numbers",
+      "text": "The pair is timelike and a co-moving frame exists but I could not compute its speed.",
+      "expect": { "proper-time-eight": false, "speed-point-six": false }
+    }
+  ]
+}

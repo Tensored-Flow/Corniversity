@@ -1,0 +1,52 @@
+{
+  "id": "tong-dynamics-relativity",
+  "title": "Dynamics and Relativity (lecture notes)",
+  "authors": ["David Tong"],
+  "institution": "University of Cambridge, DAMTP (Part IA Mathematical Tripos)",
+  "kind": "notes",
+  "canonicalUrl": "https://davidtong.org/teaching/dynamics-and-relativity/",
+  "description": "First-year course on Newtonian mechanics and special relativity: Newtonian mechanics, forces, dimensional analysis, central forces, systems of particles, non-inertial frames, and a 54-page chapter on special relativity (Lorentz transformations, relativistic physics, the geometry of spacetime, relativistic kinematics, particle physics, spinors). About 160 pages, seven chapters, four problem sheets.",
+  "rightsNotes": [
+    "The notes page states no licence and no copyright or reuse terms. Author copyright is assumed; Corniversity treats the notes as reference-only (cite and link, do not copy or ingest).",
+    "The historic DAMTP address https://www.damtp.cam.ac.uk/user/tong/relativity.html returned a 301 redirect to davidtong.org on 2026-10-30.",
+    "Convention: Chapter 7 defines the invariant interval as Δs² = c²Δt² − Δx² − Δy² − Δz² and writes the Minkowski metric as η = diag(+1, −1, −1, −1), the opposite overall sign to Corniversity's (−,+,+,+); c is kept explicit (verified in the chapter text, Sections 7.3.1 and 7.4.7)."
+  ],
+  "currentVersionId": "tong-dr-web",
+  "versions": [
+    {
+      "id": "tong-dr-web",
+      "label": "Web edition on davidtong.org (undated)",
+      "url": "https://davidtong.org/teaching/dynamics-and-relativity/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the notes page; read the text of the Chapter 7 PDF to verify its section headings and sign convention",
+      "componentsSeen": [
+        "notes page: course description, 'Full Lecture Notes' (dynrel.pdf, about 160 pages), chapter PDFs 1–7, problem sheets 1–4, textbook link",
+        "Chapter 7 PDF (dynrel7.pdf, 54 pages, printed pages 107–160): 7.1 Lorentz Transformations (7.1.1 in three spatial dimensions, 7.1.2 Spacetime Diagrams, 7.1.3 A History of Light Speed), 7.2 Relativistic Physics (Simultaneity, Causality, Time Dilation, Length Contraction, Addition of Velocities), 7.3 The Geometry of Spacetime (The Invariant Interval, The Lorentz Group, A Rant: Why c = 1), 7.4 Relativistic Kinematics (Proper Time, ..., Massless Particles, Newton's Laws of Motion, Acceleration, Indices Up, Indices Down), 7.5 Particle Physics (Particle Decay, Particle Collisions), 7.6 Spinors"
+      ],
+      "licence": "No licence stated; author copyright (free to read on the author's page)",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Chapters 1–6 and the problem sheets were listed on the page but not opened; locators to them are file-level.",
+        "Section-level locators for Chapter 7 are web locators whose headings were verified in the PDF text; no page-level pdf locators are recorded because the material is reference-only.",
+        "No year is stated on the page."
+      ],
+      "locators": [
+        { "id": "tong-dr-index", "label": "Dynamics and Relativity notes page", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/teaching/dynamics-and-relativity/", "heading": "Dynamics and Relativity" } },
+        { "id": "tong-dr-full", "label": "Full lecture notes (PDF, about 160 pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel.pdf", "heading": "Full Lecture Notes" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-dr-ch1", "label": "Chapter 1: Newtonian Mechanics (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel1.pdf", "heading": "1. Newtonian Mechanics" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-dr-ch4", "label": "Chapter 4: Central Forces (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel4.pdf", "heading": "4. Central Forces" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-dr-ch5", "label": "Chapter 5: Systems of Particles (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel5.pdf", "heading": "5. Systems of Particles" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-dr-ch6", "label": "Chapter 6: Non-Inertial Frames (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel6.pdf", "heading": "6. Non-Inertial Frames" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-dr-ch7", "label": "Chapter 7: Special Relativity (PDF, 54 pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7. Special Relativity" }, "note": "Opened; section headings and the (+,−,−,−) convention verified from the PDF text." },
+        { "id": "tong-dr-ch7-s1", "label": "Chapter 7, Section 7.1 Lorentz Transformations (7.1.1 three spatial dimensions, 7.1.2 Spacetime Diagrams, 7.1.3 A History of Light Speed)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7.1 Lorentz Transformations" } },
+        { "id": "tong-dr-ch7-s2", "label": "Chapter 7, Section 7.2 Relativistic Physics (Simultaneity, Causality, Time Dilation, Length Contraction, Addition of Velocities)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7.2 Relativistic Physics" } },
+        { "id": "tong-dr-ch7-s3", "label": "Chapter 7, Section 7.3 The Geometry of Spacetime (7.3.1 The Invariant Interval, 7.3.2 The Lorentz Group, 7.3.3 A Rant: Why c = 1)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7.3 The Geometry of Spacetime" }, "note": "Uses Δs² = c²Δt² − Δx² − Δy² − Δz² and η = diag(+1, −1, −1, −1)." },
+        { "id": "tong-dr-ch7-s4", "label": "Chapter 7, Section 7.4 Relativistic Kinematics (7.4.1 Proper Time, 7.4.4 Massless Particles, 7.4.5 Newton's Laws of Motion, 7.4.6 Acceleration, 7.4.7 Indices Up, Indices Down)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7.4 Relativistic Kinematics" } },
+        { "id": "tong-dr-ch7-s5", "label": "Chapter 7, Section 7.5 Particle Physics (7.5.1 Particle Decay, 7.5.2 Particle Collisions)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf", "heading": "7.5 Particle Physics" } },
+        { "id": "tong-dr-sheet4", "label": "Problem Sheet 4: Special Relativity (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-dr-web", "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/htl4.pdf", "heading": "Problem Sheet 4: Special Relativity" }, "note": "Linked from the notes page; file not opened. Optional practice only." }
+      ]
+    }
+  ]
+}

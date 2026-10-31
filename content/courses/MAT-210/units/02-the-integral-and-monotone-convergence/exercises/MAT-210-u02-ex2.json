@@ -1,0 +1,105 @@
+{
+  "id": "MAT-210-u02-ex2",
+  "sequence": 2,
+  "title": "Decreasing sequences need a finite start",
+  "kind": "proof",
+  "promptMarkdown": "Let $(X,\\mathcal M,\\mu)$ be a measure space and let $f_n:X\\to[0,\\infty)$ be measurable, **finite-valued**, with $f_1\\ge f_2\\ge\\cdots$ pointwise and $f_n(x)\\to f(x)$ for every $x\\in X$.\n\n1. Prove: if $\\int_Xf_1\\,d\\mu<\\infty$ then $\\int_Xf_n\\,d\\mu\\to\\int_Xf\\,d\\mu$. (Apply the monotone convergence theorem to $g_n=f_1-f_n$ and say exactly where the finiteness hypothesis is used.)\n2. Show by an explicit example on $\\mathbb N$ with counting measure that the conclusion can fail when $\\int_Xf_1\\,d\\mu=\\infty$.\n3. On $\\mathbb N$ with counting measure let $f_n(k)=2^{-k}\\big(1+\\tfrac kn\\big)$ for $k\\ge1$. Verify the hypotheses of part 1 (including $\\int f_1\\,d\\mu<\\infty$, with its value), compute $\\int_{\\mathbb N}f_n\\,d\\mu$ exactly as a function of $n$, and confirm the conclusion of part 1 by computing both $\\lim_n\\int f_n\\,d\\mu$ and $\\int f\\,d\\mu$.",
+  "conceptIds": [
+    "convergence-theorems",
+    "lebesgue-integral"
+  ],
+  "hintLadder": [
+    "Write $f_1=g_n+f_n$ with $g_n=f_1-f_n\\ge0$. In which direction is $(g_n)$ monotone, and what is its pointwise limit?",
+    "Additivity for nonnegative functions gives $\\int f_1=\\int g_n+\\int f_n$. To solve for $\\int g_n$ you must subtract; what has to be finite for that?",
+    "Tail indicators $\\chi_{\\{n,n+1,\\dots\\}}$ on $\\mathbb N$ decrease to zero.",
+    "Use exercise 1 to turn the integral into a sum, and recall $\\sum_{k\\ge1}kx^k=\\dfrac{x}{(1-x)^2}$ for $|x|<1$; separate the part of $\\int f_n$ that does not depend on $n$ from the part carrying the factor $1/n$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "integral-formula",
+      "kind": "expression_present",
+      "description": "the integral of f_n equals 1 + 2/n",
+      "params": {
+        "patterns": [
+          "1\\+2/n(?![0-9])",
+          "1\\+\\(2\\)/\\(n\\)",
+          "\\(n\\+2\\)/\\(?n\\)?",
+          "2/n\\+1(?![0-9])",
+          "\\(2\\)/\\(n\\)\\+1"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "decreasing-theorem",
+        "criterion": "g_n = f_1 − f_n shown nonnegative, measurable, increasing to f_1 − f; monotone convergence applied; additivity used to write ∫ g_n = ∫ f_1 − ∫ f_n and ∫ (f_1 − f) = ∫ f_1 − ∫ f, with the finiteness of ∫ f_1 identified as what licenses the subtraction.",
+        "weight": 0.35,
+        "levels": [
+          { "label": "met", "description": "Complete, with the finiteness use located." },
+          { "label": "partially met", "description": "Right structure; the subtraction step or monotonicity of g_n not justified." },
+          { "label": "not met", "description": "Missing or applies monotone convergence directly to the decreasing sequence." }
+        ]
+      },
+      {
+        "id": "counterexample",
+        "criterion": "An explicit decreasing sequence with infinite integrals and a pointwise limit of integral 0 (e.g. tail indicators on ℕ), with the computation shown.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Explicit and verified." },
+          { "label": "partially met", "description": "Example named without verification." },
+          { "label": "not met", "description": "Missing or wrong." }
+        ]
+      },
+      {
+        "id": "hypotheses-checked",
+        "criterion": "Monotonicity in n, nonnegativity, finiteness and the pointwise limit 2^{-k} verified; ∫ f_1 computed as 3 using Σ 2^{-k} = 1 and Σ k 2^{-k} = 2.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "All hypotheses and the value 3." },
+          { "label": "partially met", "description": "Some hypotheses unchecked or the value wrong." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "integral-and-limit",
+        "criterion": "∫ f_n = 1 + 2/n derived, its limit 1 computed, and ∫ f = Σ 2^{-k} = 1 computed independently so the conclusion of part 1 is confirmed.",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "Formula, limit and independent value of ∫ f." },
+          { "label": "partially met", "description": "Formula right but the confirmation incomplete." },
+          { "label": "not met", "description": "Formula wrong or missing." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "LaTeX computation",
+      "text": "Since $f_n(k)=2^{-k}+\\frac{k}{n}2^{-k}$, exercise 1 gives $\\int f_n\\,d\\mu=\\sum_k 2^{-k}+\\frac{1}{n}\\sum_k k2^{-k}=1+\\frac{2}{n}\\to 1=\\int f\\,d\\mu$, and $\\int f_1\\,d\\mu = 3 < \\infty$.",
+      "expect": {
+        "integral-formula": true
+      }
+    },
+    {
+      "label": "plain-text computation",
+      "text": "The integral of f_n is 1 + 2/n, which tends to 1, and the integral of the limit function 2^{-k} is also 1.",
+      "expect": {
+        "integral-formula": true
+      }
+    },
+    {
+      "label": "wrong value",
+      "text": "The integral of f_n is 3 for every n, so the limit is 3 and the theorem is confirmed.",
+      "expect": {
+        "integral-formula": false
+      }
+    }
+  ]
+}

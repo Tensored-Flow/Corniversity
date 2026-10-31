@@ -1,0 +1,91 @@
+{
+  "id": "MAT-210-u02-ex1",
+  "sequence": 1,
+  "title": "Integration on ℕ is summation",
+  "kind": "proof",
+  "promptMarkdown": "Let $X=\\mathbb N=\\{1,2,3,\\dots\\}$ with $\\mathcal M=\\mathcal P(\\mathbb N)$ and $\\mu$ the counting measure.\n\n1. Prove, from the definition of the integral as a supremum over simple functions, that for every $f:\\mathbb N\\to[0,\\infty]$\n$$\\int_{\\mathbb N}f\\,d\\mu=\\sum_{k=1}^{\\infty}f(k).$$\nHandle the case in which $f(k)=\\infty$ for some $k$ separately.\n2. Deduce from Theorem 0.3 of lecture 4, in a few lines, that for any doubly indexed family $a_{ij}\\ge0$ ($i,j\\in\\mathbb N$) one has $\\sum_i\\sum_ja_{ij}=\\sum_j\\sum_ia_{ij}$.\n3. Give an explicit sequence of functions $f_n\\ge0$ on $\\mathbb N$ with $f_n\\to0$ pointwise and $\\int f_n\\,d\\mu=1$ for every $n$. Which hypothesis of the monotone convergence theorem fails for your sequence, and what does Fatou's lemma assert about it (is the inequality strict)?",
+  "conceptIds": [
+    "lebesgue-integral",
+    "convergence-theorems",
+    "measure-space"
+  ],
+  "hintLadder": [
+    "Truncate: when $f$ is finite-valued, $s_N=f\\chi_{\\{1,\\dots,N\\}}$ is a simple function below $f$. Compute $\\int s_N\\,d\\mu$.",
+    "For the reverse inequality take an arbitrary measurable simple $0\\le s\\le f$ and compare $\\int s\\,d\\mu$ with $\\sum_k s(k)$; watch for a value $\\alpha_i>0$ carried on an infinite set.",
+    "View the double family as a sequence of functions $f_j(i)=a_{ij}$ on $\\mathbb N$ and apply Theorem 0.3 of lecture 4 together with part 1.",
+    "A moving bump: a function equal to $1$ at a single point that drifts to infinity."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "checking the identity for particular finite ranges is not a proof for all f",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "lower-bound",
+        "criterion": "∫ f ≥ Σ f(k) via the truncations f·χ_{1..N} (simple, below f, with integral the partial sum), plus the separate argument when some f(k) = ∞ (both sides infinite, using s = m·χ_{k}).",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "Truncation argument and the infinite-value case." },
+          { "label": "partially met", "description": "Truncation argument only." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "upper-bound",
+        "criterion": "∫ f ≤ Σ f(k): for an arbitrary simple 0 ≤ s ≤ f, either some positive value is carried on an infinite set (then Σ f(k) = ∞) or ∫ s = Σ_k s(k) ≤ Σ_k f(k).",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Both cases handled." },
+          { "label": "partially met", "description": "Finite-support case only." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "interchange",
+        "criterion": "The double-series identity deduced by reading Σ_j ∫ f_j = ∫ Σ_j f_j through part 1.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Clean deduction." },
+          { "label": "partially met", "description": "Theorem cited without the translation to sums." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "moving-bump",
+        "criterion": "A correct sequence (e.g. χ_{n}) with pointwise limit 0 and integrals 1; monotonicity identified as the failing hypothesis; Fatou's inequality 0 ≤ 1 stated and recognised as strict.",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "All three." },
+          { "label": "partially met", "description": "Example right, hypothesis or Fatou discussion missing." },
+          { "label": "not met", "description": "No valid example." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "general argument",
+      "text": "Let f be finite-valued and for every N put s_N = f·χ_{1..N}, a simple function with s_N ≤ f and ∫ s_N = Σ_{k≤N} f(k). Taking the supremum over N gives ∫ f ≥ Σ_k f(k). Conversely for an arbitrary simple s ≤ f, ∫ s = Σ_k s(k) ≤ Σ_k f(k) unless some positive value sits on an infinite set, in which case both sides are infinite.",
+      "expect": {
+        "examples-only": true
+      }
+    },
+    {
+      "label": "instances only",
+      "text": "For n=1 the integral of f·χ_{1} is f(1), for n=2 it is f(1)+f(2), for n=3 it is f(1)+f(2)+f(3), so the integral equals the sum.",
+      "expect": {
+        "examples-only": false
+      }
+    }
+  ]
+}

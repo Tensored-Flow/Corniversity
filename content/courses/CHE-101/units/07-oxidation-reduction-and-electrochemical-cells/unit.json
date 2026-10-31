@@ -1,0 +1,31 @@
+{
+  "id": "CHE-101-u07",
+  "courseId": "CHE-101",
+  "sequence": 7,
+  "title": "Oxidation–reduction and electrochemical cells",
+  "summary": "Oxidation numbers and balancing redox equations by half-reactions in acidic and basic solution; galvanic cells and cell notation; standard electrode potentials and the spontaneity of redox reactions; ΔG° = −nFE°, E° and K, and the Nernst equation; chemical and biological oxidations.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 25–26 of 5.111SC (Unit IV) with OpenStax 4.2 and chapter 17." }
+  ],
+  "prerequisiteConceptIds": ["balancing-chemical-equations", "entropy-free-energy", "chemical-equilibrium-constant"],
+  "teachesConceptIds": ["redox-electrochemistry"],
+  "preparation": [
+    { "description": "OCW Unit IV page: lecture 25 (oxidation–reduction and electrochemical cells) and lecture 26 (chemical and biological oxidations), each with notes, problems and solutions.", "locatorId": "chem14-unit4", "estimatedMinutes": 40 },
+    { "description": "OpenStax 4.2 Classifying Chemical Reactions (oxidation numbers, half-reaction method) and 17.1 Review of Redox Chemistry.", "locatorId": "ox-17-1", "estimatedMinutes": 40 },
+    { "description": "OpenStax 17.2 Galvanic Cells, 17.3 Electrode and Cell Potentials, 17.4 Potential, Free Energy, and Equilibrium.", "locatorId": "ox-17-3", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Lectures 25–26 and OpenStax chapter 17: redox and cells", "instructions": "Read the lecture pages and the OpenStax sections for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["chem14-unit4", "ox-4-2", "ox-17-intro", "ox-17-1", "ox-17-2", "ox-17-3", "ox-17-4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 280,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit IV page opened 2026-10-30 (lectures 25–29 listed with page URLs); OpenStax 4.2 and chapter 17 introduction and sections 17.1–17.4 opened. Lecture pages 25–26 and their notes PDFs are not yet opened; the unit page is the verified locator." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

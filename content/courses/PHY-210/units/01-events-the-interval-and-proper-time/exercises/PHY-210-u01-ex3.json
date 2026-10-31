@@ -1,0 +1,25 @@
+{
+  "id": "PHY-210-u01-ex3",
+  "sequence": 3,
+  "title": "Coordinate time versus proper time",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words, and without the book open, explain the difference between a coordinate time interval and a proper time interval between two events, and why the phrase 'moving clocks run slow' is shorthand that can mislead. Illustrate with one concrete pair of events and numbers of your own (not the book's sparks), stating which quantity each observer measures.",
+  "conceptIds": ["minkowski-spacetime"],
+  "hintLadder": [
+    "Which of the two quantities is attached to a pair of events independently of any frame, and which needs a frame to be defined?",
+    "Can a clock tell that it is moving? What does it measure between two events it is present at?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "distinction", "criterion": "Coordinate time is the difference of readings of two synchronised clocks of a frame at the two events; proper time is the reading of one clock present at both, equal to √(−Δs²)/c and frame independent.", "weight": 0.45, "levels": [ { "label": "met", "description": "Both defined correctly." }, { "label": "partially met", "description": "One defined vaguely." }, { "label": "not met", "description": "Confused." } ] },
+      { "id": "shorthand", "criterion": "Explains that no clock 'runs slow' in its own right: the statement compares a proper time with a coordinate time between the same events, and is symmetric between frames when each compares its own coordinate time with the other's proper time.", "weight": 0.35, "levels": [ { "label": "met", "description": "Clear." }, { "label": "partially met", "description": "Gestures at it." }, { "label": "not met", "description": "Repeats the shorthand as absolute." } ] },
+      { "id": "example", "criterion": "Gives a correct numerical example with the frame of each measurement named.", "weight": 0.2, "levels": [ { "label": "met", "description": "Correct numbers and frames." }, { "label": "partially met", "description": "Numbers right, frames unclear." }, { "label": "not met", "description": "No valid example." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

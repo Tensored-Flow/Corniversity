@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u03",
+  "courseId": "PHY-240",
+  "sequence": 3,
+  "title": "The equivalence principle and local flatness",
+  "summary": "Freely falling frames as the generalisation of inertial frames; weak, Einstein and strong equivalence principles; gravitational redshift and time dilation; local flatness by counting degrees of freedom, with the twenty-component deficit that will be curvature. The first unit in which spacetime is allowed to be curved.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 6–7 (Lecture Guide pages 1–2 and the recorded lectures), Tong Sections 1.2.4–1.2.5 and Carroll Chapter 4." }
+  ],
+  "prerequisiteConceptIds": ["tensor-calculus-spacetime", "covariant-derivative"],
+  "teachesConceptIds": ["equivalence-principle"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopsis of Lectures 6 and 7 on the equivalence principle (PDF page 1, final paragraphs).", "locatorId": "gr20-g-lec1-5", "estimatedMinutes": 10 },
+    { "description": "Read the Lecture Guide's continuation of Lecture 7 (PDF page 2): the counting argument for local flatness and the twenty leftover constraints.", "locatorId": "gr20-g-lec6-10", "estimatedMinutes": 15 },
+    { "description": "Watch Lecture 6: The Principle of Equivalence and Lecture 7: The Principle of Equivalence Continued; Parallel Transport (first half), from the video gallery.", "locatorId": "gr20-videos", "estimatedMinutes": 150 },
+    { "description": "Second account: Tong, General Relativity, Section 1.2 (1.2.4 The Equivalence Principle, 1.2.5 Gravitational Time Dilation), reference-only.", "locatorId": "tong-gr-ch1-s2", "estimatedMinutes": 30 },
+    { "description": "Optional: Carroll, Lecture Notes on General Relativity, Chapter 4 Gravitation (opening sections on the equivalence principle), reference-only.", "locatorId": "carroll-ch4", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "lecture", "title": "Lectures 6–7: the equivalence principle", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec1-5", "gr20-g-lec6-10", "gr20-videos", "gr20-summaries", "tong-gr-ch1-s2", "carroll-ch4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 420,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 1–2 located in the extracted PDF text on 2026-10-30 (Lectures 6–7 synopsis ends page 1 and continues on page 2); the video gallery and lecture summaries pages opened; Tong Section 1.2 headings verified in gr1.pdf; Carroll Chapter 4 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

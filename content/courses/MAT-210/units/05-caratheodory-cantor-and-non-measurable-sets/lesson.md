@@ -1,0 +1,7 @@
+## Outline: Carathéodory, the Cantor set and non-measurable sets
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 8–9 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** The Carathéodory criterion ($E$ is measurable iff it splits every set additively for outer measure) and its equivalence with the definition of unit 4; the middle-thirds Cantor set as a compact, uncountable set of measure zero; a cardinality argument showing that there are Lebesgue measurable sets that are not Borel; invariance of Lebesgue measure under translations and dilations, with the scaling factor; the construction of a non-measurable subset of $\mathbb R$ from translation invariance and countable additivity (the forward reference used in units 1 and 2); invariance under rotations.
+
+**What preparation will add.** A full lesson that makes explicit which axioms (countable additivity, translation invariance, the axiom of choice) the non-measurable set needs; examples and non-examples (a measurable set that is not Borel, an uncountable null set); original exercises with hint ladders and rubrics; instructor reference reasoning; an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

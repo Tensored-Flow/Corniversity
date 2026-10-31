@@ -1,0 +1,87 @@
+{
+  "id": "MAT-262-u02-ex1",
+  "sequence": 1,
+  "title": "Christoffel symbols of the round sphere",
+  "kind": "calculation",
+  "promptMarkdown": "On the chart $W$ of the sphere $S^2_R$ from unit 1, with $x^1=\\theta$, $x^2=\\varphi$ and $g=R^2\\,d\\theta^2+R^2\\sin^2\\theta\\,d\\varphi^2$, state your index conventions and then:\n\n1. Write down $(g^{ij})$.\n2. Compute all eight Christoffel symbols $\\Gamma^k_{ij}$ of the Levi-Civita connection from the formula $\\Gamma^k_{ij}=\\tfrac12g^{kl}(\\partial_ig_{jl}+\\partial_jg_{il}-\\partial_lg_{ij})$, showing the work for every non-zero symbol and saying why the others vanish.\n3. Verify the torsion-free symmetry $\\Gamma^k_{ij}=\\Gamma^k_{ji}$ in your table, and verify one instance of metric compatibility directly: check that $\\partial_\\theta g_{\\varphi\\varphi}=2\\,g(\\nabla_{\\partial_\\theta}\\partial_\\varphi,\\partial_\\varphi)$ using your symbols.\n4. One of your symbols is unbounded as $\\theta\\to0$. Explain why this does not mean that the Levi-Civita connection of $S^2_R$ is singular at the north pole; give a reason that does not rely on computing in another chart.\n5. Observe that $R$ does not appear in your table, and prove in general that the Levi-Civita connections of $g$ and of $c\\,g$ ($c>0$ constant) coincide.",
+  "conceptIds": ["levi-civita-connection", "metric-coefficients-charts"],
+  "hintLadder": [
+    "Only one metric coefficient has a non-zero derivative, and it depends on $\\theta$ alone. Which terms of the formula can therefore survive?",
+    "Since $(g_{ij})$ is diagonal, so is $(g^{ij})$, and the formula for $\\Gamma^k_{ij}$ has a single term in the sum over $l$, namely $l=k$.",
+    "For part 4, recall Theorem 6.20: what is the Levi-Civita connection of a submanifold of Euclidean space, and is that description smooth at the pole?",
+    "For part 5, write the Koszul formula for $c\\,g$ and factor out $c$ from both sides, or scale $g^{kl}$ and $\\partial_ig_{jl}$ in the Christoffel formula."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "cot-symbol",
+      "kind": "expression_present",
+      "description": "the symbol Γ^φ_θφ = cot θ appears (as cot θ or cos θ / sin θ)",
+      "params": {
+        "patterns": [
+          "cot\\\\?(theta|θ)",
+          "cos\\\\?(theta|θ)/\\\\?sin\\\\?(theta|θ)",
+          "\\(\\\\?cos\\\\?(theta|θ)\\)/\\(\\\\?sin\\\\?(theta|θ)\\)"
+        ]
+      }
+    },
+    {
+      "id": "sin-cos-symbol",
+      "kind": "expression_present",
+      "description": "the symbol Γ^θ_φφ = −sin θ cos θ appears (or −½ sin 2θ)",
+      "params": {
+        "patterns": [
+          "-\\\\?sin\\\\?(theta|θ)\\\\?cos\\\\?(theta|θ)",
+          "-\\\\?cos\\\\?(theta|θ)\\\\?sin\\\\?(theta|θ)",
+          "-(1/2|½|\\(1\\)/\\(2\\))\\\\?sin\\(?2"
+        ]
+      }
+    },
+    {
+      "id": "no-tensor-claim",
+      "kind": "forbidden_claim",
+      "description": "asserting that the Christoffel symbols are the components of a tensor",
+      "params": {
+        "patterns": [
+          "christoffel symbols (are|form|transform (as|like)) (the components of )?a tensor",
+          "christoffel symbols are tensorial",
+          "christoffel symbols (define|give) a tensor"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "inverse-and-symbols", "criterion": "Conventions stated; g^{ij} correct; Γ^θ_φφ = −sinθ cosθ and Γ^φ_θφ = Γ^φ_φθ = cotθ derived with work shown; the other symbols shown to vanish with a reason.", "weight": 0.45, "levels": [ { "label": "met", "description": "All symbols correct with work and reasons." }, { "label": "partially met", "description": "Correct non-zero symbols, vanishing asserted without reason or one sign slip corrected." }, { "label": "not met", "description": "Wrong symbols." } ] },
+      { "id": "checks", "criterion": "Symmetry noted and the metric-compatibility identity verified numerically with the symbols.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both verified." }, { "label": "partially met", "description": "One verified." }, { "label": "not met", "description": "Neither." } ] },
+      { "id": "coordinate-artefact", "criterion": "The blow-up of cotθ explained as a property of the chart, with an intrinsic reason that ∇ is smooth (tangential projection of the Euclidean derivative, or non-tensoriality of Γ plus smoothness of g in another chart).", "weight": 0.2, "levels": [ { "label": "met", "description": "Intrinsic reason given." }, { "label": "partially met", "description": "Correct conclusion with a coordinate-only justification." }, { "label": "not met", "description": "Claims the connection is singular." } ] },
+      { "id": "scaling", "criterion": "Independence of R observed and the general scaling statement proved from the Koszul or Christoffel formula.", "weight": 0.15, "levels": [ { "label": "met", "description": "Proved." }, { "label": "partially met", "description": "Observed, proof sketched." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX table",
+      "text": "Conventions: $\\nabla_{\\partial_i}\\partial_j=\\Gamma^k_{ij}\\partial_k$. With $g^{\\theta\\theta}=R^{-2}$, $g^{\\varphi\\varphi}=(R^2\\sin^2\\theta)^{-1}$ and $\\partial_\\theta g_{\\varphi\\varphi}=2R^2\\sin\\theta\\cos\\theta$ the only non-zero symbols are $\\Gamma^\\theta_{\\varphi\\varphi}=-\\sin\\theta\\cos\\theta$ and $\\Gamma^\\varphi_{\\theta\\varphi}=\\Gamma^\\varphi_{\\varphi\\theta}=\\cot\\theta$. Check: $2g(\\nabla_{\\partial_\\theta}\\partial_\\varphi,\\partial_\\varphi)=2\\cot\\theta\\cdot R^2\\sin^2\\theta=2R^2\\sin\\theta\\cos\\theta=\\partial_\\theta g_{\\varphi\\varphi}$. The Christoffel symbols are not tensor components, so the blow-up of $\\cot\\theta$ at the pole is a coordinate artefact; the connection is the tangential projection of the Euclidean derivative and is smooth.",
+      "expect": { "cot-symbol": true, "sin-cos-symbol": true, "no-tensor-claim": true }
+    },
+    {
+      "label": "plain-text with cos/sin",
+      "text": "Gamma^phi_{theta phi} = cos θ / sin θ and Gamma^theta_{phi phi} = -cos θ sin θ; all other symbols are zero because the only varying coefficient is g_φφ.",
+      "expect": { "cot-symbol": true, "sin-cos-symbol": true, "no-tensor-claim": true }
+    },
+    {
+      "label": "tensor claim",
+      "text": "Since the Christoffel symbols are the components of a tensor, their blow-up at the poles shows the connection is singular there.",
+      "expect": { "no-tensor-claim": false }
+    },
+    {
+      "label": "missing symbols",
+      "text": "All Christoffel symbols vanish because the metric is diagonal.",
+      "expect": { "cot-symbol": false, "sin-cos-symbol": false }
+    }
+  ]
+}

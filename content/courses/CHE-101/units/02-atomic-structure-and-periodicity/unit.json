@@ -1,0 +1,49 @@
+{
+  "id": "CHE-101-u02",
+  "courseId": "CHE-101",
+  "sequence": 2,
+  "title": "Atomic structure and periodicity",
+  "summary": "Why the atom needed quantum mechanics (electron, nucleus, the Coulomb collapse), photons and the photoelectric effect, the hydrogen atom's energy levels and orbitals, multi-electron atoms and electron configurations, and the periodic trends in ionisation energy, electron affinity and radius together with the measurement (photoelectron spectroscopy) that establishes them.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Explain why a classical orbiting electron is unstable and what the Thomson and Rutherford experiments established." },
+    { "id": "u02-o2", "description": "Use E = hν and the photoelectric relation to compute photon energies, wavelengths and electron kinetic energies, distinguishing the effect of frequency from that of intensity." },
+    { "id": "u02-o3", "description": "Use E_n = −R_H/n² to compute hydrogen transition wavelengths and the ionisation energy, and describe orbitals through the quantum numbers n, l, m_l and m_s." },
+    { "id": "u02-o4", "description": "Write ground-state configurations of atoms and ions using shielding, aufbau, Hund's rule and the Pauli principle, including the 4s/3d ordering for transition-metal ions." },
+    { "id": "u02-o5", "description": "Predict and explain periodic trends in radius, ionisation energy and electron affinity, including the subshell irregularities, and name the measurement that tests them." }
+  ],
+  "prerequisiteConceptIds": ["school-chemistry-foundations"],
+  "teachesConceptIds": ["atomic-structure-nuclear-atom", "quantisation-and-photons", "hydrogen-atom-energy-levels", "electron-configuration", "periodic-trends"],
+  "preparation": [
+    { "description": "Lecture 2 notes, pages 1 and 6: Thomson's cathode rays, and why Newton plus Coulomb predict the electron falling into the nucleus.", "locatorId": "chem14-n02-p1", "estimatedMinutes": 15 },
+    { "description": "OpenStax 6.1 Electromagnetic Energy: waves, the photoelectric effect, line spectra (Examples 6.1–6.3).", "locatorId": "ox-6-1", "estimatedMinutes": 20 },
+    { "description": "OpenStax 6.2 The Bohr Model: E_n = −kZ²/n² with k = 2.179 × 10⁻¹⁸ J (Examples 6.4–6.5).", "locatorId": "ox-6-2", "estimatedMinutes": 15 },
+    { "description": "OpenStax 6.3 Development of Quantum Theory: matter waves, orbitals, the four quantum numbers (Examples 6.6–6.9).", "locatorId": "ox-6-3", "estimatedMinutes": 20 },
+    { "description": "OpenStax 6.4 Electron Configurations: orbital energies, aufbau, configurations of ions (Examples 6.10–6.11).", "locatorId": "ox-6-4", "estimatedMinutes": 20 },
+    { "description": "OpenStax 6.5 Periodic Variations in Element Properties, then lecture 8 notes pages 1–4 for ionisation energy, photoelectron spectroscopy and electron affinity.", "locatorId": "ox-6-5", "estimatedMinutes": 25 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Lectures 2–8 and OpenStax chapter 6: from the nuclear atom to periodic trends", "instructions": "Read the lesson alongside the lecture pages and the OpenStax sections. For each model (Rutherford atom, photon, hydrogen energy levels, orbitals, shielding) write in the notebook what it assumes and which observation supports it. Stop at the lesson's worked examples and redo each one with the constants before reading on.", "estimatedMinutes": 80, "sourceLocatorIds": ["chem14-lec02", "chem14-n02-p1", "chem14-n02-p4", "chem14-n02-p5", "chem14-n02-p6", "chem14-lec03", "chem14-lec04", "chem14-lec05", "chem14-lec06", "chem14-lec07", "chem14-lec08", "chem14-n08-p1", "chem14-n08-p2", "chem14-n08-p3", "chem14-n08-p4", "ox-6-1", "ox-6-2", "ox-6-3", "ox-6-4", "ox-6-5"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "lecture", "title": "Optional: the recorded lectures", "instructions": "If you want the lectures themselves, the OCW lecture pages for lectures 3, 5, 7 and 8 embed the videos (about 50 minutes each) and link clicker questions. Optional; the lesson and reading cover the same material. Videos were not individually verified by Corniversity, so use the lecture pages as the entry point.", "estimatedMinutes": 100, "sourceLocatorIds": ["chem14-lec03", "chem14-lec05", "chem14-lec07", "chem14-lec08"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a3", "type": "problem", "title": "Tutorial: photons, hydrogen and configurations", "instructions": "Attempt exercises 1 and 2 before asking for hints. Carry units through every step of exercise 1 and state which constant you used. In exercise 2, write each configuration before deciding on unpaired electrons.", "estimatedMinutes": 90, "sourceLocatorIds": ["ox-6-1", "ox-6-2", "ox-6-4", "chem14-n08-p3"], "exerciseIds": ["CHE-101-u02-ex1", "CHE-101-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a4", "type": "explain_back", "title": "Explain: trends and the measurement behind them", "instructions": "Exercise 3, written without the notes open, then compared with lecture 8 pages 2–4.", "estimatedMinutes": 25, "sourceLocatorIds": ["chem14-n08-p2", "chem14-n08-p3", "chem14-n08-p4", "ox-6-5"], "exerciseIds": ["CHE-101-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's definitions", "instructions": "From memory: E = hν and the photoelectric relation; E_n for hydrogen; the four quantum numbers and what each fixes; the aufbau order through 4p; definitions of ionisation energy and electron affinity with sign conventions.", "estimatedMinutes": 15, "sourceLocatorIds": ["ox-6-3", "chem14-n08-p1", "chem14-n08-p4"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["CHE-101-u02-ex1", "CHE-101-u02-ex2", "CHE-101-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the 3 → 2 wavelength, the ionisation energy of hydrogen and the photoelectric kinetic energy computed with units, with the intensity question answered correctly; and exercise 2 accepted with Fe³⁺ written as [Ar]3d⁵.", "exerciseId": "CHE-101-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "Brighter light ejects faster photoelectrons.", "correction": "Intensity sets how many photons arrive per second, so how many electrons are ejected; the kinetic energy of each depends only on the photon energy hν minus the work function. This is the observation that forced the photon model.", "correctionLocatorIds": ["ox-6-1"] },
+    { "claim": "Electrons in an atom orbit the nucleus like planets.", "correction": "A classical orbiting charge radiates and the Coulomb equation of motion predicts collapse in a fraction of a nanosecond; orbitals are standing-wave probability distributions described by quantum numbers, not trajectories.", "correctionLocatorIds": ["chem14-n02-p6", "ox-6-3"] },
+    { "claim": "Transition-metal ions are formed by removing 3d electrons first because 3d was filled last.", "correction": "In the neutral transition metal the occupied 3d orbitals lie below 4s, so 4s electrons are removed first: Fe → Fe²⁺ gives [Ar]3d⁶ and Fe³⁺ is [Ar]3d⁵.", "correctionLocatorIds": ["ox-6-4"] },
+    { "claim": "Ionisation energy increases steadily across every period and increases down a group.", "correction": "It increases across a period with dips at B (2p above 2s) and O (pairing in 2p), and decreases down a group because the outer electron is in a higher shell despite larger Z; photoelectron spectroscopy measures the values that show this.", "correctionLocatorIds": ["chem14-n08-p2", "chem14-n08-p3", "ox-6-5"] }
+  ],
+  "estimatedMinutes": 425,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture pages 2–8 opened 2026-10-30 (topics and textbook readings recorded); lecture 2 and lecture 8 notes PDFs text-extracted with page indices verified (Thomson on page 1, classical collapse on page 6; IE definitions on page 1, trends and glitches on page 2, PES on page 3, EA on page 4); OpenStax 6.1–6.5 opened with learning objectives and Example titles." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived: ΔE(3→2) = 2.179e-18 × 5/36 = 3.026e-19 J, λ = 656.4 nm; IE(H) = 2.179e-18 × 6.022e23 = 1312 kJ/mol; E(400 nm) = 4.966e-19 J = 3.100 eV < 13.6 eV, so no ionisation; KE = 3.100 − 2.30 = 0.80 eV. Lesson example 4→2: 486 nm. Configurations S [Ne]3s²3p⁴, Fe [Ar]3d⁶4s², Fe³⁺ [Ar]3d⁵ (5 unpaired); four PES peaks ⇒ 1s, 2s, 2p, 3s ⇒ Na or Mg." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's worked transitions (4→2), photoelectric example (300 nm, 2.0 eV) and configurations (P, Zn²⁺, Co²⁺, Li PES) differ from the exercises (3→2; 400 nm, 2.30 eV; S, Fe³⁺, four-peak PES). Reference values only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "115 minutes of preparation, 80 minutes of reading, 90 + 25 + 15 minutes of assessed and revision work ≈ 5.4 hours, plus an optional 100 minutes of recorded lectures; one teaching week at 8–12 hours covers it with the unit 1 diagnostic if that was not already done." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["CHE-101-u02-ex1.reference-solution.md", "CHE-101-u02-ex2.reference-solution.md", "CHE-101-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

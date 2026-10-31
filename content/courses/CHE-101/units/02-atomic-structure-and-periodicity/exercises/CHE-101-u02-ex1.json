@@ -1,0 +1,71 @@
+{
+  "id": "CHE-101-u02-ex1",
+  "sequence": 1,
+  "title": "Photons and hydrogen energy levels",
+  "kind": "calculation",
+  "promptMarkdown": "Use $h = 6.626\\times10^{-34}\\ \\text{J s}$, $c = 2.998\\times10^{8}\\ \\text{m s}^{-1}$, $R_H = 2.179\\times10^{-18}\\ \\text{J}$ (the constant OpenStax 6.2 calls $k$), $N_A = 6.022\\times10^{23}\\ \\text{mol}^{-1}$ and $1\\ \\text{eV} = 1.602\\times10^{-19}\\ \\text{J}$. Treat the hydrogen atom with $E_n = -R_H/n^2$.\n\n1. Compute the wavelength, in nm, of the photon emitted when a hydrogen electron drops from $n = 3$ to $n = 2$, and say which region of the spectrum it lies in.\n2. Compute the ionisation energy of ground-state hydrogen in $\\text{kJ mol}^{-1}$.\n3. Can a photon of wavelength $400$ nm ionise a ground-state hydrogen atom? Give its energy in J and in eV and decide.\n4. The same $400$ nm light falls on a metal surface whose work function is stated to be $2.30$ eV (a value given for this exercise, not a property to look up). Compute the maximum kinetic energy of the ejected electrons in eV. Then say what happens to that kinetic energy if the light intensity is doubled at the same wavelength, and why.",
+  "conceptIds": ["quantisation-and-photons", "hydrogen-atom-energy-levels"],
+  "hintLadder": [
+    "The photon energy is the difference of two level energies: $\\Delta E = R_H\\left(\\frac{1}{n_f^2} - \\frac{1}{n_i^2}\\right)$ for $n_i \\to n_f$. Then $\\lambda = hc/\\Delta E$.",
+    "Ionising ground-state hydrogen takes the electron from $n = 1$ to $n = \\infty$; multiply the per-atom energy by $N_A$ and convert joules to kilojoules.",
+    "Compare the 400 nm photon's energy with $R_H$; a photon either has enough energy or it does not.",
+    "In the photoelectric relation $\\text{KE}_{\\max} = h\\nu - \\phi$, which quantity does intensity change? Count photons, not energy per photon."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "wavelength-656",
+      "kind": "numeric_value",
+      "description": "the 3 → 2 wavelength is about 656 nm",
+      "params": { "expected": 656.4, "tolerance": 1.5 }
+    },
+    {
+      "id": "ionisation-1312",
+      "kind": "numeric_value",
+      "description": "the ionisation energy is about 1312 kJ/mol",
+      "params": { "expected": 1312, "tolerance": 3 }
+    },
+    {
+      "id": "photon-ev",
+      "kind": "numeric_value",
+      "description": "the 400 nm photon carries about 3.10 eV",
+      "params": { "expected": 3.1, "tolerance": 0.02 }
+    },
+    {
+      "id": "kinetic-energy",
+      "kind": "numeric_value",
+      "description": "the maximum kinetic energy is about 0.80 eV",
+      "params": { "expected": 0.8, "tolerance": 0.02 }
+    },
+    {
+      "id": "intensity-not-energy",
+      "kind": "forbidden_claim",
+      "description": "claiming that doubling the intensity doubles (or raises) the kinetic energy of the photoelectrons",
+      "params": { "patterns": ["doubles the kinetic energy", "kinetic energy doubles", "doublesthekineticenergy", "kineticenergydoubles", "twice the kinetic energy", "intensity (increases|raises) the kinetic energy", "intensity(increases|raises)thekineticenergy"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "transition", "criterion": "ΔE for 3 → 2 computed from the level formula and converted to a wavelength of about 656 nm, identified as visible (red).", "weight": 0.3, "levels": [{ "label": "met", "description": "Value, units and region correct." }, { "label": "partially met", "description": "Right method with a unit or arithmetic slip, or region omitted." }, { "label": "not met", "description": "Wrong levels or formula." }] },
+      { "id": "ionisation", "criterion": "Ionisation energy as R_H per atom scaled to about 1312 kJ/mol.", "weight": 0.2, "levels": [{ "label": "met", "description": "Correct with the per-atom to per-mole step shown." }, { "label": "partially met", "description": "Per-atom value only, or unit slip." }, { "label": "not met", "description": "Missing or wrong." }] },
+      { "id": "photon-compare", "criterion": "400 nm photon energy computed (about 4.97 × 10⁻¹⁹ J, 3.10 eV) and correctly judged insufficient to ionise ground-state hydrogen (13.6 eV).", "weight": 0.2, "levels": [{ "label": "met", "description": "Energy in both units and the comparison made." }, { "label": "partially met", "description": "Energy right, comparison missing or reversed." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "photoelectric", "criterion": "KE_max = 3.10 − 2.30 = 0.80 eV, and intensity correctly said to change the number of electrons, not their kinetic energy.", "weight": 0.3, "levels": [{ "label": "met", "description": "Value and the intensity argument both correct." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "ΔE = 2.179e-18 (1/4 − 1/9) = 3.026e-19 J, so λ = hc/ΔE = 1.986e-25/3.026e-19 = 6.564e-7 m = 656.4 nm, red visible light. IE = 2.179e-18 J × 6.022e23 = 1.312e6 J/mol = 1312 kJ/mol. A 400 nm photon has E = 4.966e-19 J = 3.10 eV, far below 13.6 eV, so it cannot ionise ground-state hydrogen. KE_max = 3.10 − 2.30 = 0.80 eV. Doubling the intensity doubles the number of photons and hence of electrons; the kinetic energy of each stays 0.80 eV because it depends only on frequency.",
+      "expect": { "wavelength-656": true, "ionisation-1312": true, "photon-ev": true, "kinetic-energy": true, "intensity-not-energy": true }
+    },
+    {
+      "label": "wrong transition and classical intensity reasoning",
+      "text": "The 3 → 2 line is at 486 nm. Doubling the intensity doubles the kinetic energy of the ejected electrons because more energy arrives per second.",
+      "expect": { "wavelength-656": false, "intensity-not-energy": false }
+    }
+  ]
+}

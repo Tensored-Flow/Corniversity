@@ -1,0 +1,7 @@
+## Outline: Regularisation: L1 and L2, dropout, data augmentation and hyperparameter search
+
+This unit is **outlined, not yet prepared**. It will be written from W2D1 Tutorial 2 (Regularization techniques part 2) of the Neuromatch Deep Learning ebook (content CC BY 4.0), cited by tutorial page and section.
+
+**Scope.** What each regulariser changes in the optimisation problem: the L2 penalty as weight decay in the gradient step and as a Gaussian prior; the L1 penalty as soft-thresholding and sparsity; dropout as a stochastic ensemble with its train/eval scaling caveat; data augmentation as encoding invariances the model would otherwise have to learn; the learning rate and batch size as implicit regularisers; and hyperparameter search (grid, random, coordinate-wise, Bayesian) with its perils, chiefly that every comparison must be made on the validation set and that the search itself consumes evidence.
+
+**What preparation will add.** A full lesson with the two penalties derived as modified gradient steps, original exercises (the closed-form effect of L2 on a least-squares solution; the soft-threshold operator from L1; a hyperparameter-search protocol that is leak-free and reports variance), instructor reference reasoning, an exit check and the unit's common misconceptions ("dropout at test time"). Until then the reading above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,740 @@
+{
+  "id": "mit-measure-2003",
+  "title": "18.125 Measure and Integration",
+  "authors": [
+    "Jeff Viaclovsky (instructor)",
+    "Ethan Brown (LaTeX lecture notes prepared from the instructor's handwritten notes)"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/",
+  "description": "Graduate first course on Lebesgue integration in 24 lectures with typed notes: σ-algebras and measurable functions; positive measures and the integral; monotone and dominated convergence; Lebesgue measure on R^n (construction, Carathéodory criterion, Cantor set, a non-measurable set, invariance); Riesz representation for positive linear functionals; Lusin and Egoroff; modes of convergence; Jensen, Hölder and Minkowski; L^p spaces and Riesz–Fischer; density theorems; Fubini and product measures; convolution and mollifiers; the maximal function and Lebesgue differentiation. Assignments are references to exercises in Rudin's Real and Complex Analysis.",
+  "rightsNotes": [
+    "Content is licensed CC BY-NC-SA 4.0 by MIT OpenCourseWare (licence link on every course page; terms on the OCW terms-of-use page): attribution and share-alike required, commercial use excluded. Corniversity is private and non-commercial.",
+    "Importing the lecture-notes PDFs for personal study and citation is within the licence. The assignments are references to a commercial textbook (Rudin, Real and Complex Analysis) and are not copied; every Corniversity exercise is original or labelled adapted_with_attribution.",
+    "The lecture-notes page states that the notes were prepared in LaTeX by Ethan Brown, a former student in the class, using Professor Viaclovsky's handwritten notes."
+  ],
+  "currentVersionId": "mit-measure-2003-f03",
+  "versions": [
+    {
+      "id": "mit-measure-2003-f03",
+      "label": "Fall 2003 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the course, syllabus, calendar, lecture-notes and assignments pages and the 24 per-lecture resource pages; downloaded and text-extracted the PDFs for lectures 1–5",
+      "componentsSeen": [
+        "course landing page: 'This graduate-level course covers Lebesgue's integration theory with applications to analysis', Fall 2003, Prof. Jeff Viaclovsky, CC BY-NC-SA link",
+        "syllabus: prerequisite 18.100 Analysis I; required text Rudin, Real and Complex Analysis (McGraw-Hill, 1986 ed.); recommended Jones, Lebesgue Integration on Euclidean Space, and Evans–Gariepy, Measure Theory and Fine Properties of Functions; grade from attendance and homework, no exams",
+        "calendar: 24 lectures with topic lists; homework 1 due at lecture 8, homework 2 at lecture 12, homework 3 at lecture 20",
+        "lecture notes page: 24 entries with topic lists, each linking a resource page whose PDF URL was recorded",
+        "assignments page: three homeworks referencing Rudin chapters 1–3 (no PDFs)",
+        "lecture PDFs 1–5: 3, 4, 3, 4 and 5 pages respectively, no printed page labels, dated 4, 9, 11, 16 and 18 September 2003 in the footer"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Lecture PDFs 1–5 were downloaded and text-extracted on 2026-10-30; page indices in the pdf locators below refer to those files. Lecture PDFs 6–24 were not opened: their URLs were recorded from the OCW resource pages (opened), so those locators are file-level only.",
+        "The notes are a terse LaTeX transcription of handwritten lectures. Statement numbering restarts at 0.1 in every lecture, so a citation must name the lecture. Some statements carry slips (lecture 3, Theorem 0.2(1) reads 'E ⊂ R' where 'E ∈ M' is meant; lecture 2, Corollary 0.4(b) has 'min{f mg}' for 'min{f, g}'). Corniversity lessons restate every result with its hypotheses in full.",
+        "The assignments are exercise references into Rudin's book (commercial); they are not copied and are not used as Corniversity exercises.",
+        "The syllabus mentions the Radon–Nikodym theorem, Hausdorff measure and the area and coarea formulas; the published notes end at Marcinkiewicz interpolation (lecture 24) and do not cover them.",
+        "There are no lecture videos for this course."
+      ],
+      "locators": [
+        {
+          "id": "mi03-home",
+          "label": "Course landing page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/",
+            "heading": "Measure and Integration"
+          }
+        },
+        {
+          "id": "mi03-syllabus",
+          "label": "Syllabus page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "mi03-calendar",
+          "label": "Calendar page (24 lecture topics, homework milestones)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/pages/calendar/",
+            "heading": "Calendar"
+          }
+        },
+        {
+          "id": "mi03-notes-index",
+          "label": "Lecture notes page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/pages/lecture-notes/",
+            "heading": "Lecture Notes"
+          }
+        },
+        {
+          "id": "mi03-assignments",
+          "label": "Assignments page (three homeworks referencing Rudin)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/pages/assignments/",
+            "heading": "Assignments"
+          },
+          "note": "Exercise references into a commercial textbook; linked for context only, never copied."
+        },
+        {
+          "id": "mi03-lec01",
+          "label": "Lecture 1 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "heading": "Lecture 1: Why Measure Theory? Measure Spaces and Sigma-algebras; Operations on Measurable Functions; Borel Sets"
+          }
+        },
+        {
+          "id": "mi03-lec02",
+          "label": "Lecture 2 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "heading": "Lecture 2: Real-valued Measurable Functions; Limits of Measurable Functions; Simple Functions; Positive Measures; Definition of Lebesgue Integral"
+          }
+        },
+        {
+          "id": "mi03-lec03",
+          "label": "Lecture 3 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1c98d2b4641a7f153ab3ceeefa548451_18125_lec3.pdf",
+            "heading": "Lecture 3: Riemann Integral; Riemann Integrable iff Continuous Almost Everywhere; Comparison of Lebesgue and Riemann Integrals; Properties of Positive Measures; Elementary Properties of the Lebesgue Integral"
+          }
+        },
+        {
+          "id": "mi03-lec04",
+          "label": "Lecture 4 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "heading": "Lecture 4: Integral is Additive for Simple Functions; Monotone Convergence Theorem; Integral is Additive for All Non-negative Measurable Functions; Interchanging Summation and Integration; Fatou's Lemma"
+          }
+        },
+        {
+          "id": "mi03-lec05",
+          "label": "Lecture 5 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1473498db368e7a3194855b6935cc616_18125_lec5.pdf",
+            "heading": "Lecture 5: Integral of Complex Functions; Dominated Convergence Theorem; Sets of Measure Zero; Completion of a Sigma-algebra"
+          }
+        },
+        {
+          "id": "mi03-lec06",
+          "label": "Lecture 6 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/6ed0873e2bbe2f10e40569f03dfdf876_18125_lec6.pdf",
+            "heading": "Lecture 6: Lebesgue Measure on R^n; Measure of Special Rectangles; Measure of Special Polygons; Measure of Open Sets; Measure of Compact Sets; Outer and Inner Measures"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec07",
+          "label": "Lecture 7 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/53a04a05bd5770f80175cc685f6edbe3_18125_lec7.pdf",
+            "heading": "Lecture 7: Definition of Lebesgue Measurable for Sets with Finite Outer Measure; Remove Restriction of Finite Outer Measure; (R^n, L, λ) is a Measure Space"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec08",
+          "label": "Lecture 8 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/8a595dc5019c07c2eb57f3d0f6e76bdd_18125_lec8.pdf",
+            "heading": "Lecture 8: Carathéodory Criterion; Cantor Set; There exist (many) Lebesgue measurable sets which are not Borel measurable"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec09",
+          "label": "Lecture 9 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/5b0ad5069f36817dc0ed1dc5f44b56c3_18125_lec9.pdf",
+            "heading": "Lecture 9: Invariance of Lebesgue Measure under Translations and Dilations; A Non-measurable Set; Invariance under Rotations"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec10",
+          "label": "Lecture 10 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/e9f5dbdec8a787edfd62d0bf172ce437_18125_lec10.pdf",
+            "heading": "Lecture 10: Integration as a Linear Functional; Riesz Representation Theorem for Positive Linear Functionals; Lebesgue Integral is the 'Completion' of the Riemann Integral"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec11",
+          "label": "Lecture 11 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/b80a07e10d51c7982516a10d9fdd41e1_18125_lec11.pdf",
+            "heading": "Lecture 11: Lusin's Theorem (Measurable Functions are nearly continuous); Vitali–Carathéodory Theorem"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec12",
+          "label": "Lecture 12 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/0bb49f0e3bf706941074216dcee6e3ab_18125_lec12.pdf",
+            "heading": "Lecture 12: Approximation of Measurable Functions by Continuous Functions; Convergence Almost Everywhere; Integral Convergence Theorems Valid for Almost Everywhere Convergence; Countable Additivity of the Integral"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec13",
+          "label": "Lecture 13 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/8ee188461695d9db958de0347471d0db_18125_lec13.pdf",
+            "heading": "Lecture 13: Egoroff's Theorem; Convergence in Measure; Convergence Almost Everywhere implies Convergence in Measure; Convergence in Measure gives an Almost Everywhere Convergent Subsequence; Dominated Convergence for Convergence in Measure"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec14",
+          "label": "Lecture 14 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/6aa2562c8e9e459dd82775b0a4f01aea_18125_lec14.pdf",
+            "heading": "Lecture 14: Convex Functions; Jensen's Inequality; Hölder and Minkowski Inequalities"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec15",
+          "label": "Lecture 15 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/0c85400465928cf42a19e5b87bdc349c_18125_lec15.pdf",
+            "heading": "Lecture 15: L^p Spaces, 1 ≤ p ≤ ∞; Normed Spaces, Banach Spaces; Riesz–Fischer Theorem (L^p is complete)"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec16",
+          "label": "Lecture 16 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/75c811657aa45751e121cf3647cfb6cf_18125_lec16.pdf",
+            "heading": "Lecture 16: C_c Dense in L^p, 1 ≤ p < ∞; C_c Dense in C_0 (Functions which vanish at Infinity)"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec17",
+          "label": "Lecture 17 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/6f21af6c40de1eccd70349bd3a3b0095_18125_lec17.pdf",
+            "heading": "Lecture 17: Inclusions between L^p Spaces? l^p Spaces?; Local L^p Spaces; Convexity Properties of L^p-norm; Smooth Functions Dense in L^p"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec18",
+          "label": "Lecture 18 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/e193be026fe03f185224c66bd6b1dd9c_18125_lec18.pdf",
+            "heading": "Lecture 18: Fubini's Theorem in R^n for Non-negative Functions"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec19",
+          "label": "Lecture 19 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/e4c1ce98d6672490cf170a694c21fcda_18125_lec19.pdf",
+            "heading": "Lecture 19: Fubini's Theorem in R^n for L^1 Functions; The Product Measure for Products of General Measure Spaces"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec20",
+          "label": "Lecture 20 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/f1dba73e7df549914ba1c94cdd66e725_18125_lec20.pdf",
+            "heading": "Lecture 20: Fubini's Theorem for Product Measure; Completion of Product Measures; Convolutions"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec21",
+          "label": "Lecture 21 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/704e670e9876e70bfd3c75e00de0eeba_18125_lec21.pdf",
+            "heading": "Lecture 21: Young's Inequality; Mollifiers; C^∞ Dense in L^p, 1 ≤ p < ∞"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec22",
+          "label": "Lecture 22 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/31864359c21e7fd7f0559904c8876e7a_18125_lec22.pdf",
+            "heading": "Lecture 22: Fundamental Theorem of Calculus for Lebesgue Integral; Vitali Covering Theorem; Maximal Function; f in L^1 implies Mf in Weak L^1 (Hardy–Littlewood Theorem)"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec23",
+          "label": "Lecture 23 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/86bc06ae34f123bfc85ac30d455be03f_18125_lec23.pdf",
+            "heading": "Lecture 23: Lebesgue's Differentiation Theorem; The Lebesgue Set of an L^1 Function; Fundamental Theorem of Calculus I"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-lec24",
+          "label": "Lecture 24 notes (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/561b4faeadaad88ac3fb9139397b2a03_18125_lec24.pdf",
+            "heading": "Lecture 24: Generalized Minkowski Inequality; Another Proof of Young's Inequality; Distribution Functions; Marcinkiewicz Interpolation"
+          },
+          "note": "PDF URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "mi03-l1-sigma-def",
+          "label": "Lecture 1 notes, σ-algebra axioms (σ1)–(σ3), contrast with a topology, definition of a measurable function, PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Preliminaries: σ-algebras and measurable functions"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l1-prop01",
+          "label": "Lecture 1 notes, Proposition 0.1 (composition: continuous after continuous; continuous after measurable), PDF pages 1–2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Proposition 0.1"
+          },
+          "note": "Statement and part (1) on PDF page 1, part (2) on PDF page 2; verified against extracted text on 2026-10-30."
+        },
+        {
+          "id": "mi03-l1-thm02",
+          "label": "Lecture 1 notes, Theorem 0.2 (Φ(u, v) is measurable when u, v are measurable and Φ is continuous), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 0.2"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l1-examples",
+          "label": "Lecture 1 notes, Examples (a)–(d): complex measurable functions, real and imaginary parts and modulus, sums and products, characteristic functions, PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Examples (a)–(d)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l1-prop03",
+          "label": "Lecture 1 notes, Proposition 0.3 (smallest σ-algebra containing a collection of sets), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Proposition 0.3"
+          },
+          "note": "Statement and most of the proof on PDF page 2; the proof concludes on PDF page 3. Verified against extracted text on 2026-10-30."
+        },
+        {
+          "id": "mi03-l1-borel",
+          "label": "Lecture 1 notes, Borel sets, Borel measurable functions, F_σ and G_δ sets, PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/509c71b048eab7f1971e8f1cea40392e_18125_lec1.pdf",
+            "fileLabel": "Lecture 1 notes (18125_lec1.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Borel Sets"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-prop01",
+          "label": "Lecture 2 notes, Proposition 0.1 (a)–(c): the σ-algebra {E : f^{-1}(E) ∈ M}, preimages of Borel sets, the (α, ∞] criterion for measurability; lim sup and lim inf, PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Proposition 0.1"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-thm03",
+          "label": "Lecture 2 notes, Theorem 0.3 (sup and lim sup of a sequence of measurable functions are measurable), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 0.3"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-cor04",
+          "label": "Lecture 2 notes, Corollary 0.4 (pointwise limits, max and min of measurable functions are measurable), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Corollary 0.4"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-thm05",
+          "label": "Lecture 2 notes, Theorem 0.5 (a nonnegative measurable function is the increasing limit of measurable simple functions), with f^+, f^- and simple functions, PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Theorem 0.5"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-measure-def",
+          "label": "Lecture 2 notes, definition of a positive measure and of the integral of a nonnegative simple function over E, PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Positive measure; Lebesgue Integral (simple functions)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l2-integral-def",
+          "label": "Lecture 2 notes, definition of ∫_E f dμ for measurable f ≥ 0 as a supremum over simple functions, and of ∫_E f dμ = ∫_E f^+ − ∫_E f^- for real-valued f, PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/606d4f8e98b567c81a9f3015171a6df0_18125_lec2.pdf",
+            "fileLabel": "Lecture 2 notes (18125_lec2.pdf)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Lebesgue Integral (nonnegative measurable functions)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l3-thm01",
+          "label": "Lecture 3 notes, measure-zero subsets of R and Theorem 0.1 (Riemann integrable iff continuous almost everywhere), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1c98d2b4641a7f153ab3ceeefa548451_18125_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (18125_lec3.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Theorem 0.1"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels. The theorem is stated without proof in the notes."
+        },
+        {
+          "id": "mi03-l3-examples",
+          "label": "Lecture 3 notes, Examples (1)–(2): counting measure and the Dirac unit mass, PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1c98d2b4641a7f153ab3ceeefa548451_18125_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (18125_lec3.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Examples (1)–(2)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l3-thm02",
+          "label": "Lecture 3 notes, Theorem 0.2 (properties of positive measures: μ(∅) = 0, monotonicity, continuity from below, continuity from above when μ(A_1) < ∞), PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1c98d2b4641a7f153ab3ceeefa548451_18125_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (18125_lec3.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 0.2"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30. Part (1) is misprinted 'E ⊂ R' for 'E ∈ M' in the notes."
+        },
+        {
+          "id": "mi03-l3-integral-props",
+          "label": "Lecture 3 notes, Properties of the Integral (a)–(f) for nonnegative measurable functions, PDF pages 2–3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1c98d2b4641a7f153ab3ceeefa548451_18125_lec3.pdf",
+            "fileLabel": "Lecture 3 notes (18125_lec3.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Properties of the Integral (a)–(f)"
+          },
+          "note": "Statements and proof of (a) on PDF page 2, proofs of (b)–(f) on PDF page 3 (with the convention 0·∞ = 0). Verified against extracted text on 2026-10-30."
+        },
+        {
+          "id": "mi03-l4-prop01",
+          "label": "Lecture 4 notes, Proposition 0.1 (the integral is additive on nonnegative simple functions; E ↦ ∫_E s dμ is a measure), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (18125_lec4.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Proposition 0.1"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l4-thm02",
+          "label": "Lecture 4 notes, Theorem 0.2 (Monotone Convergence Theorem) with proof, PDF page 2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (18125_lec4.pdf)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Theorem 0.2"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l4-thm03",
+          "label": "Lecture 4 notes, Theorem 0.3 (∫ Σ f_n = Σ ∫ f_n for nonnegative measurable f_n; additivity of the integral), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (18125_lec4.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Theorem 0.3"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l4-cor04",
+          "label": "Lecture 4 notes, Corollary 0.4 (interchanging summation and integration on Z^+ with counting measure: Σ_i Σ_j a_ij = Σ_j Σ_i a_ij for a_ij ≥ 0), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (18125_lec4.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Corollary 0.4"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l4-lem05",
+          "label": "Lecture 4 notes, Lemma 0.5 (Fatou's Lemma), statement on PDF page 3, proof on PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/af37db10b124af92deea8ec0dbc5dfda_18125_lec4.pdf",
+            "fileLabel": "Lecture 4 notes (18125_lec4.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Lemma 0.5"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l5-l1-def",
+          "label": "Lecture 5 notes, definition of L^1(μ), integral of complex functions, Theorem 0.1 (linearity of the integral on L^1), PDF page 1",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1473498db368e7a3194855b6935cc616_18125_lec5.pdf",
+            "fileLabel": "Lecture 5 notes (18125_lec5.pdf)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Definition of L^1; Theorem 0.1"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l5-thm03",
+          "label": "Lecture 5 notes, Theorem 0.2 (|∫ f| ≤ ∫ |f|) and Theorem 0.3 (Dominated Convergence Theorem), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1473498db368e7a3194855b6935cc616_18125_lec5.pdf",
+            "fileLabel": "Lecture 5 notes (18125_lec5.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Theorem 0.3"
+          },
+          "note": "Statement and the Fatou step of the proof on PDF page 3; the proof concludes on PDF page 4. Verified against extracted text on 2026-10-30."
+        },
+        {
+          "id": "mi03-l5-prop04",
+          "label": "Lecture 5 notes, sets of measure zero, Proposition 0.4 (a.e. equal functions have equal integrals) and Theorem 0.5 (completion of a measure space), PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1473498db368e7a3194855b6935cc616_18125_lec5.pdf",
+            "fileLabel": "Lecture 5 notes (18125_lec5.pdf)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Proposition 0.4; Theorem 0.5"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "mi03-l5-thm06",
+          "label": "Lecture 5 notes, Theorem 0.6 (∫_E f = 0 forces f = 0 a.e. on E) and Theorem 0.7 (Σ μ(E_k) < ∞ implies almost every point lies in finitely many E_k), PDF page 5",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-measure-2003-f03",
+            "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/1473498db368e7a3194855b6935cc616_18125_lec5.pdf",
+            "fileLabel": "Lecture 5 notes (18125_lec5.pdf)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Theorem 0.6; Theorem 0.7"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the extracted text of this page is partly garbled, so the statements were cross-checked against the standard results they transcribe."
+        }
+      ]
+    }
+  ]
+}

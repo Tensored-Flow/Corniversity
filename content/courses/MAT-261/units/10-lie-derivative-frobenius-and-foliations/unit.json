@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u10",
+  "courseId": "MAT-261",
+  "sequence": 10,
+  "title": "The Lie derivative, the Frobenius theorem and foliations",
+  "summary": "Canonical forms for vector fields and the Lie derivative (§21.1); involutive distributions and the Frobenius integrability theorem (Theorem 21.4); foliations, codimension-one foliations and their normal vectors, holonomy of a loop in a leaf, Reeb's stability theorem.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 29–30 of the 18.965 notes (§21.1, Theorem 21.3, §21.2 Theorem 21.4, §21.3 Definition 21.5, §§22–24) with Hitchin §4.3–4.4 on flows and the Lie bracket." }
+  ],
+  "prerequisiteConceptIds": ["tangent-bundle-vector-fields", "inverse-function-theorem-manifolds", "ode-basics"],
+  "teachesConceptIds": ["lie-derivative-frobenius"],
+  "preparation": [
+    { "description": "Read lecture 29: §21 canonical forms and §21.1 the Lie derivative, Theorem 21.3.", "locatorId": "gm04-l29-lie-derivative", "estimatedMinutes": 40 },
+    { "description": "Read lecture 30: §21.2 the Frobenius integrability theorem (Theorem 21.4), §21.3 foliations (Definition 21.5), §22 codimension-one foliations, §23 holonomy, §24 Reeb's stability theorem.", "locatorId": "gm04-l30-frobenius", "estimatedMinutes": 70 },
+    { "description": "Read Hitchin §4.3 (one-parameter groups of diffeomorphisms) as preparation for the Lie derivative.", "locatorId": "hit14-s4-3", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Lectures 29–30: Lie derivative, Frobenius, foliations", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["gm04-lec29", "gm04-lec30", "gm04-l29-lie-derivative", "gm04-l30-frobenius", "hit14-s4-3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 29 and 30 PDFs downloaded and text-extracted 2026-10-30: §21.1 on PDF page 1 of lecture29.pdf (3 pages); §21.2 Theorem 21.4 on page 1 of lecture30.pdf (9 pages), with §§21.3–24 following in the same file. Hitchin §4.3 on printed p. 28 (PDF index 27)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

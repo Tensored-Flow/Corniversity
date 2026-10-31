@@ -1,0 +1,25 @@
+{
+  "id": "PHY-240-u02-ex3",
+  "sequence": 3,
+  "title": "Why Γ is not a tensor, and why that is fine",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words, and without the notes open, explain why the Christoffel symbols are not the components of a tensor although the covariant derivative is a tensor operation. Use polar coordinates on the flat plane as your example. Then say, in two sentences, what would be different about Γ in a genuinely curved space and what would be the same.",
+  "conceptIds": ["covariant-derivative"],
+  "hintLadder": [
+    "What are the Christoffel symbols in Cartesian coordinates on the plane? In polar coordinates? What does that tell you, given how tensors behave under coordinate changes?",
+    "Which two non-tensorial transformation terms cancel in $\\partial_\\beta V^\\mu + \\Gamma^\\mu{}_{\\alpha\\beta}V^\\alpha$?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "not-a-tensor", "criterion": "Γ vanishes in Cartesian coordinates and equals (1/r, −r) in polar coordinates on the same flat plane; a tensor zero in one chart is zero in all; hence Γ is not a tensor (its law has an inhomogeneous term).", "weight": 0.4, "levels": [ { "label": "met", "description": "Argument complete." }, { "label": "partially met", "description": "Example without the inference." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "nabla-tensor", "criterion": "∂_β V^μ also has an inhomogeneous term (second derivatives of the coordinate map); the two inhomogeneous terms cancel in ∇_β V^μ, which is the component form of the geometric derivative of the vector field.", "weight": 0.35, "levels": [ { "label": "met", "description": "Cancellation explained." }, { "label": "partially met", "description": "Asserted." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "curved", "criterion": "In a curved space no coordinates make Γ vanish on an open set (only at a point, to first order); Γ still comes from the metric by the same formula, ∇ is still defined the same way and ∇g = 0 still holds.", "weight": 0.25, "levels": [ { "label": "met", "description": "Both difference and sameness correct." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Claims Γ ≠ 0 means curvature." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 20
+}

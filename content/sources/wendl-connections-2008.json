@@ -1,0 +1,52 @@
+{
+  "id": "wendl-connections-2008",
+  "title": "Lecture Notes on Bundles and Connections",
+  "authors": ["Chris Wendl"],
+  "institution": "Humboldt-Universität zu Berlin (author-hosted); written for MIT 18.950, Spring 2007",
+  "kind": "notes",
+  "canonicalUrl": "https://www.mathematik.hu-berlin.de/~wendl/connections.html",
+  "description": "Book-in-progress (last updated 26 September 2008) written as the text for the second half of MIT's 18.950 Differential Geometry: connections motivated from Riemannian geometry and physics; fibre, vector and principal bundles; connections (parallel transport, connections on fibre, vector and principal bundles); natural constructions on vector bundles; curvature on bundles; curvature in Riemannian geometry (locally flat manifolds, hypersurfaces and Gaussian curvature, the Gauss–Bonnet formula, geodesics and sectional curvature); appendices on multilinear algebra and Lie groups. Chapters are separate PDFs.",
+  "rightsNotes": [
+    "The page states: 'These notes can be used for any noncommercial purpose without my explicit permission'. The copyright page of each chapter states: '© 2008 by Chris Wendl. Paper or electronic copies for noncommercial use may be made freely without explicit permission from the author. All other rights reserved.' This is an explicit non-commercial permission, not a formal licence; Corniversity is private and non-commercial and records it as such.",
+    "Used in MAT-262 as an open alternative for connections, curvature and Gauss–Bonnet alongside the primary notes."
+  ],
+  "currentVersionId": "wendl-connections-2008-09-26",
+  "versions": [
+    {
+      "id": "wendl-connections-2008-09-26",
+      "label": "Draft of 26 September 2008 (chapter PDFs)",
+      "url": "https://www.mathematik.hu-berlin.de/~wendl/connections.html",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the notes page (permission statement and chapter table seen) and downloaded chapters 1, 3 and 6; extracted their text to verify the copyright statement, section lists and printed page labels",
+      "componentsSeen": [
+        "notes page: title, author, description (written for MIT 18.950 Spring 2007; assumes manifolds, vector fields, tensors, forms), chapter table with one-per-side and two-per-side PDFs (Ch. 1 What is a connection and why should we care? 20 pp.; Ch. 2 Bundles 52 pp.; Ch. 3 Connections 26 pp.; Ch. 4 Natural Constructions on Vector Bundles 20 pp.; Ch. 5 Curvature on Bundles 14 pp.; Ch. 6 Curvature in Riemannian Geometry 33 pp.; App. A Multilinear algebra and index notation; App. B Lie groups and Lie algebras), the statement 'These notes can be used for any noncommercial purpose without my explicit permission', last update 26 September 2008",
+        "chapter 1 PDF: title page, copyright/permission page (ii), preface (iii–iv), Chapter 1 with §1.1 Motivation from Riemannian geometry and §1.2 Motivation from physics",
+        "chapter 3 PDF (printed pp. 69–94): §3.1 Parallel transport, §3.2 Connections on fibre bundles, §3.3 Connections on vector bundles, §3.4 Connections on principal bundles",
+        "chapter 6 PDF (printed pp. 129–161): §6.1 Locally flat manifolds, §6.2 Hypersurfaces and Gaussian curvature, §6.3 The Gauss–Bonnet formula, §6.4 Geodesics, arc length and sectional curvature"
+      ],
+      "licence": "Author's explicit statement: free use and copying for any non-commercial purpose; all other rights reserved (no formal licence)",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": ["www.mathematik.hu-berlin.de"],
+      "limitations": [
+        "Chapters 2, 4, 5 and the appendices were listed but not opened; no locators exist for them.",
+        "Draft notes from 2008 described by the author as a book-in-progress; some planned material (Killing vectors, isometries) is absent.",
+        "Printed page labels are present in the PDFs and recorded; statement numbers were not recorded."
+      ],
+      "locators": [
+        { "id": "wen-page", "label": "Notes page with chapter table and the non-commercial permission statement", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/connections.html", "heading": "Lecture Notes on Bundles and Connections" } },
+        { "id": "wen-ch1-pdf", "label": "Chapter 1 PDF: title, preface, 'What is a connection and why should we care?'", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter1.pdf", "heading": "Chapter 1 Introduction: what is a connection, and why should we care?" } },
+        { "id": "wen-copyright", "label": "Copyright and permission page ('Paper or electronic copies for noncommercial use may be made freely without explicit permission from the author'), chapter 1 PDF p. ii", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter1.pdf", "fileLabel": "connections_chapter1.pdf", "physicalPageIndex": 1, "printedPageLabel": "ii", "sectionLabel": "Copyright page" } },
+        { "id": "wen-s1-1", "label": "§1.1 Motivation from Riemannian geometry (why a directional derivative of vector fields needs extra structure; Exercise 1.1 on non-invariance under coordinate change), chapter 1 PDF p. 1", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter1.pdf", "fileLabel": "connections_chapter1.pdf", "physicalPageIndex": 4, "printedPageLabel": "1", "sectionLabel": "§1.1 Motivation from Riemannian geometry" } },
+        { "id": "wen-ch3-pdf", "label": "Chapter 3 PDF: Connections (pp. 69–94)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter3.pdf", "heading": "Chapter 3 Connections" } },
+        { "id": "wen-s3-1", "label": "§3.1 The idea of parallel transport, chapter 3 PDF p. 69", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter3.pdf", "fileLabel": "connections_chapter3.pdf", "physicalPageIndex": 0, "printedPageLabel": "69", "sectionLabel": "§3.1 Parallel transport" } },
+        { "id": "wen-s3-3", "label": "§3.3 Connections on vector bundles (covariant derivatives, Christoffel symbols, parallel transport), chapter 3 PDF p. 75", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter3.pdf", "fileLabel": "connections_chapter3.pdf", "physicalPageIndex": 6, "printedPageLabel": "75", "sectionLabel": "§3.3 Connections on vector bundles" } },
+        { "id": "wen-ch6-pdf", "label": "Chapter 6 PDF: Curvature in Riemannian Geometry (pp. 129–161)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter6.pdf", "heading": "Chapter 6 Curvature in Riemannian geometry" } },
+        { "id": "wen-s6-1", "label": "§6.1 Locally flat manifolds, chapter 6 PDF p. 130", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter6.pdf", "fileLabel": "connections_chapter6.pdf", "physicalPageIndex": 1, "printedPageLabel": "130", "sectionLabel": "§6.1 Locally flat manifolds" } },
+        { "id": "wen-s6-2", "label": "§6.2 Hypersurfaces and Gaussian curvature, chapter 6 PDF p. 132", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter6.pdf", "fileLabel": "connections_chapter6.pdf", "physicalPageIndex": 3, "printedPageLabel": "132", "sectionLabel": "§6.2 Hypersurfaces and Gaussian curvature" } },
+        { "id": "wen-s6-3", "label": "§6.3 The Gauss–Bonnet formula, chapter 6 PDF p. 138", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter6.pdf", "fileLabel": "connections_chapter6.pdf", "physicalPageIndex": 9, "printedPageLabel": "138", "sectionLabel": "§6.3 The Gauss-Bonnet formula" } },
+        { "id": "wen-s6-4", "label": "§6.4 Geodesics, arc length and sectional curvature, chapter 6 PDF p. 153", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "wendl-connections-2008-09-26", "url": "https://www.mathematik.hu-berlin.de/~wendl/pub/connections_chapter6.pdf", "fileLabel": "connections_chapter6.pdf", "physicalPageIndex": 24, "printedPageLabel": "153", "sectionLabel": "§6.4 Geodesics, arc length and sectional curvature" } }
+      ]
+    }
+  ]
+}

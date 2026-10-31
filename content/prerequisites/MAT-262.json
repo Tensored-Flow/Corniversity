@@ -1,0 +1,12 @@
+[
+  {
+    "id": "MAT-262-inner-products-and-odes",
+    "courseId": "MAT-262",
+    "strength": "soft",
+    "description": "Riemannian Geometry computes with symmetric positive-definite bilinear forms, matrix inverses and determinants, and relies on existence and uniqueness for ordinary differential equations (parallel transport, geodesics). The primary notes list linear algebra, several-variable real analysis and ODEs as prerequisites.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "ode-basics"] },
+      { "label": "Rigorous Real Analysis course plus demonstrated linear algebra", "courseIds": ["MAT-201"], "conceptIds": ["linear-algebra-vector-spaces"] }
+    ]
+  }
+]

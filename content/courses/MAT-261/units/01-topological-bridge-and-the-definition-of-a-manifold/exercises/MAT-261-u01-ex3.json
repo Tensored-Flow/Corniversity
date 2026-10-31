@@ -1,0 +1,27 @@
+{
+  "id": "MAT-261-u01-ex3",
+  "sequence": 3,
+  "title": "Maximal atlases without Zorn's lemma",
+  "kind": "proof",
+  "promptMarkdown": "Let $X$ be a Hausdorff, second countable space and $\\mathcal{A}$ an atlas on $X$. Define\n$$\\mathcal{A}_{\\max}=\\{(V,\\psi)\\text{ a chart on }X:\\ (V,\\psi)\\text{ is compatible with every chart of }\\mathcal{A}\\}.$$\n\n1. Prove that any two charts in $\\mathcal{A}_{\\max}$ are compatible with each other, so $\\mathcal{A}_{\\max}$ is an atlas. (Smoothness of a map between open subsets of $\\mathbb{R}^n$ is a local property; use the charts of $\\mathcal{A}$ to test it.)\n2. Prove that $\\mathcal{A}\\subseteq\\mathcal{A}_{\\max}$ and that $\\mathcal{A}_{\\max}$ is maximal.\n3. Prove that $\\mathcal{A}_{\\max}$ is the only maximal atlas containing $\\mathcal{A}$.\n4. Deduce that two atlases are equivalent (their union is an atlas) if and only if they determine the same maximal atlas.\n\nThe notes' Exercise 1 suggests Zorn's lemma for the existence of a maximal atlas. Say in one sentence why no choice principle is needed.",
+  "conceptIds": ["smooth-manifold"],
+  "hintLadder": [
+    "Take $(V,\\psi),(W,\\chi)\\in\\mathcal{A}_{\\max}$ and a point $x\\in V\\cap W$. Some chart $(U,\\varphi)$ of $\\mathcal{A}$ contains $x$. Write $\\chi\\circ\\psi^{-1}$ near $\\psi(x)$ as a composition of two transition maps that you know are smooth.",
+    "Be explicit about the open set on which the composition is defined: $\\psi(U\\cap V\\cap W)$.",
+    "For uniqueness, show that any maximal atlas $\\mathcal{M}\\supseteq\\mathcal{A}$ satisfies $\\mathcal{M}\\subseteq\\mathcal{A}_{\\max}$, and then that $\\mathcal{M}\\cup\\mathcal{A}_{\\max}$ is an atlas."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "locality", "criterion": "Compatibility of two charts of A_max is proved by factoring the transition map through a chart of A on an explicitly named open set, for an arbitrary point of the overlap.", "weight": 0.4, "levels": [ { "label": "met", "description": "Composition and domains explicit; both directions covered." }, { "label": "partially met", "description": "Idea right but domains or one direction omitted." }, { "label": "not met", "description": "Missing or circular." } ] },
+      { "id": "maximality", "criterion": "A ⊆ A_max and maximality of A_max are both proved.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both proved." }, { "label": "partially met", "description": "One proved." }, { "label": "not met", "description": "Neither." } ] },
+      { "id": "uniqueness", "criterion": "Uniqueness proved via inclusion both ways using maximality.", "weight": 0.25, "levels": [ { "label": "met", "description": "Complete." }, { "label": "partially met", "description": "One inclusion." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "equivalence", "criterion": "Equivalence of atlases characterised correctly and the remark on Zorn made accurately (the maximal atlas is defined explicitly, so no choice is needed).", "weight": 0.15, "levels": [ { "label": "met", "description": "Both directions and the remark." }, { "label": "partially met", "description": "One direction or remark vague." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 30
+}

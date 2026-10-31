@@ -1,0 +1,61 @@
+{
+  "id": "COG-201-u02-ex2",
+  "sequence": 2,
+  "title": "The size principle and hypothesis averaging",
+  "kind": "derivation",
+  "promptMarkdown": "Work in the number game with the four-hypothesis space of the lesson: $h_1$ = even numbers ($|h_1|=50$), $h_2$ = multiples of 10 ($|h_2|=10$), $h_3$ = powers of two $\\{2,4,8,16,32,64\\}$ ($|h_3|=6$), $h_4$ = the numbers 50 to 60 inclusive ($|h_4|=11$), with a uniform prior over the four.\n\n1. State the strong-sampling assumption and derive from it the likelihood $p(X\\mid h)=|h|^{-n}\\,\\mathbf 1[X\\subseteq h]$ for a set $X$ of $n$ examples.\n2. For $X=\\{60\\}$, compute the posterior over the four hypotheses exactly (as fractions and to three decimal places), then the hypothesis-averaged generalisation probabilities $P(70\\in C\\mid X)$, $P(52\\in C\\mid X)$ and $P(55\\in C\\mid X)$.\n3. Repeat for $X=\\{60,80,10,30\\}$.\n4. Explain, in terms of the breadth of the two posteriors, why generalisation is graded after one example and rule-like after four, and what would have to be true of the hypothesis space for the four examples *not* to produce a rule.\n5. The lecture says the hypothesis space \"embodies a strong prior\" and the web book says the size principle means the prior \"does not have to penalize complexity\". Reconcile the two statements in a short paragraph: what does the likelihood do, and what is left for the prior?",
+  "conceptIds": ["bayesian-concept-learning", "bayesian-inference-cognition"],
+  "hintLadder": [
+    "Under strong sampling each example is drawn uniformly from the true extension. What is the probability of one particular number under $h$, and how do independent draws combine?",
+    "Which hypotheses contain 60? Which contain all of 60, 80, 10 and 30? A hypothesis that misses any example has likelihood 0.",
+    "With a uniform prior the posterior is the normalised likelihood: divide each surviving $|h|^{-n}$ by their sum.",
+    "$P(y\\in C\\mid X)$ sums the posterior over the surviving hypotheses that contain $y$. Check which of 70, 52, 55 lie in each surviving hypothesis.",
+    "For part 4: after four examples, compare $(1/10)^4$ with $(1/50)^4$. What ratio of sizes would keep the two hypotheses comparable after four examples?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "posterior-mult10-one",
+      "kind": "expression_present",
+      "description": "the posterior of 'multiples of 10' after {60}, about 0.474",
+      "params": { "patterns": ["0\\.474", "47\\.4(%|percent)"] }
+    },
+    {
+      "id": "posterior-interval-one",
+      "kind": "expression_present",
+      "description": "the posterior of '50 to 60' after {60}, about 0.431",
+      "params": { "patterns": ["0\\.431", "43\\.1(%|percent)"] }
+    },
+    {
+      "id": "posterior-mult10-four",
+      "kind": "expression_present",
+      "description": "the posterior of 'multiples of 10' after {60, 80, 10, 30}, about 0.998",
+      "params": { "patterns": ["0\\.998", "99\\.8(%|percent)"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "size-principle-derivation", "criterion": "Strong sampling stated (examples i.i.d. uniform on the true extension) and the likelihood derived as a product of n factors 1/|h|, zero if any example falls outside h.", "weight": 0.2, "levels": [{ "label": "met", "description": "Assumption and derivation explicit." }, { "label": "partially met", "description": "Formula stated, assumption vague." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "single-example", "criterion": "After {60}: h_3 excluded; posteriors 11/116 ≈ 0.095, 55/116 ≈ 0.474, 50/116 ≈ 0.431 for even, multiples of 10, 50–60 (any equivalent exact form); P(70) ≈ 0.569, P(52) ≈ 0.526, P(55) ≈ 0.431.", "weight": 0.25, "levels": [{ "label": "met", "description": "All values correct." }, { "label": "partially met", "description": "Posterior right, one generalisation wrong." }, { "label": "not met", "description": "Posterior wrong." }] },
+      { "id": "four-examples", "criterion": "After {60, 80, 10, 30}: only even and multiples of 10 survive; posteriors ≈ 0.0016 and ≈ 0.998; P(70) = 1, P(52) ≈ 0.0016, P(55) = 0.", "weight": 0.2, "levels": [{ "label": "met", "description": "All values correct." }, { "label": "partially met", "description": "Survivors right, arithmetic slip." }, { "label": "not met", "description": "Wrong survivors." }] },
+      { "id": "graded-vs-rule", "criterion": "Explains that one example leaves several hypotheses of comparable posterior (a broad posterior, hence graded averaging) while four examples make the smallest consistent hypothesis dominate exponentially; a rule would fail to emerge only if several consistent hypotheses had similar sizes.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both halves." }, { "label": "partially met", "description": "One half." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "likelihood-vs-prior", "criterion": "Reconciles the statements: the likelihood supplies the preference for smaller consistent hypotheses (no complexity penalty needed in the prior), while the prior and the choice of hypothesis space exclude unnatural hypotheses that would otherwise win on size.", "weight": 0.15, "levels": [{ "label": "met", "description": "Clear division of labour." }, { "label": "partially met", "description": "One role described." }, { "label": "not met", "description": "Conflates them." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct posteriors",
+      "text": "After {60}: likelihoods 1/50, 1/10, 0, 1/11; normalising gives even 0.095, multiples of 10 0.474, 50–60 0.431. P(70) = 0.095 + 0.474 = 0.569; P(52) = 0.526; P(55) = 0.431. After {60, 80, 10, 30}: (1/10)^4 versus (1/50)^4, so multiples of 10 has posterior 0.998 and even 0.002.",
+      "expect": { "posterior-mult10-one": true, "posterior-interval-one": true, "posterior-mult10-four": true }
+    },
+    {
+      "label": "forgot the interval hypothesis",
+      "text": "After {60}: even 1/6 ≈ 0.167 and multiples of 10 5/6 ≈ 0.833; after four examples multiples of 10 has posterior 0.998.",
+      "expect": { "posterior-mult10-one": false, "posterior-interval-one": false, "posterior-mult10-four": true }
+    }
+  ]
+}

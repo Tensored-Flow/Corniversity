@@ -1,0 +1,30 @@
+{
+  "id": "MAT-210-u05",
+  "courseId": "MAT-210",
+  "sequence": 5,
+  "title": "Carathéodory, the Cantor set and non-measurable sets",
+  "summary": "The Carathéodory criterion for measurability; the Cantor set as an uncountable null set; Lebesgue measurable sets that are not Borel; invariance of Lebesgue measure under translations, dilations and rotations; the construction of a non-measurable set.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 8–9 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["lebesgue-measure", "outer-measure"],
+  "teachesConceptIds": ["nonmeasurable-and-cantor-sets", "lebesgue-measure"],
+  "preparation": [
+    { "description": "Read lecture 8: the Carathéodory criterion, the Cantor set, and the existence of Lebesgue measurable sets that are not Borel.", "locatorId": "mi03-lec08", "estimatedMinutes": 60 },
+    { "description": "Read lecture 9: invariance under translations and dilations, a non-measurable set, invariance under rotations.", "locatorId": "mi03-lec09", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Lectures 8–9: Carathéodory, Cantor, non-measurable sets", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["mi03-lec08", "mi03-lec09"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locators: the OCW lecture-notes page and the resource pages for lectures 8 and 9 were opened 2026-10-30 and the PDF URLs recorded; the PDF files themselves were not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,39 +1,49 @@
 {
   "id": "MAT-262",
-  "version": 1,
+  "version": 2,
   "title": "Riemannian Geometry",
-  "departmentIds": [
-    "mathematics"
-  ],
-  "level": "intermediate",
+  "departmentIds": ["mathematics"],
+  "level": "advanced",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Riemannian Geometry. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "MAT-262-smooth-manifolds"
+  "purpose": "Riemannian metrics and their coordinate expressions, the Levi-Civita connection, geodesics and distance, curvature, submanifolds, Jacobi fields and comparison, Gauss–Bonnet, and the first local-to-global theorems, with the Lorentzian case kept explicitly separate; studied from Sigmundur Gudmundsson's author-hosted Lund notes and Shlomo Sternberg's Creative-Commons book, with John M. Lee's Introduction to Riemannian Manifolds (2nd ed.) as the recommended commercial reference and original Corniversity exercises.",
+  "description": "Riemannian geometry equips a smooth manifold with an inner product on every tangent space, varying smoothly, and asks what that measures: lengths, angles, distance, straightest curves and curvature. This course develops the machinery with every convention stated: positive-definite signature $(+,\\dots,+)$ throughout, Einstein summation, metric components $g_{ij}=g(\\partial_i,\\partial_j)$ with lower indices and the inverse $g^{ij}$ with upper ones, Christoffel symbols $\\Gamma^k_{ij}$ with the direction of differentiation in the first lower index. The Lorentzian case (signature $(-,+,+,+)$) is treated in a separate contrast unit and never silently mixed in. Units cover metrics and their coordinate expressions (including what happens at a coordinate singularity), the Levi-Civita connection and Christoffel symbols, geodesics and the exponential map, distance and completeness, the Riemann curvature tensor with sectional, Ricci and scalar curvature, submanifolds and the Gauss equation, Jacobi fields and comparison, Gauss–Bonnet, Lorentzian metrics in contrast, and curvature-versus-topology theorems.\n\n**How this adaptation works.** The main reading is Sigmundur Gudmundsson's *An Introduction to Riemannian Geometry* (Lund University, author-hosted PDF, version 1.438 of 6 May 2026): freely downloadable, but with no licence stated, so Corniversity treats it as reference-only (the tutor cites statement and page; nothing is imported or sent to a model). Shlomo Sternberg's *Semi-Riemann Geometry and General Relativity* (2003, CC BY-NC-SA 2.0) is the open-licensed alternative and the source for the Lorentzian contrast; Chris Wendl's *Lecture Notes on Bundles and Connections* (explicit non-commercial permission) supplies connections, curvature and Gauss–Bonnet. John M. Lee's *Introduction to Riemannian Manifolds*, 2nd edition (Springer GTM 176, 2018) is the owner's named candidate textbook; it is commercial, only its front matter is public, and it is recorded as a reference with chapter pointers taken from its table of contents. An acquisition request stands: once a legitimate copy is available, units will add Lee readings. Corniversity keeps the notes' statement numbers so citations can be reopened and sets its own exercises; the advanced-geometry tutorial of unit 1 derives the metric of a sphere of radius $R$ from the ambient Euclidean inner product and examines the coordinate singularity at the poles.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises, instructor reference reasoning and checks; outlined units have verified chapter-level reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Define a Riemannian metric, compute its components in a chart from a parametrisation and the ambient inner product, apply the transformation law, and distinguish a coordinate singularity from a geometric one.", "evidenceExpected": "The accepted sphere-of-radius-R derivation with the pole discussion, and a transformation-law computation (polar coordinates)." },
+    { "id": "o2", "description": "State and prove the fundamental theorem of Riemannian geometry (existence and uniqueness of the Levi-Civita connection), compute Christoffel symbols, and recognise the tangential connection of a submanifold.", "evidenceExpected": "Christoffel symbols of the round sphere computed and checked; a proof that the tangential projection is torsion-free and metric." },
+    { "id": "o3", "description": "Work with geodesics, parallel transport, the exponential map and the distance function, and state the Hopf–Rinow theorem with its hypotheses.", "evidenceExpected": "Geodesic equations solved on model spaces; a completeness argument." },
+    { "id": "o4", "description": "Define the Riemann curvature tensor, derive its symmetries, and compute sectional, Ricci and scalar curvature, including via the Gauss equation for submanifolds.", "evidenceExpected": "Curvature computations for spheres and hyperbolic space; a Gauss-equation argument." },
+    { "id": "o5", "description": "Explain how curvature controls geometry and topology through Jacobi fields, comparison theorems, Gauss–Bonnet and the local-to-global theorems.", "evidenceExpected": "The final synthesis exposition." },
+    { "id": "o6", "description": "State precisely which constructions survive when the metric is Lorentzian and which do not, with the signature convention named.", "evidenceExpected": "The contrast explanation of unit 1 and the contrast unit's written account." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["MAT-262-smooth-manifolds", "MAT-262-inner-products-and-odes"],
+  "recommendedConceptIds": ["smooth-manifold", "tangent-bundle-vector-fields", "linear-algebra-vector-spaces", "multivariable-calculus", "ode-basics"],
+  "teachesConceptIds": [
+    "riemannian-metric", "metric-coefficients-charts", "isometries-and-model-spaces", "connections-geodesics", "levi-civita-connection", "riemannian-distance-completeness", "curvature", "riemannian-submanifolds", "jacobi-fields-comparison", "gauss-bonnet", "lorentzian-metric", "curvature-and-topology"
+  ],
+  "primarySourceIds": ["gudmundsson-riemannian", "sternberg-semi-riemannian"],
+  "supplementalSourceIds": ["wendl-connections-2008", "lee-riemannian"],
+  "unitIds": ["MAT-262-u01", "MAT-262-u02", "MAT-262-u03", "MAT-262-u04", "MAT-262-u05", "MAT-262-u06", "MAT-262-u07", "MAT-262-u08", "MAT-262-u09", "MAT-262-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "proof_portfolio", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Conventions (signature, index placement) must be stated in every computation; revision is expected and the portfolio records attempts and revisions.", "weight": 0.5, "rubricSummary": ["conventions stated", "statement fidelity", "hypotheses (positive-definiteness, chart domains, completeness)", "logical steps", "coordinate-independence and boundary cases"] },
+    { "id": "a2", "title": "Mid-course synthesis: metric, connection, geodesics", "kind": "written_explanation", "description": "After unit 4: a written account of how a metric determines its Levi-Civita connection and geodesics, with one model space worked in full (sphere, hyperbolic space or a Lie group) and the exponential map described. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["correctness", "handling of conventions and hypotheses", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: curvature and topology", "kind": "project", "description": "An exposition of one local-to-global theorem (Gauss–Bonnet, Cartan–Hadamard or Myers) with every step proved or cited precisely, and a short section stating what changes in Lorentzian signature. Optional oral explanation to the tutor.", "weight": 0.3, "rubricSummary": ["correct statements and hypotheses", "completeness of the argument", "exposition", "Riemannian/Lorentzian distinction kept"] }
+  ],
+  "workloadHours": { "minimum": 100, "typical": 135, "maximum": 170 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified sources: Gudmundsson's notes (PDF v1.438 downloaded and text-extracted on 2026-10-30; statement numbers and printed pages recorded), Sternberg's book (PDF downloaded and text-extracted; licence seen on the author's books page), Wendl's chapters 1, 3 and 6 (downloaded and text-extracted; permission statement seen) and Lee's author page with the front-matter PDF (table of contents only). Exercises are original; reference solutions were re-derived by the build agent. Workload estimated at roughly 10–14 hours per teaching week over ten units.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "Acquisition request: John M. Lee, Introduction to Riemannian Manifolds, 2nd ed. (Springer GTM 176, 2018; ISBN 978-3-319-91754-2). Commercial; only the front matter is public. Until a legitimate copy is available the book is a recommended reference with chapter pointers and no assigned reading.",
+      "Gudmundsson's notes are a living document; the version and date are recorded in the source and statement numbers must be re-verified if the version changes.",
+      "No MIT OpenCourseWare course covers Riemannian geometry: 18.965 (Fall 2004) stops at manifolds, bundles and de Rham theory despite its landing-page description, and 18.966 (Spring 2007) is symplectic. Candidates considered and not recorded: Bishop's arXiv notes (arXiv non-exclusive licence), Andrews's ANU notes and Tong's GR notes (no licence statements)."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "halvard-brekke",
+  "tutorPersonaId": "halvard-brekke",
+  "externalSyllabusNote": "Adapted study path using Sigmundur Gudmundsson's An Introduction to Riemannian Geometry (Lund University lecture notes, author-hosted, no licence stated, reference-only), Shlomo Sternberg's Semi-Riemann Geometry and General Relativity (2003, CC BY-NC-SA 2.0) and Chris Wendl's Lecture Notes on Bundles and Connections (2008, author's non-commercial permission), with John M. Lee's Introduction to Riemannian Manifolds (2nd ed., Springer, commercial) as the recommended reference pending acquisition. The Lund notes support a one-semester Master's course; Corniversity re-paces the material as 10 units, adds a Lorentzian contrast unit and sets its own exercises and assessments. This is not a Lund, Harvard, Berlin or MIT course and confers no credit anywhere."
 }

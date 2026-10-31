@@ -1,0 +1,30 @@
+{
+  "id": "PHY-201-u08",
+  "courseId": "PHY-201",
+  "sequence": 8,
+  "title": "Canonical transformations and generating functions",
+  "summary": "Canonical transformations and the four generating functions; the symplectic condition and invariance of Poisson brackets; the oscillator by a canonical transformation; infinitesimal transformations and conserved quantities as generators.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 4 (canonical transformations) and Tong, Classical Dynamics, Chapter 4." }
+  ],
+  "prerequisiteConceptIds": ["hamiltonian-mechanics"],
+  "teachesConceptIds": ["canonical-transformations"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 4 (PDF), the sections on canonical transformations and generating functions.", "locatorId": "cm3-ch4", "estimatedMinutes": 70 },
+    { "description": "Read Tong, Classical Dynamics, Chapter 4 (reference-only), the sections on canonical transformations and the symplectic condition.", "locatorId": "tong-cd-ch4", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Reading: canonical transformations", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["cm3-ch4", "tong-cd-ch4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 4 resource page and direct PDF link opened 2026-10-30 (PDF text not yet extracted); Tong's Classical Dynamics page listing Chapter 4 opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

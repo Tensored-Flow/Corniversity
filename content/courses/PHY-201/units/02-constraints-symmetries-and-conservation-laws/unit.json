@@ -1,0 +1,48 @@
+{
+  "id": "PHY-201-u02",
+  "courseId": "PHY-201",
+  "sequence": 2,
+  "title": "Constraints, symmetries and conservation laws",
+  "summary": "Holonomic, non-holonomic and semi-holonomic constraints and the integrability test; virtual displacements and D'Alembert's principle; Lagrange multipliers and forces of constraint; cyclic coordinates, Noether's theorem for continuous symmetries, the Jacobi integral dH/dt = −∂L/∂t, and when the Hamiltonian is the energy.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Classify a given constraint as holonomic, non-holonomic or semi-holonomic, and apply the integrability conditions (with a possible integrating factor) to decide whether a differential constraint is secretly holonomic." },
+    { "id": "u02-o2", "description": "Derive the Euler–Lagrange equations with generalized forces from D'Alembert's principle, stating where vanishing virtual work and the independence of the coordinates are used." },
+    { "id": "u02-o3", "description": "Use Lagrange multipliers to find a force of constraint, and interpret the multiplier term physically." },
+    { "id": "u02-o4", "description": "State and prove Noether's theorem for a continuous symmetry of L and apply it to find a conserved quantity that is not a single canonical momentum." },
+    { "id": "u02-o5", "description": "Prove dH/dt = −∂L/∂t and state and prove the hypotheses under which H equals the energy, with an example where they fail." }
+  ],
+  "prerequisiteConceptIds": ["lagrangian-mechanics", "multivariable-calculus"],
+  "teachesConceptIds": ["constraints-generalised-coordinates", "noether-symmetry"],
+  "preparation": [
+    { "description": "Read Section 1.4 (PDF pages 16–18): holonomic constraints (Eq. 1.60), non-holonomic examples, the vertical rolling disc and semi-holonomic constraints (Eqs. 1.61–1.62), the integrability conditions (Eq. 1.63) and virtual displacements.", "locatorId": "cm3-c1-constraints", "estimatedMinutes": 25 },
+    { "description": "Read PDF page 19: vanishing virtual work and D'Alembert's principle (Eq. 1.64).", "locatorId": "cm3-c1-dalembert", "estimatedMinutes": 10 },
+    { "description": "Read Section 1.5, Method of Lagrange Multipliers (PDF pages 23–25, Eqs. 1.85–1.90), including the interpretation of λ∇f as a constraint force.", "locatorId": "cm3-c1-multipliers", "estimatedMinutes": 25 },
+    { "description": "Read Section 1.3 (PDF pages 12–14): cyclic coordinates and Noether's theorem as stated in the notes, centre-of-mass momentum, angular momentum, scaling symmetry, the charge in an electromagnetic field, and dH/dt = −∂L/∂t (Eq. 1.55).", "locatorId": "cm3-c1-noether", "estimatedMinutes": 30 },
+    { "description": "Read PDF pages 15–16: the spring on a moving cart (Eqs. 1.56–1.59), the case where H = E is not conserved and H′ is conserved but is not E.", "locatorId": "cm3-c1-cart", "estimatedMinutes": 15 },
+    { "description": "Optional second account: Tong, Classical Dynamics, Section 2.4 Noether's Theorem and Symmetries (reference-only), for the continuous-symmetry form of the theorem used in the lesson.", "locatorId": "tong-cd-ch2-s4", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Lecture: constraints, multipliers, Noether", "instructions": "Read the lesson with Sections 1.3–1.5 of the Chapter 1 notes. Redo the integrability check for the rolling disc yourself before reading the notes' version. In the sphere example, verify the value of λ at θ = 0 and the departure angle.", "estimatedMinutes": 70, "sourceLocatorIds": ["cm3-c1-constraints", "cm3-c1-rolling-disk", "cm3-c1-virtual", "cm3-c1-dalembert", "cm3-c1-phase-space-action", "cm3-c1-multipliers", "cm3-c1-noether", "cm3-c1-angular", "cm3-c1-scaling-energy", "cm3-c1-cart", "cm3-c1-h-equals-e"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "problem", "title": "Tutorial: a constraint force and a hidden symmetry", "instructions": "Attempt exercise 1 (rolling bodies with a multiplier) before asking for any hint; state the units of the multiplier and check the point-mass limit. Then attempt exercise 2 (helical symmetry). Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 90, "sourceLocatorIds": ["cm3-c1-multipliers", "cm3-c1-rolling-disk", "cm3-c1-noether", "cm3-c1-scaling-energy"], "exerciseIds": ["PHY-201-u02-ex1", "PHY-201-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a3", "type": "explain_back", "title": "Explain: the Hamiltonian versus the energy", "instructions": "Write exercise 3 without the notes open, then compare with the cart example on PDF pages 15–16.", "estimatedMinutes": 15, "sourceLocatorIds": ["cm3-c1-cart", "cm3-c1-h-equals-e"], "exerciseIds": ["PHY-201-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the three kinds of constraint with an example each; the integrability conditions; D'Alembert's principle; the multiplier equations; Noether's theorem; the hypotheses under which H = E.", "estimatedMinutes": 10, "sourceLocatorIds": ["cm3-c1-constraints", "cm3-c1-multipliers", "cm3-c1-noether"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-201-u02-ex1", "PHY-201-u02-ex2", "PHY-201-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the rolling constraint shown holonomic, the multiplier equations written and solved for the acceleration g sin α/(1 + β) and the friction force, the point-mass limit checked, and the no-slip condition on the friction coefficient derived.", "exerciseId": "PHY-201-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "The Hamiltonian is by definition the total energy T + V.", "correction": "H = Σ p q̇ − L equals T + V only when T is homogeneous of degree two in the velocities and V is velocity independent (Eqs. 1.30–1.31). The spring on a moving cart gives H = E not conserved in one coordinate and H′ conserved but not equal to E in another (Eqs. 1.56–1.59).", "correctionLocatorIds": ["cm3-c1-h-equals-e", "cm3-c1-cart"] },
+    { "claim": "Rolling without slipping is always a holonomic constraint, since it can be integrated for a wheel on a line.", "correction": "On a line it integrates to x = aφ + x₀; for a disc free to roll on a plane the constraints dx − a sin θ dφ = 0, dy + a cos θ dφ = 0 admit no integrating factor and are genuinely non-holonomic (notes, PDF page 18).", "correctionLocatorIds": ["cm3-c1-rolling-disk", "cm3-c1-virtual"] },
+    { "claim": "Static friction in rolling without slipping does work, so energy is lost.", "correction": "The contact point has zero virtual displacement, so the friction force does no virtual work; it enters as a constraint force λ a_jα and mechanical energy is conserved. Sliding friction is different and must be added as a generalized force.", "correctionLocatorIds": ["cm3-c1-dalembert", "cm3-c1-multipliers"] },
+    { "claim": "Any symmetry of L gives a conservation law.", "correction": "Noether's theorem needs a continuous (one-parameter) family of transformations; a reflection symmetry gives no conserved quantity in classical mechanics.", "correctionLocatorIds": ["cm3-c1-noether"] }
+  ],
+  "estimatedMinutes": 310,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All eleven Chapter 1 locators used by this unit opened 2026-10-30 and page indices verified against text extracted from MIT8_09F14_Chapter_1.pdf: Section 1.3 begins on PDF page 12 (index 11) with the cyclic-coordinate statement, the cart example on pages 15–16 (indices 14–15), Section 1.4 on page 16 (index 15), the integrability test and virtual displacements on page 18 (index 17), D'Alembert Eq. 1.64 on page 19 (index 18), the multiplier method on pages 23–25 (indices 22–24). Tong Section 2.4 heading verified in clas2.pdf." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: the non-integrability of dx − a sin θ dφ = 0 (any integrating factor h must satisfy h cos θ = 0); D'Alembert to Lagrange via the two identities of unit 1; the multiplier theorem; the sphere example λ = mg(3 cos θ − 2) with departure at cos θ = 2/3 and λ(0) = mg; Noether's theorem for q → q + εK(q); dH/dt = −∂L/∂t; H′ = (p′ − mv₀)²/2m + kx′²/2 − mv₀²/2 for the cart; for the exercises, ẍ = g sin α/(1 + β), friction β m g sin α/(1 + β), no-slip condition tan α ≤ μ(1 + β)/β, and the helical charge Q = p_θ + p_z/k with dQ/dt = −U₂ + kU₂/k = 0." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's multiplier example is the sphere, not the rolling body; the helical-symmetry charge and the no-slip condition appear only in instructor/ files; the exercise prompts state no final formulas." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 90 + 15 + 10 minutes of activities plus about 125 minutes of preparation ≈ 5.2 hours; with unit 1 this is the first teaching week at roughly 9.5 hours, inside the 9–13 hours budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-201-u02-ex1.reference-solution.md", "PHY-201-u02-ex2.reference-solution.md", "PHY-201-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

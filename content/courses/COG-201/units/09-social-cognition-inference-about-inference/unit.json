@@ -1,0 +1,29 @@
+{
+  "id": "COG-201-u09",
+  "courseId": "COG-201",
+  "sequence": 9,
+  "title": "Social cognition: inference about inference",
+  "summary": "Agents as planners; inferring goals, preferences, knowledge and beliefs by inverting a generative model of rational action; nested inference; communication and scalar implicature as reasoning about a speaker who reasons about a listener.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is the web book's Social cognition chapter (prelude on assembly lines; inferring goals, preferences, knowledge and beliefs; emotion; communication and language; planning), with the OCW course's description of theory of mind as a target domain for context." }
+  ],
+  "prerequisiteConceptIds": ["generative-models-cognition", "inference-algorithms-process-models"],
+  "teachesConceptIds": ["social-cognition-inference"],
+  "preparation": [
+    { "description": "Read the web book's Social cognition chapter in full. Reference-only: read on the book's site.", "locatorId": "pm2-ch-social-cognition", "estimatedMinutes": 70 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Social cognition: inference about inference", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["pm2-ch-social-cognition", "cocosci04-syllabus"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Web book Social cognition chapter returned HTTP 200 on 2026-10-30 with h1 headings 'Prelude: Thinking About Assembly Lines', 'Social Cognition', 'Emotion and other mental states' (plus 'Communication and Language' and 'Planning' in the GitHub source). The 2004 OCW slide decks do not cover this topic; the syllabus page is cited for context only." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,37 +1,52 @@
 {
   "id": "COG-201",
-  "version": 1,
+  "version": 2,
   "title": "Computational Cognitive Science",
-  "departmentIds": [
-    "cognitive-science"
-  ],
+  "departmentIds": ["cognitive-science"],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Computational Cognitive Science. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "purpose": "Bayesian inference as a model of cognition: the problem of induction, generative models and graphical models, concept learning and the size principle, Occam's razor, hierarchical and causal models, inference algorithms and the measurement of behaviour, studied from the MIT 9.66J Computational Cognitive Science lecture slides (Fall 2004, OpenCourseWare) and the web book Probabilistic Models of Cognition, with original Corniversity exercises that keep model behaviour, measurement, experimental evidence and causal claims explicitly apart.",
+  "description": "How can a mind generalise from a handful of examples, infer causes from effects, and learn new concepts from a few positive instances? Computational cognitive science answers by writing down the inference problem a learner faces and solving it: hypothesis spaces, priors, likelihoods and posteriors become a theory of what people are computing. This course builds that toolkit mathematically (Bayes' rule in odds form, Beta–Bernoulli learning, the size principle, hypothesis averaging, marginal likelihood and Bayes factors, hierarchical priors, sampling algorithms) and uses it on the classic phenomena: coin flips that look suspicious, the number game, categorisation, Occam's razor, learning to learn, causal learning and social inference.\n\n**How this adaptation works.** The owner's entry point is MIT CBMM's course page, which describes the current course but publishes no teaching material. The open spine is therefore the Fall 2004 OpenCourseWare publication of the same course (24 slide decks, CC BY-NC-SA 4.0), read alongside the second edition of *Probabilistic Models of Cognition* (Goodman, Tenenbaum and the ProbMods contributors), which is openly readable on its own site but states no licence and is therefore reference-only: cited, never imported. Corniversity re-paces the material as ten units for a term of ten teaching weeks plus a reading week and a synthesis week, supplies the derivations the slides only sketch, and sets its own exercises. Labs are Corniversity implementations, not WebPPL.\n\n**Department convention, enforced in every unit.** Four kinds of statement are labelled and kept apart: what a model predicts (model behaviour), what an experiment measured (measurement), what the correspondence between them shows and at which of Marr's levels (experimental evidence), and what mechanism is claimed (causal claim). A computational-level fit licenses none of the last kind on its own.\n\n**Currency check (2026-10-30).** The OCW slides are from 2004 and the web book is cited as 2016 (site last modified 2023-06-05 per its server). The mathematics taught here is stable; where the field has moved (probabilistic programming, large-scale models, resource-rational analysis) the lessons say so and point at the web book's later chapters rather than presenting 2004 material as current practice.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Formulate a cognitive capacity as an inference problem at the computational level and derive its Bayesian solution: posteriors over discrete hypothesis spaces, Beta–Bernoulli learning with posterior predictives, odds-form comparison and hierarchical priors.", "evidenceExpected": "Worked derivations with exact numbers (coin examples, the number game), including the size principle derived from the sampling assumption." },
+    { "id": "o2", "description": "Build and reason about generative and graphical models: factorisation, causal versus statistical dependence, screening off and explaining away, intervention versus observation.", "evidenceExpected": "Graphical-model exercises with dependence statements proved from the factorisation and a worked explaining-away calculation." },
+    { "id": "o3", "description": "Explain concept learning, categorisation and Occam's razor with the size principle, hypothesis averaging and marginal likelihood, and say what each phenomenon (graded versus rule-like generalisation, prototype effects) does and does not show.", "evidenceExpected": "Number-game and model-selection calculations plus a written interpretation that separates model behaviour from measurement." },
+    { "id": "o4", "description": "Use hierarchical and causal models to explain learning to learn and causal inference, and connect computational-level models to algorithms through sampling and resource-rational analysis.", "evidenceExpected": "A hierarchical-model derivation, a causal-learning exercise, and an explanation of how an approximate inference algorithm could stand as a process model." },
+    { "id": "o5", "description": "Keep model behaviour, measurement, experimental evidence and causal claims explicitly distinguished in every written account, and design an experiment that would separate two models.", "evidenceExpected": "Explain-back submissions and the final project write-up, assessed with the department's four-way labelling." }
+  ],
+  "prerequisiteRuleIds": ["COG-201-probability", "COG-201-programming"],
+  "recommendedConceptIds": ["probability-measure-theoretic", "linear-algebra-vector-spaces", "python-scientific-computing"],
+  "teachesConceptIds": [
+    "computational-level-analysis", "inductive-inference-cognition", "bayesian-inference-cognition", "bayesian-concept-learning",
+    "generative-models-cognition", "graphical-models-dependence", "categorisation-models", "bayesian-occams-razor",
+    "hierarchical-bayesian-models", "causal-learning-models", "inference-algorithms-process-models", "social-cognition-inference",
+    "model-evidence-distinction", "bayesian-data-analysis-cognition"
+  ],
+  "primarySourceIds": ["mit-cocosci-2004", "probmods-v2"],
+  "supplementalSourceIds": ["mit-cognitive-science"],
+  "unitIds": ["COG-201-u01", "COG-201-u02", "COG-201-u03", "COG-201-u04", "COG-201-u05", "COG-201-u06", "COG-201-u07", "COG-201-u08", "COG-201-u09", "COG-201-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "problem_set", "description": "Each unit's derivations and calculations are submitted as immutable attempts and assessed with line-localised feedback; revision is expected. Mirrors the source course's four problem sets in spirit, with Corniversity's own problems.", "weight": 0.4, "rubricSummary": ["correct use of Bayes' rule and the sampling assumptions", "exact numbers where asked, with working", "hypotheses and priors stated explicitly", "alternate derivations accepted"] },
+    { "id": "a2", "title": "Model-interpretation essays", "kind": "written_explanation", "description": "Short written pieces (one after unit 2, one after unit 6) that take a model–data comparison and label every statement as model behaviour, measurement, experimental evidence or causal claim, then say what further experiment would be needed.", "weight": 0.25, "rubricSummary": ["four-way labelling complete and correct", "level of analysis named", "unlicensed inferences identified", "a discriminating experiment proposed"] },
+    { "id": "a3", "title": "Final modelling project", "kind": "project", "description": "Implement a Bayesian model of one cognitive phenomenon on synthetic data (labelled synthetic) or openly available behavioural data, compare it with a baseline model, and write up what the fit does and does not show. Mirrors the source course's 'final project or paper on cognitive modeling'. Optional oral explanation to the tutor.", "weight": 0.35, "rubricSummary": ["model correctly specified and implemented", "baseline comparison", "synthetic data labelled as such", "claims limited to the level of analysis the evidence supports"] }
+  ],
+  "workloadHours": { "minimum": 70, "typical": 100, "maximum": 140 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the content author agent. OCW 9.66J (Fall 2004): course, syllabus, calendar, lecture-notes, readings and projects pages opened on 2026-10-30; all 24 lecture-slide resource pages confirmed; text extracted from seven slide decks with scripts/pdf-dump.ts and slide indices recorded as locators. Probabilistic Models of Cognition (2nd ed.): index and 13 chapters opened over HTTP on 2026-10-30 and headings cross-checked against the probmods/probmods2 GitHub source; no licence found, so reference-only. CBMM page opened and recorded as an entry point without public material. Lessons and exercises are original; every reference solution was re-derived.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Spine decision: the CBMM page establishes the current course's scope only; public teaching material exists for the Fall 2004 OCW offering, used as the primary spine, with the web book as the modern companion.",
+      "Probabilistic Models of Cognition states no licence; it is cited by chapter URL and heading and must not be ingested or sent to an external model.",
+      "OCW slide decks omit copyrighted figures, including the human generalization plots of the number game; the lessons describe the reported pattern without quoting values that are not in the public file.",
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The lab bayesian-concept-learning is a Corniversity implementation referenced by id; it must exist in the application before unit 2 is taught."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "dev-anantharaman",
+  "tutorPersonaId": "dev-anantharaman",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 9.66J Computational Cognitive Science (Fall 2004) slides under CC BY-NC-SA 4.0 and the openly readable web book Probabilistic Models of Cognition (2nd ed., licence not stated, reference-only). The original MIT course ran 25 sessions with four problem sets and a final project; the current MIT offering (CBMM page) publishes no materials. Corniversity re-paces the material as ten units, supplies its own lessons, exercises and labs, and confers no MIT credit."
 }

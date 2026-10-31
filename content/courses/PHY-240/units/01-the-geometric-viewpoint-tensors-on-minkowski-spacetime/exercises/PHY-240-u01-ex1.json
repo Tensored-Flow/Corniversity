@@ -1,0 +1,65 @@
+{
+  "id": "PHY-240-u01-ex1",
+  "sequence": 1,
+  "title": "Four-acceleration and the hyperbolic worldline",
+  "kind": "derivation",
+  "promptMarkdown": "Signature $(-,+,+,+)$, $c = 1$ until part 6. A massive particle has worldline $x^\\mu(\\tau)$, 4-velocity $u^\\mu = dx^\\mu/d\\tau$ and 4-acceleration $a^\\mu = du^\\mu/d\\tau$.\n\n1. Prove that $u_\\mu a^\\mu = 0$.\n2. Let $\\alpha$ be the magnitude of the ordinary acceleration measured in the particle's momentary rest frame. Show that $a_\\mu a^\\mu = \\alpha^2$ and that $a^\\mu$ is spacelike.\n3. Now let the motion be along the $x$-axis with constant proper acceleration $\\alpha$, starting from rest at the origin at $\\tau = 0$. Using the constraint $u\\cdot u = -1$ to parametrise $u^\\mu$ by a single function of $\\tau$, derive $u^\\mu(\\tau)$ and then $x^\\mu(\\tau)$.\n4. Show that the worldline is the hyperbola $(x + 1/\\alpha)^2 - t^2 = 1/\\alpha^2$, and find the coordinate velocity $v = dx/dt$ as a function of $\\tau$. What is the relation between $\\alpha\\tau$ and the rapidity?\n5. Expand for $\\alpha\\tau\\ll 1$ and recover Newtonian uniformly accelerated motion, naming the first neglected term.\n6. Restore $c$ in $x(\\tau)$, $t(\\tau)$ and $v(\\tau)$ and check the units of every expression. For $\\alpha = 9.8\\ \\mathrm{m\\,s^{-2}}$, how much proper time elapses before $v = 0.9c$?",
+  "conceptIds": ["four-vectors", "tensor-calculus-spacetime"],
+  "hintLadder": [
+    "Differentiate the constant $u\\cdot u = -1$ with respect to $\\tau$.",
+    "Evaluate $a^\\mu$ in the momentary rest frame, where $u^\\mu = (1, \\mathbf 0)$ and $u\\cdot a = 0$ fixes $a^0$.",
+    "If $(u^0)^2 - (u^1)^2 = 1$, write $u^0 = \\cosh\\theta(\\tau)$, $u^1 = \\sinh\\theta(\\tau)$ and compute $a\\cdot a$ in terms of $\\dot\\theta$.",
+    "Integrate $dt/d\\tau = u^0$ and $dx/d\\tau = u^1$ with the stated initial conditions.",
+    "Dimensional analysis: $\\alpha\\tau/c$ is dimensionless and $c^2/\\alpha$ is a length."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "hyperbolic-functions",
+      "kind": "expression_present",
+      "description": "the hyperbolic-function parametrisation (cosh/sinh/tanh) appears",
+      "params": { "patterns": [ "cosh", "sinh", "tanh" ] }
+    },
+    {
+      "id": "acceleration-not-timelike",
+      "kind": "forbidden_claim",
+      "description": "claiming the 4-acceleration is timelike or parallel to the 4-velocity",
+      "params": {
+        "patterns": [
+          "(four|4)[- ]acceleration[^.]{0,40}\\bis timelike",
+          "(four|4)[- ]acceleration[^.]{0,40}parallel to (the )?(four|4)[- ]velocity",
+          "a\\^\\\\?mu[^.]{0,30}parallel to u"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "orthogonality", "criterion": "u·a = 0 from d(u·u)/dτ = 0; a·a = α² and spacelike via the rest frame, with the frame-independence of the invariant noted.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both parts complete." }, { "label": "partially met", "description": "Rest-frame step asserted." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "integration", "criterion": "u = (cosh ατ, sinh ατ) derived from a·a = θ̇² = α² with θ(0) = 0; t = sinh(ατ)/α and x = (cosh(ατ) − 1)/α.", "weight": 0.3, "levels": [ { "label": "met", "description": "Derived with initial conditions." }, { "label": "partially met", "description": "Correct result, parametrisation asserted." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "hyperbola", "criterion": "The hyperbola identity verified; v = tanh ατ; ατ identified as the rapidity (proper acceleration = rate of change of rapidity with proper time).", "weight": 0.2, "levels": [ { "label": "met", "description": "All three." }, { "label": "partially met", "description": "Two." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "limits-units", "criterion": "x ≈ ½ατ² ≈ ½αt² with the next term ∝ α³τ⁴ named; c restored as x = (c²/α)(cosh(ατ/c) − 1), t = (c/α) sinh(ατ/c), v = c tanh(ατ/c) with units checked; τ = (c/α) artanh(0.9) ≈ 1.47 c/α ≈ 1.43 years for g.", "weight": 0.3, "levels": [ { "label": "met", "description": "Limit, restoration, units and number." }, { "label": "partially met", "description": "One element missing." }, { "label": "not met", "description": "Units wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60,
+  "checkExamples": [
+    {
+      "label": "correct solution",
+      "text": "Differentiating $u\\cdot u = -1$ gives $u\\cdot a = 0$. In the rest frame $a = (0,\\boldsymbol\\alpha)$ so $a\\cdot a = \\alpha^2 > 0$: spacelike. Writing $u = (\\cosh\\theta, \\sinh\\theta)$, $a\\cdot a = \\dot\\theta^2 = \\alpha^2$, so $\\theta = \\alpha\\tau$ and $t = \\sinh(\\alpha\\tau)/\\alpha$, $x = (\\cosh(\\alpha\\tau)-1)/\\alpha$, with $v = \\tanh\\alpha\\tau$.",
+      "expect": { "hyperbolic-functions": true, "acceleration-not-timelike": true }
+    },
+    {
+      "label": "wrong causal character",
+      "text": "Since the particle accelerates along its motion, the 4-acceleration is timelike and parallel to the 4-velocity.",
+      "expect": { "acceleration-not-timelike": false }
+    },
+    {
+      "label": "no parametrisation",
+      "text": "I showed u·a = 0 but could not integrate the equations of motion.",
+      "expect": { "hyperbolic-functions": false }
+    }
+  ]
+}

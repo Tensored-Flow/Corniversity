@@ -1,0 +1,44 @@
+{
+  "id": "CSA-210-u02",
+  "courseId": "CSA-210",
+  "sequence": 2,
+  "title": "Gradient descent and backpropagation on computational graphs",
+  "summary": "The gradient as the steepest-ascent direction; gradient descent and its exact analysis on quadratics (step-size threshold, condition number, best rate); the descent lemma for smooth functions; computational graphs; backpropagation as the chain rule in reverse topological order and its cost; autograd and the training loop.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Prove that the negative gradient is the steepest-descent direction and analyse gradient descent on a quadratic: convergence iff 0 < η < 2/λ_max, contraction factor, condition number and best rate (κ−1)/(κ+1)." },
+    { "id": "u02-o2", "description": "State and prove the descent lemma for β-smooth functions and deduce that gradient descent with η ≤ 1/β reaches points of arbitrarily small gradient." },
+    { "id": "u02-o3", "description": "Compute every parameter gradient of a small network by the reverse-mode chain rule on its computational graph, verify one by finite differences, and explain the cost of reverse versus forward mode." },
+    { "id": "u02-o4", "description": "Write a correct training loop with autograd, including zeroing accumulated gradients, and explain what each line does." }
+  ],
+  "prerequisiteConceptIds": ["multivariable-calculus", "linear-algebra-vector-spaces", "tensors-and-autodiff"],
+  "teachesConceptIds": ["gradient-descent", "backpropagation", "tensors-and-autodiff"],
+  "preparation": [
+    { "description": "Read W1D2 Tutorial 1, Section 1.1 (Gradients & Steepest Ascent) and attempt its Analytical Exercise 1.1 before reading the lesson's proof.", "locatorId": "nmadl-w1d2-t1-s1-1", "estimatedMinutes": 25 },
+    { "description": "Read Section 1.2 (Gradient Descent Algorithm) and Section 1.3 (Computational Graphs and Backprop), including the optional chain-rule exercise.", "locatorId": "nmadl-w1d2-t1-s1-3", "estimatedMinutes": 25 },
+    { "description": "Read Section 2.2 (Backward Propagation) and Section 3.1 (Training loop in PyTorch); note where gradients are zeroed.", "locatorId": "nmadl-w1d2-t1-s2-2", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Lesson with W1D2 Tutorial 1", "instructions": "Read the lesson alongside the tutorial. After the quadratic example, close everything and re-derive the condition 0 < η < 2/λ_max on paper before reading on. Check the hand-backprop example line by line.", "estimatedMinutes": 80, "sourceLocatorIds": ["nmadl-w1d2-t1", "nmadl-w1d2-t1-s1-1", "nmadl-w1d2-t1-s1-2", "nmadl-w1d2-t1-s1-3", "nmadl-w1d2-t1-s2-1", "nmadl-w1d2-t1-s2-2", "nmadl-w1d2-t1-s3-1"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "lab", "title": "Lab: the gradient-descent surface", "instructions": "Prediction first: write down the learning rate at which you expect divergence on the quadratic with eigenvalues 1 and 10, and the rate you expect to be fastest. Then run η = 0.05, 0.1, 0.18 and 0.21, record what happens along each eigendirection, and compare with your predictions. Finish on the non-convex surface by finding a start that ends at a stationary point that is not the minimum.", "estimatedMinutes": 45, "sourceLocatorIds": ["nmadl-w1d2-t1-s1-2"], "exerciseIds": [], "labId": "gradient-descent-surface", "sessionKind": "lab" },
+    { "id": "u02-a3", "type": "proof_workshop", "title": "Tutorial: backprop by hand; step sizes on a quadratic", "instructions": "Attempt exercise 1 before asking for any hint, and verify one gradient numerically. Then exercise 2. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 85, "sourceLocatorIds": ["nmadl-w1d2-t1-s1-3", "nmadl-w1d2-t1-s2-2", "nmadl-w1d2-t1-s1-2"], "exerciseIds": ["CSA-210-u02-ex1", "CSA-210-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a4", "type": "explain_back", "title": "Explain: why reverse mode", "instructions": "Write exercise 3 without the lesson open, then compare with the lesson's Model (reverse-mode differentiation).", "estimatedMinutes": 15, "sourceLocatorIds": ["nmadl-w1d2-t1-s1-3"], "exerciseIds": ["CSA-210-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's statements", "instructions": "From memory: the steepest-ascent proposition; the convergence condition and best rate for a quadratic; the descent lemma; the adjoint recursion; the five lines of a training loop.", "estimatedMinutes": 10, "sourceLocatorIds": ["nmadl-w1d2-t1-s3-1"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["CSA-210-u02-ex1", "CSA-210-u02-ex2", "CSA-210-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: all eight adjoints computed by the reverse sweep, the gradient step applied correctly, and one derivative confirmed by finite differences.", "exerciseId": "CSA-210-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "A smaller learning rate is always safer, so start small and leave it.", "correction": "Below 2/λ_max every step converges; the question is speed. On a quadratic the best step is 2/(λ_min + λ_max), and halving it roughly doubles the number of steps. Safety has a precise threshold; below it, smaller is slower, not safer.", "correctionLocatorIds": ["nmadl-w1d2-t1-s1-2"] },
+    { "claim": "Backpropagation is a separate algorithm from the chain rule, or needs the loss to be differentiable everywhere.", "correction": "It is the multivariable chain rule evaluated in reverse topological order on the computational graph. At kinks autograd returns a chosen subgradient; the derivative does not exist there, and the method still works in practice.", "correctionLocatorIds": ["nmadl-w1d2-t1-s1-3", "nmadl-w1d2-t1-s2-2"] },
+    { "claim": "Calling backward() computes the gradient and replaces the previous one.", "correction": "Gradients accumulate into .grad by design. Without zero_grad the previous step's gradient is added to the current one and the algorithm being run is no longer gradient descent.", "correctionLocatorIds": ["nmadl-w1d2-t1-s3-1"] }
+  ],
+  "estimatedMinutes": 315,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All cited locators opened 2026-10-30: W1D2 Tutorial 1 page (HTTP 200, title 'Tutorial 1: Gradient Descent and AutoGrad') and its section ids section-1-1-gradients-steepest-ascent, section-1-2-gradient-descent-algorithm, section-1-3-computational-graphs-and-backprop, section-2-1-forward-propagation, section-2-2-backward-propagation and section-3-1-training-loop-in-pytorch read from the page HTML." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Content author re-derived: error recursion (I − ηA)^t on a quadratic, threshold 2/λ_max, optimal step 2/(λ_1 + λ_d) and rate (κ−1)/(κ+1); quadratic upper bound and descent lemma from the Lipschitz gradient; the hand-backprop example (adjoints 0.5, 0.25, 0.5, 0.5, 0.125, 0.125, 0.125) with a finite-difference check of ∂L/∂w_1 = 0.125; exercise values (adjoints −1, −0.5, −1, −2, −0.5, −0.5, 0.5, −0.5; updates v = 2.05, c = −0.4, w_1 = 0.55, w_2 = 0.95, b = 0.55; new loss 0.3186; quadratic rates 0.9 at η = 0.1, 0.82 at η = 0.18, 9/11 at η* = 2/11)." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's worked example uses different parameter values from exercise 1 and the lesson's quadratic is kept general; exercise answers appear only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "80 + 45 + 85 + 15 + 10 minutes of activities plus 70 minutes of preparation ≈ 5.1 hours; with unit 1 this fills the first teaching week within the 8–12 hour budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["CSA-210-u02-ex1.reference-solution.md", "CSA-210-u02-ex1.grading-notes.md", "CSA-210-u02-ex2.reference-solution.md", "CSA-210-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

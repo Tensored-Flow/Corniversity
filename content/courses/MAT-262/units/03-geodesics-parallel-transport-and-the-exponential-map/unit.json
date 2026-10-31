@@ -1,0 +1,32 @@
+{
+  "id": "MAT-262-u03",
+  "courseId": "MAT-262",
+  "sequence": 3,
+  "title": "Geodesics, parallel transport and the exponential map",
+  "summary": "Vector fields along curves and the covariant derivative D/dt (Proposition 7.2); parallel vector fields and geodesics (Definition 7.4); existence and uniqueness of parallel transport (Theorem 7.5) and of geodesics (Theorem 7.9); the geodesic equation in coordinates; the exponential map and normal neighbourhoods (Definition 7.21); geodesics as locally shortest paths (Theorem 7.23); geodesics of spheres and Lie groups.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson chapter 7 (Definitions 7.1, 7.4, 7.21; Proposition 7.2; Theorems 7.5, 7.9, 7.23; Examples 7.12–7.17) with Sternberg §3.3–3.4 and chapter 6 as open-licensed alternatives and Lee chapters 4–5 as the commercial reference." }
+  ],
+  "prerequisiteConceptIds": ["levi-civita-connection", "riemannian-metric", "ode-basics"],
+  "teachesConceptIds": ["connections-geodesics", "riemannian-distance-completeness"],
+  "preparation": [
+    { "description": "Read Gudmundsson chapter 7, pp. 91–94: Definition 7.1 (vector fields along curves), Proposition 7.2 (the operator D/dt), Remark 7.3, Definition 7.4 (parallel fields, geodesics).", "locatorId": "gud-def7-4", "estimatedMinutes": 35 },
+    { "description": "Read pp. 94–98: Theorem 7.5 (parallel transport), Theorem 7.9 (geodesics), Examples 7.12–7.17 (Euclidean space, surfaces, spheres, Lie groups).", "locatorId": "gud-thm7-9", "estimatedMinutes": 40 },
+    { "description": "Read pp. 100–102: Definition 7.21 (the exponential map set-up) and Theorem 7.23 (geodesics are locally shortest).", "locatorId": "gud-thm7-23", "estimatedMinutes": 35 },
+    { "description": "Open-licensed alternative: Sternberg §3.3 (parallel transport), §3.4 (geodesics) and chapter 6 §6.1–6.2 (exponential map, normal coordinates).", "locatorId": "stb-s3-4", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Chapter 7: geodesics and the exponential map", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["gud-ch7", "gud-def7-4", "gud-thm7-5", "gud-thm7-9", "gud-def7-21", "gud-thm7-23", "stb-s3-2", "stb-s3-4", "stb-ch6", "lee-rm-ch4", "lee-rm-ch5"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 280,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson chapter 7 locators verified against text extracted from Riemann.pdf (v1.438) on 2026-10-30: chapter start p. 91, Definition 7.4 p. 93, Theorem 7.5 p. 94, Theorem 7.9 p. 96, Definition 7.21 p. 100, Theorem 7.23 p. 102. Sternberg §3.2–3.4 (pp. 58–60) and chapter 6 (p. 125) verified likewise; Lee chapters 4–5 are table-of-contents pointers." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

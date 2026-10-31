@@ -1,0 +1,23 @@
+[
+  {
+    "id": "NEU-220-mathematics",
+    "courseId": "NEU-220",
+    "strength": "soft",
+    "description": "Computational Neuroscience uses linear algebra (vectors, matrices, eigenvalues), multivariable calculus (gradients, partial derivatives) and basic differential equations throughout; the Neuromatch prerequisites page lists the same topics. An Imperial mathematics background satisfies this rule easily; it is recorded so that the evidence is explicit, not assumed.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "ode-basics"] },
+      { "label": "Targeted bridge", "bridgeCourseId": "MAT-110" }
+    ]
+  },
+  {
+    "id": "NEU-220-python-and-statistics",
+    "courseId": "NEU-220",
+    "strength": "soft",
+    "description": "The tutorials are Python notebooks (NumPy, SciPy, Matplotlib) and the models are statistical: likelihoods, estimators, sampling variability. The Neuromatch prerequisites page expects variables, lists, dicts, numpy, scipy and matplotlib plotting, plus means, variances and the normal distribution. Neuromatch's optional refresher days (Python Workshops W0D1–W0D2, Statistics W0D5) are an alternative route named in unit 1.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["python-scientific-computing", "applied-statistics-basics"] },
+      { "label": "Python for Scientific Work", "courseIds": ["CSA-100"] },
+      { "label": "Optional readiness bridge", "bridgeCourseId": "CSA-100" }
+    ]
+  }
+]

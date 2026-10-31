@@ -1,0 +1,53 @@
+{
+  "id": "mit-cognitive-science",
+  "title": "Computational Cognitive Science (9.66J / 9.660 / 6.804J) — CBMM course entry page",
+  "authors": [
+    "Joshua Tenenbaum (instructor named on the page)"
+  ],
+  "institution": "MIT Center for Brains, Minds and Machines (CBMM)",
+  "kind": "web",
+  "canonicalUrl": "https://cbmm.mit.edu/education/courses/computational-cognitive-science",
+  "description": "Catalogue-style entry page for the current MIT course: numbers 9.66J, 9.660, 6.804J; instructor Joshua Tenenbaum; semester listed as Fall 2021; prerequisites (9.40, 6.008, 6.036, 6.041B, 18.05 or permission; basic probability and statistics; programming); four problem sets and a final modeling project; a topic outline covering probabilistic generative models, structured symbolic systems, hierarchical models and approximate inference, with applications to perception, language, common-sense reasoning and theory of mind. The only course link is to an MIT Stellar site (institutional login).",
+  "rightsNotes": [
+    "The page carries a CBMM copyright notice and a Terms of Use link; no open licence. Reference-only: cited as the owner's entry point and for the current course's scope, never imported.",
+    "The page does not provide lecture videos, slides, a syllabus file or OCW materials for this offering. Public teaching material for the course exists only as the Fall 2004 OCW publication (source mit-cocosci-2004)."
+  ],
+  "currentVersionId": "cbmm-cocosci-page-2026",
+  "versions": [
+    {
+      "id": "cbmm-cocosci-page-2026",
+      "label": "CBMM course page as published (semester shown: Fall 2021; opened 2026-10-30)",
+      "url": "https://cbmm.mit.edu/education/courses/computational-cognitive-science",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (content author agent) — opened the page with WebFetch and recorded its fields",
+      "componentsSeen": [
+        "course numbers, instructor, school, semester (Fall 2021), level (graduate and undergraduate), class times and room",
+        "prerequisites, assignments (four problem sets, final modeling project, no exams)",
+        "course description and topic outline",
+        "a link to https://stellar.mit.edu/S/course/9/fa19/9.66/ (institutional; not opened)",
+        "footer: copyright notice, NSF disclaimer, Terms of Use link"
+      ],
+      "licence": "Not stated; CBMM copyright notice and Terms of Use",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Entry point only: establishes the current course's existence, scope and prerequisites, not any public teaching material.",
+        "The linked course site requires an MIT login and was not opened; Corniversity never automates institutional access."
+      ],
+      "locators": [
+        {
+          "id": "cbmm-cocosci-page",
+          "label": "CBMM course entry page: Computational Cognitive Science",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "cbmm-cocosci-page-2026",
+            "url": "https://cbmm.mit.edu/education/courses/computational-cognitive-science",
+            "heading": "Computational Cognitive Science"
+          }
+        }
+      ]
+    }
+  ]
+}

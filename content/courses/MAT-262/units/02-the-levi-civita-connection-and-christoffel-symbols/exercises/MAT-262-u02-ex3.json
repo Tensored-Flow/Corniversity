@@ -1,0 +1,25 @@
+{
+  "id": "MAT-262-u02-ex3",
+  "sequence": 3,
+  "title": "What torsion-free and metric each buy",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words and without the notes open: explain the role played by each of the two conditions (torsion-free, metric) in the proof that the Levi-Civita connection is unique, and why neither condition alone determines a connection. Support the second claim with two examples on Euclidean space $(\\mathbb{R}^n,\\langle\\cdot,\\cdot\\rangle)$: a connection that is metric but has non-zero torsion, and one that is torsion-free but not metric. State the connections explicitly and say in one line each why they have the claimed properties.",
+  "conceptIds": ["levi-civita-connection"],
+  "hintLadder": [
+    "Any connection on $\\mathbb{R}^n$ is $\\partial_XY+A(X,Y)$ for a tensor $A$. Which algebraic conditions on $A$ correspond to 'metric' and to 'torsion-free'?",
+    "In $\\mathbb{R}^3$ the cross product is antisymmetric and $\\langle X\\times Y,Z\\rangle$ is alternating in all three slots."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "roles", "criterion": "Identifies that metric compatibility supplies the three permuted identities and torsion-freeness lets ∇_Y X, ∇_Z X, ∇_Z Y be rewritten so that the unknown terms cancel in the Koszul formula (or an equivalent account).", "weight": 0.4, "levels": [ { "label": "met", "description": "Both roles correct." }, { "label": "partially met", "description": "One role, or vague." }, { "label": "not met", "description": "Missing or wrong." } ] },
+      { "id": "metric-with-torsion", "criterion": "A correct metric connection with torsion, e.g. ∂_X Y + X × Y on R³, with the one-line reasons (⟨X×Y,Z⟩ + ⟨Y,X×Z⟩ = 0; torsion 2X×Y).", "weight": 0.3, "levels": [ { "label": "met", "description": "Correct example and reasons." }, { "label": "partially met", "description": "Example right, reasons missing or wrong." }, { "label": "not met", "description": "No valid example." } ] },
+      { "id": "torsion-free-non-metric", "criterion": "A correct torsion-free non-metric connection, e.g. ∂_X Y + X(f)Y + Y(f)X for non-constant f, with reasons.", "weight": 0.3, "levels": [ { "label": "met", "description": "Correct example and reasons." }, { "label": "partially met", "description": "Example right, reasons missing or wrong." }, { "label": "not met", "description": "No valid example." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

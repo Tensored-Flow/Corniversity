@@ -1,0 +1,55 @@
+{
+  "id": "CSA-210-u02-ex1",
+  "sequence": 1,
+  "title": "Backpropagation by hand on a two-layer graph",
+  "kind": "derivation",
+  "promptMarkdown": "A network with two inputs and one logistic hidden unit:\n$$z=w_1x_1+w_2x_2+b,\\qquad h=\\sigma(z)=\\frac{1}{1+e^{-z}},\\qquad \\hat y=v\\,h+c,\\qquad L=\\tfrac12(\\hat y-y)^2.$$\nInputs $x_1=1$, $x_2=-1$; parameters $w_1=0.5$, $w_2=1$, $b=0.5$, $v=2$, $c=-0.5$; target $y=1.5$.\n\n1. Draw (or list) the computational graph: nodes, edges and a topological order. Run the forward pass and give $z$, $h$, $\\hat y$ and $L$.\n2. Run the reverse sweep. Give every adjoint $\\partial L/\\partial(\\cdot)$ for $\\hat y$, $v$, $c$, $h$, $z$, $w_1$, $w_2$ and $b$, showing the local derivative used at each edge.\n3. Take one gradient-descent step with $\\eta=0.1$ and give the five updated parameters. Then recompute the loss at the new parameters and confirm it decreased.\n4. Verify $\\partial L/\\partial w_2$ with a central finite difference ($\\varepsilon=10^{-3}$). Finally, explain in two sentences why one backward sweep produced all five parameter derivatives, and how many sweeps forward-mode differentiation would need here.",
+  "conceptIds": ["backpropagation", "gradient-descent", "tensors-and-autodiff"],
+  "hintLadder": [
+    "Topological order: $z$ depends on $w_1,w_2,b,x_1,x_2$; $h$ on $z$; $\\hat y$ on $v,h,c$; $L$ on $\\hat y$. Evaluate in that order; $\\sigma(0)=\\tfrac12$.",
+    "Start the sweep at the loss: $\\partial L/\\partial\\hat y=\\hat y-y$. Each adjoint further back is (adjoint of the child) × (local derivative of the child with respect to this node).",
+    "For the logistic unit, $\\sigma'(z)=h(1-h)$; you already have $h$ from the forward pass.",
+    "The update is $\\theta\\leftarrow\\theta-\\eta\\,\\partial L/\\partial\\theta$ for each parameter separately. A negative gradient makes the parameter grow.",
+    "Central difference: $\\big(L(w_2+\\varepsilon)-L(w_2-\\varepsilon)\\big)/(2\\varepsilon)$ with everything else fixed. It should agree with your adjoint to about six decimal places."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "updated-v",
+      "kind": "numeric_value",
+      "description": "the updated output weight v = 2.05 appears",
+      "params": { "expected": 2.05, "tolerance": 0.000001 }
+    },
+    {
+      "id": "updated-w2",
+      "kind": "numeric_value",
+      "description": "the updated hidden weight w_2 = 0.95 appears",
+      "params": { "expected": 0.95, "tolerance": 0.000001 }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "forward", "criterion": "Graph laid out with a valid topological order; forward values z = 0, h = 0.5, ŷ = 0.5, L = 0.5.", "weight": 0.15, "levels": [{ "label": "met", "description": "All correct." }, { "label": "partially met", "description": "Graph right, one arithmetic slip." }, { "label": "not met", "description": "Wrong structure or values." }] },
+      { "id": "adjoints", "criterion": "All eight adjoints correct with the local derivatives shown (ŷ: −1; v: −0.5; c: −1; h: −2; z: −0.5; w_1: −0.5; w_2: 0.5; b: −0.5).", "weight": 0.35, "levels": [{ "label": "met", "description": "All correct with local derivatives." }, { "label": "partially met", "description": "Sign or factor error propagated consistently from one slip." }, { "label": "not met", "description": "Chain rule misapplied." }] },
+      { "id": "update", "criterion": "Correct update direction and values (v = 2.05, c = −0.4, w_1 = 0.55, w_2 = 0.95, b = 0.55) and the loss recomputed as about 0.319 < 0.5.", "weight": 0.2, "levels": [{ "label": "met", "description": "Values and decreased loss." }, { "label": "partially met", "description": "Values right, loss not recomputed." }, { "label": "not met", "description": "Wrong direction or values." }] },
+      { "id": "finite-difference", "criterion": "Central difference for ∂L/∂w_2 performed and agrees with 0.5 to the expected precision.", "weight": 0.15, "levels": [{ "label": "met", "description": "Performed and compared." }, { "label": "partially met", "description": "Performed with a mistake in the recomputation." }, { "label": "not met", "description": "Omitted." }] },
+      { "id": "reverse-vs-forward", "criterion": "Explains that the reverse sweep visits each edge once from the scalar loss and yields all parameter derivatives, whereas forward mode needs one sweep per parameter (five here).", "weight": 0.15, "levels": [{ "label": "met", "description": "Both points correct." }, { "label": "partially met", "description": "One point." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct update",
+      "text": "Forward: z = 0.5 - 1 + 0.5 = 0, h = 0.5, yhat = 0.5, L = 0.5. Backward: dL/dyhat = -1, dL/dv = -0.5, dL/dc = -1, dL/dh = -2, dL/dz = -2 * 0.25 = -0.5, dL/dw1 = -0.5, dL/dw2 = 0.5, dL/db = -0.5. Step with eta = 0.1: v = 2.05, c = -0.4, w1 = 0.55, w2 = 0.95, b = 0.55. New loss 0.3186 < 0.5.",
+      "expect": { "updated-v": true, "updated-w2": true }
+    },
+    {
+      "label": "sign error in the update",
+      "text": "Step: v = 1.95, c = -0.6, w1 = 0.45, w2 = 1.05, b = 0.45.",
+      "expect": { "updated-v": false, "updated-w2": false }
+    }
+  ]
+}

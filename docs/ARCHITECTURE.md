@@ -108,6 +108,9 @@ device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); upl
 4. pgvector optional; full-text search always on.
 5. better-auth over hand-rolled auth; email+password baseline because email delivery is not set up.
 6. Single `claude-opus-5-5` default for all teaching roles; cheaper models are an owner choice.
-7. Open-licensed primary materials (MIT OCW CC BY-NC-SA, OpenStax CC BY, Neuromatch CC BY,
-   Judson's AATA GFDL) may be imported by the worker from allow-listed hosts with licence
-   recorded; all other books are reference-only unless the owner grants permissions.
+7. Open-licensed primary materials (MIT OCW CC BY-NC-SA, Neuromatch CC BY, Judson's AATA GFDL,
+   Taylor & Wheeler CC BY, Sternberg CC BY-NC-SA, Wendl's explicit permission) may be imported
+   from allow-listed hosts with the licence recorded as the basis of the item's permissions;
+   everything else, including OpenStax Chemistry 2e (CC BY-NC-SA with an AI-ingestion
+   restriction) and unlicensed author-hosted notes, is reference-only unless the owner grants
+   permissions per item.

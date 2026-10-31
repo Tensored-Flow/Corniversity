@@ -1,0 +1,76 @@
+{
+  "id": "PHY-201-u01-ex1",
+  "sequence": 1,
+  "title": "A bead in a paraboloidal bowl",
+  "kind": "derivation",
+  "promptMarkdown": "A particle of mass $m$ slides without friction on the inside of the paraboloid $z = r^2/(2a)$, where $(r,\\theta,z)$ are cylindrical coordinates with the $z$-axis vertical and $a>0$ is a constant with the units of length. Gravity acts downwards with acceleration $g$.\n\n1. Write the Lagrangian using the two coordinates $(r,\\theta)$ only, eliminating $z$ with the constraint. State the units of each term.\n2. Derive the Euler–Lagrange equations for $r$ and for $\\theta$. Identify a quantity that is conserved and say why it is conserved.\n3. Show that circular orbits ($r = r_0$ constant) exist, find their angular velocity $\\dot\\theta$, and say what is surprising about how it depends on $r_0$. Express $r_0$ in terms of the conserved quantity of part 2, $m$, $g$ and $a$, and check the units of your expression.\n4. Take the limit $a\\to\\infty$ and interpret the result physically.",
+  "conceptIds": ["lagrangian-mechanics"],
+  "hintLadder": [
+    "Differentiate the constraint: if $z = r^2/(2a)$ then $\\dot z$ is proportional to $r\\dot r$. The kinetic energy in cylindrical coordinates is $\\tfrac12 m(\\dot r^2 + r^2\\dot\\theta^2 + \\dot z^2)$.",
+    "The coordinate $\\theta$ does not appear in $L$. What does the Euler–Lagrange equation for $\\theta$ then say about $\\partial L/\\partial\\dot\\theta$?",
+    "For a circular orbit set $\\dot r = \\ddot r = 0$ in the $r$ equation and solve for $\\dot\\theta^2$. Then use the conserved quantity to express $r_0$.",
+    "As $a\\to\\infty$ the surface $z = r^2/(2a)$ becomes the horizontal plane $z = 0$. What force would be needed to keep a particle on a circle on a frictionless horizontal plane?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "orbit-frequency",
+      "kind": "expression_present",
+      "description": "the circular-orbit angular velocity squared equals g/a",
+      "params": {
+        "patterns": [
+          "g/a",
+          "\\(g\\)/\\(a\\)",
+          "ga\\^-1",
+          "ga\\^\\(-1\\)"
+        ]
+      }
+    },
+    {
+      "id": "radius-dependence",
+      "kind": "forbidden_claim",
+      "description": "claiming that the circular-orbit frequency or period depends on the orbit radius (it does not)",
+      "params": {
+        "patterns": [
+          "(frequency|period|angular velocity|angular speed|omega|ω)[^.]{0,40}depends on (the )?(radius|r_0|r0|r_\\{0\\})",
+          "(frequency|period|angular velocity|angular speed|omega|ω)[^.]{0,40}increases with (the )?(radius|r_0|r0)",
+          "(frequency|period|angular velocity|angular speed|omega|ω)[^.]{0,40}decreases with (the )?(radius|r_0|r0)"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "lagrangian", "criterion": "The Lagrangian is written correctly in (r, θ) with the constraint eliminated, including the (1 + r²/a²) factor multiplying ṙ², and the units of each term are stated.", "weight": 0.25, "levels": [ { "label": "met", "description": "Correct L with units." }, { "label": "partially met", "description": "L missing the ż contribution or units not stated." }, { "label": "not met", "description": "Incorrect or absent." } ] },
+      { "id": "equations", "criterion": "Both Euler–Lagrange equations are derived (not asserted), and the conservation of m r² θ̇ is identified with the reason (θ absent from L).", "weight": 0.3, "levels": [ { "label": "met", "description": "Both equations correct, conservation explained." }, { "label": "partially met", "description": "One equation wrong or conservation stated without reason." }, { "label": "not met", "description": "Equations missing or wrong." } ] },
+      { "id": "circular-orbits", "criterion": "The circular-orbit condition yields θ̇² = g/a, its independence of r₀ is noted, r₀ is expressed through the conserved quantity, and the units check.", "weight": 0.3, "levels": [ { "label": "met", "description": "All four elements present and correct." }, { "label": "partially met", "description": "θ̇² correct but r₀ or units incomplete." }, { "label": "not met", "description": "Circular-orbit condition wrong." } ] },
+      { "id": "limit", "criterion": "The a → ∞ limit is taken correctly (ω → 0, no circular orbit at finite radius) and interpreted as the absence of a centripetal force on a flat frictionless plane.", "weight": 0.15, "levels": [ { "label": "met", "description": "Limit and interpretation correct." }, { "label": "partially met", "description": "Limit taken without interpretation." }, { "label": "not met", "description": "Missing or wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX solution",
+      "text": "With $z = r^2/2a$, $\\dot z = r\\dot r/a$, so $L = \\tfrac12 m[(1 + r^2/a^2)\\dot r^2 + r^2\\dot\\theta^2] - mgr^2/(2a)$. The θ equation gives $m r^2\\dot\\theta = \\ell$ constant since θ is cyclic. For a circular orbit $\\dot r = \\ddot r = 0$ and the r equation gives $\\dot\\theta^2 = g/a$, independent of $r_0$. Then $r_0 = (\\ell^2 a/(m^2 g))^{1/4}$, which has units of metres. As $a \\to \\infty$ the frequency tends to zero: no circular orbit on a flat plane.",
+      "expect": { "orbit-frequency": true, "radius-dependence": true }
+    },
+    {
+      "label": "plain-text solution with frac",
+      "text": "Circular orbits satisfy theta-dot squared = \\frac{g}{a}, so the period is 2 pi sqrt(a/g) and does not depend on the radius.",
+      "expect": { "orbit-frequency": true, "radius-dependence": true }
+    },
+    {
+      "label": "wrong claim about the radius",
+      "text": "The angular velocity of the circular orbit depends on the radius r_0 because larger orbits are higher up the bowl.",
+      "expect": { "radius-dependence": false }
+    },
+    {
+      "label": "missing frequency",
+      "text": "I found the Lagrangian and the equations of motion but could not find the circular orbit condition.",
+      "expect": { "orbit-frequency": false }
+    }
+  ]
+}

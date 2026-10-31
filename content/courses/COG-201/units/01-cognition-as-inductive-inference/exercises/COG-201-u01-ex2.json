@@ -1,0 +1,27 @@
+{
+  "id": "COG-201-u01-ex2",
+  "sequence": 2,
+  "title": "Grue, simplicity and entrenchment",
+  "kind": "conceptual",
+  "promptMarkdown": "A seminar contribution of 300–450 words.\n\n1. State Goodman's new riddle of induction in your own words, using the green/grue pair, and explain why the proposal \"prefer the simpler or parameter-free hypothesis\" does not by itself separate the two. Make the symmetry argument explicit.\n2. Explain what Goodman's notion of *entrenchment* adds, and how lecture 1 reinterprets entrenchment (what two sources of entrenchment does it name, and which does it favour?).\n3. Give one example from everyday cognition, not from the slides, in which a projectible and a non-projectible predicate compete to explain the same observations, and say which of Marr's levels an account in terms of entrenchment or theory belongs to.\n4. One sentence: how does this problem reappear as a question about priors in a Bayesian model?",
+  "conceptIds": ["inductive-inference-cognition", "computational-level-analysis"],
+  "hintLadder": [
+    "Write down the two hypotheses in the green/blue vocabulary, then rewrite them in a vocabulary whose primitives are grue and bleen. Which one now contains the time clause?",
+    "Entrenchment is about the history of a predicate's use in successful inductions. The lecture asks how a predicate becomes entrenched and offers two answers.",
+    "Think of a case where a child or an adult generalises a property from a few instances: which properties are projected (shape, kind, material) and which are not (position, the day of the week)?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "riddle-and-symmetry", "criterion": "The riddle is stated correctly and the symmetry under redescription (green is 'grue before t, bleen after' in the grue/bleen vocabulary) is made explicit as the reason syntactic simplicity fails.", "weight": 0.35, "levels": [{ "label": "met", "description": "Riddle and symmetry both explicit." }, { "label": "partially met", "description": "Riddle right, symmetry gestured at." }, { "label": "not met", "description": "Misstates the riddle or claims simplicity settles it." }] },
+      { "id": "entrenchment", "criterion": "Entrenchment explained as past success in induction; the lecture's two sources (experience; a causal theory) named, with 'theory supported by experience' as the favoured account.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both sources and the preference." }, { "label": "partially met", "description": "Entrenchment explained, sources incomplete." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "example-and-level", "criterion": "A correct original example of competing projectible and non-projectible predicates, with the entrenchment/theory account placed at Marr's computational level (or argued to span levels 1 and 2) with a reason.", "weight": 0.25, "levels": [{ "label": "met", "description": "Example apt and level argued." }, { "label": "partially met", "description": "Example apt, level unargued." }, { "label": "not met", "description": "No valid example." }] },
+      { "id": "bayesian-link", "criterion": "Identifies that the choice of hypothesis space and prior encodes which hypotheses are projectible.", "weight": 0.15, "levels": [{ "label": "met", "description": "Clear." }, { "label": "partially met", "description": "Vague." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 30
+}

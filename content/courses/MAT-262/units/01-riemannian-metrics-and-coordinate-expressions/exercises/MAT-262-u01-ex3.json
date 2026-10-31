@@ -1,0 +1,25 @@
+{
+  "id": "MAT-262-u01-ex3",
+  "sequence": 3,
+  "title": "Riemannian or Lorentzian?",
+  "kind": "explanation",
+  "promptMarkdown": "In under 250 words and without the notes open: suppose the positive definiteness in the definition of a Riemannian metric is replaced by non-degeneracy with signature $(-,+,+,+)$ (a Lorentzian metric on a 4-manifold). Name the signature convention you are using. Then say (a) which constructions and statements of this unit remain valid word for word (think of coefficients $g_{ij}$, the transformation law, the determinant, the inverse $g^{ij}$), (b) which fail or must be modified (think of arc length $\\int\\sqrt{g(\\dot\\gamma,\\dot\\gamma)}$, the distance function of Proposition 5.10, and the existence proof of Theorem 5.16 via partitions of unity), giving one sentence of reason for each, and (c) why this course keeps the two cases in separate units rather than treating them together.",
+  "conceptIds": ["lorentzian-metric", "riemannian-metric"],
+  "hintLadder": [
+    "Which statements used only that $(g_{ij})$ is an invertible symmetric matrix, and which used that $g(v,v)>0$ for $v\\neq0$?",
+    "Is a convex combination of two non-degenerate indefinite forms always non-degenerate? Try $\\mathrm{diag}(-1,1)$ and $\\mathrm{diag}(1,-1)$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "survives", "criterion": "Correctly identifies that components, the transformation law, the determinant law and the inverse metric survive (non-degeneracy is what they need).", "weight": 0.3, "levels": [ { "label": "met", "description": "Correct with the reason (only invertibility used)." }, { "label": "partially met", "description": "Partially correct list." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "fails", "criterion": "Correctly identifies that arc length needs |g(γ̇,γ̇)| or a causal restriction, that the distance function (Proposition 5.10) fails, and that the convex-combination existence proof fails (convex combinations of indefinite forms can degenerate), each with a reason.", "weight": 0.5, "levels": [ { "label": "met", "description": "All three with reasons." }, { "label": "partially met", "description": "Two of three, or reasons missing." }, { "label": "not met", "description": "Claims everything carries over." } ] },
+      { "id": "convention-and-separation", "criterion": "Signature convention named explicitly and a sensible reason for separating the cases given (different theorems, different hypotheses; avoiding silent convention switches).", "weight": 0.2, "levels": [ { "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

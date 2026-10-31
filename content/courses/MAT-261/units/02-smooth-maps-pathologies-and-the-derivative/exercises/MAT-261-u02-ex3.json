@@ -1,0 +1,25 @@
+{
+  "id": "MAT-261-u02-ex3",
+  "sequence": 3,
+  "title": "Why the two axioms are in the definition",
+  "kind": "explanation",
+  "promptMarkdown": "In your own words, without the notes open, and in under 250 words: explain why the definition of a smooth manifold includes the Hausdorff axiom and the second countability axiom in addition to the existence of a smooth atlas. For each axiom give (a) one example showing that 'locally Euclidean with smooth overlaps' does not imply it, and (b) one consequence of the axiom that the theory will rely on (you may name results to come: uniqueness of limits, closedness of compact sets, partitions of unity, embedding in some $\\mathbb{R}^N$, countable atlases).",
+  "conceptIds": ["smooth-maps-diffeomorphisms", "manifold-topology-bridge"],
+  "hintLadder": [
+    "Which of the two pathologies from lecture 2 violates which axiom?",
+    "What does a convergent sequence do on the line with two origins? What does 'uncountably many disjoint open sets' prevent you from doing with a cover?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "hausdorff", "criterion": "Correct witness (line with two origins) and a correct consequence (unique limits or compact sets closed) for the Hausdorff axiom.", "weight": 0.4, "levels": [ { "label": "met", "description": "Both correct." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Neither, or confused with second countability." } ] },
+      { "id": "second-countable", "criterion": "Correct witness (long line) and a correct consequence (partitions of unity, countable atlas or embedding) for second countability.", "weight": 0.4, "levels": [ { "label": "met", "description": "Both correct." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Neither." } ] },
+      { "id": "independence", "criterion": "States clearly that the atlas alone does not give either axiom.", "weight": 0.2, "levels": [ { "label": "met", "description": "Stated and connected to the examples." }, { "label": "partially met", "description": "Implicit." }, { "label": "not met", "description": "Absent or denied." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

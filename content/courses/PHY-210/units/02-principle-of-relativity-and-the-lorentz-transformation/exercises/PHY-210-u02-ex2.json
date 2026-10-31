@@ -1,0 +1,69 @@
+{
+  "id": "PHY-210-u02-ex2",
+  "sequence": 2,
+  "title": "A pole, a barn and two events",
+  "kind": "calculation",
+  "promptMarkdown": "A pole of proper length $10.0\\ \\mathrm m$ is carried at speed $v = 0.600c$ through a barn of proper length $8.00\\ \\mathrm m$ that has a door at each end, along the barn's axis. Work in metres of light-travel time where convenient and state the frame of every quantity.\n\n1. What length does the barn frame measure for the pole, and the pole frame for the barn?\n2. Define event $E_1$: the front of the pole reaches the back door; event $E_2$: the rear of the pole passes the front door. Place the barn's front door at $x = 0$ and choose the time origin so that $E_1$ and $E_2$ are simultaneous in the barn frame. Give the barn-frame coordinates $(ct, x)$ of both events and explain why they are simultaneous there.\n3. Transform both events to the pole frame. Which happens first there, by how much (in metres of light-travel time and in nanoseconds), and is that consistent with the lengths of part 1? Show the consistency explicitly.\n4. Compute the interval between $E_1$ and $E_2$ and classify it. Use the classification to say in one sentence why 'does the pole fit in the barn?' has no frame-independent answer, and whether any frame sees $E_2$ before $E_1$.",
+  "conceptIds": ["lorentz-transformation", "minkowski-spacetime"],
+  "hintLadder": [
+    "$\\gamma = 1.25$ at $v = 0.6c$. Contracted length is proper length divided by $\\gamma$, in the frame where the object moves.",
+    "In the barn frame the pole is exactly as long as the barn, so its ends are at the two doors at the same barn time.",
+    "Use $ct' = \\gamma(ct - \\tfrac vc x)$ on each event separately; the difference is what matters.",
+    "In the pole frame the barn is shorter than the pole. After the front reaches the back door, how far must the barn move before its front door reaches the pole's rear, and how long does that take at $0.6c$?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "barn-in-pole-frame",
+      "kind": "numeric_value",
+      "description": "the barn measures 6.40 m in the pole frame",
+      "params": { "expected": 6.4, "tolerance": 0.01 }
+    },
+    {
+      "id": "time-gap-ns",
+      "kind": "numeric_value",
+      "description": "the events are 20.0 ns apart in the pole frame",
+      "params": { "expected": 20, "tolerance": 0.1 }
+    },
+    {
+      "id": "no-absolute-fit",
+      "kind": "forbidden_claim",
+      "description": "asserting that the events are simultaneous in both frames, or that the pole 'really' does or does not fit",
+      "params": {
+        "patterns": [
+          "simultaneous in (both|all|every) (frame|frames)",
+          "(really|truly|actually) (fits|does not fit|doesn'?t fit)"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "lengths", "criterion": "Pole 8.00 m in the barn frame; barn 6.40 m in the pole frame; frames named.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both with frames." }, { "label": "partially met", "description": "One right." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "barn-events", "criterion": "E₁ = (0, 8.00 m), E₂ = (0, 0) in the barn frame (or equivalent choice), simultaneity explained by the contracted pole exactly spanning the barn.", "weight": 0.2, "levels": [ { "label": "met", "description": "Coordinates and reason." }, { "label": "partially met", "description": "Coordinates without reason." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "pole-frame", "criterion": "ct′₁ − ct′₂ = −γ(v/c)(8.00 m) = −6.00 m: E₁ precedes E₂ by 6.00 m = 20.0 ns in the pole frame; consistency shown (barn 6.40 m moves 0.6c × 20.0 ns = 3.60 m; 6.40 + 3.60 = 10.0 m).", "weight": 0.35, "levels": [ { "label": "met", "description": "Order, magnitude in both units, consistency check." }, { "label": "partially met", "description": "Order and magnitude without the check." }, { "label": "not met", "description": "Wrong order or magnitude." } ] },
+      { "id": "interval", "criterion": "Δs² = +64.0 m², spacelike; the time order of a spacelike pair is frame-dependent, so 'fits' (simultaneity of E₁ and E₂) is frame-dependent; frames moving the other way see E₂ first.", "weight": 0.25, "levels": [ { "label": "met", "description": "All three." }, { "label": "partially met", "description": "Classification without the inference." }, { "label": "not met", "description": "Wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct solution",
+      "text": "γ = 1.25. The barn frame measures the pole as 8.00 m; the pole frame measures the barn as 6.40 m. In the barn frame E₁ = (0, 8.00 m) and E₂ = (0, 0) are simultaneous. In the pole frame ct′₁ = −1.25 × 0.6 × 8.00 = −6.00 m, so E₁ comes first by 6.00 m of light time, i.e. 20.0 ns; the barn moves 3.60 m in that time and 6.40 + 3.60 = 10.0 m. Δs² = +64 m² is spacelike, so the order is frame-dependent and the question of fitting has no frame-independent answer.",
+      "expect": { "barn-in-pole-frame": true, "time-gap-ns": true, "no-absolute-fit": true }
+    },
+    {
+      "label": "absolute claim",
+      "text": "The pole really does not fit because it is 10 m long and the barn is only 8 m; the events are simultaneous in both frames.",
+      "expect": { "no-absolute-fit": false }
+    },
+    {
+      "label": "missing numbers",
+      "text": "The barn is shorter in the pole frame and the events are not simultaneous there, but I could not compute by how much.",
+      "expect": { "barn-in-pole-frame": false, "time-gap-ns": false }
+    }
+  ]
+}

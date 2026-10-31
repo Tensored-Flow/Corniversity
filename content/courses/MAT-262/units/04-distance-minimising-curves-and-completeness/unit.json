@@ -1,0 +1,31 @@
+{
+  "id": "MAT-262-u04",
+  "courseId": "MAT-262",
+  "sequence": 4,
+  "title": "Distance, minimising curves and completeness",
+  "summary": "The distance function and the metric-space structure of a Riemannian manifold (Proposition 5.10, proved); Gauss's lemma and the minimising property of short geodesics; totally geodesic submanifolds (Definition 7.24); completeness and the Hopf–Rinow theorem, with Theorem 7.34 (complete manifolds have geodesics between any two points) and symmetric spaces as examples.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson Proposition 5.10 and chapter 7 (Theorem 7.23, Definition 7.24, Proposition 7.33, Theorem 7.34) with Sternberg §6.5–6.6 (Gauss's lemma, minimisation of arc length) and Lee chapter 6 as the commercial reference." }
+  ],
+  "prerequisiteConceptIds": ["connections-geodesics", "riemannian-metric", "metric-spaces"],
+  "teachesConceptIds": ["riemannian-distance-completeness"],
+  "preparation": [
+    { "description": "Re-read Gudmundsson Proposition 5.10 (p. 64), whose proof the notes defer; this unit supplies it.", "locatorId": "gud-ex5-8", "estimatedMinutes": 10 },
+    { "description": "Read Gudmundsson pp. 102–105: Theorem 7.23, Definition 7.24 and Proposition 7.25 (totally geodesic submanifolds), Definition 7.31 (symmetric spaces), Proposition 7.33 and Theorem 7.34.", "locatorId": "gud-thm7-34", "estimatedMinutes": 40 },
+    { "description": "Read Sternberg §6.5 (Gauss' lemma) and §6.6 (minimization of arc length) for the open-licensed proof of the local minimising property.", "locatorId": "stb-s6-6", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Distance and completeness", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["gud-ex5-8", "gud-thm7-23", "gud-def7-24", "gud-thm7-34", "stb-s6-5", "stb-s6-6", "lee-rm-ch6"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson Proposition 5.10 (p. 64), Theorem 7.23 (p. 102), Definition 7.24 (p. 103) and Theorem 7.34 (p. 105) verified against extracted text of Riemann.pdf (v1.438) on 2026-10-30; Sternberg §6.5 (p. 129) and §6.6 (p. 131) verified likewise; Lee chapter 6 is a table-of-contents pointer." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review. The Hopf–Rinow theorem is not stated in full in the primary notes (Theorem 7.34 is one consequence); the prepared lesson will state and prove it independently and say so." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

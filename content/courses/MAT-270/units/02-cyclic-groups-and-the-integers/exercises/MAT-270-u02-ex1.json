@@ -1,0 +1,112 @@
+{
+  "id": "MAT-270-u02-ex1",
+  "sequence": 1,
+  "title": "Counting by order in a cyclic group",
+  "kind": "proof",
+  "promptMarkdown": "Let $G=\\langle a\\rangle$ be a cyclic group of order $n$.\n\n1. Prove that for every positive divisor $d$ of $n$ the group $G$ has exactly one subgroup of order $d$, namely $\\langle a^{n/d}\\rangle$, and that $G$ has no subgroups of any other order.\n2. Prove that for every positive divisor $d$ of $n$ the number of elements of $G$ of order exactly $d$ is $\\varphi(d)$, where $\\varphi$ is Euler's function.\n3. Deduce the identity $\\displaystyle\\sum_{d\\mid n}\\varphi(d)=n$.\n4. For $\\mathbb Z_{36}$, tabulate the number of elements of each possible order and check the identity numerically.",
+  "conceptIds": [
+    "cyclic-groups",
+    "integers-mod-n"
+  ],
+  "hintLadder": [
+    "Every subgroup of a cyclic group is cyclic: $H=\\langle a^m\\rangle$ with $m$ the least positive exponent occurring in $H$. Why must $m$ divide $n$, and what is $|H|$ in terms of $m$?",
+    "Use the order formula $|a^k|=n/\\gcd(k,n)$ to identify the order of $\\langle a^{n/d}\\rangle$.",
+    "An element of order $d$ generates a subgroup of order $d$; by part 1 there is only one. How many generators does a cyclic group of order $d$ have (Corollary 4.1.14)?",
+    "Every element of $G$ has exactly one order, and that order divides $n$. Count $G$ by sorting its elements according to their orders."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "phi-present",
+      "kind": "expression_present",
+      "description": "Euler's function φ(d) is used for the count of elements of order d",
+      "params": {
+        "patterns": [
+          "\\\\?(var)?phi\\(d\\)",
+          "φ\\(d\\)",
+          "ϕ\\(d\\)",
+          "euler",
+          "totient"
+        ]
+      }
+    },
+    {
+      "id": "examples-only",
+      "kind": "finite_examples_not_proof",
+      "description": "tables for particular n are not a proof for all n",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "one-subgroup-per-divisor",
+        "criterion": "Every subgroup is ⟨a^m⟩ with m | n and order n/m, so subgroup orders divide n and for each divisor d the only subgroup of order d is ⟨a^{n/d}⟩ (whose order is confirmed by the order formula).",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Existence, uniqueness and the exclusion of other orders all argued." },
+          { "label": "partially met", "description": "Existence via the order formula, uniqueness or the divisibility m | n not argued." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "phi-count",
+        "criterion": "Elements of order d are exactly the generators of the unique subgroup of order d, which is cyclic of order d and has φ(d) generators.",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "Both steps (elements of order d generate that subgroup; generator count)." },
+          { "label": "partially met", "description": "Count asserted with one step missing." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "sum-identity",
+        "criterion": "Partition of G by order of elements gives n = Σ_{d|n} φ(d).",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "Clean deduction." },
+          { "label": "partially met", "description": "Identity stated with a vague reason." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "z36-table",
+        "criterion": "Divisors 1, 2, 3, 4, 6, 9, 12, 18, 36 with counts 1, 1, 2, 2, 2, 6, 4, 6, 12 summing to 36.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "All nine counts correct and the sum checked." },
+          { "label": "partially met", "description": "At most two counts wrong, or sum not checked." },
+          { "label": "not met", "description": "Several errors or missing." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "general argument",
+      "text": "Each element of order $d$ generates the unique subgroup of order $d$, which is cyclic of order $d$ and so has $\\varphi(d)$ generators; hence there are exactly $\\varphi(d)$ elements of order $d$ for every divisor $d$ of $n$, and summing over all divisors counts every element of $G$ once.",
+      "expect": {
+        "phi-present": true,
+        "examples-only": true
+      }
+    },
+    {
+      "label": "no Euler function",
+      "text": "There are exactly d elements of order d, since the subgroup of order d has d elements.",
+      "expect": {
+        "phi-present": false
+      }
+    },
+    {
+      "label": "tables only",
+      "text": "For n=6 there are 1, 1, 2, 2 elements of orders 1, 2, 3, 6; for n=4 there are 1, 1, 2 of orders 1, 2, 4; for n=8 the table is 1, 1, 2, 4. So the claim holds.",
+      "expect": {
+        "examples-only": false
+      }
+    }
+  ]
+}

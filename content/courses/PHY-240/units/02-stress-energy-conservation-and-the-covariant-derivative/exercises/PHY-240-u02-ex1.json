@@ -1,0 +1,78 @@
+{
+  "id": "PHY-240-u02-ex1",
+  "sequence": 1,
+  "title": "Christoffel symbols and the Laplacian in spherical coordinates",
+  "kind": "derivation",
+  "promptMarkdown": "Flat Euclidean 3-space in spherical coordinates has $ds^2 = dr^2 + r^2\\,d\\theta^2 + r^2\\sin^2\\theta\\,d\\phi^2$.\n\n1. Write $g_{ij}$ and $g^{ij}$. Using $\\Gamma^k{}_{ij} = \\tfrac12 g^{kl}(\\partial_i g_{lj} + \\partial_j g_{li} - \\partial_l g_{ij})$, find every non-zero Christoffel symbol. State the units of each (take $r$ in metres).\n2. Check two of them independently by differentiating the coordinate basis vectors $\\mathbf e_r, \\mathbf e_\\theta, \\mathbf e_\\phi$ expressed in Cartesian components.\n3. Derive the divergence $\\nabla_iV^i$ of a vector field from the covariant derivative and show that it equals $\\dfrac{1}{\\sqrt g}\\partial_i(\\sqrt g\\,V^i)$ with $\\sqrt g = r^2\\sin\\theta$. Rewrite it in terms of the orthonormal components $V^{\\hat r} = V^r$, $V^{\\hat\\theta} = rV^\\theta$, $V^{\\hat\\phi} = r\\sin\\theta\\,V^\\phi$.\n4. Derive the Laplacian $\\nabla^2 f = g^{ij}\\nabla_i\\partial_j f$ of a scalar. Check it on $f = 1/r$ (for $r\\neq0$) and on $f = r^2 = x^2+y^2+z^2$, whose Cartesian Laplacian you know.",
+  "conceptIds": ["covariant-derivative", "tensor-calculus-spacetime"],
+  "hintLadder": [
+    "The metric is diagonal, so $g^{ij}$ is the reciprocal of each diagonal entry and the formula collapses to a few terms: $\\Gamma^k{}_{ij}$ can be non-zero only if $k$ equals $i$ or $j$, or if $i = j$.",
+    "For the basis check, $\\mathbf e_\\theta = \\partial\\mathbf x/\\partial\\theta$ with $\\mathbf x = r(\\sin\\theta\\cos\\phi, \\sin\\theta\\sin\\phi, \\cos\\theta)$; then $\\partial_\\phi\\mathbf e_\\phi$ expressed in the basis gives $\\Gamma^r{}_{\\phi\\phi}$ and $\\Gamma^\\theta{}_{\\phi\\phi}$ at once.",
+    "$\\nabla_iV^i = \\partial_iV^i + \\Gamma^i{}_{ji}V^j$; the contracted symbol $\\Gamma^i{}_{ji}$ equals $\\partial_j\\ln\\sqrt g$ for a diagonal metric — verify it here.",
+    "$\\nabla^2 f = \\nabla_i(g^{ij}\\partial_jf)$ is the divergence of the gradient vector field; use part 3."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "theta-phi-phi",
+      "kind": "expression_present",
+      "description": "the symbol Γ^θ_φφ = −sin θ cos θ (or −½ sin 2θ) appears",
+      "params": {
+        "patterns": [
+          "sin\\\\?θ\\\\?cos\\\\?θ",
+          "\\\\sin\\\\theta\\\\cos\\\\theta",
+          "sin\\(θ\\)cos\\(θ\\)",
+          "\\\\sin\\(\\\\theta\\)\\\\cos\\(\\\\theta\\)",
+          "sin2θ/2",
+          "\\\\sin2\\\\theta/2",
+          "\\(1\\)/\\(2\\)sin2θ",
+          "\\(1\\)/\\(2\\)\\\\sin2\\\\theta",
+          "sin\\(2θ\\)/2",
+          "\\\\sin\\(2\\\\theta\\)/2"
+        ]
+      }
+    },
+    {
+      "id": "volume-factor",
+      "kind": "expression_present",
+      "description": "the factor √g = r² sin θ appears",
+      "params": {
+        "patterns": [
+          "r\\^2\\\\?sin",
+          "r\\^2\\\\?\\\\?sin\\\\theta",
+          "r\\^2sinθ",
+          "r\\^2\\\\sin\\\\theta"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "symbols", "criterion": "All six independent non-zero symbols: Γ^r_θθ = −r, Γ^r_φφ = −r sin²θ, Γ^θ_rθ = 1/r, Γ^θ_φφ = −sin θ cos θ, Γ^φ_rφ = 1/r, Γ^φ_θφ = cot θ (and their symmetric partners), with units (m, m, m⁻¹, dimensionless, m⁻¹, dimensionless).", "weight": 0.35, "levels": [ { "label": "met", "description": "All correct with units." }, { "label": "partially met", "description": "One symbol or the units wrong." }, { "label": "not met", "description": "Several wrong." } ] },
+      { "id": "basis-check", "criterion": "Two symbols verified from derivatives of Cartesian-component basis vectors.", "weight": 0.15, "levels": [ { "label": "met", "description": "Two verified." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "None." } ] },
+      { "id": "divergence", "criterion": "∇_iV^i = (1/r²)∂_r(r²V^r) + (1/sin θ)∂_θ(sin θ V^θ) + ∂_φV^φ, shown equal to (1/√g)∂_i(√g V^i) with √g = r² sin θ, and the orthonormal form recovered.", "weight": 0.25, "levels": [ { "label": "met", "description": "All three forms." }, { "label": "partially met", "description": "One form missing." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "laplacian", "criterion": "Laplacian (1/r²)∂_r(r²∂_rf) + (1/(r² sin θ))∂_θ(sin θ ∂_θf) + (1/(r² sin²θ))∂²_φf; ∇²(1/r) = 0 and ∇²r² = 6 verified.", "weight": 0.25, "levels": [ { "label": "met", "description": "Formula and both checks." }, { "label": "partially met", "description": "Formula and one check." }, { "label": "not met", "description": "Wrong formula." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX solution",
+      "text": "The non-zero symbols are $\\Gamma^r_{\\theta\\theta} = -r$, $\\Gamma^r_{\\phi\\phi} = -r\\sin^2\\theta$, $\\Gamma^\\theta_{r\\theta} = 1/r$, $\\Gamma^\\theta_{\\phi\\phi} = -\\sin\\theta\\cos\\theta$, $\\Gamma^\\phi_{r\\phi} = 1/r$, $\\Gamma^\\phi_{\\theta\\phi} = \\cot\\theta$. With $\\sqrt g = r^2\\sin\\theta$ the divergence is $\\frac{1}{r^2\\sin\\theta}\\partial_i(r^2\\sin\\theta V^i)$.",
+      "expect": { "theta-phi-phi": true, "volume-factor": true }
+    },
+    {
+      "label": "plain-text solution",
+      "text": "Γ^θ_φφ = −sin θ cos θ = −(1/2) sin 2θ and √g = r^2 sin θ.",
+      "expect": { "theta-phi-phi": true, "volume-factor": true }
+    },
+    {
+      "label": "incomplete",
+      "text": "I found Γ^r_θθ = −r and Γ^θ_rθ = 1/r but not the φ symbols or the volume factor.",
+      "expect": { "theta-phi-phi": false, "volume-factor": false }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "NEU-220-u02-ex2",
+  "sequence": 2,
+  "title": "The bias–variance decomposition and what a bootstrap interval means",
+  "kind": "derivation",
+  "promptMarkdown": "1. Let $y = f(x) + \\epsilon$ with $\\mathbb{E}\\epsilon = 0$, $\\text{Var}\\,\\epsilon = \\sigma^2$, and let $\\hat f$ be an estimator fitted on a training set independent of the new observation $y$. Prove that at a fixed $x$,\n$$\\mathbb{E}\\big[(y - \\hat f(x))^2\\big] = \\sigma^2 + \\big(f(x) - \\mathbb{E}\\hat f(x)\\big)^2 + \\text{Var}\\big(\\hat f(x)\\big),$$\nstating exactly where independence and $\\mathbb{E}\\epsilon = 0$ are used. (W1D2 Tutorial 5 sets this as a bonus; do it unaided.)\n2. Explain how the three terms behave as polynomial order increases in Tutorial 5's synthetic experiment, and why the test error therefore has a minimum while the training error does not.\n3. Describe the bootstrap percentile interval of Tutorial 3 as a procedure, list its assumptions, and state correctly what '95%' refers to. A synthetic run with true slope 1.2 gave the interval $[1.05, 1.35]$: say what can and cannot be concluded from this single interval, and how its width should change if the sample size is quadrupled (give the factor and the assumption behind it).\n4. Give one concrete dataset structure for which the pairs bootstrap gives misleading intervals, and say why.",
+  "conceptIds": ["model-selection-cross-validation", "bootstrap-confidence-intervals"],
+  "hintLadder": [
+    "Write $y - \\hat f = \\epsilon + (f - \\mathbb{E}\\hat f) + (\\mathbb{E}\\hat f - \\hat f)$ and expand the square; the cross terms vanish because $\\epsilon$ is independent of $\\hat f$ and has mean zero, and because $\\mathbb{E}[\\mathbb{E}\\hat f - \\hat f] = 0$.",
+    "Low-order polynomials cannot represent $f$ (bias); high-order ones follow the noise in each training set (variance). Which term is fixed whatever you do?",
+    "The standard error of a slope estimate scales like $1/\\sqrt{N}$ under independent sampling; apply that to the interval width.",
+    "Think about time series with slow drifts, or a single point far out in $x$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "three-terms",
+      "kind": "expression_present",
+      "description": "squared bias and variance both appear",
+      "params": { "patterns": ["bias\\^?2|bias²|\\(bias\\)\\^?2|biassquared|squaredbias", "var(iance)?"], "requireAll": true }
+    },
+    {
+      "id": "general-proof",
+      "kind": "finite_examples_not_proof",
+      "description": "the decomposition must be proved, not illustrated",
+      "params": {}
+    },
+    {
+      "id": "interval-meaning",
+      "kind": "forbidden_claim",
+      "description": "reading the interval as a 95% probability statement about the true slope, or as a recovery of the true value",
+      "params": { "patterns": ["95% probability that the true", "95%probabilitythatthetrue", "probability 0\\.95 that the true", "the true slope (lies|is) in (the|this) interval with probability", "thetrueslope(lies|is)in(the|this)intervalwithprobability", "bootstrap (gives|yields|recovers) the true", "bootstrap(gives|yields|recovers)thetrue"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "proof", "criterion": "Expansion with the three cross terms shown to vanish, naming independence of ε and the training set, Eε = 0, and E[f̂ − Ef̂] = 0.", "weight": 0.35, "levels": [{ "label": "met", "description": "Complete with every cross term handled." }, { "label": "partially met", "description": "One cross term asserted without justification." }, { "label": "not met", "description": "Not a proof." }] },
+      { "id": "behaviour", "criterion": "Noise term constant; bias² falls with order; variance rises with order; test error = sum has a minimum; training error keeps falling because the fit is evaluated on the data that shaped it.", "weight": 0.2, "levels": [{ "label": "met", "description": "All four points." }, { "label": "partially met", "description": "Two or three." }, { "label": "not met", "description": "Fewer." }] },
+      { "id": "bootstrap", "criterion": "Procedure (resample pairs with replacement, refit, percentiles); assumptions (independent pairs, representative sample, enough resamples); 95% as a coverage property of the procedure; the single interval shows consistency with 1.2 but cannot confirm it; width shrinks by about half when N is quadrupled under independent sampling.", "weight": 0.3, "levels": [{ "label": "met", "description": "All five elements correct." }, { "label": "partially met", "description": "Procedure and coverage right, one other element missing." }, { "label": "not met", "description": "Interval misread as a probability about the true value." }] },
+      { "id": "failure-case", "criterion": "A concrete structure (serially correlated residuals in a time series; one high-leverage point; clustered trials) with the reason the pairs bootstrap misleads.", "weight": 0.15, "levels": [{ "label": "met", "description": "Structure and reason." }, { "label": "partially met", "description": "Structure only." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct proof and interpretation",
+      "text": "For arbitrary fixed x write y − f̂ = ε + (f − Ef̂) + (Ef̂ − f̂). Squaring and taking expectations: E[ε²] = σ²; (f − Ef̂)² is a constant, the squared bias; E[(Ef̂ − f̂)²] = Var(f̂). Cross terms: E[ε(f − Ef̂)] = 0 since Eε = 0; E[ε(Ef̂ − f̂)] = 0 since ε is independent of the training set and Eε = 0; E[(f − Ef̂)(Ef̂ − f̂)] = 0 since E[Ef̂ − f̂] = 0. Hence E[(y − f̂)²] = σ² + Bias² + Var. In Tutorial 5 the noise term is fixed, bias² falls with polynomial order and variance rises, so the test error has a minimum, while training error keeps falling because it is measured on the data that shaped the fit. Bootstrap: resample the N pairs with replacement, refit the slope, repeat thousands of times, take the 2.5th and 97.5th percentiles; it assumes independent pairs and a representative sample. The 95% is a coverage property of the procedure over repeated samples, not a probability that the true slope lies in this one interval. The interval [1.05, 1.35] is consistent with 1.2 but a single interval cannot confirm it. Quadrupling N halves the width if the samples are independent. Failure case: a slowly drifting time series, where residuals are serially correlated and resampling pairs destroys the dependence, giving intervals that are too narrow.",
+      "expect": { "three-terms": true, "general-proof": true, "interval-meaning": true }
+    },
+    {
+      "label": "probability misreading",
+      "text": "There is a 95% probability that the true slope lies in [1.05, 1.35], so the bootstrap gives the true value to within 0.15. Checking n=1, n=2 and n=3 polynomial orders confirms the variance term.",
+      "expect": { "interval-meaning": false, "general-proof": false }
+    }
+  ]
+}

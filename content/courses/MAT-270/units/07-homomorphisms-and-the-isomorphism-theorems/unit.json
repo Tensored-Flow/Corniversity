@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u07",
+  "courseId": "MAT-270",
+  "sequence": 7,
+  "title": "Homomorphisms and the isomorphism theorems",
+  "summary": "Group homomorphisms, kernels and images; the kernel is a normal subgroup and every normal subgroup is a kernel; the first isomorphism theorem and the canonical factorisation; the second and third isomorphism theorems and the correspondence theorem; automorphisms.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 11 of Judson (Sections 11.1–11.2)." }
+  ],
+  "prerequisiteConceptIds": ["quotient-groups", "group-isomorphisms"],
+  "teachesConceptIds": ["group-homomorphisms", "quotient-groups"],
+  "preparation": [
+    { "description": "Read Section 11.1 (group homomorphisms, kernels, images) from the chapter page.", "locatorId": "aata-ch11", "estimatedMinutes": 45 },
+    { "description": "Read Section 11.2: the first isomorphism theorem (Theorem 11.2.1), the second (Theorem 11.2.3), the correspondence theorem (Theorem 11.2.4) and the third (Theorem 11.2.5).", "locatorId": "aata-s11-2", "estimatedMinutes": 50 },
+    { "description": "Optional supplement: MIT student notes, lecture 5 (The Correspondence Theorem).", "locatorId": "an21-lec05", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Chapter 11: homomorphisms and the isomorphism theorems", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch11", "aata-s11-2", "an21-lec03", "an21-lec05"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 11 page and Section 11.2 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 11.2). MIT student-notes lecture 3 and 5 PDF URLs recorded from their resource pages; the files were not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

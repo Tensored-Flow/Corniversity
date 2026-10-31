@@ -1,0 +1,59 @@
+{
+  "id": "CHE-101-u04-ex1",
+  "sequence": 1,
+  "title": "Enthalpy of combustion two ways",
+  "kind": "calculation",
+  "promptMarkdown": "Methane burns according to $\\ce{CH4(g) + 2 O2(g) -> CO2(g) + 2 H2O(l)}$. All values below are for 298.15 K and the standard state of 1 bar.\n\nData: $\\Delta H^\\circ_f$ (kJ mol⁻¹): $\\ce{CH4(g)}$ −74.6, $\\ce{CO2(g)}$ −393.5, $\\ce{H2O(l)}$ −285.8. Mean bond enthalpies (kJ mol⁻¹, gas phase): C–H 413, O=O 498, C=O (in $\\ce{CO2}$) 799, O–H 463. Enthalpy of vaporisation of water at 298 K: 44.0 kJ mol⁻¹.\n\n1. Compute $\\Delta H^\\circ_r$ from the enthalpies of formation.\n2. Estimate $\\Delta H^\\circ_r$ from the mean bond enthalpies, listing the bonds broken and formed.\n3. The two numbers differ by about 90 kJ mol⁻¹. Identify the main reason and show, with the vaporisation enthalpy, that it accounts for the gap.\n4. What is $\\Delta H^\\circ_r$ if the water is produced as a gas instead? Use the formation route and the vaporisation enthalpy.\n5. State the assumptions behind each of your numbers (temperature, pressure, standard states, phases, what 'mean' bond enthalpy means).",
+  "conceptIds": ["enthalpy-thermochemistry"],
+  "hintLadder": [
+    "Products minus reactants, each weighted by its coefficient; the enthalpy of formation of $\\ce{O2(g)}$ is zero because it is an element in its standard state.",
+    "Count bonds per molecule and multiply by the coefficient: four C–H bonds in one $\\ce{CH4}$, one O=O in each of two $\\ce{O2}$, two C=O in $\\ce{CO2}$, two O–H in each of two $\\ce{H2O}$.",
+    "Mean bond enthalpies describe gaseous molecules. Which product in the balanced equation is not a gas, and how much enthalpy does changing its phase involve, per mole, times how many moles?",
+    "Reversing the phase change adds the vaporisation enthalpy for each mole of water."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "formation-route",
+      "kind": "numeric_value",
+      "description": "ΔH°r = −890.5 kJ/mol (the parser reads an ASCII minus as the sign; a Unicode minus is not parsed, so a correct answer typed that way can fail this advisory check)",
+      "params": { "expected": -890.5, "tolerance": 0.6 }
+    },
+    {
+      "id": "bond-enthalpy-estimate",
+      "kind": "numeric_value",
+      "description": "the bond-enthalpy estimate is about −802 kJ/mol (ASCII minus parsed as the sign)",
+      "params": { "expected": -802, "tolerance": 0.4 }
+    },
+    {
+      "id": "phase-named",
+      "kind": "requires_hypothesis",
+      "description": "when bond enthalpies are used, the gas-phase/liquid-water point must be made",
+      "params": { "triggerPatterns": ["bond enthalp", "bond energ"], "hypothesisPatterns": ["gas", "phase", "liquid", "vapou?r", "condens"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "formation", "criterion": "ΔH°r = −890.5 kJ/mol from products minus reactants with O2 at zero.", "weight": 0.3, "levels": [{ "label": "met", "description": "Correct value, sign and working." }, { "label": "partially met", "description": "Sign or coefficient slip with the right method." }, { "label": "not met", "description": "Reactants minus products or missing." }] },
+      { "id": "bonds", "criterion": "Broken 4(413) + 2(498) = 2648; formed 2(799) + 4(463) = 3450; estimate −802 kJ/mol with the broken-minus-formed convention.", "weight": 0.3, "levels": [{ "label": "met", "description": "Bond counts listed and the estimate correct." }, { "label": "partially met", "description": "One bond miscounted or sign convention reversed with the counts right." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "discrepancy", "criterion": "Bond enthalpies are gas-phase averages; the product water is liquid, and 2 × 44.0 = 88.0 kJ/mol of condensation closes the gap (−802 − 88 ≈ −890). Averaging accounts for the small residual.", "weight": 0.25, "levels": [{ "label": "met", "description": "Reason named and the arithmetic shown." }, { "label": "partially met", "description": "Reason named without the arithmetic, or arithmetic without naming the phase." }, { "label": "not met", "description": "Attributed only to 'approximation'." }] },
+      { "id": "gas-water-and-assumptions", "criterion": "With H2O(g): −890.5 + 88.0 = −802.5 kJ/mol; assumptions listed (298.15 K, 1 bar, standard states, phases as written, mean bond enthalpies as averages over many molecules).", "weight": 0.15, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "Formation route: [(-393.5) + 2(-285.8)] - [(-74.6) + 0] = -965.1 + 74.6 = -890.5 kJ/mol. Bond enthalpies: broken 4(413) + 2(498) = 2648 kJ; formed 2(799) + 4(463) = 3450 kJ; estimate 2648 - 3450 = -802 kJ/mol. The bond enthalpy values describe gas-phase molecules while the product water here is liquid; condensing 2 mol of water releases 2 x 44.0 = 88.0 kJ, and -802 - 88 = -890 kJ/mol, matching the formation value within the averaging error. With H2O(g) the formation route gives -890.5 + 88.0 = -802.5 kJ/mol. Assumptions: 298.15 K, 1 bar standard states, phases as written, mean bond enthalpies are averages.",
+      "expect": { "formation-route": true, "bond-enthalpy-estimate": true, "phase-named": true }
+    },
+    {
+      "label": "bond enthalpies used with no phase comment",
+      "text": "Using bond enthalpies the answer is -802 kJ/mol, and the formation route gives -965.1 kJ/mol; the difference is just approximation error.",
+      "expect": { "phase-named": false, "formation-route": false, "bond-enthalpy-estimate": true }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "PHY-240-u11",
+  "courseId": "PHY-240",
+  "sequence": 11,
+  "title": "Black holes",
+  "summary": "Schwarzschild spacetime as a vacuum with mass; curvature versus coordinate singularities via the Kretschmann scalar; radial infall in proper and coordinate time; the meaning of t and the horizon as a one-way surface; orbits of light and matter, the photon sphere and the innermost stable circular orbit.",
+  "objectives": [
+    { "id": "u11-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 21 (end), 22 and 23 (Lecture Guide pages 10–12), Tong Chapter 6 and Carroll Chapter 7." }
+  ],
+  "prerequisiteConceptIds": ["schwarzschild-solution", "spacetime-causal-structure", "connections-geodesics"],
+  "teachesConceptIds": ["schwarzschild-solution"],
+  "preparation": [
+    { "description": "Read the end of the Lecture Guide's Lecture 21 synopsis (PDF page 10): the Kretschmann scalar and radial infall in proper versus coordinate time.", "locatorId": "gr20-g-lec21", "estimatedMinutes": 15 },
+    { "description": "Read the Lecture Guide's synopsis of Lecture 22 (PDF page 11): the meaning of t, light propagation and the horizon.", "locatorId": "gr20-g-lec22", "estimatedMinutes": 15 },
+    { "description": "Read the Lecture Guide's synopsis of Lecture 23 (PDF page 12): testing black-hole spacetimes through the motion of light and matter.", "locatorId": "gr20-g-lec23", "estimatedMinutes": 15 },
+    { "description": "Watch Lectures 22 and 23 (Black Holes I and II) from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Chapter 6 Black Holes (reference-only).", "locatorId": "tong-gr-ch6", "estimatedMinutes": 60 },
+    { "description": "Optional: Carroll, Chapter 7 The Schwarzschild Solution and Black Holes (second half), reference-only.", "locatorId": "carroll-ch7", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u11-a1", "type": "lecture", "title": "Lectures 22–23: black holes", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec21", "gr20-g-lec22", "gr20-g-lec23", "gr20-videos", "gr20-summaries", "tong-gr-ch6", "carroll-ch7"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 490,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 10–12 (end of Lecture 21, Lectures 22–23) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Chapter 6 listed on the notes page; Carroll Chapter 7 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

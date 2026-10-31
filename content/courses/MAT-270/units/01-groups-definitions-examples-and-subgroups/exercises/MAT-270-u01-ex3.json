@@ -1,0 +1,54 @@
+{
+  "id": "MAT-270-u01-ex3",
+  "sequence": 3,
+  "title": "The same operation",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words and without the text open, explain two things.\n\n1. Why $GL_2(\\mathbb R)$ is a group, yet is **not** a subgroup of $(M_2(\\mathbb R),+)$, the additive group of all $2\\times2$ real matrices, even though it is a subset of it. Say precisely what the definition of subgroup requires beyond \"a subset that happens to be a group\".\n2. Why $(\\mathbb Z_n,\\cdot)$ is not a group while $U(n)$ is, naming the axiom that fails for $\\mathbb Z_n$ and the one non-obvious condition that must be checked for $U(n)$.",
+  "conceptIds": [
+    "group-basics",
+    "integers-mod-n"
+  ],
+  "hintLadder": [
+    "Which operation does the subgroup definition refer to: the subset's own, or the ambient group's? Test closure of $GL_2(\\mathbb R)$ under the ambient operation.",
+    "In $U(n)$, is the product of two units a unit? That is the condition to check; the others are inherited."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "same-operation",
+        "criterion": "States that a subgroup must be a group under the ambient group's operation, and shows GL_2(R) fails closure under addition (e.g. A + (−A) = 0 is singular), while being a group under multiplication.",
+        "weight": 0.5,
+        "levels": [
+          { "label": "met", "description": "Requirement stated and failure of closure exhibited." },
+          { "label": "partially met", "description": "Requirement stated without an explicit failure, or vice versa." },
+          { "label": "not met", "description": "Missing or confused." }
+        ]
+      },
+      {
+        "id": "units",
+        "criterion": "Names inverses as the failing axiom for (Z_n, ·) (0, and any a with gcd(a, n) > 1) and identifies closure of U(n) under multiplication as the condition that needs proof.",
+        "weight": 0.4,
+        "levels": [
+          { "label": "met", "description": "Both points." },
+          { "label": "partially met", "description": "One point." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "concision",
+        "criterion": "Within the word limit and free of unsupported claims.",
+        "weight": 0.1,
+        "levels": [
+          { "label": "met", "description": "Concise and accurate." },
+          { "label": "not met", "description": "Over length or contains a false statement." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

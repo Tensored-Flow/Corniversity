@@ -1,0 +1,7 @@
+## Outline: vector bundles and the tangent bundle
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 6–7 of the MIT 18.965 Fall 2004 notes (CC BY-NC-SA 4.0), keeping the notes' statement numbering (Definition 7.1, Example 7.2, Definition 7.3), with Hitchin's §3.2–3.3 and §4.1–4.3 (reference-only) supplying the derivation picture of tangent vectors and the theory of flows.
+
+**Scope.** Vector bundles defined by local trivialisations; transition functions $g_{\alpha\beta}:U_\alpha\cap U_\beta\to GL(V)$ and the cocycle condition; reconstruction of a bundle from a cocycle; the tautological bundle over $\mathrm{Gr}_k(\mathbb{R}^n)$; Whitney sums and pullbacks. Tangent vectors to a manifold as equivalence classes of pairs (chart, vector in $\mathbb{R}^n$) and, equivalently, as derivations; the tangent bundle with its transition functions $d(\varphi_\beta\circ\varphi_\alpha^{-1})$; coordinate vector fields $\partial/\partial x^i$; the differential $Df:TM\to TN$ and its Jacobian in charts; vector fields, Lie bracket and one-parameter groups of diffeomorphisms.
+
+**What preparation will add.** A full lesson with definitions, examples and non-examples, the main theorems with their hypotheses in view, original exercises with hint ladders and rubrics, instructor reference reasoning for the assessor, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,31 @@
+{
+  "id": "CHE-101-u09",
+  "courseId": "CHE-101",
+  "sequence": 9,
+  "title": "Catalysis and applying chemical principles",
+  "summary": "Homogeneous and heterogeneous catalysis; enzymes as catalysts and the reaction-coordinate picture of what a catalyst changes and leaves unchanged; the course's closing lecture on applying chemical principles across the units.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 34–35 of 5.111SC (Unit V) with OpenStax 12.7." }
+  ],
+  "prerequisiteConceptIds": ["reaction-mechanisms", "arrhenius-temperature-dependence"],
+  "teachesConceptIds": ["arrhenius-temperature-dependence"],
+  "preparation": [
+    { "description": "OCW Unit V page: lecture 34 (kinetics: catalysts, with the enzyme-pathway videos) and lecture 35 (applying chemical principles).", "locatorId": "chem14-unit5", "estimatedMinutes": 40 },
+    { "description": "OpenStax 12.7 Catalysis: homogeneous and heterogeneous catalysts, reaction diagrams for catalysed reactions (Example 12.15).", "locatorId": "ox-12-7", "estimatedMinutes": 30 },
+    { "description": "Lecture 33 notes page 4: reaction coordinate diagrams, the forward and reverse barriers and their difference.", "locatorId": "chem14-n33-p4", "estimatedMinutes": 10 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Lectures 34–35 and OpenStax 12.7: catalysis and synthesis of principles", "instructions": "Read the lecture pages and the OpenStax section for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["chem14-unit5", "ox-12-7", "chem14-n33-p4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 200,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit V page opened 2026-10-30 (lectures 30–35 listed with page URLs); OpenStax 12.7 opened; lecture 33 notes PDF page 4 text-extracted. Lecture pages 34–35 and their notes PDFs are not yet opened; the unit page is the verified locator for them." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

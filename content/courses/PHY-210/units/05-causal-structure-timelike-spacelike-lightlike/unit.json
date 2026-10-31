@@ -1,0 +1,32 @@
+{
+  "id": "PHY-210-u05",
+  "courseId": "PHY-210",
+  "sequence": 5,
+  "title": "Causal structure: timelike, spacelike and lightlike",
+  "summary": "Light speed as the limit on causality; the three relations between events and their frame independence; invariance of time order for timelike pairs; the light cone and the regions of spacetime; why superluminal signals would reverse cause and effect.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 6, Tong Sections 7.2.2 and 7.3.1, and MIT 8.20 Week 2 (Lectures 5.4–5.5)." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "lorentz-transformation"],
+  "teachesConceptIds": ["spacetime-causal-structure"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 6 Regions of Spacetime (pp. 171–188): 6.1 Light Speed: Limit on Causality, 6.2 Relation Between Events, 6.3 Light Cone.", "locatorId": "stp-ch6", "estimatedMinutes": 50 },
+    { "description": "Re-read Section 1.4 (pp. 11–13) on timelike and spacelike intervals.", "locatorId": "stp-ch1-s4", "estimatedMinutes": 10 },
+    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.2 (7.2.2 Causality) and Section 7.3 (7.3.1 The Invariant Interval: timelike, spacelike, lightlike), reference-only.", "locatorId": "tong-dr-ch7-s2", "estimatedMinutes": 20 },
+    { "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.4 Regions in Spacetime Diagrams and Lecture 5.5 Causality.", "locatorId": "sr21-week2", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Reading: causal structure", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["stp-ch6", "stp-ch1-s4", "tong-dr-ch7-s2", "tong-dr-ch7-s3", "sr21-week2"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 210,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 6 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Section 1.4 located in the extracted text of 01_chapter1.pdf; Tong Sections 7.2 and 7.3 headings verified in dynrel7.pdf; MIT 8.20 Week 2 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

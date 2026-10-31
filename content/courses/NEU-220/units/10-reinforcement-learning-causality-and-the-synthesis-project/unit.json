@@ -1,0 +1,31 @@
+{
+  "id": "NEU-220-u10",
+  "courseId": "NEU-220",
+  "sequence": 10,
+  "title": "Reinforcement learning, network causality and the synthesis project",
+  "summary": "Neuromatch W3D4 and W3D5: temporal-difference learning and prediction, bandits and exploration, Q-learning and model-based planning; then causality in networks, interventions versus correlations, simultaneous regression and instrumental variables; closing with the synthesis-week project in which the learner fits a chosen model to synthetic data of known structure and writes up what it does and does not show.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W3D4 (Tutorials 1–4) and W3D5 (Tutorials 1–4), with the synthesis project (assessment a4) attached." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-inference-perception", "logistic-regression-decoding", "model-selection-cross-validation"],
+  "teachesConceptIds": ["reinforcement-learning-td", "network-causality"],
+  "preparation": [
+    { "description": "W3D4 Reinforcement Learning chapter page: Tutorial 1 Learning to Predict, Tutorial 2 Multi-Armed Bandits, Tutorial 3 Q-Learning, Tutorial 4 Model-Based Reinforcement Learning.", "locatorId": "nma-w3d4", "estimatedMinutes": 180 },
+    { "description": "W3D5 Network Causality chapter page: Tutorial 1 Interventions, Tutorial 2 Correlations, Tutorial 3 Simultaneous fitting/regression, Tutorial 4 Instrumental Variables.", "locatorId": "nma-w3d5", "estimatedMinutes": 180 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "problem", "title": "W3D4 and W3D5 tutorials (Neuromatch notebooks)", "instructions": "Work through the W3D4 and W3D5 tutorials from the chapter pages; this unit spans two Neuromatch days plus the synthesis week. The prepared lesson, exercises and project guidance are not yet written; this outline shows exactly what the unit will cover. The individual tutorial pages have not yet been opened by Corniversity, so the chapter pages are the verified locators.", "estimatedMinutes": 360, "sourceLocatorIds": ["nma-w3d4", "nma-w3d5"], "exerciseIds": [], "sessionKind": "lab" },
+    { "id": "u10-a2", "type": "project", "title": "Synthesis project (assessment a4): to be specified", "instructions": "The synthesis project will ask you to choose one model from units 5–10, generate synthetic data from a known version of it, fit it, compare with a baseline, show a failure case and write up the scope honestly. Its specification, rubric and instructor guidance are not yet written.", "estimatedMinutes": 240, "sourceLocatorIds": ["nma-intro"], "exerciseIds": [], "sessionKind": "project" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared; it will be the synthesis project (assessment a4)." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 960,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W3D4 and W3D5 chapter pages and the course introduction page opened 2026-10-30 with their tutorial lists. Tutorial pages and the project booklet not yet opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson, exercises or project specification to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

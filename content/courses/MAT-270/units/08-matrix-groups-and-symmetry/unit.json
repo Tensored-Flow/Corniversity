@@ -1,0 +1,30 @@
+{
+  "id": "MAT-270-u08",
+  "courseId": "MAT-270",
+  "sequence": 8,
+  "title": "Matrix groups and symmetry",
+  "summary": "The general and special linear groups over a field; the Euclidean inner product and the orthogonal group O(n), with the equivalent characterisations of orthogonal matrices; isometries of the plane; finite symmetry groups and the wallpaper groups.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 12 of Judson (Sections 12.1–12.2)." }
+  ],
+  "prerequisiteConceptIds": ["group-basics", "permutation-groups", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["matrix-and-symmetry-groups"],
+  "preparation": [
+    { "description": "Read Section 12.1: facts from linear algebra, GL_n and SL_n, the orthogonal group (Proposition 12.1.6, Theorem 12.1.8).", "locatorId": "aata-s12-1", "estimatedMinutes": 50 },
+    { "description": "Read Section 12.2 (symmetry and the wallpaper groups) from the chapter page.", "locatorId": "aata-ch12", "estimatedMinutes": 50 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Chapter 12: matrix groups and symmetry", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch12", "aata-s12-1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 12 page and Section 12.1 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 12.1)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,0 +1,59 @@
+{
+  "id": "COG-201-u01-ex1",
+  "sequence": 1,
+  "title": "Sample complexity of a finite hypothesis space",
+  "kind": "proof",
+  "promptMarkdown": "Let $H$ be a finite hypothesis space of concepts over an object space $\\mathcal X$, let $c$ be the true concept, and let $N$ labelled examples be drawn independently from a distribution $D$ on $\\mathcal X$. For $h\\in H$ write $\\mathrm{err}(h)=\\Pr_{x\\sim D}[h(x)\\neq c(x)]$.\n\n1. Prove: if $N\\ge\\frac1\\varepsilon\\big(\\ln|H|+\\ln\\frac1\\delta\\big)$ then, with probability at least $1-\\delta$ over the sample, every $h\\in H$ consistent with all $N$ examples satisfies $\\mathrm{err}(h)\\le\\varepsilon$. State explicitly where independence and the identity of the training and test distributions are used.\n2. Over $k$ binary features, count the conjunctive concepts (each feature required true, required false, or irrelevant) and the set of all Boolean concepts, and give $\\ln|H|$ for each as a function of $k$.\n3. With $\\varepsilon=0.1$, $\\delta=0.05$ and $k=10$, compute the sample size the bound requires for each of the two spaces (round up to an integer).\n4. In three or four sentences, say what the comparison in part 3 shows about inductive bias, and name the assumption of part 1 that no amount of bias removes.",
+  "conceptIds": ["inductive-inference-cognition", "computational-level-analysis"],
+  "hintLadder": [
+    "Fix one hypothesis $h$ with $\\mathrm{err}(h)>\\varepsilon$. What is the probability that a single random example fails to expose it? What about $N$ independent examples?",
+    "Use $1-\\varepsilon\\le e^{-\\varepsilon}$. Then ask: how many such bad hypotheses can there be at most, and what does the union bound give for the event that at least one of them survives?",
+    "For the conjunctions, think of each feature independently choosing one of three roles. For all Boolean concepts, how many objects are there, and how many ways to label them?",
+    "Compute $\\frac{1}{0.1}\\big(\\ln|H|+\\ln 20\\big)$ for each space; $\\ln 3\\approx1.0986$, $\\ln 2\\approx0.6931$, $\\ln 20\\approx2.9957$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "conjunction-count",
+      "kind": "expression_present",
+      "description": "the number of conjunctions is given as 3^k",
+      "params": { "patterns": ["3\\^k", "3\\^\\(k\\)", "\\|h\\|=3\\^"] }
+    },
+    {
+      "id": "n-conjunctions",
+      "kind": "expression_present",
+      "description": "the sample size 140 for conjunctions appears",
+      "params": { "patterns": ["(?<![0-9.])140(?![0-9])", "139\\.8"] }
+    },
+    {
+      "id": "n-boolean",
+      "kind": "expression_present",
+      "description": "the sample size about 7128 for all Boolean concepts appears",
+      "params": { "patterns": ["712[78]", "7,12[78]"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "bad-hypothesis-bound", "criterion": "For a fixed bad hypothesis, the probability of surviving N independent examples is bounded by (1−ε)^N ≤ e^{−εN}, with independence and the shared distribution named at this step.", "weight": 0.3, "levels": [{ "label": "met", "description": "Bound and assumptions explicit." }, { "label": "partially met", "description": "Bound right, assumptions implicit." }, { "label": "not met", "description": "Missing or wrong." }] },
+      { "id": "union-bound", "criterion": "The union bound over at most |H| bad hypotheses gives |H| e^{−εN} ≤ δ, solved for N.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Union bound used without justifying the count." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "counting", "criterion": "3^k conjunctions (ln|H| = k ln 3) and 2^{2^k} Boolean concepts (ln|H| = 2^k ln 2).", "weight": 0.2, "levels": [{ "label": "met", "description": "Both counts with reasons." }, { "label": "partially met", "description": "One count right." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "numbers-and-interpretation", "criterion": "N ≥ 140 for conjunctions and N ≥ 7128 for all Boolean concepts; the comparison interpreted as the necessity of inductive bias, with the i.i.d. same-distribution assumption named as irreducible.", "weight": 0.25, "levels": [{ "label": "met", "description": "Numbers and interpretation correct." }, { "label": "partially met", "description": "Numbers right, interpretation thin." }, { "label": "not met", "description": "Wrong numbers." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "complete solution",
+      "text": "Fix a bad h with err(h) > ε. Each independent example is consistent with h with probability < 1−ε, so all N are with probability < (1−ε)^N ≤ e^{−εN}. By the union bound over at most |H| bad hypotheses the failure probability is < |H| e^{−εN} ≤ δ when N ≥ (1/ε)(ln|H| + ln(1/δ)). Conjunctions: 3^k, so ln|H| = k ln 3; all Boolean concepts: 2^{2^k}. With ε = 0.1, δ = 0.05, k = 10: N ≥ 10(10 ln 3 + ln 20) = 139.8, so N ≥ 140; for all Boolean concepts N ≥ 10(1024 ln 2 + ln 20) = 7127.8, so N ≥ 7128.",
+      "expect": { "conjunction-count": true, "n-conjunctions": true, "n-boolean": true }
+    },
+    {
+      "label": "wrong count",
+      "text": "There are 2^k conjunctions, so N ≥ 10(10 ln 2 + ln 20) = 99.3, i.e. N ≥ 100.",
+      "expect": { "conjunction-count": false, "n-conjunctions": false, "n-boolean": false }
+    }
+  ]
+}

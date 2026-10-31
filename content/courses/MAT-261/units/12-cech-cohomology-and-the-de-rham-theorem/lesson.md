@@ -1,0 +1,7 @@
+## Outline: Čech cohomology, Stokes' theorem and the de Rham theorem
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 33–34 of the MIT 18.965 Fall 2004 notes (CC BY-NC-SA 4.0), keeping the notes' statement numbering (§26.1, §27, Definition 27.2, §28), with Hitchin §7.1–7.2 (reference-only) for orientation, integration and Stokes' theorem.
+
+**Scope.** Čech cohomology of an open cover with coefficients in a sheaf, refinement and the passage to the limit; sheaves admitting partitions of unity (fine sheaves) and the acyclicity of the sheaf of $p$-forms; the double complex argument by which the Poincaré lemma, applied on a good cover, identifies Čech cohomology with constant coefficients and de Rham cohomology; orientation of manifolds, integration of top-degree forms and Stokes' theorem, used to show that $H^n_{dR}$ of a compact oriented $n$-manifold is non-zero. Smale's immersion theorem (lecture 35) is listed as optional further reading and is not assessed.
+
+**What preparation will add.** A full lesson with definitions, examples and non-examples, the main theorems with their hypotheses in view, original exercises with hint ladders and rubrics, instructor reference reasoning for the assessor, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

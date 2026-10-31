@@ -1,0 +1,31 @@
+{
+  "id": "PHY-210-u03",
+  "courseId": "PHY-210",
+  "sequence": 3,
+  "title": "Free-float frames and the lattice of clocks",
+  "summary": "Operational definition of inertial (free-float) frames; their local character and tidal limits; test particles; the latticework of rods and synchronised clocks; the observer as a lattice; measuring speed; the rocket frame.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 2 (Floating Free), Section 3.1, and MIT 8.20 Week 1." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "newtonian-mechanics"],
+  "teachesConceptIds": ["minkowski-spacetime"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 2 Floating Free (pp. 25–52): Sections 2.1–2.10 and the exercises.", "locatorId": "stp-ch2", "estimatedMinutes": 70 },
+    { "description": "Re-read Section 3.1 The Principle of Relativity (pp. 53–55).", "locatorId": "stp-ch3-s1", "estimatedMinutes": 10 },
+    { "description": "Optional: MIT 8.20 Week 1 videos, Lecture 2.1 Events and Lecture 2.2 Galilean Transformation.", "locatorId": "sr21-week1", "estimatedMinutes": 25 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Reading: free-float frames", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["stp-ch2", "stp-ch3-s1", "sr21-week1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 200,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 2 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Chapter 3 Section 3.1 located in the extracted text of 03_chapter3.pdf; MIT 8.20 Week 1 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

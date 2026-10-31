@@ -1,0 +1,47 @@
+{
+  "id": "NEU-220-u01",
+  "courseId": "NEU-220",
+  "sequence": 1,
+  "title": "Models of what, how and why",
+  "summary": "Neuromatch W1D1 re-paced for a week: spikes, firing rates and inter-spike intervals from a real recording (the Steinmetz et al. 2019 subset the tutorials load); descriptive 'what' models of the ISI distribution; a mechanistic 'how' model, the leaky integrate-and-fire neuron, solved exactly for constant input; a normative 'why' model, maximum-entropy spiking under a rate constraint, proved; and the habit of stating for every model what it assumes and what observation would refute it.",
+  "objectives": [
+    { "id": "u01-o1", "description": "Compute firing rates, ISI distributions and the coefficient of variation from spike trains, and derive the exponential ISI law of a Poisson process with and without a refractory period." },
+    { "id": "u01-o2", "description": "Solve the leaky integrate-and-fire equation for constant input, derive the rheobase and the firing-rate formula, and say what the model omits." },
+    { "id": "u01-o3", "description": "Prove that the exponential distribution maximises entropy among nonnegative distributions of fixed mean, and interpret the result as a normative claim with stated constraints." },
+    { "id": "u01-o4", "description": "Classify models as descriptive, mechanistic or normative, pair each with its assumptions and a refuting observation, and keep recorded data distinct from simulated data in every statement." }
+  ],
+  "prerequisiteConceptIds": ["ode-basics", "applied-statistics-basics", "python-scientific-computing"],
+  "teachesConceptIds": ["neural-spiking-basics", "model-types-what-how-why", "leaky-integrate-and-fire"],
+  "preparation": [
+    { "description": "Neuromatch prerequisites page: check the Python, linear algebra, statistics and calculus expectations; the W0D1 Python workshop (LIF neuron part I) and W0D5 Statistics refreshers are optional bridges if anything is unfamiliar.", "locatorId": "nma-prereqs", "estimatedMinutes": 15 },
+    { "description": "W1D1 Tutorial 1, 'What' models: load the Steinmetz dataset (real recordings, acknowledged on the page), plot spike counts and rasters, compute ISI distributions and compare candidate functional forms.", "locatorId": "nma-w1d1-t1", "estimatedMinutes": 60 },
+    { "description": "W1D1 Tutorial 2, 'How' models: simulate the linear and leaky integrate-and-fire neuron with Poisson input spikes and inhibition (simulated data).", "locatorId": "nma-w1d1-t2", "estimatedMinutes": 60 },
+    { "description": "W1D1 Tutorial 3, 'Why' models: entropy of toy ISI distributions and of the Steinmetz ISIs.", "locatorId": "nma-w1d1-t3", "estimatedMinutes": 45 },
+    { "description": "W1D1 Tutorial 4, Model discussions: read the prompts and answer them in the notebook as a solo learner.", "locatorId": "nma-w1d1-t4", "estimatedMinutes": 15 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "reading", "title": "Lesson: three kinds of model", "instructions": "Read the lesson before the notebooks. For each of the three model types write in the notebook: what it takes as input, what it predicts, one assumption and one observation that would count against it. Note which data in this unit are recorded (Steinmetz) and which are simulated (every LIF run).", "estimatedMinutes": 45, "sourceLocatorIds": ["nma-w1d1", "nma-w1d1-t1", "nma-w1d1-t2", "nma-w1d1-t3"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "problem", "title": "Work through the W1D1 tutorials (Neuromatch notebooks)", "instructions": "Run Tutorials 1–3 in the Neuromatch book (they open in Colab or Kaggle from the page; the code is BSD-3 licensed). Do the coding exercises yourself before revealing solutions. Keep a log of every plot you make with one sentence on what it shows and whether the data were recorded or simulated. Neuromatch allots about three hours of pod time to this day; alone, expect longer.", "estimatedMinutes": 180, "sourceLocatorIds": ["nma-w1d1-t1", "nma-w1d1-t2", "nma-w1d1-t3", "nma-w1d1-t4"], "exerciseIds": [], "sessionKind": "lab" },
+    { "id": "u01-a3", "type": "problem", "title": "Tutorial: the Poisson ISI and the LIF neuron, solved exactly", "instructions": "Attempt exercises 1 and 2 before asking for hints. Both are derivations with a numerical check at the end; do the derivation first and only then the numbers.", "estimatedMinutes": 90, "sourceLocatorIds": ["nma-w1d1-t1", "nma-w1d1-t2"], "exerciseIds": ["NEU-220-u01-ex1", "NEU-220-u01-ex2"], "sessionKind": "tutorial" },
+    { "id": "u01-a4", "type": "proof_workshop", "title": "Proof workshop: why exponential ISIs", "instructions": "Exercise 3. Write the proof in full; then write the interpretive paragraph with the notes closed.", "estimatedMinutes": 45, "sourceLocatorIds": ["nma-w1d1-t3"], "exerciseIds": ["NEU-220-u01-ex3"], "sessionKind": "problem_class" },
+    { "id": "u01-a5", "type": "explain_back", "title": "Explain: the three models in your own words", "instructions": "Without the lesson open, answer Tutorial 4's prompts in the notebook in under 300 words: which model types answer which questions, and what would be missing if one type did not exist. The tutor compares your answer with the lesson's table.", "estimatedMinutes": 15, "sourceLocatorIds": ["nma-w1d1-t4"], "exerciseIds": [], "sessionKind": "oral" }
+  ],
+  "exerciseIds": ["NEU-220-u01-ex1", "NEU-220-u01-ex2", "NEU-220-u01-ex3"],
+  "exitCheck": { "description": "Exercise 2 accepted: the LIF equation solved for constant input, the rheobase and firing-rate formula derived, the numbers matching, and the model's omissions named; and exercise 1 accepted with the exponential ISI law and the refractory CV derived.", "exerciseId": "NEU-220-u01-ex2" },
+  "commonMisconceptions": [
+    { "claim": "A model that reproduces the data explains it.", "correction": "A descriptive model can fit an ISI histogram with several functional forms; fitting is evidence of shape, not of mechanism. Mechanistic claims need a 'how' model whose assumptions can be tested separately, and normative claims need the constraint stated.", "correctionLocatorIds": ["nma-w1d1-t1", "nma-w1d1-t3"] },
+    { "claim": "Irregular spiking means the neuron is noisy and the model is wrong.", "correction": "A Poisson process has CV = 1 by construction; irregularity is what the descriptive model predicts. The question is whether the measured CV, the gap at short intervals and the dependence between successive intervals match.", "correctionLocatorIds": ["nma-w1d1-t1"] },
+    { "claim": "The leaky integrate-and-fire neuron's firing rate is proportional to the input current.", "correction": "Below rheobase it is zero; above, it grows as 1/(t_ref + τ ln(...)), a logarithmic-type curve that only looks linear well above threshold and saturates at 1/t_ref.", "correctionLocatorIds": ["nma-w1d1-t2"] },
+    { "claim": "The exponential ISI distribution is 'optimal', so real neurons should show it.", "correction": "It maximises entropy under one constraint (fixed mean) with no refractory period. Real ISIs have refractory gaps and bursts; the normative model is a hypothesis about what is being optimised, refuted or refined by those deviations.", "correctionLocatorIds": ["nma-w1d1-t3"] }
+  ],
+  "estimatedMinutes": 575,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W1D1 chapter page and Tutorials 1–4 opened 2026-10-30; objectives, section structure, models (linear and leaky IF equations; entropy formula) and data statements recorded (Tutorial 1 and 3 use the Steinmetz et al. 2019 subset; Tutorial 2 simulates Poisson inputs). Prerequisites page opened. All pages carry the CC BY 4.0 footer." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived: Poisson ISI density r e^{−rτ}, mean 1/r, SD 1/r, CV 1; with refractory period t_ref the mean is t_ref + 1/r and CV = 1/(1 + r t_ref); r = 20 s⁻¹, t_ref = 5 ms gives mean 55 ms and CV 0.909. LIF with E_L = −70, V_th = −50, V_reset = −65 mV, τ_m = 10 ms, R = 10 MΩ, t_ref = 2 ms, I = 3.0 nA: V_∞ = −40 mV, T = 10 ln(25/10) = 9.163 ms, f = 1/(11.163 ms) = 89.6 Hz, rheobase 2.0 nA. Max-entropy: H(exponential, mean μ) = 1 + ln μ; uniform on [0, 2μ] has ln 2 + ln μ, smaller by 1 − ln 2 = 0.307 nats." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson states the exponential ISI result and the LIF equation but leaves the derivations, the refractory CV, the firing-rate formula and the entropy proof to the exercises; its worked numbers (r = 10 s⁻¹ ISI example; sub-threshold LIF case) differ from the exercises'. Reference reasoning only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "195 minutes of notebook preparation, 45 of lesson, 180 of tutorial work, 90 + 45 of derivations and 15 of explanation ≈ 9.5 hours: one teaching week at the upper end of 8–12 hours, deliberately, because the notebooks are the learner's first contact with the Neuromatch format." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["NEU-220-u01-ex1.reference-solution.md", "NEU-220-u01-ex2.reference-solution.md", "NEU-220-u01-ex3.reference-solution.md", "NEU-220-u01-ex3.grading-notes.md", "lesson-notes.md"]
+}

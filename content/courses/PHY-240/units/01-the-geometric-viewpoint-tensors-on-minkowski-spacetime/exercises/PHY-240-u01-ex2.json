@@ -1,0 +1,67 @@
+{
+  "id": "PHY-240-u01-ex2",
+  "sequence": 2,
+  "title": "Tensor or not?",
+  "kind": "proof",
+  "promptMarkdown": "Signature $(-,+,+,+)$. For every claim that something 'is a tensor', state the class of transformations under which the claim holds (Lorentz transformations with constant $\\Lambda$, or general coordinate transformations $x\\to x'(x)$).\n\n1. Let $T^{\\mu\\nu}$ be a $(2,0)$ tensor. Prove that the trace $T^\\mu{}_\\mu = \\eta_{\\mu\\nu}T^{\\mu\\nu}$ is a Lorentz scalar, and show by an explicit boost of a specific tensor that the 'sum of the diagonal components' $\\sum_\\mu T^{\\mu\\mu}$ is not.\n2. Prove that $\\delta^\\mu{}_\\nu$ and $\\eta_{\\mu\\nu}$ have the same components in every inertial frame, and explain why this is *not* true of $\\eta_{\\mu\\nu}$ under general coordinate transformations.\n3. Let $A_\\nu$ be a one-form field. Show that $\\partial_\\mu A_\\nu$ is a tensor under Lorentz transformations. Then compute how $\\partial_\\mu A_\\nu$ transforms under a general coordinate transformation and identify the term that spoils the tensor law.\n4. Show that $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$ *is* a tensor under general coordinate transformations, and say in one sentence why this matters for electromagnetism.",
+  "conceptIds": ["tensor-calculus-spacetime", "four-vectors"],
+  "hintLadder": [
+    "For a concrete counterexample take $T^{\\mu\\nu} = u^\\mu u^\\nu$ for a particle at rest, then boost.",
+    "For part 2 use $\\Lambda^T\\eta\\Lambda = \\eta$ and $\\Lambda\\Lambda^{-1} = 1$. Under a general transformation the Jacobian $\\partial x'/\\partial x$ replaces $\\Lambda$ and need not satisfy the first relation.",
+    "Write $A'_\\nu = \\frac{\\partial x^\\beta}{\\partial x'^\\nu}A_\\beta$ and differentiate with respect to $x'^\\mu$ using the chain rule. One term contains a second derivative of the coordinate map.",
+    "Second partial derivatives are symmetric in their two indices."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "diagonal-sum-not-invariant",
+      "kind": "forbidden_claim",
+      "description": "claiming that the plain sum of diagonal components is invariant or a scalar",
+      "params": {
+        "patterns": [
+          "sum of (the )?diagonal (components|elements|entries)[^.]{0,40}\\b(is|are|remains|stays) (invariant|a (lorentz )?scalar|the same in (all|every) frame)",
+          "sum_\\\\?(mu|μ) ?t\\^\\{?(mu|μ)(mu|μ)\\}?[^.]{0,40}\\b(is|are|remains|stays) (invariant|a (lorentz )?scalar)",
+          "(diagonal sum|plain sum)[^.]{0,40}\\b(is|are|remains|stays) (invariant|a (lorentz )?scalar)"
+        ]
+      }
+    },
+    {
+      "id": "tensor-claim-hypothesis",
+      "kind": "requires_hypothesis",
+      "description": "a claim that an object is a tensor must name the transformation class (Lorentz/constant Λ, or general coordinate transformations)",
+      "params": {
+        "triggerPatterns": [ "is a tensor", "are tensors", "transforms as a tensor" ],
+        "hypothesisPatterns": [ "lorentz", "constant", "inertial", "linear", "general coordinate", "any coordinate", "all coordinate", "arbitrary coordinate", "diffeomorphism" ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "trace", "criterion": "Trace invariance proved via the transformation laws and Λᵀ η Λ = η (or via contraction); a concrete boosted counterexample for Σ T^μμ (e.g. u u at rest gives 1, boosted gives γ²(1 + v²)).", "weight": 0.3, "levels": [ { "label": "met", "description": "Proof and explicit counterexample." }, { "label": "partially met", "description": "Counterexample asserted without numbers." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "invariant-tensors", "criterion": "δ and η invariant under Lorentz transformations with the two identities; η's components change under general transformations because the Jacobian need not preserve η (e.g. polar coordinates give g_θθ = r²).", "weight": 0.2, "levels": [ { "label": "met", "description": "Both with reasons." }, { "label": "partially met", "description": "One reason missing." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "partial-derivative", "criterion": "∂_μ A_ν tensorial for constant Λ; under general transformations the extra term (∂²x^β/∂x′^μ∂x′^ν) A_β identified as the obstruction.", "weight": 0.3, "levels": [ { "label": "met", "description": "Both parts with the term written." }, { "label": "partially met", "description": "Obstruction named but not derived." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "antisymmetric", "criterion": "The obstruction is symmetric in μν and cancels in F_μν, which is therefore a tensor under general coordinate changes; consequence: Maxwell's equations can be written covariantly in any coordinates.", "weight": 0.2, "levels": [ { "label": "met", "description": "Proof and consequence." }, { "label": "partially met", "description": "Proof without consequence." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "checkExamples": [
+    {
+      "label": "correct solution",
+      "text": "The trace η_μν T^μν is a Lorentz scalar because the two Λ factors are absorbed by Λᵀ η Λ = η. For T = u u with u = (1,0) at rest the diagonal sum is 1, but after a boost u = γ(1, v) it is γ²(1 + v²), so the sum of the diagonal components is not invariant. ∂_μ A_ν is a tensor under Lorentz transformations because Λ is constant; under general coordinate transformations the term (∂²x^β/∂x′^μ∂x′^ν)A_β appears, but it is symmetric and cancels in F_μν, which is therefore a tensor under any coordinate transformation.",
+      "expect": { "diagonal-sum-not-invariant": true, "tensor-claim-hypothesis": true }
+    },
+    {
+      "label": "diagonal-sum misconception",
+      "text": "The sum of the diagonal components is invariant since it is the trace of the matrix, and the trace of a matrix does not depend on the basis.",
+      "expect": { "diagonal-sum-not-invariant": false }
+    },
+    {
+      "label": "tensor claim without class",
+      "text": "The object ∂_μ A_ν is a tensor, as one checks by writing out its components.",
+      "expect": { "tensor-claim-hypothesis": false }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u06",
+  "courseId": "COG-201",
+  "sequence": 6,
+  "title": "Hierarchical models and learning to learn",
+  "summary": "Overhypotheses and shared priors; the blessing of abstraction; the shape bias and one-shot learning of categories; intuitive theories and the role of theories in induction; learning domain structures.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lectures 19–21 (Intuitive Biology and the Role of Theories; Learning Domain Structures 1–2), lecture 11's hierarchical-priors slides, and the web book's Hierarchical models chapter." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-inference-cognition", "bayesian-occams-razor"],
+  "teachesConceptIds": ["hierarchical-bayesian-models"],
+  "preparation": [
+    { "description": "Revisit OCW lecture 11 slides 30–39 (origin of prior knowledge; problems with simple empiricism; a simple theory; hierarchical priors) and read lectures 19, 20 and 21.", "locatorId": "cocosci04-l11-hierarchical", "estimatedMinutes": 70 },
+    { "description": "Read the web book's Hierarchical models chapter (shared prototypes; the blessing of abstraction; overhypotheses; the shape bias; one-shot learning of visual categories). Reference-only.", "locatorId": "pm2-ch-hierarchical-models", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Lectures 19–21 with the Hierarchical models chapter", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["cocosci04-l11-origin-prior", "cocosci04-l11-simple-empiricism", "cocosci04-l11-simple-theory", "cocosci04-l11-hierarchical", "cocosci04-lec19", "cocosci04-lec20", "cocosci04-lec21", "pm2-ch-hierarchical-models"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 11 hierarchical-prior slides verified 2026-10-30 at PDF pages 30–39 from extracted text; lecture 19, 20 and 21 PDF resource pages confirmed (HTTP 200), not text-extracted. Web book Hierarchical models chapter returned HTTP 200 with h1 'Hierarchical models'." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

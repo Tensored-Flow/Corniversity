@@ -1,0 +1,72 @@
+{
+  "id": "CHE-101-u04-ex2",
+  "sequence": 2,
+  "title": "Spontaneity and temperature: decomposing calcium carbonate",
+  "kind": "calculation",
+  "promptMarkdown": "Limestone decomposes on heating: $\\ce{CaCO3(s) -> CaO(s) + CO2(g)}$. Data at 298.15 K and 1 bar: $\\Delta H^\\circ_f$ (kJ mol⁻¹): $\\ce{CaCO3(s)}$ −1207.6, $\\ce{CaO(s)}$ −634.9, $\\ce{CO2(g)}$ −393.5. $S^\\circ$ (J K⁻¹ mol⁻¹): $\\ce{CaCO3(s)}$ 91.7, $\\ce{CaO(s)}$ 38.1, $\\ce{CO2(g)}$ 213.8. $R = 8.314\\ \\text{J K}^{-1}\\text{mol}^{-1}$.\n\n1. Compute $\\Delta H^\\circ_r$ and $\\Delta S^\\circ_r$, and say before calculating what sign you expect for $\\Delta S^\\circ_r$ and why.\n2. Compute $\\Delta G^\\circ_r$ at 298.15 K. Is the decomposition spontaneous under standard conditions at this temperature?\n3. Estimate the temperature above which the decomposition becomes spontaneous under standard conditions, and state the assumption this estimate requires.\n4. Compute $K$ at 298.15 K and interpret it as an equilibrium pressure of $\\ce{CO2}$ over the solids (which species appear in $K$ and which do not?). What is $K$ at the crossover temperature?\n5. A learner says 'the reaction is endothermic, so it cannot happen'. Correct the statement in two sentences.",
+  "conceptIds": ["entropy-free-energy", "chemical-equilibrium-constant", "enthalpy-thermochemistry"],
+  "hintLadder": [
+    "One mole of gas is produced from solids only; think about what that does to the number of microstates.",
+    "Convert $\\Delta S^\\circ$ to kJ K⁻¹ mol⁻¹ before forming $\\Delta H^\\circ - T\\Delta S^\\circ$.",
+    "$\\Delta G^\\circ = 0$ when $T = \\Delta H^\\circ/\\Delta S^\\circ$, provided both are treated as constants over the temperature range.",
+    "Pure solids have activity 1, so $K$ contains only the $\\ce{CO2}$ pressure divided by 1 bar. $\\ln K = -\\Delta G^\\circ/RT$ with $\\Delta G^\\circ$ in joules."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "enthalpy",
+      "kind": "numeric_value",
+      "description": "ΔH° = +179.2 kJ/mol",
+      "params": { "expected": 179.2, "tolerance": 0.3 }
+    },
+    {
+      "id": "entropy",
+      "kind": "numeric_value",
+      "description": "ΔS° = +160.2 J/(K mol)",
+      "params": { "expected": 160.2, "tolerance": 0.3 }
+    },
+    {
+      "id": "gibbs",
+      "kind": "numeric_value",
+      "description": "ΔG°(298.15 K) ≈ +131.4 kJ/mol",
+      "params": { "expected": 131.4, "tolerance": 0.8 }
+    },
+    {
+      "id": "crossover",
+      "kind": "numeric_value",
+      "description": "crossover temperature ≈ 1119 K",
+      "params": { "expected": 1119, "tolerance": 4 }
+    },
+    {
+      "id": "constancy-assumed",
+      "kind": "requires_hypothesis",
+      "description": "a crossover temperature must be accompanied by the assumption that ΔH° and ΔS° are independent of temperature",
+      "params": { "triggerPatterns": ["crossover", "becomes spontaneous", "spontaneous above", "above (about |approximately |roughly )?\\d"], "hypothesisPatterns": ["assum", "independent of temperature", "temperature.independent", "do(es)? not (vary|change|depend)", "constant"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "h-and-s", "criterion": "ΔH° = +179.2 kJ/mol and ΔS° = +160.2 J/(K mol), with the positive entropy sign anticipated from gas formation.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both values, with the prediction." }, { "label": "partially met", "description": "One value wrong by a coefficient or sign." }, { "label": "not met", "description": "Both wrong." }] },
+      { "id": "gibbs", "criterion": "ΔG°(298.15 K) = 179.2 − 298.15(0.1602) = +131.4 kJ/mol; not spontaneous under standard conditions.", "weight": 0.2, "levels": [{ "label": "met", "description": "Correct with units handled." }, { "label": "partially met", "description": "Factor-of-1000 slip in TΔS noticed or not." }, { "label": "not met", "description": "Wrong conclusion." }] },
+      { "id": "crossover", "criterion": "T* = ΔH°/ΔS° ≈ 1119 K (about 846 °C), stated as an estimate assuming ΔH° and ΔS° independent of temperature.", "weight": 0.2, "levels": [{ "label": "met", "description": "Value and assumption." }, { "label": "partially met", "description": "Value without the assumption." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "k", "criterion": "K = exp(−131400/(8.314 × 298.15)) ≈ 9 × 10⁻²⁴, equal to P(CO2)/1 bar since both solids have activity 1; K = 1 (P(CO2) = 1 bar) at the crossover.", "weight": 0.2, "levels": [{ "label": "met", "description": "Value, the solids argument and K = 1 at crossover." }, { "label": "partially met", "description": "Two of the three." }, { "label": "not met", "description": "Solids included in K or value wrong by orders of magnitude." }] },
+      { "id": "correction", "criterion": "Endothermic reactions can be spontaneous when TΔS exceeds ΔH; here that happens above about 1119 K, and even below it the reaction proceeds to a (tiny) equilibrium extent.", "weight": 0.1, "levels": [{ "label": "met", "description": "Both points." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Agrees with the learner." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "ΔH° = (-634.9 - 393.5) - (-1207.6) = +179.2 kJ/mol. A gas is produced from solids, so ΔS° should be positive: 38.1 + 213.8 - 91.7 = +160.2 J/(K mol). ΔG°(298.15 K) = 179.2 - 298.15 x 0.1602 = +131.4 kJ/mol, not spontaneous. The crossover is T = 179200/160.2 = 1119 K, assuming ΔH° and ΔS° are independent of temperature. K = exp(-131400/(8.314 x 298.15)) = 9 x 10^-24 = P(CO2)/1 bar, since the two solids have activity 1; at the crossover K = 1. Endothermic reactions can be spontaneous once TΔS exceeds ΔH, so the reaction happens above about 1119 K, and below it there is still a small equilibrium pressure of CO2.",
+      "expect": { "enthalpy": true, "entropy": true, "gibbs": true, "crossover": true, "constancy-assumed": true }
+    },
+    {
+      "label": "unit slip and no assumption",
+      "text": "ΔH° = 179.2 kJ/mol, ΔS° = 160.2 J/(K mol), so ΔG° = 179.2 - 298.15 x 160.2 = -47583 kJ/mol and the reaction is spontaneous; it becomes spontaneous above 1119 K.",
+      "expect": { "gibbs": false, "constancy-assumed": false, "enthalpy": true, "crossover": true }
+    }
+  ]
+}

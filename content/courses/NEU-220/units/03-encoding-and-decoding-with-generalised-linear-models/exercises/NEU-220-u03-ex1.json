@@ -1,0 +1,66 @@
+{
+  "id": "NEU-220-u03-ex1",
+  "sequence": 1,
+  "title": "The Poisson GLM: likelihood, gradient, concavity and meaning",
+  "kind": "derivation",
+  "promptMarkdown": "In W1D3 Tutorial 1 the Poisson GLM (linear–nonlinear–Poisson model) has rate $\\lambda_t = \\exp(\\mathbf{x}_t^\\top\\boldsymbol\\theta)$ and counts $y_t \\sim \\text{Poisson}(\\lambda_t)$, independent across time bins given the inputs. Let $\\mathbf{X}$ be the $T \\times d$ design matrix with rows $\\mathbf{x}_t^\\top$ (including a column of ones), $\\mathbf{y}$ the count vector and $\\boldsymbol\\lambda = \\exp(\\mathbf{X}\\boldsymbol\\theta)$ elementwise.\n\n1. Write the log-likelihood $\\ell(\\boldsymbol\\theta)$ up to terms that do not depend on $\\boldsymbol\\theta$, in sum form and in the matrix form the tutorial uses.\n2. Derive the gradient $\\nabla\\ell$ and the Hessian $\\nabla^2\\ell$ in matrix form. Show that the Hessian is negative semidefinite, conclude that $\\ell$ is concave, and state the condition on $\\mathbf{X}$ under which the maximiser is unique.\n3. Write the stationarity condition $\\nabla\\ell = 0$ as a moment-matching statement in words. For the intercept-only model ($\\mathbf{X}$ a single column of ones) solve it exactly and interpret the result.\n4. Interpret a fitted filter weight $\\theta_k$: what does a unit increase in the stimulus at lag $k$ do to the predicted rate, and why is this a multiplicative rather than additive effect? Contrast with the Linear-Gaussian model's prediction and name the two defects of that model the Poisson GLM repairs.\n5. State two assumptions of the model that a real spike train can violate, and for one of them say what pattern in the residuals would reveal the violation and what input you would add to the design matrix to address it.",
+  "conceptIds": ["poisson-glm-encoding", "maximum-likelihood-estimation"],
+  "hintLadder": [
+    "$\\ln P(y_t \\mid \\lambda_t) = y_t\\ln\\lambda_t - \\lambda_t - \\ln y_t!$, and $\\ln\\lambda_t = \\mathbf{x}_t^\\top\\boldsymbol\\theta$.",
+    "Differentiate term by term: $\\partial(y_t\\mathbf{x}_t^\\top\\boldsymbol\\theta)/\\partial\\boldsymbol\\theta = y_t\\mathbf{x}_t$ and $\\partial\\exp(\\mathbf{x}_t^\\top\\boldsymbol\\theta)/\\partial\\boldsymbol\\theta = \\lambda_t\\mathbf{x}_t$. Collect into $\\mathbf{X}^\\top(\\cdot)$.",
+    "For any vector $\\mathbf{v}$, $\\mathbf{v}^\\top\\mathbf{X}^\\top\\text{diag}(\\boldsymbol\\lambda)\\mathbf{X}\\mathbf{v} = \\sum_t\\lambda_t(\\mathbf{x}_t^\\top\\mathbf{v})^2 \\ge 0$.",
+    "With one column of ones, $\\mathbf{X}^\\top(\\mathbf{y} - \\boldsymbol\\lambda) = \\sum_t(y_t - e^{\\theta_0})$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "gradient-residual",
+      "kind": "expression_present",
+      "description": "the gradient contains the residual y − λ",
+      "params": { "patterns": ["\\(y-(λ|\\\\lambda|lambda|\\\\boldsymbol\\\\lambda|\\\\hat\\{?y\\}?)\\)", "\\(y_t-(λ|\\\\lambda|lambda)_t\\)", "\\(\\\\mathbf\\{y\\}-\\\\boldsymbol\\\\lambda\\)", "\\(\\\\mathbf\\{y\\}-\\\\lambda\\)"] }
+    },
+    {
+      "id": "concavity",
+      "kind": "expression_present",
+      "description": "concavity is concluded",
+      "params": { "patterns": ["concav"] }
+    },
+    {
+      "id": "intercept-mle",
+      "kind": "expression_present",
+      "description": "the intercept-only MLE is the log of the mean count",
+      "params": { "patterns": ["ln\\(\\\\bar\\{?y\\}?\\)", "log\\(\\\\bar\\{?y\\}?\\)", "ln\\(ȳ\\)", "log\\(ȳ\\)", "ln\\((the)?mean", "log\\((the)?mean", "log(arithm)?ofthemean", "lnofthemean", "=\\\\ln\\\\bar", "ln\\(\\\\frac\\{1\\}\\{t\\}", "ln\\(\\(1\\)/\\(t\\)"] }
+    },
+    {
+      "id": "general-derivation",
+      "kind": "finite_examples_not_proof",
+      "description": "the derivation must be general, not checked on particular values",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "likelihood", "criterion": "ℓ(θ) = Σ_t [y_t x_tᵀθ − exp(x_tᵀθ)] + const = yᵀXθ − 1ᵀexp(Xθ), matching the tutorial's yᵀlog λ − 1ᵀλ.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both forms, constant identified." }, { "label": "partially met", "description": "One form." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "gradient-hessian", "criterion": "∇ℓ = Xᵀ(y − λ); ∇²ℓ = −Xᵀdiag(λ)X; negative semidefinite via Σλ_t(x_tᵀv)² ≥ 0; concave; unique maximiser when X has full column rank.", "weight": 0.35, "levels": [{ "label": "met", "description": "All, with the quadratic-form argument." }, { "label": "partially met", "description": "Gradient and Hessian right, semidefiniteness asserted." }, { "label": "not met", "description": "Gradient wrong." }] },
+      { "id": "moment-matching", "criterion": "At the optimum Xᵀy = Xᵀλ: observed and predicted counts agree when weighted by each input; intercept-only gives λ = ȳ, θ₀ = ln ȳ, the baseline rate is the mean count.", "weight": 0.2, "levels": [{ "label": "met", "description": "Words and the intercept solution." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "interpretation", "criterion": "Rate multiplied by e^{θ_k} per unit stimulus at lag k because the nonlinearity is exponential; the Linear-Gaussian model adds θ_k to the rate, can predict negative rates and assumes constant-variance continuous noise.", "weight": 0.15, "levels": [{ "label": "met", "description": "Multiplicative interpretation and both defects." }, { "label": "partially met", "description": "Interpretation without the contrast." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "assumptions", "criterion": "Two assumptions (conditional independence of bins; stationarity; linearity in the exponent; Poisson variance) with a residual pattern (e.g. autocorrelated residuals or a refractory dip after spikes) and a remedy (spike-history inputs).", "weight": 0.15, "levels": [{ "label": "met", "description": "Two assumptions, pattern and remedy." }, { "label": "partially met", "description": "Assumptions only." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct derivation",
+      "text": "For arbitrary T and d: ℓ(θ) = Σ_t [y_t x_tᵀθ − exp(x_tᵀθ)] + const = yᵀXθ − 1ᵀexp(Xθ), the tutorial's yᵀlog λ − 1ᵀλ. Gradient: ∇ℓ = Σ_t (y_t − λ_t) x_t = Xᵀ(y − λ). Hessian: ∇²ℓ = −Σ_t λ_t x_t x_tᵀ = −Xᵀ diag(λ) X; for any v, vᵀXᵀdiag(λ)Xv = Σ_t λ_t (x_tᵀv)² ≥ 0, so the Hessian is negative semidefinite and ℓ is concave; if X has full column rank the inequality is strict and the maximiser is unique. Stationarity Xᵀy = Xᵀλ says observed and predicted counts agree when weighted by each input column. Intercept only: Σ_t (y_t − e^{θ₀}) = 0 gives λ = ȳ and θ₀ = ln(ȳ), the log of the mean count. A unit increase in the stimulus at lag k multiplies the rate by e^{θ_k}, a multiplicative effect because the nonlinearity is exponential; the Linear-Gaussian model adds θ_k to the rate, can predict negative rates, and assumes constant-variance continuous noise. Assumptions a real spike train can violate: conditional independence of bins (refractoriness and bursting produce autocorrelated residuals; add spike-history inputs) and stationarity (drifting residuals over the recording).",
+      "expect": { "gradient-residual": true, "concavity": true, "intercept-mle": true, "general-derivation": true }
+    },
+    {
+      "label": "wrong gradient and convexity",
+      "text": "The gradient is Xᵀy and the likelihood is convex so gradient descent fails; the intercept-only MLE is the mean count.",
+      "expect": { "gradient-residual": false, "concavity": false, "intercept-mle": false }
+    }
+  ]
+}

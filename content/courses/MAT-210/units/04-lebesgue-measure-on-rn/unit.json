@@ -1,0 +1,30 @@
+{
+  "id": "MAT-210-u04",
+  "courseId": "MAT-210",
+  "sequence": 4,
+  "title": "Lebesgue measure on R^n",
+  "summary": "Construction of Lebesgue measure: special rectangles and polygons, measure of open sets by approximation from within and of compact sets from outside, outer and inner measures, Lebesgue measurability first for sets of finite outer measure and then in general, and the proof that (R^n, L, λ) is a measure space.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 6–7 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["measure-space", "sigma-algebra", "metric-spaces"],
+  "teachesConceptIds": ["outer-measure", "lebesgue-measure"],
+  "preparation": [
+    { "description": "Read lecture 6: special rectangles and polygons, measure of open and compact sets, outer and inner measures.", "locatorId": "mi03-lec06", "estimatedMinutes": 60 },
+    { "description": "Read lecture 7: Lebesgue measurability for finite outer measure, removal of the restriction, and the proof that L is a σ-algebra and λ a measure.", "locatorId": "mi03-lec07", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Lectures 6–7: constructing Lebesgue measure", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["mi03-lec06", "mi03-lec07"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locators: the OCW lecture-notes page and the resource pages for lectures 6 and 7 were opened 2026-10-30 and the PDF URLs recorded; the PDF files themselves were not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

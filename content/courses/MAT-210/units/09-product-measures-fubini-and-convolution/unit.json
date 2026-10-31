@@ -1,0 +1,32 @@
+{
+  "id": "MAT-210-u09",
+  "courseId": "MAT-210",
+  "sequence": 9,
+  "title": "Product measures, Fubini and convolution",
+  "summary": "Fubini's theorem in R^n for nonnegative functions and for L^1 functions; product measures for general measure spaces and Fubini for the product measure; completion of product measures; convolution, Young's inequality, mollifiers and the density of smooth functions in L^p.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 18–21 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["lebesgue-measure", "lebesgue-integral", "lp-space"],
+  "teachesConceptIds": ["product-measure-fubini", "convolution-mollifiers"],
+  "preparation": [
+    { "description": "Read lecture 18: Fubini's theorem in R^n for nonnegative functions.", "locatorId": "mi03-lec18", "estimatedMinutes": 45 },
+    { "description": "Read lecture 19: Fubini for L^1 functions and the product measure for general measure spaces.", "locatorId": "mi03-lec19", "estimatedMinutes": 45 },
+    { "description": "Read lecture 20: Fubini for product measures, completion of product measures, convolutions.", "locatorId": "mi03-lec20", "estimatedMinutes": 45 },
+    { "description": "Read lecture 21: Young's inequality, mollifiers, density of smooth functions in L^p.", "locatorId": "mi03-lec21", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Lectures 18–21: Fubini, product measures, convolution", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["mi03-lec18", "mi03-lec19", "mi03-lec20", "mi03-lec21"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 360,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locators: the OCW lecture-notes page and the resource pages for lectures 18–21 were opened 2026-10-30 and the PDF URLs recorded; the PDF files themselves were not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

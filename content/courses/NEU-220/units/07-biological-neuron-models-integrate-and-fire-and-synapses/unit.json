@@ -1,0 +1,30 @@
+{
+  "id": "NEU-220-u07",
+  "courseId": "NEU-220",
+  "sequence": 7,
+  "title": "Biological neuron models: integrate-and-fire and synapses",
+  "summary": "Neuromatch W2D4: the leaky integrate-and-fire neuron under stochastic input, the effects of input correlation on output spiking, models of static and dynamic synapses, and the bonus material on spike-timing-dependent plasticity; the mechanistic ('how') thread of unit 1 continued.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W2D4 (Tutorials 1–3 and the bonus STDP tutorial), building on the W1D1 'how' tutorial already verified." }
+  ],
+  "prerequisiteConceptIds": ["leaky-integrate-and-fire", "ode-basics", "neural-spiking-basics"],
+  "teachesConceptIds": ["leaky-integrate-and-fire"],
+  "preparation": [
+    { "description": "W2D4 Biological Neuron Models chapter page: Tutorial 1 The Leaky Integrate-and-Fire Neuron Model, Tutorial 2 Effects of Input Correlation, Tutorial 3 Synaptic transmission (static and dynamic synapses), bonus Tutorial 4 Spike-timing dependent plasticity.", "locatorId": "nma-w2d4", "estimatedMinutes": 180 },
+    { "description": "Re-read W1D1 Tutorial 2 ('How' models) for the integrate-and-fire model with Poisson inputs, which this unit extends.", "locatorId": "nma-w1d1-t2", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "problem", "title": "W2D4 tutorials (Neuromatch notebooks)", "instructions": "Work through the W2D4 tutorials from the chapter page. The prepared lesson, derivations and exercises are not yet written; this outline shows exactly what the unit will cover. The individual W2D4 tutorial pages have not yet been opened by Corniversity, so the chapter page is the verified locator.", "estimatedMinutes": 180, "sourceLocatorIds": ["nma-w2d4", "nma-w1d1-t2"], "exerciseIds": [], "sessionKind": "lab" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 380,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W2D4 chapter page opened 2026-10-30 with its tutorial list (Tutorials 1–3, bonus Tutorial 4, intro, outro, further reading, day summary); W1D1 Tutorial 2 opened and read in full. W2D4 tutorial pages not yet opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,37 +1,53 @@
 {
   "id": "NEU-220",
-  "version": 1,
+  "version": 2,
   "title": "Computational Neuroscience",
-  "departmentIds": [
-    "neuroscience"
-  ],
+  "departmentIds": ["neuroscience"],
   "level": "intermediate",
   "position": "Launch; evaluate Neuromatch as a spine",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch; evaluate Neuromatch as a spine). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Computational Neuroscience. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch; evaluate Neuromatch as a spine. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
+  "purpose": "Computational neuroscience through models you fit, break and explain: descriptive, mechanistic and normative models, model fitting and selection, generalised linear models for encoding and decoding, dimensionality reduction, then outlined units on neuron and network dynamics, Bayesian inference, hidden dynamics, reinforcement learning and causality, following the Neuromatch Academy course book (CC BY 4.0) re-paced for evening study, with original exercises and a model-fitting laboratory on explicitly synthetic data.",
+  "description": "Computational neuroscience asks what neurons and circuits compute, how, and why. This course follows the Neuromatch Academy curriculum's own organisation of that question: first the three kinds of model (descriptive, mechanistic, normative) and the discipline of saying what a model assumes and what would refute it; then the machine-learning core, fitting models by least squares and maximum likelihood, quantifying uncertainty, choosing complexity, encoding and decoding with generalised linear models, and reducing dimensionality; then, in outlined units, dynamics of neurons and networks, Bayesian decisions, hidden dynamics, reinforcement learning and causal inference.\n\n**How this adaptation works.** The spine is the Neuromatch Academy Computational Neuroscience course book (content CC BY 4.0; code BSD-3-Clause, recorded separately), which runs as a three-week intensive: fifteen days, each with about three hours of tutorials worked in pods with teaching assistants and three hours of project time. That schedule is not an evening workload estimate. Corniversity re-paces one Neuromatch day per teaching week over ten units, cites exact tutorial pages, replaces the pod project with a modelling portfolio and a synthesis project, and sets its own exercises. The catalogue asked for Neuromatch to be evaluated as a spine; the evaluation concluded in favour, because the book has real explanations, coding exercises, an inspectable sequence and an open licence, and the units record exactly which tutorials were opened.\n\n**Synthetic and real data.** Several Neuromatch tutorials load recorded data (a subset of Steinmetz et al. 2019; retinal ganglion cell recordings from Uzzell and Chichilnisky 2004) under their own terms; Corniversity links to those tutorials and does not redistribute the data. Corniversity's own laboratory uses synthetic data generated from a known model and labelled synthetic in every mention; nothing fitted to it is a claim about biological neurons.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises with hint ladders and rubrics, instructor reference reasoning and checks; outlined units have verified tutorial locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Classify a model as descriptive, mechanistic or normative, state its assumptions and the question it answers, and name an observation that would refute it.", "evidenceExpected": "Written model critiques and derivations in unit 1 that pair each model with its assumptions and a refuting observation." },
+    { "id": "o2", "description": "Fit models by least squares and maximum likelihood, quantify uncertainty with the bootstrap, and choose model complexity with held-out error or cross-validation, explaining why each step is justified.", "evidenceExpected": "Derivations of the estimators plus the synthetic-data fitting report with an out-of-sample comparison against a baseline." },
+    { "id": "o3", "description": "Build and interpret Poisson GLM encoding models and logistic-regression decoders with regularisation, reading fitted parameters as evidence about the model, not as facts about the brain.", "evidenceExpected": "Likelihood derivations, a decoder evaluated against chance and a baseline, and interpretations that separate model behaviour from biological claims." },
+    { "id": "o4", "description": "Use PCA to reduce and reconstruct neural population data and state what variance explained does and does not mean.", "evidenceExpected": "A derivation of PCA as variance maximisation, numerical variance-explained and reconstruction calculations, and a written interpretation with a counterexample." },
+    { "id": "o5", "description": "Keep synthetic teaching data distinct from biological observations in every claim, and identify a failure case for each model studied.", "evidenceExpected": "Every submitted interpretation labels the origin of its data; the laboratory report includes a failure-case section with the diagnostic that revealed it." }
+  ],
+  "prerequisiteRuleIds": ["NEU-220-mathematics", "NEU-220-python-and-statistics"],
+  "recommendedConceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "ode-basics", "python-scientific-computing", "applied-statistics-basics"],
+  "teachesConceptIds": [
+    "neural-spiking-basics", "model-types-what-how-why", "leaky-integrate-and-fire", "tuning-curves-encoding",
+    "model-fitting-least-squares", "maximum-likelihood-estimation", "bootstrap-confidence-intervals", "model-selection-cross-validation",
+    "poisson-glm-encoding", "logistic-regression-decoding", "regularisation-sparsity",
+    "pca-dimensionality-reduction", "nonlinear-embedding-visualisation",
+    "neural-decoding-deep-networks", "linear-dynamical-systems-neural", "rate-network-dynamics", "bayesian-inference-perception", "hidden-state-inference", "reinforcement-learning-td", "network-causality"
+  ],
+  "primarySourceIds": ["neuromatch-compneuro"],
   "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "unitIds": ["NEU-220-u01", "NEU-220-u02", "NEU-220-u03", "NEU-220-u04", "NEU-220-u05", "NEU-220-u06", "NEU-220-u07", "NEU-220-u08", "NEU-220-u09", "NEU-220-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Modelling portfolio", "kind": "computational_notebook", "description": "Each prepared unit's derivation and interpretation exercises, submitted as immutable attempts alongside the learner's own notebook work on the Neuromatch tutorials. Assessed for correct derivations, stated assumptions, baseline comparisons and honest labelling of data origin. Revision is expected.", "weight": 0.35, "rubricSummary": ["derivations correct and complete", "assumptions and data regime stated", "baseline and out-of-sample comparison", "synthetic versus recorded data labelled"] },
+    { "id": "a2", "title": "Synthetic-data model-fitting laboratory report", "kind": "lab_report", "description": "Unit 2: fit a tuning-curve model to explicitly synthetic spike counts, compare it with a constant-rate baseline on held-out trials, interpret the parameters and their uncertainty, and explain a constructed failure case. Every mention of the data must say it is synthetic; no claim about biological neurons is made.", "weight": 0.25, "rubricSummary": ["likelihood and estimators correct", "held-out comparison against a baseline", "parameter interpretation with uncertainty", "failure case diagnosed", "data origin labelled throughout"] },
+    { "id": "a3", "title": "Model critiques", "kind": "written_explanation", "description": "Short written critiques (under 300 words each) of a model from each prepared unit: what it assumes, what it explains, what would refute it, and what it cannot say. Open book.", "weight": 0.15, "rubricSummary": ["assumptions named", "refuting observation named", "scope limits stated"] },
+    { "id": "a4", "title": "Synthesis project", "kind": "project", "description": "After unit 10: choose one model from the later units, generate synthetic data from a known version of it, fit it, compare with a baseline, show a failure case, and write up what the exercise does and does not show about real neural systems. Optional oral explanation to the tutor.", "weight": 0.25, "rubricSummary": ["model stated with assumptions", "fitting and evaluation sound", "failure case and interpretation", "honest scope"] }
+  ],
+  "workloadHours": { "minimum": 80, "typical": 105, "maximum": 130 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the content agent from the verified Neuromatch Academy course book pages (introduction, schedule, prerequisites, chapter pages and sixteen tutorial pages opened 2026-10-30) and the repository licence files. Exercises are original; the laboratory uses Corniversity's own synthetic data. Workload estimated by re-pacing one Neuromatch day (about three hours of tutorials plus discussion) per teaching week with reading, derivations and the laboratory, at roughly 8–12 hours per week.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "Tutorial videos were not watched; units cite the tutorial pages, which embed them.",
+      "Tutorial pages for the outlined units (weeks 2–3 and W1D5) were not opened; those units carry chapter-level locators only.",
+      "The Neuromatch intensive schedule (about six hours per day for fifteen days) is recorded for reference and is not used as a workload estimate."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit"],
+  "convenorPersonaId": "dev-anantharaman",
+  "tutorPersonaId": "dev-anantharaman",
+  "externalSyllabusNote": "Adapted study path using the Neuromatch Academy Computational Neuroscience course book under CC BY 4.0 (code BSD-3-Clause). Neuromatch runs the material as a three-week intensive summer school: fifteen days of about three hours of pod tutorials plus three hours of project time, with optional refresher days beforehand. Corniversity re-paces one Neuromatch day per teaching week as ten units, replaces the pod project with a modelling portfolio and synthesis project, and sets its own exercises and laboratory. The intensive schedule is not an evening workload estimate. Corniversity is not affiliated with Neuromatch Academy and issues no Neuromatch certificate; this course confers no credit anywhere."
 }

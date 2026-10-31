@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u04",
+  "courseId": "PHY-240",
+  "sequence": 4,
+  "title": "Parallel transport, geodesics, Lie derivatives and Killing vectors",
+  "summary": "Transport laws and the covariant derivative on a curved manifold; parallel transport; Lie transport, the Lie derivative and Killing's equation; tensor densities and the Levi-Civita tensor; geodesics as parallel-transported tangents and as extremal proper time; conserved quantities from Killing vectors.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 7–9 (Lecture Guide page 2), Tong Sections 1.1.1 and 1.2.6 and Chapter 2, and Carroll Chapters 2–3." }
+  ],
+  "prerequisiteConceptIds": ["covariant-derivative", "equivalence-principle", "smooth-manifold"],
+  "teachesConceptIds": ["covariant-derivative", "connections-geodesics"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopses of Lectures 7 (transport and parallel transport), 8 (Lie transport, Killing vectors, tensor densities) and 9 (geodesics, conserved quantities) (PDF page 2).", "locatorId": "gr20-g-lec6-10", "estimatedMinutes": 20 },
+    { "description": "Watch Lectures 7 (second half), 8 and 9 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 200 },
+    { "description": "Second account: Tong, General Relativity, Section 1.1 (1.1.1 The Geodesic Equation) and Section 1.2 (1.2.6 Geodesics in Spacetime), reference-only.", "locatorId": "tong-gr-ch1-s1", "estimatedMinutes": 30 },
+    { "description": "Second account for the manifold language: Tong, General Relativity, Chapter 2 Introducing Differential Geometry (reference-only).", "locatorId": "tong-gr-ch2", "estimatedMinutes": 45 },
+    { "description": "Optional: Carroll, Chapters 2 Manifolds and 3 Curvature (covariant derivative, parallel transport, geodesics), reference-only.", "locatorId": "carroll-ch2", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "lecture", "title": "Lectures 7–9: transport and geodesics", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 200, "sourceLocatorIds": ["gr20-g-lec6-10", "gr20-videos", "gr20-summaries", "tong-gr-ch1-s1", "tong-gr-ch1-s2", "tong-gr-ch2", "carroll-ch2", "carroll-ch3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 540,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide page 2 (Lectures 7–9) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Sections 1.1.1 and 1.2.6 headings verified in gr1.pdf and Chapter 2 listed on the notes page; Carroll Chapters 2–3 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

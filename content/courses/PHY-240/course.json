@@ -2,38 +2,49 @@
   "id": "PHY-240",
   "version": 1,
   "title": "General Relativity I",
-  "departmentIds": [
-    "physics"
-  ],
-  "level": "intermediate",
+  "departmentIds": ["physics"],
+  "level": "graduate",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: General Relativity I. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "PHY-240-tensor-geometry-bridge"
+  "purpose": "A graduate first course in general relativity following MIT 8.962 (Spring 2020): tensors on Minkowski spacetime, stress-energy and the covariant derivative, the equivalence principle, parallel transport and geodesics, curvature, the Einstein field equation, linearised gravity and gravitational radiation, cosmology, Schwarzschild spacetime and relativistic stars, black holes — with David Tong's and Sean Carroll's lecture notes as supplements and original Corniversity exercises.",
+  "description": "General relativity is the statement that gravity is not a force but the curvature of spacetime, and that free bodies move on geodesics of a Lorentzian metric whose curvature is sourced by stress-energy. This course builds that statement in the order MIT's graduate course builds it: first the geometric viewpoint on special relativity (tensors as frame-independent objects, the stress-energy tensor, covariant differentiation in curvilinear coordinates while spacetime is still flat), then the equivalence principle and curvature, then the field equation, and finally the three classic applications — weak fields and gravitational waves, cosmology, and spherical compact sources and black holes. The level is graduate: derivations are carried through in index notation, and the learner is expected to compute curvature tensors by hand at least once.\n\n**How this adaptation works.** The spine is MIT OpenCourseWare 8.962 General Relativity, Spring 2020 (Prof. Scott Hughes; CC BY-NC-SA 4.0): 23 recorded lectures with transcripts, per-lecture summaries and a 20-page Lecture Guide whose pages are cited by number. Corniversity re-paces Lectures 1–23 as 11 units for a term of ten teaching weeks plus a reading week and a synthesis week, omits the two unrecorded advanced lectures, and supplements each unit with the matching chapter of David Tong's *General Relativity* notes (Cambridge Part III; free to read, reference-only) and Sean Carroll's 1997 *Lecture Notes on General Relativity* (the notes behind MIT's required textbook; free on arXiv and the author's site, reference-only). The commercial textbook is not required. Exercises are original.\n\n**Conventions.** Metric signature $(-,+,+,+)$ with $\\eta_{\\mu\\nu} = \\mathrm{diag}(-1,+1,+1,+1)$, as in the 8.962 Lecture Guide, Tong and Carroll; Greek indices run over $0,1,2,3$ with the Einstein summation convention; $c = 1$ from unit 1 and $G = 1$ where a unit says so, with SI factors restored for every quantity that is compared with an experiment. Special relativity (flat spacetime) is kept explicitly separate from curvature: units 1–2 work in Minkowski spacetime, and the first appearance of genuine curvature is announced in unit 3.\n\n**What is prepared now.** The unit list shows the status of each unit. Prepared units have a full lesson, original exercises with hint ladders and rubrics, instructor reference reasoning and checks; outlined units have verified lecture and chapter locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Manipulate tensors on Minkowski spacetime in index notation: transformation laws, the metric and its inverse, contraction, four-velocity, four-momentum and four-acceleration, and decide whether a given object is a tensor.", "evidenceExpected": "Derivation and proof exercises in index notation with invariants identified and transformation classes named." },
+    { "id": "o2", "description": "Construct the stress-energy tensor of dust and of a perfect fluid, derive the Newtonian limit of its conservation law, and compute Christoffel symbols and covariant derivatives in curvilinear coordinates on flat spacetime.", "evidenceExpected": "A perfect-fluid conservation calculation with every approximation stated, and a Christoffel/Laplacian calculation in spherical coordinates." },
+    { "id": "o3", "description": "State the equivalence principle in its weak and Einstein forms, explain local flatness by counting degrees of freedom, and derive the geodesic equation, parallel transport and Killing's equation.", "evidenceExpected": "Written derivations and the mid-course synthesis." },
+    { "id": "o4", "description": "Compute the Riemann, Ricci and Einstein tensors for a given metric, prove the Bianchi identity, interpret geodesic deviation as tides, and derive the Einstein field equation with its Newtonian normalisation.", "evidenceExpected": "At least one full curvature computation by hand and a derivation of the field equation with the constant fixed." },
+    { "id": "o5", "description": "Apply the field equation in the three classic regimes: linearised gravity and gravitational radiation, Robertson–Walker cosmology, and Schwarzschild spacetime with relativistic stars and black holes.", "evidenceExpected": "Calculations in each regime and the final synthesis project." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["PHY-240-tensor-geometry-bridge", "PHY-240-special-relativity", "PHY-240-analytical-mechanics"],
+  "recommendedConceptIds": ["lorentzian-metric", "smooth-manifold", "multivariable-calculus", "four-vectors", "lagrangian-mechanics", "ode-basics"],
+  "teachesConceptIds": [
+    "tensor-calculus-spacetime", "stress-energy-tensor", "covariant-derivative", "equivalence-principle", "spacetime-curvature", "einstein-field-equation",
+    "linearised-gravity", "frw-cosmology", "schwarzschild-solution", "connections-geodesics", "curvature"
+  ],
+  "primarySourceIds": ["mit-gr-2020"],
+  "supplementalSourceIds": ["tong-general-relativity", "carroll-gr-notes"],
+  "unitIds": ["PHY-240-u01", "PHY-240-u02", "PHY-240-u03", "PHY-240-u04", "PHY-240-u05", "PHY-240-u06", "PHY-240-u07", "PHY-240-u08", "PHY-240-u09", "PHY-240-u10", "PHY-240-u11"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "problem_set", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Index gymnastics must be shown, every approximation named with its regime, and every result compared with a limiting case (flat space, slow motion, weak field). Revision is expected and the record of attempts is the assessment.", "weight": 0.5, "rubricSummary": ["index placement and contractions correct", "transformation class or hypothesis named for each tensor claim", "approximations stated with regime of validity", "limiting cases checked", "signature and units stated"] },
+    { "id": "a2", "title": "Mid-course synthesis: from the equivalence principle to the field equation", "kind": "written_explanation", "description": "After unit 6: a written account that starts from the equivalence principle, explains why the covariant derivative and the Riemann tensor are forced, and ends at $G_{\\mu\\nu} = 8\\pi G\\, T_{\\mu\\nu}$ with the constant fixed by the Newtonian limit; one curvature computation (a metric of the learner's choice) is included in full. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["logical chain from local flatness to curvature", "field equation derived with the normalisation argument", "a complete, correct curvature computation"] },
+    { "id": "a3", "title": "Final synthesis: one solution of the field equation", "kind": "project", "description": "A single exact or approximate solution (Schwarzschild exterior and interior, a Robertson–Walker model, or a plane gravitational wave) derived from the field equation, with its geodesics or observables worked out and at least one comparison with observation stated honestly (what the model predicts, what has been measured, and what the model cannot say). Optional oral explanation to the tutor.", "weight": 0.3, "rubricSummary": ["solution derived rather than quoted", "geodesics or observables computed", "comparison with experiment stated with its limits", "exposition"] }
+  ],
+  "workloadHours": { "minimum": 120, "typical": 160, "maximum": 210 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified MIT 8.962 Spring 2020 materials (course, syllabus, calendar, readings, lecture summaries, assignments and video gallery pages and the pages for Lectures 1–5 opened on 2026-10-30; the Lecture Guide PDF downloaded and its text extracted, with page-level locators recorded), David Tong's General Relativity page (opened; Chapter 1 PDF read to verify headings and the signature statement) and Sean Carroll's notes (arXiv abstract and author's page opened). Exercises are original and every reference solution was re-derived. Workload estimated from eleven units at roughly 11–19 hours each at graduate pace.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The MIT syllabus requires Carroll, Spacetime and Geometry (CUP 2019), a commercial book; Corniversity substitutes Carroll's free 1997 notes and does not raise an acquisition request. The owner may choose to acquire the book.",
+      "The OCW problem sets are the Spring 2006 versions without solutions; they are linked, not copied, and no Corniversity exercise is adapted from them.",
+      "Lecture videos were located by their gallery pages; timestamps were not verified, so no video locators are recorded.",
+      "Prof. Hughes's typed and handwritten notes are on a personal MIT page without a licence statement and are not recorded as a source."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit"],
+  "convenorPersonaId": "ines-valdivia",
+  "tutorPersonaId": "ines-valdivia",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 8.962 General Relativity (Spring 2020) materials under CC BY-NC-SA 4.0, with David Tong's Cambridge General Relativity notes and Sean Carroll's 1997 Lecture Notes on General Relativity as reference reading. The original MIT course ran 25 lectures (23 recorded) with eleven problem sets and no exams, and required Carroll's textbook; Corniversity re-paces Lectures 1–23 as 11 units, omits the unrecorded advanced lectures, does not require the textbook, and sets its own exercises and assessments. This is not an MIT course and confers no credit anywhere."
 }

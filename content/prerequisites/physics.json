@@ -1,0 +1,43 @@
+[
+  {
+    "id": "PHY-201-newtonian-foundations",
+    "courseId": "PHY-201",
+    "strength": "soft",
+    "description": "Classical Mechanics begins with the Lagrangian formulation and assumes first-year Newtonian mechanics (Newton's laws in inertial frames, energy, momentum and angular momentum). The source course, MIT 8.09, assumes two earlier mechanics courses; Corniversity reviews the Newtonian material inside unit 1 and offers the bridge course for anyone who wants it first.",
+    "alternatives": [
+      { "label": "Demonstrated Newtonian mechanics", "conceptIds": ["newtonian-mechanics"] },
+      { "label": "Mathematical methods bridge", "bridgeCourseId": "PHY-100" }
+    ]
+  },
+  {
+    "id": "PHY-210-newtonian-kinematics",
+    "courseId": "PHY-210",
+    "strength": "soft",
+    "description": "Special Relativity contrasts Lorentz with Galilean kinematics and relativistic with Newtonian momentum and energy, so first-year Newtonian mechanics is assumed (MIT 8.20 lists 8.01 Classical Mechanics as a prerequisite). The mathematics needed is linear algebra and single-variable calculus.",
+    "alternatives": [
+      { "label": "Demonstrated Newtonian mechanics", "conceptIds": ["newtonian-mechanics"] },
+      { "label": "Classical Mechanics", "courseIds": ["PHY-201"] },
+      { "label": "Mathematical methods bridge", "bridgeCourseId": "PHY-100" }
+    ]
+  },
+  {
+    "id": "PHY-240-special-relativity",
+    "courseId": "PHY-240",
+    "strength": "hard",
+    "description": "General Relativity I starts from Minkowski spacetime written in index notation, four-vectors and the Lorentz group; without special relativity the first unit cannot be followed. This is the only hard rule in the physics department.",
+    "alternatives": [
+      { "label": "Special Relativity and Minkowski Geometry", "courseIds": ["PHY-210"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["minkowski-spacetime", "lorentz-transformation", "four-vectors"] }
+    ]
+  },
+  {
+    "id": "PHY-240-analytical-mechanics",
+    "courseId": "PHY-240",
+    "strength": "soft",
+    "description": "The MIT 8.962 syllabus asks for familiarity with Lagrangians and action principles, differential equations and linear algebra; the variational derivation of the field equation and the geodesic action use them.",
+    "alternatives": [
+      { "label": "Classical Mechanics", "courseIds": ["PHY-201"] },
+      { "label": "Demonstrated concepts", "conceptIds": ["lagrangian-mechanics", "ode-basics", "linear-algebra-vector-spaces"] }
+    ]
+  }
+]

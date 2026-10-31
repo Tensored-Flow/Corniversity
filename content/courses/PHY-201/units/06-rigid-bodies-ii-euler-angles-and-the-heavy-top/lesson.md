@@ -1,0 +1,7 @@
+## Outline: Rigid bodies II — Euler angles and the heavy symmetric top
+
+This unit is **outlined, not yet prepared**. It will be written from the second half of Chapter 2 (Rigid Body Dynamics) of the MIT 8.09 Fall 2014 notes (CC BY-NC-SA 4.0; chapter PDF located, page-level locators to be added when the unit is prepared) and the corresponding sections of Chapter 3 of David Tong's *Classical Dynamics* notes (reference-only); Tong's Problem Sheet 3 (Euler's Equations and Euler Angles) is linked for optional practice only.
+
+**Scope.** Euler angles $(\phi,\theta,\psi)$ as coordinates on the rotation group and the expression of $\boldsymbol\omega$ in terms of them; the Lagrangian of the heavy symmetric top, its two cyclic coordinates and the conserved momenta $p_\phi$, $p_\psi$ (unit 2 applied); reduction to a one-dimensional problem in $\theta$ with an effective potential; precession, nutation and the "sleeping top" stability condition; gyroscopic motion and the fast-top limit, with the precession frequency checked by units and in the limit of large spin. The unit also revisits the free symmetric top of unit 5 in the space frame.
+
+**What preparation will add.** A full lesson, original exercises (a derivation of the top's effective potential, a fast-top precession calculation with a limiting-case check, an explain-back on why the top does not fall), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

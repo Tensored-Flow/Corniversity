@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u10",
+  "courseId": "COG-201",
+  "sequence": 10,
+  "title": "Bayesian data analysis and the evidence discipline; synthesis project",
+  "summary": "Scientists' models of people's models: parameter inference, posterior prediction and model checking, Bayes factors and the Savage–Dickey method, Bayesian data analysis of cognitive models; what a fit does and does not show; the final modelling project.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is the web book's Interlude - Bayesian data analysis chapter, with the OCW course's projects page as the model for the final modelling project (assessment a3)." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-occams-razor", "model-evidence-distinction"],
+  "teachesConceptIds": ["bayesian-data-analysis-cognition", "model-evidence-distinction"],
+  "preparation": [
+    { "description": "Read the web book's Interlude - Bayesian data analysis (people's models of coins versus scientists' models of people; parameters and predictives; model selection; BDA of cognitive models). Reference-only.", "locatorId": "pm2-ch-bayesian-data-analysis", "estimatedMinutes": 60 },
+    { "description": "Read the OCW projects page (final project guidelines and two example projects) and the syllabus statement of the final project or paper.", "locatorId": "cocosci04-projects", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Bayesian data analysis and the project brief", "instructions": "Read the material for this unit. The prepared lesson, project brief and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["pm2-ch-bayesian-data-analysis", "cocosci04-projects", "cocosci04-syllabus"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Web book Interlude - Bayesian data analysis returned HTTP 200 on 2026-10-30 with h1 headings 'Parameters and predictives', 'Model selection', 'BDA of cognitive models'. OCW projects and syllabus pages opened 2026-10-30 (guidelines: four problem sets and a final project or paper on cognitive modeling; two example projects listed)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

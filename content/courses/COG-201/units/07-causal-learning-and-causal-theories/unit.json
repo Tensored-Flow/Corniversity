@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u07",
+  "courseId": "COG-201",
+  "sequence": 7,
+  "title": "Causal learning and causal theories",
+  "summary": "Causal structure and causal strength as inference problems; causal power; blocking and backward blocking; intervention versus observation; causal theories as priors over causal models; the blicket detector.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lectures 22–24 (Causal Learning; Causal Theories 1–2) and the web book's dependence chapters together with its 'Estimating Causal Power' example." }
+  ],
+  "prerequisiteConceptIds": ["graphical-models-dependence", "hierarchical-bayesian-models"],
+  "teachesConceptIds": ["causal-learning-models"],
+  "preparation": [
+    { "description": "Read OCW lectures 22 (Causal Learning), 23 and 24 (Causal Theories 1–2).", "locatorId": "cocosci04-lec22", "estimatedMinutes": 70 },
+    { "description": "Re-read the web book's Causal and statistical dependence and Conditional dependence chapters (blickets and blocking) and the 'Example: Estimating Causal Power' subsection of Learning as conditional inference. Reference-only.", "locatorId": "pm2-lci-continuous-parameter", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Lectures 22–24 and the web book's causal examples", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["cocosci04-lec22", "cocosci04-lec23", "cocosci04-lec24", "pm2-ch-dependence", "pm2-ch-conditional-dependence", "pm2-lci-continuous-parameter"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 22, 23 and 24 PDF resource pages confirmed 2026-10-30 (HTTP 200), not text-extracted. Web book chapters returned HTTP 200; the heading id learning-a-continuous-parameter (which contains 'Example: Estimating Causal Power' per the GitHub source) was read from the rendered page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

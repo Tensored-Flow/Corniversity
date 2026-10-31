@@ -1,0 +1,12 @@
+[
+  {
+    "id": "MAT-210-proof-writing",
+    "courseId": "MAT-210",
+    "strength": "soft",
+    "description": "Measure theory is proved, not computed: the course assumes fluency with quantifiers, set-theoretic manipulation (countable unions, complements, preimages) and proof by contradiction from the first unit.",
+    "alternatives": [
+      { "label": "Demonstrated proof writing", "conceptIds": ["proof-writing"] },
+      { "label": "Proof bridge", "bridgeCourseId": "MAT-100" }
+    ]
+  }
+]

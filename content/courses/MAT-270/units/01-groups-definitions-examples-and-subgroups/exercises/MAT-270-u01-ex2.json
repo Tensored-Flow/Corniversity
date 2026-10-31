@@ -1,0 +1,103 @@
+{
+  "id": "MAT-270-u01-ex2",
+  "sequence": 2,
+  "title": "Subgroups of GL_2",
+  "kind": "proof",
+  "promptMarkdown": "Let $G=GL_2(\\mathbb R)$ under matrix multiplication. For each of the following subsets decide, with proof, whether it is a subgroup of $G$. When it is not, name the condition that fails and give an explicit witness.\n\n(a) The upper triangular matrices in $G$ (those with zero below the diagonal).\n(b) $\\{A\\in G:\\det A=\\pm1\\}$.\n(c) The matrices in $G$ with integer entries.\n(d) The matrices with integer entries and $\\det A=\\pm1$.\n(e) For a fixed $B\\in G$, the centraliser $C(B)=\\{A\\in G: AB=BA\\}$.\n\n(f) Now replace $\\mathbb R$ by the field $\\mathbb Z_2=\\{0,1\\}$. Determine $|GL_2(\\mathbb Z_2)|$ with proof, and show that $GL_2(\\mathbb Z_2)$ is non-abelian by exhibiting two matrices that do not commute.",
+  "conceptIds": [
+    "group-basics",
+    "linear-algebra-vector-spaces"
+  ],
+  "hintLadder": [
+    "For a candidate subgroup check identity, closure and inverses (or use the one-step test $gh^{-1}\\in H$). When a condition fails, a single explicit matrix is a proof.",
+    "For $2\\times2$ matrices, $A^{-1}=\\dfrac{1}{\\det A}\\begin{pmatrix} d&-b\\\\-c&a\\end{pmatrix}$. When are the entries of $A^{-1}$ integers?",
+    "If $AB=BA$, multiply both sides by $A^{-1}$ on the left and on the right to relate $A^{-1}$ and $B$.",
+    "Build an invertible matrix over $\\mathbb Z_2$ column by column: how many choices for a nonzero first column, and then for a second column outside the span of the first?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "order-six",
+      "kind": "numeric_value",
+      "description": "GL_2(Z_2) has 6 elements",
+      "params": {
+        "expected": 6,
+        "tolerance": 0
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "positive-cases",
+        "criterion": "(a), (b) and (e) shown to be subgroups with identity, closure and inverses each justified (triangular inverse is triangular; det is multiplicative and det(A^{-1}) = 1/det A; conjugation argument for the centraliser).",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "All three with every condition justified." },
+          { "label": "partially met", "description": "Conclusions right, some conditions asserted without reason." },
+          { "label": "not met", "description": "A wrong conclusion." }
+        ]
+      },
+      {
+        "id": "integer-entries",
+        "criterion": "(c) is not a subgroup: an explicit integer matrix in G whose inverse is not integral, with the failing condition (inverses) named.",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "Explicit witness and condition." },
+          { "label": "partially met", "description": "Correct conclusion without a witness." },
+          { "label": "not met", "description": "Claims it is a subgroup." }
+        ]
+      },
+      {
+        "id": "gl2z",
+        "criterion": "(d) is a subgroup: closure via integer products and multiplicativity of det, inverses via the adjugate formula with det = ±1.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Both closure and the adjugate argument." },
+          { "label": "partially met", "description": "Inverses asserted without the adjugate reasoning." },
+          { "label": "not met", "description": "Missing or wrong." }
+        ]
+      },
+      {
+        "id": "count",
+        "criterion": "|GL_2(Z_2)| = 6 by counting ordered pairs of linearly independent columns (3 choices then 2), or an equivalent complete count.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Correct count with a complete argument." },
+          { "label": "partially met", "description": "Correct count by exhaustive listing without the structural reason, or reason without verifying all 16 matrices are accounted for." },
+          { "label": "not met", "description": "Wrong count." }
+        ]
+      },
+      {
+        "id": "non-abelian",
+        "criterion": "Two explicit matrices over Z_2 whose products in both orders are computed and differ.",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "Both products computed." },
+          { "label": "partially met", "description": "Pair named, products not shown." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "column count",
+      "text": "Over Z_2 a matrix is invertible iff its columns are linearly independent: 3 choices of a nonzero first column and 2 choices of a second column outside its span, so |GL_2(Z_2)| = 3·2 = 6.",
+      "expect": {
+        "order-six": true
+      }
+    },
+    {
+      "label": "wrong count",
+      "text": "GL_2(Z_2) consists of all 2x2 matrices with entries in Z_2 except the zero matrix, so it has 15 elements.",
+      "expect": {
+        "order-six": false
+      }
+    }
+  ]
+}

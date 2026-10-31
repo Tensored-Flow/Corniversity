@@ -1,0 +1,29 @@
+{
+  "id": "MAT-210-u07",
+  "courseId": "MAT-210",
+  "sequence": 7,
+  "title": "Modes of convergence",
+  "summary": "Egoroff's theorem (pointwise convergence is nearly uniform on finite measure spaces); convergence in measure; almost-everywhere convergence implies convergence in measure on finite measure spaces; convergence in measure gives an almost-everywhere convergent subsequence; dominated convergence under convergence in measure.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lecture 13 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["convergence-theorems", "almost-everywhere"],
+  "teachesConceptIds": ["lusin-egoroff-theorems", "convergence-in-measure"],
+  "preparation": [
+    { "description": "Read lecture 13: Egoroff's theorem, convergence in measure and its relations to a.e. convergence, dominated convergence for convergence in measure.", "locatorId": "mi03-lec13", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Lecture 13: Egoroff and convergence in measure", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["mi03-lec13"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locator: the OCW lecture-notes page and the resource page for lecture 13 were opened 2026-10-30 and the PDF URL recorded; the PDF file itself was not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

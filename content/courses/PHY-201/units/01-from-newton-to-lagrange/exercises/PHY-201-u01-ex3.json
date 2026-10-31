@@ -1,0 +1,26 @@
+{
+  "id": "PHY-201-u01-ex3",
+  "sequence": 3,
+  "title": "What the action principle buys",
+  "kind": "explanation",
+  "promptMarkdown": "In your own words, and without the notes open, explain in under 200 words what Hamilton's principle gives you that $\\mathbf F = m\\ddot{\\mathbf r}$ does not, for (a) a change of coordinates and (b) a system with a holonomic constraint. Then name one kind of force that the recipe $L = T - V$ does not handle directly and say in one sentence how such forces are accommodated.",
+  "conceptIds": ["lagrangian-mechanics"],
+  "hintLadder": [
+    "What happened to the centripetal term when you wrote the polar-coordinate Lagrangian, compared with writing Newton's law in polar coordinates?",
+    "In the cone example, which force was never computed? Why was that allowed?",
+    "Think of a block sliding on a rough table. Is there a potential whose gradient gives the friction force?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "coordinates", "criterion": "Explains that the Euler–Lagrange equations keep their form in any coordinates, so acceleration terms such as the centripetal term appear automatically.", "weight": 0.35, "levels": [ { "label": "met", "description": "Clear and correct." }, { "label": "partially met", "description": "Gestures at the idea." }, { "label": "not met", "description": "Missing or confused." } ] },
+      { "id": "constraints", "criterion": "Explains that holonomic, frictionless constraints are absorbed by choosing independent coordinates, so constraint forces need not be computed.", "weight": 0.35, "levels": [ { "label": "met", "description": "Clear, with the frictionless/holonomic qualification." }, { "label": "partially met", "description": "Idea present without the qualification." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "non-potential", "criterion": "Names a non-potential force (friction, air drag, or a general velocity-dependent force) and says it is added as a generalized force on the right-hand side (or via D'Alembert's principle).", "weight": 0.3, "levels": [ { "label": "met", "description": "Correct example and accommodation." }, { "label": "partially met", "description": "Example without the accommodation." }, { "label": "not met", "description": "Missing or wrong (e.g. claims every force has a potential)." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

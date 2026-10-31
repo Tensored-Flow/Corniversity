@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u03",
+  "courseId": "CSA-210",
+  "sequence": 3,
+  "title": "Multilayer perceptrons: approximation, depth and width",
+  "summary": "Affine maps composed with nonlinearities; the universal approximation theorem (statement, a constructive ReLU sketch, and what it does not say); classification with cross-entropy; the depth-versus-width trade-off at fixed parameter count; initialisation.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W1D3 Tutorials 1 (Biological vs. Artificial Neural Networks) and 2 (Deep MLPs) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["gradient-descent", "backpropagation"],
+  "teachesConceptIds": ["multilayer-perceptron"],
+  "preparation": [
+    { "description": "Read W1D3 Tutorial 1 (universal approximation with ReLU, MLPs in PyTorch, cross entropy, train/eval and the generalisation question) and Tutorial 2 (wide versus deep, a real-world dataloader, initialisation bonus).", "locatorId": "nmadl-w1d3-t1", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "W1D3: Multi Layer Perceptrons", "instructions": "Read the tutorials for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w1d3", "nmadl-w1d3-t1", "nmadl-w1d3-t2"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and both tutorial pages opened 2026-10-30 (HTTP 200; titles 'Multi Layer Perceptrons', 'Tutorial 1: Biological vs. Artificial Neural Networks', 'Tutorial 2: Deep MLPs'); section lists recorded in the source record." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

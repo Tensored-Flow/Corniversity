@@ -1,0 +1,89 @@
+{
+  "id": "mit-algebra-2010",
+  "title": "18.701 Algebra I",
+  "authors": [
+    "Michael Artin (instructor)"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/",
+  "description": "Undergraduate Algebra I, Fall 2010: groups, vector spaces, linear transformations, symmetry groups, bilinear forms and linear groups, following Artin's Algebra (2nd edition). OCW publishes the syllabus, a 38-session calendar, a session-by-session reading list into the textbook, assignments and study materials. There are no lecture notes or videos in this publication; the Fall 2021 student notes (RES.18-011) are a separate OCW resource.",
+  "rightsNotes": [
+    "CC BY-NC-SA 4.0 (MIT OpenCourseWare) for the published pages.",
+    "The textbook (Artin, Algebra, 2nd ed., Addison Wesley 2010, ISBN 9780132413770) is a commercial book: reference-only, never imported or processed. Corniversity cites the OCW reading list for its topic sequence, not the book's text."
+  ],
+  "currentVersionId": "mit-algebra-2010-f10",
+  "versions": [
+    {
+      "id": "mit-algebra-2010-f10",
+      "label": "Fall 2010 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the course landing, syllabus, calendar and readings pages",
+      "componentsSeen": [
+        "landing page: 'This undergraduate level Algebra I course covers groups, vector spaces, linear transformations, symmetry groups, bilinear forms, and linear groups'; navigation to syllabus, calendar, readings, assignments, study materials; CC BY-NC-SA link",
+        "syllabus: prerequisites 18.700 Linear Algebra and 18.100 Analysis I or permission; 'Students should have some familiarity with proofs'; textbook Artin, Algebra (2nd ed.); two 1.5-hour lectures per week; grading 25% homework and three quizzes at 25% each (quizzes not published)",
+        "calendar: 38 sessions with topics, eleven problem sets and three quizzes",
+        "readings: 35 sessions mapped to chapters and sections of Artin (chapter 2 groups in sessions 1–7; chapters 6–7 symmetry, group operations, class equation, icosahedral group, symmetric and alternating groups in sessions 16–24)"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Assignments and study-materials pages were not opened.",
+        "The reading list points into a commercial textbook; it is cited only to show how the original course sequenced the group theory, and no textbook text is reproduced.",
+        "No lecture notes or videos exist in this publication."
+      ],
+      "locators": [
+        {
+          "id": "al10-home",
+          "label": "Course landing page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-2010-f10",
+            "url": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/",
+            "heading": "Algebra I"
+          }
+        },
+        {
+          "id": "al10-syllabus",
+          "label": "Syllabus page (prerequisites, textbook, grading)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-2010-f10",
+            "url": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "al10-calendar",
+          "label": "Calendar page (38 sessions, problem sets, quizzes)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-2010-f10",
+            "url": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/pages/calendar/",
+            "heading": "Calendar"
+          }
+        },
+        {
+          "id": "al10-readings",
+          "label": "Readings page (session topics mapped to Artin, Algebra, 2nd ed.)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-2010-f10",
+            "url": "https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/pages/readings/",
+            "heading": "Readings"
+          }
+        }
+      ]
+    }
+  ]
+}

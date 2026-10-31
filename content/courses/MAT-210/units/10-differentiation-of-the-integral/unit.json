@@ -1,0 +1,31 @@
+{
+  "id": "MAT-210-u10",
+  "courseId": "MAT-210",
+  "sequence": 10,
+  "title": "Differentiation of the integral",
+  "summary": "The fundamental theorem of calculus for the Lebesgue integral; the Vitali covering theorem; the Hardy–Littlewood maximal function and its weak (1,1) bound; Lebesgue's differentiation theorem and Lebesgue points; the generalised Minkowski inequality, distribution functions and Marcinkiewicz interpolation (the maximal operator is bounded on L^p for p > 1).",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 22–24 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["lebesgue-measure", "lp-space", "convergence-theorems"],
+  "teachesConceptIds": ["lebesgue-differentiation", "integral-inequalities"],
+  "preparation": [
+    { "description": "Read lecture 22: the fundamental theorem of calculus for the Lebesgue integral, the Vitali covering theorem, the maximal function and the Hardy–Littlewood weak (1,1) theorem.", "locatorId": "mi03-lec22", "estimatedMinutes": 60 },
+    { "description": "Read lecture 23: Lebesgue's differentiation theorem, the Lebesgue set of an L^1 function, the fundamental theorem of calculus I.", "locatorId": "mi03-lec23", "estimatedMinutes": 45 },
+    { "description": "Read lecture 24: the generalised Minkowski inequality, another proof of Young's inequality, distribution functions, Marcinkiewicz interpolation.", "locatorId": "mi03-lec24", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Lectures 22–24: maximal function and differentiation", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 150, "sourceLocatorIds": ["mi03-lec22", "mi03-lec23", "mi03-lec24"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 330,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locators: the OCW lecture-notes page and the resource pages for lectures 22–24 were opened 2026-10-30 and the PDF URLs recorded; the PDF files themselves were not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

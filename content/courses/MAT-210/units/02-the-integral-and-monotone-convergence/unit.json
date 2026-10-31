@@ -1,0 +1,44 @@
+{
+  "id": "MAT-210-u02",
+  "courseId": "MAT-210",
+  "sequence": 2,
+  "title": "Positive measures, the integral and monotone convergence",
+  "summary": "Positive measures and their continuity properties; the integral of simple and of nonnegative measurable functions as a supremum; elementary properties; additivity on simple functions; the monotone convergence theorem with proof; additivity and termwise integration of series; Fatou's lemma and the examples that make it an inequality.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Define a positive measure and prove monotonicity, countable subadditivity, continuity from below and continuity from above, naming the finiteness hypothesis the last one needs and giving the counterexample without it." },
+    { "id": "u02-o2", "description": "Define the integral of a nonnegative simple function and of a nonnegative measurable function, show the simple integral is independent of the representation, and prove the elementary properties (a)–(f)." },
+    { "id": "u02-o3", "description": "Prove the monotone convergence theorem and locate the exact use of each hypothesis." },
+    { "id": "u02-o4", "description": "Derive additivity of the integral, termwise integration of series of nonnegative functions and Fatou's lemma from the monotone convergence theorem, and produce sequences where Fatou's inequality is strict and where monotone convergence fails for decreasing sequences." }
+  ],
+  "prerequisiteConceptIds": ["sigma-algebra", "measurable-function", "real-analysis-sequences"],
+  "teachesConceptIds": ["measure-space", "lebesgue-integral", "convergence-theorems"],
+  "preparation": [
+    { "description": "Read lecture 2, PDF pages 3–4 from 'A positive measure': the definition of a positive measure, the integral of a nonnegative simple function over E, and the integral of a nonnegative measurable function as a supremum.", "locatorId": "mi03-l2-integral-def", "estimatedMinutes": 15 },
+    { "description": "Read lecture 3, PDF pages 2–3: counting measure and the Dirac mass, Theorem 0.2 (properties of positive measures) with its proof, and Properties of the Integral (a)–(f). Skip page 1 (Riemann integration), which belongs to unit 3.", "locatorId": "mi03-l3-thm02", "estimatedMinutes": 25 },
+    { "description": "Read lecture 4 (4 PDF pages): Proposition 0.1 (additivity for simple functions), Theorem 0.2 (monotone convergence) with its proof, Theorem 0.3 and Corollary 0.4 (series and interchange of summation), Lemma 0.5 (Fatou) with its proof.", "locatorId": "mi03-l4-thm02", "estimatedMinutes": 35 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Lectures 2–4: measures, the integral, monotone convergence", "instructions": "Read the lesson with lectures 2 (end), 3 and 4 of the notes. After the statement of the monotone convergence theorem, close the notes and try to prove it yourself for fifteen minutes before reading the proof; then mark in the margin where monotonicity, nonnegativity and the constant c < 1 are used.", "estimatedMinutes": 70, "sourceLocatorIds": ["mi03-l2-measure-def", "mi03-l2-integral-def", "mi03-l3-examples", "mi03-l3-thm02", "mi03-l3-integral-props", "mi03-l4-prop01", "mi03-l4-thm02", "mi03-l4-thm03", "mi03-l4-cor04", "mi03-l4-lem05"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "proof_workshop", "title": "Tutorial: integration on ℕ and decreasing sequences", "instructions": "Attempt exercise 1, then exercise 2. In exercise 2 write the proof of part 1 first and only then the computation; submit each attempt when you believe it is complete.", "estimatedMinutes": 85, "sourceLocatorIds": ["mi03-l2-integral-def", "mi03-l4-thm02", "mi03-l4-thm03", "mi03-l4-cor04", "mi03-l4-lem05"], "exerciseIds": ["MAT-210-u02-ex1", "MAT-210-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a3", "type": "explain_back", "title": "Explain: where monotonicity enters", "instructions": "Write exercise 3 without the notes open, then compare with the proof in lecture 4.", "estimatedMinutes": 15, "sourceLocatorIds": ["mi03-l4-thm02", "mi03-l4-lem05"], "exerciseIds": ["MAT-210-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: statements of the unit", "instructions": "From memory, with all hypotheses: countable additivity; continuity from above; the definition of ∫ f dμ for f ≥ 0; the monotone convergence theorem; Fatou's lemma.", "estimatedMinutes": 10, "sourceLocatorIds": ["mi03-l3-thm02", "mi03-l4-thm02", "mi03-l4-lem05"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["MAT-210-u02-ex1", "MAT-210-u02-ex2", "MAT-210-u02-ex3"],
+  "exitCheck": { "description": "Exercise 2 accepted: the decreasing monotone convergence theorem proved under the finiteness hypothesis, the counterexample without it given, and the integral 1 + 2/n computed with its limit.", "exerciseId": "MAT-210-u02-ex2" },
+  "commonMisconceptions": [
+    { "claim": "Continuity from above holds for every decreasing sequence of measurable sets.", "correction": "It needs μ(A_1) < ∞ (or some μ(A_k) < ∞). With counting measure on ℕ and A_n = {n, n+1, …}, μ(A_n) = ∞ for all n while the intersection is empty.", "correctionLocatorIds": ["mi03-l3-thm02"] },
+    { "claim": "The monotone convergence theorem also applies to decreasing sequences.", "correction": "Only with a finiteness hypothesis: if ∫ f_1 dμ < ∞ then ∫ f_n → ∫ f for decreasing f_n ≥ 0 (exercise 2). Without it the tail indicators χ_{n,n+1,…} on ℕ decrease to 0 with every integral infinite.", "correctionLocatorIds": ["mi03-l4-thm02"] },
+    { "claim": "Fatou's lemma is an equality, or holds with the inequality reversed.", "correction": "It states ∫ lim inf f_n ≤ lim inf ∫ f_n and nothing more; moving bumps χ_{n} on ℕ give 0 on the left and 1 on the right.", "correctionLocatorIds": ["mi03-l4-lem05"] },
+    { "claim": "Additivity ∫(f + g) = ∫ f + ∫ g is immediate from the definition as a supremum.", "correction": "The supremum definition gives ≥ directly (s ≤ f, t ≤ g imply s + t ≤ f + g) but the reverse inequality needs the monotone convergence theorem through simple approximants; the notes say so explicitly at the top of lecture 4, page 2.", "correctionLocatorIds": ["mi03-l4-thm03"] }
+  ],
+  "estimatedMinutes": 255,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All ten statement-level locators point into lecture PDFs 2, 3 and 4, downloaded and text-extracted on 2026-10-30 (4, 3 and 4 pages, no printed labels): positive measure and simple integral on lecture 2 PDF page 3, the supremum definition on page 4; lecture 3 Examples and Theorem 0.2 and Properties (a)–(f) on pages 2–3; lecture 4 Proposition 0.1 on page 1, Theorem 0.2 on page 2, Theorem 0.3, Corollary 0.4 and Lemma 0.5 on page 3 with Fatou's proof on page 4." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: continuity from above via C_n = A_1 \\ A_n and the counterexample A_n = {n, n+1, …}; independence of the simple integral from the representation by common refinement; the monotone convergence proof including why ∪E_n = X needs c < 1; ∫_ℕ f = Σ f(k) from the supremum definition with the infinite-value case; the moving-bump sequence χ_{n} for strict Fatou; the decreasing theorem via g_n = f_1 − f_n for finite-valued f_1 with ∫ f_1 < ∞; ∫ f_n = 1 + 2/n for f_n(k) = 2^{-k}(1 + k/n) using Σ k 2^{-k} = 2, with ∫ f_1 = 3 and limit 1." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson gives the general examples (tail indicators for continuity from above, moving bumps for Fatou) because the notes' theorems need them, but the exercises ask for proofs and a computation whose answers (the integral formula 1 + 2/n, the sum-equals-integral proof, the decreasing theorem's proof) appear only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 85 + 15 + 10 minutes of activities plus 75 minutes of preparation ≈ 4.25 hours; units 1 and 2 together ≈ 8 hours, the first teaching week." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["MAT-210-u02-ex1.reference-solution.md", "MAT-210-u02-ex2.reference-solution.md", "MAT-210-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

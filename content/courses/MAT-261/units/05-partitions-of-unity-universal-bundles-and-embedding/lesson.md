@@ -1,0 +1,7 @@
+## Outline: connections, partitions of unity and embedding in Euclidean space
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 8–9 of the MIT 18.965 Fall 2004 notes (CC BY-NC-SA 4.0), keeping the notes' statement numbering (§8, §9, Theorem 10.1, Theorem 11.1), with Hitchin §6.2 and §10.4 (reference-only) for the existence proof of partitions of unity.
+
+**Scope.** Connections on a vector bundle as the natural generalisation of the directional derivative, with the Leibniz rule and linearity over functions in the direction slot (a first look; the Levi-Civita connection is the subject of MAT-262). Smooth partitions of unity subordinate to an open cover, and the role of second countability and Hausdorffness in their existence. The theorem that a vector bundle of finite type is the pullback of the tautological bundle under a map to a Grassmannian. The easiest Whitney embedding theorem: a compact $n$-manifold admits an embedding in some $\mathbb{R}^N$, proved with a partition of unity subordinate to finitely many charts.
+
+**What preparation will add.** A full lesson with definitions, examples and non-examples, the main theorems with their hypotheses in view, original exercises with hint ladders and rubrics, instructor reference reasoning for the assessor, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

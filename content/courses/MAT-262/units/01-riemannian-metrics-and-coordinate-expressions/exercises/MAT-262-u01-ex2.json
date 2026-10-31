@@ -1,0 +1,76 @@
+{
+  "id": "MAT-262-u01-ex2",
+  "sequence": 2,
+  "title": "Change of coordinates, the determinant and the polar singularity",
+  "kind": "proof",
+  "promptMarkdown": "Let $(M,g)$ be a Riemannian manifold and $(U,x)$, $(V,y)$ two charts with $U\\cap V\\neq\\varnothing$. Write $g_{ij}=g(\\partial/\\partial x^i,\\partial/\\partial x^j)$ and $\\tilde g_{ab}=g(\\partial/\\partial y^a,\\partial/\\partial y^b)$, and let $J=(\\partial x^i/\\partial y^a)$ be the Jacobian of the transition map on $U\\cap V$.\n\n1. Prove the transformation law $\\tilde g_{ab}=\\dfrac{\\partial x^i}{\\partial y^a}\\dfrac{\\partial x^j}{\\partial y^b}\\,g_{ij}$, stating what you use about $\\partial/\\partial y^a$.\n2. Deduce that $\\det(\\tilde g_{ab})=(\\det J)^2\\det(g_{ij})$ and that positive definiteness of $(g_{ij})$ at a point does not depend on the chart.\n3. Let $\\mathbb{R}^2$ carry the Euclidean metric and let $P(r,\\theta)=(r\\cos\\theta,r\\sin\\theta)$ on $(0,\\infty)\\times(0,2\\pi)$. Show that $P^{-1}$ is a chart on the slit plane $\\mathbb{R}^2\\setminus\\{(x,0):x\\ge0\\}$, compute $g$ and $\\det(g_{ij})$ in the coordinates $(r,\\theta)$, and explain, using part 2, why $\\det(g_{ij})\\to0$ as $r\\to0$ even though the Euclidean metric is non-degenerate at the origin.\n4. Is $\\sqrt{\\det(g_{ij})}$ a function on $M$? Say how it transforms under change of chart and name the geometric object it defines (statement only, no proof required).",
+  "conceptIds": ["metric-coefficients-charts", "riemannian-metric"],
+  "hintLadder": [
+    "The chain rule expresses $\\partial/\\partial y^a$ as a combination of the $\\partial/\\partial x^i$; apply bilinearity of $g$.",
+    "Write the law as a matrix identity $\\tilde G=J^{t}GJ$ and take determinants. For positive definiteness, evaluate $v^t\\tilde Gv$ as a quadratic form in $Jv$.",
+    "In part 3 the Jacobian of $P$ has determinant $r$. Which of the two factors in $\\det\\tilde G=(\\det J)^2\\det G$ is responsible for the vanishing?",
+    "In part 4 compare $\\sqrt{\\det\\tilde G}$ with $\\sqrt{\\det G}$ using part 2: you should see $|\\det J|$ appear."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "polar-metric",
+      "kind": "expression_present",
+      "description": "the Euclidean metric in polar coordinates, with the coefficient r² in front of dθ²",
+      "params": {
+        "patterns": [
+          "r\\^2\\\\?d\\\\?(theta|θ)\\^2",
+          "g_(\\\\theta|θ)(\\\\theta|θ)=r\\^2",
+          "diag\\(1,r\\^2\\)"
+        ]
+      }
+    },
+    {
+      "id": "no-invariant-determinant-claim",
+      "kind": "forbidden_claim",
+      "description": "claiming that det(g_ij) is chart-independent or a function on M",
+      "params": {
+        "patterns": [
+          "det\\(? ?g\\)? is (invariant|independent of (the )?(coordinates|chart|charts)|a scalar)",
+          "detgis(invariant|independentof(the)?(coordinates|charts?)|ascalar)",
+          "determinant (of g|of the metric) is (invariant|a scalar|independent of (the )?(coordinates|chart|charts))",
+          "(sqrt|√)\\(?det ?g\\)? is a (smooth )?function on m"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "transformation-law", "criterion": "The chain-rule expression of ∂/∂y^a and bilinearity used to prove the law.", "weight": 0.25, "levels": [ { "label": "met", "description": "Complete with the chain-rule step stated." }, { "label": "partially met", "description": "Law asserted with the chain rule implicit." }, { "label": "not met", "description": "Missing or wrong indices." } ] },
+      { "id": "determinant-and-positivity", "criterion": "det Ĝ = (det J)² det G derived from the matrix form; chart-independence of positive definiteness via congruence with invertible J.", "weight": 0.25, "levels": [ { "label": "met", "description": "Both deduced correctly." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "polar", "criterion": "P^{-1} justified as a chart on the slit plane; g = dr² + r² dθ² with det = r²; the vanishing attributed to det J = r → 0, i.e. to the parametrisation, with g non-degenerate at the origin in Cartesian coordinates.", "weight": 0.35, "levels": [ { "label": "met", "description": "All items, attribution explicit." }, { "label": "partially met", "description": "Computation right, attribution vague or chart justification missing." }, { "label": "not met", "description": "Wrong metric or claims the Euclidean metric degenerates at the origin." } ] },
+      { "id": "density", "criterion": "√det g recognised as transforming by |det J|, hence a density rather than a function; the Riemannian volume element named.", "weight": 0.15, "levels": [ { "label": "met", "description": "Transformation and name given." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Claims it is a function." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX argument",
+      "text": "Since $\\partial/\\partial y^a=(\\partial x^i/\\partial y^a)\\partial/\\partial x^i$, bilinearity gives $\\tilde g_{ab}=\\frac{\\partial x^i}{\\partial y^a}\\frac{\\partial x^j}{\\partial y^b}g_{ij}$, i.e. $\\tilde G=J^tGJ$, so $\\det\\tilde G=(\\det J)^2\\det G$ and $v^t\\tilde Gv=(Jv)^tG(Jv)>0$ for $v\\neq0$. In polar coordinates $g=dr^2+r^2\\,d\\theta^2$ with $\\det(g_{ij})=r^2=(\\det J)^2\\cdot1$, which tends to zero only because $\\det J=r\\to0$: the parametrisation degenerates, the Euclidean metric does not. Hence $\\sqrt{\\det g}$ transforms by $|\\det J|$ and is a density defining the Riemannian volume element, not a function.",
+      "expect": { "polar-metric": true, "no-invariant-determinant-claim": true }
+    },
+    {
+      "label": "plain-text polar metric",
+      "text": "In polar coordinates g_rr = 1, g_rθ = 0 and g_θθ = r^2, so the matrix is diag(1, r^2) and det g = r^2.",
+      "expect": { "polar-metric": true, "no-invariant-determinant-claim": true }
+    },
+    {
+      "label": "invariant determinant claim",
+      "text": "Because g is a tensor, det g is invariant under change of coordinates, so the vanishing at r = 0 means the metric is degenerate there.",
+      "expect": { "no-invariant-determinant-claim": false }
+    },
+    {
+      "label": "wrong polar metric",
+      "text": "In polar coordinates the metric is dr^2 + dθ^2 since the coordinates are orthogonal.",
+      "expect": { "polar-metric": false }
+    }
+  ]
+}

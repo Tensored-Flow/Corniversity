@@ -1,0 +1,31 @@
+{
+  "id": "PHY-201-u10",
+  "courseId": "PHY-201",
+  "sequence": 10,
+  "title": "Perturbation theory and the onset of chaos",
+  "summary": "Canonical perturbation theory and small denominators; time-dependent perturbations; fixed points, stability and bifurcations; the damped driven pendulum, Poincaré sections and sensitive dependence; the KAM picture and the logistic map.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 5 (Perturbation Theory) and Chapter 7 (Chaos and Non-Linear Dynamics)." }
+  ],
+  "prerequisiteConceptIds": ["hamiltonian-mechanics", "canonical-transformations", "small-oscillations"],
+  "teachesConceptIds": ["classical-perturbation-chaos"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 5, Perturbation Theory (PDF).", "locatorId": "cm3-ch5", "estimatedMinutes": 60 },
+    { "description": "Read 8.09 Chapter 7, Chaos and Non-Linear Dynamics (PDF).", "locatorId": "cm3-ch7", "estimatedMinutes": 70 },
+    { "description": "Consult the 8.09 readings page for the (optional, commercial) textbook mapping of the chaos lectures.", "locatorId": "cm3-readings", "estimatedMinutes": 5 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Reading: perturbation theory and chaos", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 140, "sourceLocatorIds": ["cm3-ch5", "cm3-ch7", "cm3-readings"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 280,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 5 and Chapter 7 resource pages and direct PDF links opened 2026-10-30 (PDF text not yet extracted); the readings page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

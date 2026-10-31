@@ -1,0 +1,30 @@
+{
+  "id": "MAT-270-u03",
+  "courseId": "MAT-270",
+  "sequence": 3,
+  "title": "Permutation and dihedral groups",
+  "summary": "The symmetric group S_n and cycle notation; disjoint cycles commute and every permutation is a product of disjoint cycles; transpositions and the well-definedness of parity; the alternating group A_n and its order; the dihedral groups D_n as symmetries of regular polygons and the motion group of a cube.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 5 of Judson (Sections 5.1–5.2)." }
+  ],
+  "prerequisiteConceptIds": ["group-basics", "cyclic-groups"],
+  "teachesConceptIds": ["permutation-groups"],
+  "preparation": [
+    { "description": "Read Section 5.1: S_n (Theorem 5.1.1), cycle notation, disjoint cycles (Proposition 5.1.8, Theorem 5.1.9), transpositions (Proposition 5.1.12, Lemma 5.1.14, Theorem 5.1.15), the alternating group (Theorem 5.1.16, Proposition 5.1.17).", "locatorId": "aata-s5-1", "estimatedMinutes": 60 },
+    { "description": "Read Section 5.2 (dihedral groups and the motion group of a cube) from the chapter page.", "locatorId": "aata-ch05", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Chapter 5: permutation and dihedral groups", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch05", "aata-s5-1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 5 page and Section 5.1 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 5.1; Section 5.2 is reached from the chapter page and was not opened separately)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

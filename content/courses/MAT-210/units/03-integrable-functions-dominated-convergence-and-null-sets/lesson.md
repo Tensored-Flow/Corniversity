@@ -1,0 +1,7 @@
+## Outline: Integrable functions, dominated convergence and null sets
+
+This unit is **outlined, not yet prepared**. It will be written from lecture 5 and the first page of lecture 3 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page.
+
+**Scope.** $L^1(\mu)$ and the integral of real and complex functions through $f^+-f^-$ and real and imaginary parts; linearity (lecture 5, Theorem 0.1) and $|\int f|\le\int|f|$ (Theorem 0.2); the dominated convergence theorem (Theorem 0.3) proved from Fatou's lemma; sets of measure zero, almost-everywhere equality and why $L^1$ consists of equivalence classes (Proposition 0.4); completion of a measure space (Theorem 0.5); $\int_Ef=0$ forces $f=0$ a.e. (Theorem 0.6) and the Borel–Cantelli-type Theorem 0.7; the comparison with the Riemann integral and Lebesgue's criterion (lecture 3, Theorem 0.1, stated without proof in the notes; the prepared lesson will supply one).
+
+**What preparation will add.** A full lesson with definitions, examples and non-examples (a sequence with no integrable dominating function; a Riemann-integrable function that is discontinuous on a dense set), the main theorems with their hypotheses in view, original exercises with hint ladders and rubrics, instructor reference reasoning for the assessor, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

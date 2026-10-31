@@ -1,0 +1,7 @@
+## Outline: Product measures, Fubini and convolution
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 18–21 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** Fubini's theorem in $\mathbb R^n$, first for nonnegative measurable functions (Tonelli form) and then for $L^1$ functions, with the measurability of sections and of the partial integrals; product σ-algebras and the product measure for two general σ-finite measure spaces, Fubini for the product measure, and the completion of product measures (Lebesgue measure on $\mathbb R^{m+n}$ as the completion of the product); convolution of integrable functions, Young's inequality $\|f*g\|_r\le\|f\|_p\|g\|_q$, mollifiers as approximate identities, and the density of $C^\infty$ functions in $L^p$ for $p<\infty$. The standard counterexamples (a non-integrable function whose iterated integrals exist and differ; the failure without σ-finiteness) will be included.
+
+**What preparation will add.** A full lesson with the theorems stated with hypotheses in full (σ-finiteness, integrability), examples and non-examples, original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

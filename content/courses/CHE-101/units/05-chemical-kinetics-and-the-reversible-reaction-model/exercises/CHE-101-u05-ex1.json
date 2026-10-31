@@ -1,0 +1,70 @@
+{
+  "id": "CHE-101-u05-ex1",
+  "sequence": 1,
+  "title": "Rate law from initial rates, then an integrated rate law",
+  "kind": "calculation",
+  "promptMarkdown": "**Part A.** The gas-phase reaction $\\ce{2 NO(g) + Cl2(g) -> 2 NOCl(g)}$ was studied at a fixed temperature. The initial-rate data below are constructed for this exercise (they are not measurements):\n\n| Run | $[\\ce{NO}]_0$ / M | $[\\ce{Cl2}]_0$ / M | Initial rate / M s⁻¹ |\n|---|---|---|---|\n| 1 | 0.10 | 0.10 | $1.8\\times10^{-4}$ |\n| 2 | 0.20 | 0.10 | $7.2\\times10^{-4}$ |\n| 3 | 0.10 | 0.20 | $3.6\\times10^{-4}$ |\n\nHere 'rate' means $\\tfrac12 d[\\ce{NOCl}]/dt$.\n\n1. Determine the order with respect to $\\ce{NO}$ and to $\\ce{Cl2}$, showing the ratio of rates you used for each.\n2. Write the rate law and compute $k$ with its units.\n3. Explain why the rate law could not have been read from the stoichiometric coefficients, and under what condition it could.\n\n**Part B.** A different compound decomposes by a first-order process with $k = 2.50\\times10^{-3}\\ \\text{s}^{-1}$ at the temperature of the run.\n\n4. Compute the half-life and the time for the concentration to fall to 10% of its initial value. State what, if anything, these times depend on besides $k$.",
+  "conceptIds": ["reaction-rate-laws", "integrated-rate-laws"],
+  "hintLadder": [
+    "Compare runs that change one concentration only: runs 1 and 2 for $\\ce{NO}$, runs 1 and 3 for $\\ce{Cl2}$. The ratio of rates equals the ratio of concentrations raised to the order.",
+    "Once the orders are known, substitute any run into the rate law to solve for $k$, and work out its units from rate divided by the concentration factors.",
+    "For a first-order process, $\\ln([\\ce{A}]_t/[\\ce{A}]_0) = -kt$; set the ratio to $\\tfrac12$ and to $0.10$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "rate-law-form",
+      "kind": "expression_present",
+      "description": "the rate law k[NO]²[Cl2] appears",
+      "params": { "patterns": ["\\[no\\]\\^?2\\[cl_?2\\]", "\\[no\\]²\\[cl_?2\\]", "\\[cl_?2\\]\\[no\\]\\^?2", "\\[cl_?2\\]\\[no\\]²"] }
+    },
+    {
+      "id": "rate-constant",
+      "kind": "numeric_value",
+      "description": "k = 0.18 M⁻² s⁻¹",
+      "params": { "expected": 0.18, "tolerance": 0.005 }
+    },
+    {
+      "id": "half-life",
+      "kind": "numeric_value",
+      "description": "half-life about 277 s",
+      "params": { "expected": 277.3, "tolerance": 1.5 }
+    },
+    {
+      "id": "ten-percent-time",
+      "kind": "numeric_value",
+      "description": "time to 10% about 921 s",
+      "params": { "expected": 921, "tolerance": 2 }
+    },
+    {
+      "id": "orders-wrong",
+      "kind": "forbidden_claim",
+      "description": "asserting first order in NO or second order in Cl2",
+      "params": { "patterns": ["firstorderinno(?![a-z])", "first order in no(?![a-z])", "secondorderincl", "second order in cl", "firstorderwithrespecttono(?![a-z])", "secondorderwithrespecttocl"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "orders", "criterion": "Doubling [NO] quadruples the rate (second order in NO); doubling [Cl2] doubles it (first order in Cl2), with the ratios shown.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both orders with the ratio argument." }, { "label": "partially met", "description": "Orders right, argument implicit." }, { "label": "not met", "description": "An order wrong." }] },
+      { "id": "k-units", "criterion": "rate = k[NO]²[Cl2], k = 1.8e-4/(0.10² × 0.10) = 0.18 M⁻² s⁻¹.", "weight": 0.25, "levels": [{ "label": "met", "description": "Value and units." }, { "label": "partially met", "description": "Value without correct units." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "experimental-nature", "criterion": "Orders are experimental and equal the coefficients only for an elementary step; the termolecular appearance here is a coincidence of this data set, not evidence of mechanism.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both points." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "first-order-times", "criterion": "t½ = ln 2/k = 277 s; t(10%) = ln 10/k = 921 s; both independent of the initial concentration for first order.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both times and the independence statement." }, { "label": "partially met", "description": "Times right, independence missing, or one time wrong." }, { "label": "not met", "description": "Second-order formula used or wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "Runs 1 and 2: [NO] doubles and the rate goes from 1.8e-4 to 7.2e-4, a factor of 4 = 2^2, so second order in NO. Runs 1 and 3: [Cl2] doubles and the rate doubles, first order in Cl2. Rate = k[NO]^2[Cl2]; k = 1.8e-4/(0.10^2 x 0.10) = 0.18 M^-2 s^-1. The orders are experimental; they would equal the coefficients only if the reaction were a single elementary (here termolecular) step, which the data alone cannot establish. Part B: t1/2 = 0.693/2.50e-3 = 277 s; t(10%) = ln(10)/2.50e-3 = 921 s; neither depends on the initial concentration.",
+      "expect": { "rate-law-form": true, "rate-constant": true, "half-life": true, "ten-percent-time": true, "orders-wrong": true }
+    },
+    {
+      "label": "orders read from coefficients",
+      "text": "From the equation the reaction is second order in NO and first order in Cl2... actually I get first order in NO from runs 1 and 2 since the rate increases. k = 0.018. t1/2 = 400 s.",
+      "expect": { "orders-wrong": false, "rate-constant": false, "half-life": false }
+    }
+  ]
+}

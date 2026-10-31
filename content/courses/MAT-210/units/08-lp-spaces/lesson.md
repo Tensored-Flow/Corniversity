@@ -1,0 +1,7 @@
+## Outline: L^p spaces
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 14–17 of the MIT 18.125 Fall 2003 notes (CC BY-NC-SA 4.0), citing each statement by lecture, number and PDF page once the lecture PDFs have been opened and their page indices verified.
+
+**Scope.** Convex functions on an interval and Jensen's inequality on a probability space; Hölder's inequality for conjugate exponents and Minkowski's inequality; the spaces $L^p(\mu)$ for $1\le p\le\infty$, including the essential supremum, as normed spaces of equivalence classes; the Riesz–Fischer theorem that $L^p$ is complete, proved through the absolutely-summable-series criterion and the convergence theorems of unit 2; density of compactly supported continuous functions in $L^p$ for $p<\infty$ and in $C_0$, with the failure for $p=\infty$; inclusions between $L^p$ spaces on finite measure spaces and between $\ell^p$ spaces (in the opposite direction), local $L^p$ spaces, convexity of $p\mapsto\|f\|_p$ and density of smooth functions. This unit overlaps the measure-theory middle of MAT-230 and will cross-reference it.
+
+**What preparation will add.** A full lesson with the inequalities proved and their equality cases discussed, examples and non-examples (functions in $L^1$ but not $L^2$ and conversely), original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "MAT-270-induction-and-divisibility",
+    "courseId": "MAT-270",
+    "strength": "soft",
+    "description": "Unit 2 uses the division algorithm, greatest common divisors and Bézout's identity, and induction appears throughout. Judson's Section 2.2 is linked from unit 2 as revision, so the rule is soft.",
+    "alternatives": [
+      { "label": "Demonstrated proof writing (induction, divisibility)", "conceptIds": ["proof-writing"] },
+      { "label": "Proof bridge", "bridgeCourseId": "MAT-100" }
+    ]
+  }
+]

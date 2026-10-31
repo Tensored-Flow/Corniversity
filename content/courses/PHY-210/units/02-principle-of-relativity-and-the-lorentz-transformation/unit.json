@@ -1,0 +1,48 @@
+{
+  "id": "PHY-210-u02",
+  "courseId": "PHY-210",
+  "sequence": 2,
+  "title": "The principle of relativity and the Lorentz transformation",
+  "summary": "The principle of relativity; relativity of simultaneity (the train) and invariance of transverse dimensions; proof of the invariance of the interval with the light clock; linearity and the derivation of the Lorentz transformation; time dilation, simultaneity shifts and length contraction as corollaries; rapidity, hyperbolic rotation and velocity addition.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Prove the invariance of the interval from the principle of relativity and the invariance of transverse dimensions, naming where each hypothesis is used." },
+    { "id": "u02-o2", "description": "Derive the Lorentz transformation from linearity and the invariance of the interval, check its units and its Galilean limit, and invert it." },
+    { "id": "u02-o3", "description": "Obtain time dilation, the quantitative relativity of simultaneity and length contraction from the transformation, stating the simultaneity condition that defines a length measurement." },
+    { "id": "u02-o4", "description": "Write a boost as a hyperbolic rotation by the rapidity, prove that rapidities add, and derive the velocity-addition law." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["lorentz-transformation", "minkowski-spacetime"],
+  "preparation": [
+    { "description": "Read Section 3.1 The Principle of Relativity (pp. 53–55) and skim Sections 3.2–3.3 (pp. 56–61) on what is and is not the same in different frames.", "locatorId": "stp-ch3-s1", "estimatedMinutes": 20 },
+    { "description": "Read Section 3.4 Relativity of Simultaneity (pp. 62–63), Einstein's train, and Section 3.5 Lorentz Contraction of Length (pp. 63–64), noting the insistence on measurement rather than sight.", "locatorId": "stp-ch3-s4", "estimatedMinutes": 15 },
+    { "description": "Read Section 3.6 Invariance of Transverse Dimension (pp. 65–67): the wheels and the pipes.", "locatorId": "stp-ch3-s6", "estimatedMinutes": 10 },
+    { "description": "Read Section 3.7 Invariance of the Interval Proved (pp. 67–70) with Table 3-1, and Section 3.8 (pp. 71–72) for the super-rocket check. Redo the 3-4-5 arithmetic in our sign convention.", "locatorId": "stp-ch3-s7", "estimatedMinutes": 25 },
+    { "description": "Read Special Topic L.3–L.5 (pp. 99–101): the clock at the rocket origin and γ, why the transformation is linear, and the completion of the derivation; then the result (L-10) and the inverse transformation (p. 102).", "locatorId": "stp-sp-l3", "estimatedMinutes": 30 },
+    { "description": "Read Special Topic L.7 Addition of Velocities (pp. 103–110).", "locatorId": "stp-sp-l7", "estimatedMinutes": 15 },
+    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.1 Lorentz Transformations and Section 7.3.2 The Lorentz Group (reference-only; signature (+,−,−,−)).", "locatorId": "tong-dr-ch7-s1", "estimatedMinutes": 25 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "reading", "title": "Lecture: from the principle to the transformation", "instructions": "Read the lesson with Chapter 3 and the Special Topic. Reproduce the derivation of the Lorentz transformation on paper without the book, then compare coefficient by coefficient with Eqs. (L-6)–(L-10). Optional: MIT 8.20 Week 2 videos (Lecture 4.4 Invariance, 4.5 Lorentz Transformation, 5.2 Velocity Addition).", "estimatedMinutes": 70, "sourceLocatorIds": ["stp-ch3-s1", "stp-ch3-s2", "stp-ch3-s3", "stp-ch3-s4", "stp-ch3-s5", "stp-ch3-s6", "stp-ch3-s7", "stp-ch3-s7-table", "stp-ch3-s8", "stp-sp-l3", "stp-sp-l4", "stp-sp-l5", "stp-sp-l5-result", "stp-sp-l7", "tong-dr-ch7-s1", "tong-dr-ch7-s3", "sr21-week2"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "problem", "title": "Tutorial: the boost as a hyperbolic rotation; a paradox in two frames", "instructions": "Attempt exercise 1 before asking for any hint. Then attempt exercise 2, drawing the two events in both frames before computing. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 85, "sourceLocatorIds": ["stp-sp-l4", "stp-sp-l5", "stp-sp-l7", "stp-ch3-s4", "stp-ch3-s5", "tong-dr-ch7-s3"], "exerciseIds": ["PHY-210-u02-ex1", "PHY-210-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a3", "type": "explain_back", "title": "Explain: a boost is a rotation by a hyperbolic angle", "instructions": "Write exercise 3 without the sources open, then compare with Tong's rotational analogy (Section 7.3.1).", "estimatedMinutes": 15, "sourceLocatorIds": ["tong-dr-ch7-s3"], "exerciseIds": ["PHY-210-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: the transformation and its corollaries", "instructions": "From memory: the Lorentz transformation and its inverse with c explicit; γ; the three corollaries with their conditions (clock at rest in S′; Δt = 0 in S; ends measured at the same S-time); the rapidity and the velocity-addition law.", "estimatedMinutes": 10, "sourceLocatorIds": ["stp-sp-l5-result", "stp-sp-l7"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-210-u02-ex1", "PHY-210-u02-ex2", "PHY-210-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the Lorentz transformation derived from linearity and invariance, written as a hyperbolic rotation, composition shown to add rapidities, velocity addition derived, units and the Galilean limit checked.", "exerciseId": "PHY-210-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "Lorentz contraction is what a moving object looks like.", "correction": "It is the result of measuring both ends at the same time in the observer's frame with a lattice of clocks; what an eye sees also includes light-travel delays and is a different question (book, pp. 63–64).", "correctionLocatorIds": ["stp-ch3-s5"] },
+    { "claim": "Time dilation and length contraction are additional postulates.", "correction": "Both follow from the Lorentz transformation, which follows from linearity and the invariance of the interval, which follows from the principle of relativity and transverse invariance (Sections 3.7, L.3–L.5).", "correctionLocatorIds": ["stp-ch3-s7", "stp-sp-l5"] },
+    { "claim": "Velocities add: a projectile fired forward at u from a ship moving at v travels at u + v.", "correction": "Rapidities add; velocities combine as w = (u + v)/(1 + uv/c²), which is less than c whenever u and v are (Section L.7).", "correctionLocatorIds": ["stp-sp-l7"] },
+    { "claim": "Each observer thinks the other's clocks run slow, which is a contradiction.", "correction": "Each compares a proper time (one clock) with a coordinate time (two synchronised clocks), and the two comparisons concern different pairs of events; the symmetry is required by the principle of relativity and involves no contradiction (unit 4 draws the diagram).", "correctionLocatorIds": ["stp-ch3-s1", "stp-sp-l3"] }
+  ],
+  "estimatedMinutes": 320,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All seventeen Spacetime Physics and Tong locators used by this unit opened 2026-10-30; page indices verified against OCR text extracted from 03_chapter3.pdf (42 pages; printed = index + 53) and 04a_special_topic.pdf (26 pages; printed = index + 95): Section 3.4 on index 9 (printed 62), 3.5 on 10 (63), 3.6 on 12 (65), 3.7 on 14 (67), Table 3-1 on 17 (70), 3.8 on 18 (71); L.3 on index 4 (99), L.4 on 5 (100), L.5 on 6 (101), Eqs. (L-10) and L.6 on 7 (102), L.7 on 8 (103). Tong Sections 7.1 and 7.3.2 headings verified in dynrel7.pdf; MIT 8.20 Week 2 page opened." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: the light-clock interval −4h² with the 3-4-5 numbers (6, 0) and (10, 8); the coefficients B = γv/c, G = γ from the cross-term and x′² conditions; the inverse transformation; Δt = γΔt′ for a clock at rest in S′; Δt′ = −γvΔx/c² for simultaneous events; L = L₀/γ with the same-t condition; γ = 1.25 at v = 0.6c with the (4, 0) → (5, 3) example and interval check; rapidity composition and w = (u + v)/(1 + uv/c²); for exercise 2, barn 6.40 m in the pole frame and the door events separated by 6.00 m of light-travel time (20.0 ns) there, spacelike interval +64 m²." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's numerical example uses a 10 m rod and simultaneous events 8 m apart but not the pole-and-barn event ordering; the exercise answers appear only in instructor/ files." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 85 + 15 + 10 minutes of activities plus about 140 minutes of preparation ≈ 5.3 hours; with unit 1 the first week is about 9.7 hours, inside the 6–12 hours per unit budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-210-u02-ex1.reference-solution.md", "PHY-210-u02-ex2.reference-solution.md", "PHY-210-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

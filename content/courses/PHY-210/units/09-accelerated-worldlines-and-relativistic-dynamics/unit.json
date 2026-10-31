@@ -1,0 +1,31 @@
+{
+  "id": "PHY-210-u09",
+  "courseId": "PHY-210",
+  "sequence": 9,
+  "title": "Accelerated worldlines and relativistic dynamics",
+  "summary": "Proper time along arbitrary worldlines; four-force and the relativistic second law; constant proper acceleration and the hyperbolic worldline; the relativistic rocket and a smooth twin paradox; work and kinetic energy; acceleration within special relativity.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Tong, Dynamics and Relativity, Sections 7.4.5–7.4.6, Spacetime Physics Sections 5.6–5.8, and MIT 8.20 Week 3 (Lecture 9.4)." }
+  ],
+  "prerequisiteConceptIds": ["four-vectors", "relativistic-energy-momentum", "spacetime-causal-structure"],
+  "teachesConceptIds": ["four-vectors", "spacetime-causal-structure"],
+  "preparation": [
+    { "description": "Read Tong, Dynamics and Relativity, Section 7.4: 7.4.5 Newton's Laws of Motion and 7.4.6 Acceleration (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 40 },
+    { "description": "Re-read Spacetime Physics Chapter 5, Sections 5.6–5.8 (pp. 148–160): wristwatch time along a worldline, kinked worldline, stretch factor.", "locatorId": "stp-ch5", "estimatedMinutes": 30 },
+    { "description": "Optional: MIT 8.20 Week 3 video, Lecture 9.4 Forces and Kinetic Energy.", "locatorId": "sr21-week3", "estimatedMinutes": 15 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Reading: accelerated worldlines", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["tong-dr-ch7-s4", "stp-ch5", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 220,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Tong Sections 7.4.5 and 7.4.6 headings verified in dynrel7.pdf on 2026-10-30; Chapter 5 PDF listed on the authors' download page with section titles and pages from the contents PDF; MIT 8.20 Week 3 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

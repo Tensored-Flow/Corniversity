@@ -1,0 +1,29 @@
+{
+  "id": "NEU-220-u08",
+  "courseId": "NEU-220",
+  "sequence": 8,
+  "title": "Dynamical systems: rate models and Wilson–Cowan networks",
+  "summary": "Neuromatch W2D5: single-population rate models, fixed points and their stability, the excitatory–inhibitory Wilson–Cowan model and its phase plane, nullclines, limit cycles and the bonus extensions; population-level mechanistic models whose assumptions are made explicit.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W2D5 (Tutorials 1–2 and the bonus tutorial)." }
+  ],
+  "prerequisiteConceptIds": ["ode-basics", "linear-dynamical-systems-neural", "leaky-integrate-and-fire"],
+  "teachesConceptIds": ["rate-network-dynamics"],
+  "preparation": [
+    { "description": "W2D5 Dynamical Systems chapter page: Tutorial 1 Neural Rate Models, Tutorial 2 Wilson-Cowan Model, bonus Tutorial 3 Extending the Wilson-Cowan Model.", "locatorId": "nma-w2d5", "estimatedMinutes": 150 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "problem", "title": "W2D5 tutorials (Neuromatch notebooks)", "instructions": "Work through the W2D5 tutorials from the chapter page. The prepared lesson, derivations and exercises are not yet written; this outline shows exactly what the unit will cover. The individual tutorial pages have not yet been opened by Corniversity, so the chapter page is the verified locator.", "estimatedMinutes": 150, "sourceLocatorIds": ["nma-w2d5"], "exerciseIds": [], "sessionKind": "lab" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W2D5 chapter page opened 2026-10-30 with its tutorial list (Tutorials 1–2, bonus Tutorial 3, intro, outro, further reading, day summary). Tutorial pages not yet opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

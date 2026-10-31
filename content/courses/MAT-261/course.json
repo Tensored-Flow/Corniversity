@@ -1,39 +1,49 @@
 {
   "id": "MAT-261",
-  "version": 1,
+  "version": 2,
   "title": "Smooth Manifolds",
-  "departmentIds": [
-    "mathematics"
-  ],
-  "level": "intermediate",
+  "departmentIds": ["mathematics"],
+  "level": "advanced",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Smooth Manifolds. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "MAT-261-topology-and-multivariable"
+  "purpose": "Smooth manifolds from the definition to the de Rham theorem, opening with a targeted topology bridge: charts and atlases, smooth maps and the standard pathologies, the inverse and implicit function theorems, vector bundles and the tangent bundle, partitions of unity and embeddings, Sard's theorem, transversality and the Whitney theorems, the Lie derivative and Frobenius, differential forms and de Rham cohomology, studied from the MIT 18.965 (Fall 2004) lecture notes with Hitchin's Oxford notes as a second voice and original Corniversity exercises.",
+  "description": "A manifold is a space on which calculus makes sense: locally it looks like $\\mathbb{R}^n$, and the local pictures are glued by smooth maps. This course builds that idea carefully and then uses it. It begins with a short, targeted bridge through the point-set topology the definition needs (Hausdorff, second countable, quotient topology), so that a learner who knows metric spaces but not general topology can start at once. It then treats smooth maps and the pathologies that justify the axioms, the derivative and the inverse and implicit function theorems, submanifolds and matrix groups, vector bundles and the tangent bundle, partitions of unity and the easiest Whitney embedding theorem, Sard's theorem, fibre bundles and the medium Whitney theorem, a Banach-space interlude on Fredholm operators and Smale's Sard theorem, transversality and the strong Whitney theorem, the Lie derivative and the Frobenius theorem, differential forms and de Rham cohomology, and finally Čech cohomology and the de Rham theorem.\n\n**How this adaptation works.** The spine is the set of 26 per-lecture outline notes by Tomasz Mrowka for MIT OpenCourseWare 18.965 Geometry of Manifolds, Fall 2004 (CC BY-NC-SA 4.0), covering 35 sessions. Those notes are terse, so Corniversity lessons write out the definitions, proofs and examples in full, keep the notes' statement numbers (Definition 1.1, Theorem 5.1, …) so every citation can be reopened, and use Nigel Hitchin's author-hosted Oxford notes Differentiable Manifolds (2014; no licence stated, so reference-only) as a second presentation of charts, tangent vectors and forms. Corniversity re-paces the material as 12 units for a term of ten teaching weeks plus a reading week and a synthesis week, omits the Morse-theory lectures (the source provides no notes for them), and sets its own exercises with hint ladders and rubrics; no exercise is copied from the source problem sets.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises, instructor reference reasoning and checks; outlined units have verified lecture-level reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "State the definition of a smooth manifold with all its topological hypotheses, verify it for the standard examples (spheres, projective spaces, Grassmannians, matrix groups) and explain by example why each hypothesis is needed.", "evidenceExpected": "Accepted proofs that S^n and RP^n are smooth manifolds with explicit transition maps, and an accepted account of the line with two origins." },
+    { "id": "o2", "description": "Decide whether maps between manifolds are smooth, immersions, submersions or diffeomorphisms, using charts and the chain rule, and apply the inverse and implicit function theorems to produce submanifolds.", "evidenceExpected": "Chart computations with chart-independence justified; a regular-value argument for a matrix group." },
+    { "id": "o3", "description": "Work with the tangent bundle and vector bundles: transition functions and the cocycle condition, pullbacks and Whitney sums, and the differential of a smooth map.", "evidenceExpected": "Exercises identifying tangent spaces of submanifolds and verifying bundle constructions." },
+    { "id": "o4", "description": "Use partitions of unity and Sard's theorem to prove embedding and transversality results, stating exactly where second countability and compactness enter.", "evidenceExpected": "A written proof of the easiest Whitney embedding theorem and a parametric-transversality argument with hypotheses named." },
+    { "id": "o5", "description": "Compute with differential forms and the exterior derivative, prove the Poincaré lemma, and explain de Rham cohomology and the Frobenius theorem.", "evidenceExpected": "Computations of d on explicit forms, a proof of d² = 0 and an explanation of homotopy invariance." },
+    { "id": "o6", "description": "Explain the de Rham theorem: why Čech and de Rham cohomology agree, and what the acyclicity of the sheaf of forms contributes.", "evidenceExpected": "The final synthesis exposition." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["MAT-261-topology-and-multivariable", "MAT-261-topology-bridge-in-course", "MAT-261-calculus-and-linear-algebra"],
+  "recommendedConceptIds": ["topology-general", "metric-spaces", "multivariable-calculus", "linear-algebra-vector-spaces", "proof-writing"],
+  "teachesConceptIds": [
+    "manifold-topology-bridge", "smooth-manifold", "smooth-maps-diffeomorphisms", "inverse-function-theorem-manifolds", "tangent-bundle-vector-fields", "vector-bundles", "partitions-of-unity", "whitney-embedding", "sard-theorem", "fibre-bundles", "fredholm-and-smale-sard", "transversality", "lie-derivative-frobenius", "differential-forms-de-rham", "cech-de-rham-theorem"
+  ],
+  "primarySourceIds": ["mit-gm-2004"],
+  "supplementalSourceIds": ["hitchin-manifolds-2014"],
+  "unitIds": ["MAT-261-u01", "MAT-261-u02", "MAT-261-u03", "MAT-261-u04", "MAT-261-u05", "MAT-261-u06", "MAT-261-u07", "MAT-261-u08", "MAT-261-u09", "MAT-261-u10", "MAT-261-u11", "MAT-261-u12"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "proof_portfolio", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Revision is expected; the portfolio is the record of attempts and revisions, not a single mark.", "weight": 0.5, "rubricSummary": ["statement fidelity", "hypotheses and quantifiers (Hausdorff, second countable, compact, regular value)", "chart-independence arguments", "logical steps", "boundary cases and counterexamples"] },
+    { "id": "a2", "title": "Mid-course synthesis: from charts to embeddings", "kind": "written_explanation", "description": "After unit 6: a written account of how the inverse function theorem, partitions of unity and Sard's theorem combine to embed a compact manifold in Euclidean space, with one worked example chosen by the learner. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["correctness", "choice and handling of hypotheses", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: the de Rham theorem", "kind": "project", "description": "An exposition of the de Rham theorem (Čech cohomology equals de Rham cohomology) with the Poincaré lemma and the acyclicity of the sheaf of forms proved or cited precisely, illustrated on a surface. Optional oral explanation to the tutor.", "weight": 0.3, "rubricSummary": ["correct statements and hypotheses", "completeness of the argument", "exposition and examples"] }
+  ],
+  "workloadHours": { "minimum": 110, "typical": 150, "maximum": 190 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified MIT 18.965 Fall 2004 lecture notes (all 26 PDFs downloaded and text-extracted on 2026-10-30; statement numbers and page indices recorded as locators) and Hitchin's 2014 Oxford notes (PDF downloaded and text-extracted the same day). Exercises are original. Workload estimated from 35 sessions of 1.5 hours plus problem work at roughly 10–14 hours per teaching week.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The source's textbooks (Bott–Tu, Abraham–Marsden–Ratiu, Hirsch) are commercial and are not required; no acquisition request is needed for this course.",
+      "Lectures 23–28 (Morse theory) have no source notes and are omitted; lecture 35 (Smale's immersion theorem) is mentioned in unit 12 as further reading only.",
+      "Hitchin's notes carry no licence statement and are cited as reference-only; the course does not depend on importing them."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "halvard-brekke",
+  "tutorPersonaId": "halvard-brekke",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 18.965 Geometry of Manifolds (Fall 2004) lecture notes under CC BY-NC-SA 4.0, with Nigel Hitchin's Differentiable Manifolds notes (Oxford, 2014) as a reference-only supplement. The original MIT course ran 35 sessions of 1.5 hours, was graded entirely on six problem sets, and assumed Analysis II and Algebraic Topology. Corniversity re-paces it as 12 units with an in-course topology bridge, omits the Morse-theory lectures, and sets its own exercises and assessments. This is not an MIT or Oxford course and confers no credit anywhere."
 }

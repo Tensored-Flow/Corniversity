@@ -1,0 +1,31 @@
+{
+  "id": "MAT-262-u06",
+  "courseId": "MAT-262",
+  "sequence": 6,
+  "title": "Riemannian submanifolds and the Gauss equation",
+  "summary": "Normal bundle and the normal connection; the second fundamental form revisited (Definition 6.19, Proposition 6.21) and the shape operator of a hypersurface (Example 6.23); the Gauss equation relating intrinsic curvature, ambient curvature and the second fundamental form (Theorem 8.19) with its corollaries for submanifolds of Euclidean space; the theorema egregium for surfaces; totally geodesic and minimal submanifolds.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson Definitions 5.33 and 6.19, Theorem 6.20, Proposition 6.21, Example 6.23, Proposition 6.24, Definition 7.24 and Theorem 8.19 with Corollaries 8.21–8.22, with Wendl §6.2, Sternberg chapter 1 and Lee chapter 8 as the commercial reference." }
+  ],
+  "prerequisiteConceptIds": ["levi-civita-connection", "curvature", "inverse-function-theorem-manifolds"],
+  "teachesConceptIds": ["riemannian-submanifolds"],
+  "preparation": [
+    { "description": "Re-read Gudmundsson Definition 5.33 (normal bundle), Definition 6.19 and Theorem 6.20, Proposition 6.21, Example 6.23 (shape operator) and Proposition 6.24 (normal connection).", "locatorId": "gud-def6-19", "estimatedMinutes": 30 },
+    { "description": "Read Gudmundsson Theorem 8.19 (Gauss equation) with Corollaries 8.21–8.22 and Example 8.23 (the unit sphere), pp. 114–116, and Definition 7.24 (totally geodesic).", "locatorId": "gud-thm8-19", "estimatedMinutes": 40 },
+    { "description": "Open-licensed alternatives: Wendl §6.2 (hypersurfaces and Gaussian curvature); Sternberg chapter 1 (principal curvatures, Gauss and Weingarten maps, theorema egregium).", "locatorId": "wen-s6-2", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Submanifolds and the Gauss equation", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["gud-def5-33", "gud-def6-19", "gud-thm6-20", "gud-ex6-23", "gud-def7-24", "gud-thm8-19", "wen-s6-2", "stb-ch1", "lee-rm-ch8"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 280,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson Definition 5.33 (p. 72), Definition 6.19 (p. 84), Theorem 6.20 (p. 85), Example 6.23 (p. 86), Definition 7.24 (p. 103) and Theorem 8.19 (p. 114) verified against extracted text of Riemann.pdf (v1.438) on 2026-10-30; Wendl §6.2 (p. 132) and Sternberg chapter 1 (p. 11) verified likewise; Lee chapter 8 is a table-of-contents pointer." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

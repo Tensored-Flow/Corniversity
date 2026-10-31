@@ -1,0 +1,31 @@
+{
+  "id": "PHY-201-u03",
+  "courseId": "PHY-201",
+  "sequence": 3,
+  "title": "Central forces and the Kepler problem",
+  "summary": "Reduction of the two-body problem; angular momentum and the effective potential; the orbit equation and conic sections; Kepler's laws, including the third law from scaling symmetry; precession; scattering and the Rutherford cross-section.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Tong, Dynamics and Relativity, Chapter 4, Tong, Classical Dynamics, Section 2.5 (two-body problem), and the scaling-symmetry passage of the 8.09 Chapter 1 notes (PDF page 14)." }
+  ],
+  "prerequisiteConceptIds": ["lagrangian-mechanics", "noether-symmetry"],
+  "teachesConceptIds": ["central-force-motion"],
+  "preparation": [
+    { "description": "Read Tong, Dynamics and Relativity, Chapter 4 Central Forces (reference-only; read on the author's page).", "locatorId": "tong-dr-ch4", "estimatedMinutes": 60 },
+    { "description": "Read Tong, Classical Dynamics, Section 2.5 Applications, in particular 2.5.4 Two Body Problem (reference-only).", "locatorId": "tong-cd-ch2-s5", "estimatedMinutes": 20 },
+    { "description": "Re-read the scaling-symmetry item in Section 1.3 of the 8.09 Chapter 1 notes (PDF page 14), which obtains Kepler's third law from the homogeneity of the potential.", "locatorId": "cm3-c1-scaling-energy", "estimatedMinutes": 10 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Reading: central forces", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["tong-dr-ch4", "tong-cd-ch2-s5", "cm3-c1-scaling-energy"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Tong's Dynamics and Relativity page listing Chapter 4 opened 2026-10-30; the Classical Dynamics Chapter 2 PDF was opened and its Section 2.5 heading verified; the 8.09 scaling passage was located in the extracted text of Chapter 1 (PDF page 14)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

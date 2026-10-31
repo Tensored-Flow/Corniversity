@@ -1,0 +1,33 @@
+{
+  "id": "PHY-201-u07",
+  "courseId": "PHY-201",
+  "sequence": 7,
+  "title": "Hamiltonian mechanics: phase space and Poisson brackets",
+  "summary": "The Legendre transformation and Hamilton's equations (from L and from the phase-space action); phase space and Liouville's theorem; Poisson brackets, their algebra, time evolution and conserved quantities; the angular-momentum algebra.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 1 (Hamiltonian passages, PDF pages 8–9 and 23), the opening of 8.09 Chapter 4, and Tong, Classical Dynamics, Chapter 4." }
+  ],
+  "prerequisiteConceptIds": ["lagrangian-mechanics", "noether-symmetry"],
+  "teachesConceptIds": ["hamiltonian-mechanics"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 1, Hamiltonian Mechanics (PDF page 8, Eqs. 1.24–1.28): canonical momenta, Legendre transformation, Hamilton's equations.", "locatorId": "cm3-c1-hamiltonian", "estimatedMinutes": 20 },
+    { "description": "Read PDF page 9 (Eqs. 1.30–1.33): when H equals the energy; Lagrangians with linear velocity terms.", "locatorId": "cm3-c1-h-equals-e", "estimatedMinutes": 15 },
+    { "description": "Read PDF page 23 (Eqs. 1.81–1.82): Hamilton's equations from the phase-space action.", "locatorId": "cm3-c1-phase-space-action", "estimatedMinutes": 15 },
+    { "description": "Read the opening sections of 8.09 Chapter 4 (PDF) on Poisson brackets and canonical variables.", "locatorId": "cm3-ch4", "estimatedMinutes": 40 },
+    { "description": "Read Tong, Classical Dynamics, Chapter 4 The Hamiltonian Formulation (reference-only), the sections on Hamilton's equations, Liouville's theorem and Poisson brackets.", "locatorId": "tong-cd-ch4", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Reading: Hamiltonian mechanics", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["cm3-c1-hamiltonian", "cm3-c1-h-equals-e", "cm3-c1-phase-space-action", "cm3-ch4", "tong-cd-ch4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "8.09 Chapter 1 Hamiltonian passages located in extracted text (PDF pages 8, 9 and 23) on 2026-10-30; Chapter 4 resource page and direct PDF link opened (PDF text not yet extracted); Tong's Classical Dynamics page listing Chapter 4 opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

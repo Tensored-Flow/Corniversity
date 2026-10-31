@@ -1,0 +1,27 @@
+{
+  "id": "COG-201-u02-ex3",
+  "sequence": 3,
+  "title": "What the fit shows and what it does not",
+  "kind": "explanation",
+  "promptMarkdown": "In under 250 words and without the lesson open, using the number game:\n\n1. State what the Bayesian model predicts for the example sets $\\{16\\}$ and $\\{16,8,2,64\\}$ (model behaviour), in qualitative terms.\n2. State what the experiment reported on the lecture slides measured: who, what task, what response (measurement). Be careful to claim only what the public slides contain.\n3. Say what a match between (1) and (2) would show, at which of Marr's levels, and what it would not show (experimental evidence versus causal claim).\n4. Name one alternative model that would produce the same qualitative profile for $\\{16\\}$ but a different one for $\\{16,8,2,64\\}$, or vice versa, and describe the experiment that would separate it from the Bayesian model.",
+  "conceptIds": ["model-evidence-distinction", "bayesian-concept-learning"],
+  "hintLadder": [
+    "For one example the posterior is broad; for four examples of the same small concept it is narrow. What does hypothesis averaging give in each case?",
+    "The slides say generalisation judgements came from twenty participants and show the example sets used; the data plots are removed from the public PDF. Do not invent numbers.",
+    "A pure similarity model rates numbers by distance to the examples. What does it predict for 20 after {16, 8, 2, 64}, and what does the Bayesian model predict?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "model-behaviour", "criterion": "Graded profile after {16} (several hypotheses survive), rule-like all-or-none profile for powers of two after {16, 8, 2, 64}.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both cases correct." }, { "label": "partially met", "description": "One case." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "measurement", "criterion": "Twenty participants rated whether other numbers belong to the concept after seeing example sets; the quantitative data are not in the public slides and are not claimed.", "weight": 0.25, "levels": [{ "label": "met", "description": "Accurate and appropriately limited." }, { "label": "partially met", "description": "Accurate but invents detail." }, { "label": "not met", "description": "Misdescribes the measurement." }] },
+      { "id": "evidence-and-level", "criterion": "A match is computational-level evidence that people's generalisation solves the inductive problem the model formalises; it is not evidence that people represent hypotheses or compute posteriors.", "weight": 0.3, "levels": [{ "label": "met", "description": "Level named and the limit stated." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Treats the match as mechanistic evidence." }] },
+      { "id": "alternative-and-experiment", "criterion": "A similarity or exemplar model (graded for both sets) or a rule-only model (all-or-none for both) is named, and example sets on which the models disagree are proposed as the discriminating experiment.", "weight": 0.2, "levels": [{ "label": "met", "description": "Alternative and experiment both apt." }, { "label": "partially met", "description": "Alternative named, experiment vague." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 20
+}

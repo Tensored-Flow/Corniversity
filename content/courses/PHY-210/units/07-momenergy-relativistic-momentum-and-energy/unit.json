@@ -1,0 +1,31 @@
+{
+  "id": "PHY-210-u07",
+  "courseId": "PHY-210",
+  "sequence": 7,
+  "title": "Momenergy: relativistic momentum and energy",
+  "summary": "The four-momentum as the momenergy arrow; E = γmc², p = γmv and the invariant E² = p²c² + m²c⁴; the Newtonian limit; mass as invariant; massless particles; conservation of four-momentum.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 7, Tong Section 7.4, and MIT 8.20 Week 3 (Lectures 9.1–9.2)." }
+  ],
+  "prerequisiteConceptIds": ["four-vectors", "newtonian-mechanics"],
+  "teachesConceptIds": ["relativistic-energy-momentum"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 7 Momenergy (pp. 189–220): Sections 7.1–7.7 and the exercises.", "locatorId": "stp-ch7", "estimatedMinutes": 70 },
+    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.4 Relativistic Kinematics, including 7.4.4 Massless Particles (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 30 },
+    { "description": "Optional: MIT 8.20 Week 3 videos, Lecture 9.1 Momentum Conservation and Lecture 9.2 Energy Conservation.", "locatorId": "sr21-week3", "estimatedMinutes": 25 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Reading: momenergy", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["stp-ch7", "tong-dr-ch7-s4", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 7 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.4 headings verified in dynrel7.pdf; MIT 8.20 Week 3 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

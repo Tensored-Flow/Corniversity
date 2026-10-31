@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u06",
+  "courseId": "MAT-270",
+  "sequence": 6,
+  "title": "Normal subgroups and factor groups",
+  "summary": "Subgroups whose left and right cosets agree; equivalent characterisations of normality by conjugation; the factor group G/N with its well-defined multiplication and order [G:N]; examples and non-examples; the simplicity of A_n for n ≥ 5.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 10 of Judson (Sections 10.1–10.2)." }
+  ],
+  "prerequisiteConceptIds": ["cosets-lagrange", "group-isomorphisms", "permutation-groups"],
+  "teachesConceptIds": ["quotient-groups", "simple-groups"],
+  "preparation": [
+    { "description": "Read Section 10.1: normal subgroups (Theorem 10.1.3) and factor groups (Theorem 10.1.4) with examples.", "locatorId": "aata-s10-1", "estimatedMinutes": 50 },
+    { "description": "Read Section 10.2 (the simplicity of the alternating group) from the chapter page.", "locatorId": "aata-ch10", "estimatedMinutes": 40 },
+    { "description": "Optional supplement: MIT student notes, lecture 6 (Normal Subgroups and Quotient Groups).", "locatorId": "an21-lec06", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Chapter 10: normal subgroups and factor groups", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch10", "aata-s10-1", "an21-lec06"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 10 page and Section 10.1 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 10.1). MIT student-notes lecture 6 PDF URL recorded from its resource page; the file was not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

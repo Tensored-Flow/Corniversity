@@ -1,0 +1,32 @@
+{
+  "id": "PHY-210-u04",
+  "courseId": "PHY-210",
+  "sequence": 4,
+  "title": "Spacetime diagrams, worldlines and the twin paradox",
+  "summary": "Spacetime maps and the light cone; the invariant hyperbola and axis calibration; worldlines and proper time as length along a worldline; the straight worldline maximises proper time; the kinked worldline and the twin paradox; the stretch factor.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapters 4 and 5, Tong Section 7.1.2, and MIT 8.20 Week 2." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "lorentz-transformation"],
+  "teachesConceptIds": ["spacetime-causal-structure"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 5 Trekking through Spacetime (pp. 137–170): spacetime maps, invariant hyperbola, worldlines, wristwatch time along a worldline, kinked worldline, stretch factor.", "locatorId": "stp-ch5", "estimatedMinutes": 70 },
+    { "description": "Read Chapter 4 Trip to Canopus (pp. 121–136): the round trip, 4.6 Twin Paradox, 4.9 Relativity of Simultaneity, 4.10 Experimental Evidence.", "locatorId": "stp-ch4", "estimatedMinutes": 40 },
+    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.1.2 Spacetime Diagrams (within Section 7.1; reference-only).", "locatorId": "tong-dr-ch7-s1", "estimatedMinutes": 15 },
+    { "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.3 Spacetime Diagrams and Lecture 6.2 Twin Paradox.", "locatorId": "sr21-week2", "estimatedMinutes": 25 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Reading: diagrams and worldlines", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["stp-ch5", "stp-ch4", "tong-dr-ch7-s1", "sr21-week2"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapters 4 and 5 PDFs listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.1.2 heading verified in dynrel7.pdf; MIT 8.20 Week 2 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

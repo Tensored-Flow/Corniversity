@@ -1,0 +1,71 @@
+{
+  "id": "PHY-240-u02-ex2",
+  "sequence": 2,
+  "title": "Dust, perfect fluids and the Newtonian limit",
+  "kind": "derivation",
+  "promptMarkdown": "Signature $(-,+,+,+)$, $c = 1$ unless stated.\n\n1. Dust with rest-frame number density $n$, particle mass $m$ and 4-velocity $u^\\mu$ moves with speed $v$ along $x$ in the laboratory. Write all components of $T^{\\mu\\nu} = \\rho u^\\mu u^\\nu$ ($\\rho = mn$) in the laboratory and interpret $T^{00}$, $T^{0x}$ and $T^{xx}$ physically, explaining each factor of $\\gamma$.\n2. Show that $T^{\\mu\\nu} = (\\rho+P)u^\\mu u^\\nu + P\\eta^{\\mu\\nu}$ has rest-frame components $\\mathrm{diag}(\\rho,P,P,P)$, and argue that it is the only symmetric tensor built from $u^\\mu$ and $\\eta^{\\mu\\nu}$ alone with those rest-frame components.\n3. Starting from $\\partial_\\mu T^{\\mu\\nu} = 0$ for the perfect fluid with $u^\\mu = \\gamma(1,\\mathbf v)$, derive the continuity equation and Euler's equation. State each approximation you make and say what physical effect it discards. Restore $c$ in the approximations.\n4. For dust ($P = 0$), show that $\\partial_\\mu T^{\\mu\\nu} = 0$ implies both $\\partial_\\mu(\\rho u^\\mu) = 0$ and $u^\\mu\\partial_\\mu u^\\nu = 0$. Interpret the second equation.",
+  "conceptIds": ["stress-energy-tensor", "covariant-derivative"],
+  "hintLadder": [
+    "$u^\\mu = \\gamma(1, v, 0, 0)$; $T^{00} = \\rho\\gamma^2$ has one $\\gamma$ from the energy of each particle and one from the density of particles.",
+    "Any symmetric $(2,0)$ tensor built from $u$ and $\\eta$ is $A\\,u^\\mu u^\\nu + B\\,\\eta^{\\mu\\nu}$ for scalars $A$, $B$; fix them in the rest frame.",
+    "Write the $\\nu = 0$ and $\\nu = j$ components in full, then expand $\\gamma^2 = 1 + v^2 + \\dots$ and drop $P$ against $\\rho$. Use the continuity equation inside the momentum equation.",
+    "Contract $\\partial_\\mu(\\rho u^\\mu u^\\nu) = 0$ with $u_\\nu$ and use $u_\\nu\\partial_\\mu u^\\nu = \\tfrac12\\partial_\\mu(u\\cdot u) = 0$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "pressure-gradient",
+      "kind": "expression_present",
+      "description": "a pressure gradient (∇P or ∂_i P) appears in the derived Euler equation",
+      "params": {
+        "patterns": [
+          "∇p",
+          "\\\\nablap",
+          "∂_\\\\?[ij]p",
+          "\\\\partial_\\\\?[ij]p",
+          "gradp",
+          "∂p/∂x",
+          "\\\\partialp/\\\\partialx"
+        ]
+      }
+    },
+    {
+      "id": "limit-hypotheses",
+      "kind": "requires_hypothesis",
+      "description": "a Newtonian or non-relativistic limit must name its approximations (v ≪ c and P ≪ ρc²)",
+      "params": {
+        "triggerPatterns": [ "newtonian limit", "non-?relativistic limit", "newtonian (fluid )?equations", "euler'?s? equation" ],
+        "hypothesisPatterns": [ "v ?(≪|<<|\\\\ll) ?(1|c)", "p ?(≪|<<|\\\\ll) ?(ρ|\\\\rho|rho)", "pressure[^.]{0,40}(small|negligible|much (less|smaller))", "slow(ly)? (moving|motion)", "non-?relativistic (speed|velocit)", "small velocit", "low velocit", "γ ?(≈|\\\\approx|~) ?1", "gamma ?(≈|\\\\approx|~) ?1" ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "dust", "criterion": "Laboratory components ργ²(1, v; v, v²) in the t–x block, zero elsewhere; T^00 as energy density (two γ's explained), T^0x as energy flux = momentum density, T^xx as momentum flux.", "weight": 0.2, "levels": [ { "label": "met", "description": "Components and interpretations." }, { "label": "partially met", "description": "Components right, γ factors not explained." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "perfect-fluid", "criterion": "Rest-frame check done; uniqueness argued from A u u + B η with A = ρ + P, B = P.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both." }, { "label": "partially met", "description": "Check only." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "newtonian-limit", "criterion": "Continuity and Euler derived with the approximations v ≪ c and P ≪ ρc² stated and interpreted (γ → 1; pressure no longer contributes to inertia).", "weight": 0.4, "levels": [ { "label": "met", "description": "Both equations, both approximations with meaning." }, { "label": "partially met", "description": "Equations right, an approximation unstated." }, { "label": "not met", "description": "Wrong equations." } ] },
+      { "id": "dust-geodesic", "criterion": "∂_μ(ρu^μ) = 0 obtained by contracting with u_ν; hence ρu^μ∂_μu^ν = 0, i.e. dust particles move on straight lines (the acceleration-free equation that becomes the geodesic equation later).", "weight": 0.2, "levels": [ { "label": "met", "description": "Both results with interpretation." }, { "label": "partially met", "description": "Results without interpretation." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60,
+  "checkExamples": [
+    {
+      "label": "correct solution",
+      "text": "In the Newtonian limit we take v ≪ c so that γ ≈ 1 and P ≪ ρc² so that pressure does not contribute to inertia. The ν = 0 equation gives ∂_t ρ + ∇·(ρv) = 0 and the ν = j equation, after using continuity, gives ρ(∂_t v + v·∇v) = −∇P, Euler's equation.",
+      "expect": { "pressure-gradient": true, "limit-hypotheses": true }
+    },
+    {
+      "label": "limit without hypotheses",
+      "text": "Taking the Newtonian limit of the conservation law gives Euler's equation ρ dv/dt = −∇P.",
+      "expect": { "pressure-gradient": true, "limit-hypotheses": false }
+    },
+    {
+      "label": "no Euler equation",
+      "text": "I derived the continuity equation from the ν = 0 component but did not finish the momentum equation.",
+      "expect": { "pressure-gradient": false }
+    }
+  ]
+}

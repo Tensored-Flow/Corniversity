@@ -1,0 +1,46 @@
+{
+  "id": "CHE-101-u02-ex3",
+  "sequence": 3,
+  "title": "Periodic trends: predict, then say what measures them",
+  "kind": "explanation",
+  "promptMarkdown": "Write this without the notes open (under 350 words), then compare with lecture 8 pages 2–4.\n\n1. Rank Na, Mg, K and Cl by atomic radius (largest first) and by first ionisation energy (lowest first). Give a one-line reason for each ranking in terms of the shell number $n$ and the effective nuclear charge.\n2. Explain the two irregularities in the second period: why the first ionisation energy of B is below that of Be, and why that of O is below that of N.\n3. Which experiment measures ionisation energies directly, and what observation in it would contradict your ranking in part 1?\n4. Using the sign convention of lecture 8 ($\\text{EA} = -\\Delta E$ for $\\ce{X(g) + e- -> X-(g)}$), explain why chlorine has a large positive electron affinity and neon an unfavourable one.",
+  "conceptIds": ["periodic-trends", "electron-configuration"],
+  "hintLadder": [
+    "Across a period $n$ is fixed and $Z$ grows; down a group $n$ grows. Decide which effect dominates in each direction.",
+    "Write the configurations of Be, B, N and O and look at which subshell the outermost electron occupies and whether it is paired.",
+    "Photoelectron spectroscopy measures electron kinetic energies for a known photon energy; the binding energy is the difference."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "trend-direction",
+      "kind": "forbidden_claim",
+      "description": "asserting that ionisation energy increases down a group or that atomic radius increases across a period",
+      "params": { "patterns": ["(ionisation|ionization) energy (increases|rises|grows) down (a|the) (group|column)", "(ionisation|ionization)energy(increases|rises|grows)down(a|the)(group|column)", "radius (increases|rises|grows) across (a|the) period", "radius(increases|rises|grows)across(a|the)period"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "rankings", "criterion": "Radius K > Na > Mg > Cl and IE K < Na < Mg < Cl, each with the n / effective-nuclear-charge reason.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both rankings and both reasons." }, { "label": "partially met", "description": "Rankings right, reasons thin or one slip." }, { "label": "not met", "description": "A ranking reversed." }] },
+      { "id": "glitches", "criterion": "B below Be because the 2p electron is higher in energy and better shielded than 2s; O below N because the fourth 2p electron pairs and repulsion lowers its binding.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both explained with configurations." }, { "label": "partially met", "description": "One explained." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "measurement", "criterion": "Photoelectron spectroscopy named, with the contradicting observation stated (for example Mg's outermost peak at higher kinetic energy than Na's at the same photon energy would mean a lower IE for Mg).", "weight": 0.2, "levels": [{ "label": "met", "description": "Experiment and a concrete contradicting observation." }, { "label": "partially met", "description": "Experiment named only." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "electron-affinity", "criterion": "Cl releases energy on gaining an electron that completes the 3p subshell (EA positive in this convention); Ne's added electron would open a new shell, so energy is required.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both, with the sign convention respected." }, { "label": "partially met", "description": "One, or sign convention muddled." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct explanation",
+      "text": "Radius: K > Na > Mg > Cl, since K has the largest n and across period 3 the rising Z pulls electrons in at fixed n. IE: K < Na < Mg < Cl, for the same reasons in reverse: ionization energy decreases down a group and increases across a period. B is below Be because its outer electron is in 2p, higher than 2s; O is below N because the fourth 2p electron must pair. Photoelectron spectroscopy measures the kinetic energies of electrons ejected by X-rays of known energy; if the outermost peak of Mg appeared at a higher kinetic energy than that of Na, Mg's IE would be lower and my ranking wrong. Cl gains an electron into a nearly full 3p subshell and releases energy (EA > 0); Ne would have to start a new shell, so energy is required.",
+      "expect": { "trend-direction": true }
+    },
+    {
+      "label": "reversed group trend",
+      "text": "Ionization energy increases down a group because there are more protons, so K has the highest ionization energy of the four.",
+      "expect": { "trend-direction": false }
+    }
+  ]
+}

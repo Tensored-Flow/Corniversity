@@ -1,0 +1,222 @@
+{
+  "id": "mit-algebra-notes-2021",
+  "title": "RES.18-011 Algebra I Student Notes",
+  "authors": [
+    "Students of the Fall 2021 on-campus 18.701 Algebra I class (unnamed on OCW)"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "notes",
+  "canonicalUrl": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/",
+  "description": "Typed notes taken by students in a Fall 2021 on-campus 18.701 Algebra I class, published by OCW as a supplement to the Fall 2010 18.701 course. Thirty-five lectures: groups, subgroups and cyclic groups, homomorphisms, cosets, the correspondence theorem, quotient groups, vector spaces and Jordan form, isometries and symmetry groups, group actions and the class equation, the icosahedral group, conjugacy in S_n and A_n, the Sylow theorems, bilinear forms, the spectral theorem, linear groups, SU(2), one-parameter subgroups, Lie groups, simple linear groups and Hilbert's third problem.",
+  "rightsNotes": [
+    "CC BY-NC-SA 4.0 (MIT OpenCourseWare); attribution and share-alike required, no commercial use.",
+    "OCW states the notes 'have not been checked for accuracy by the instructors of that class or by other MIT faculty members'. Corniversity cites them as a supplement only and re-derives every result it teaches."
+  ],
+  "currentVersionId": "mit-algebra-notes-2021-f21",
+  "versions": [
+    {
+      "id": "mit-algebra-notes-2021-f21",
+      "label": "Fall 2021 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the resource landing page, the Student Notes page and the resource pages for the complete set and for lectures 1–6, 17–19 and 21–23",
+      "componentsSeen": [
+        "landing page: 'Algebra I is the first semester of a year-long introduction to modern algebra'; notes created by students in a recent on-campus 18.701 class; supplement to OCW 18.701 Fall 2010; accuracy disclaimer; CC BY-NC-SA link",
+        "Student Notes page: 'Complete Set of Algebra I Notes in One File' plus 35 per-lecture entries with titles (Lecture 1: Groups … Lecture 35: Hilbert's Third Problem)",
+        "resource pages for the complete set (3 MB PDF) and lectures 1–6, 17–19, 21–23: PDF URLs and file sizes"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "No PDF was opened or text-extracted; all locators are file-level and the files' page counts and internal numbering are unknown.",
+        "Resource pages for lectures 7–16, 20 and 24–35 were not opened; those lectures have no locators.",
+        "The notes are student-written and unchecked by MIT faculty (OCW's statement); they support but never replace the Judson spine in MAT-270."
+      ],
+      "locators": [
+        {
+          "id": "an21-home",
+          "label": "Resource landing page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/",
+            "heading": "Algebra I Student Notes"
+          }
+        },
+        {
+          "id": "an21-notes-index",
+          "label": "Student Notes page (complete set and 35 lecture entries)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/pages/student-notes/",
+            "heading": "Student Notes"
+          }
+        },
+        {
+          "id": "an21-full",
+          "label": "Complete set of Algebra I student notes in one file (PDF, 3 MB)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_full_lec_new.pdf",
+            "heading": "RES.18-011 (Fall 2021) Full Lecture Notes: Algebra I Student Notes"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec01",
+          "label": "Lecture 1: Groups (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect1.pdf",
+            "heading": "Lecture 1: Groups"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec02",
+          "label": "Lecture 2: Subgroups and Cyclic Groups (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect2.pdf",
+            "heading": "Lecture 2: Subgroups and Cyclic Groups"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec03",
+          "label": "Lecture 3: Homomorphisms and Isomorphisms (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect3.pdf",
+            "heading": "Lecture 3: Homomorphisms and Isomorphisms"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec04",
+          "label": "Lecture 4: Isomorphisms and Cosets (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect4.pdf",
+            "heading": "Lecture 4: Isomorphisms and Cosets"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec05",
+          "label": "Lecture 5: The Correspondence Theorem (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect5.pdf",
+            "heading": "Lecture 5: The Correspondence Theorem"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec06",
+          "label": "Lecture 6: Normal Subgroups and Quotient Groups (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect6.pdf",
+            "heading": "Lecture 6: Normal Subgroups and Quotient Groups"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec17",
+          "label": "Lecture 17: Group Actions (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect17.pdf",
+            "heading": "Lecture 17: Group Actions"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec18",
+          "label": "Lecture 18: Stabilizer (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect18.pdf",
+            "heading": "Lecture 18: Stabilizer"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec19",
+          "label": "Lecture 19: Group Actions on G (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect19.pdf",
+            "heading": "Lecture 19: Group Actions on G"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec21",
+          "label": "Lecture 21: Conjugacy Classes for Symmetric and Alternating Groups (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect21.pdf",
+            "heading": "Lecture 21: Conjugacy Classes for Symmetric and Alternating Groups"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec22",
+          "label": "Lecture 22: The Sylow Theorems (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect22.pdf",
+            "heading": "Lecture 22: The Sylow Theorems"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        },
+        {
+          "id": "an21-lec23",
+          "label": "Lecture 23: Proofs and Applications of the Sylow Theorems (PDF)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-algebra-notes-2021-f21",
+            "url": "https://ocw.mit.edu/courses/res-18-011-algebra-i-student-notes-fall-2021/mit18_701f21_lect23.pdf",
+            "heading": "Lecture 23: Proofs and Applications of the Sylow Theorems"
+          },
+          "note": "URL recorded from the OCW resource page (opened); the file itself was not opened."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "MAT-261-u01-ex2",
+  "sequence": 2,
+  "title": "Real projective space is a smooth manifold",
+  "kind": "proof",
+  "promptMarkdown": "Let $\\mathbb{RP}^n=(\\mathbb{R}^{n+1}\\setminus\\{0\\})/\\mathbb{R}^*$ with the quotient topology, $\\pi$ the projection, $[x^0:\\dots:x^n]=\\pi(x)$, and for $i=0,\\dots,n$ let $U_i=\\{[x]:x^i\\neq0\\}$ and\n$$\\varphi_i([x^0:\\dots:x^n])=\\Big(\\frac{x^0}{x^i},\\dots,\\frac{x^{i-1}}{x^i},\\frac{x^{i+1}}{x^i},\\dots,\\frac{x^n}{x^i}\\Big)\\in\\mathbb{R}^n .$$\n\n1. Show that $\\pi$ is an open map and deduce that $\\mathbb{RP}^n$ is second countable.\n2. Prove that $\\mathbb{RP}^n$ is Hausdorff. (A quotient of a Hausdorff space need not be Hausdorff, so an argument specific to this quotient is required.)\n3. Show that $\\mathbb{RP}^n$ is compact.\n4. Show that $\\varphi_i$ is well defined and is a homeomorphism from $U_i$ onto $\\mathbb{R}^n$. For $i\\neq j$ determine $\\varphi_i(U_i\\cap U_j)$, write down $\\varphi_j\\circ\\varphi_i^{-1}$ explicitly, and conclude that the charts are smoothly compatible, so $\\mathbb{RP}^n$ is a smooth $n$-manifold.",
+  "conceptIds": ["smooth-manifold", "manifold-topology-bridge"],
+  "hintLadder": [
+    "For openness of $\\pi$: the saturation $\\pi^{-1}(\\pi(W))$ of an open set $W$ is $\\bigcup_{\\lambda\\neq0}\\lambda W$. Why is that open?",
+    "For Hausdorff: represent two distinct lines by unit vectors $u,v\\in S^n$. Find $\\varepsilon$ so that the four balls around $\\pm u$ and $\\pm v$ in $S^n$ are pairwise disjoint, and pass to the cones over the two symmetric sets.",
+    "For compactness: which compact space maps continuously onto $\\mathbb{RP}^n$?",
+    "For the charts: write the inverse $\\varphi_i^{-1}(y)$ by inserting a $1$ in the $i$-th slot; continuity of $\\varphi_i$ follows from the universal property of the quotient topology applied to $\\varphi_i\\circ\\pi$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "no-quotient-hausdorff-claim",
+      "kind": "forbidden_claim",
+      "description": "asserting that quotients of Hausdorff spaces are Hausdorff, or that RP^n is compact because it is closed and bounded",
+      "params": {
+        "patterns": [
+          "quotient of a hausdorff space is (always |automatically )?hausdorff",
+          "quotients (of hausdorff spaces )?are (always |automatically )?hausdorff",
+          "hausdorff (is|property is) (preserved|inherited) (by|under) (taking )?quotients",
+          "hausdorff because r\\^\\{?n\\+1\\}? (minus|\\\\setminus|without) (the origin|\\{0\\}|0) is hausdorff",
+          "rp\\^n is (closed and bounded|bounded and closed)"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "open-map", "criterion": "π shown to be open via saturations, and second countability deduced from a countable basis of R^{n+1} minus the origin.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both steps correct." }, { "label": "partially met", "description": "Openness shown but the deduction only sketched, or vice versa." }, { "label": "not met", "description": "Missing or wrong." } ] },
+      { "id": "hausdorff", "criterion": "Disjoint saturated open neighbourhoods of two distinct lines are constructed and shown disjoint.", "weight": 0.3, "levels": [ { "label": "met", "description": "Construction explicit, saturation and disjointness proved." }, { "label": "partially met", "description": "Construction right but disjointness or openness not proved." }, { "label": "not met", "description": "Missing, or relies on a false general principle." } ] },
+      { "id": "compact", "criterion": "Compactness via a continuous surjection from S^n (or another valid argument).", "weight": 0.1, "levels": [ { "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Asserted with a gap." }, { "label": "not met", "description": "Missing or wrong." } ] },
+      { "id": "charts", "criterion": "Well-definedness, inverse, continuity both ways, the overlap domain and the explicit rational transition map with smoothness.", "weight": 0.4, "levels": [ { "label": "met", "description": "All items present and correct, including the correct overlap domain." }, { "label": "partially met", "description": "Transition map correct but continuity of the chart or the overlap domain not handled." }, { "label": "not met", "description": "Transition map wrong or missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "checkExamples": [
+    {
+      "label": "correct Hausdorff argument",
+      "text": "Let $[u]\\neq[v]$ with $u,v\\in S^n$. Choose $\\varepsilon>0$ smaller than half the distances between any two of $\\pm u,\\pm v$. Put $A=B(u,\\varepsilon)\\cup B(-u,\\varepsilon)$ and $B=B(v,\\varepsilon)\\cup B(-v,\\varepsilon)$ in $S^n$; they are symmetric and disjoint. The cones $\\tilde A=\\mathbb{R}^*A$ and $\\tilde B=\\mathbb{R}^*B$ are open, saturated and disjoint, so $\\pi(\\tilde A)$ and $\\pi(\\tilde B)$ are disjoint open neighbourhoods. Hence $\\mathbb{RP}^n$ is Hausdorff, and it is compact as the continuous image of $S^n$.",
+      "expect": { "no-quotient-hausdorff-claim": true }
+    },
+    {
+      "label": "false general principle",
+      "text": "R^{n+1} minus the origin is Hausdorff and the quotient of a Hausdorff space is Hausdorff, so RP^n is Hausdorff.",
+      "expect": { "no-quotient-hausdorff-claim": false }
+    },
+    {
+      "label": "closed and bounded misuse",
+      "text": "RP^n is closed and bounded, hence compact by Heine-Borel.",
+      "expect": { "no-quotient-hausdorff-claim": false }
+    }
+  ]
+}

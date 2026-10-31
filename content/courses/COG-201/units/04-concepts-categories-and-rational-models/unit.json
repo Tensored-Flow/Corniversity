@@ -1,0 +1,31 @@
+{
+  "id": "COG-201-u04",
+  "courseId": "COG-201",
+  "sequence": 4,
+  "title": "Concepts, categories and rational models of categorisation",
+  "summary": "Concepts and categories and their functions; the classical and statistical views; two-class classification with parametric class models; prototype effects (Posner and Keele) and their model; the limits of classification as a model of concepts; exemplar models and neural networks; unsupervised and semi-supervised learning; mixture models and unknown numbers of categories.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lecture 12 (concepts and categories; statistical pattern recognition; Posner and Keele; limitations), lectures 14–16 (unsupervised and semi-supervised learning; exemplar models and neural networks) and the web book's Mixture models chapter." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-concept-learning", "bayesian-inference-cognition"],
+  "teachesConceptIds": ["categorisation-models"],
+  "preparation": [
+    { "description": "Read OCW lecture 12 slides 30–52 (concepts and categories; statistical pattern recognition; the parametric Gaussian approach and its learning; relevance to human concept learning; Posner and Keele; limitations).", "locatorId": "cocosci04-l12-concepts-categories", "estimatedMinutes": 30 },
+    { "description": "Read OCW lectures 14 (unsupervised and semi-supervised learning), 15 and 16 (non-parametric classification: exemplar models and neural networks).", "locatorId": "cocosci04-lec14", "estimatedMinutes": 60 },
+    { "description": "Read the web book's Mixture models chapter (learning categories; categorical perception of speech sounds; unknown numbers of categories). Reference-only.", "locatorId": "pm2-ch-mixture-models", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Lectures 12 and 14–16 with the Mixture models chapter", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["cocosci04-l12-concepts-categories", "cocosci04-l12-pattern-recognition", "cocosci04-l12-learning-gaussians", "cocosci04-l12-posner-keele", "cocosci04-l12-limitations", "cocosci04-lec14", "cocosci04-lec15", "cocosci04-lec16", "pm2-ch-mixture-models"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 12 text extracted 2026-10-30 (printed labels present; concepts and categories at printed p. 30, Posner and Keele results at p. 49, limitations at p. 52); lecture 14–16 PDF resource pages confirmed (HTTP 200), not text-extracted. Web book Mixture models chapter returned HTTP 200 with h1 'Mixture models'." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

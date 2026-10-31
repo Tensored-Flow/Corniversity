@@ -1,0 +1,7 @@
+## Outline: Isomorphisms, Cayley's theorem and direct products
+
+This unit is **outlined, not yet prepared**. It will be written from chapter 9 of Judson's Abstract Algebra: Theory and Applications (HTML edition, GFDL), citing each statement by its number so that every claim can be reopened at its section page.
+
+**Scope.** Isomorphisms $\phi:G\to H$ as bijections with $\phi(ab)=\phi(a)\phi(b)$; what they preserve (orders, commutativity, cyclicity, subgroup structure: Theorem 9.1.6), which turns the subgroup-counting of units 1–2 into proofs that groups are not isomorphic; every infinite cyclic group is isomorphic to $\mathbb Z$ and every cyclic group of order $n$ to $\mathbb Z_n$ (Theorems 9.1.7–9.1.8, Corollary 9.1.9); isomorphism is an equivalence relation (Theorem 9.1.10); Cayley's theorem that every group is a group of permutations (Theorem 9.1.12), with $GL_2(\mathbb Z_2)\cong S_3$ from unit 1 as a worked case; external direct products, the order of an element of a product, $\mathbb Z_m\times\mathbb Z_n\cong\mathbb Z_{mn}$ iff $\gcd(m,n)=1$, and internal direct products (Section 9.2).
+
+**What preparation will add.** A full lesson with explicit isomorphisms and non-isomorphism proofs by invariants, original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

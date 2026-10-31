@@ -1,0 +1,7 @@
+## Outline: deep networks for decoding and encoding
+
+This unit is **outlined, not yet prepared**. It will be written from Neuromatch Academy W1D5 Deep Learning (content CC BY 4.0, code BSD-3-Clause), citing the exact tutorial pages once they have been opened and verified; so far only the chapter page has been.
+
+**Scope.** Multilayer networks as decoders of neural responses (Tutorial 1), trained with the same held-out discipline as the logistic decoder of unit 3; convolutional networks and the inductive bias they encode (Tutorial 2); deep networks as normative encoding models of visual responses and how such models are evaluated against recorded data (Tutorial 3); the bonus material on decoding and encoding together. Throughout, the department's rules: which data are recorded and which synthetic, what a high decoding accuracy does and does not show, and what a network that predicts responses well is and is not evidence of.
+
+**What preparation will add.** A full lesson, original exercises with hint ladders and rubrics (a derivation of backpropagation for a small network, a held-out evaluation exercise with a leakage trap, and a written critique of a normative encoding model), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,7 @@
+## Outline: Group actions and the class equation
+
+This unit is **outlined, not yet prepared**. It will be written from chapter 14 of Judson's Abstract Algebra: Theory and Applications (HTML edition, GFDL), with lectures 17–19 of the MIT RES.18-011 student notes (CC BY-NC-SA, unchecked by MIT faculty) as an optional supplement, citing each statement by its number so that every claim can be reopened at its section page.
+
+**Scope.** An action of $G$ on a set $X$ as a homomorphism $G\to S_X$; orbits, stabilisers and the bijection between an orbit and the cosets of a stabiliser, giving $|\mathcal O_x|=[G:G_x]$; fixed points; the action of $G$ on itself by conjugation, conjugacy classes, centralisers and the centre; the class equation $|G|=|Z(G)|+\sum[G:C(x_i)]$; a group of prime-power order has nontrivial centre (Theorem 14.2.4) and a group of order $p^2$ is abelian (Corollary 14.2.5); Burnside's counting theorem and its use for colourings of a geometric figure and for switching functions (Section 14.3). Conjugacy classes in $S_n$ by cycle type (unit 3) will be revisited.
+
+**What preparation will add.** A full lesson with the orbit–stabiliser proof written out, worked class equations for $S_3$, $D_4$ and $Q_8$, original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,66 @@
+{
+  "id": "NEU-220-u04-ex2",
+  "sequence": 2,
+  "title": "Variance explained, reconstruction error and the limits of both",
+  "kind": "calculation",
+  "promptMarkdown": "A synthetic six-neuron covariance (constructed for this exercise; not from any recording) has eigenvalues $5.0, 2.5, 1.0, 0.8, 0.4, 0.3$ in units of spikes² per bin.\n\n1. Compute the fraction of variance explained by each component and the cumulative fraction for $K = 1, \\dots, 6$. How many components are needed to reach at least 90%?\n2. Prove that the mean squared reconstruction error when keeping the first $K$ components equals $\\sum_{k > K}\\lambda_k$, and compute it for $K = 2$.\n3. Describe how a scree-plot 'elbow' is used to choose $K$, and say precisely what question that choice answers and what question it does not.\n4. Construct a synthetic scenario (state it as synthetic) in which a stimulus variable is encoded entirely in the component with eigenvalue $0.3$ and the component with eigenvalue $5.0$ is a shared fluctuation unrelated to the stimulus. What would a two-component PCA show, and what method would find the stimulus direction instead?\n5. Spike counts have variance that grows with their mean. Explain how this affects which neurons dominate an unscaled covariance, and what you would do about it before interpreting the components.",
+  "conceptIds": ["pca-dimensionality-reduction", "neural-spiking-basics"],
+  "hintLadder": [
+    "The eigenvalues sum to the total variance, 10.0.",
+    "Write $\\mathbf{x} = \\sum_k s_k\\mathbf{w}_k$ and $\\hat{\\mathbf{x}} = \\sum_{k \\le K}s_k\\mathbf{w}_k$; the error is $\\sum_{k > K}s_k\\mathbf{w}_k$, and by orthonormality its squared norm is $\\sum_{k > K}s_k^2$. Average over the data.",
+    "The elbow answers 'how many components reproduce the data to a tolerance', not 'which directions matter for the task'.",
+    "A target variable is needed to find relevance: regress the stimulus on the scores, or decode, or use a supervised reduction."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "cumulative-two",
+      "kind": "numeric_value",
+      "description": "two components explain 75%",
+      "params": { "expected": 75, "tolerance": 0.1 }
+    },
+    {
+      "id": "cumulative-four",
+      "kind": "numeric_value",
+      "description": "four components explain 93%",
+      "params": { "expected": 93, "tolerance": 0.1 }
+    },
+    {
+      "id": "reconstruction-two",
+      "kind": "numeric_value",
+      "description": "reconstruction MSE with two components is 2.5",
+      "params": { "expected": 2.5, "tolerance": 0.01 }
+    },
+    {
+      "id": "relevance-addressed",
+      "kind": "requires_hypothesis",
+      "description": "whenever variance explained is discussed, its non-equivalence with relevance or information must be addressed",
+      "params": { "triggerPatterns": ["variance explained", "varianceexplained", "explains? \\d+%"], "hypothesisPatterns": ["not (the same as|equal to|a measure of|information|relevan)", "does not (mean|imply|tell)", "low-?variance", "stimulus", "behaviou?r", "relevan", "target variable"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "fractions", "criterion": "Per component 50, 25, 10, 8, 4, 3%; cumulative 50, 75, 85, 93, 97, 100%; K = 4 reaches 90%.", "weight": 0.2, "levels": [{ "label": "met", "description": "All correct." }, { "label": "partially met", "description": "Arithmetic slip." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "reconstruction", "criterion": "Error vector Σ_{k>K} s_k w_k, squared norm Σ_{k>K} s_k² by orthonormality, average equals Σ_{k>K} λ_k since the mean of s_k² is λ_k; for K = 2 the error is 1.0 + 0.8 + 0.4 + 0.3 = 2.5.", "weight": 0.25, "levels": [{ "label": "met", "description": "Proof and value." }, { "label": "partially met", "description": "Value with an asserted identity." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "elbow", "criterion": "The elbow marks where additional components add little variance; it answers how many components reproduce the data to a tolerance, not which directions carry task-relevant information.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both questions distinguished." }, { "label": "partially met", "description": "Use described without the distinction." }, { "label": "not met", "description": "Elbow read as relevance." }] },
+      { "id": "counterexample", "criterion": "A synthetic scenario with a large shared fluctuation (eigenvalue 5.0) unrelated to the stimulus and the stimulus confined to the 0.3 direction: two-component PCA discards the stimulus entirely; regression of the stimulus on all scores, a decoder, or a supervised method (e.g. demixed or targeted reduction) finds it.", "weight": 0.25, "levels": [{ "label": "met", "description": "Scenario labelled synthetic, PCA outcome, and a method that uses the target." }, { "label": "partially met", "description": "Scenario without the alternative method." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "poisson-scaling", "criterion": "High-rate neurons have larger count variance and dominate the covariance for reasons of noise; standardise, use a variance-stabilising transform (e.g. square root), or analyse trial averages, and state the choice.", "weight": 0.15, "levels": [{ "label": "met", "description": "Effect and remedy." }, { "label": "partially met", "description": "Effect only." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "Total variance 10.0. Fractions 50, 25, 10, 8, 4, 3%; cumulative 50, 75, 85, 93, 97, 100%, so K = 4 is the first to reach 90%. Reconstruction: x = Σ s_k w_k and the K-component reconstruction omits Σ_{k>K} s_k w_k, whose squared norm is Σ_{k>K} s_k² by orthonormality; averaging over data gives Σ_{k>K} λ_k, which for K = 2 is 1.0 + 0.8 + 0.4 + 0.3 = 2.5. The elbow answers how many components reproduce the data to a tolerance; variance explained is not a measure of information about a stimulus or behaviour. Synthetic scenario: a shared arousal-like fluctuation drives all six neurons together with eigenvalue 5.0 while the stimulus modulates only the 0.3-eigenvalue direction; two-component PCA would discard the stimulus entirely, and regressing the stimulus on all six scores (or a decoder) would find the low-variance direction. Poisson-like counts give high-rate neurons larger variance, so they dominate an unscaled covariance for reasons of noise; standardise each neuron or apply a square-root transform, and say so.",
+      "expect": { "cumulative-two": true, "cumulative-four": true, "reconstruction-two": true, "relevance-addressed": true }
+    },
+    {
+      "label": "wrong arithmetic and variance read as relevance",
+      "text": "Two components explain 50% of the variance and the error is 5; four components reach 85%. The components with most variance explained are the ones that matter most.",
+      "expect": { "cumulative-two": false, "cumulative-four": false, "reconstruction-two": false, "relevance-addressed": false }
+    }
+  ]
+}

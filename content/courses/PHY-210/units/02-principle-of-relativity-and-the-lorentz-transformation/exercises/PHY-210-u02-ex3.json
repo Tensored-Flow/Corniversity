@@ -1,0 +1,25 @@
+{
+  "id": "PHY-210-u02-ex3",
+  "sequence": 3,
+  "title": "A boost is a rotation by a hyperbolic angle",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words, written for a reader who knows linear algebra but no physics, explain in what precise sense a Lorentz boost is a rotation: what quadratic form it preserves, what group the boosts along one axis form, why the natural parameter is a hyperbolic angle rather than a velocity, and what physical statement 'rapidities add but velocities do not' encodes. End with the one place where the analogy with Euclidean rotations breaks down.",
+  "conceptIds": ["lorentz-transformation", "four-vectors"],
+  "hintLadder": [
+    "Euclidean rotations preserve $x^2 + y^2$ and form $SO(2)$, parametrised by an angle that adds under composition. Replace each ingredient.",
+    "What is the range of $\\tanh$? What does that say about the range of $v/c$?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "form-and-group", "criterion": "States that boosts preserve −c²t² + x² (the Minkowski form), form a one-parameter group isomorphic to (ℝ, +) via the rapidity, and are the hyperbolic rotations Λ(φ).", "weight": 0.4, "levels": [ { "label": "met", "description": "All three elements." }, { "label": "partially met", "description": "Two." }, { "label": "not met", "description": "Confused." } ] },
+      { "id": "parameter", "criterion": "Explains that φ adds under composition while v/c = tanh φ combines by the velocity-addition formula, so c is never reached (|tanh| < 1).", "weight": 0.35, "levels": [ { "label": "met", "description": "Clear with the bound." }, { "label": "partially met", "description": "Addition stated without the bound." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "breakdown", "criterion": "Names a genuine breakdown of the analogy: the group is non-compact (φ ∈ ℝ, not periodic), or the form is indefinite so there are null directions / distinct causal classes of vectors.", "weight": 0.25, "levels": [ { "label": "met", "description": "Correct breakdown named." }, { "label": "partially met", "description": "Vague." }, { "label": "not met", "description": "None or wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

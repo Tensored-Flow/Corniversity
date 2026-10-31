@@ -1,0 +1,59 @@
+{
+  "id": "CHE-101-u03-ex2",
+  "sequence": 2,
+  "title": "Shapes and polarity: four molecules",
+  "kind": "short_answer",
+  "promptMarkdown": "For each of $\\ce{SF4}$, $\\ce{XeF4}$, $\\ce{NH3}$ and $\\ce{SO3}$:\n\n1. Give the valence-electron count, the AXE class, the electron-pair geometry, the molecular shape and the approximate bond angles (state whether the angles are compressed below the ideal and why).\n2. Decide whether the molecule has a nonzero dipole moment and justify with the shape.\n3. Explain why $\\ce{SF4}$ exists but a molecule $\\ce{OF4}$ with the same shape does not.\n4. For $\\ce{SO3}$, explain why the shape does not depend on which resonance structure you draw.",
+  "conceptIds": ["vsepr-molecular-geometry", "covalent-bonding-lewis"],
+  "hintLadder": [
+    "Count the regions of electron density around the central atom: each bonded atom is one region whatever the bond order, and each lone pair is one region.",
+    "Steric number 5 is a trigonal bipyramid, where lone pairs go equatorial; steric number 6 is an octahedron, where two lone pairs go opposite each other.",
+    "Draw the bond dipoles as arrows towards the more electronegative atom and ask whether they cancel by symmetry.",
+    "Which period is sulfur in, and which is oxygen in? What does that permit around the central atom?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "sf4-seesaw",
+      "kind": "expression_present",
+      "description": "SF4 described as see-saw",
+      "params": { "patterns": ["see-?saw", "seesaw"] }
+    },
+    {
+      "id": "xef4-square-planar",
+      "kind": "expression_present",
+      "description": "XeF4 described as square planar",
+      "params": { "patterns": ["squareplanar", "square-planar"] }
+    },
+    {
+      "id": "polarity-claims",
+      "kind": "forbidden_claim",
+      "description": "claiming XeF4 or SO3 is polar, or SF4 nonpolar",
+      "params": { "patterns": ["xef4 is polar", "xef4ispolar", "so3 is polar", "so3ispolar", "sf4 is nonpolar", "sf4isnonpolar", "sf4 is non-polar", "sf4isnon-polar"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "classes", "criterion": "SF4 AX4E (34 e⁻) trigonal bipyramidal / see-saw; XeF4 AX4E2 (36 e⁻) octahedral / square planar; NH3 AX3E (8 e⁻) tetrahedral / trigonal pyramidal; SO3 AX3 (24 e⁻) trigonal planar / trigonal planar.", "weight": 0.35, "levels": [{ "label": "met", "description": "All four correct with counts." }, { "label": "partially met", "description": "Three correct." }, { "label": "not met", "description": "Two or fewer." }] },
+      { "id": "angles", "criterion": "Angles: SF4 slightly below 120° and 90° (and the axial F–S–F below 180°) because of the equatorial lone pair; XeF4 90°; NH3 below 109.5° (about 107°); SO3 120°.", "weight": 0.2, "levels": [{ "label": "met", "description": "Compressions identified with the lone-pair reason." }, { "label": "partially met", "description": "Ideal angles given without compression reasoning." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "polarity", "criterion": "SF4 and NH3 polar; XeF4 and SO3 nonpolar by cancellation of bond dipoles in the symmetric shapes.", "weight": 0.25, "levels": [{ "label": "met", "description": "All four with the symmetry argument." }, { "label": "partially met", "description": "Three correct, or correct without justification." }, { "label": "not met", "description": "Two or fewer." }] },
+      { "id": "hypervalence-and-resonance", "criterion": "S (period 3) can hold more than eight electrons, O (period 2) cannot, so OF4 would violate the octet; SO3's shape depends only on the three electron regions, common to all resonance forms.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both explained." }, { "label": "partially met", "description": "One explained." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "SF4: 34 valence electrons, AX4E, trigonal bipyramidal electron-pair geometry, see-saw shape with the lone pair equatorial; the equatorial angle is a little under 120° and the axial under 180°; polar. XeF4: 36 electrons, AX4E2, octahedral, square planar, 90° angles; nonpolar because the four Xe–F dipoles cancel. NH3: 8 electrons, AX3E, tetrahedral, trigonal pyramidal, about 107°; polar. SO3: 24 electrons, AX3, trigonal planar, 120°; nonpolar by symmetry. SF4 exists because sulfur in period 3 can be hypervalent, while oxygen in period 2 cannot exceed an octet. SO3's three resonance structures all have three electron regions, so VSEPR gives the same shape for each.",
+      "expect": { "sf4-seesaw": true, "xef4-square-planar": true, "polarity-claims": true }
+    },
+    {
+      "label": "tetrahedral guesses and polarity reversed",
+      "text": "SF4 is tetrahedral. XeF4 is polar because of its lone pairs. SF4 is nonpolar.",
+      "expect": { "sf4-seesaw": false, "xef4-square-planar": false, "polarity-claims": false }
+    }
+  ]
+}

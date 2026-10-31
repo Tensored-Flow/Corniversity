@@ -1,0 +1,32 @@
+{
+  "id": "PHY-240-u06",
+  "courseId": "PHY-240",
+  "sequence": 6,
+  "title": "The Einstein field equation",
+  "summary": "The Einstein tensor and its vanishing divergence; the field equation G = 8πG T with the constant fixed by the Newtonian limit; the cosmological constant as a perfect fluid; the Einstein–Hilbert action and the Palatini variation; why GR is the simplest relativistic theory of gravity.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 12–13 (Lecture Guide page 3), Tong Chapter 4 and Carroll Chapter 4." }
+  ],
+  "prerequisiteConceptIds": ["spacetime-curvature", "stress-energy-tensor", "lagrangian-mechanics"],
+  "teachesConceptIds": ["einstein-field-equation"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopses of Lectures 12 and 13 (PDF page 3): Einstein tensor, field equation and its normalisation, cosmological constant; the variational derivation and the Palatini remark.", "locatorId": "gr20-g-lec11-13", "estimatedMinutes": 20 },
+    { "description": "Watch Lectures 12 and 13 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Chapter 4 The Einstein Equations (reference-only).", "locatorId": "tong-gr-ch4", "estimatedMinutes": 60 },
+    { "description": "Optional: Carroll, Chapter 4 Gravitation (the field equations and the action), reference-only.", "locatorId": "carroll-ch4", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "lecture", "title": "Lectures 12–13: the field equation", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec11-13", "gr20-videos", "gr20-summaries", "tong-gr-ch4", "carroll-ch4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 480,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide page 3 (Lectures 12–13) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Chapter 4 listed on the notes page; Carroll Chapter 4 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

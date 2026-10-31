@@ -1,0 +1,4 @@
+[
+  { "id": "python-scientific-computing", "title": "Python for scientific computing", "departmentId": "computer-science-ai", "description": "Variables, lists and dictionaries, functions, NumPy arrays and vectorised arithmetic, SciPy routines and Matplotlib plots; running and reading a Jupyter notebook." },
+  { "id": "applied-statistics-basics", "title": "Applied statistics basics", "departmentId": "computer-science-ai", "description": "Random variables, means and variances, the normal and Poisson distributions, sampling variability, and the idea of estimating a parameter from data." }
+]

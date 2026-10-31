@@ -1,0 +1,58 @@
+{
+  "id": "NEU-220-u01-ex3",
+  "sequence": 3,
+  "title": "Why exponential ISIs: the maximum-entropy argument, proved and criticised",
+  "kind": "proof",
+  "promptMarkdown": "W1D1 Tutorial 3 computes the entropy of deterministic, uniform and exponential ISI distributions with the same mean and finds the exponential largest. Prove the general statement and then say what it means.\n\n1. Let $p$ be any probability density on $[0, \\infty)$ with mean $\\mu$, and let $q(\\tau) = \\mu^{-1}e^{-\\tau/\\mu}$. Prove that the differential entropy $h(p) = -\\int_0^\\infty p\\ln p$ satisfies $h(p) \\le h(q) = 1 + \\ln\\mu$, with equality if and only if $p = q$ almost everywhere. (Gibbs' inequality, the non-negativity of the Kullback–Leibler divergence, or Lagrange multipliers are all acceptable routes; if you use Lagrange multipliers, say how you know the stationary point is the maximum.)\n2. Compute the entropy of the uniform density on $[0, 2\\mu]$ (which also has mean $\\mu$) and show by how many nats it falls short of the exponential. What happens to the entropy of a density that concentrates at $\\tau = \\mu$?\n3. In under 200 words: state precisely what normative claim about neurons this theorem supports, what constraint it assumes, and which features of recorded ISI histograms (such as those from the Steinmetz data in Tutorial 1) would count against the claim as stated, and how one might revise the constraint rather than abandon the objective.",
+  "conceptIds": ["model-types-what-how-why", "neural-spiking-basics"],
+  "hintLadder": [
+    "Write $h(p) = -\\int p\\ln q - \\int p\\ln(p/q)$. The second integral is the Kullback–Leibler divergence $D(p\\,\\|\\,q) \\ge 0$.",
+    "Because $\\ln q(\\tau) = -\\ln\\mu - \\tau/\\mu$ is affine in $\\tau$, $-\\int p\\ln q$ depends on $p$ only through its mean, which is fixed.",
+    "For the uniform density on $[0, 2\\mu]$, $h = \\ln(2\\mu)$; compare $1 + \\ln\\mu$ with $\\ln 2 + \\ln\\mu$.",
+    "A refractory gap violates the premise that all of $[0, \\infty)$ is available; adding that constraint changes the maximiser."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "general-argument",
+      "kind": "finite_examples_not_proof",
+      "description": "checking particular means is not a proof",
+      "params": {}
+    },
+    {
+      "id": "inequality-named",
+      "kind": "expression_present",
+      "description": "a general inequality or variational argument is used (KL divergence, Gibbs, Jensen or Lagrange multipliers)",
+      "params": { "patterns": ["kullback", "gibbs", "jensen", "d\\(p‖q\\)", "d_kl", "relativeentropy", "lagrang", "kl"] }
+    },
+    {
+      "id": "ln2-gap",
+      "kind": "numeric_value",
+      "description": "the uniform falls short by 1 − ln 2 = 0.307 nats (ln 2 = 0.693)",
+      "params": { "expected": 0.307, "tolerance": 0.002 }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "proof", "criterion": "h(p) = −∫p ln q − D(p‖q) with −∫p ln q = ln μ + 1 for every p of mean μ, so h(p) ≤ 1 + ln μ with equality iff D = 0 iff p = q a.e.; or an equivalent Lagrangian argument with concavity justifying the maximum.", "weight": 0.45, "levels": [{ "label": "met", "description": "Complete, with the equality case." }, { "label": "partially met", "description": "Inequality right, equality case or the mean-only step missing." }, { "label": "not met", "description": "Not a proof." }] },
+      { "id": "comparisons", "criterion": "Uniform on [0, 2μ]: h = ln 2 + ln μ, short by 1 − ln 2 ≈ 0.307 nats; a density concentrating at μ has entropy → −∞.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "interpretation", "criterion": "Claim: if a neuron maximised ISI entropy at a fixed mean rate with no other constraint, its ISIs would be exponential. Refuting features: refractory gap, bimodality, CV far from 1. Revision: add the refractory constraint (support [t_ref, ∞)), which shifts the maximiser to a shifted exponential, rather than abandoning the objective.", "weight": 0.35, "levels": [{ "label": "met", "description": "Claim, constraint, refuting features and a constraint revision." }, { "label": "partially met", "description": "Three of four." }, { "label": "not met", "description": "Treats the theorem as a fact about neurons." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct proof and interpretation",
+      "text": "Let p be any density on [0, ∞) with mean μ and q the exponential with mean μ. Then h(p) = −∫p ln q − ∫p ln(p/q) = −∫p ln q − D(p‖q). Since ln q = −ln μ − τ/μ, −∫p ln q = ln μ + (1/μ)∫τ p = ln μ + 1 for every such p. The Kullback–Leibler divergence is nonnegative (Gibbs' inequality) and zero iff p = q a.e., so h(p) ≤ 1 + ln μ with equality iff p = q. The uniform on [0, 2μ] has h = ln(2μ) = ln 2 + ln μ, short by 1 − ln 2 = 0.307 nats; a density concentrating at μ has entropy tending to −∞. The theorem supports the claim that a neuron maximising ISI entropy subject only to a fixed mean rate would have exponential ISIs. Recorded histograms with a refractory gap or bimodal peaks count against the claim as stated; adding the refractory constraint (support on [t_ref, ∞)) gives a shifted exponential as the new maximiser, revising the constraint rather than the objective.",
+      "expect": { "general-argument": true, "inequality-named": true, "ln2-gap": true }
+    },
+    {
+      "label": "instances instead of a proof",
+      "text": "For n=1, n=2 and n=3 the exponential has more entropy than the uniform with the same mean, so it is the maximum.",
+      "expect": { "general-argument": false, "inequality-named": false, "ln2-gap": false }
+    }
+  ]
+}

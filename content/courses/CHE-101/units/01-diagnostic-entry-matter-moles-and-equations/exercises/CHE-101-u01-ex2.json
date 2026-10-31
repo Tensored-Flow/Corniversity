@@ -1,0 +1,65 @@
+{
+  "id": "CHE-101-u01-ex2",
+  "sequence": 2,
+  "title": "Limiting reactant and yield: reducing iron(III) oxide",
+  "kind": "calculation",
+  "promptMarkdown": "Iron(III) oxide is reduced by carbon monoxide:\n$$\\ce{Fe2O3(s) + 3 CO(g) -> 2 Fe(s) + 3 CO2(g)}$$\n(check that it is balanced before using it). A virtual run starts with $25.0\\ \\text{g}$ of $\\ce{Fe2O3}$ and $15.0\\ \\text{g}$ of $\\ce{CO}$ and produces $15.2\\ \\text{g}$ of iron. Atomic masses: Fe 55.85, C 12.01, O 16.00 $\\text{g mol}^{-1}$.\n\n1. Identify the limiting reactant, showing the comparison of amounts you used.\n2. Compute the theoretical yield of iron in grams.\n3. Compute the percent yield.\n4. Compute the mass of the excess reactant left over when the reaction stops.\n5. State the assumptions behind the theoretical yield, and give one reason a real yield could fall short that is not a calculation error.",
+  "conceptIds": ["limiting-reactant-yield", "reaction-stoichiometry", "mole-and-molar-mass"],
+  "hintLadder": [
+    "Convert both masses to moles first. Masses cannot be compared directly because the molar masses differ.",
+    "Ask how many moles of $\\ce{CO}$ would be needed to consume all of the $\\ce{Fe2O3}$, and compare that with the moles of $\\ce{CO}$ available.",
+    "The theoretical yield comes from the limiting reactant alone, through the mole ratio to iron.",
+    "The excess remaining is the amount available minus the amount consumed, converted back to grams."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "theoretical-fe",
+      "kind": "numeric_value",
+      "description": "the theoretical yield of iron is about 17.49 g (17.5 g)",
+      "params": { "expected": 17.49, "tolerance": 0.08 }
+    },
+    {
+      "id": "percent-yield",
+      "kind": "numeric_value",
+      "description": "the percent yield is about 86.9%",
+      "params": { "expected": 86.9, "tolerance": 0.35 }
+    },
+    {
+      "id": "excess-co",
+      "kind": "numeric_value",
+      "description": "about 1.85 g of CO remains",
+      "params": { "expected": 1.85, "tolerance": 0.03 }
+    },
+    {
+      "id": "co-not-limiting",
+      "kind": "forbidden_claim",
+      "description": "claiming that CO is the limiting reactant (Fe2O3 limits; CO is in excess)",
+      "params": { "patterns": ["co is (the )?limiting", "carbon monoxide is (the )?limiting", "coisthelimiting", "coislimiting", "carbonmonoxideislimiting"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "limiting", "criterion": "The limiting reactant (Fe2O3) is identified by comparing amounts against the 1:3 ratio, not by comparing masses.", "weight": 0.3, "levels": [{ "label": "met", "description": "Both amounts computed and the ratio comparison shown." }, { "label": "partially met", "description": "Correct identification with the comparison implicit." }, { "label": "not met", "description": "Wrong reactant or masses compared." }] },
+      { "id": "theoretical-yield", "criterion": "Theoretical yield of iron computed from the limiting reactant with units.", "weight": 0.25, "levels": [{ "label": "met", "description": "About 17.5 g with the ratio shown." }, { "label": "partially met", "description": "Right method, arithmetic slip." }, { "label": "not met", "description": "Computed from the excess reactant or missing." }] },
+      { "id": "percent-and-excess", "criterion": "Percent yield and mass of excess CO computed correctly.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both correct." }, { "label": "partially met", "description": "One correct." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "assumptions", "criterion": "Assumptions stated (pure reactants, reaction to completion as written, no side reactions, product fully recovered) and one physical reason for a shortfall given.", "weight": 0.2, "levels": [{ "label": "met", "description": "Assumptions and a plausible reason (incomplete reaction, side products, losses on recovery, impure reactant)." }, { "label": "partially met", "description": "Assumptions or reason, not both." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "n(Fe2O3) = 25.0/159.70 = 0.1565 mol; n(CO) = 15.0/28.01 = 0.5355 mol. All the Fe2O3 needs 3 × 0.1565 = 0.4696 mol CO, less than the 0.5355 mol available, so Fe2O3 is the limiting reactant and CO is in excess. Fe theoretical: 2 × 0.1565 = 0.3131 mol × 55.85 = 17.49 g. Percent yield = 15.2/17.49 = 86.9%. Excess CO: (0.5355 − 0.4696) × 28.01 = 1.85 g. Assumes pure reactants and complete reaction as written; a real shortfall could come from incomplete reduction or losses in recovering the iron.",
+      "expect": { "theoretical-fe": true, "percent-yield": true, "excess-co": true, "co-not-limiting": true }
+    },
+    {
+      "label": "masses compared instead of moles",
+      "text": "CO is the limiting reactant because 15.0 g is less than 25.0 g. Theoretical iron = 29.9 g, so the yield is 50.8%.",
+      "expect": { "co-not-limiting": false, "theoretical-fe": false, "percent-yield": false }
+    }
+  ]
+}

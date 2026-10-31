@@ -1,0 +1,31 @@
+{
+  "id": "PHY-210-u08",
+  "courseId": "PHY-210",
+  "sequence": 8,
+  "title": "Collisions, decays and invariant mass",
+  "summary": "Total four-momentum and the invariant mass of a system; photons; thresholds for creating mass; two-body decays and the Compton effect by invariants; fission, fusion and annihilation in SI numbers.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 8, Tong Section 7.5, and MIT 8.20 Weeks 3–4 (Lectures 9.3, 10.3–10.7)." }
+  ],
+  "prerequisiteConceptIds": ["relativistic-energy-momentum", "four-vectors"],
+  "teachesConceptIds": ["relativistic-energy-momentum"],
+  "preparation": [
+    { "description": "Read Spacetime Physics Chapter 8 Collide. Create. Annihilate. (pp. 221–274), including the Dialog on the concept of mass (p. 246).", "locatorId": "stp-ch8", "estimatedMinutes": 80 },
+    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.5 Particle Physics (reference-only).", "locatorId": "tong-dr-ch7-s5", "estimatedMinutes": 25 },
+    { "description": "Optional: MIT 8.20 Week 3 Lecture 9.3 Collisions and Week 4 Lectures 10.3, 10.5, 10.6, 10.7.", "locatorId": "sr21-week4", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Reading: collisions and decays", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 130, "sourceLocatorIds": ["stp-ch8", "tong-dr-ch7-s5", "sr21-week3", "sr21-week4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 280,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 8 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.5 headings verified in dynrel7.pdf; MIT 8.20 Week 3 and Week 4 pages opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

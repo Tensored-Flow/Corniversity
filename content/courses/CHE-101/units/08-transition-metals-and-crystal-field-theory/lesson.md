@@ -1,0 +1,7 @@
+## Outline: transition metals and crystal field theory
+
+This unit is **outlined, not yet prepared**. It will be written from lectures 27–29 of MIT 5.111SC (Fall 2014, CC BY-NC-SA 4.0), citing lecture-notes pages exactly as the prepared units do. The matching OpenStax Chemistry 2e chapter (19, Transition Metals and Coordination Chemistry) has not yet been opened and verified; it will be added as linked reading when it has.
+
+**Scope.** Electron configurations and oxidation states of d-block metals (building on the 4s/3d ordering of unit 2); coordination complexes, ligands, coordination number and geometry; crystal field theory for octahedral and tetrahedral fields, the splitting $\Delta$, high-spin and low-spin configurations and their magnetic consequences; the origin of colour in complexes; the spectrochemical series as an empirical ordering; chelation, which lecture 27 connects to the treatment of acute lead poisoning, discussed as a model of binding equilibria and not as medical guidance.
+
+**What preparation will add.** A full lesson, original exercises with hint ladders and rubrics (d-electron counts and spin states with magnetism predictions; a colour and $\Delta$ estimate with the model's assumptions stated), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

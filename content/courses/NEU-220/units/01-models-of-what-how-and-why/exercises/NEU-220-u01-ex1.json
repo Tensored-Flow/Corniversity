@@ -1,0 +1,65 @@
+{
+  "id": "NEU-220-u01-ex1",
+  "sequence": 1,
+  "title": "Inter-spike intervals of a Poisson neuron, with and without a refractory period",
+  "kind": "derivation",
+  "promptMarkdown": "Model a neuron as a homogeneous Poisson process with rate $r$: in every short interval $dt$ a spike occurs with probability $r\\,dt$, independently of the past. This is a descriptive model; nothing here is a recording.\n\n1. Derive the probability density of the inter-spike interval $\\tau$, its mean and its standard deviation, and hence the coefficient of variation CV.\n2. Now add an absolute refractory period: after each spike no spike can occur for a time $t_{ref}$, after which the process resumes at rate $r$. Derive the new ISI density, mean, standard deviation and CV, and show that CV $< 1$.\n3. For $r = 20\\ \\text{s}^{-1}$ and $t_{ref} = 5$ ms, compute the mean ISI in ms and the CV.\n4. W1D1 Tutorial 1 fits candidate functions to ISI histograms from the Steinmetz et al. (2019) recordings. Name two features of a recorded ISI histogram that would refute the pure Poisson model, and one that the refractory model would also fail to capture. Say in one sentence why a good fit of the exponential form would not show that the neuron 'is' a Poisson process.",
+  "conceptIds": ["neural-spiking-basics", "model-types-what-how-why"],
+  "hintLadder": [
+    "Let $S(\\tau)$ be the probability that no spike has occurred in $(0, \\tau]$ after a spike at 0. Independence gives $S(\\tau + dt) = S(\\tau)(1 - r\\,dt)$; turn this into a differential equation.",
+    "The density is $-dS/d\\tau$. Mean and variance of the exponential follow from $\\int_0^\\infty \\tau^k r e^{-r\\tau}\\,d\\tau = k!/r^k$.",
+    "With a refractory period the interval is $t_{ref}$ plus an exponential variable: shift the density, and recall that adding a constant changes the mean but not the standard deviation.",
+    "A gap near zero, a peak at a preferred interval, or a CV far from 1 are all features the pure model cannot produce; successive-interval correlations are something neither model produces."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "cv-refractory",
+      "kind": "numeric_value",
+      "description": "CV = 1/(1 + r t_ref) = 0.909 for the given numbers",
+      "params": { "expected": 0.909, "tolerance": 0.003 }
+    },
+    {
+      "id": "mean-isi",
+      "kind": "numeric_value",
+      "description": "mean ISI = 55 ms",
+      "params": { "expected": 55, "tolerance": 0.1 }
+    },
+    {
+      "id": "cv-direction",
+      "kind": "forbidden_claim",
+      "description": "claiming that the refractory period raises the CV or makes it exceed 1",
+      "params": { "patterns": ["cv>1", "cv (is )?greater than 1", "cvgreaterthan1", "refractory period (increases|raises) (the )?cv", "refractoryperiod(increases|raises)(the)?cv", "cv (is )?(above|over) 1", "cvabove1"] }
+    },
+    {
+      "id": "not-just-numbers",
+      "kind": "finite_examples_not_proof",
+      "description": "the densities must be derived in general, not evaluated at particular values",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "exponential-law", "criterion": "Survival function S(τ) = e^{−rτ} derived from independence; density p(τ) = r e^{−rτ}; mean 1/r, SD 1/r, CV = 1.", "weight": 0.3, "levels": [{ "label": "met", "description": "Derived, not quoted, with all three statistics." }, { "label": "partially met", "description": "Density quoted or one statistic wrong." }, { "label": "not met", "description": "Wrong density." }] },
+      { "id": "refractory", "criterion": "p(τ) = r e^{−r(τ − t_ref)} for τ ≥ t_ref, zero below; mean t_ref + 1/r; SD 1/r; CV = 1/(1 + r t_ref) < 1.", "weight": 0.3, "levels": [{ "label": "met", "description": "All, with the SD argument." }, { "label": "partially met", "description": "Mean right, SD or CV wrong." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "numbers", "criterion": "Mean 55 ms; CV = 1/1.1 = 0.909.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "refutation", "criterion": "Two refuting features (gap at short intervals, CV ≠ 1, peak or bimodality); one feature beyond the refractory model (serial correlations, bursts, rate non-stationarity); and the point that a fit shows shape, not mechanism or independence.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three parts." }, { "label": "partially met", "description": "Two parts." }, { "label": "not met", "description": "One or none." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "correct derivation",
+      "text": "Let S(τ) be the probability of no spike in (0, τ]. For all τ, S(τ + dt) = S(τ)(1 − r dt), so dS/dτ = −rS and S = e^{−rτ}; the density is p(τ) = −S' = r e^{−rτ}, with mean 1/r, variance 1/r², SD 1/r and CV = 1. With a refractory period the interval is t_ref plus an exponential variable: p(τ) = r e^{−r(τ − t_ref)} for τ ≥ t_ref, mean t_ref + 1/r, SD 1/r (a shift does not change the spread), CV = (1/r)/(t_ref + 1/r) = 1/(1 + r t_ref) < 1. Numbers: mean = 5 + 50 = 55 ms, CV = 1/1.1 = 0.909. Refuting features: a gap at short intervals and a CV well below 1 refute the pure Poisson model; serial correlations between successive intervals (bursting) are beyond both. A good exponential fit only shows the histogram's shape; it does not show that spikes are independent, which is the mechanism-free assumption behind 'Poisson'.",
+      "expect": { "cv-refractory": true, "mean-isi": true, "cv-direction": true, "not-just-numbers": true }
+    },
+    {
+      "label": "reversed CV and no derivation",
+      "text": "The refractory period increases the CV above 1 because spikes become more spread out. Mean ISI is 50 ms.",
+      "expect": { "cv-direction": false, "cv-refractory": false, "mean-isi": false }
+    }
+  ]
+}

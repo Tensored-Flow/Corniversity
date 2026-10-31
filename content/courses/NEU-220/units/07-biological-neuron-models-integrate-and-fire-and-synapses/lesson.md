@@ -1,0 +1,7 @@
+## Outline: biological neuron models
+
+This unit is **outlined, not yet prepared**. It will be written from Neuromatch Academy W2D4 Biological Neuron Models (content CC BY 4.0, code BSD-3-Clause), citing the exact tutorial pages once they have been opened and verified; so far the chapter page and the related W1D1 Tutorial 2 have been.
+
+**Scope.** The leaky integrate-and-fire neuron of unit 1 driven by stochastic input: mean-driven versus fluctuation-driven firing, the f–I curve under noise, and the CV of the output (Tutorial 1); how correlations among input spike trains shape output spiking (Tutorial 2); synaptic transmission as conductance changes, static synapses and short-term plasticity (depression and facilitation) as dynamic synapses (Tutorial 3); the bonus on spike-timing-dependent plasticity. Every simulation is synthetic by construction and will be labelled so; the question for each model is which recorded observation it reproduces and which it cannot.
+
+**What preparation will add.** A full lesson, original exercises with hint ladders and rubrics (the diffusion approximation for the membrane potential under Poisson input, a derivation of the steady-state synaptic efficacy in a depression model, and a critique pairing each model with a refuting observation), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

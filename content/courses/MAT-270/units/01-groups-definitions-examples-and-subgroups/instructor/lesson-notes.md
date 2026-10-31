@@ -1,0 +1,9 @@
+## Lesson notes (instructor only)
+
+Source mapping, Judson, Abstract Algebra: Theory and Applications, HTML edition (judsonbooks.org, title block dated August 4, 2026). Section 3.1: Examples 3.1.1–3.1.2, Figure 3.1.3, Proposition 3.1.4 (parts 1 and 6 proved in the text, the rest left as exercises), Figures 3.1.5–3.1.7. Section 3.2: the group definition (unnumbered), Examples 3.2.1–3.2.9 (3.2.4 is $U(n)$, 3.2.6 is $S_3$, 3.2.7 is $GL_2(\mathbb R)$, 3.2.8 is $Q_8$), Propositions 3.2.10–3.2.15 (3.2.15 cancellation is left to the exercises), Theorem 3.2.16. Section 3.3: Examples 3.3.1–3.3.5 (3.3.4 is the $GL_2$ warning, 3.3.5 is $\mathbb Z_4$ versus $\mathbb Z_2\times\mathbb Z_2$), Propositions 3.3.7–3.3.8. Anchors for each statement are recorded in the source record; the section URLs remain valid even if anchors are regenerated.
+
+The lesson adds two things the text does not state: the proof that the identity of a subgroup is the identity of $G$ (needed for Proposition 3.3.7's necessity direction), and the remark that finite closed subsets are subgroups. The direct product $\mathbb Z_2\times\mathbb Z_2$ is used informally in Example 3.3.5 before direct products are defined (chapter 9, unit 5); say so if asked.
+
+Teaching intent: the learner has a strong background, so the tutorial should move quickly past axiom-checking to exercise 1 part 2 (the pairing argument) and exercise 2 (f). Insist on the habit "name the failing axiom" for every non-example. If time remains, ask for $|GL_2(\mathbb Z_3)|$ ($=(9-1)(9-3)=48$) and whether the involutions of $Q_8$ form a subgroup (yes, $\{\pm1\}$), which pre-empts the invalid counterexample.
+
+Supplement: MIT RES.18-011 lecture 1 (student notes, unchecked by MIT faculty) introduces groups via $GL_n$ and $S_n$; it is optional reading and never the source of a statement cited in this unit.

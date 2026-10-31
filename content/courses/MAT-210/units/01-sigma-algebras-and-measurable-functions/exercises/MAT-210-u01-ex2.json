@@ -1,0 +1,97 @@
+{
+  "id": "MAT-210-u01-ex2",
+  "sequence": 2,
+  "title": "Measurability through a countable test family",
+  "kind": "proof",
+  "promptMarkdown": "Let $(X,\\mathcal M)$ be a measurable space.\n\n1. Prove that $f:X\\to[-\\infty,\\infty]$ is measurable if and only if $\\{f>q\\}\\in\\mathcal M$ for every **rational** $q$.\n2. Let $X$ be uncountable and let $\\mathcal M_c$ be the countable–co-countable σ-algebra of exercise 1. Prove that $f:X\\to\\mathbb R$ is $\\mathcal M_c$-measurable if and only if there is a constant $c\\in\\mathbb R$ such that $\\{x\\in X: f(x)\\neq c\\}$ is countable.\n3. Let $f_n:X\\to\\mathbb R$ be $\\mathcal M_c$-measurable and suppose $f_n\\to f$ pointwise on $X$. Theorem 0.3 of lecture 2 says that $f$ is measurable; confirm this directly from your characterisation in part 2, identifying the constant for $f$ in terms of the constants $c_n$ for the $f_n$.",
+  "conceptIds": [
+    "measurable-function",
+    "sigma-algebra"
+  ],
+  "hintLadder": [
+    "Every real $\\alpha$ is approached by rationals from above: express $\\{f>\\alpha\\}$ as a countable union of sets $\\{f>q\\}$ with $q$ rational, then apply the $(\\alpha,\\infty]$ criterion.",
+    "For the easy direction of part 2, split according to whether $c\\in U$. For the hard direction, for each rational $q$ the set $\\{f\\le q\\}$ is countable or co-countable; let $S$ be the set of rationals $q$ for which it is countable.",
+    "Show that $S$ is a down-set of $\\mathbb Q$ (if $q\\in S$ and $q'<q$ then $q'\\in S$), that $S\\neq\\mathbb Q$ and that $S\\neq\\emptyset$, using that $X$ is uncountable and $f$ is real-valued. Then let $c=\\sup S$ and examine $\\{f<c\\}$ and $\\{f>c\\}$.",
+    "For part 3, the exceptional sets $N_n=\\{f_n\\neq c_n\\}$ are countable; what happens to $f_n(x)$ for $x$ outside their union, and why is that union not all of $X$?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "constant-named",
+      "kind": "expression_present",
+      "description": "the characterisation of M_c-measurable functions names a constant value taken off a countable set",
+      "params": {
+        "patterns": [
+          "constant",
+          "singlevalue",
+          "onevalue",
+          "samevalue"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "rational-criterion",
+        "criterion": "{f > α} is written as a countable union of sets {f > q} over rationals q > α, and the (α, ∞] criterion is invoked.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Union identity justified in both directions and the criterion cited." },
+          { "label": "partially met", "description": "Identity stated without justification." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "characterisation-necessity",
+        "criterion": "Measurable ⇒ constant off a countable set: a correct argument locating the constant (for instance via the down-set S = {q ∈ ℚ : {f ≤ q} countable}, shown nonempty and proper using that X is uncountable, and c = sup S), with both {f < c} and {f > c} shown countable.",
+        "weight": 0.35,
+        "levels": [
+          { "label": "met", "description": "Constant located, both tails countable, uncountability of X used explicitly." },
+          { "label": "partially met", "description": "Right idea; one tail or the nonemptiness/properness of S not justified." },
+          { "label": "not met", "description": "Missing or circular." }
+        ]
+      },
+      {
+        "id": "characterisation-sufficiency",
+        "criterion": "Constant off a countable set ⇒ measurable, by the case split c ∈ U or c ∉ U.",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "Both cases." },
+          { "label": "partially met", "description": "One case." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "limit-consistency",
+        "criterion": "Part 3: off the countable union of the exceptional sets the functions are constants c_n, the limit forces (c_n) to converge (the complement is nonempty because X is uncountable), and f equals lim c_n off a countable set.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Union of exceptional sets, convergence of c_n justified, constant identified." },
+          { "label": "partially met", "description": "Constant identified but convergence of c_n or nonemptiness of the complement not justified." },
+          { "label": "not met", "description": "Missing or appeals only to Theorem 0.3." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "characterisation stated",
+      "text": "Claim: f is M_c-measurable if and only if f is constant outside a countable set. If f = c off a countable set N, then for any U either c ∈ U, so the preimage contains X \\ N and is co-countable, or c ∉ U, so the preimage lies inside N and is countable.",
+      "expect": {
+        "constant-named": true
+      }
+    },
+    {
+      "label": "no characterisation",
+      "text": "f is measurable iff the preimage of every open set is countable or co-countable; this is just the definition, so there is nothing more to say.",
+      "expect": {
+        "constant-named": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u08",
+  "courseId": "MAT-261",
+  "sequence": 8,
+  "title": "Banach-space interlude: Fredholm operators and Smale's Sard theorem",
+  "summary": "Normed and Banach spaces, bounded operators, the Hahn–Banach, open mapping and closed graph theorems as tools; compact operators and Arzelà–Ascoli; Fredholm operators and the index; Banach manifolds; Smale's Sard theorem for Fredholm maps.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 15–19 of the 18.965 notes (§16.1–16.3, Theorems 16.3–16.11, Definition 16.13, Theorem 16.26, §17 Theorem 17.3). Learners who have taken MAT-230 may treat §16.1–16.2 as revision." }
+  ],
+  "prerequisiteConceptIds": ["inverse-function-theorem-manifolds", "sard-theorem", "banach-space", "bounded-operator"],
+  "teachesConceptIds": ["fredholm-and-smale-sard"],
+  "preparation": [
+    { "description": "Read lecture 15: §16.1 basic definitions (normed and Banach spaces, bounded operators, Hahn–Banach, open mapping, closed graph) and §16.2 compact operators with Arzelà–Ascoli.", "locatorId": "gm04-lec15", "estimatedMinutes": 45 },
+    { "description": "Read lectures 16–17: §16.3 Fredholm operators, Definition 16.13 and the characterisation Theorem 16.26.", "locatorId": "gm04-lec16-17", "estimatedMinutes": 60 },
+    { "description": "Read lectures 18–19: §17 Smale's Sard theorem, Definitions 17.1–17.2, Theorem 17.3.", "locatorId": "gm04-lec18-19", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Lectures 15–19: linear analysis and Smale's Sard theorem", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["gm04-lec15", "gm04-lec16-17", "gm04-lec18-19"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 15, 16–17 and 18–19 PDFs downloaded and text-extracted 2026-10-30; section headings §16.1–16.2 (lecture15.pdf, 4 pages), §16.3 with Definition 16.13 and Theorem 16.26 (lecture16_17.pdf, 6 pages) and §17 with Theorem 17.3 (lecture18_19.pdf, 3 pages) located in the extracted text; file-level locators recorded." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

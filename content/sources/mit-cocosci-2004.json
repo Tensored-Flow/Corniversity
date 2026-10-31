@@ -1,0 +1,1422 @@
+{
+  "id": "mit-cocosci-2004",
+  "title": "9.66J Computational Cognitive Science (Fall 2004)",
+  "authors": [
+    "Joshua B. Tenenbaum (instructor; slide author per PDF metadata)"
+  ],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/",
+  "description": "Undergraduate introduction to computational theories of human cognition: the problem of induction, knowledge representation, Bayesian inference, graphical models, concept learning and categorization, Occam's razor, hierarchical models, intuitive theories and causal learning. OCW publishes the syllabus, calendar, readings list, 24 lecture slide decks (PDF), study materials and two example student projects.",
+  "rightsNotes": [
+    "Licensed CC BY-NC-SA 4.0 by MIT OpenCourseWare (the course page links the licence; the OCW terms of use apply). Attribution and share-alike are required; commercial use is excluded. Corniversity is private and non-commercial.",
+    "Many slides state 'Image removed due to copyright considerations'; the published PDFs omit third-party figures, including the human generalization data plots of the number game. Corniversity does not reconstruct or quote the removed material.",
+    "The readings page is bibliographic only (no open PDFs; some 'Buy at MIT Press' links). Readings are reference-only and are not imported.",
+    "This is the Fall 2004 offering. The current MIT course (9.66J/9.660/6.804J, CBMM page) has no public materials; see the mit-cognitive-science record."
+  ],
+  "currentVersionId": "mit-cocosci-2004-f04",
+  "versions": [
+    {
+      "id": "mit-cocosci-2004-f04",
+      "label": "Fall 2004 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (content author agent) — opened the course, syllabus, calendar, lecture-notes, readings, projects and study-materials pages; confirmed all 24 lecture resource pages return HTTP 200 and extracted text from seven lecture PDFs with scripts/pdf-dump.ts",
+      "componentsSeen": [
+        "course landing page: description, instructor, level, links to Syllabus, Calendar, Readings, Lecture Notes, Projects, Study Materials; Creative Commons licence link",
+        "syllabus: two 1.5-hour lectures per week; prerequisite 'a class in probability or statistics'; programming experience desirable; no single required text; four problem sets and a final project or paper; grading 40% problem sets, 40% project, 20% discussion",
+        "calendar: 25 sessions with problem-set and project milestones",
+        "lecture notes index: 24 slide decks (sessions 1–24; session 25 is project presentations with no file)",
+        "lecture PDFs text-extracted: sept_9_2004.pdf (72 pp.), sept_14_2004.pdf (65 pp.), oct_5_2004_final.pdf (44 pp.), oct_14_2004_fin.pdf (67 pp.), oct_19_2004_fin.pdf (53 pp.), oct_21_2004_fin.pdf (49 pp.); oct_12_2004_fin.pdf (47 pp.) extracted and found to contain Bayes-net material",
+        "readings page (bibliographic citations only), projects page (guidelines and two example projects as PDFs), study materials (MATLAB notes and a statistics/regression handout)"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
+      "limitations": [
+        "Slide decks, not prose notes: many slides are figures or one-line titles, and copyrighted images are removed. Lessons must supply the derivations the slides only gesture at.",
+        "Page-level locators exist only for the seven decks whose text was extracted (lectures 1, 2, 8, 10, 11, 12, 13); the other decks have file-level locators only.",
+        "The file names and the listed lecture topics do not always align: oct_12_2004_fin.pdf (listed as 'Simple Bayesian Learning 1') contains Bayes-net semantics, explaining away and sampling; oct_14_2004_fin.pdf (listed as 'Simple Bayesian Learning 2') contains Bayesian parameter estimation, hierarchical priors and MCMC; oct_19_2004_fin.pdf opens with MCMC and topic models before concepts and categories. Locators record what the pages actually contain.",
+        "Printed page labels are present only in oct_5, oct_19 and oct_21 (equal to physical index + 1); the other decks have no printed labels.",
+        "Material is from 2004; later developments (probabilistic programming, large-scale models) are covered through the probmods-v2 record, not this one."
+      ],
+      "locators": [
+        {
+          "id": "cocosci04-home",
+          "label": "Course landing page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/",
+            "heading": "Computational Cognitive Science"
+          }
+        },
+        {
+          "id": "cocosci04-syllabus",
+          "label": "Syllabus page (prerequisites, readings statement, assignments, grading)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "cocosci04-calendar",
+          "label": "Calendar page (25 sessions, problem-set and project milestones)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/pages/calendar/",
+            "heading": "Calendar"
+          }
+        },
+        {
+          "id": "cocosci04-notes-index",
+          "label": "Lecture notes index (24 slide decks)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/pages/lecture-notes/",
+            "heading": "Lecture Notes"
+          }
+        },
+        {
+          "id": "cocosci04-readings",
+          "label": "Readings page (bibliographic list per session; no open PDFs)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/pages/readings/",
+            "heading": "Readings"
+          }
+        },
+        {
+          "id": "cocosci04-projects",
+          "label": "Projects page (final project guidelines and two example projects)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/pages/projects/",
+            "heading": "Projects"
+          }
+        },
+        {
+          "id": "cocosci04-lec01",
+          "label": "Lecture 1 slides: Introduction (sept_9_2004.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "heading": "Lecture 1: Introduction"
+          }
+        },
+        {
+          "id": "cocosci04-lec02",
+          "label": "Lecture 2 slides: Foundations of Inductive Learning (sept_14_2004.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "heading": "Lecture 2: Foundations of Inductive Learning"
+          }
+        },
+        {
+          "id": "cocosci04-lec03",
+          "label": "Lecture 3 slides: Knowledge Representation: Spaces, Trees, Features (knowledge_sep16.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/knowledge_sep16.pdf",
+            "heading": "Lecture 3: Knowledge Representation: Spaces, Trees, Features"
+          }
+        },
+        {
+          "id": "cocosci04-lec04",
+          "label": "Lecture 4 slides: Knowledge Representation: Language and Logic 1 (sept_21_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_21_2004_fin.pdf",
+            "heading": "Lecture 4: Knowledge Representation: Language and Logic 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec05",
+          "label": "Lecture 5 slides: Knowledge Representation: Language and Logic 2 (sept_23_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_23_2004_fin.pdf",
+            "heading": "Lecture 5: Knowledge Representation: Language and Logic 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec06",
+          "label": "Lecture 6 slides: Knowledge Representation: Great Debates 1 (sept_28_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_28_2004_fin.pdf",
+            "heading": "Lecture 6: Knowledge Representation: Great Debates 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec07",
+          "label": "Lecture 7 slides: Knowledge Representation: Great Debates 2 (sept_30_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_30_2004_fin.pdf",
+            "heading": "Lecture 7: Knowledge Representation: Great Debates 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec08",
+          "label": "Lecture 8 slides: Basic Bayesian Inference (oct_5_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "heading": "Lecture 8: Basic Bayesian Inference"
+          }
+        },
+        {
+          "id": "cocosci04-lec09",
+          "label": "Lecture 9 slides: Graphical Models and Bayes Nets (oct_7_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_7_2004_final.pdf",
+            "heading": "Lecture 9: Graphical Models and Bayes Nets"
+          }
+        },
+        {
+          "id": "cocosci04-lec10",
+          "label": "Lecture 10 slides, listed as Simple Bayesian Learning 1; content is Bayes-net semantics, explaining away and sampling (oct_12_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_12_2004_fin.pdf",
+            "heading": "Lecture 10: Simple Bayesian Learning 1 (file content: Bayes nets, explaining away, sampling)"
+          },
+          "note": "Text extracted on 2026-10-30: slide titles include 'Compression in Bayes nets', 'Global semantics', 'Explaining away', 'Spreading activation or recurrent neural networks', 'Sampling possible worlds'."
+        },
+        {
+          "id": "cocosci04-lec11",
+          "label": "Lecture 11 slides, listed as Simple Bayesian Learning 2; content is Bayesian parameter estimation, hierarchical priors and MCMC (oct_14_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "heading": "Lecture 11: Simple Bayesian Learning 2 (file content: Bayesian parameter estimation, hierarchical priors, Metropolis-Hastings)"
+          }
+        },
+        {
+          "id": "cocosci04-lec12",
+          "label": "Lecture 12 slides: Probabilistic Models for Concept Learning and Categorization 1 (oct_19_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "heading": "Lecture 12: Probabilistic Models for Concept Learning and Categorization 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec13",
+          "label": "Lecture 13 slides: Probabilistic Models for Concept Learning and Categorization 2, including the number game (oct_21_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "heading": "Lecture 13: Probabilistic Models for Concept Learning and Categorization 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec14",
+          "label": "Lecture 14 slides: Unsupervised and Semi-supervised Learning (oct_26_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_26_2004_fin.pdf",
+            "heading": "Lecture 14: Unsupervised and Semi-supervised Learning"
+          }
+        },
+        {
+          "id": "cocosci04-lec15",
+          "label": "Lecture 15 slides: Non-parametric Classification: Exemplar Models and Neural Networks 1 (oct_28_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_28_2004_fin.pdf",
+            "heading": "Lecture 15: Non-parametric Classification: Exemplar Models and Neural Networks 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec16",
+          "label": "Lecture 16 slides: Non-parametric Classification: Exemplar Models and Neural Networks 2 (nov_2_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_2_2004_final.pdf",
+            "heading": "Lecture 16: Non-parametric Classification: Exemplar Models and Neural Networks 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec17",
+          "label": "Lecture 17 slides: Controlling Complexity and Occam's Razor 1 (nov_4_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_4_2004_final.pdf",
+            "heading": "Lecture 17: Controlling Complexity and Occam's Razor 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec18",
+          "label": "Lecture 18 slides: Controlling Complexity and Occam's Razor 2 (nov_9_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_9_2004_final.pdf",
+            "heading": "Lecture 18: Controlling Complexity and Occam's Razor 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec19",
+          "label": "Lecture 19 slides: Intuitive Biology and the Role of Theories (nov_16_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_16_2004_fin.pdf",
+            "heading": "Lecture 19: Intuitive Biology and the Role of Theories"
+          }
+        },
+        {
+          "id": "cocosci04-lec20",
+          "label": "Lecture 20 slides: Learning Domain Structures 1 (nov18.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov18.pdf",
+            "heading": "Lecture 20: Learning Domain Structures 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec21",
+          "label": "Lecture 21 slides: Learning Domain Structures 2 (nov_23_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_23_2004_fin.pdf",
+            "heading": "Lecture 21: Learning Domain Structures 2"
+          }
+        },
+        {
+          "id": "cocosci04-lec22",
+          "label": "Lecture 22 slides: Causal Learning (nov_30_2004_fin.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/nov_30_2004_fin.pdf",
+            "heading": "Lecture 22: Causal Learning"
+          }
+        },
+        {
+          "id": "cocosci04-lec23",
+          "label": "Lecture 23 slides: Causal Theories 1 (dec_2_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/dec_2_2004_final.pdf",
+            "heading": "Lecture 23: Causal Theories 1"
+          }
+        },
+        {
+          "id": "cocosci04-lec24",
+          "label": "Lecture 24 slides: Causal Theories 2 (dec_7_2004_final.pdf)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/dec_7_2004_final.pdf",
+            "heading": "Lecture 24: Causal Theories 2"
+          }
+        },
+        {
+          "id": "cocosci04-l1-problem-of-induction",
+          "label": "Lecture 1 slides, 'The problem of induction' (section title), PDF page 10",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 9,
+            "sectionLabel": "The problem of induction"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-induction-vs-deduction",
+          "label": "Lecture 1 slides, 'Induction versus Deduction' (Socrates syllogisms), PDF page 11",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 10,
+            "sectionLabel": "Induction versus Deduction"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-inductive-reasoning",
+          "label": "Lecture 1 slides, 'Induction versus Deduction': inductive conclusions follow with more or less probability and depend on semantics, PDF page 14",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 13,
+            "sectionLabel": "Induction versus Deduction (inductive reasoning)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-mill",
+          "label": "Lecture 1 slides, 'The great problem of philosophy' (J. S. Mill quotation), PDF page 17",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 16,
+            "sectionLabel": "The great problem of philosophy"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-two-ingredients",
+          "label": "Lecture 1 slides, 'Computational approaches to induction': knowledge representation and statistics, PDF page 18",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 17,
+            "sectionLabel": "Computational approaches to induction"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-cognition-as-inductive-inference",
+          "label": "Lecture 1 slides, 'Cognition as inductive inference' (section title), PDF page 23",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 22,
+            "sectionLabel": "Cognition as inductive inference"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-everyday-induction",
+          "label": "Lecture 1 slides, 'Induction in everyday reasoning': generalizing from examples (avian flu), PDF page 24",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 23,
+            "sectionLabel": "Induction in everyday reasoning"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-diagnosis",
+          "label": "Lecture 1 slides, 'Induction in everyday reasoning': diagnosis of causes given effects (mammogram question), PDF page 27",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 26,
+            "sectionLabel": "Induction in everyday reasoning (diagnosis)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-marr",
+          "label": "Lecture 1 slides, 'Marr's three levels', PDF page 43",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 42,
+            "sectionLabel": "Marr's three levels"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-hume",
+          "label": "Lecture 1 slides, 'Hume's problem', PDF page 48",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 47,
+            "sectionLabel": "Hume's problem"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-pac-answer",
+          "label": "Lecture 1 slides, 'A modern answer to Hume?' (PAC; still requires uniformity of nature), PDF page 49",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 48,
+            "sectionLabel": "A modern answer to Hume?"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-goodman",
+          "label": "Lecture 1 slides, 'Goodman's problem' (lawlike vs accidental hypotheses; grue), PDF page 50",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 49,
+            "sectionLabel": "Goodman's problem"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-responses-to-goodman",
+          "label": "Lecture 1 slides, 'Responses to Goodman' (simplicity; green/grue symmetry), PDF page 53",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 52,
+            "sectionLabel": "Responses to Goodman"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-plato-matlab",
+          "label": "Lecture 1 slides, 'Plato meets Matlab' (which curve fits the data?), PDF page 58",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 57,
+            "sectionLabel": "Plato meets Matlab"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l1-entrenchment",
+          "label": "Lecture 1 slides, 'Goodman's answer to Goodman' (entrenchment; theory supported by experience), PDF page 70",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_9_2004.pdf",
+            "fileLabel": "Lecture 1 slides (sept_9_2004.pdf)",
+            "physicalPageIndex": 69,
+            "sectionLabel": "Goodman's answer to Goodman"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-learning-as-search",
+          "label": "Lecture 2 slides, 'Inductive learning as search' (section title), PDF page 26",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 25,
+            "sectionLabel": "Inductive learning as search"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-marr",
+          "label": "Lecture 2 slides, 'Marr's three levels', PDF page 27",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 26,
+            "sectionLabel": "Marr's three levels"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-level-questions",
+          "label": "Lecture 2 slides, the Level 1 and Level 2 questions for concept learning, PDF page 28",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 27,
+            "sectionLabel": "Level 1: Computational theory / Level 2: Representation and algorithm (questions)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-computational-theory",
+          "label": "Lecture 2 slides, 'Level 1: Computational Theory': a concept as a rule; identification in the limit; PAC, PDF page 29",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 28,
+            "sectionLabel": "Level 1: Computational Theory"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-representation",
+          "label": "Lecture 2 slides, 'Level 2: Representation and Algorithm': binary-feature worlds and conjunctive concepts, PDF page 30",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 29,
+            "sectionLabel": "Level 2: Representation and Algorithm"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-identification-in-limit",
+          "label": "Lecture 2 slides, 'Computational analysis': identification in the limit for conjunctions (at most k mistakes; positive examples suffice), PDF page 42",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 41,
+            "sectionLabel": "Computational analysis: identification in the limit"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-pac-intuition",
+          "label": "Lecture 2 slides, 'Probably Approximately Correct (PAC)': the intuition, PDF page 47",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 46,
+            "sectionLabel": "Probably Approximately Correct (PAC): the intuition"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-pac-theorem",
+          "label": "Lecture 2 slides, 'Probably Approximately Correct (PAC)': the PAC theorem and how N scales with ε, δ and log|H|, PDF page 51",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 50,
+            "sectionLabel": "Probably Approximately Correct (PAC): the theorem"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-inductive-bias",
+          "label": "Lecture 2 slides, 'The role of inductive bias': learning with no bias is impossible, PDF page 58",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 57,
+            "sectionLabel": "The role of inductive bias"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-open-questions",
+          "label": "Lecture 2 slides, 'What this doesn't tell us': why conjunctions are easier than disjunctions; natural categories, PDF page 60",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 59,
+            "sectionLabel": "What this doesn't tell us"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l2-summary",
+          "label": "Lecture 2 slides, 'Summary: Inductive learning as search', PDF page 65",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/sept_14_2004.pdf",
+            "fileLabel": "Lecture 2 slides (sept_14_2004.pdf)",
+            "physicalPageIndex": 64,
+            "sectionLabel": "Summary: Inductive learning as search"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l8-bayes-rule",
+          "label": "Lecture 8 slides, 'Bayes' rule' (posterior, prior, likelihood named), printed page 16",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 15,
+            "printedPageLabel": "16",
+            "sectionLabel": "Bayes' rule"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-origin",
+          "label": "Lecture 8 slides, 'The origin of Bayes' rule' (from the product rule), printed page 17",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 16,
+            "printedPageLabel": "17",
+            "sectionLabel": "The origin of Bayes' rule"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-why-probabilities",
+          "label": "Lecture 8 slides, 'Why represent degrees of belief with probabilities?' (Cox axioms, Dutch book, a theory of learning), printed page 18",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 17,
+            "printedPageLabel": "18",
+            "sectionLabel": "Why represent degrees of belief with probabilities?"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-cox",
+          "label": "Lecture 8 slides, 'Cox Axioms (via Jaynes)', printed page 19",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 18,
+            "printedPageLabel": "19",
+            "sectionLabel": "Cox Axioms (via Jaynes)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-good-argument",
+          "label": "Lecture 8 slides, 'Bayesian inference': what makes a good scientific argument (plausible, predicts the data, data surprising), printed page 21",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 20,
+            "printedPageLabel": "21",
+            "sectionLabel": "Bayesian inference (what makes a good scientific argument?)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-conditionalization",
+          "label": "Lecture 8 slides, 'A more useful form of Bayes' (conditionalization over an exhaustive set of states), printed page 22",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 21,
+            "printedPageLabel": "22",
+            "sectionLabel": "A more useful form of Bayes"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-coin-hypotheses",
+          "label": "Lecture 8 slides, 'Hypotheses in coin flipping' (generative models for D = HHTHT), printed page 32",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 31,
+            "printedPageLabel": "32",
+            "sectionLabel": "Hypotheses in coin flipping"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-graphical-models",
+          "label": "Lecture 8 slides, 'Representing generative models' (graphical model notation; fair coin vs Markov model), printed page 33",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 32,
+            "printedPageLabel": "33",
+            "sectionLabel": "Representing generative models"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-three-comparisons",
+          "label": "Lecture 8 slides, 'Coin flipping': three kinds of comparison (two simple hypotheses; simple vs complex; infinitely many), printed page 35",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 34,
+            "printedPageLabel": "35",
+            "sectionLabel": "Coin flipping (three comparisons)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-two-hypotheses",
+          "label": "Lecture 8 slides, 'Comparing two simple hypotheses' (fair coin vs always heads), printed page 38",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 37,
+            "printedPageLabel": "38",
+            "sectionLabel": "Comparing two simple hypotheses"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-odds-form",
+          "label": "Lecture 8 slides, 'Bayes' rule in odds form', printed page 39",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 38,
+            "printedPageLabel": "39",
+            "sectionLabel": "Bayes' rule in odds form"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-hhtht",
+          "label": "Lecture 8 slides, 'Comparing two simple hypotheses' worked for D = HHTHT (likelihoods 1/2^5 and 0), printed page 40",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 39,
+            "printedPageLabel": "40",
+            "sectionLabel": "Comparing two simple hypotheses (HHTHT)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l8-role-of-theories",
+          "label": "Lecture 8 slides, 'The role of theories' (why HHHHH looks suspicious: priors from implicit theories), printed page 44",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_5_2004_final.pdf",
+            "fileLabel": "Lecture 8 slides (oct_5_2004_final.pdf)",
+            "physicalPageIndex": 43,
+            "printedPageLabel": "44",
+            "sectionLabel": "The role of theories"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l11-infinitely-many",
+          "label": "Lecture 11 slides, 'Comparing infinitely many hypotheses' (each θ a hypothesis), PDF page 3",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Comparing infinitely many hypotheses"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-future-like-past",
+          "label": "Lecture 11 slides, 'Comparing infinitely many hypotheses': 5 heads in 10 flips; 4 heads and 6 tails and prior knowledge, PDF page 4",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Comparing infinitely many hypotheses (future like the past)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-likelihood-prior",
+          "label": "Lecture 11 slides, 'Likelihood and prior' (Bernoulli likelihood; Beta-form prior), PDF page 6",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Likelihood and prior"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-fictitious-trials",
+          "label": "Lecture 11 slides, 'A simple method of specifying priors' (fictitious trials), PDF page 7",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 6,
+            "sectionLabel": "A simple method of specifying priors"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-beta-shapes",
+          "label": "Lecture 11 slides, 'Shape of the Beta prior' (four parameter settings), PDF page 12",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 11,
+            "sectionLabel": "Shape of the Beta prior"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-beta-bernoulli",
+          "label": "Lecture 11 slides, 'Bayesian parameter learning': Bernoulli likelihood, Beta(F_H, F_T) prior, Beta(N_H+F_H, N_T+F_T) posterior, PDF page 14",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 13,
+            "sectionLabel": "Bayesian parameter learning"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-conjugate",
+          "label": "Lecture 11 slides, 'Conjugate priors', PDF page 18",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 17,
+            "sectionLabel": "Conjugate priors"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-examples",
+          "label": "Lecture 11 slides, 'Some examples': strong (1000,1000) and weak (3,3) priors after 4 heads and 6 tails, PDF page 28",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 27,
+            "sectionLabel": "Some examples"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-thumbtacks",
+          "label": "Lecture 11 slides, 'But… flipping thumbtacks' (weak prior; empty prior gives 100%), PDF page 29",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 28,
+            "sectionLabel": "But… flipping thumbtacks"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-origin-prior",
+          "label": "Lecture 11 slides, 'Origin of prior knowledge' (prior experience with other coins), PDF page 30",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 29,
+            "sectionLabel": "Origin of prior knowledge"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-simple-empiricism",
+          "label": "Lecture 11 slides, 'Problems with simple empiricism' (prior knowledge stronger, smoother, more structured than raw experience), PDF page 32",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 31,
+            "sectionLabel": "Problems with simple empiricism"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-simple-theory",
+          "label": "Lecture 11 slides, 'A simple theory' (coins manufactured by a standardized procedure; tacks asymmetric), PDF page 33",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 32,
+            "sectionLabel": "A simple theory"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-hierarchical",
+          "label": "Lecture 11 slides, 'Hierarchical priors': fair or unfair as a higher-order hypothesis; 25 heads give posterior odds about 9 × 10^-5, PDF page 37",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 36,
+            "sectionLabel": "Hierarchical priors (fair or unfair?)"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l11-summary",
+          "label": "Lecture 11 slides, 'Summary' (parameter learning as Bayesian inference; conjugate priors; hierarchical models), PDF page 39",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_14_2004_fin.pdf",
+            "fileLabel": "Lecture 11 slides (oct_14_2004_fin.pdf)",
+            "physicalPageIndex": 38,
+            "sectionLabel": "Summary"
+          },
+          "note": "Page index verified against text extracted from the PDF on 2026-10-30; the file has no printed page labels."
+        },
+        {
+          "id": "cocosci04-l12-concepts-categories",
+          "label": "Lecture 12 slides, 'Concepts and categories' (definitions; functions of concepts), printed page 30",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "fileLabel": "Lecture 12 slides (oct_19_2004_fin.pdf)",
+            "physicalPageIndex": 29,
+            "printedPageLabel": "30",
+            "sectionLabel": "Concepts and categories"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l12-pattern-recognition",
+          "label": "Lecture 12 slides, 'Statistical pattern recognition' (two-class classification), printed page 36",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "fileLabel": "Lecture 12 slides (oct_19_2004_fin.pdf)",
+            "physicalPageIndex": 35,
+            "printedPageLabel": "36",
+            "sectionLabel": "Statistical pattern recognition"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l12-learning-gaussians",
+          "label": "Lecture 12 slides, 'Learning': hypothesis space of Gaussians; maximum likelihood parameters, printed page 46",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "fileLabel": "Lecture 12 slides (oct_19_2004_fin.pdf)",
+            "physicalPageIndex": 45,
+            "printedPageLabel": "46",
+            "sectionLabel": "Learning (Gaussian class models)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l12-posner-keele",
+          "label": "Lecture 12 slides, 'Posner and Keele: results' (unseen prototype classified as well as memorized variants), printed page 49",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "fileLabel": "Lecture 12 slides (oct_19_2004_fin.pdf)",
+            "physicalPageIndex": 48,
+            "printedPageLabel": "49",
+            "sectionLabel": "Posner and Keele: results"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l12-limitations",
+          "label": "Lecture 12 slides, 'Limitations' of Bayesian classification (overlapping concepts; few positive examples; non-Gaussian categories), printed page 52",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_19_2004_fin.pdf",
+            "fileLabel": "Lecture 12 slides (oct_19_2004_fin.pdf)",
+            "physicalPageIndex": 51,
+            "printedPageLabel": "52",
+            "sectionLabel": "Limitations"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-tenenbaum-2000",
+          "label": "Lecture 13 slides, 'Tenenbaum (2000)': concepts as pointers to sets; a probability distribution over possible sets, printed page 11",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 10,
+            "printedPageLabel": "11",
+            "sectionLabel": "Tenenbaum (2000)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-number-game-task",
+          "label": "Lecture 13 slides, 'The number game': learning task (positive examples; judge other numbers), printed page 13",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 12,
+            "printedPageLabel": "13",
+            "sectionLabel": "The number game (learning task)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30. The following slide (printed 14) labels generalization judgments 'N = 20'; its data plot is removed for copyright."
+        },
+        {
+          "id": "cocosci04-l13-phenomena",
+          "label": "Lecture 13 slides, 'The number game': main phenomena to explain (graded vs all-or-none generalization; few positive examples), printed page 18",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 17,
+            "printedPageLabel": "18",
+            "sectionLabel": "The number game (main phenomena)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-hypothesis-space",
+          "label": "Lecture 13 slides, 'Bayesian model': hypothesis space of number concepts (even numbers, multiples of 10, powers of 2, 50–60), printed page 20",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 19,
+            "printedPageLabel": "20",
+            "sectionLabel": "Bayesian model (hypothesis space)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-bayesian-model",
+          "label": "Lecture 13 slides, 'Bayesian model': prior, likelihood, posterior over hypotheses given examples X, printed page 24",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 23,
+            "printedPageLabel": "24",
+            "sectionLabel": "Bayesian model (prior, likelihood, posterior)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-size-principle",
+          "label": "Lecture 13 slides, 'Likelihood: p(X|h)': the size principle, printed page 26",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 25,
+            "printedPageLabel": "26",
+            "sectionLabel": "Likelihood: p(X|h) (size principle)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-illustrating-size",
+          "label": "Lecture 13 slides, 'Illustrating the size principle' (even numbers vs multiples of 10), printed page 27",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 26,
+            "printedPageLabel": "27",
+            "sectionLabel": "Illustrating the size principle"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-subset-principle",
+          "label": "Lecture 13 slides, 'Relation to the subset principle', printed page 30",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 29,
+            "printedPageLabel": "30",
+            "sectionLabel": "Relation to the subset principle"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-prior",
+          "label": "Lecture 13 slides, 'Prior: p(h)': the hypothesis space embodies a strong prior, printed page 31",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 30,
+            "printedPageLabel": "31",
+            "sectionLabel": "Prior: p(h)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-posterior",
+          "label": "Lecture 13 slides, 'Posterior' for X = {60, 80, 10, 30}: likelihood vs prior roles, printed page 36",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 35,
+            "printedPageLabel": "36",
+            "sectionLabel": "Posterior"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-bayesian-occam",
+          "label": "Lecture 13 slides, 'Bayesian Occam's Razor' (common currency for complexity and fit), printed page 37",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 36,
+            "printedPageLabel": "37",
+            "sectionLabel": "Bayesian Occam's Razor"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-hypothesis-averaging",
+          "label": "Lecture 13 slides, 'Generalizing to new objects': hypothesis averaging, printed page 39",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 38,
+            "printedPageLabel": "39",
+            "sectionLabel": "Generalizing to new objects (hypothesis averaging)"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        },
+        {
+          "id": "cocosci04-l13-human-generalization",
+          "label": "Lecture 13 slides, 'Examples / Human generalization / Bayesian Model' comparison for 60; 60 80 10 30; 60 52 57 55; 16; 16 8 2 64; 16 23 19 20 (plots removed for copyright), printed page 43",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 42,
+            "printedPageLabel": "43",
+            "sectionLabel": "Human generalization vs Bayesian model"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30; the comparison plots are 'removed due to copyright considerations', so only the example sets are legible."
+        },
+        {
+          "id": "cocosci04-l13-summary",
+          "label": "Lecture 13 slides, 'Summary of the Bayesian model': posterior ∝ likelihood × prior; hypothesis averaging + size principle; broad vs narrow posteriors, printed page 44",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-cocosci-2004-f04",
+            "url": "https://ocw.mit.edu/courses/9-66j-computational-cognitive-science-fall-2004/oct_21_2004_fin.pdf",
+            "fileLabel": "Lecture 13 slides (oct_21_2004_fin.pdf)",
+            "physicalPageIndex": 43,
+            "printedPageLabel": "44",
+            "sectionLabel": "Summary of the Bayesian model"
+          },
+          "note": "Page index and printed label verified against text extracted from the PDF on 2026-10-30."
+        }
+      ]
+    }
+  ]
+}

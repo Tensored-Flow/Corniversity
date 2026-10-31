@@ -1,0 +1,23 @@
+[
+  {
+    "id": "MAT-261-topology-bridge-in-course",
+    "courseId": "MAT-261",
+    "strength": "soft",
+    "description": "Units 1 and 2 contain the targeted topology bridge (Hausdorff and second-countable spaces, quotient topology, compactness of the standard examples, the pathologies that the axioms exclude). A learner with demonstrated general topology or a completed General Topology course may read the bridge quickly; a learner with metric-space background only takes the bridge inside the course instead of first completing MAT-260.",
+    "alternatives": [
+      { "label": "Demonstrated point-set topology", "conceptIds": ["topology-general"] },
+      { "label": "General Topology course", "courseIds": ["MAT-260"] },
+      { "label": "In-course bridge (units 1–2) with metric-space background", "conceptIds": ["metric-spaces"] }
+    ]
+  },
+  {
+    "id": "MAT-261-calculus-and-linear-algebra",
+    "courseId": "MAT-261",
+    "strength": "soft",
+    "description": "From unit 2 onwards the course uses the derivative as a linear map, the chain rule and the inverse function theorem in R^n, together with linear algebra (rank, linear maps, matrix groups). The source course assumes a second analysis course.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["multivariable-calculus", "linear-algebra-vector-spaces"] },
+      { "label": "Rigorous Real Analysis course", "courseIds": ["MAT-201"] }
+    ]
+  }
+]

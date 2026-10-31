@@ -1,0 +1,31 @@
+{
+  "id": "MAT-210-u06",
+  "courseId": "MAT-210",
+  "sequence": 6,
+  "title": "Riesz representation and approximation by continuous functions",
+  "summary": "Integration as a positive linear functional and the Riesz representation theorem for positive linear functionals; the Lebesgue integral as the completion of the Riemann integral; Lusin's theorem and the Vitali–Carathéodory theorem; approximation of measurable functions by continuous ones; convergence almost everywhere and the convergence theorems under a.e. hypotheses; countable additivity of the integral.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 10–12 of the 18.125 notes." }
+  ],
+  "prerequisiteConceptIds": ["lebesgue-measure", "lebesgue-integral", "almost-everywhere", "metric-spaces"],
+  "teachesConceptIds": ["riesz-representation-positive-functionals", "lusin-egoroff-theorems", "almost-everywhere"],
+  "preparation": [
+    { "description": "Read lecture 10: integration as a linear functional, the Riesz representation theorem for positive linear functionals, the Lebesgue integral as the completion of the Riemann integral.", "locatorId": "mi03-lec10", "estimatedMinutes": 60 },
+    { "description": "Read lecture 11: Lusin's theorem and the Vitali–Carathéodory theorem.", "locatorId": "mi03-lec11", "estimatedMinutes": 45 },
+    { "description": "Read lecture 12: approximation by continuous functions, convergence almost everywhere, convergence theorems for a.e. convergence, countable additivity of the integral.", "locatorId": "mi03-lec12", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Lectures 10–12: Riesz representation, Lusin, a.e. convergence", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 150, "sourceLocatorIds": ["mi03-lec10", "mi03-lec11", "mi03-lec12"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 330,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture-level locators: the OCW lecture-notes page and the resource pages for lectures 10–12 were opened 2026-10-30 and the PDF URLs recorded; the PDF files themselves were not opened, so no page-level locators exist yet." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

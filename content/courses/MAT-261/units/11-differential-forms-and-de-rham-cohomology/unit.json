@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u11",
+  "courseId": "MAT-261",
+  "sequence": 11,
+  "title": "Differential forms, the Poincaré lemma and de Rham cohomology",
+  "summary": "The exterior algebra of a vector space; differential forms and the exterior derivative with d² = 0 (Theorem 25.1); cochain complexes (Definition 25.3) and de Rham cohomology; the Poincaré lemma and homotopy invariance (§25.2); the beginning of Čech cohomology (§26).",
+  "objectives": [
+    { "id": "u11-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 31–32 of the 18.965 notes (§25, Theorem 25.1, Definition 25.3, §25.2, §26) with Hitchin §5–6 for the exterior algebra, forms, the exterior derivative and de Rham cohomology." }
+  ],
+  "prerequisiteConceptIds": ["tangent-bundle-vector-fields", "vector-bundles", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["differential-forms-de-rham"],
+  "preparation": [
+    { "description": "Read lecture 31: §25 the exterior algebra, differential forms, Theorem 25.1 (d² = 0), Definition 25.3 (cochain complex).", "locatorId": "gm04-l31-forms", "estimatedMinutes": 45 },
+    { "description": "Read lecture 32: §25.2 the Poincaré lemma and homotopy invariance of de Rham cohomology; §26 Čech cohomology (first part).", "locatorId": "gm04-l32-poincare", "estimatedMinutes": 45 },
+    { "description": "Read Hitchin §5–5.1 (tensor products, exterior algebra), §6.1 (bundle of p-forms), §6.4 (exterior derivative) and §6.6 (de Rham cohomology) for the fuller treatment.", "locatorId": "hit14-s6-4", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u11-a1", "type": "reading", "title": "Lectures 31–32 and Hitchin §5–6: forms and de Rham cohomology", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["gm04-lec31", "gm04-lec32", "gm04-l31-forms", "gm04-l32-poincare", "hit14-s5", "hit14-s6-1", "hit14-s6-4", "hit14-s6-6"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 31 and 32 PDFs downloaded and text-extracted 2026-10-30: §25 with Theorem 25.1 and Definition 25.3 in lecture31.pdf (4 pages); §25.2 and §26 in lecture32.pdf (3 pages). Hitchin §5 (p. 33), §6.1 (p. 38), §6.4 (p. 43), §6.6 (p. 50) verified against extracted text." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "CHE-101-chemistry-entry",
+    "courseId": "CHE-101",
+    "strength": "soft",
+    "description": "Principles of Chemical Science is the chemistry entry point and carries no mathematics prerequisite: the source course states that there are no formal prerequisites and assumes one year of school chemistry. Advanced mathematics does not establish chemistry readiness. The evidence that does is school-level chemistry (symbols and formulas, the mole, balancing equations, simple stoichiometry, the parts of an atom), which unit 1 of this course diagnoses honestly before any new material; a learner without it continues in the course with unit 1 as the bridge.",
+    "alternatives": [
+      { "label": "School chemistry foundations demonstrated (unit 1 diagnostic or prior evidence)", "conceptIds": ["school-chemistry-foundations"] }
+    ]
+  }
+]

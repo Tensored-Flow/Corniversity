@@ -1,0 +1,60 @@
+{
+  "id": "CHE-101-u05-ex2",
+  "sequence": 2,
+  "title": "Mechanism versus rate law",
+  "kind": "derivation",
+  "promptMarkdown": "For $\\ce{2 NO(g) + Cl2(g) -> 2 NOCl(g)}$ the following mechanism is proposed:\n\n- Step 1: $\\ce{NO + Cl2 <=>[k_1][k_{-1}] NOCl2}$\n- Step 2: $\\ce{NOCl2 + NO ->[k_2] 2 NOCl}$\n\nDefine the rate as $\\tfrac12\\,d[\\ce{NOCl}]/dt$ throughout and say so.\n\n1. Check that the steps add to the overall equation and name the intermediate.\n2. Assume step 1 is a fast pre-equilibrium and step 2 is slow. Derive the predicted rate law and compare it with the experimental law $k_{\\text{obs}}[\\ce{NO}]^2[\\ce{Cl2}]$ from exercise 1; express $k_{\\text{obs}}$ in terms of $k_1$, $k_{-1}$, $k_2$.\n3. Assume instead that step 1 is slow and step 2 fast. What rate law results, and is it consistent with experiment?\n4. Without assuming either limit, apply the steady-state approximation to $[\\ce{NOCl2}]$ and derive the general rate law. Show that it reduces to your answers in parts 2 and 3 in the appropriate limits, stating each limit as an inequality between rate terms.\n5. Describe an experiment on the model (which concentration to vary, what to measure) that would distinguish the two limits, and say what each predicts.",
+  "conceptIds": ["reaction-mechanisms", "reaction-rate-laws"],
+  "hintLadder": [
+    "Each step-2 event produces two molecules of $\\ce{NOCl}$, so $d[\\ce{NOCl}]/dt = 2k_2[\\ce{NOCl2}][\\ce{NO}]$; your defined rate is half of that.",
+    "In a pre-equilibrium, $k_1[\\ce{NO}][\\ce{Cl2}] = k_{-1}[\\ce{NOCl2}]$; solve for the intermediate and substitute.",
+    "Steady state: $d[\\ce{NOCl2}]/dt = k_1[\\ce{NO}][\\ce{Cl2}] - k_{-1}[\\ce{NOCl2}] - k_2[\\ce{NOCl2}][\\ce{NO}] = 0$.",
+    "The limits are $k_{-1} \\gg k_2[\\ce{NO}]$ and $k_{-1} \\ll k_2[\\ce{NO}]$; the apparent order in $\\ce{NO}$ differs between them, which is what an experiment can see."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "steady-state-denominator",
+      "kind": "expression_present",
+      "description": "the steady-state expression contains the denominator k−1 + k2[NO]",
+      "params": { "patterns": ["k_?-1\\+k_?2\\[no\\]", "k_?\\{?-1\\}?\\+k_?2\\[no\\]", "k_?2\\[no\\]\\+k_?-1"] }
+    },
+    {
+      "id": "pre-equilibrium-law",
+      "kind": "expression_present",
+      "description": "the pre-equilibrium rate law in the form k2(k1/k−1)[NO]²[Cl2] or k2K1[NO]²[Cl2]",
+      "params": { "patterns": ["k_?2k_?1/k_?-1|k_?2\\(k_?1\\)/\\(k_?-1\\)|k_?2k_?1\\[no\\]\\^?2\\[cl_?2\\]/k_?-1|\\(k_?1k_?2\\)/\\(k_?-1\\)|k_?1k_?2/k_?-1|k_?2k_?1\\[no\\]|k_?2k_?1\\[", "k_?2k_?1\\[no\\]\\^?2\\[cl_?2\\]"] }
+    },
+    {
+      "id": "not-a-proof-by-cases",
+      "kind": "finite_examples_not_proof",
+      "description": "numerical instances do not derive a rate law",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "bookkeeping", "criterion": "Steps add to 2NO + Cl2 → 2NOCl; NOCl2 is the intermediate; rate defined as ½ d[NOCl]/dt with the factor 2 handled.", "weight": 0.15, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "Factor 2 mishandled or definition not stated." }, { "label": "not met", "description": "Steps do not add or intermediate misnamed." }] },
+      { "id": "pre-equilibrium", "criterion": "[NOCl2] = (k1/k−1)[NO][Cl2]; rate = k2(k1/k−1)[NO]²[Cl2]; consistent with experiment, k_obs = k1k2/k−1.", "weight": 0.25, "levels": [{ "label": "met", "description": "Derived and matched." }, { "label": "partially met", "description": "Derived with a factor slip." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "slow-first-step", "criterion": "Rate = k1[NO][Cl2], first order in NO, inconsistent with the observed second order.", "weight": 0.15, "levels": [{ "label": "met", "description": "Law and verdict." }, { "label": "partially met", "description": "Law without the verdict." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "steady-state", "criterion": "[NOCl2] = k1[NO][Cl2]/(k−1 + k2[NO]); rate = k1k2[NO]²[Cl2]/(k−1 + k2[NO]); limits k−1 ≫ k2[NO] (pre-equilibrium) and k−1 ≪ k2[NO] (slow first step) recovered.", "weight": 0.3, "levels": [{ "label": "met", "description": "General law and both limits as inequalities." }, { "label": "partially met", "description": "General law with limits asserted loosely." }, { "label": "not met", "description": "Steady state misapplied." }] },
+      { "id": "distinguishing-experiment", "criterion": "Vary [NO] over a wide range at fixed [Cl2]: the apparent order in NO is 2 at low [NO] and falls towards 1 at high [NO] if the steady-state law holds; a pure pre-equilibrium predicts order 2 throughout.", "weight": 0.15, "levels": [{ "label": "met", "description": "Variable, measurement and both predictions." }, { "label": "partially met", "description": "Variable named, predictions vague." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct derivation",
+      "text": "Adding the steps: NO + Cl2 + NOCl2 + NO → NOCl2 + 2NOCl, i.e. 2NO + Cl2 → 2NOCl; NOCl2 is the intermediate. Rate = ½ d[NOCl]/dt = k_2[NOCl_2][NO]. Pre-equilibrium: k_1[NO][Cl_2] = k_{-1}[NOCl_2], so rate = k_2 k_1 [NO]^2 [Cl_2]/k_{-1} = k_2 K_1 [NO]^2[Cl_2], matching experiment with k_obs = k_1 k_2/k_{-1}. Slow first step: rate = k_1[NO][Cl_2], first order in NO, inconsistent. Steady state: 0 = k_1[NO][Cl_2] − k_{-1}[NOCl_2] − k_2[NOCl_2][NO], so [NOCl_2] = k_1[NO][Cl_2]/(k_{-1} + k_2[NO]) and rate = k_1 k_2 [NO]^2[Cl_2]/(k_{-1} + k_2[NO]). For k_{-1} ≫ k_2[NO] this is the pre-equilibrium law; for k_{-1} ≪ k_2[NO] it is k_1[NO][Cl_2]. Experiment on the model: vary [NO] at fixed [Cl_2]; the steady-state law predicts the apparent order in NO falling from 2 towards 1 as [NO] grows, whereas pure pre-equilibrium predicts order 2 throughout.",
+      "expect": { "steady-state-denominator": true, "pre-equilibrium-law": true, "not-a-proof-by-cases": true }
+    },
+    {
+      "label": "numbers substituted instead of a derivation",
+      "text": "With [NO] = 0.1 the rate is 1.8e-4; with n=1 and n=2 and n=3 the law k[NO]^2[Cl2] fits, so the mechanism works.",
+      "expect": { "steady-state-denominator": false, "not-a-proof-by-cases": false }
+    }
+  ]
+}

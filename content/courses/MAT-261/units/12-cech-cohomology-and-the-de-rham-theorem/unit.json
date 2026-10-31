@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u12",
+  "courseId": "MAT-261",
+  "sequence": 12,
+  "title": "Čech cohomology, Stokes' theorem and the de Rham theorem",
+  "summary": "Refinement of covers and Čech cohomology; fine sheaves and the acyclicity of the sheaf of p-forms (§27, Definition 27.2); the Poincaré lemma implies that Čech and de Rham cohomology agree (§28); orientation, integration and Stokes' theorem from Hitchin §7; Smale's immersion theorem (lecture 35) as further reading.",
+  "objectives": [
+    { "id": "u12-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 33–34 of the 18.965 notes (§26.1, §27, Definition 27.2, §28) with Hitchin §7.1–7.2 for orientation and Stokes' theorem; lecture 35 is optional further reading." }
+  ],
+  "prerequisiteConceptIds": ["differential-forms-de-rham", "partitions-of-unity"],
+  "teachesConceptIds": ["cech-de-rham-theorem"],
+  "preparation": [
+    { "description": "Read lecture 33: §26.1 refinement and §27 the acyclicity of the sheaf of p-forms, Definition 27.2 (fine sheaf).", "locatorId": "gm04-l33-acyclicity", "estimatedMinutes": 45 },
+    { "description": "Read lecture 34: §28 the Poincaré lemma implies the equality of Čech and de Rham cohomology.", "locatorId": "gm04-l34-de-rham", "estimatedMinutes": 40 },
+    { "description": "Read Hitchin §7.1 (orientation) and §7.2 (Stokes' theorem), which the synthesis project uses to illustrate the theorem on a surface.", "locatorId": "hit14-s7-2", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u12-a1", "type": "reading", "title": "Lectures 33–34 and Hitchin §7: the de Rham theorem", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover. Lecture 35 (Smale's immersion theorem) is optional further reading.", "estimatedMinutes": 120, "sourceLocatorIds": ["gm04-lec33", "gm04-lec34", "gm04-l33-acyclicity", "gm04-l34-de-rham", "hit14-s7-1", "hit14-s7-2", "gm04-lec35"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 33, 34 and 35 PDFs downloaded and text-extracted 2026-10-30: §27 and §26.1 with Definition 27.2 in lecture33.pdf (2 pages); §28 on the single page of lecture34.pdf; §29 on the single page of lecture35.pdf. Hitchin §7.1 (p. 57) and §7.2 (p. 62) verified against extracted text." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

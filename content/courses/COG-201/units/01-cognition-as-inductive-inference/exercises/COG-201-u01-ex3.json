@@ -1,0 +1,52 @@
+{
+  "id": "COG-201-u01-ex3",
+  "sequence": 3,
+  "title": "Four claims, kept apart",
+  "kind": "model_interpretation",
+  "promptMarkdown": "Read this paragraph (written for the exercise; it paraphrases the kind of summary the course will meet in unit 2 and is not a quotation):\n\n> (S1) In a number-concept task, twenty participants saw the example 60 and rated how likely each of several other numbers was to belong to the same concept; the ratings fell off gradually with distance from 60. (S2) A Bayesian model with a hypothesis space of number concepts and hypothesis averaging produces a gradually decreasing generalisation profile for the example 60. (S3) The model's profile matches the participants' average ratings. (S4) Therefore people compute posterior distributions over hypotheses when they generalise.\n\nIn under 250 words and without the lesson open:\n\n1. Label each sentence S1–S4 as *model behaviour*, *measurement*, *experimental evidence* or *causal claim*, with one clause of justification each.\n2. Say which of Marr's levels the evidence in S3 bears on, and which inference in the paragraph is not licensed by S1–S3.\n3. Name one further kind of evidence that would be needed before anything like S4 could be asserted, and one alternative model that could also produce S2.",
+  "conceptIds": ["model-evidence-distinction", "computational-level-analysis"],
+  "hintLadder": [
+    "Who or what does each sentence talk about: the model, the participants, the relationship between them, or the mechanism inside people?",
+    "A match between a level-1 model and behaviour constrains the problem being solved. Which level would a claim about 'computing posteriors' belong to?",
+    "Think about what else produces a graded profile: similarity-based models, exemplar models, or a simple heuristic on numerical distance."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "no-unlicensed-mechanism",
+      "kind": "forbidden_claim",
+      "description": "endorsing the inference from a computational-level fit to a mechanistic claim that people compute posteriors",
+      "params": {
+        "patterns": [
+          "therefore people compute posterior",
+          "so people (must )?compute posterior",
+          "(proves|shows|demonstrates|establishes) that people (really |actually |do )?(compute|represent) (posterior|probabilit)",
+          "s4 (follows from|is licensed|is justified|is correct|is warranted|is established)"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "labelling", "criterion": "S1 measurement (twenty participants, ratings, procedure); S2 model behaviour (what the model outputs); S3 experimental evidence (correspondence); S4 causal/mechanistic claim.", "weight": 0.4, "levels": [{ "label": "met", "description": "All four labelled with a justification." }, { "label": "partially met", "description": "Three correct." }, { "label": "not met", "description": "Two or fewer." }] },
+      { "id": "level-and-licence", "criterion": "S3 is evidence at Marr's computational level; the step to S4 (a claim about the algorithm or mechanism) is not licensed by a level-1 fit.", "weight": 0.35, "levels": [{ "label": "met", "description": "Both the level and the unlicensed step identified." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Endorses S4." }] },
+      { "id": "further-evidence-and-alternative", "criterion": "Names level-2 or process evidence (response times, trial-by-trial dynamics, interventions, individual differences, neural data) and an alternative model (similarity or exemplar model, distance heuristic) that could produce S2.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both named with reasons." }, { "label": "partially met", "description": "One named." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 20,
+  "checkExamples": [
+    {
+      "label": "correct labelling",
+      "text": "S1 is measurement, S2 is model behaviour, S3 is experimental evidence at the computational level, S4 is a causal claim. The match in S3 does not license S4: a similarity-based model could produce the same graded profile, and a mechanistic claim needs process evidence such as response times.",
+      "expect": { "no-unlicensed-mechanism": true }
+    },
+    {
+      "label": "endorses the mechanism",
+      "text": "The model matches the data; therefore people compute posterior distributions over hypotheses, and S4 is justified.",
+      "expect": { "no-unlicensed-mechanism": false }
+    }
+  ]
+}

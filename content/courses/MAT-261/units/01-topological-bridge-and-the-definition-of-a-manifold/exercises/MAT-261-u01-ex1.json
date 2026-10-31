@@ -1,0 +1,76 @@
+{
+  "id": "MAT-261-u01-ex1",
+  "sequence": 1,
+  "title": "Stereographic charts on the sphere",
+  "kind": "proof",
+  "promptMarkdown": "Let $S^n=\\{x=(x^0,x^1,\\dots,x^n)\\in\\mathbb{R}^{n+1}:|x|=1\\}$ with the subspace topology, let $N=(1,0,\\dots,0)$ and $S=(-1,0,\\dots,0)$, and put $U_+=S^n\\setminus\\{N\\}$, $U_-=S^n\\setminus\\{S\\}$. Define\n$$\\varphi_\\pm:U_\\pm\\to\\mathbb{R}^n,\\qquad \\varphi_\\pm(x)=\\frac{1}{1\\mp x^0}\\,(x^1,\\dots,x^n).$$\n\n1. Show that $S^n$ is Hausdorff, second countable and compact, naming the general facts you use.\n2. Show that $\\varphi_+$ is a homeomorphism of $U_+$ onto $\\mathbb{R}^n$ by finding its inverse explicitly and checking continuity of both maps.\n3. Determine the set $\\varphi_+(U_+\\cap U_-)\\subseteq\\mathbb{R}^n$, compute the transition map $\\varphi_-\\circ\\varphi_+^{-1}$ on it in closed form, and prove that the two charts are smoothly compatible. Conclude that $\\{(U_\\pm,\\varphi_\\pm)\\}$ is a smooth atlas, so $S^n$ is a smooth $n$-manifold.\n4. Explain, with a proof, why no single chart can have domain all of $S^n$.",
+  "conceptIds": ["smooth-manifold", "manifold-topology-bridge"],
+  "hintLadder": [
+    "For part 1, $S^n$ is a subset of $\\mathbb{R}^{n+1}$: which properties pass to subspaces for free, and which theorem about closed bounded subsets of Euclidean space gives compactness?",
+    "For part 2, write $y=\\varphi_+(x)$ and compute $|y|^2$ in terms of $x^0$ alone, using $|x|=1$. That lets you solve for $x^0$, and then for $(x^1,\\dots,x^n)$.",
+    "For part 3, substitute your inverse into $\\varphi_-$. Expect something very short; check it on the equator $x^0=0$, where both charts should agree.",
+    "For part 4, a chart with domain $S^n$ would make $S^n$ homeomorphic to an open subset of $\\mathbb{R}^n$. Use compactness together with connectedness of $\\mathbb{R}^n$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "transition-inversion",
+      "kind": "expression_present",
+      "description": "the transition map is inversion in the unit sphere, y ↦ y/|y|²",
+      "params": {
+        "patterns": [
+          "/\\(?[|‖][a-z][|‖](\\^2|²)",
+          "[|‖][a-z][|‖]\\^-2",
+          "inversion"
+        ]
+      }
+    },
+    {
+      "id": "no-single-chart",
+      "kind": "forbidden_claim",
+      "description": "claiming that the sphere can be covered by a single chart",
+      "params": {
+        "patterns": [
+          "s\\^n (is|can be) covered by (a |one )?single chart",
+          "sphere (is|can be) covered by (a |one )?single chart",
+          "single chart (covers|suffices for) (the sphere|s\\^n)",
+          "s\\^n (has|admits) an atlas (with|consisting of) (a single|one) chart"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "topology", "criterion": "Hausdorff and second countability derived from the subspace topology with the facts named; compactness via Heine–Borel with closedness and boundedness justified.", "weight": 0.2, "levels": [ { "label": "met", "description": "All three properties with the facts named." }, { "label": "partially met", "description": "Properties asserted with partial justification." }, { "label": "not met", "description": "Missing or wrong." } ] },
+      { "id": "inverse", "criterion": "The inverse of φ_+ is found explicitly and both φ_+ and its inverse are shown continuous onto the right sets.", "weight": 0.25, "levels": [ { "label": "met", "description": "Correct inverse, surjectivity onto R^n and continuity both ways." }, { "label": "partially met", "description": "Inverse correct but surjectivity or continuity not addressed." }, { "label": "not met", "description": "Inverse missing or wrong." } ] },
+      { "id": "transition", "criterion": "The domain φ_+(U_+ ∩ U_−) is identified correctly and the transition map is computed and shown smooth with smooth inverse.", "weight": 0.35, "levels": [ { "label": "met", "description": "Correct domain, correct closed form, smoothness of both directions argued." }, { "label": "partially met", "description": "Correct map but wrong or unstated domain, or only one direction." }, { "label": "not met", "description": "Transition map wrong." } ] },
+      { "id": "no-global-chart", "criterion": "A correct argument that S^n is not homeomorphic to an open subset of R^n.", "weight": 0.2, "levels": [ { "label": "met", "description": "Compactness plus connectedness (or an equivalent valid argument) used correctly." }, { "label": "partially met", "description": "Right idea, gap in the argument." }, { "label": "not met", "description": "Missing or invalid." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX argument",
+      "text": "Write $y=\\varphi_+(x)$. Then $|y|^2=\\frac{1+x^0}{1-x^0}$, so $x^0=\\frac{|y|^2-1}{|y|^2+1}$ and $(x^1,\\dots,x^n)=\\frac{2y}{|y|^2+1}$, which is continuous, so $\\varphi_+$ is a homeomorphism onto $\\mathbb{R}^n$. On $\\varphi_+(U_+\\cap U_-)=\\mathbb{R}^n\\setminus\\{0\\}$ we get $\\varphi_-\\circ\\varphi_+^{-1}(y)=\\frac{y}{|y|^2}$, smooth with smooth inverse (it is its own inverse). A chart with domain $S^n$ would make the compact space $S^n$ homeomorphic to a nonempty open subset of $\\mathbb{R}^n$, which is then closed and open, hence all of $\\mathbb{R}^n$, not compact.",
+      "expect": { "transition-inversion": true, "no-single-chart": true }
+    },
+    {
+      "label": "plain-text correct transition",
+      "text": "The transition map on R^n minus the origin is y/|y|^2, inversion in the unit sphere, which is smooth there and equal to its own inverse.",
+      "expect": { "transition-inversion": true, "no-single-chart": true }
+    },
+    {
+      "label": "wrong transition map",
+      "text": "The transition map is y/|y|, which is smooth away from 0, so the charts are compatible.",
+      "expect": { "transition-inversion": false }
+    },
+    {
+      "label": "single chart claim",
+      "text": "Since stereographic projection is defined everywhere except the pole, S^n can be covered by a single chart if we send the pole to infinity.",
+      "expect": { "no-single-chart": false }
+    }
+  ]
+}

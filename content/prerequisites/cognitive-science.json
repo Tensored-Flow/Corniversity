@@ -1,0 +1,22 @@
+[
+  {
+    "id": "COG-201-probability",
+    "courseId": "COG-201",
+    "strength": "soft",
+    "description": "Computational Cognitive Science is built on probability: conditional probability, Bayes' rule, expectations, the Beta and binomial distributions, and comfort with sums and integrals over hypothesis spaces. The source course (MIT 9.66J) requires 'a class in probability or statistics'; a measure-theoretic background more than suffices.",
+    "alternatives": [
+      { "label": "Demonstrated measure-theoretic probability", "conceptIds": ["probability-measure-theoretic"] },
+      { "label": "Probability from Measure Theory", "courseIds": ["MAT-220"] }
+    ]
+  },
+  {
+    "id": "COG-201-programming",
+    "courseId": "COG-201",
+    "strength": "soft",
+    "description": "Labs and the final modelling project implement small Bayesian models in Python; the source course expected programming experience in a high-level language.",
+    "alternatives": [
+      { "label": "Demonstrated Python for scientific computing", "conceptIds": ["python-scientific-computing"] },
+      { "label": "Python bridge", "bridgeCourseId": "CSA-100" }
+    ]
+  }
+]

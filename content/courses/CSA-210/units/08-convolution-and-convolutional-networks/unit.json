@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u08",
+  "courseId": "CSA-210",
+  "sequence": 8,
+  "title": "Convolution as a linear operator; convolutional networks",
+  "summary": "Discrete convolution and cross-correlation as linear, translation-equivariant operators; kernels, padding, stride and output size; multiple filters, ReLU and pooling; parameter counts versus fully connected layers; a small CNN and transfer learning.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D2 Tutorial 1 (Introduction to CNNs) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["multilayer-perceptron", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["convolution-operator"],
+  "preparation": [
+    { "description": "Read W2D2 Tutorial 1: convolutions and edge detection, padding and stride, kernels, pooling and subsampling, parameter counts, implementing a CNN, transfer learning.", "locatorId": "nmadl-w2d2-t1", "estimatedMinutes": 70 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "W2D2 Tutorial 1: Introduction to CNNs", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d2", "nmadl-w2d2-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Introduction to CNNs'; sections 'Section 2: Convolutions and Edge Detection', 'Section 2.2: Padding and Edge Detection', 'Section 3.3: Pooling', 'Section 4.1: Number of Parameters in Convolutional vs. Fully-connected Models' recorded)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

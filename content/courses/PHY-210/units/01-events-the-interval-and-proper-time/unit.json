@@ -1,0 +1,47 @@
+{
+  "id": "PHY-210-u01",
+  "courseId": "PHY-210",
+  "sequence": 1,
+  "title": "Events, the interval and proper time",
+  "summary": "Conventions (SI, c explicit, signature (−,+,+,+) and the dictionary to Taylor–Wheeler and Tong); events and inertial frames; the invariant spacetime interval checked on the book's spark data; proper time of a uniformly moving clock derived from invariance; timelike, lightlike and spacelike separations; time measured in metres.",
+  "objectives": [
+    { "id": "u01-o1", "description": "State the invariant interval in the (−,+,+,+) convention, translate it into the conventions of Taylor–Wheeler and Tong, and compute it from coordinate separations with units carried." },
+    { "id": "u01-o2", "description": "Derive τ = Δt√(1 − v²/c²) for a uniformly moving clock from the invariance of the interval, and check the limits v ≪ c and v → c." },
+    { "id": "u01-o3", "description": "Classify a pair of events as timelike, lightlike or spacelike and identify the frame (if any) in which they are co-located or simultaneous." },
+    { "id": "u01-o4", "description": "Explain the difference between coordinate time and proper time and why 'moving clocks run slow' is frame-dependent shorthand for a frame-independent statement." }
+  ],
+  "prerequisiteConceptIds": ["newtonian-mechanics", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["minkowski-spacetime", "lorentzian-metric"],
+  "preparation": [
+    { "description": "Read Section 1.1 Parable of the Surveyors (printed pp. 1–4): rotation-invariant distance as the model for the interval.", "locatorId": "stp-ch1-s1", "estimatedMinutes": 10 },
+    { "description": "Read Section 1.2 Surveying Spacetime (pp. 5–8): time in metres, c as a conversion factor, the two sparks, Tables 1-3 and 1-4, Eqs. (1-4)–(1-6). Note the book's sign convention and translate Eq. (1-6) into ours.", "locatorId": "stp-ch1-s2", "estimatedMinutes": 25 },
+    { "description": "Work Sample Problem 1-1 Sparking at a Faster Rate (pp. 8–9) yourself before reading its solution.", "locatorId": "stp-ch1-sp1", "estimatedMinutes": 15 },
+    { "description": "Read Section 1.3 Events and Intervals Alone! (pp. 9–11): events as the primitive objects; wristwatch (proper) time.", "locatorId": "stp-ch1-s3", "estimatedMinutes": 15 },
+    { "description": "Read Section 1.4 (pp. 11–13), especially the timelike/spacelike discussion and the 1983 definition of the metre, and Section 1.5 Unity of Spacetime (pp. 15–18).", "locatorId": "stp-ch1-s4", "estimatedMinutes": 20 },
+    { "description": "Second account for a mathematician: Tong, Dynamics and Relativity, Section 7.3.1 The Invariant Interval (reference-only; uses the opposite sign convention, Δs² = c²Δt² − Δx²).", "locatorId": "tong-dr-ch7-s3", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "reading", "title": "Lecture: the interval and proper time", "instructions": "Read the lesson alongside Chapter 1 of Spacetime Physics. Redo the arithmetic of Tables 1-3 and 1-4 in our sign convention; re-derive the starship proper time with one more significant figure than the book carries. Optional: watch the Week 1 videos of MIT 8.20 (Lecture 2.1 Events; Lecture 3.3 Michelson-Morley) for a second voice.", "estimatedMinutes": 60, "sourceLocatorIds": ["stp-ch1-s1", "stp-ch1-s2", "stp-ch1-s2-interval", "stp-ch1-s2-minus", "stp-ch1-sp1", "stp-ch1-s3", "stp-ch1-s3-proper", "stp-ch1-s4", "stp-ch1-sp2", "stp-ch1-s5", "tong-dr-ch7-s3", "sr21-week1"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "problem", "title": "Tutorial: intervals, proper time and the clock's frame", "instructions": "Attempt exercise 1 before asking for any hint, stating the sign convention at the top and carrying units. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 75, "sourceLocatorIds": ["stp-ch1-s2-interval", "stp-ch1-sp1", "stp-ch1-s3-proper", "stp-ch1-s4"], "exerciseIds": ["PHY-210-u01-ex1", "PHY-210-u01-ex2"], "sessionKind": "tutorial" },
+    { "id": "u01-a3", "type": "explain_back", "title": "Explain: coordinate time versus proper time", "instructions": "Write exercise 3 without the book open, then compare with Section 1.3.", "estimatedMinutes": 15, "sourceLocatorIds": ["stp-ch1-s3-proper"], "exerciseIds": ["PHY-210-u01-ex3"], "sessionKind": "oral" },
+    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the interval in our convention and in the book's; the value of c in m/ns; the definition of proper time; the three classes of separation and which frames exist for each.", "estimatedMinutes": 10, "sourceLocatorIds": ["stp-ch1-s2-interval", "stp-ch1-s4"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-210-u01-ex1", "PHY-210-u01-ex2", "PHY-210-u01-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: interval computed with the convention stated, pair classified, the co-moving frame's speed and proper time found with units, and the lightlike and spacelike variants handled correctly.", "exerciseId": "PHY-210-u01-ex1" },
+  "commonMisconceptions": [
+    { "claim": "A negative squared interval means a mistake has been made.", "correction": "In Lorentz geometry Δs² can be negative (timelike), zero (lightlike) or positive (spacelike); the sign is information, not an error. The book's Section 1.4 handclap example is a spacelike pair.", "correctionLocatorIds": ["stp-ch1-s2-minus", "stp-ch1-s4"] },
+    { "claim": "Moving clocks run slow, so the rocket clock is 'wrong' or 'slowed down'.", "correction": "The rocket clock reads the proper time between two events it is present at; laboratory clocks read a coordinate time between the same events at different places. Both are correct measurements of different quantities; τ ≤ Δt follows from invariance of the interval.", "correctionLocatorIds": ["stp-ch1-s3-proper", "stp-ch1-sp1"] },
+    { "claim": "Proper time is 'the time in the rest frame of the observer'.", "correction": "Proper time belongs to a pair of events (or a worldline between them), not to an observer's frame: it is the time read by a clock present at both events. Different pairs of events have different proper clocks.", "correctionLocatorIds": ["stp-ch1-s3", "stp-ch1-s3-proper"] },
+    { "claim": "Two events with zero interval are the same event.", "correction": "Zero interval means the events can be joined by a light flash (lightlike separation); they can be far apart in space and time. This is a genuine difference from Euclidean distance.", "correctionLocatorIds": ["stp-ch1-s4", "tong-dr-ch7-s3"] }
+  ],
+  "estimatedMinutes": 265,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "All twelve Spacetime Physics locators used by this unit opened 2026-10-30; page indices verified against OCR text extracted from 01_chapter1.pdf (24 pages, printed numbers from running heads): Section 1.2 on PDF index 4 (printed 5), Tables 1-3/1-4 and Eqs. (1-4)–(1-6) on indices 5–6 (printed 6–7), Sample Problem 1-1 on index 7 (printed 8), Section 1.3 on index 8 (printed 9), proper time on index 9 (printed 10), Section 1.4 on index 10 (printed 11), Sample Problem 1-2 on index 13 (printed 14), Section 1.5 on index 14 (printed 15). Tong Section 7.3.1 heading and sign convention verified in dynrel7.pdf; MIT 8.20 Week 1 video page opened." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: c = 0.299792458 m/ns; 33.6900 ns → 10.1000 m and 33.0228 ns → 9.9000 m; Δs² = −98.010 m² in both frames; Mary's speed 0.198c and the consistency check 33.6900 × √(1 − 0.198²) = 33.02 ns; τ = Δt√(1 − v²/c²) with the v ≪ c expansion; Sample Problem 1-1 (5, 4, 3 m; 4c/5); starship proper time 1.41 yr versus the book's rounded 1.42 yr; for exercise 1, Δs² = −64 m², τ = 8.00 m = 26.69 ns, v = 0.600c, and the spacelike variant v = (10/12)c with proper distance √44 m = 6.63 m; for exercise 2, τ = Δt/2 at v = (√3/2)c = 0.866c." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson's worked numbers (the book's sparks, Sample Problems 1-1 and 1-2) differ from the exercise data; the exercise answers appear only in instructor/ files." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "60 + 75 + 15 + 10 minutes of activities plus about 105 minutes of preparation ≈ 4.4 hours, within the 6–12 hours per unit budget; with unit 2 this is the first week." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-210-u01-ex1.reference-solution.md", "PHY-210-u01-ex2.reference-solution.md", "PHY-210-u01-ex3.grading-notes.md", "lesson-notes.md"]
+}

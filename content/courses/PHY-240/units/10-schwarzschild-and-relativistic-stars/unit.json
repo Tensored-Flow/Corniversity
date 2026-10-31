@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u10",
+  "courseId": "PHY-240",
+  "sequence": 10,
+  "title": "Spherical compact sources: Schwarzschild spacetime and relativistic stars",
+  "summary": "Static spherically symmetric spacetimes and the areal radius; the exterior solution, the Schwarzschild metric and Birkhoff's theorem; the interior mass function and the TOV equations; constant-density stars and the Buchdahl limit; polytropes; perihelion precession and light bending.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 20–21 (Lecture Guide pages 8–10), Tong Section 1.3 and Carroll Chapter 7." }
+  ],
+  "prerequisiteConceptIds": ["einstein-field-equation", "stress-energy-tensor", "connections-geodesics"],
+  "teachesConceptIds": ["schwarzschild-solution"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopsis of Lecture 20 (PDF pages 8–9): the static spherically symmetric ansatz, the exterior solution and the Schwarzschild metric.", "locatorId": "gr20-g-lec20", "estimatedMinutes": 20 },
+    { "description": "Read the Lecture Guide's synopsis of the rest of Lecture 20 and Lecture 21 (PDF pages 9–10): mass function, TOV equations, constant-density stars, Buchdahl's theorem, polytropes.", "locatorId": "gr20-g-lec21", "estimatedMinutes": 20 },
+    { "description": "Watch Lectures 20 and 21 (Spherical Compact Sources I and II) from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Section 1.3 A First Look at the Schwarzschild Metric (geodesics, planetary orbits, precession, light bending), reference-only.", "locatorId": "tong-gr-ch1-s3", "estimatedMinutes": 45 },
+    { "description": "Optional: Carroll, Chapter 7 The Schwarzschild Solution and Black Holes (first half), reference-only.", "locatorId": "carroll-ch7", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "lecture", "title": "Lectures 20–21: spherical compact sources", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec20", "gr20-g-lec21", "gr20-videos", "gr20-summaries", "tong-gr-ch1-s3", "carroll-ch7"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 480,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 8–10 (Lectures 20–21, including the Schwarzschild derivation, the TOV equations and the Buchdahl bound) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Section 1.3 headings verified in gr1.pdf; Carroll Chapter 7 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

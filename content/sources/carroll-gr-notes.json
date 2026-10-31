@@ -1,0 +1,50 @@
+{
+  "id": "carroll-gr-notes",
+  "title": "Lecture Notes on General Relativity",
+  "authors": ["Sean M. Carroll"],
+  "institution": "MIT Physics 8.962 (Spring 1996); distributed via arXiv and the author's site",
+  "kind": "notes",
+  "canonicalUrl": "https://arxiv.org/abs/gr-qc/9712019",
+  "description": "A lightly edited version of the notes handed out while teaching MIT's graduate course 8.962 in Spring 1996 (238 pages): 1 Special Relativity and Flat Spacetime; 2 Manifolds; 3 Curvature; 4 Gravitation; 5 More Geometry; 6 Weak Fields and Gravitational Radiation; 7 The Schwarzschild Solution and Black Holes; 8 Cosmology. Later expanded into the textbook Spacetime and Geometry.",
+  "rightsNotes": [
+    "arXiv record gr-qc/9712019 (v1, submitted 3 December 1997, 'Comments: 238 pages, numerous figures'): the rights link points to arXiv's assumed licence for 1991–2003 submissions, under which arXiv holds a perpetual non-exclusive licence to distribute the article; no reuse licence is granted to readers.",
+    "The author's page (preposterousuniverse.com/grnotes/) shows 'Copyright © 2026 Sean Carroll' and states 'The notes as they are will always be here for free'; it names no licence. Corniversity therefore treats the notes as reference-only: cite and link, do not copy or ingest.",
+    "Convention: the notes and the textbook that grew from them use signature (−,+,+,+); this was not re-verified inside the PDF on 2026-10-30 and is stated here from the author's textbook practice, so the PHY-240 units announce the signature themselves rather than relying on this note."
+  ],
+  "currentVersionId": "carroll-grnotes-1997",
+  "versions": [
+    {
+      "id": "carroll-grnotes-1997",
+      "label": "arXiv gr-qc/9712019 v1 (3 December 1997); author's chapter PDFs on preposterousuniverse.com",
+      "url": "https://arxiv.org/abs/gr-qc/9712019",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the arXiv abstract page, the arXiv assumed-licence page and the author's notes page",
+      "componentsSeen": [
+        "arXiv abstract page: title, author, abstract (one semester of introductory GR for beginning graduate students; manifolds, Riemannian geometry, Einstein's equations, gravitational radiation, black holes, cosmology), submission date, '238 pages, numerous figures', rights link, PDF link",
+        "arXiv licence page for 1991–2003 submissions (assumed non-exclusive distribution licence)",
+        "author's notes page: description (notes from 8.962, Spring 1996; expanded into Spacetime and Geometry; 'About 50% of the book is completely new'), eight chapter PDFs with titles, 'The notes as they are will always be here for free', copyright line"
+      ],
+      "licence": "Author copyright; arXiv assumed non-exclusive distribution licence (1991–2003); free to read, no reuse licence stated",
+      "licenceUrl": "https://arxiv.org/licenses/assumed-1991-2003/",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Neither the arXiv PDF nor the chapter PDFs were opened; chapter locators are file-level, with titles taken from the author's page.",
+        "The notes date from 1996–1997; observational cosmology in Chapter 8 predates the accelerating-universe results and must be read as historical."
+      ],
+      "locators": [
+        { "id": "carroll-arxiv-abs", "label": "arXiv abstract page gr-qc/9712019", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://arxiv.org/abs/gr-qc/9712019", "heading": "Lecture Notes on General Relativity" } },
+        { "id": "carroll-notes-page", "label": "Author's notes page (chapter list, free availability statement)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://www.preposterousuniverse.com/grnotes/", "heading": "Lecture Notes on General Relativity" } },
+        { "id": "carroll-ch1", "label": "Chapter 1: Special Relativity and Flat Spacetime (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-one.pdf", "heading": "1. Special Relativity and Flat Spacetime" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch2", "label": "Chapter 2: Manifolds (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-two.pdf", "heading": "2. Manifolds" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch3", "label": "Chapter 3: Curvature (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-three.pdf", "heading": "3. Curvature" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch4", "label": "Chapter 4: Gravitation (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-four.pdf", "heading": "4. Gravitation" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch5", "label": "Chapter 5: More Geometry (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-five.pdf", "heading": "5. More Geometry" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch6", "label": "Chapter 6: Weak Fields and Gravitational Radiation (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-six.pdf", "heading": "6. Weak Fields and Gravitational Radiation" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch7", "label": "Chapter 7: The Schwarzschild Solution and Black Holes (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-seven.pdf", "heading": "7. The Schwarzschild Solution and Black Holes" }, "note": "Linked from the author's page; file not opened." },
+        { "id": "carroll-ch8", "label": "Chapter 8: Cosmology (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "carroll-grnotes-1997", "url": "https://preposterousuniverse.com/wp-content/uploads/grnotes-eight.pdf", "heading": "8. Cosmology" }, "note": "Linked from the author's page; file not opened." }
+      ]
+    }
+  ]
+}

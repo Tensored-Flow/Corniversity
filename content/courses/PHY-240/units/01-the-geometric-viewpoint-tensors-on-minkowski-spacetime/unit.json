@@ -1,0 +1,47 @@
+{
+  "id": "PHY-240-u01",
+  "courseId": "PHY-240",
+  "sequence": 1,
+  "title": "The geometric viewpoint: tensors on Minkowski spacetime",
+  "summary": "Lorentz transformations as isometries of the interval; 4-vectors by transformation law, bases and coordinate bases, the metric as inner product; one-forms, the gradient, raising and lowering; (M,N) tensors as multilinear maps, contraction, invariant tensors; 4-velocity, 4-momentum, 4-acceleration and the number-flux 4-vector with its conservation law. Flat spacetime throughout.",
+  "objectives": [
+    { "id": "u01-o1", "description": "State the transformation laws of vectors, one-forms and (M,N) tensors under Lorentz transformations and prove that contraction of an upper with a lower index yields a tensor while summing two upper indices does not." },
+    { "id": "u01-o2", "description": "Derive the components and invariants of the 4-velocity, 4-momentum and 4-acceleration, including u·a = 0 and the interpretation of a·a as the squared proper acceleration." },
+    { "id": "u01-o3", "description": "Integrate the worldline of constant proper acceleration and check its Newtonian limit and units." },
+    { "id": "u01-o4", "description": "Decide whether a given object is a tensor, naming the class of transformations under which the claim holds." }
+  ],
+  "prerequisiteConceptIds": ["minkowski-spacetime", "lorentz-transformation", "four-vectors", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["tensor-calculus-spacetime", "four-vectors", "lorentzian-metric"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopses of Lectures 1–3 (PDF page 1): Lorentz transformations and the displacement 4-vector, component notation, basis vectors and the metric; coordinate bases, 4-velocity, 4-momentum, 4-acceleration, (M,N) tensors, raising and lowering, number flux; contraction and the dual nature of vectors.", "locatorId": "gr20-g-lec1-5", "estimatedMinutes": 20 },
+    { "description": "Watch Lecture 1: Introduction and the Geometric Viewpoint on Physics (transcript available on the page).", "locatorId": "gr20-lec01", "estimatedMinutes": 90 },
+    { "description": "Watch Lecture 2: Introduction to Tensors (transcript available).", "locatorId": "gr20-lec02", "estimatedMinutes": 90 },
+    { "description": "Watch or read the transcript of Lecture 3: Tensors Continued (contraction, 1-forms).", "locatorId": "gr20-lec03", "estimatedMinutes": 60 },
+    { "description": "Second account: Tong, General Relativity, Section 1.2.1 A Particle in Minkowski Spacetime (within Section 1.2; reference-only; same signature).", "locatorId": "tong-gr-ch1-s2", "estimatedMinutes": 20 },
+    { "description": "Optional second account: Carroll, Lecture Notes on General Relativity, Chapter 1 Special Relativity and Flat Spacetime (reference-only).", "locatorId": "carroll-ch1", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "lecture", "title": "Lecture: tensors on Minkowski spacetime", "instructions": "Read the lesson after watching Lectures 1–2. Reproduce the derivations of u·u = −1 and u·a = 0 without notes. Write out the transformation law of a (1,2) tensor in full once; it is the last time you will need to.", "estimatedMinutes": 90, "sourceLocatorIds": ["gr20-g-lec1-5", "gr20-lec01", "gr20-lec02", "gr20-lec03", "tong-gr-ch1-s2", "carroll-ch1"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "problem", "title": "Tutorial: hyperbolic motion; tensor or not?", "instructions": "Attempt exercise 1 before asking for any hint; carry c through the final part. Then attempt exercise 2, writing the transformation class for every tensor claim. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 120, "sourceLocatorIds": ["gr20-g-lec1-5", "gr20-lec02", "gr20-lec03"], "exerciseIds": ["PHY-240-u01-ex1", "PHY-240-u01-ex2"], "sessionKind": "tutorial" },
+    { "id": "u01-a3", "type": "explain_back", "title": "Explain: why multilinear maps", "instructions": "Write exercise 3 without the notes open.", "estimatedMinutes": 20, "sourceLocatorIds": ["gr20-g-lec1-5"], "exerciseIds": ["PHY-240-u01-ex3"], "sessionKind": "oral" },
+    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the defining property of a Lorentz transformation; the transformation laws for upper and lower indices; the definition of an (M,N) tensor; u^μ, p^μ and their invariants; the number-flux conservation law.", "estimatedMinutes": 10, "sourceLocatorIds": ["gr20-g-lec1-5"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-240-u01-ex1", "PHY-240-u01-ex2", "PHY-240-u01-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: u·a = 0 and a·a = α² derived, the hyperbolic worldline integrated with its Newtonian limit and the c-restored form, units checked.", "exerciseId": "PHY-240-u01-ex1" },
+  "commonMisconceptions": [
+    { "claim": "Any quantity with four components is a 4-vector.", "correction": "A 4-vector is defined by its transformation law A′^μ = Λ^μ_ν A^ν. (E, p) qualifies because p^μ = m dx^μ/dτ; (t, |x|) does not.", "correctionLocatorIds": ["gr20-g-lec1-5", "gr20-lec01"] },
+    { "claim": "The inner product of two 4-vectors is Σ_μ A^μ B^μ.", "correction": "It is η_μν A^μ B^ν = −A⁰B⁰ + A·B in our convention; the plain sum of products is not Lorentz invariant (exercise 2 shows the analogous failure for Σ T^μμ).", "correctionLocatorIds": ["gr20-g-lec1-5", "gr20-lec03"] },
+    { "claim": "The 4-acceleration points along the 4-velocity, like Newtonian acceleration along velocity in rectilinear motion.", "correction": "u·a = 0 always: a is spacelike and Minkowski-orthogonal to u, with a·a equal to the squared proper acceleration.", "correctionLocatorIds": ["gr20-lec02"] },
+    { "claim": "Partial derivatives of tensor components are always tensors.", "correction": "Only under transformations with constant Λ (inertial coordinates). In curvilinear coordinates, or under general coordinate changes, ∂_μ A_ν is not a tensor; the covariant derivative of unit 2 repairs this. The antisymmetric part ∂_μ A_ν − ∂_ν A_μ is a tensor in general (exercise 2).", "correctionLocatorIds": ["gr20-g-lec1-5", "gr20-lec05"] }
+  ],
+  "estimatedMinutes": 560,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The Lecture Guide PDF was downloaded and its text extracted on 2026-10-30 (20 pages, no PDF labels, printed number = index + 1); the Lecture 1–3 synopses are on PDF page 1 (index 0). The video pages for Lectures 1, 2 and 3 were opened and each offers a transcript. Tong Section 1.2.1 heading verified in gr1.pdf; Carroll's Chapter 1 PDF is listed on the author's page (not opened)." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: Λᵀ η Λ = η from interval invariance; inverse transformation of basis vectors and one-form components; contraction via Λ Λ⁻¹ = 1; u^μ = γ(1, v) with u·u = −1; p·p = −m² and E² = p² + m²; u·a = 0 and a·a = α² in the rest frame; the continuity equation from ∂_μ N^μ = 0; for exercise 1, u = (cosh ατ, sinh ατ), t = sinh(ατ)/α, x = (cosh(ατ) − 1)/α, (x + 1/α)² − t² = 1/α², v = tanh ατ, x ≈ ½αt² for ατ ≪ 1; for exercise 2, the boost counterexample Σ T^μμ = γ²(1 + v²) versus η_μν T^μν = −1 for T = u u, and the cancellation of the second-derivative terms in ∂_μ A_ν − ∂_ν A_μ under general coordinate changes." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson states u·a = 0 and a·a = α² (needed to set exercise 1) but not the integrated hyperbolic worldline; the trace counterexample and the antisymmetric-derivative proof appear only in instructor/ files." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "About 320 minutes of preparation (three lecture videos and two readings) plus 90 + 120 + 20 + 10 minutes of activities ≈ 9.3 hours, inside the graduate budget of 11–19 hours per unit." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-240-u01-ex1.reference-solution.md", "PHY-240-u01-ex2.reference-solution.md", "PHY-240-u01-ex3.grading-notes.md", "lesson-notes.md"]
+}

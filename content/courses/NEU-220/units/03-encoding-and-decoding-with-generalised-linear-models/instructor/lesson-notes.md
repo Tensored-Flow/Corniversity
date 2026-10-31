@@ -1,0 +1,11 @@
+## Lesson notes (instructor only)
+
+**Source mapping (all opened 2026-10-30).** Neuromatch W1D3 chapter page (Intro, Tutorials 1–2, Outro, further reading, day summary). Tutorial 1, GLMs for Encoding: objective to model a retinal ganglion cell spike train by fitting a temporal receptive field, first with a Linear-Gaussian GLM then with a Poisson GLM (LNP); Section 1.1 design matrix, 1.2 Linear-Gaussian fit and prediction, 2.1 Poisson GLM fitted with scipy.optimize; Poisson pmf with λ_t = exp(x_tᵀθ) and the matrix log-likelihood yᵀlog λ − 1ᵀλ; data from Uzzell and Chichilnisky 2004 "provided for tutorial purposes only". Tutorial 2, Classifiers and regularizers: logistic model σ(θᵀx), scikit-learn implementation, Steinmetz data (spikes 276 × 691, choices 276), cross-validation, L2 and L1 penalised objectives with β/2, sparsity, choosing the penalty; acknowledgement of Steinmetz et al. 2019. Licence footer CC BY 4.0 on every page.
+
+**Teaching intent.** Unify the three models under the GLM recipe; make the noise model a conscious choice; install the evaluation discipline (baseline, shuffle, leak-free split, hyperparameters inside the loop) and the refusal to read decoding as causation. The exercises are original: the tutorial fits the models numerically, the exercises derive their gradients and concavity and construct the evaluation reasoning on invented confusion-table numbers (stated as constructed).
+
+**Data handling.** Both tutorials use recorded data under their own terms. Corniversity links to the tutorial pages; nothing is copied into this repository, and the lesson refers to the datasets by their published attributions. Do not describe the experiments themselves beyond what the tutorial pages state.
+
+**Tutor behaviour (dev-anantharaman).** Ask for the out-of-sample check and the baseline before discussing any accuracy; ask whether held-out trials were touched during feature selection or penalty choice; ask why the Poisson model behaves as it does (positivity, multiplicative filter) before asking how well it fits; refuse causal readings.
+
+**Re-pacing.** W1D3 is a lighter Neuromatch day (two tutorials); here it is one teaching week with the derivations carrying the extra time.

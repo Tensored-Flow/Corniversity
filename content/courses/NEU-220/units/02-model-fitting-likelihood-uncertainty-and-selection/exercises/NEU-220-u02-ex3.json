@@ -1,0 +1,67 @@
+{
+  "id": "NEU-220-u02-ex3",
+  "sequence": 3,
+  "title": "Laboratory report: fitting a tuning curve to synthetic spike counts",
+  "kind": "model_interpretation",
+  "promptMarkdown": "**All data in this laboratory are synthetic.** The `neural-tuning-fit` laboratory generates spike counts from a known model neuron and labels them synthetic on every screen; nothing here is a recording from any animal, and nothing you conclude is a claim about biological neurons. Say so in the report wherever the data are mentioned.\n\nThe generating model is a von Mises tuning curve with Poisson counts: at orientation $\\theta_j$ (eight orientations from $0^\\circ$ to $157.5^\\circ$), a trial's count is $n \\sim \\text{Poisson}(\\lambda(\\theta_j)T)$ with $\\lambda(\\theta) = b + A\\exp(\\kappa\\cos(2(\\theta - \\theta_{\\text{pref}})))$ and $T$ the window length. The laboratory splits trials into training and held-out sets and provides a second synthetic dataset built to break the model.\n\nWrite a report with these sections.\n\n1. **Likelihood and baseline.** Write the Poisson log-likelihood of a set of counts given a rate function. Show that for the constant-rate baseline $\\lambda(\\theta) = b$ the MLE is $\\hat b = \\bar n/T$, the mean count divided by the window. Explain why the baseline is the right comparison for the tuning model.\n2. **Fit and comparison.** Report the fitted parameters of the tuning model on the training trials and the mean held-out log-likelihood per trial of both models. State which model wins out of sample and by how much, and why training log-likelihood alone would not have settled it.\n3. **Parameters and uncertainty.** Interpret $\\hat\\theta_{\\text{pref}}$, $\\hat\\kappa$, $\\hat A$ and $\\hat b$ in words (what each does to the curve) and give bootstrap intervals for at least two of them. Which parameter is least certain and why might that be, given the orientation sampling?\n4. **Failure case.** Run the second synthetic dataset. Report what the unimodal model does, which diagnostic revealed the problem (held-out likelihood, residuals by orientation, the bootstrap, or something else) and what feature of the generating process the model cannot represent.\n5. **Scope.** In under 120 words, state what this exercise does and does not show about real cortical neurons, and name one assumption (Poisson variability, stationarity across trials, a single preferred orientation, independence of trials) that would have to be checked on recorded data before the same model could be used there.",
+  "conceptIds": ["tuning-curves-encoding", "maximum-likelihood-estimation", "model-selection-cross-validation", "bootstrap-confidence-intervals"],
+  "hintLadder": [
+    "For counts $n_i$ with rates $\\lambda_i$, $\\ell = \\sum_i [n_i\\ln(\\lambda_iT) - \\lambda_iT - \\ln n_i!]$; with a constant rate, differentiate with respect to $b$.",
+    "Mean held-out log-likelihood per trial puts models with different numbers of parameters on the same footing; compare the difference with its variability across bootstrap splits before calling a winner.",
+    "$\\kappa$ controls width; with only eight orientations a narrow curve is sampled at few points, so $\\kappa$ is poorly determined when the peak falls between sampled orientations.",
+    "A unimodal curve fitted to bimodal data puts its peak between the two true peaks or on one of them; look at the residuals as a function of orientation.",
+    "Overdispersed counts (variance above the mean) violate the Poisson assumption even when the mean curve is right; the likelihood comparison then misstates the evidence."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "synthetic-labelled",
+      "kind": "requires_hypothesis",
+      "description": "any mention of the data, tuning or counts must be accompanied by the word synthetic (or simulated/generated)",
+      "params": { "triggerPatterns": ["tuning", "spike count", "data"], "hypothesisPatterns": ["synthetic", "simulated", "generated", "artificial"] }
+    },
+    {
+      "id": "held-out-comparison",
+      "kind": "expression_present",
+      "description": "an out-of-sample comparison is reported",
+      "params": { "patterns": ["held-?out", "testset|testdata|testtrials", "cross-?validat", "out-?of-?sample", "validationset|validationtrials"] }
+    },
+    {
+      "id": "baseline-named",
+      "kind": "expression_present",
+      "description": "the constant-rate baseline is compared",
+      "params": { "patterns": ["baseline", "constant-?rate", "nullmodel", "flat(tuning|model|rate)"] }
+    },
+    {
+      "id": "no-recording-claim",
+      "kind": "forbidden_claim",
+      "description": "describing the synthetic data as a recording from an animal or as real neurons",
+      "params": { "patterns": ["recorded from (a |the )?(mouse|monkey|rat|cortex|v1|animal|neuron)", "recordedfrom(a|the)?(mouse|monkey|rat|cortex|v1|animal|neuron)", "in vivo", "invivo", "real neurons? (show|shows|showed|prefer|prefers|have|has)", "realneurons?(show|shows|showed|prefer|prefers|have|has)", "this neuron in (the )?(mouse|monkey|cortex|v1)"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "likelihood", "criterion": "Poisson log-likelihood written correctly; baseline MLE b̂ = n̄/T derived by differentiation; baseline justified as the no-tuning alternative.", "weight": 0.2, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "Likelihood right, derivation or justification thin." }, { "label": "not met", "description": "Wrong likelihood." }] },
+      { "id": "comparison", "criterion": "Fitted parameters and held-out log-likelihood per trial for both models reported from the laboratory; winner stated with the margin and its variability; training likelihood explicitly said to be insufficient.", "weight": 0.25, "levels": [{ "label": "met", "description": "Numbers from the run, margin, and the training-likelihood point." }, { "label": "partially met", "description": "Numbers without the margin or the point." }, { "label": "not met", "description": "No out-of-sample comparison." }] },
+      { "id": "parameters", "criterion": "Each parameter interpreted; at least two bootstrap intervals; the least certain parameter identified with a reason tied to the eight-orientation sampling.", "weight": 0.2, "levels": [{ "label": "met", "description": "All." }, { "label": "partially met", "description": "Interpretations without intervals, or intervals without the reasoning." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "failure", "criterion": "Second dataset run; the model's behaviour described; the diagnostic that revealed it named; the unrepresentable feature (bimodality or overdispersion) identified.", "weight": 0.2, "levels": [{ "label": "met", "description": "All four." }, { "label": "partially met", "description": "Behaviour described, diagnostic or feature missing." }, { "label": "not met", "description": "Not run or misdiagnosed." }] },
+      { "id": "scope", "criterion": "Synthetic labelled throughout; explicit statement that nothing is shown about biological neurons; one assumption to check on recorded data named.", "weight": 0.15, "levels": [{ "label": "met", "description": "All, with no slip into biological claims." }, { "label": "partially met", "description": "Labelled but with a vague scope statement." }, { "label": "not met", "description": "Claims about real neurons made." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 90,
+  "checkExamples": [
+    {
+      "label": "correct report excerpt",
+      "text": "All counts here are synthetic, generated by the laboratory from a known von Mises neuron; nothing is a recording. Likelihood: ℓ = Σ[n_i ln(λ_i T) − λ_i T − ln n_i!]. For the constant-rate baseline λ = b, dℓ/db = Σ n_i/b − NT = 0 gives b̂ = n̄/T. The baseline is the hypothesis of no tuning, so beating it out of sample is the minimum evidence that the tuning parameters carry information. On the synthetic training trials the tuning model fitted θ_pref = 47°, κ = 1.8, A = 12 Hz, b = 3 Hz; the mean held-out log-likelihood per trial was −2.31 for the tuning model against −3.02 for the baseline, a margin of 0.71 nats that was stable across ten bootstrap splits, so the tuning model wins on the held-out data; training log-likelihood would favour the richer model whatever the data. Bootstrap intervals: θ_pref [41°, 53°], κ [1.2, 2.9]; κ is least certain because eight orientations sample the peak coarsely. Failure case: the second synthetic dataset was generated with two preferred orientations 90° apart; the unimodal model placed its peak on one of them, its held-out likelihood barely beat the baseline, and the residuals by orientation showed a second positive lobe, the feature a single-peaked curve cannot represent. Scope: this shows how the method behaves on synthetic data of known structure and shows nothing about real cortical neurons; on recorded data the Poisson assumption (variance equal to the mean) would have to be checked first.",
+      "expect": { "synthetic-labelled": true, "held-out-comparison": true, "baseline-named": true, "no-recording-claim": true }
+    },
+    {
+      "label": "data described as a recording, no baseline or held-out set",
+      "text": "The neuron recorded from a mouse V1 prefers 45 degrees with kappa 1.8; the training likelihood improved a lot, so the tuning data are well explained.",
+      "expect": { "synthetic-labelled": false, "held-out-comparison": false, "baseline-named": false, "no-recording-claim": false }
+    }
+  ]
+}

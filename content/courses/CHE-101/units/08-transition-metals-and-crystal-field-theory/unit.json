@@ -1,0 +1,29 @@
+{
+  "id": "CHE-101-u08",
+  "courseId": "CHE-101",
+  "sequence": 8,
+  "title": "Transition metals and crystal field theory",
+  "summary": "d-block metals and their multiple oxidation states; coordination complexes and ligands; d-orbital splitting in octahedral and tetrahedral fields; high-spin and low-spin configurations, colour and magnetism; chelation as a model for treating acute lead poisoning, as lecture 27 frames it.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 27–29 of 5.111SC (Unit IV)." }
+  ],
+  "prerequisiteConceptIds": ["electron-configuration", "molecular-orbital-theory"],
+  "teachesConceptIds": ["transition-metal-coordination"],
+  "preparation": [
+    { "description": "OCW Unit IV page: lecture 27 (introduction to transition metals), lectures 28–29 (crystal field theory parts I and II), each with notes, problems and solutions.", "locatorId": "chem14-unit4", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Lectures 27–29: transition metals and crystal field theory", "instructions": "Read the lecture pages for this unit. The matching OpenStax chapter (19, Transition Metals and Coordination Chemistry) has not yet been opened and verified, so no OpenStax locator is listed; it will be added when the unit is prepared. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["chem14-unit4"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit IV page opened 2026-10-30 (lectures 27–29 listed with page URLs and the unit's stated goals). Lecture pages 27–29, their notes PDFs and OpenStax chapter 19 are not yet opened; the unit page is the only verified locator." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

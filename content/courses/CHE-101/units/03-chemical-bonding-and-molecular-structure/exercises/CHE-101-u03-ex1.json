@@ -1,0 +1,60 @@
+{
+  "id": "CHE-101-u03-ex1",
+  "sequence": 1,
+  "title": "Lewis structures, formal charge and resonance: the nitrite ion",
+  "kind": "short_answer",
+  "promptMarkdown": "The nitrite ion $\\ce{NO2^-}$ has nitrogen as its central atom.\n\n1. Count the valence electrons and describe (in text or a drawing) a Lewis structure that obeys the octet rule. Give the formal charge on each atom and show that the formal charges sum to the ion's charge.\n2. Give the second resonance structure, state the N–O bond order in the resonance hybrid and say what it predicts about the two N–O bond lengths.\n3. A student proposes a structure with two N=O double bonds and one lone pair on nitrogen. It has the right electron count and its formal charges sum to −1. Explain why it is rejected anyway.\n4. Use VSEPR to give the electron-pair geometry, the molecular shape and whether the O–N–O angle is larger or smaller than the ideal angle of that geometry, with the reason. Then explain why $\\ce{CO2}$, also a triatomic with a central atom, is linear instead.",
+  "conceptIds": ["covalent-bonding-lewis", "vsepr-molecular-geometry"],
+  "hintLadder": [
+    "Valence electrons: nitrogen contributes 5, each oxygen 6, and the negative charge adds one more.",
+    "Full shells would need $3 \\times 8 = 24$ electrons; the difference between that and the valence count is the number of bonding electrons, which tells you how many bonds to draw.",
+    "$\\text{FC} = V - L - \\tfrac12 B$ for each atom; add them up and compare with −1.",
+    "How many electrons would surround nitrogen in the double-double structure? Which period is nitrogen in?",
+    "Count the regions of electron density around N (bonds count once each, lone pairs once each) and compare with the count around C in $\\ce{CO2}$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "bond-order",
+      "kind": "numeric_value",
+      "description": "the N–O bond order in the hybrid is 1.5",
+      "params": { "expected": 1.5, "tolerance": 0.01 }
+    },
+    {
+      "id": "formal-charge-sum",
+      "kind": "expression_present",
+      "description": "the formal charges are stated to sum to −1",
+      "params": { "patterns": ["sum(to|is|=|equals|:)-1", "sumof(the)?formalcharges(is|=|equals|:)-1", "formalcharges(sum|add)(up)?to-1", "total(formal)?charge(is|=|of|:)-1", "add(s)?(up)?to-1", "total(s)?-1", "0\\+0\\+\\(-1\\)=-1", "0\\+0-1=-1"] }
+    },
+    {
+      "id": "not-linear",
+      "kind": "forbidden_claim",
+      "description": "claiming that the nitrite ion is linear",
+      "params": { "patterns": ["nitrite(ion)?islinear", "no2-islinear", "no_2\\^-islinear", "no2\\^-islinear", "nitrite ion is linear", "nitrite is linear", "no2- is linear"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "structure", "criterion": "18 valence electrons; O=N–O⁻ with a lone pair on N; formal charges N 0, double-bonded O 0, single-bonded O −1, summing to −1.", "weight": 0.3, "levels": [{ "label": "met", "description": "Count, structure, all formal charges and the sum." }, { "label": "partially met", "description": "Structure right with a formal-charge slip or no sum check." }, { "label": "not met", "description": "Wrong structure or count." }] },
+      { "id": "resonance", "criterion": "Second resonance form given; bond order 1.5; equal N–O bond lengths predicted, intermediate between single and double.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "Resonance form without the bond order or the length prediction." }, { "label": "not met", "description": "No resonance." }] },
+      { "id": "rejection", "criterion": "The double-double structure puts 10 electrons on nitrogen; a second-period atom cannot exceed an octet, so the structure is rejected despite its electron count and formal-charge sum.", "weight": 0.2, "levels": [{ "label": "met", "description": "Octet violation on N named with the period-2 reason." }, { "label": "partially met", "description": "Rejected with a vaguer reason (for example 'formal charges worse')." }, { "label": "not met", "description": "Accepted or no reason." }] },
+      { "id": "shape", "criterion": "AX2E: trigonal planar electron-pair geometry, bent shape, angle below 120° because the lone pair repels more; CO2 is AX2 with no lone pairs on C, hence linear.", "weight": 0.25, "levels": [{ "label": "met", "description": "Geometry, shape, angle direction with reason, and the CO2 contrast." }, { "label": "partially met", "description": "Shape right, angle or contrast missing." }, { "label": "not met", "description": "Linear nitrite or wrong geometry." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "Valence electrons: 5 + 12 + 1 = 18. Structure: O=N–O⁻ with one lone pair on N and lone pairs completing both oxygens. Formal charges: N = 5 − 2 − 3 = 0; double-bonded O = 6 − 4 − 2 = 0; single-bonded O = 6 − 6 − 1 = −1; they sum to −1, the ion's charge. The second resonance form moves the double bond to the other oxygen; the hybrid has N–O bond order 1.5 and two equal bond lengths. The double-double structure gives nitrogen 10 electrons, impossible for a period-2 atom, so it is rejected. VSEPR: three electron regions, trigonal planar electron-pair geometry, bent shape with an O–N–O angle smaller than 120° because the lone pair repels the bonding pairs more. CO2 has two regions on carbon and no lone pairs, so it is linear.",
+      "expect": { "bond-order": true, "formal-charge-sum": true, "not-linear": true }
+    },
+    {
+      "label": "linear claim and no sum",
+      "text": "The nitrite ion is linear like CO2, with bond order 2 on both N–O bonds.",
+      "expect": { "not-linear": false, "bond-order": false, "formal-charge-sum": false }
+    }
+  ]
+}

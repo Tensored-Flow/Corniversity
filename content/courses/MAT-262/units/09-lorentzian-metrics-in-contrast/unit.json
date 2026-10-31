@@ -1,0 +1,31 @@
+{
+  "id": "MAT-262-u09",
+  "courseId": "MAT-262",
+  "sequence": 9,
+  "title": "Lorentzian metrics in contrast",
+  "summary": "Non-degenerate metrics of signature (−,+,+,+): Minkowski space and Lorentz transformations (Sternberg chapter 7); causal character of vectors and curves, proper time and the reverse triangle inequality; which constructions carry over verbatim (Levi-Civita connection, Christoffel symbols, curvature tensor, divergence on a semi-Riemannian manifold) and which fail (distance function, Hopf–Rinow, existence via partitions of unity); the standing convention of this course restated.",
+  "objectives": [
+    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Sternberg chapter 7 (§7.1 two-dimensional Lorentz transformations, §7.2 Minkowski space) and §8.1 (divergence and Lie derivative on a semi-Riemannian manifold), with Lee chapter 2 (Pseudo-Riemannian Metrics, p. 40) and chapter 3 (Model Pseudo-Riemannian Manifolds) as the commercial reference. The primary Lund notes do not treat indefinite metrics." }
+  ],
+  "prerequisiteConceptIds": ["riemannian-metric", "levi-civita-connection", "curvature"],
+  "teachesConceptIds": ["lorentzian-metric"],
+  "preparation": [
+    { "description": "Read Sternberg chapter 7, §7.1 (two-dimensional Lorentz transformations, proper time, the reverse triangle inequality) and §7.2 (Minkowski space), pp. 133–152.", "locatorId": "stb-ch7", "estimatedMinutes": 60 },
+    { "description": "Read Sternberg §8.1 (pp. 157–166): densities, divergence on a semi-Riemannian manifold, the Lie derivative of a semi-Riemann metric, to see the Riemannian formalism carried to indefinite signature.", "locatorId": "stb-ch8", "estimatedMinutes": 40 },
+    { "description": "Optional, if you have the book: Lee chapter 2, section 'Pseudo-Riemannian Metrics', and chapter 3, 'Model Pseudo-Riemannian Manifolds'.", "locatorId": "lee-rm-ch2-pseudo", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u09-a1", "type": "reading", "title": "Minkowski space and semi-Riemannian geometry", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover. Keep the signature convention of each source in view: Sternberg's and Lee's may differ from each other and from the (−,+,+,+) used here.", "estimatedMinutes": 110, "sourceLocatorIds": ["stb-ch7", "stb-s7-2", "stb-ch8", "lee-rm-ch2-pseudo", "lee-rm-ch3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Sternberg chapter 7 (p. 133, PDF index 132), §7.2 (p. 142, index 141) and chapter 8 §8.1 (p. 157, index 156) verified against extracted text on 2026-10-30; Lee's section and chapter are table-of-contents pointers from the author-hosted front matter." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

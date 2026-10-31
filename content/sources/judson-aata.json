@@ -1,0 +1,833 @@
+{
+  "id": "judson-aata",
+  "title": "Abstract Algebra: Theory and Applications",
+  "authors": [
+    "Thomas W. Judson",
+    "Robert A. Beezer (Sage exercises)"
+  ],
+  "institution": "Open textbook published by the author at judsonbooks.org (PreTeXt source on GitHub, twjudson/aata)",
+  "kind": "book",
+  "canonicalUrl": "https://judsonbooks.org/abstract-algebra-theory-and-applications/",
+  "description": "Open undergraduate algebra textbook, revised annually. Chapters 1–15 cover preliminaries, the integers, groups, cyclic groups, permutation groups, cosets and Lagrange's theorem, cryptography, coding theory, isomorphisms, normal subgroups and factor groups, homomorphisms, matrix groups and symmetry, the structure of groups, group actions and the Sylow theorems; chapters 16–23 cover rings, polynomials, domains, lattices, vector spaces, fields and Galois theory. The HTML edition gives every section its own page with numbered, anchored statements.",
+  "rightsNotes": [
+    "The HTML edition's colophon states: 'Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.2 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.' Copyright line: '©1997–2026 Thomas W. Judson, Robert A. Beezer'. Corniversity may import the HTML for private study and citation; any Corniversity artefact that reproduces substantial text from the book would itself fall under the GFDL and must say so.",
+    "The site landing page carries a generic footer 'Copyright © 2025. Thomas W. Judson. All rights reserved' and describes the book as an open source textbook; the book's own colophon licence governs the book text.",
+    "The book's exercises are not copied. Corniversity exercises are original and labelled; any adaptation would be labelled adapted_with_attribution."
+  ],
+  "currentVersionId": "judson-aata-html-2026",
+  "versions": [
+    {
+      "id": "judson-aata-html-2026",
+      "label": "HTML edition at judsonbooks.org (title block dated August 4, 2026; the site's book page lists the HTML edition as updated August 1, 2025)",
+      "url": "https://judsonbooks.org/aata-files/aata-html/aata.html",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the book landing page, the HTML title and contents page, the colophon, the chapter pages for chapters 2–6 and 9–15, and sixteen section pages",
+      "componentsSeen": [
+        "book landing page: title, author, Sage contributor, HTML edition link ('the latest and most up-to-date version', updated August 1, 2025), Runestone version, French edition, PDF editions 2010–2025 (including a file dated August 11, 2026), print edition details, GitHub link",
+        "HTML title/contents page: author credits, date August 4, 2026, full table of contents for chapters 1–23 with front and back matter, including an appendix 'GNU Free Documentation License'",
+        "colophon: website judsonbooks.org/aata/, copyright ©1997–2026 Thomas W. Judson, Robert A. Beezer, GFDL 1.2-or-later permission notice",
+        "chapter pages 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15: introductions and section lists with URLs",
+        "section pages 2.2, 3.1, 3.2, 3.3, 4.1, 4.2, 4.3, 5.1, 6.2, 9.1, 10.1, 11.2, 12.1, 13.1, 14.2, 15.1: numbered statements and anchors recorded below"
+      ],
+      "licence": "GNU Free Documentation License, Version 1.2 or any later version; no Invariant Sections, no Front-Cover Texts, no Back-Cover Texts",
+      "licenceUrl": "https://judsonbooks.org/aata-files/aata-html/aata-3.html",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": [
+        "judsonbooks.org"
+      ],
+      "limitations": [
+        "The PDF editions listed on the landing page were not opened; all locators are to the HTML edition. The HTML title block is dated August 4, 2026 while the landing page says the HTML edition was updated August 1, 2025, and one PDF labelled '2025 edition' is dated August 11, 2026; the edition labelling on the site is inconsistent and is recorded as seen.",
+        "Fragment identifiers were read from the section pages' HTML on 2026-10-30; a regenerated HTML edition may renumber anchors while the section URLs stay valid. Section pages 5.1, 6.2, 9.1, 10.1, 11.2, 12.1, 13.1, 14.2 and 15.1 were opened for statement numbers only and carry no anchors.",
+        "Section pages of chapters 1, 7, 8 and 16–23 were not opened (chapters 7, 8 and 16–23 are outside MAT-270).",
+        "The older hosts abstract.ups.edu and abstract.pugetsound.edu did not resolve on 2026-10-30; judsonbooks.org is the current host, also named in the GitHub README. The URL judsonbooks.org/aata/ printed in the colophon returned HTTP 404; the working HTML edition lives under aata-files/aata-html/.",
+        "Theorem 4.2.10 (roots of unity) cites Corollary 17.2.4 (a polynomial of degree n has at most n roots) from a chapter outside this course; the Corniversity lesson supplies a direct argument instead."
+      ],
+      "locators": [
+        {
+          "id": "aata-landing",
+          "label": "Book landing page at judsonbooks.org (editions, formats, print details)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/abstract-algebra-theory-and-applications/",
+            "heading": "Abstract Algebra: Theory and Applications"
+          }
+        },
+        {
+          "id": "aata-title",
+          "label": "HTML edition: title page and table of contents",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/aata.html",
+            "heading": "Abstract Algebra: Theory and Applications"
+          }
+        },
+        {
+          "id": "aata-colophon",
+          "label": "HTML edition: colophon (copyright and GFDL permission notice)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/aata-3.html",
+            "heading": "Colophon"
+          }
+        },
+        {
+          "id": "aata-ch02",
+          "label": "Chapter 2: The Integers (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers.html",
+            "heading": "Chapter 2 The Integers"
+          }
+        },
+        {
+          "id": "aata-ch03",
+          "label": "Chapter 3: Groups (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups.html",
+            "heading": "Chapter 3 Groups"
+          }
+        },
+        {
+          "id": "aata-ch04",
+          "label": "Chapter 4: Cyclic Groups (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic.html",
+            "heading": "Chapter 4 Cyclic Groups"
+          }
+        },
+        {
+          "id": "aata-ch05",
+          "label": "Chapter 5: Permutation Groups (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/permute.html",
+            "heading": "Chapter 5 Permutation Groups"
+          }
+        },
+        {
+          "id": "aata-ch06",
+          "label": "Chapter 6: Cosets and Lagrange's Theorem (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cosets.html",
+            "heading": "Chapter 6 Cosets and Lagrange's Theorem"
+          }
+        },
+        {
+          "id": "aata-ch09",
+          "label": "Chapter 9: Isomorphisms (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/isomorph.html",
+            "heading": "Chapter 9 Isomorphisms"
+          }
+        },
+        {
+          "id": "aata-ch10",
+          "label": "Chapter 10: Normal Subgroups and Factor Groups (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/normal.html",
+            "heading": "Chapter 10 Normal Subgroups and Factor Groups"
+          }
+        },
+        {
+          "id": "aata-ch11",
+          "label": "Chapter 11: Homomorphisms (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/homomorph.html",
+            "heading": "Chapter 11 Homomorphisms"
+          }
+        },
+        {
+          "id": "aata-ch12",
+          "label": "Chapter 12: Matrix Groups and Symmetry (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/matrix.html",
+            "heading": "Chapter 12 Matrix Groups and Symmetry"
+          }
+        },
+        {
+          "id": "aata-ch13",
+          "label": "Chapter 13: The Structure of Groups (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/struct.html",
+            "heading": "Chapter 13 The Structure of Groups"
+          }
+        },
+        {
+          "id": "aata-ch14",
+          "label": "Chapter 14: Group Actions (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/actions.html",
+            "heading": "Chapter 14 Group Actions"
+          }
+        },
+        {
+          "id": "aata-ch15",
+          "label": "Chapter 15: The Sylow Theorems (chapter page)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/sylow.html",
+            "heading": "Chapter 15 The Sylow Theorems"
+          }
+        },
+        {
+          "id": "aata-s2-2",
+          "label": "Section 2.2: The Division Algorithm (Theorems 2.2.1–2.2.2, Corollary 2.2.3, Lemma 2.2.5, Theorems 2.2.6–2.2.7)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers-section-division-algorithm.html",
+            "heading": "Section 2.2 The Division Algorithm"
+          }
+        },
+        {
+          "id": "aata-thm-2-2-1",
+          "label": "Theorem 2.2.1 (Division Algorithm: a = bq + r with 0 ≤ r < b, q and r unique)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers-section-division-algorithm.html",
+            "heading": "Theorem 2.2.1",
+            "fragment": "integers-theorem-division_algorithm"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-thm-2-2-2",
+          "label": "Theorem 2.2.2 (gcd(a, b) = ar + bs for some integers r, s; the gcd is unique)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers-section-division-algorithm.html",
+            "heading": "Theorem 2.2.2",
+            "fragment": "integers-theorem-gcd"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-cor-2-2-3",
+          "label": "Corollary 2.2.3 (relatively prime a, b admit ar + bs = 1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers-section-division-algorithm.html",
+            "heading": "Corollary 2.2.3",
+            "fragment": "integers-corollary-coprime"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-lem-2-2-5",
+          "label": "Lemma 2.2.5 (Euclid: a prime dividing ab divides a or b)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/integers-section-division-algorithm.html",
+            "heading": "Lemma 2.2.5",
+            "fragment": "integers-theorem-prime-divisor"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s3-1",
+          "label": "Section 3.1: Integer Equivalence Classes and Symmetries (Examples 3.1.1–3.1.2, Proposition 3.1.4, Figures 3.1.5–3.1.7)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-mod-n-sym.html",
+            "heading": "Section 3.1 Integer Equivalence Classes and Symmetries"
+          }
+        },
+        {
+          "id": "aata-prop-3-1-4",
+          "label": "Proposition 3.1.4 (arithmetic laws in Z_n; a nonzero a has a multiplicative inverse mod n iff gcd(a, n) = 1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-mod-n-sym.html",
+            "heading": "Proposition 3.1.4",
+            "fragment": "groups-proposition-zn-equiv-classes"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s3-2",
+          "label": "Section 3.2: Definitions and Examples (definition of a group; Examples 3.2.1–3.2.9; Propositions 3.2.10–3.2.15; Theorem 3.2.16)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Section 3.2 Definitions and Examples"
+          }
+        },
+        {
+          "id": "aata-def-group",
+          "label": "Definition of a group (associativity, identity, inverses) and of an abelian group, Section 3.2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Section 3.2, definition of a group",
+            "fragment": "groups-section-defnitions-2-1"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30; the definition is unnumbered in the text."
+        },
+        {
+          "id": "aata-ex-3-2-4",
+          "label": "Example 3.2.4 (Z_n is not a group under multiplication; the units U(n) form a group)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Example 3.2.4",
+            "fragment": "groups-example-z6-mult"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-3-2-6",
+          "label": "Example 3.2.6 (symmetries of an equilateral triangle: the nonabelian group S_3 = D_3)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Example 3.2.6",
+            "fragment": "groups-example-nonabelian"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-3-2-7",
+          "label": "Example 3.2.7 (the general linear group GL_2(R))",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Example 3.2.7",
+            "fragment": "groups-example-gl2"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-3-2-8",
+          "label": "Example 3.2.8 (the quaternion group Q_8)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Example 3.2.8",
+            "fragment": "groups-example-quaterions"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30 (the anchor's spelling 'quaterions' is the page's)."
+        },
+        {
+          "id": "aata-prop-3-2-10",
+          "label": "Proposition 3.2.10 (the identity element is unique)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Proposition 3.2.10",
+            "fragment": "groups-subsection-basic-properties-2"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-2-11",
+          "label": "Proposition 3.2.11 (inverses are unique)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Proposition 3.2.11",
+            "fragment": "groups-subsection-basic-properties-4"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-2-12",
+          "label": "Proposition 3.2.12 ((ab)^{-1} = b^{-1}a^{-1})",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Proposition 3.2.12",
+            "fragment": "groups-proposition-inverse-of-products"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-2-14",
+          "label": "Proposition 3.2.14 (ax = b and xa = b have unique solutions)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Proposition 3.2.14",
+            "fragment": "groups-proposition-group-equations"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-2-15",
+          "label": "Proposition 3.2.15 (left and right cancellation)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Proposition 3.2.15",
+            "fragment": "groups-subsection-basic-properties-9"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30; the proof is left to the exercises in the text."
+        },
+        {
+          "id": "aata-thm-3-2-16",
+          "label": "Theorem 3.2.16 (laws of exponents in a group)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-defnitions.html",
+            "heading": "Theorem 3.2.16",
+            "fragment": "groups-theorem-exponent-laws"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s3-3",
+          "label": "Section 3.3: Subgroups (Examples 3.3.1–3.3.5, Propositions 3.3.7–3.3.8)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-subgroups.html",
+            "heading": "Section 3.3 Subgroups"
+          }
+        },
+        {
+          "id": "aata-ex-3-3-4",
+          "label": "Example 3.3.4 (GL_2(R) is a group under multiplication but not a subgroup of the additive group of 2×2 matrices)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-subgroups.html",
+            "heading": "Example 3.3.4",
+            "fragment": "groups-example-gl2-subgroup"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-3-3-5",
+          "label": "Example 3.3.5 (Z_4 and Z_2 × Z_2 have different subgroup structures)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-subgroups.html",
+            "heading": "Example 3.3.5",
+            "fragment": "groups-example-z2xz2"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-3-7",
+          "label": "Proposition 3.3.7 (subgroup test: identity, closure under products, closure under inverses)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-subgroups.html",
+            "heading": "Proposition 3.3.7",
+            "fragment": "groups-subsection-subgroup-theorems-3"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-3-3-8",
+          "label": "Proposition 3.3.8 (one-step subgroup test: H nonempty and gh^{-1} ∈ H)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/groups-section-subgroups.html",
+            "heading": "Proposition 3.3.8",
+            "fragment": "groups-proposition-subgroup"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s4-1",
+          "label": "Section 4.1: Cyclic Subgroups (Theorem 4.1.3, Examples 4.1.5–4.1.7, Theorems 4.1.9–4.1.10, Corollary 4.1.11, Proposition 4.1.12, Theorem 4.1.13, Corollary 4.1.14)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Section 4.1 Cyclic Subgroups"
+          }
+        },
+        {
+          "id": "aata-thm-4-1-3",
+          "label": "Theorem 4.1.3 (⟨a⟩ is the smallest subgroup containing a)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Theorem 4.1.3",
+            "fragment": "cyclic-theorem-subgroup"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-4-1-6",
+          "label": "Example 4.1.6 (U(9) is cyclic, generated by 2)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Example 4.1.6",
+            "fragment": "cyclic-example-u9"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-ex-4-1-7",
+          "label": "Example 4.1.7 (S_3 is not cyclic although every subgroup of S_3 is cyclic)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Example 4.1.7",
+            "fragment": "cyclic-example-s3-not-cyclic"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-thm-4-1-9",
+          "label": "Theorem 4.1.9 (every cyclic group is abelian)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Theorem 4.1.9",
+            "fragment": "cyclic-theorem-abelian"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-thm-4-1-10",
+          "label": "Theorem 4.1.10 (every subgroup of a cyclic group is cyclic)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Theorem 4.1.10",
+            "fragment": "cyclic-theorem-cyclic-subgroups"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-cor-4-1-11",
+          "label": "Corollary 4.1.11 (the subgroups of Z are exactly the nZ)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Corollary 4.1.11",
+            "fragment": "cyclic-subsection-cyclic-subgroups-4"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-4-1-12",
+          "label": "Proposition 4.1.12 (in a cyclic group of order n generated by a, a^k = e iff n divides k)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Proposition 4.1.12",
+            "fragment": "cyclic-proposition-subgrp-order"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-thm-4-1-13",
+          "label": "Theorem 4.1.13 (if b = a^k in a cyclic group of order n then b has order n/gcd(k, n))",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Theorem 4.1.13",
+            "fragment": "cyclic-theorem-cyclic-orders"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-cor-4-1-14",
+          "label": "Corollary 4.1.14 (the generators of Z_n are the r with 1 ≤ r < n and gcd(r, n) = 1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-cyclic-subgroups.html",
+            "heading": "Corollary 4.1.14",
+            "fragment": "cyclic-corollary-mod-n-generators"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s4-2",
+          "label": "Section 4.2: Multiplicative Group of Complex Numbers (Proposition 4.2.5, Theorem 4.2.7 De Moivre, Proposition 4.2.9, Theorem 4.2.10, Example 4.2.11)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Section 4.2 Multiplicative Group of Complex Numbers"
+          }
+        },
+        {
+          "id": "aata-prop-4-2-5",
+          "label": "Proposition 4.2.5 (product of complex numbers in polar form: moduli multiply, arguments add)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Proposition 4.2.5",
+            "fragment": "cyclic-proposition-polar-mult"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-thm-4-2-7",
+          "label": "Theorem 4.2.7 (De Moivre: (r cis θ)^n = r^n cis(nθ))",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Theorem 4.2.7",
+            "fragment": "cyclic-section-mult-group-c-2-13"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-prop-4-2-9",
+          "label": "Proposition 4.2.9 (the circle group T is a subgroup of C*)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Proposition 4.2.9",
+            "fragment": "cyclic-subsection-circle-group-3"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30 (heading anchor of the statement)."
+        },
+        {
+          "id": "aata-thm-4-2-10",
+          "label": "Theorem 4.2.10 (the nth roots of unity are cis(2kπ/n), k = 0, …, n−1, and form a cyclic subgroup of T of order n)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Theorem 4.2.10",
+            "fragment": "cyclic-subsection-circle-group-5"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30 (heading anchor of the statement). The text's proof cites Corollary 17.2.4."
+        },
+        {
+          "id": "aata-ex-4-2-11",
+          "label": "Example 4.2.11 (the primitive 8th roots of unity are ω, ω^3, ω^5, ω^7)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-mult-group-c.html",
+            "heading": "Example 4.2.11",
+            "fragment": "example-roots_unity"
+          },
+          "note": "Anchor as read from the page HTML on 2026-10-30."
+        },
+        {
+          "id": "aata-s4-3",
+          "label": "Section 4.3: The Method of Repeated Squares (Example 4.3.1)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cyclic-section-method-of-repeated-squares.html",
+            "heading": "Section 4.3 The Method of Repeated Squares"
+          }
+        },
+        {
+          "id": "aata-s5-1",
+          "label": "Section 5.1: Definitions and Notation (Theorem 5.1.1, Proposition 5.1.8, Theorem 5.1.9, Proposition 5.1.12, Lemma 5.1.14, Theorems 5.1.15–5.1.16, Proposition 5.1.17)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/permute-section-permutation-definitions.html",
+            "heading": "Section 5.1 Definitions and Notation"
+          }
+        },
+        {
+          "id": "aata-s6-2",
+          "label": "Section 6.2: Lagrange's Theorem (Proposition 6.2.1, Theorem 6.2.2, Corollaries 6.2.3–6.2.5, Proposition 6.2.7, Theorem 6.2.8)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/cosets-section-lagranges-theorem.html",
+            "heading": "Section 6.2 Lagrange's Theorem"
+          }
+        },
+        {
+          "id": "aata-s9-1",
+          "label": "Section 9.1: Definition and Examples (Theorems 9.1.6–9.1.8, Corollary 9.1.9, Theorem 9.1.10, Theorem 9.1.12 Cayley)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/isomorph-section-definitions.html",
+            "heading": "Section 9.1 Definition and Examples"
+          }
+        },
+        {
+          "id": "aata-s10-1",
+          "label": "Section 10.1: Factor Groups and Normal Subgroups (Theorems 10.1.3–10.1.4)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/normal-section-factor-groups.html",
+            "heading": "Section 10.1 Factor Groups and Normal Subgroups"
+          }
+        },
+        {
+          "id": "aata-s11-2",
+          "label": "Section 11.2: The Isomorphism Theorems (Theorems 11.2.1, 11.2.3, 11.2.4 Correspondence, 11.2.5)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/homomorph-section-group-isomorphism-theorems.html",
+            "heading": "Section 11.2 The Isomorphism Theorems"
+          }
+        },
+        {
+          "id": "aata-s12-1",
+          "label": "Section 12.1: Matrix Groups (Proposition 12.1.6, Theorem 12.1.8 on orthogonal matrices)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/matrix-section-groups.html",
+            "heading": "Section 12.1 Matrix Groups"
+          }
+        },
+        {
+          "id": "aata-s13-1",
+          "label": "Section 13.1: Finite Abelian Groups (Proposition 13.1.3, Theorem 13.1.4, Lemmas 13.1.6–13.1.9, Theorem 13.1.10)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/struct-section-finite-abelian-groups.html",
+            "heading": "Section 13.1 Finite Abelian Groups"
+          }
+        },
+        {
+          "id": "aata-s14-2",
+          "label": "Section 14.2: The Class Equation (Theorem 14.2.4, Corollary 14.2.5)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/actions-section-class-equation.html",
+            "heading": "Section 14.2 The Class Equation"
+          }
+        },
+        {
+          "id": "aata-s15-1",
+          "label": "Section 15.1: The Sylow Theorems (Theorem 15.1.1 Cauchy, Corollary 15.1.2, Theorem 15.1.4, Lemmas 15.1.5–15.1.6, Theorems 15.1.7–15.1.8)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "judson-aata-html-2026",
+            "url": "https://judsonbooks.org/aata-files/aata-html/sylow-section-sylow-theorems.html",
+            "heading": "Section 15.1 The Sylow Theorems"
+          }
+        }
+      ]
+    }
+  ]
+}

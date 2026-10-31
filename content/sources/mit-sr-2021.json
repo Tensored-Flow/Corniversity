@@ -1,0 +1,49 @@
+{
+  "id": "mit-sr-2021",
+  "title": "8.20 Introduction to Special Relativity",
+  "authors": ["Markus Klute (instructor)"],
+  "institution": "MIT OpenCourseWare",
+  "kind": "course",
+  "canonicalUrl": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/",
+  "description": "Four-week IAP course (19 live sessions, flipped classroom) on special relativity with a glance at general relativity: foundations and the Michelson-Morley experiment; time dilation, length contraction, spacetime diagrams, causality and the standard 'paradoxes'; Lorentz transformations, 4-vectors, momentum and energy, collisions; tests and applications, electromagnetism, equivalence principle, GPS. Published as 52 short lecture videos in four weekly groups, plus problem sets, exams and readings.",
+  "rightsNotes": [
+    "Content is licensed CC BY-NC-SA 4.0 by MIT OpenCourseWare (licence link in the page footer). Corniversity is private and non-commercial.",
+    "The course has no lecture notes; the videos are the primary material and are hosted on YouTube and the Internet Archive via OCW pages. Textbooks (French 1968, Resnick 1968) are commercial and not required by Corniversity.",
+    "The Readings page lists weekly 'papers of the week' linking to external sites with their own terms."
+  ],
+  "currentVersionId": "mit-sr-2021-iap21",
+  "versions": [
+    {
+      "id": "mit-sr-2021-iap21",
+      "label": "January IAP 2021 (OCW publication)",
+      "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the course, syllabus, readings and video-lectures pages and the four weekly video pages",
+      "componentsSeen": [
+        "course landing page: description, instructor, Creative Commons licence link, browse menu (Syllabus, Video Lectures by week, Readings, Assignments, Exams)",
+        "syllabus: prerequisites 18.01 and 8.01; 19 sessions of about 1.5 h over four weeks; textbooks French, Resnick, Tsamparlis, Einstein; grading 50% problem sets, 30% midterms, 20% final; weekly calendar",
+        "readings: Resnick and French chapters by week plus papers of the week (Michelson & Morley 1887; Einstein 1905 papers; Chou et al. 2010; Mandelberg & Witten 1962; Einstein 1911)",
+        "video lectures index and the four weekly pages listing 11, 17, 7 and 17 titled videos respectively (titles and OCW resource URLs seen; individual video pages not opened)"
+      ],
+      "licence": "CC BY-NC-SA 4.0",
+      "licenceUrl": "https://ocw.mit.edu/pages/privacy-and-terms-of-use/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": ["ocw.mit.edu"],
+      "limitations": [
+        "No lecture notes exist; locators are to the weekly video pages. Individual video pages, timestamps and transcripts were not inspected, so no video locators are recorded.",
+        "Problem sets, solutions and exams were listed but not opened.",
+        "The textbooks are commercial (1968 editions) and are not part of Corniversity's reading."
+      ],
+      "locators": [
+        { "id": "sr21-syllabus", "label": "Syllabus page (format, prerequisites, textbooks, grading, weekly calendar)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/syllabus/", "heading": "Syllabus" } },
+        { "id": "sr21-readings", "label": "Readings page (Resnick and French chapters by week; papers of the week)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/readings/", "heading": "Readings" } },
+        { "id": "sr21-videos-index", "label": "Video Lectures index (four weekly pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/video-lectures/", "heading": "Video Lectures" } },
+        { "id": "sr21-week1", "label": "Week 1: Foundations of Special Relativity (Lectures 1.1–3.4: course organisation, history, space/time/spacetime, categories of physics, events, Galilean transformation, light, waves, Michelson-Morley, stellar aberration)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/video-lectures/week-1-foundations-of-special-relativity/", "heading": "Week 1: Foundations of Special Relativity" } },
+        { "id": "sr21-week2", "label": "Week 2: Spacetime in Special Relativity (Lectures 4.1–7.4: time dilation, muons, length contraction, invariance, Lorentz transformation, velocity addition, spacetime diagrams, regions, causality, pole-in-the-barn, twin paradox, spacecraft-on-a-rope, Doppler effect, redshift, galaxy travel)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/video-lectures/week-2-spacetime-in-special-relativity/", "heading": "Week 2: Spacetime in Special Relativity" } },
+        { "id": "sr21-week3", "label": "Week 3: Kinematics in Special Relativity (Lectures 8.1–9.4: algebra of Lorentz transformations, 4-vector notation, proper velocity, momentum and energy conservation, collisions, forces and kinetic energy)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/video-lectures/week-3-kinematics-in-special-relativity/", "heading": "Week 3: Kinematics in Special Relativity" } },
+        { "id": "sr21-week4", "label": "Week 4: Beyond Special Relativity (Lectures 10.1–13.1: tests, LEP, deuteron production, photons, pion decay, particle creation, Compton effect, GPS, charge and current, electric and magnetic fields, equivalence principle, gravitational time dilation, light bending, redshift tests, general relativity, experimental evidence, review)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-sr-2021-iap21", "url": "https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/pages/video-lectures/week-4-beyond-special-relativity/", "heading": "Week 4: Beyond Special Relativity" } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "CHE-101-u05-ex3",
+  "sequence": 3,
+  "title": "Virtual model report: reversible first-order reaction A ⇌ B at constant volume",
+  "kind": "model_interpretation",
+  "promptMarkdown": "**Virtual model activity, not a laboratory procedure.** Nothing here is to be done with real chemicals. The system is a stated mathematical model; your task is to derive its behaviour, compare with the simulator and examine its assumptions.\n\nA well-mixed solution at constant volume and constant temperature contains a species A that converts reversibly to B, both steps elementary and first order:\n$$\\ce{A <=>[k_f][k_r] B}, \\qquad \\frac{d[\\ce{A}]}{dt} = -k_f[\\ce{A}] + k_r[\\ce{B}], \\qquad \\frac{d[\\ce{B}]}{dt} = k_f[\\ce{A}] - k_r[\\ce{B}],$$\nwith $k_f, k_r \\ge 0$, $[\\ce{A}]_0 = C_0$ and $[\\ce{B}]_0 = 0$. No other reactions occur and the rate constants do not change during a run.\n\n1. Show that $[\\ce{A}] + [\\ce{B}]$ is constant and equal to $C_0$, and use this to reduce the system to one differential equation for $[\\ce{A}]$.\n2. Solve it. Write the solution as $[\\ce{A}](t) = [\\ce{A}]_{eq} + ([\\ce{A}]_0 - [\\ce{A}]_{eq})\\,e^{-t/\\tau}$ and identify $[\\ce{A}]_{eq}$, $[\\ce{B}]_{eq}$ and $\\tau$ in terms of $k_f$, $k_r$, $C_0$. Show that $[\\ce{B}]_{eq}/[\\ce{A}]_{eq} = k_f/k_r$ and name this ratio.\n3. Take $k_f = 0.30\\ \\text{min}^{-1}$, $k_r = 0.10\\ \\text{min}^{-1}$, $C_0 = 1.00\\ \\text{M}$. Compute $[\\ce{A}]_{eq}$, $[\\ce{B}]_{eq}$, $K$, $\\tau$ and the half-life of the approach to equilibrium. Run the simulator with these values and compare its $[\\ce{A}]$ at $t = 5.0$ min with your formula.\n4. Double $k_f$ to $0.60\\ \\text{min}^{-1}$ with everything else fixed: what happens to $K$, to $[\\ce{A}]_{eq}$ and to $\\tau$? Then instead double both $k_f$ and $k_r$: what changes and what does not? Say what each case shows about the difference between where a reaction ends and how fast it gets there.\n5. At equilibrium both concentrations are constant in time; so are they in a mixture in which no reaction occurs at all. Describe two observations available in the virtual model that would distinguish dynamic equilibrium from no reaction, and say what the model predicts for each.\n6. List the model's assumptions (phase, mixing, temperature, volume, ideality, first-order kinetics, no side reactions, constant rate constants) and for two of them say how the equations would change if the assumption failed.",
+  "conceptIds": ["kinetic-view-of-equilibrium", "integrated-rate-laws", "chemical-equilibrium-constant"],
+  "hintLadder": [
+    "Add the two differential equations. What is $d([\\ce{A}] + [\\ce{B}])/dt$?",
+    "Substitute $[\\ce{B}] = C_0 - [\\ce{A}]$ into the equation for $[\\ce{A}]$; the result is linear with constant coefficients, $d[\\ce{A}]/dt = -(k_f + k_r)[\\ce{A}] + k_rC_0$.",
+    "The equilibrium value makes the right-hand side zero; the deviation from it decays exponentially with rate $k_f + k_r$.",
+    "For the distinguishing observations, think about what happens if you add some extra B to an equilibrium mixture, or if you could tag the A molecules present at one instant and follow where the tag goes.",
+    "If the volume were not constant, concentrations would change without any reaction; if the system were not well mixed, the concentrations would depend on position and the equations would need a diffusion term."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "a-equilibrium",
+      "kind": "numeric_value",
+      "description": "[A]_eq = 0.250 M",
+      "params": { "expected": 0.25, "tolerance": 0.002 }
+    },
+    {
+      "id": "equilibrium-constant",
+      "kind": "numeric_value",
+      "description": "K = 3.00 (advisory: the number 3 must appear)",
+      "params": { "expected": 3, "tolerance": 0.005 }
+    },
+    {
+      "id": "relaxation-time",
+      "kind": "numeric_value",
+      "description": "τ = 2.50 min",
+      "params": { "expected": 2.5, "tolerance": 0.01 }
+    },
+    {
+      "id": "half-life",
+      "kind": "numeric_value",
+      "description": "half-life of the approach 1.73 min",
+      "params": { "expected": 1.733, "tolerance": 0.01 }
+    },
+    {
+      "id": "doubled-kf",
+      "kind": "numeric_value",
+      "description": "with k_f doubled, [A]_eq = 0.143 M",
+      "params": { "expected": 0.1429, "tolerance": 0.0015 }
+    },
+    {
+      "id": "reaction-continues",
+      "kind": "forbidden_claim",
+      "description": "claiming that the reaction stops, or that the forward and reverse rates are zero, at equilibrium",
+      "params": { "patterns": ["reaction(s)? (has|have) stopped", "reaction stops at equilibrium", "reactionstopsatequilibrium", "nothing happens at equilibrium", "forward rate is zero", "forwardrateiszero", "both rates are zero", "bothratesarezero", "rates are zero at equilibrium"] }
+    },
+    {
+      "id": "assumptions-stated",
+      "kind": "requires_hypothesis",
+      "description": "a first-order model must come with its assumptions (constant temperature and volume, well mixed, ideal, dilute)",
+      "params": { "triggerPatterns": ["first.order"], "hypothesisPatterns": ["assum", "constant temperature", "constant volume", "well.mixed", "isothermal", "ideal", "dilute"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "conservation", "criterion": "d([A]+[B])/dt = 0 shown from the equations; [A] + [B] = C0; reduction to d[A]/dt = −(kf + kr)[A] + kr C0.", "weight": 0.15, "levels": [{ "label": "met", "description": "Derived cleanly." }, { "label": "partially met", "description": "Asserted with partial working." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "solution", "criterion": "[A]_eq = kr C0/(kf + kr), [B]_eq = kf C0/(kf + kr), τ = 1/(kf + kr); the ratio kf/kr identified as the equilibrium constant K.", "weight": 0.2, "levels": [{ "label": "met", "description": "All identified and the ODE solved, not guessed." }, { "label": "partially met", "description": "Correct limits with the exponent wrong or unjustified." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "numbers-and-comparison", "criterion": "[A]_eq = 0.250 M, [B]_eq = 0.750 M, K = 3.00, τ = 2.50 min, t½ = 1.73 min; the simulator's [A](5.0 min) compared with the formula's 0.351 M and agreement or disagreement discussed.", "weight": 0.15, "levels": [{ "label": "met", "description": "All values and the comparison." }, { "label": "partially met", "description": "Values right, comparison missing." }, { "label": "not met", "description": "Values wrong." }] },
+      { "id": "parameter-changes", "criterion": "kf doubled: K = 6, [A]_eq = 0.143 M, τ = 1.43 min (end point and speed both change); both doubled: K = 3 and composition unchanged, τ = 1.25 min (only speed changes); the end point depends on the ratio, the speed on the sum.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both cases with the ratio-versus-sum conclusion." }, { "label": "partially met", "description": "Both cases computed, conclusion missing." }, { "label": "not met", "description": "A case wrong." }] },
+      { "id": "distinguishing-observations", "criterion": "Two valid observations with the model's predictions: e.g. perturb by adding B and watch relaxation at rate kf + kr (a non-reacting mixture stays perturbed); tag the A present at one instant and watch the tag spread into B while totals stay constant; start from different initial ratios and see both converge to B/A = 3 (a non-reacting mixture keeps whatever ratio it was given); change temperature and watch K shift.", "weight": 0.2, "levels": [{ "label": "met", "description": "Two observations, each with both predictions." }, { "label": "partially met", "description": "One observation, or two without predictions." }, { "label": "not met", "description": "Claims the reaction has stopped or gives no observation." }] },
+      { "id": "assumptions", "criterion": "Assumptions listed (single phase, well mixed, constant T and V, ideal and dilute so first-order laws hold, no side reactions, constant k) and two failure modes translated into changes in the equations (for example a volume change adds a dilution term; non-ideality or second-order steps change the rate expressions; a side reaction adds a sink term and breaks conservation of A + B).", "weight": 0.1, "levels": [{ "label": "met", "description": "List plus two consequences." }, { "label": "partially met", "description": "List only." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 90,
+  "checkExamples": [
+    {
+      "label": "correct report",
+      "text": "Adding the equations gives d([A]+[B])/dt = 0, so [A] + [B] = C0. Then d[A]/dt = -(kf + kr)[A] + kr C0, whose solution is [A](t) = A_eq + (C0 - A_eq) exp(-(kf+kr)t) with A_eq = kr C0/(kf + kr), B_eq = kf C0/(kf + kr), tau = 1/(kf + kr); B_eq/A_eq = kf/kr = K, the equilibrium constant. Numbers: A_eq = 0.250 M, B_eq = 0.750 M, K = 3.00, tau = 2.50 min, half-life = ln2/0.40 = 1.73 min; the formula gives [A](5.0 min) = 0.351 M and the simulator agreed to three figures. Doubling kf: K = 6, A_eq = 0.143 M, tau = 1.43 min, so both the end point and the speed change; doubling both: K = 3, A_eq = 0.250 M unchanged, tau = 1.25 min, only the speed changes: the end point depends on the ratio of rate constants, the speed on their sum. Distinguishing equilibrium from no reaction: (i) add 0.1 M of B to the equilibrium mixture; the model predicts relaxation back to B/A = 3 with time constant 2.5 min, while a non-reacting mixture would stay at the new ratio; (ii) tag the A molecules present at t = 0 in the equilibrium mixture; the model predicts the tag appears in B at rate kf while totals stay constant, whereas with no reaction the tag never moves. At equilibrium the net rate is zero but the forward and reverse rates are both 0.075 M/min. Assumptions: single liquid phase, well mixed, constant temperature and volume, dilute ideal solution so the first-order laws hold, no side reactions, constant rate constants. If the volume changed, a dilution term -([A]/V) dV/dt would appear; if a side reaction consumed B, a sink term would break the conservation of A + B.",
+      "expect": { "a-equilibrium": true, "equilibrium-constant": true, "relaxation-time": true, "half-life": true, "doubled-kf": true, "reaction-continues": true, "assumptions-stated": true }
+    },
+    {
+      "label": "equilibrium as a stopped reaction",
+      "text": "At equilibrium the reaction has stopped and both rates are zero, so A_eq = 0.5 M and K = 1. This is a first-order reaction.",
+      "expect": { "reaction-continues": false, "a-equilibrium": false, "assumptions-stated": false }
+    }
+  ]
+}

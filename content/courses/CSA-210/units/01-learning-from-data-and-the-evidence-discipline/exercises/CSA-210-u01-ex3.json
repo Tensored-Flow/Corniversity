@@ -1,0 +1,26 @@
+{
+  "id": "CSA-210-u01-ex3",
+  "sequence": 3,
+  "title": "Why a held-out set estimates generalisation",
+  "kind": "explanation",
+  "promptMarkdown": "In under 200 words and without the lesson open:\n\n1. State the assumption under which the error on a held-out set is an unbiased estimate of the risk of a trained model, and show in one line why the training error is not.\n2. Explain why choosing the best of several models by their *test* error destroys the property in (1), and what the validation set is for.\n3. Give one concrete example of leakage that would survive a perfectly executed random train/test split.",
+  "conceptIds": ["supervised-learning-generalisation", "data-leakage"],
+  "hintLadder": [
+    "Conditional on the fitted model, what is the distribution of the loss on one held-out item? What does that give for the expectation of the average?",
+    "The minimum of several noisy unbiased estimates is not unbiased. In which direction is it biased?",
+    "Random splitting removes selection by the experimenter, not structure in the data: think of time, groups or duplicated items."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "independence-assumption", "criterion": "States that the held-out data must be independent of the training data and of every decision used to fit the model; conditional on the model the held-out losses are i.i.d. with mean equal to the risk, whereas the trained model was chosen to minimise the training error.", "weight": 0.4, "levels": [{ "label": "met", "description": "Assumption stated and the one-line argument given." }, { "label": "partially met", "description": "Assumption stated without the argument." }, { "label": "not met", "description": "Missing or confuses with sample size." }] },
+      { "id": "selection-bias", "criterion": "Explains that selecting on the test error makes the chosen model's test error the minimum of noisy estimates and therefore optimistic; the validation set absorbs this role so the test set can be used once.", "weight": 0.35, "levels": [{ "label": "met", "description": "Both the bias direction and the role of the validation set." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "leakage-example", "criterion": "Gives a correct example that random splitting does not prevent: temporal order, grouped records (same patient or machine), duplicates, target-derived features, or preprocessing fitted on all data.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct example with the route of the leak." }, { "label": "partially met", "description": "Example named without the route." }, { "label": "not met", "description": "No valid example." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

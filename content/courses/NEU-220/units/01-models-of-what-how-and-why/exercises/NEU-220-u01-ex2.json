@@ -1,0 +1,67 @@
+{
+  "id": "NEU-220-u01-ex2",
+  "sequence": 2,
+  "title": "The leaky integrate-and-fire neuron solved exactly",
+  "kind": "derivation",
+  "promptMarkdown": "The leaky integrate-and-fire (LIF) model of W1D1 Tutorial 2 (bonus section) is\n$$\\tau_m\\frac{dV}{dt} = -(V - E_L) + RI,$$\nwith a spike emitted when $V$ reaches $V_{th}$, after which $V$ is reset to $V_{reset}$ and held for an absolute refractory period $t_{ref}$. All runs of this model are simulations; it is a mechanistic ('how') model.\n\n1. For constant input current $I$ and $V(0) = V_{reset}$, solve the equation. What value does $V$ approach, and with what time constant?\n2. Derive the condition on $I$ for the neuron to fire at all, and give the threshold current (the rheobase) in terms of the parameters.\n3. For $I$ above rheobase, derive the time $T$ from reset to threshold and hence the firing rate $f = 1/(t_{ref} + T)$. What is the maximum firing rate the model can produce, and why?\n4. Take $E_L = -70$ mV, $V_{th} = -50$ mV, $V_{reset} = -65$ mV, $\\tau_m = 10$ ms, $R = 10\\ \\text{M}\\Omega$, $t_{ref} = 2$ ms and $I = 3.0$ nA. Compute the rheobase, $T$ in ms and $f$ in Hz.\n5. Name two observations about real neurons that this model cannot reproduce, and say which component you would have to add for each. (Do not describe any experiment on animals; name the observation only.)",
+  "conceptIds": ["leaky-integrate-and-fire", "model-types-what-how-why"],
+  "hintLadder": [
+    "Write $V_\\infty = E_L + RI$. Then $u = V - V_\\infty$ satisfies $\\tau_m\\,du/dt = -u$.",
+    "The neuron fires if and only if the asymptote lies above threshold. Solve $E_L + RI_{rh} = V_{th}$ for $I_{rh}$.",
+    "Set $V(T) = V_{th}$ in your solution and solve for $T$; it involves a logarithm of a ratio of voltage differences.",
+    "As $I \\to \\infty$, $T \\to 0$, so the rate is bounded by the refractory period alone.",
+    "Think about what happens to a real neuron's rate under a long constant current, and about what shapes a real action potential."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "time-to-threshold",
+      "kind": "numeric_value",
+      "description": "T = 10 ln(25/10) = 9.16 ms",
+      "params": { "expected": 9.163, "tolerance": 0.02 }
+    },
+    {
+      "id": "firing-rate",
+      "kind": "numeric_value",
+      "description": "f = 1/(2 + 9.163 ms) = 89.6 Hz",
+      "params": { "expected": 89.6, "tolerance": 0.3 }
+    },
+    {
+      "id": "uses-logarithm",
+      "kind": "expression_present",
+      "description": "the time-to-threshold formula contains a logarithm",
+      "params": { "patterns": ["ln\\(", "\\\\ln", "log\\("] }
+    },
+    {
+      "id": "not-just-numbers",
+      "kind": "finite_examples_not_proof",
+      "description": "the solution must be derived in general before numbers are substituted",
+      "params": {}
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "solution", "criterion": "V(t) = V_∞ + (V_reset − V_∞)e^{−t/τ_m} with V_∞ = E_L + RI, approached with time constant τ_m.", "weight": 0.25, "levels": [{ "label": "met", "description": "Derived and interpreted." }, { "label": "partially met", "description": "Correct form, derivation thin." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "rheobase", "criterion": "Fires iff E_L + RI > V_th; I_rh = (V_th − E_L)/R.", "weight": 0.15, "levels": [{ "label": "met", "description": "Condition and formula." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "rate-formula", "criterion": "T = τ_m ln[(V_∞ − V_reset)/(V_∞ − V_th)]; f = 1/(t_ref + T); maximum rate 1/t_ref as I → ∞ because T → 0.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three." }, { "label": "partially met", "description": "T right, limit or f wrong." }, { "label": "not met", "description": "T wrong." }] },
+      { "id": "numbers", "criterion": "I_rh = 2.0 nA; V_∞ = −40 mV; T = 10 ln(25/10) = 9.16 ms; f = 89.6 Hz.", "weight": 0.2, "levels": [{ "label": "met", "description": "All correct." }, { "label": "partially met", "description": "One slip." }, { "label": "not met", "description": "More." }] },
+      { "id": "omissions", "criterion": "Two observations beyond the model (spike-frequency adaptation; spike shape and afterhyperpolarisation; irregular firing under constant input; dendritic integration) with the component to add (adaptation current; Hodgkin–Huxley conductances; noise or stochastic input; compartments).", "weight": 0.15, "levels": [{ "label": "met", "description": "Two observations each with a component." }, { "label": "partially met", "description": "Observations without components." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct derivation",
+      "text": "Let V_∞ = E_L + RI. For arbitrary constant I, u = V − V_∞ obeys τ_m du/dt = −u, so V(t) = V_∞ + (V_reset − V_∞) e^{−t/τ_m}, approaching V_∞ with time constant τ_m. The neuron fires iff V_∞ > V_th, i.e. I > I_rh = (V_th − E_L)/R. Setting V(T) = V_th: T = τ_m ln((V_∞ − V_reset)/(V_∞ − V_th)), and f = 1/(t_ref + T); as I → ∞, T → 0 and f → 1/t_ref. Numbers: I_rh = 20 mV/10 MΩ = 2.0 nA; V_∞ = −70 + 30 = −40 mV; T = 10 ln(25/10) = 9.16 ms; f = 1/(11.16 ms) = 89.6 Hz. Omissions: spike-frequency adaptation (add an adaptation current) and the action-potential waveform (add Hodgkin–Huxley conductances).",
+      "expect": { "time-to-threshold": true, "firing-rate": true, "uses-logarithm": true, "not-just-numbers": true }
+    },
+    {
+      "label": "rate assumed proportional to current",
+      "text": "The rate is f = I/(C V_th) which gives 150 Hz for 3 nA; rheobase is zero since any current eventually charges the membrane.",
+      "expect": { "time-to-threshold": false, "firing-rate": false, "uses-logarithm": false }
+    }
+  ]
+}

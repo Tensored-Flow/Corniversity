@@ -1,0 +1,54 @@
+{
+  "id": "MAT-210-u02-ex3",
+  "sequence": 3,
+  "title": "Where monotonicity enters",
+  "kind": "explanation",
+  "promptMarkdown": "In under 250 words and without the notes open:\n\n(a) Identify the exact step or steps in the proof of the monotone convergence theorem where the hypothesis $f_n\\le f_{n+1}$ is used, and the step where the constant $c<1$ is needed (what goes wrong with $c=1$?).\n\n(b) Explain what Fatou's lemma provides when a sequence is **not** monotone, and why its conclusion cannot in general be strengthened to an equality. One example suffices.",
+  "conceptIds": [
+    "convergence-theorems"
+  ],
+  "hintLadder": [
+    "Two things in the proof are claimed to be increasing: a sequence of numbers and a sequence of sets. Which hypothesis makes each one increase?",
+    "Suppose $s=f$ on some set and $c=1$. Does $f_n(x)\\ge s(x)$ ever hold there?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "monotonicity-located",
+        "criterion": "Names both uses: ∫ f_n is increasing (so its limit exists) and the sets E_n = {f_n ≥ c s} increase to X (so continuity from below of E ↦ ∫_E s applies).",
+        "weight": 0.4,
+        "levels": [
+          { "label": "met", "description": "Both uses, correctly described." },
+          { "label": "partially met", "description": "One use." },
+          { "label": "not met", "description": "Missing or wrong." }
+        ]
+      },
+      {
+        "id": "role-of-c",
+        "criterion": "Explains that c < 1 guarantees ∪ E_n = X: where s(x) = f(x) > 0 the approximants f_n(x) may stay strictly below f(x) for every n, and where f(x) = ∞ a simple s cannot be reached without the slack.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Correct explanation with the failure for c = 1." },
+          { "label": "partially met", "description": "States c < 1 is needed for ∪ E_n = X without saying why." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "fatou-role",
+        "criterion": "States Fatou's inequality with its direction, explains that it bounds the integral of the limit by the limit of the integrals without any monotonicity, and gives an example (moving bumps) where it is strict.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Direction, role and a correct strict example." },
+          { "label": "partially met", "description": "Direction and example without the role, or role without an example." },
+          { "label": "not met", "description": "Wrong direction or missing." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

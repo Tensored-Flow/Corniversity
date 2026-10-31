@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u03",
+  "courseId": "COG-201",
+  "sequence": 3,
+  "title": "Generative models, graphical models and dependence",
+  "summary": "Knowledge as generative models; directed graphical models and their factorisation; causal versus statistical dependence; screening off and explaining away; intervention versus observation; sampling as a way of interrogating a model.",
+  "objectives": [
+    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lectures 9 and 10 (graphical models and Bayes nets; Bayes-net semantics, explaining away, sampling) and the web book's chapters Generative models, Causal and statistical dependence and Conditional dependence." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-inference-cognition", "probability-measure-theoretic"],
+  "teachesConceptIds": ["generative-models-cognition", "graphical-models-dependence"],
+  "preparation": [
+    { "description": "Read OCW lecture 9 (Graphical Models and Bayes Nets) and lecture 10 (Bayes-net semantics, explaining away, sampling possible worlds; the file is oct_12_2004_fin.pdf).", "locatorId": "cocosci04-lec09", "estimatedMinutes": 50 },
+    { "description": "Read the web book's Generative models (models, simulation and degrees of belief; the rules of probability), Causal and statistical dependence, and Conditional dependence (screening off, explaining away, blickets). Reference-only: read on the book's site.", "locatorId": "pm2-ch-generative-models", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u03-a1", "type": "reading", "title": "Lectures 9–10 and the web book's dependence chapters", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["cocosci04-lec09", "cocosci04-lec10", "pm2-ch-generative-models", "pm2-gm-models-simulation", "pm2-gm-rules-of-probability", "pm2-ch-dependence", "pm2-ch-conditional-dependence"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 9 and 10 PDF resource pages confirmed 2026-10-30 (HTTP 200); lecture 10 text extracted (slide titles: Compression in Bayes nets, Global/Local semantics, Explaining away, Sampling possible worlds). Web book chapters Generative models, Causal and statistical dependence and Conditional dependence returned HTTP 200 with the stated h1 headings." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

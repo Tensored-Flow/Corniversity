@@ -1,0 +1,63 @@
+{
+  "id": "tao-measure-theory",
+  "title": "An Introduction to Measure Theory",
+  "authors": [
+    "Terence Tao"
+  ],
+  "institution": "American Mathematical Society, Graduate Studies in Mathematics 126 (author-hosted online draft)",
+  "kind": "book",
+  "canonicalUrl": "https://terrytao.wordpress.com/books/an-introduction-to-measure-theory/",
+  "description": "Graduate textbook (2011, 206 pages) derived from the author's blog: Lebesgue measure and integral, abstract measure spaces, modes of convergence, differentiation theorems, outer measures and the Carathéodory extension, product measures. The author's page links an online draft PDF for reading and keeps an errata list keyed to the printed book's page numbers.",
+  "rightsNotes": [
+    "The author's pages link an online draft PDF ('An online version of the text can be found here') but state no licence; the printed book is published by the AMS. Treated as reference-only: readable online by the learner, never imported, never processed by external models.",
+    "The author's page states 'There is no solution guide for this text.'"
+  ],
+  "currentVersionId": "tao-measure-theory-2011",
+  "versions": [
+    {
+      "id": "tao-measure-theory-2011",
+      "label": "2011 (GSM 126) with author-hosted online draft (PDF uploaded December 2012)",
+      "url": "https://terrytao.wordpress.com/books/an-introduction-to-measure-theory/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the author's book page on terrytao.wordpress.com and the updated book page on teorth.github.io",
+      "componentsSeen": [
+        "wordpress book page: bibliographic data (2011 hardcover, 206 pp., ISBN-13 978-0-8218-6919-2, Graduate Studies in Mathematics vol. 126), AMS bookstore link, link to an online draft PDF, long errata list, 'NOTE: these pages are no longer maintained' with a pointer to the GitHub-hosted page, 'Last updated: Jan 6, 2026'",
+        "teorth.github.io book page: same bibliographic data, same draft PDF link, errata (126 corrections, 17 awaiting a page number), contributors, 'Last updated: August 15, 2026'"
+      ],
+      "licence": "No licence stated on the author's pages; copyright in the printed book rests with the publisher (AMS). Read-online only.",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "The draft PDF was not opened or inspected; no chapter-, section- or page-level locators are recorded. Any reading assignment into this book must be given by section title and checked by the learner against the draft's own table of contents.",
+        "Errata refer to the printed book's page numbers, which may differ from the draft's.",
+        "The AMS bookstore page (which would carry the publisher's table of contents) returned HTTP 403 on 2026-10-30 and could not be verified."
+      ],
+      "locators": [
+        {
+          "id": "tao-mt-bookpage",
+          "label": "Author's book page (terrytao.wordpress.com): bibliographic data, link to the online draft, errata",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tao-measure-theory-2011",
+            "url": "https://terrytao.wordpress.com/books/an-introduction-to-measure-theory/",
+            "heading": "An introduction to measure theory"
+          },
+          "note": "The page says these pages are no longer maintained and points to the GitHub-hosted page below."
+        },
+        {
+          "id": "tao-mt-bookpage-github",
+          "label": "Author's updated book page (teorth.github.io): bibliographic data, link to the online draft, errata",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "tao-measure-theory-2011",
+            "url": "https://teorth.github.io/tao-web/an-introduction-to-measure-theory.html",
+            "heading": "An introduction to measure theory"
+          }
+        }
+      ]
+    }
+  ]
+}

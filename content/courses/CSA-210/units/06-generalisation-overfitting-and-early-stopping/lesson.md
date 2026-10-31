@@ -1,0 +1,7 @@
+## Outline: Generalisation, overfitting and early stopping
+
+This unit is **outlined, not yet prepared**. It will be written from W2D1 Tutorial 1 (Regularization techniques part 1) of the Neuromatch Deep Learning ebook (content CC BY 4.0), cited by tutorial page and section.
+
+**Scope.** The unit returns to unit 1's risk/empirical-risk gap with a network in hand. Overparameterised networks as efficient universal approximators; the tutorial's train-versus-test curves and its demonstration that the same network fits randomised labels, which shows that capacity alone does not explain generalisation; the Frobenius norm as a measure of model size and regularisation read as shrinkage; why the test set must not be used for tuning and how a validation split is carved out (the tutorial's "Overfitting on Test Dataset" and "Validation Dataset"); early stopping as validation-selected shrinkage. The department's reporting conventions are applied to every curve.
+
+**What preparation will add.** A full lesson, original exercises (an interpretation task on labelled synthetic learning curves; an argument for why early stopping acts as a norm constraint for gradient descent on a least-squares problem; an evidence-audit miniature preparing for assessment a2), instructor reference reasoning, an exit check and the unit's common misconceptions ("a model that can memorise cannot generalise"). Until then the reading above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

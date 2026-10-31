@@ -1,0 +1,7 @@
+## Outline: rate models and Wilson–Cowan networks
+
+This unit is **outlined, not yet prepared**. It will be written from Neuromatch Academy W2D5 Dynamical Systems (content CC BY 4.0, code BSD-3-Clause), citing the exact tutorial pages once they have been opened and verified; so far only the chapter page has been.
+
+**Scope.** A single population's firing rate as a dynamical variable with a sigmoidal input–output function; fixed points, their stability from the slope of the transfer function, and bistability (Tutorial 1); the two-population excitatory–inhibitory Wilson–Cowan model, nullclines and the phase plane, the Jacobian at a fixed point, oscillations and limit cycles (Tutorial 2); extensions in the bonus tutorial. The models are mechanistic at the population level; the unit will make their assumptions explicit (rate as a sufficient description, instantaneous synapses, homogeneous populations) and ask which observations they can and cannot reproduce.
+
+**What preparation will add.** A full lesson, original exercises with hint ladders and rubrics (a stability analysis of the single-population model with a bifurcation sketch, a Jacobian analysis of a stated Wilson–Cowan parameter set, and a written critique of the rate assumption), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

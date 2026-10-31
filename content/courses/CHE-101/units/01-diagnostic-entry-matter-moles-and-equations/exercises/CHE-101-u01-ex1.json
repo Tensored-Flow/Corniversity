@@ -1,0 +1,70 @@
+{
+  "id": "CHE-101-u01-ex1",
+  "sequence": 1,
+  "title": "Balancing and mass bookkeeping: burning ethanol",
+  "kind": "calculation",
+  "promptMarkdown": "Ethanol burns in oxygen to give carbon dioxide and water. Use the atomic masses C 12.01, H 1.008, O 16.00 ($\\text{g mol}^{-1}$) and work at the precision of the data.\n\n1. Balance the skeletal equation $\\ce{C2H5OH(l) + O2(g) -> CO2(g) + H2O(l)}$ and show the count of C, H and O atoms on each side.\n2. A sample of $11.5\\ \\text{g}$ of ethanol burns completely. Compute the amount (mol) and the mass (g) of $\\ce{CO2}$ produced.\n3. Compute the mass of $\\ce{O2}$ consumed and the mass of water formed, and show that the total mass of the products equals the total mass of the reactants.\n4. State the assumptions your answer relies on (purity, completeness of reaction, the phases written).",
+  "conceptIds": ["balancing-chemical-equations", "reaction-stoichiometry", "mole-and-molar-mass"],
+  "hintLadder": [
+    "Carbon and hydrogen each appear in only one product; fix those coefficients first, then count the oxygen atoms on the right.",
+    "Compute the molar mass of ethanol from the atomic masses before converting grams to moles; every later step passes through the amount in moles.",
+    "The coefficients are mole ratios: moles of $\\ce{CO2}$ per mole of ethanol is the ratio of their coefficients.",
+    "For the mass balance, convert the moles of $\\ce{O2}$ and $\\ce{H2O}$ to grams with their molar masses and add up each side separately."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "balanced-equation",
+      "kind": "expression_present",
+      "description": "the balanced equation carries the coefficients 3 O2, 2 CO2 and 3 H2O",
+      "params": { "patterns": ["3o_?2", "2co_?2", "3h_?2o"], "requireAll": true }
+    },
+    {
+      "id": "moles-co2",
+      "kind": "numeric_value",
+      "description": "the amount of CO2 is about 0.499 mol",
+      "params": { "expected": 0.499, "tolerance": 0.0035 }
+    },
+    {
+      "id": "mass-co2",
+      "kind": "numeric_value",
+      "description": "the mass of CO2 is about 21.97 g (22.0 g at three significant figures)",
+      "params": { "expected": 21.97, "tolerance": 0.12 }
+    },
+    {
+      "id": "mass-balance-total",
+      "kind": "numeric_value",
+      "description": "the total mass on each side is about 35.46 g",
+      "params": { "expected": 35.46, "tolerance": 0.1 }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "balance", "criterion": "The equation is balanced for every element with coefficients only (subscripts unchanged) and the atom counts are shown.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct coefficients and counts for C, H and O." }, { "label": "partially met", "description": "Correct coefficients without the counts, or one element miscounted." }, { "label": "not met", "description": "Unbalanced or subscripts altered." }] },
+      { "id": "moles-and-mass", "criterion": "Mass of ethanol is converted to moles with a correctly computed molar mass, the mole ratio is applied, and the mass of CO2 follows with units.", "weight": 0.35, "levels": [{ "label": "met", "description": "All three steps shown with units and sensible significant figures." }, { "label": "partially met", "description": "Right method with an arithmetic slip or missing units." }, { "label": "not met", "description": "Grams compared directly, or ratio misapplied." }] },
+      { "id": "mass-balance", "criterion": "Masses of O2 consumed and H2O formed are computed and the two totals are shown to agree.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both masses computed and totals compared explicitly." }, { "label": "partially met", "description": "One mass computed or totals asserted without numbers." }, { "label": "not met", "description": "Absent." }] },
+      { "id": "assumptions", "criterion": "Assumptions are stated: pure ethanol, complete combustion to the products written, phases as labelled, atomic masses as given.", "weight": 0.15, "levels": [{ "label": "met", "description": "At least three relevant assumptions named." }, { "label": "partially met", "description": "One or two named." }, { "label": "not met", "description": "None." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct plain-text answer",
+      "text": "Balanced: C2H5OH + 3 O2 → 2 CO2 + 3 H2O (C: 2 = 2, H: 6 = 6, O: 1 + 6 = 7 = 4 + 3). n(ethanol) = 11.5/46.07 = 0.2496 mol, so n(CO2) = 0.4993 mol and m(CO2) = 0.4993 × 44.01 = 21.97 g. O2 consumed: 0.7489 mol = 23.96 g; water formed: 13.49 g. Reactants 11.5 + 23.96 = 35.46 g; products 21.97 + 13.49 = 35.46 g. Assumed pure ethanol, complete combustion and the phases as written.",
+      "expect": { "balanced-equation": true, "moles-co2": true, "mass-co2": true, "mass-balance-total": true }
+    },
+    {
+      "label": "correct LaTeX answer with subscripts",
+      "text": "$\\ce{C2H5OH(l) + 3 O2(g) -> 2 CO2(g) + 3 H2O(l)}$, equivalently $C_2H_5OH + 3 O_2 \\to 2 CO_2 + 3 H_2O$. This gives $n(\\ce{CO2}) = 0.499$ mol and $m = 22.0$ g; each side totals $35.5$ g.",
+      "expect": { "balanced-equation": true, "moles-co2": true, "mass-co2": true, "mass-balance-total": true }
+    },
+    {
+      "label": "wrong coefficient on oxygen",
+      "text": "C2H5OH + 2 O2 → 2 CO2 + 3 H2O. Then 0.25 mol CO2 form, which is 11.0 g.",
+      "expect": { "balanced-equation": false, "moles-co2": false, "mass-co2": false }
+    }
+  ]
+}

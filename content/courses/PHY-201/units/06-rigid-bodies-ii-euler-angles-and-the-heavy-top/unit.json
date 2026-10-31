@@ -1,0 +1,31 @@
+{
+  "id": "PHY-201-u06",
+  "courseId": "PHY-201",
+  "sequence": 6,
+  "title": "Rigid bodies II: Euler angles and the heavy symmetric top",
+  "summary": "Euler angles and the angular velocity in terms of them; the heavy symmetric top: cyclic coordinates, effective potential, precession, nutation and the sleeping-top condition; the fast-top limit.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is the second half of 8.09 Chapter 2 and Tong, Classical Dynamics, Chapter 3." }
+  ],
+  "prerequisiteConceptIds": ["rigid-body-dynamics", "noether-symmetry"],
+  "teachesConceptIds": ["rigid-body-dynamics"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 2, Rigid Body Dynamics (PDF), second half: Euler angles and the heavy symmetric top.", "locatorId": "cm3-ch2", "estimatedMinutes": 60 },
+    { "description": "Read Tong, Classical Dynamics, Chapter 3 (reference-only), the sections on Euler angles and the heavy top.", "locatorId": "tong-cd-ch3", "estimatedMinutes": 40 },
+    { "description": "Optional practice: Tong, Problem Sheet 3 Euler's Equations and Euler Angles (reference-only; not assessed).", "locatorId": "tong-cd-sheet3", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Reading: rigid bodies II", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["cm3-ch2", "tong-cd-ch3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 2 resource page and direct PDF link opened 2026-10-30 (PDF text not yet extracted); Tong's Classical Dynamics page listing Chapter 3 and Problem Sheet 3 opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

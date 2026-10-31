@@ -1,0 +1,7 @@
+## Outline: Homomorphisms and the isomorphism theorems
+
+This unit is **outlined, not yet prepared**. It will be written from chapter 11 of Judson's Abstract Algebra: Theory and Applications (HTML edition, GFDL), citing each statement by its number so that every claim can be reopened at its section page.
+
+**Scope.** Homomorphisms $\phi:G\to H$ and their elementary properties (identity to identity, inverses to inverses, images of subgroups are subgroups); kernels and images, the kernel as a normal subgroup, injectivity as triviality of the kernel; the first isomorphism theorem $G/\ker\phi\cong\phi(G)$ (Theorem 11.2.1) and the canonical factorisation of a homomorphism through the quotient; the second isomorphism theorem $H/(H\cap N)\cong HN/N$ (Theorem 11.2.3); the correspondence theorem between subgroups of $G$ containing $N$ and subgroups of $G/N$, preserving normality (Theorem 11.2.4); the third isomorphism theorem $(G/N)/(H/N)\cong G/H$ (Theorem 11.2.5); automorphisms and inner automorphisms (Section 11.5 exercises). The determinant $GL_n\to\mathbb R^*$, the sign $S_n\to\{\pm1\}$ and reduction $\mathbb Z\to\mathbb Z_n$ will be the running examples.
+
+**What preparation will add.** A full lesson with each theorem proved from the first, diagrams of the correspondence theorem for a concrete group, original exercises with hint ladders and rubrics, instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

@@ -1,0 +1,53 @@
+{
+  "id": "NEU-220-u04-ex3",
+  "sequence": 3,
+  "title": "Interpretation: PCA and t-SNE on synthetic data, images and recordings",
+  "kind": "explanation",
+  "promptMarkdown": "In under 350 words and without the notes open, compare three cases:\n\n1. The simulated bivariate Gaussian data of W1D4 Tutorials 1–2 (stand-ins for two neurons' firing rates).\n2. The MNIST handwritten-digit images of Tutorials 3–4.\n3. A hypothetical single-trial population recording of several hundred neurons during a task (no such data are provided in this unit).\n\nFor each, say what a PCA scree plot and a two-dimensional t-SNE embedding can and cannot show, which assumptions of PCA hold or fail, and what you would need to know before calling any low-dimensional structure 'neural'. Say explicitly which of the three are neural data.",
+  "conceptIds": ["pca-dimensionality-reduction", "nonlinear-embedding-visualisation"],
+  "hintLadder": [
+    "In the Gaussian case you set the covariance yourself, so PCA recovers exactly what you built in; that is a check of the method, not a finding.",
+    "MNIST has known categories, so an embedding can be judged by whether digits separate; images are not neurons.",
+    "For recordings think about Poisson variance, non-stationarity, single trials versus averages, and what variable defines 'relevant'.",
+    "t-SNE: neighbourhoods are preserved at the chosen perplexity; distances and cluster sizes are not."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "tsne-caveat",
+      "kind": "requires_hypothesis",
+      "description": "when t-SNE is discussed, what it distorts or its perplexity dependence must be stated",
+      "params": { "triggerPatterns": ["t-?sne"], "hypothesisPatterns": ["perplexity", "not preserve", "does not preserve", "distort", "cluster size", "nonlinear", "non-linear", "local", "neighbou?r"] }
+    },
+    {
+      "id": "data-origin-stated",
+      "kind": "requires_hypothesis",
+      "description": "when MNIST is discussed it must be identified as images, not neural data",
+      "params": { "triggerPatterns": ["mnist"], "hypothesisPatterns": ["image", "digit", "not neural", "handwritten", "pixel"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "gaussian", "criterion": "Synthetic Gaussian: PCA recovers the built-in covariance exactly; linear-Gaussian assumptions hold by construction; the result is a check of the method, not a finding about neurons.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three points." }, { "label": "partially met", "description": "Two." }, { "label": "not met", "description": "Treated as neural evidence." }] },
+      { "id": "mnist", "criterion": "MNIST: images with known labels; the scree plot shows spread across pixels, reconstructions sharpen with K; t-SNE separates digits by neighbourhood but inter-island distances and sizes are not meaningful; nothing neural.", "weight": 0.25, "levels": [{ "label": "met", "description": "All, with the t-SNE caveat." }, { "label": "partially met", "description": "Missing the caveat or the non-neural point." }, { "label": "not met", "description": "Confused." }] },
+      { "id": "recording", "criterion": "Recording: Poisson-like variance and rate differences dominate an unscaled covariance; non-stationarity and trial-to-trial variability mix with stimulus variance; single-trial versus averaged analysis must be stated; low-variance components may carry the task variable; structure is called 'neural' only after these are handled and the preprocessing is stated.", "weight": 0.35, "levels": [{ "label": "met", "description": "At least four of these issues." }, { "label": "partially met", "description": "Two or three." }, { "label": "not met", "description": "Fewer." }] },
+      { "id": "labelling", "criterion": "States explicitly that only case 3 is neural data and that it is hypothetical in this unit.", "weight": 0.15, "levels": [{ "label": "met", "description": "Explicit." }, { "label": "partially met", "description": "Implicit." }, { "label": "not met", "description": "Absent or wrong." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 25,
+  "checkExamples": [
+    {
+      "label": "correct explanation",
+      "text": "Case 1 is synthetic Gaussian data standing in for two neurons: PCA recovers the covariance I set, the linear and Gaussian assumptions hold by construction, and the result checks the method rather than saying anything about neurons. Case 2 is MNIST, handwritten-digit images with known labels, not neural data: the scree plot describes spread across pixels, reconstructions sharpen as K grows, and t-SNE separates digits because it preserves local neighbourhoods at the chosen perplexity while distorting distances between islands and cluster sizes. Case 3, a hypothetical recording, is the only neural case and is not provided here: spike counts have Poisson-like variance so high-rate neurons dominate an unscaled covariance, non-stationarity and trial-to-trial variability mix with stimulus-driven variance, single-trial and averaged analyses answer different questions, and the task variable may live in a low-variance component; only after stating the preprocessing and checking these would I call the structure neural.",
+      "expect": { "tsne-caveat": true, "data-origin-stated": true }
+    },
+    {
+      "label": "t-SNE distances read literally",
+      "text": "t-SNE preserves the true distances between neural states, so islands far apart are very different states.",
+      "expect": { "tsne-caveat": false }
+    }
+  ]
+}

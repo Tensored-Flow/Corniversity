@@ -1,0 +1,29 @@
+{
+  "id": "NEU-220-u06",
+  "courseId": "NEU-220",
+  "sequence": 6,
+  "title": "Linear systems and stochastic dynamics",
+  "summary": "Neuromatch W2D3: linear dynamical systems and their eigen-solutions, Markov processes, the Ornstein–Uhlenbeck process as determinism plus noise, and autoregressive models fitted to time series; the mathematics of the reversible-reaction and membrane equations seen elsewhere, now as a general tool for neural signals.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W2D3 (Tutorials 1–4)." }
+  ],
+  "prerequisiteConceptIds": ["ode-basics", "linear-algebra-vector-spaces", "applied-statistics-basics"],
+  "teachesConceptIds": ["linear-dynamical-systems-neural"],
+  "preparation": [
+    { "description": "W2D3 Linear Systems chapter page: Tutorial 1 Linear dynamical systems, Tutorial 2 Markov Processes, Tutorial 3 Combining determinism and stochasticity, Tutorial 4 Autoregressive models.", "locatorId": "nma-w2d3", "estimatedMinutes": 180 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "problem", "title": "W2D3 tutorials (Neuromatch notebooks)", "instructions": "Work through the W2D3 tutorials from the chapter page. The prepared lesson, derivations and exercises are not yet written; this outline shows exactly what the unit will cover. The individual tutorial pages have not yet been opened by Corniversity, so the chapter page is the verified locator.", "estimatedMinutes": 180, "sourceLocatorIds": ["nma-w2d3"], "exerciseIds": [], "sessionKind": "lab" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 360,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W2D3 chapter page opened 2026-10-30 with its tutorial list (Tutorials 1–4, intro, outro, further reading, day summary). Tutorial pages not yet opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

@@ -1,0 +1,7 @@
+## Outline: Permutation and dihedral groups
+
+This unit is **outlined, not yet prepared**. It will be written from chapter 5 of Judson's Abstract Algebra: Theory and Applications (HTML edition, GFDL), citing each statement by its number so that every claim can be reopened at its section page.
+
+**Scope.** The symmetric group $S_n$ as the group of bijections of $\{1,\dots,n\}$ (Theorem 5.1.1), composition conventions, cycle notation; disjoint cycles commute (Proposition 5.1.8) and every permutation is a product of disjoint cycles (Theorem 5.1.9); every permutation is a product of transpositions (Proposition 5.1.12), the identity is a product of an even number of transpositions (Lemma 5.1.14) and parity is well defined (Theorem 5.1.15); the alternating group $A_n$ is a subgroup of index two (Theorem 5.1.16, Proposition 5.1.17); the dihedral group $D_n$ of symmetries of a regular $n$-gon, its $2n$ elements, the relations between rotations and reflections, and the rotation group of the cube (Section 5.2).
+
+**What preparation will add.** A full lesson with worked computations in cycle notation and a fixed composition convention, examples and non-examples, original exercises with hint ladders and rubrics (orders of permutations from cycle type, parity arguments, dihedral relations), instructor reference reasoning, an exit check and common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

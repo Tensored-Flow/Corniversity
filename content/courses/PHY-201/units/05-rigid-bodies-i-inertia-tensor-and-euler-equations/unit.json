@@ -1,0 +1,31 @@
+{
+  "id": "PHY-201-u05",
+  "courseId": "PHY-201",
+  "sequence": 5,
+  "title": "Rigid bodies I: the inertia tensor and Euler's equations",
+  "summary": "Angular velocity and the body frame; the inertia tensor, principal axes and the parallel-axis theorem; angular momentum versus angular velocity; Euler's equations and torque-free motion, including the intermediate-axis instability.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 2 (Rigid Body Dynamics) and Tong, Classical Dynamics, Chapter 3." }
+  ],
+  "prerequisiteConceptIds": ["lagrangian-mechanics", "noether-symmetry", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["rigid-body-dynamics"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 2, Rigid Body Dynamics (PDF), first half: kinematics, inertia tensor, Euler's equations.", "locatorId": "cm3-ch2", "estimatedMinutes": 60 },
+    { "description": "Read Tong, Classical Dynamics, Chapter 3 The Motion of Rigid Bodies (reference-only), the sections on the inertia tensor and Euler's equations.", "locatorId": "tong-cd-ch3", "estimatedMinutes": 40 },
+    { "description": "Re-read the angular-momentum passage of 8.09 Chapter 1, Section 1.3 (PDF page 13).", "locatorId": "cm3-c1-angular", "estimatedMinutes": 10 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Reading: rigid bodies I", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["cm3-ch2", "tong-cd-ch3", "cm3-c1-angular"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 2 resource page and direct PDF link opened 2026-10-30 (PDF text not yet extracted); Tong's Classical Dynamics page listing Chapter 3 opened; the 8.09 Chapter 1 angular-momentum passage located in extracted text (PDF page 13)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

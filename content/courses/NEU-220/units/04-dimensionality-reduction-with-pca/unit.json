@@ -1,0 +1,47 @@
+{
+  "id": "NEU-220-u04",
+  "courseId": "NEU-220",
+  "sequence": 4,
+  "title": "Dimensionality reduction with PCA",
+  "summary": "Neuromatch W1D4 re-paced for a week: the geometric view of multivariate data (orthonormal bases, projections, variance along a direction), principal component analysis as the eigendecomposition of the sample covariance, variance explained and reconstruction error (the tutorials use MNIST images, not neural data), nonlinear embeddings with t-SNE and how to read them, and the interpretation question that matters for neuroscience: variance is not relevance.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Prove that the direction of maximal projected variance is the top eigenvector of the sample covariance, that successive components are uncorrelated, and compute components for a small covariance by hand." },
+    { "id": "u04-o2", "description": "Compute variance explained, cumulative variance and reconstruction error from eigenvalues, and choose a number of components with a stated criterion." },
+    { "id": "u04-o3", "description": "Explain the effects of centring and scaling, why variance explained is not information about a stimulus or behaviour, and give a counterexample where the relevant signal lives in a low-variance component." },
+    { "id": "u04-o4", "description": "Read a t-SNE embedding correctly (what it preserves and distorts) and distinguish the tutorials' synthetic Gaussian data and MNIST images from neural recordings." }
+  ],
+  "prerequisiteConceptIds": ["linear-algebra-vector-spaces", "applied-statistics-basics", "python-scientific-computing"],
+  "teachesConceptIds": ["pca-dimensionality-reduction", "nonlinear-embedding-visualisation"],
+  "preparation": [
+    { "description": "W1D4 chapter page: Intro, Tutorials 1–4, Outro, day summary.", "locatorId": "nma-w1d4", "estimatedMinutes": 5 },
+    { "description": "W1D4 Tutorial 1, Geometric view of data: simulated bivariate normal 'firing rates' of two neurons, an arbitrary orthonormal basis, projections.", "locatorId": "nma-w1d4-t1", "estimatedMinutes": 40 },
+    { "description": "W1D4 Tutorial 2, Principal Component Analysis: sample covariance, eigenvectors, projection S = XW, eigenvalues (simulated data).", "locatorId": "nma-w1d4-t2", "estimatedMinutes": 45 },
+    { "description": "W1D4 Tutorial 3, Dimensionality Reduction & Reconstruction: PCA on MNIST (70,000 handwritten-digit images, 784 pixels), variance explained, reconstruction, bonus denoising.", "locatorId": "nma-w1d4-t3", "estimatedMinutes": 45 },
+    { "description": "W1D4 Tutorial 4, Nonlinear Dimensionality Reduction: MNIST in two dimensions with PCA and t-SNE.", "locatorId": "nma-w1d4-t4", "estimatedMinutes": 35 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Lesson: variance, bases and what they do not tell you", "instructions": "Read the lesson before the notebooks. Do the two-dimensional eigen-decomposition in the lesson by hand before reading its solution. Note that none of the W1D4 datasets is a neural recording: Tutorials 1–2 simulate Gaussian 'firing rates' and Tutorials 3–4 use handwritten-digit images.", "estimatedMinutes": 45, "sourceLocatorIds": ["nma-w1d4", "nma-w1d4-t1", "nma-w1d4-t2", "nma-w1d4-t3", "nma-w1d4-t4"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u04-a2", "type": "problem", "title": "Work through the W1D4 tutorials (Neuromatch notebooks)", "instructions": "Run Tutorials 1–4 in the Neuromatch book (Colab or Kaggle; code BSD-3). Implement the covariance, eigendecomposition and projection yourself in Tutorial 2 before using library calls; keep the scree plot and the reconstructions from Tutorial 3; in Tutorial 4 change the t-SNE perplexity and record what moves.", "estimatedMinutes": 150, "sourceLocatorIds": ["nma-w1d4-t1", "nma-w1d4-t2", "nma-w1d4-t3", "nma-w1d4-t4"], "exerciseIds": [], "sessionKind": "lab" },
+    { "id": "u04-a3", "type": "problem", "title": "Tutorial: PCA proved and computed", "instructions": "Attempt exercises 1 and 2 before asking for hints. Exercise 1 is a proof; write it for general dimension before the two-dimensional check. Exercise 2 is arithmetic on stated synthetic eigenvalues; the interpretation parts carry most of the weight.", "estimatedMinutes": 90, "sourceLocatorIds": ["nma-w1d4-t2", "nma-w1d4-t3"], "exerciseIds": ["NEU-220-u04-ex1", "NEU-220-u04-ex2"], "sessionKind": "tutorial" },
+    { "id": "u04-a4", "type": "explain_back", "title": "Explain: PCA on neural populations, synthetic data and images", "instructions": "Exercise 3, written without the notes open.", "estimatedMinutes": 25, "sourceLocatorIds": ["nma-w1d4-t1", "nma-w1d4-t3", "nma-w1d4-t4"], "exerciseIds": ["NEU-220-u04-ex3"], "sessionKind": "oral" },
+    { "id": "u04-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's definitions", "instructions": "From memory: the sample covariance for centred data; the variance of a projection; the eigen-characterisation of principal components; variance explained and cumulative variance; reconstruction error as the sum of discarded eigenvalues; what t-SNE preserves.", "estimatedMinutes": 10, "sourceLocatorIds": ["nma-w1d4-t2", "nma-w1d4-t3"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["NEU-220-u04-ex1", "NEU-220-u04-ex2", "NEU-220-u04-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the variance-maximisation characterisation proved for general dimension with the uncorrelatedness of components, and the two-dimensional case computed; and exercise 2 accepted with variance explained, reconstruction error and the variance-is-not-relevance counterexample.", "exerciseId": "NEU-220-u04-ex1" },
+  "commonMisconceptions": [
+    { "claim": "The first principal components are the most informative dimensions of the population.", "correction": "They are the directions of largest variance. Variance can be noise, slow drift or a shared signal unrelated to the task; a behaviourally relevant signal can live in a low-variance component. Relevance needs a target variable; PCA has none.", "correctionLocatorIds": ["nma-w1d4-t2", "nma-w1d4-t3"] },
+    { "claim": "PCA is scale-free.", "correction": "Changing the units of one variable changes the covariance and the components. Centring is required for the covariance interpretation; scaling (correlation PCA) is a choice that must be stated.", "correctionLocatorIds": ["nma-w1d4-t1", "nma-w1d4-t2"] },
+    { "claim": "Distances between clusters in a t-SNE plot measure how different the clusters are.", "correction": "t-SNE preserves local neighbourhoods, not global distances; cluster sizes and inter-cluster distances depend on the perplexity and the random seed and should not be read quantitatively.", "correctionLocatorIds": ["nma-w1d4-t4"] },
+    { "claim": "The W1D4 results are results about neurons.", "correction": "Tutorials 1–2 use simulated Gaussian data standing in for two neurons' rates; Tutorials 3–4 use MNIST handwritten-digit images. The methods transfer to recordings; the results do not.", "correctionLocatorIds": ["nma-w1d4-t1", "nma-w1d4-t3"] }
+  ],
+  "estimatedMinutes": 490,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "W1D4 chapter page and Tutorials 1–4 opened 2026-10-30; objectives, section structure and data statements recorded: Tutorial 1 generates bivariate normal data as stand-ins for two neurons' firing rates; Tutorial 2 states Σ̂ = XᵀX/N for mean-subtracted data and S = XW, with 1000 samples from a zero-mean bivariate Gaussian; Tutorial 3 uses MNIST (70,000 images of 28 × 28 pixels); Tutorial 4 visualises the first 2,000 MNIST samples with PCA and t-SNE." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived: maximising wᵀΣw subject to ‖w‖ = 1 gives Σw = λw with variance λ (Lagrange multiplier or Rayleigh quotient); projections onto distinct eigenvectors have covariance w_iᵀΣw_j = λ_j w_iᵀw_j = 0. Σ = [[3, 1], [1, 3]]: eigenvalues 4 and 2, eigenvectors (1, 1)/√2 and (1, −1)/√2, PC1 share 4/6 = 66.7%. Eigenvalues 5.0, 2.5, 1.0, 0.8, 0.4, 0.3 (total 10.0): cumulative 50, 75, 85, 93, 97, 100%; reconstruction MSE with K components = Σ_{k>K} λ_k, so 2.5 for K = 2; K = 4 is the smallest with ≥ 90%. Lesson example Σ = [[2, 1], [1, 2]]: eigenvalues 3, 1, PC1 share 75%; eigenvalues 4, 3, 2, 1: K = 2 gives 70% and MSE 3." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson states the eigen-characterisation and the reconstruction-error identity but leaves the proofs to exercise 1; its covariance example ([[2, 1], [1, 2]]) and eigenvalue example (4, 3, 2, 1) differ from the exercises'. Reference reasoning only in instructor/." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "170 minutes of notebook preparation, 45 of lesson, 150 of tutorial work, 90 + 25 + 10 of proof, explanation and retrieval ≈ 8.2 hours; one teaching week." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["NEU-220-u04-ex1.reference-solution.md", "NEU-220-u04-ex2.reference-solution.md", "NEU-220-u04-ex3.grading-notes.md", "lesson-notes.md"]
+}

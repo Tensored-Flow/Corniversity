@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u08",
+  "courseId": "PHY-240",
+  "sequence": 8,
+  "title": "Gravitational radiation",
+  "summary": "Transverse-traceless waves and the two polarisations; the effect on test bodies via proper separation and geodesic deviation; the quadrupole formula; waves on a general background, the non-locality of wave energy and the radiated power.",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 16–17 (Lecture Guide pages 4–5), Tong Chapter 5 and Carroll Chapter 6." }
+  ],
+  "prerequisiteConceptIds": ["linearised-gravity", "spacetime-curvature"],
+  "teachesConceptIds": ["linearised-gravity"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopsis of Lecture 16 (PDF page 4): transverse-traceless waves, h+ and h×, geodesic deviation, the quadrupole formula.", "locatorId": "gr20-g-lec14-16", "estimatedMinutes": 15 },
+    { "description": "Read the Lecture Guide's synopsis of Lecture 17 (PDF page 5): waves on a general background, non-locality of gravitational-wave energy, second-order perturbation theory and radiated power.", "locatorId": "gr20-g-lec17-18", "estimatedMinutes": 15 },
+    { "description": "Watch Lectures 16 and 17 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Chapter 5 When Gravity is Weak (reference-only), the sections on gravitational waves.", "locatorId": "tong-gr-ch5", "estimatedMinutes": 50 },
+    { "description": "Optional: Carroll, Chapter 6 Weak Fields and Gravitational Radiation (second half), reference-only.", "locatorId": "carroll-ch6", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "lecture", "title": "Lectures 16–17: gravitational radiation", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec14-16", "gr20-g-lec17-18", "gr20-videos", "gr20-summaries", "tong-gr-ch5", "carroll-ch6"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 460,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 4–5 (Lectures 16–17) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Chapter 5 listed on the notes page; Carroll Chapter 6 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

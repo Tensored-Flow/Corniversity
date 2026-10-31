@@ -1,0 +1,30 @@
+{
+  "id": "PHY-201-u04",
+  "courseId": "PHY-201",
+  "sequence": 4,
+  "title": "Small oscillations and normal modes",
+  "summary": "Stability of equilibria; second-order expansion of T and V; the generalized eigenvalue problem for normal modes; normal coordinates and zero modes; coupled pendula and molecules as examples.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.09 Chapter 3 (Vibrations & Oscillations) and Tong, Classical Dynamics, Section 2.6." }
+  ],
+  "prerequisiteConceptIds": ["lagrangian-mechanics", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["small-oscillations"],
+  "preparation": [
+    { "description": "Read 8.09 Chapter 3, Vibrations & Oscillations (PDF).", "locatorId": "cm3-ch3", "estimatedMinutes": 60 },
+    { "description": "Read Tong, Classical Dynamics, Section 2.6 Small Oscillations and Stability (reference-only), including the double pendulum and triatomic molecule examples.", "locatorId": "tong-cd-ch2-s6", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Reading: small oscillations", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["cm3-ch3", "tong-cd-ch2-s6"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "The 8.09 Chapter 3 resource page and direct PDF link opened 2026-10-30 (PDF text not yet extracted); Tong's Chapter 2 PDF opened and the Section 2.6 heading verified." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

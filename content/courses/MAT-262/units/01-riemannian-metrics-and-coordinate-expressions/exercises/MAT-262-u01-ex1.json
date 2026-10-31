@@ -1,0 +1,103 @@
+{
+  "id": "MAT-262-u01-ex1",
+  "sequence": 1,
+  "title": "The round sphere of radius R in spherical coordinates",
+  "kind": "derivation",
+  "promptMarkdown": "Let $R>0$ and let $S^2_R=\\{p\\in\\mathbb{R}^3:|p|=R\\}$ carry the metric $g$ induced by the Euclidean inner product $\\langle\\cdot,\\cdot\\rangle$ of $\\mathbb{R}^3$. State your conventions (signature, index placement, which coordinate is $x^1$ and which is $x^2$) before you begin. Define\n$$F:(0,\\pi)\\times(0,2\\pi)\\to\\mathbb{R}^3,\\qquad F(\\theta,\\varphi)=(R\\sin\\theta\\cos\\varphi,\\;R\\sin\\theta\\sin\\varphi,\\;R\\cos\\theta).$$\n\n1. Show that $F$ is a smooth injective immersion, determine its image $W\\subseteq S^2_R$ exactly, show $W$ is open in $S^2_R$, and explain why $F^{-1}:W\\to(0,\\pi)\\times(0,2\\pi)$ is a chart of $S^2_R$ (so $(\\theta,\\varphi)$ are coordinates on $W$, not on all of $S^2_R$).\n2. Compute the coordinate vector fields $\\partial_\\theta,\\partial_\\varphi$ as vectors in $\\mathbb{R}^3$ and derive the metric coefficients $g_{\\theta\\theta},g_{\\theta\\varphi},g_{\\varphi\\varphi}$ from the ambient inner product. Write $g$ both as $g_{ij}\\,dx^idx^j$ and as a matrix, and confirm positive definiteness on $W$.\n3. The formula for $F$ makes sense for $\\theta\\in[0,\\pi]$. Show that at $\\theta=0$ and $\\theta=\\pi$ the extended map fails to be an immersion and fails to be injective, and that $\\det(g_{ij})\\to0$ there. Then show that this is a coordinate singularity and not a singularity of the sphere or of $g$: exhibit a chart of $S^2_R$ whose domain contains the north pole, compute its metric coefficients, and verify that they are smooth and positive definite at the pole.\n4. Using $g$, compute the length of the parallel $\\theta=\\theta_0$ (with $\\varphi$ running over $(0,2\\pi)$) and of a meridian arc from $\\theta_1$ to $\\theta_2$, and check both against Euclidean geometry.",
+  "conceptIds": ["riemannian-metric", "metric-coefficients-charts"],
+  "hintLadder": [
+    "Injectivity: the third component determines $\\theta\\in(0,\\pi)$; then the first two components determine $\\varphi\\in(0,2\\pi)$. Which points of the sphere are never reached?",
+    "For the immersion property, compute $\\partial_\\theta F\\times\\partial_\\varphi F$ and compare it with $F$ itself; its length tells you exactly where the two partial derivatives are dependent.",
+    "A chart from an injective immersion: $F$ maps a 2-manifold into the 2-manifold $S^2_R$ with injective differential, so the inverse function theorem makes it a local diffeomorphism. Alternatively write $\\theta$ and $\\varphi$ explicitly as continuous functions on $W$.",
+    "At the pole, try the graph chart $z=\\sqrt{R^2-x^2-y^2}$ on the disc $x^2+y^2<R^2$ and evaluate its Gram matrix at $(x,y)=(0,0)$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "metric-coefficients",
+      "kind": "expression_present",
+      "description": "the coefficient g_φφ = R² sin²θ appears (or the factored form R²(dθ² + sin²θ dφ²), or (R sinθ)²)",
+      "params": {
+        "patterns": [
+          "r\\^2\\\\?sin\\^2",
+          "\\(r\\\\?sin\\\\?(theta|θ)\\)\\^2",
+          "r\\^2\\(d\\\\?(theta|θ)\\^2\\+\\\\?sin\\^2"
+        ]
+      }
+    },
+    {
+      "id": "no-geometric-singularity-claim",
+      "kind": "forbidden_claim",
+      "description": "claiming that the sphere, or the metric itself, is singular at the poles",
+      "params": {
+        "patterns": [
+          "sphere (is|has a|has) singular(ity|ities)? at the (north |south )?poles?",
+          "(sphere|manifold) is not smooth at the (north |south )?poles?",
+          "poles are singular points of the sphere",
+          "the metric (itself |tensor )?is (genuinely |truly |really )?(singular|degenerate) at the poles(?! in (these|spherical|the) (coordinates|chart))"
+        ]
+      }
+    },
+    {
+      "id": "chart-domain-stated",
+      "kind": "requires_hypothesis",
+      "description": "calling (θ, φ) or spherical coordinates a chart requires stating the domain restriction (0 < θ < π, poles and a meridian excluded)",
+      "params": {
+        "triggerPatterns": [
+          "spherical coordinates (form|give|define|are|is) a (global )?chart",
+          "\\((\\\\theta|θ), ?(\\\\varphi|\\\\phi|φ)\\)\\$? (is|are|form|forms|gives|defines) a chart",
+          "f\\^\\{?-1\\}?\\$? is a chart"
+        ],
+        "hypothesisPatterns": [
+          "0 ?< ?(\\\\theta|θ) ?< ?(\\\\pi|π)",
+          "\\(0, ?(\\\\pi|π)\\)",
+          "(\\\\theta|θ) ?(\\\\in|∈) ?\\(0",
+          "exclud(e|es|ed|ing) the poles",
+          "away from the poles",
+          "minus (the|a) (closed )?(half[- ]?)?(meridian|great circle)",
+          "on w\\b",
+          "open (subset|set) w"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "conventions-and-chart", "criterion": "Conventions stated; F shown to be a smooth injective immersion with the image W identified exactly (sphere minus the closed half-meridian through the poles), W shown open, and F^{-1} justified as a chart.", "weight": 0.25, "levels": [ { "label": "met", "description": "All items, with the chart domain explicit." }, { "label": "partially met", "description": "Image or openness or the chart justification missing." }, { "label": "not met", "description": "Treats (θ, φ) as global coordinates or omits the immersion check." } ] },
+      { "id": "coefficients", "criterion": "∂_θ and ∂_φ computed as vectors in R³; g_θθ = R², g_θφ = 0, g_φφ = R² sin²θ derived from the inner product; g written in both forms; positive definiteness on W noted.", "weight": 0.3, "levels": [ { "label": "met", "description": "Derivation shown, both forms, positivity noted." }, { "label": "partially met", "description": "Correct values with derivation gaps or missing R² factor corrected late." }, { "label": "not met", "description": "Wrong coefficients." } ] },
+      { "id": "poles", "criterion": "Failure of immersion and injectivity at θ ∈ {0, π} shown; det → 0 shown; a second chart at the pole with smooth, positive definite coefficients exhibited; the distinction coordinates versus geometry stated explicitly.", "weight": 0.3, "levels": [ { "label": "met", "description": "All four items, distinction stated in words." }, { "label": "partially met", "description": "Second chart given but positivity at the pole not verified, or distinction left implicit." }, { "label": "not met", "description": "Claims the sphere or g is singular at the poles, or no second chart." } ] },
+      { "id": "lengths", "criterion": "Lengths 2πR sinθ₀ and R(θ₂ − θ₁) computed from g and checked against Euclidean geometry.", "weight": 0.15, "levels": [ { "label": "met", "description": "Both with the check." }, { "label": "partially met", "description": "One of the two, or no check." }, { "label": "not met", "description": "Missing or wrong." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 55,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX derivation",
+      "text": "Conventions: signature $(+,+)$, $x^1=\\theta$, $x^2=\\varphi$, $g_{ij}=g(\\partial_i,\\partial_j)$. On $W=S^2_R$ minus the closed half-meridian $\\{y=0,x\\ge0\\}$ the map $F^{-1}$ is a chart, since $F$ is an injective immersion between 2-manifolds, so $(\\theta,\\varphi)$ is a chart on $W$ with $0<\\theta<\\pi$. We get $\\partial_\\theta F=R(\\cos\\theta\\cos\\varphi,\\cos\\theta\\sin\\varphi,-\\sin\\theta)$ and $\\partial_\\varphi F=R(-\\sin\\theta\\sin\\varphi,\\sin\\theta\\cos\\varphi,0)$, hence $g_{\\theta\\theta}=R^2$, $g_{\\theta\\varphi}=0$, $g_{\\varphi\\varphi}=R^2\\sin^2\\theta$ and $g=R^2(d\\theta^2+\\sin^2\\theta\\,d\\varphi^2)$. At the poles $\\partial_\\varphi F=0$, so the parametrisation is not an immersion and $\\det(g_{ij})=R^4\\sin^2\\theta\\to0$; this is a coordinate singularity: in the graph chart the Gram matrix at the pole is the identity, so the metric is positive definite there.",
+      "expect": { "metric-coefficients": true, "no-geometric-singularity-claim": true, "chart-domain-stated": true }
+    },
+    {
+      "label": "plain-text correct coefficients with factored form",
+      "text": "The metric is g = R^2 (dθ^2 + sin^2 θ dφ^2), i.e. g_θθ = R^2 and g_φφ = (R sin θ)^2, positive definite for 0 < θ < π.",
+      "expect": { "metric-coefficients": true, "no-geometric-singularity-claim": true, "chart-domain-stated": true }
+    },
+    {
+      "label": "geometric singularity claim",
+      "text": "Since g_φφ = R^2 sin^2 θ vanishes at θ = 0, the sphere has a singularity at the poles.",
+      "expect": { "metric-coefficients": true, "no-geometric-singularity-claim": false }
+    },
+    {
+      "label": "chart without domain",
+      "text": "Spherical coordinates form a chart on the sphere, and in it g_φφ = R^2 sin^2 θ.",
+      "expect": { "chart-domain-stated": false, "metric-coefficients": true }
+    },
+    {
+      "label": "missing radius factor",
+      "text": "We find g = dθ^2 + sin^2 θ dφ^2 on the chart domain 0 < θ < π.",
+      "expect": { "metric-coefficients": false, "chart-domain-stated": true }
+    }
+  ]
+}

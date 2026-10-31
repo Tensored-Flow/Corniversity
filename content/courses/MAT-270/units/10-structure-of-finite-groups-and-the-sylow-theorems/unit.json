@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u10",
+  "courseId": "MAT-270",
+  "sequence": 10,
+  "title": "Structure of finite groups and the Sylow theorems",
+  "summary": "The fundamental theorem of finite abelian groups and of finitely generated abelian groups; solvable groups; Cauchy's theorem and the three Sylow theorems with proofs by group actions; applications: groups of order pq, non-simplicity of groups of given orders, and the classification of groups of small order as the final synthesis.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapters 13 and 15 of Judson with MIT student notes lectures 22–23 as a supplement." }
+  ],
+  "prerequisiteConceptIds": ["group-actions", "quotient-groups", "group-isomorphisms"],
+  "teachesConceptIds": ["finite-abelian-groups", "sylow-theory", "simple-groups"],
+  "preparation": [
+    { "description": "Read Section 13.1: the fundamental theorem of finite abelian groups (Theorem 13.1.4) with Lemmas 13.1.6–13.1.9, and Theorem 13.1.10 for finitely generated abelian groups; then Section 13.2 (solvable groups) from the chapter page.", "locatorId": "aata-s13-1", "estimatedMinutes": 70 },
+    { "description": "Read Section 15.1: Cauchy's theorem (Theorem 15.1.1), Corollary 15.1.2, the First Sylow Theorem (Theorem 15.1.4), Lemmas 15.1.5–15.1.6, the Second and Third Sylow Theorems (Theorems 15.1.7–15.1.8); then Section 15.2 (examples, applications, finite simple groups) from the chapter page.", "locatorId": "aata-s15-1", "estimatedMinutes": 80 },
+    { "description": "Optional supplement: MIT student notes, lectures 22–23 (The Sylow Theorems; Proofs and Applications).", "locatorId": "an21-lec22", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Chapters 13 and 15: structure theorems and Sylow", "instructions": "Read the chapters for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 150, "sourceLocatorIds": ["aata-ch13", "aata-s13-1", "aata-ch15", "aata-s15-1", "an21-lec22", "an21-lec23"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 390,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 13 and 15 pages and Section 13.1 and 15.1 pages of the HTML edition opened 2026-10-30 (statement numbers recorded). MIT student-notes lecture 22–23 PDF URLs recorded from their resource pages; the files were not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

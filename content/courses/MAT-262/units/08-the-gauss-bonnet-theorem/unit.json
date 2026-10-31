@@ -1,0 +1,30 @@
+{
+  "id": "MAT-262-u08",
+  "courseId": "MAT-262",
+  "sequence": 8,
+  "title": "The Gauss–Bonnet theorem",
+  "summary": "Gaussian curvature of surfaces revisited; geodesic curvature and the local Gauss–Bonnet formula for a region bounded by a piecewise smooth curve; the global theorem ∫_M K dA = 2πχ(M) for compact oriented surfaces; the theorema egregium and holonomy as the structure-equation route; the sphere of radius R as the check (K = R^{-2}, area 4πR², χ = 2).",
+  "objectives": [
+    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Wendl §6.3 (the Gauss–Bonnet formula) with §6.2, Sternberg §4.5 (Gauss' theorems: structure equations, theorema egregium, holonomy, §4.5.5 Gauss–Bonnet), and Lee chapter 9 as the commercial reference. The primary Lund notes do not treat Gauss–Bonnet; this unit relies on the open-licensed sources." }
+  ],
+  "prerequisiteConceptIds": ["curvature", "riemannian-submanifolds", "differential-forms-de-rham"],
+  "teachesConceptIds": ["gauss-bonnet"],
+  "preparation": [
+    { "description": "Read Wendl §6.3 (the Gauss–Bonnet formula), pp. 138–152, after reviewing §6.2 (hypersurfaces and Gaussian curvature).", "locatorId": "wen-s6-3", "estimatedMinutes": 70 },
+    { "description": "Read Sternberg §4.5 (Gauss' theorems), pp. 103–105: structure equations of a surface, theorema egregium, holonomy, §4.5.5 Gauss–Bonnet.", "locatorId": "stb-s4-5", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u08-a1", "type": "reading", "title": "Gauss–Bonnet from Wendl and Sternberg", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["wen-s6-2", "wen-s6-3", "wen-ch6-pdf", "stb-s4-5", "stb-ch1", "lee-rm-ch9"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Wendl chapter 6 PDF downloaded and text-extracted 2026-10-30: §6.2 begins on printed p. 132 (PDF index 3), §6.3 on p. 138 (index 9); Sternberg §4.5 on p. 103 (index 102) with §4.5.5 on p. 105 (index 104), verified against extracted text; Lee chapter 9 is a table-of-contents pointer." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

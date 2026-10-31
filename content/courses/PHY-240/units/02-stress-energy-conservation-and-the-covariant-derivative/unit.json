@@ -1,0 +1,47 @@
+{
+  "id": "PHY-240-u02",
+  "courseId": "PHY-240",
+  "sequence": 2,
+  "title": "Stress-energy, conservation laws and the covariant derivative in curvilinear coordinates",
+  "summary": "Volume elements and Gauss's theorem; electrodynamics in geometric language; the stress-energy tensor, its symmetry, dust and the perfect fluid; ∂_μ T^μν = 0 and its Newtonian limit (continuity and Euler); curvilinear coordinates on the flat plane, varying basis vectors and the Christoffel symbol; the covariant derivative, metric compatibility and the Christoffel formula; the divergence in polar coordinates. Flat spacetime throughout.",
+  "objectives": [
+    { "id": "u02-o1", "description": "Construct the stress-energy tensors of dust and of a perfect fluid, verify their rest-frame components, and interpret each component in a moving frame." },
+    { "id": "u02-o2", "description": "Derive the continuity and Euler equations from ∂_μ T^μν = 0, stating the two approximations used and what each neglects." },
+    { "id": "u02-o3", "description": "Compute Christoffel symbols from varying basis vectors and from the metric formula, and show the two agree in polar and spherical coordinates." },
+    { "id": "u02-o4", "description": "Define the covariant derivative of vectors, one-forms and tensors, prove metric compatibility implies the Christoffel formula, and derive the divergence and Laplacian in curvilinear coordinates." },
+    { "id": "u02-o5", "description": "Explain why Γ is not a tensor and why ∇ is, and state precisely why none of this is curvature." }
+  ],
+  "prerequisiteConceptIds": ["tensor-calculus-spacetime", "four-vectors", "multivariable-calculus"],
+  "teachesConceptIds": ["stress-energy-tensor", "covariant-derivative", "connections-geodesics"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopses of Lectures 4 and 5 (PDF page 1): volume elements and the Levi-Civita tensor, integral and differential conservation laws, electrodynamics in geometric language, the stress-energy tensor and the perfect fluid; symmetry and meaning of T's components, conservation of energy and momentum, curvilinear coordinates, the Christoffel symbol and the covariant derivative, ∇g = 0 from the equivalence principle.", "locatorId": "gr20-g-lec1-5", "estimatedMinutes": 20 },
+    { "description": "Watch Lecture 4: Volumes and Volume Elements; Conservation Laws (transcript available).", "locatorId": "gr20-lec04", "estimatedMinutes": 90 },
+    { "description": "Watch Lecture 5: The Stress Energy Tensor and the Christoffel Symbol (transcript available).", "locatorId": "gr20-lec05", "estimatedMinutes": 90 },
+    { "description": "Second account: Tong, General Relativity, Chapter 2 Introducing Differential Geometry (reference-only), for the mathematician's view of vector fields and bases.", "locatorId": "tong-gr-ch2", "estimatedMinutes": 45 },
+    { "description": "Optional: Carroll, Lecture Notes on General Relativity, Chapter 1 (stress-energy in special relativity) and the opening of Chapter 3 Curvature (the covariant derivative), reference-only.", "locatorId": "carroll-ch3", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u02-a1", "type": "lecture", "title": "Lecture: stress-energy and the covariant derivative", "instructions": "Read the lesson after watching Lectures 4–5. Verify the perfect-fluid rest-frame components yourself, then redo the polar-coordinate Christoffel symbols both from the basis vectors and from the metric formula.", "estimatedMinutes": 90, "sourceLocatorIds": ["gr20-g-lec1-5", "gr20-lec04", "gr20-lec05", "tong-gr-ch2", "carroll-ch1", "carroll-ch3"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u02-a2", "type": "problem", "title": "Tutorial: spherical coordinates; fluids and their Newtonian limit", "instructions": "Attempt exercise 1 before asking for any hint, checking the Laplacian on two test functions. Then attempt exercise 2, naming every approximation. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 130, "sourceLocatorIds": ["gr20-g-lec1-5", "gr20-lec04", "gr20-lec05"], "exerciseIds": ["PHY-240-u02-ex1", "PHY-240-u02-ex2"], "sessionKind": "tutorial" },
+    { "id": "u02-a3", "type": "explain_back", "title": "Explain: why Γ is not a tensor and why that is fine", "instructions": "Write exercise 3 without the notes open.", "estimatedMinutes": 20, "sourceLocatorIds": ["gr20-lec05"], "exerciseIds": ["PHY-240-u02-ex3"], "sessionKind": "oral" },
+    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the meaning of each component of T^μν; the perfect-fluid tensor; the covariant derivative of a vector and of a one-form; the Christoffel formula; the polar-coordinate Christoffel symbols.", "estimatedMinutes": 10, "sourceLocatorIds": ["gr20-g-lec1-5"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["PHY-240-u02-ex1", "PHY-240-u02-ex2", "PHY-240-u02-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: all non-zero Christoffel symbols of flat 3-space in spherical coordinates derived, the divergence and Laplacian obtained from the covariant derivative, and both test-function checks passed.", "exerciseId": "PHY-240-u02-ex1" },
+  "commonMisconceptions": [
+    { "claim": "Non-zero Christoffel symbols signal curvature.", "correction": "Polar coordinates on the flat plane have Γ^r_θθ = −r and Γ^θ_rθ = 1/r. Γ records how coordinate basis vectors vary; curvature is the obstruction to making all Γ vanish in a neighbourhood, not at a point or in one coordinate system.", "correctionLocatorIds": ["gr20-g-lec1-5", "gr20-lec05"] },
+    { "claim": "Γ is a tensor because it has three indices.", "correction": "Its transformation law has an inhomogeneous term (it vanishes in Cartesian coordinates and not in polar ones on the same plane). The inhomogeneous term cancels that of ∂_β V^μ, so ∇_β V^μ is a tensor although neither piece is.", "correctionLocatorIds": ["gr20-lec05"] },
+    { "claim": "The pressure in T^μν only appears in the spatial diagonal, so it cannot affect energy or momentum conservation.", "correction": "In (ρ + P)u^μu^ν + Pη^μν the pressure also multiplies u^μu^ν; it contributes to the inertia of a moving fluid and, later, to gravity. Only in the limit P ≪ ρc² does it drop out of the continuity equation.", "correctionLocatorIds": ["gr20-lec04", "gr20-lec05"] },
+    { "claim": "Metric compatibility ∇g = 0 is an extra postulate.", "correction": "On flat space it is a theorem: ∇ = ∂ in Cartesian coordinates where g is constant, and the statement is tensorial. In general relativity the Guide imposes it by appeal to the equivalence principle (local flatness), which is where the postulate enters.", "correctionLocatorIds": ["gr20-g-lec1-5"] }
+  ],
+  "estimatedMinutes": 535,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide PDF text extracted on 2026-10-30; the Lecture 4 and 5 synopses (including the footnote on the Levi-Civita tensor, the dimensions-of-length remark about e_φ, the 'not a tensor!' remark and the ∇g = 0 argument) are on PDF page 1 (index 0). Video pages for Lectures 4 and 5 opened, transcripts available. Tong Chapter 2 and Carroll Chapters 1 and 3 are listed on their authors' pages (not opened)." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: perfect-fluid rest-frame components from (ρ + P)uu + Pη; dust T^00 = γ²ρ; the ν = 0 and ν = j conservation equations and their reduction to continuity and Euler under v ≪ 1 and P ≪ ρ; polar basis vectors, their derivatives and Γ^θ_rθ = 1/r, Γ^r_θθ = −r both directly and from the metric formula; the divergence (1/r)∂_r(rV^r) + ∂_θV^θ; for exercise 1, the six independent spherical Christoffel symbols, √g = r² sin θ, the Laplacian, ∇²(1/r) = 0 and ∇²r² = 6; for exercise 2, u_ν ∂_μ(ρu^μu^ν) = −∂_μ(ρu^μ) and hence u^μ∂_μu^ν = 0 for dust." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson works polar coordinates in two dimensions and the perfect-fluid Newtonian limit; the spherical-coordinate symbols, the Laplacian, and the dust geodesic argument appear only in instructor/ files." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "About 285 minutes of preparation (two lecture videos and readings) plus 90 + 130 + 20 + 10 minutes of activities ≈ 8.9 hours; with unit 1 the opening two weeks total about 18 hours, inside the graduate budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["PHY-240-u02-ex1.reference-solution.md", "PHY-240-u02-ex2.reference-solution.md", "PHY-240-u02-ex3.grading-notes.md", "lesson-notes.md"]
+}

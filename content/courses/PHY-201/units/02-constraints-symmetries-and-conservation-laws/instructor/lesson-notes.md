@@ -1,0 +1,11 @@
+## Lesson notes (instructor only)
+
+Source mapping, MIT 8.09 Chapter 1 notes (PDF page = physical index + 1): Section 1.3 Symmetry and Conservation Laws pp. 12–16 (cyclic coordinates and Noether as the notes state it, CM momentum Eqs. 1.48–1.49 p. 12; angular momentum Eqs. 1.50–1.53 p. 13; scaling, EM canonical momentum, Eq. 1.55 p. 14; cart example Eqs. 1.56–1.59 pp. 15–16); Section 1.4 Constraints and Friction Forces pp. 16–21 (Eq. 1.60 p. 16; rolling disc and Eqs. 1.61–1.62 p. 17; Eq. 1.63, integrability and virtual displacements p. 18; D'Alembert Eq. 1.64 p. 19); Section 1.5 pp. 22–25 (calculus of variations p. 22; phase-space action and D'Alembert vs Hamilton Eqs. 1.81–1.84 p. 23; multipliers Eqs. 1.85–1.90 pp. 24–25). The notes state Noether's theorem in the cyclic-coordinate form; the lesson adds the continuous-symmetry form (Tong, Classical Dynamics, Section 2.4.1, reference-only) because exercise 2 needs it.
+
+The lesson's derivation of Lagrange's equations from D'Alembert's principle is compressed; the notes carry it out in Eqs. 1.65–1.75 (pp. 19–21), which were not individually located. If the learner wants every step, send them to those pages.
+
+Teaching intent: the integrability test and the multiplier method are where a mathematician's instincts (exact forms, constrained optimisation) pay off; let the learner lead there. The physics to insist on: the meaning of $\lambda$ (a force, with units), that static friction does no work, and the precise hypotheses behind $H = E$. The sphere example is worth doing live, including the question "what would the equations say for $\theta$ past the departure angle if we kept the constraint?" ($\lambda < 0$, a sphere pulling inward, which a one-sided constraint cannot do).
+
+Watch for: $K_z = k$ instead of $1/k$ in exercise 2; sign errors in $a_\phi$ in exercise 1; "H is by definition the energy".
+
+Staged misconception for a peer discussion, if peers are enabled: a classmate may argue that the hoop, having the most rotational energy, must "need the most friction and therefore lose the most energy". Resolve through the zero virtual work of the contact point and the conserved total energy; the hoop is slowest because more of the same potential energy goes into rotation, not because energy is lost.

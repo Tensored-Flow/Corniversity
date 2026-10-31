@@ -1,0 +1,107 @@
+{
+  "id": "MAT-270-u01-ex1",
+  "sequence": 1,
+  "title": "Involutions",
+  "kind": "proof",
+  "promptMarkdown": "Let $G$ be a group. An element $g$ with $g^2=e$ is called an involution (the identity counts).\n\n1. Prove that if $g^2=e$ for **every** $g\\in G$, then $G$ is abelian.\n2. Prove that if $G$ is finite and $|G|$ is even, then $G$ contains an element $g\\neq e$ with $g^2=e$.\n3. Let $H=\\{g\\in G: g^2=e\\}$. Prove that $H$ is a subgroup of $G$ whenever $G$ is abelian, and exhibit a group $G$, with proof, in which $H$ is **not** a subgroup.",
+  "conceptIds": [
+    "group-basics"
+  ],
+  "hintLadder": [
+    "If $g^2=e$, what is $g^{-1}$? Now write $(ab)^{-1}$ in two ways using Proposition 3.2.12.",
+    "Pair each element $g$ with $g^{-1}$. Which elements are paired with themselves? Count the others in pairs and look at the parity of $|G|$.",
+    "In an abelian group, $(ab)^2=a^2b^2$. For the counterexample you need two involutions that do not commute: multiply them and compute the order of the product.",
+    "The symmetries of an equilateral triangle: compose two different reflections."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "witness-named",
+      "kind": "expression_present",
+      "description": "a standard non-abelian witness (S_3 or a dihedral or symmetric group, or an explicit pair of non-commuting reflections or transpositions) is named for part 3",
+      "params": {
+        "patterns": [
+          "(?<![a-z])s_?[3-9](?![0-9])",
+          "(?<![a-z])s_?n(?![a-z])",
+          "(?<![a-z])d_?[3-9](?![0-9])",
+          "(?<![a-z])d_?n(?![a-z])",
+          "dihedral",
+          "symmetricgroup",
+          "transposition",
+          "reflection"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "square-trivial-abelian",
+        "criterion": "Uses g = g^{-1} for all g and (ab)^{-1} = b^{-1}a^{-1} to get ab = ba.",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "Clean two-line argument with the inverse-of-product rule cited or proved." },
+          { "label": "partially met", "description": "Right idea, inverse-of-product step unjustified." },
+          { "label": "not met", "description": "Missing or circular." }
+        ]
+      },
+      {
+        "id": "even-order-involution",
+        "criterion": "Pairs each element with its inverse, observes that g ≠ g^{-1} exactly when g² ≠ e, concludes the number of elements with g² = e is even and at least 1 (it contains e), hence at least 2.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Pairing argument complete with the parity step and the role of e." },
+          { "label": "partially met", "description": "Pairing idea without the parity count, or appeal to Lagrange/Cauchy (not yet available) without proof." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "abelian-case",
+        "criterion": "For abelian G: e ∈ H, closure via (ab)² = a²b² = e, inverses via a^{-1} = a.",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "All three conditions." },
+          { "label": "partially met", "description": "Closure only." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "non-abelian-counterexample",
+        "criterion": "An explicit non-abelian group with two non-commuting involutions whose product is not an involution, verified by computation (for example two reflections of a triangle composing to a rotation of order 3).",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Group named, the two involutions and their product computed, non-closure concluded." },
+          { "label": "partially met", "description": "Group named with the right idea but the product not computed." },
+          { "label": "not met", "description": "No valid example, or an example (such as Q_8 or A_4) where H is in fact a subgroup." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "S_3 witness",
+      "text": "Take $G=S_3$. The elements with $g^2=e$ are $e$ and the three transpositions, but $(1\\,2)(1\\,3)=(1\\,3\\,2)$ has order 3, so $H$ is not closed under the operation and is not a subgroup.",
+      "expect": {
+        "witness-named": true
+      }
+    },
+    {
+      "label": "dihedral witness in words",
+      "text": "In the dihedral group of the square, two reflections in adjacent axes compose to a quarter turn, which has order 4, so the involutions do not form a subgroup.",
+      "expect": {
+        "witness-named": true
+      }
+    },
+    {
+      "label": "no witness",
+      "text": "H is always a subgroup, because (ab)^2 = a^2 b^2 = e whenever a^2 = b^2 = e, and e and inverses are clearly in H.",
+      "expect": {
+        "witness-named": false
+      }
+    }
+  ]
+}

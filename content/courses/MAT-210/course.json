@@ -2,38 +2,50 @@
   "id": "MAT-210",
   "version": 1,
   "title": "Measure and Integration",
-  "departmentIds": [
-    "mathematics"
-  ],
+  "departmentIds": ["mathematics"],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Measure and Integration. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "MAT-210-real-analysis"
+  "purpose": "σ-algebras, measures and the Lebesgue integral with its convergence theorems; the construction and structure of Lebesgue measure on R^n; approximation theorems, modes of convergence and L^p spaces; product measures, convolution and the differentiation of the integral, studied with complete proofs from the MIT 18.125 (Fall 2003) lecture notes and original Corniversity exercises.",
+  "description": "Measure theory replaces the Riemann integral with one that behaves well under limits. The course builds it from the ground up: which collections of sets can be measured (σ-algebras), which functions can be integrated (measurable functions), the integral of a nonnegative function as a supremum and the monotone convergence theorem that makes it computable; then integrable functions, dominated convergence and null sets; then the construction of Lebesgue measure on $\\mathbb R^n$, its invariance properties, the Cantor set and a non-measurable set; the Riesz representation theorem, Lusin and Egoroff, and the implications between almost-everywhere convergence, convergence in measure and $L^p$ convergence; Jensen, Hölder and Minkowski and the completeness of $L^p$; Fubini's theorem, convolution and mollifiers; and finally the maximal function and Lebesgue's differentiation theorem.\n\n**How this adaptation works.** The spine is the complete set of 24 typed lecture notes from MIT OpenCourseWare 18.125 Measure and Integration, Fall 2003 (CC BY-NC-SA 4.0), prepared by a student from the instructor's handwritten lectures. The notes are terse and restart their numbering in every lecture, so Corniversity cites them by lecture, statement number and PDF page, restates every result with its hypotheses in full, supplies proofs the notes omit, and sets its own exercises with hint ladders and rubrics. The 24 lectures are re-paced as 10 units for a term of ten teaching weeks plus a reading week and a synthesis week. Terence Tao's *An Introduction to Measure Theory* is linked as a read-online reference for a second account of the same material; it is not imported and its sections are not cited.\n\n**What is prepared now.** The unit list below shows the exact status of each unit: prepared units have a full lesson, exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "State the σ-algebra and measure axioms, prove the basic properties of measures and of measurable functions, and decide with proof whether given sets and functions are measurable.", "evidenceExpected": "Proofs on σ-algebra and measurability exercises, including a non-example (the finite–cofinite algebra) and the characterisation of measurable functions for a non-trivial σ-algebra." },
+    { "id": "o2", "description": "Define the Lebesgue integral and prove and apply the monotone convergence theorem, Fatou's lemma and the dominated convergence theorem with their hypotheses explicit.", "evidenceExpected": "Convergence-theorem exercises that name the hypothesis used and give a counterexample when it is dropped." },
+    { "id": "o3", "description": "Construct Lebesgue measure on R^n, prove its invariance under translations and dilations, and explain why not every subset of R is measurable.", "evidenceExpected": "The mid-course synthesis: a written account of the construction and of the non-measurable set, with each use of countable additivity and translation invariance marked." },
+    { "id": "o4", "description": "Approximate measurable functions by simple and by continuous functions, and relate convergence almost everywhere, in measure and in L^p with proofs and counterexamples.", "evidenceExpected": "Proofs using Lusin's and Egoroff's theorems and a complete implication diagram with counterexamples for the missing arrows." },
+    { "id": "o5", "description": "Prove the Jensen, Hölder and Minkowski inequalities and the completeness of L^p, and use the density of continuous and smooth functions.", "evidenceExpected": "Inequality proofs with equality cases, and a written Riesz–Fischer argument." },
+    { "id": "o6", "description": "Apply Fubini's theorem and convolution, and prove Lebesgue's differentiation theorem through the maximal function.", "evidenceExpected": "The final synthesis: an exposition of the differentiation theorem from the Vitali covering lemma to the fundamental theorem of calculus, with every analytic step justified." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["MAT-210-real-analysis", "MAT-210-proof-writing"],
+  "recommendedConceptIds": ["real-analysis-sequences", "metric-spaces", "proof-writing"],
+  "teachesConceptIds": [
+    "sigma-algebra", "measurable-function", "measure-space", "lebesgue-integral", "convergence-theorems", "almost-everywhere", "riemann-lebesgue-comparison",
+    "outer-measure", "lebesgue-measure", "nonmeasurable-and-cantor-sets", "riesz-representation-positive-functionals", "lusin-egoroff-theorems", "convergence-in-measure",
+    "integral-inequalities", "lp-space", "product-measure-fubini", "convolution-mollifiers", "lebesgue-differentiation", "measure-and-integration-foundations"
+  ],
+  "primarySourceIds": ["mit-measure-2003"],
+  "supplementalSourceIds": ["tao-measure-theory"],
+  "unitIds": ["MAT-210-u01", "MAT-210-u02", "MAT-210-u03", "MAT-210-u04", "MAT-210-u05", "MAT-210-u06", "MAT-210-u07", "MAT-210-u08", "MAT-210-u09", "MAT-210-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "proof_portfolio", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Revision is expected; the portfolio is the record of attempts and revisions, not a single mark.", "weight": 0.5, "rubricSummary": ["statement fidelity", "hypotheses and quantifiers", "logical steps", "boundary cases and counterexamples", "distinction between intuition and proof"] },
+    { "id": "a2", "title": "Mid-course synthesis: the construction of Lebesgue measure", "kind": "written_explanation", "description": "After unit 5: a written account of the construction of Lebesgue measure on R, of why it is countably additive and translation invariant, and of why these properties rule out measuring every subset, with one worked application chosen by the learner. Open book, untimed by default.", "weight": 0.25, "rubricSummary": ["correctness", "choice and handling of hypotheses", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: Lebesgue's differentiation theorem", "kind": "project", "description": "An exposition proving Lebesgue's differentiation theorem from the Vitali covering lemma and the weak (1,1) bound for the maximal function, and deducing the fundamental theorem of calculus for the Lebesgue integral, with every analytic step justified. Optional oral explanation to the tutor.", "weight": 0.25, "rubricSummary": ["correct use of the covering lemma and maximal inequality", "completeness of the analytic justification", "exposition"] }
+  ],
+  "workloadHours": { "minimum": 100, "typical": 140, "maximum": 180 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified MIT 18.125 Fall 2003 lecture notes: OCW course, syllabus, calendar, lecture-notes and assignments pages and all 24 per-lecture resource pages opened on 2026-10-30; lecture PDFs 1–5 downloaded and text-extracted with statement numbers and page indices recorded as locators; lectures 6–24 located at file level. Exercises are original. Workload estimated from 24 lectures of 1.5 hours plus problem work at roughly 10–12 hours per teaching week over ten units.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The source course's three homeworks reference Rudin's Real and Complex Analysis (commercial). No acquisition is needed: the lecture notes are self-contained for the topics taught and the course sets its own exercises.",
+      "Tao's An Introduction to Measure Theory is linked as a read-online reference only; the author's pages state no licence, so it is not imported and its sections are not cited.",
+      "The original 18.125 is a graduate course; the catalogue level 'intermediate' records its position as the first measure-theory course in the Corniversity analysis path, not a dilution of the material."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "tamsin-okoro",
+  "tutorPersonaId": "tamsin-okoro",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 18.125 Measure and Integration (Fall 2003) materials under CC BY-NC-SA 4.0. The original course ran 24 lectures with three homeworks drawn from Rudin's Real and Complex Analysis and no exams, graded on attendance and homework. Corniversity re-paces it as 10 units, cites the notes by lecture, statement number and PDF page, and sets its own exercises and assessments. This is not an MIT course and confers no credit anywhere."
 }

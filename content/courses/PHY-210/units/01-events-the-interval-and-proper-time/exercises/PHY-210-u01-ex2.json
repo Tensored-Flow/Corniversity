@@ -1,0 +1,72 @@
+{
+  "id": "PHY-210-u01-ex2",
+  "sequence": 2,
+  "title": "Proper time along a straight worldline",
+  "kind": "derivation",
+  "promptMarkdown": "A clock moves with constant velocity $v$ along the $x$-axis of an inertial laboratory frame and ticks at two events $A$ and $B$.\n\n1. Starting only from the invariance of the interval, derive the relation between the proper time $\\tau$ read by the clock between $A$ and $B$ and the laboratory time $\\Delta t$ between them. Carry the units.\n2. Expand your result for $v\\ll c$ to first non-trivial order and evaluate the fractional correction for a jet aircraft at $v = 250\\ \\mathrm{m\\,s^{-1}}$ and for a satellite at $v = 7.7\\ \\mathrm{km\\,s^{-1}}$.\n3. At what speed does the clock accumulate exactly half the laboratory time? Give the exact value as a fraction of $c$ and a three-figure decimal.\n4. Prove that $\\tau\\le\\Delta t$ for every $v$ with equality only for $v = 0$, and explain in one sentence what would go wrong in the derivation if $v > c$.",
+  "conceptIds": ["minkowski-spacetime"],
+  "hintLadder": [
+    "In the laboratory the clock's spatial displacement between the ticks is $\\Delta x = v\\Delta t$. In the clock's own frame, what is its spatial displacement?",
+    "Write the interval in both frames and equate.",
+    "Use $(1-\\epsilon)^{1/2}\\approx 1 - \\epsilon/2$ for small $\\epsilon$.",
+    "Set $\\tau/\\Delta t = 1/2$ and solve for $v^2/c^2$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "time-dilation-formula",
+      "kind": "expression_present",
+      "description": "the factor √(1 − v²/c²) (or 1/γ) appears",
+      "params": {
+        "patterns": [
+          "sqrt\\{?\\(?1-v\\^2/c\\^2",
+          "sqrt\\{?\\(?1-\\(v/c\\)\\^2",
+          "sqrt\\{?\\(?1-β\\^2",
+          "sqrt\\{?\\(?1-\\\\beta\\^2",
+          "\\(1-v\\^2/c\\^2\\)\\^\\(?1/2",
+          "\\(1-β\\^2\\)\\^\\(?1/2",
+          "\\(1-\\\\beta\\^2\\)\\^\\(?1/2",
+          "/γ",
+          "/\\\\gamma",
+          "γ\\^\\(?-1",
+          "\\\\gamma\\^\\(?-1"
+        ]
+      }
+    },
+    {
+      "id": "half-speed",
+      "kind": "numeric_value",
+      "description": "the speed at which τ = Δt/2 is 0.866 c",
+      "params": { "expected": 0.866, "tolerance": 0.0015 }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "derivation", "criterion": "τ = Δt√(1 − v²/c²) derived from −c²τ² = −c²Δt² + v²Δt² with the clock's zero displacement in its own frame stated; units checked.", "weight": 0.35, "levels": [ { "label": "met", "description": "Complete." }, { "label": "partially met", "description": "Formula right, a step asserted." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "expansion", "criterion": "τ ≈ Δt(1 − v²/2c²); fractional corrections ≈ 3.5 × 10⁻¹³ for 250 m/s and ≈ 3.3 × 10⁻¹⁰ for 7.7 km/s.", "weight": 0.25, "levels": [ { "label": "met", "description": "Expansion and both numbers (to one figure)." }, { "label": "partially met", "description": "Expansion right, numbers off." }, { "label": "not met", "description": "Wrong expansion." } ] },
+      { "id": "half", "criterion": "v = (√3/2)c ≈ 0.866c.", "weight": 0.2, "levels": [ { "label": "met", "description": "Exact and decimal." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Wrong." } ] },
+      { "id": "inequality", "criterion": "τ ≤ Δt since 0 ≤ 1 − v²/c² ≤ 1 with equality iff v = 0; for v > c the square root is imaginary — no clock can move faster than light, equivalently the events would be spacelike and no clock could be present at both.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both parts." }, { "label": "partially met", "description": "One part." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX derivation",
+      "text": "In the lab $\\Delta x = v\\Delta t$; in the clock frame $\\Delta x' = 0$. Invariance gives $-c^2\\tau^2 = -c^2\\Delta t^2 + v^2\\Delta t^2$, so $\\tau = \\Delta t\\sqrt{1 - v^2/c^2}$. Setting $\\tau = \\Delta t/2$ gives $v = (\\sqrt3/2)c \\approx 0.866c$.",
+      "expect": { "time-dilation-formula": true, "half-speed": true }
+    },
+    {
+      "label": "plain-text derivation with gamma",
+      "text": "tau = dt/γ where γ = 1/sqrt(1-(v/c)^2); half the time needs γ = 2, i.e. v = 0.8660 c.",
+      "expect": { "time-dilation-formula": true, "half-speed": true }
+    },
+    {
+      "label": "no formula",
+      "text": "The clock reads less time than the laboratory but I could not derive the factor.",
+      "expect": { "time-dilation-formula": false, "half-speed": false }
+    }
+  ]
+}

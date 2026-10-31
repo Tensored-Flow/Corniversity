@@ -1,0 +1,31 @@
+{
+  "id": "MAT-261-u04",
+  "courseId": "MAT-261",
+  "sequence": 4,
+  "title": "Vector bundles and the tangent bundle",
+  "summary": "Vector bundles via local trivialisations, transition functions and the cocycle condition; the tautological bundle over the Grassmannian; Whitney sums and pullbacks; tangent vectors as equivalence classes of chart–vector pairs and as derivations; the tangent bundle, coordinate vector fields and the differential of a smooth map; flows of vector fields.",
+  "objectives": [
+    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 6–7 of the 18.965 notes (Definition 7.1, Example 7.2, §7.1, Definition 7.3) with Hitchin §3.2–3.3 and §4.1–4.3 as the fuller treatment of tangent vectors, derivations and flows." }
+  ],
+  "prerequisiteConceptIds": ["smooth-maps-diffeomorphisms", "inverse-function-theorem-manifolds", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["vector-bundles", "tangent-bundle-vector-fields"],
+  "preparation": [
+    { "description": "Read lecture 6: Definition 7.1 (vector bundle), Example 7.2 (tautological bundle), transition functions and the cocycle condition, §7.1 new bundles from old.", "locatorId": "gm04-l6-def7-1", "estimatedMinutes": 30 },
+    { "description": "Read lecture 7 §7.2: Definition 7.3 (tangent vectors and the tangent bundle), coordinate vector fields, the differential Df and its Jacobian matrix.", "locatorId": "gm04-l7-def7-3", "estimatedMinutes": 25 },
+    { "description": "Read Hitchin §3.2–3.3 (tangent and cotangent vectors, derivatives of smooth maps) and §4.1–4.3 (the tangent bundle, vector fields as derivations, flows).", "locatorId": "hit14-s3-2", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u04-a1", "type": "reading", "title": "Lectures 6–7 and Hitchin §3–4: bundles and tangent vectors", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["gm04-lec06", "gm04-lec07", "gm04-l6-def7-1", "gm04-l6-new-bundles", "gm04-l7-def7-3", "hit14-s3-2", "hit14-s3-3", "hit14-s4-1", "hit14-s4-2", "hit14-s4-3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 260,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 6 and 7 PDFs downloaded and text-extracted 2026-10-30: Definition 7.1 and Example 7.2 on PDF page 1 and §7.1 on page 2 of lecture6.pdf; Definition 7.3 on page 1 of lecture7.pdf. Hitchin §3.2 (p. 16), §3.3 (p. 20), §4.1 (p. 22), §4.2 (p. 26), §4.3 (p. 28) verified against extracted text." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

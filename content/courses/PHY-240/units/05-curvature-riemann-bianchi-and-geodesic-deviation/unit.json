@@ -1,0 +1,33 @@
+{
+  "id": "PHY-240-u05",
+  "courseId": "PHY-240",
+  "sequence": 5,
+  "title": "Curvature: the Riemann tensor, Bianchi identity and geodesic deviation",
+  "summary": "Weak-field geodesics and Newton's law; the Riemann tensor from transport round a loop and from commuting covariant derivatives; symmetries and the twenty components; Ricci tensor and scalar; geodesic deviation as tides; the Bianchi identity.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is 8.962 Lectures 10–11 (Lecture Guide pages 2–3), Tong Chapter 3 and Carroll Chapter 3." }
+  ],
+  "prerequisiteConceptIds": ["covariant-derivative", "connections-geodesics", "equivalence-principle"],
+  "teachesConceptIds": ["spacetime-curvature", "curvature"],
+  "preparation": [
+    { "description": "Read the Lecture Guide's synopsis of Lecture 10 (PDF page 2): weak-field geodesics and the Riemann tensor from transport round a parallelogram.", "locatorId": "gr20-g-lec6-10", "estimatedMinutes": 15 },
+    { "description": "Read the Lecture Guide's synopses of the end of Lecture 10 (Riemann symmetries, twenty components, commutator form) and Lecture 11 (Ricci, geodesic deviation, Bianchi identity) (PDF page 3).", "locatorId": "gr20-g-lec11-13", "estimatedMinutes": 15 },
+    { "description": "Watch Lectures 10 and 11 from the video gallery (transcripts on each lecture page).", "locatorId": "gr20-videos", "estimatedMinutes": 160 },
+    { "description": "Second account: Tong, General Relativity, Chapter 3 Introducing Riemannian Geometry (reference-only).", "locatorId": "tong-gr-ch3", "estimatedMinutes": 60 },
+    { "description": "Optional: Carroll, Chapter 3 Curvature (Riemann tensor, geodesic deviation), reference-only.", "locatorId": "carroll-ch3", "estimatedMinutes": 45 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "lecture", "title": "Lectures 10–11: curvature", "instructions": "Watch or read the transcripts of the listed lectures and the supplements. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 180, "sourceLocatorIds": ["gr20-g-lec6-10", "gr20-g-lec11-13", "gr20-videos", "gr20-summaries", "tong-gr-ch3", "carroll-ch3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 480,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture Guide pages 2–3 (Lectures 10–11) located in the extracted PDF text on 2026-10-30; video gallery and lecture summaries pages opened; Tong Chapter 3 listed on the notes page; Carroll Chapter 3 listed on the author's page." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

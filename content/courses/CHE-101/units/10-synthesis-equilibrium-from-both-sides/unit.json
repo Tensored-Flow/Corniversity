@@ -1,0 +1,32 @@
+{
+  "id": "CHE-101-u10",
+  "courseId": "CHE-101",
+  "sequence": 10,
+  "title": "Synthesis: equilibrium from both sides",
+  "summary": "The synthesis-week unit: the thermodynamic view of equilibrium (ΔG° = −RT ln K, temperature dependence through ΔH°) and the kinetic view (K = k_f/k_r for elementary steps, temperature dependence of rate constants through E_a) brought together on one system chosen by the learner, with the assumptions of each view stated; preparation for the written synthesis assessment.",
+  "objectives": [
+    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; it revisits lecture 18 pages 1–2, lecture 31 page 4 and lecture 33 page 6 of 5.111SC with OpenStax 13.1 and 16.4." }
+  ],
+  "prerequisiteConceptIds": ["chemical-equilibrium-constant", "kinetic-view-of-equilibrium", "arrhenius-temperature-dependence"],
+  "teachesConceptIds": ["kinetic-view-of-equilibrium", "chemical-equilibrium-constant"],
+  "preparation": [
+    { "description": "Lecture 18 notes page 2: ΔG = ΔG° + RT ln Q and ΔG° = −RT ln K.", "locatorId": "chem14-n18-p2", "estimatedMinutes": 15 },
+    { "description": "Lecture 31 notes page 4: K as the ratio of forward and reverse rate constants.", "locatorId": "chem14-n31-p4", "estimatedMinutes": 10 },
+    { "description": "Lecture 33 notes page 6: rate constants versus equilibrium constants with temperature.", "locatorId": "chem14-n33-p6", "estimatedMinutes": 10 },
+    { "description": "OpenStax 16.4 Free Energy (free energy and equilibrium) and 13.1 Chemical Equilibria (dynamic equilibrium).", "locatorId": "ox-16-4", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u10-a1", "type": "reading", "title": "Revisiting the two views of equilibrium", "instructions": "Re-read the three lecture-notes pages and the two OpenStax sections for this unit with the question: which assumptions does each view make, and where do they meet? The prepared synthesis guidance and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["chem14-n18-p2", "chem14-n31-p4", "chem14-n33-p6", "ox-16-4", "ox-13-1"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared; it will be the written synthesis (assessment a4)." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 18, 31 and 33 notes PDFs text-extracted 2026-10-30 with the cited pages verified; OpenStax 13.1 and 16.4 opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

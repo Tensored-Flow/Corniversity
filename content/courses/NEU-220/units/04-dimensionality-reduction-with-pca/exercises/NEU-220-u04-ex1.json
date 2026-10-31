@@ -1,0 +1,60 @@
+{
+  "id": "NEU-220-u04-ex1",
+  "sequence": 1,
+  "title": "PCA as variance maximisation",
+  "kind": "proof",
+  "promptMarkdown": "Let $\\mathbf{X}$ be an $N \\times D$ matrix of centred observations and $\\boldsymbol\\Sigma = \\mathbf{X}^\\top\\mathbf{X}/N$ its sample covariance (W1D4 Tutorial 2).\n\n1. Show that for a unit vector $\\mathbf{w}$ the sample variance of the projections $\\mathbf{X}\\mathbf{w}$ equals $\\mathbf{w}^\\top\\boldsymbol\\Sigma\\mathbf{w}$.\n2. Prove that the unit vector maximising this variance is an eigenvector of $\\boldsymbol\\Sigma$ for its largest eigenvalue, and that the maximal variance equals that eigenvalue. State what you use about $\\boldsymbol\\Sigma$ (symmetry, positive semidefiniteness) and where.\n3. Let $\\mathbf{w}_i$, $\\mathbf{w}_j$ be eigenvectors for distinct eigenvalues. Prove that the score vectors $\\mathbf{X}\\mathbf{w}_i$ and $\\mathbf{X}\\mathbf{w}_j$ are uncorrelated. Explain briefly why the second component is therefore the top eigenvector of $\\boldsymbol\\Sigma$ restricted to the orthogonal complement of the first.\n4. Compute the principal components and the fraction of variance explained by the first component for $\\boldsymbol\\Sigma = \\begin{pmatrix}3 & 1\\\\ 1 & 3\\end{pmatrix}$ (a synthetic covariance, not from data).\n5. Explain what changes in the components if one variable is rescaled by a constant, and why centring is required for part 1 to be a variance.",
+  "conceptIds": ["pca-dimensionality-reduction", "linear-algebra-vector-spaces"],
+  "hintLadder": [
+    "The projections have mean zero because the columns of $\\mathbf{X}$ do; their variance is $\\|\\mathbf{X}\\mathbf{w}\\|^2/N$.",
+    "Maximise $\\mathbf{w}^\\top\\boldsymbol\\Sigma\\mathbf{w}$ subject to $\\mathbf{w}^\\top\\mathbf{w} = 1$ with a Lagrange multiplier, or expand $\\mathbf{w}$ in an orthonormal eigenbasis (the spectral theorem for symmetric matrices) and bound the Rayleigh quotient.",
+    "$(\\mathbf{X}\\mathbf{w}_i)^\\top(\\mathbf{X}\\mathbf{w}_j)/N = \\mathbf{w}_i^\\top\\boldsymbol\\Sigma\\mathbf{w}_j = \\lambda_j\\mathbf{w}_i^\\top\\mathbf{w}_j$; symmetric matrices have orthogonal eigenvectors for distinct eigenvalues.",
+    "The characteristic polynomial of the $2 \\times 2$ matrix is $(3 - \\lambda)^2 - 1$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "general-proof",
+      "kind": "finite_examples_not_proof",
+      "description": "the characterisation must be proved for general D, not checked in examples",
+      "params": {}
+    },
+    {
+      "id": "method-named",
+      "kind": "expression_present",
+      "description": "a Lagrange multiplier, Rayleigh quotient or eigenbasis argument appears",
+      "params": { "patterns": ["lagrang", "rayleigh", "eigen"] }
+    },
+    {
+      "id": "pc1-share",
+      "kind": "expression_present",
+      "description": "the first component explains 4/6 = 2/3 ≈ 66.7% in the 2 × 2 example",
+      "params": { "patterns": ["2/3", "\\(2\\)/\\(3\\)", "4/6", "\\(4\\)/\\(6\\)", "0\\.6667", "0\\.667", "66\\.7"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "variance-form", "criterion": "Projections have zero mean (centred columns); variance ‖Xw‖²/N = wᵀXᵀXw/N = wᵀΣw.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both the zero-mean point and the identity." }, { "label": "partially met", "description": "Identity without the centring point." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "maximisation", "criterion": "Lagrangian wᵀΣw − λ(wᵀw − 1) gives Σw = λw, so stationary points are eigenvectors with variance λ and the maximum is the largest eigenvalue; or the Rayleigh quotient bounded by λ_max via the spectral theorem (symmetry gives a real orthonormal eigenbasis; PSD gives λ ≥ 0).", "weight": 0.35, "levels": [{ "label": "met", "description": "Complete, with the properties of Σ named where used." }, { "label": "partially met", "description": "Stationarity shown, maximality or the spectral theorem not invoked." }, { "label": "not met", "description": "Asserted." }] },
+      { "id": "uncorrelated", "criterion": "Cov = w_iᵀΣw_j = λ_j w_iᵀw_j = 0 by orthogonality of eigenvectors of a symmetric matrix for distinct eigenvalues; hence the second component maximises variance within the orthogonal complement, where Σ's top eigenvector is the second eigenvector overall.", "weight": 0.2, "levels": [{ "label": "met", "description": "Both parts." }, { "label": "partially met", "description": "Uncorrelatedness only." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "computation", "criterion": "Eigenvalues 4 and 2; eigenvectors (1, 1)/√2 and (1, −1)/√2; PC1 explains 4/6 = 66.7%.", "weight": 0.15, "levels": [{ "label": "met", "description": "All." }, { "label": "partially met", "description": "Eigenvalues right, vectors or share wrong." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "scaling-centring", "criterion": "Rescaling a variable by c multiplies its variance by c² and its covariances by c, changing eigenvectors and eigenvalues (PCA is not scale-invariant); without centring wᵀXᵀXw/N is a second moment, not a variance, and the first direction points towards the mean.", "weight": 0.15, "levels": [{ "label": "met", "description": "Both." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Neither." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct proof",
+      "text": "For arbitrary D: the columns of X have mean zero, so Xw has mean zero and its sample variance is ‖Xw‖²/N = wᵀXᵀXw/N = wᵀΣw. Maximise wᵀΣw subject to wᵀw = 1 with a Lagrange multiplier: ∇(wᵀΣw − λ(wᵀw − 1)) = 2Σw − 2λw = 0, so Σw = λw and the variance at a stationary point is wᵀΣw = λ; Σ is symmetric, so by the spectral theorem it has a real orthonormal eigenbasis and the maximum over the unit sphere is the largest eigenvalue, attained at its eigenvector (Σ is PSD so all eigenvalues are nonnegative). For eigenvectors w_i, w_j with distinct eigenvalues, Cov(Xw_i, Xw_j) = w_iᵀΣw_j = λ_j w_iᵀw_j = 0 because eigenvectors of a symmetric matrix for distinct eigenvalues are orthogonal; restricting to the orthogonal complement of w_1, the same argument gives the second eigenvector. Example: (3 − λ)² − 1 = 0 gives λ = 4, 2 with eigenvectors (1,1)/√2 and (1,−1)/√2; PC1 explains 4/6 = 2/3 ≈ 66.7%. Rescaling a variable by c scales its variance by c² and covariances by c, so the components change; without centring the quadratic form is a second moment and the first direction points at the mean.",
+      "expect": { "general-proof": true, "method-named": true, "pc1-share": true }
+    },
+    {
+      "label": "checked in low dimensions only",
+      "text": "For n=1 and n=2 the direction of largest spread is the first component, so PCA maximises variance. The first component explains half the variance.",
+      "expect": { "general-proof": false, "method-named": false, "pc1-share": false }
+    }
+  ]
+}

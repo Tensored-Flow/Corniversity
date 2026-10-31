@@ -1,0 +1,9 @@
+## Outline: Sequences, attention and transformers
+
+This unit is **outlined, not yet prepared**. It will be written from W3D1 Tutorial 1 (Learn how to work with Transformers) and W2D5 Tutorial 2 (Natural Language Processing and LLMs) of the Neuromatch Deep Learning ebook (content CC BY 4.0), cited by tutorial page and section.
+
+**Scope.** Attention as a content-dependent linear map: for queries $Q$, keys $K$ and values $V$, the output $\operatorname{softmax}(QK^\top/\sqrt{d_k})\,V$ is a convex combination of value vectors with weights computed from the inputs, so the "weights" of this layer are not parameters but functions of the data; multi-head attention as several such maps in parallel; why the $\sqrt{d_k}$ scaling keeps the softmax from saturating (a variance argument); positional encoding as the fix for permutation equivariance; the transformer block (attention, residual, normalisation, feed-forward) and its parameter count; the efficiency comparison with recurrent networks the tutorial asks for; BERT and GPT as masked and autoregressive pretraining recipes.
+
+**Currency note.** Large language models move quickly. This unit cites the Neuromatch tutorials as they stood on 2026-10-30 and teaches the stable mathematics of attention; it does not describe any model as the current state of the art, and the W2D5 sections on "GPT Today and Tomorrow" are read as a dated snapshot.
+
+**What preparation will add.** A full lesson, original exercises (a hand attention computation on three tokens; the variance argument for the scaling; a parameter count for one block; an equivariance argument showing why positional information is needed), instructor reference reasoning, an exit check and the unit's common misconceptions ("attention weights explain the model's decision"). Until then the reading above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

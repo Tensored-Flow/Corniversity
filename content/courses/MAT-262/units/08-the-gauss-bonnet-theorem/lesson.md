@@ -1,0 +1,7 @@
+## Outline: the Gauss–Bonnet theorem
+
+This unit is **outlined, not yet prepared**. It will be written from Wendl's §6.3 with §6.2 (author's non-commercial permission) and Sternberg's §4.5 (CC BY-NC-SA 2.0), with Lee chapter 9 as the commercial reference. The primary Lund notes do not treat the Gauss–Bonnet theorem, so this unit depends on the open-licensed sources and says so.
+
+**Scope.** Gaussian curvature of a surface as the sectional curvature of its single tangent plane and as the determinant of the shape operator; geodesic curvature of curves on a surface; the local Gauss–Bonnet formula $\int_\Omega K\,dA+\int_{\partial\Omega}\kappa_g\,ds+\sum(\text{exterior angles})=2\pi$ for a disc-like region, via the rotation index and Cartan's structure equations or via holonomy of parallel transport around the boundary; the global theorem $\int_MK\,dA=2\pi\chi(M)$ for a compact oriented surface, obtained by triangulating; the round sphere of radius $R$ as the check ($K=R^{-2}$, area $4\pi R^2$, Euler characteristic $2$) and the torus and surfaces of higher genus as examples where total curvature is forced to vanish or be negative.
+
+**What preparation will add.** A full lesson with definitions, examples and non-examples, the main theorems with their hypotheses in view, original exercises with hint ladders and rubrics, instructor reference reasoning for the assessor, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

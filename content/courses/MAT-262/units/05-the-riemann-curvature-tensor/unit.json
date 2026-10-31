@@ -1,0 +1,32 @@
+{
+  "id": "MAT-262-u05",
+  "courseId": "MAT-262",
+  "sequence": 5,
+  "title": "The Riemann curvature tensor",
+  "summary": "Higher covariant derivatives (Definition 8.1); the curvature operator R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_[X,Y] Z as a tensor (Theorem 8.9) and its symmetries including the first Bianchi identity; sectional curvature on 2-planes (Definition 8.14) and its coordinate expression; Ricci and scalar curvature; constant curvature and the form of R (Theorem 8.29); flat manifolds; curvature of spheres, hyperbolic space and Lie groups.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Gudmundsson chapter 8 (Definitions 8.1, 8.14, 8.27; Theorems 8.9, 8.29; Examples 8.17–8.18, 8.23) with Sternberg §3.7 and §3.11–3.13, Wendl §6.1 and Lee chapter 7 as the commercial reference." }
+  ],
+  "prerequisiteConceptIds": ["levi-civita-connection", "connections-geodesics", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["curvature"],
+  "preparation": [
+    { "description": "Read Gudmundsson chapter 8, pp. 109–112: Definition 8.1 (covariant derivatives of tensor fields), Theorem 8.9 (the curvature operator is tensorial) and Proposition 8.10 (symmetries).", "locatorId": "gud-thm8-9", "estimatedMinutes": 40 },
+    { "description": "Read pp. 113–114: Definition 8.14 (sectional curvature), Example 8.17 (coordinate expression), Example 8.18 (Euclidean space is flat).", "locatorId": "gud-def8-14", "estimatedMinutes": 30 },
+    { "description": "Read pp. 118–120: Definition 8.27 (the tensor of constant curvature), Lemma 8.28 and Theorem 8.29.", "locatorId": "gud-thm8-29", "estimatedMinutes": 30 },
+    { "description": "Open-licensed alternatives: Sternberg §3.7 (curvature), §3.11–3.13 (curvature identities, sectional and Ricci curvature); Wendl §6.1 (locally flat manifolds).", "locatorId": "stb-s3-12", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Chapter 8: the curvature tensor", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["gud-ch8", "gud-thm8-9", "gud-def8-14", "gud-thm8-29", "stb-s3-7", "stb-s3-12", "wen-s6-1", "lee-rm-ch7"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 300,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Gudmundsson chapter 8 locators verified against extracted text of Riemann.pdf (v1.438) on 2026-10-30: chapter start p. 109, Theorem 8.9 p. 111, Definition 8.14 p. 113, Theorem 8.29 p. 119. Sternberg §3.7 (p. 63) and §3.12–3.13 (p. 69), Wendl §6.1 (p. 130) verified likewise; Lee chapter 7 is a table-of-contents pointer." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

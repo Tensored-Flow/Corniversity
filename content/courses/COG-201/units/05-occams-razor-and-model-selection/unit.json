@@ -1,0 +1,30 @@
+{
+  "id": "COG-201-u05",
+  "courseId": "COG-201",
+  "sequence": 5,
+  "title": "Occam's razor and model selection",
+  "summary": "Marginal likelihood as the common currency for fit and complexity; the size principle generalised to Bayes Occam's razor; the law of conservation of belief; Bayes factors for fair versus unfair coins and for curve fitting; the effect of unused parameters; cognitive phenomena read as model selection.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is OCW lectures 17–18 (Controlling Complexity and Occam's Razor), lecture 13's Bayesian Occam's razor slide, and the web book's Occam's Razor chapter." }
+  ],
+  "prerequisiteConceptIds": ["bayesian-concept-learning", "bayesian-inference-cognition"],
+  "teachesConceptIds": ["bayesian-occams-razor"],
+  "preparation": [
+    { "description": "Read OCW lectures 17 and 18 (Controlling Complexity and Occam's Razor 1–2) and revisit lecture 13's 'Bayesian Occam's Razor' slide.", "locatorId": "cocosci04-lec17", "estimatedMinutes": 60 },
+    { "description": "Read the web book's Occam's Razor chapter: the law of conservation of belief, the rectangle game, Bayes Occam's razor, model selection (fair or unfair coin; unused parameters; curve fitting). Reference-only.", "locatorId": "pm2-ch-occams-razor", "estimatedMinutes": 50 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Lectures 17–18 and the Occam's Razor chapter", "instructions": "Read the material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["cocosci04-lec17", "cocosci04-lec18", "cocosci04-l13-bayesian-occam", "pm2-ch-occams-razor", "pm2-occam-rectangle-game", "pm2-occam-bayes-occam", "pm2-occam-model-selection"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 250,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 17 and 18 PDF resource pages confirmed 2026-10-30 (HTTP 200), not text-extracted; lecture 13 'Bayesian Occam's Razor' slide verified at printed p. 37. Web book Occam's Razor chapter returned HTTP 200 with heading ids the-size-principle, example-the-rectangle-game, generalizing-the-size-principle-bayes-occams-razor and model-selection-with-the-bayesian-occams-razor." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

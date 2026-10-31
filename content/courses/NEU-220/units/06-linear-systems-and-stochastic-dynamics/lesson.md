@@ -1,0 +1,7 @@
+## Outline: linear systems and stochastic dynamics
+
+This unit is **outlined, not yet prepared**. It will be written from Neuromatch Academy W2D3 Linear Systems (content CC BY 4.0, code BSD-3-Clause), citing the exact tutorial pages once they have been opened and verified; so far only the chapter page has been.
+
+**Scope.** Linear dynamical systems $\dot{\mathbf{x}} = \mathbf{A}\mathbf{x}$ and their eigen-solutions, stability from eigenvalues, and the two-dimensional phase portraits (Tutorial 1); Markov processes and transition matrices (Tutorial 2); the Ornstein–Uhlenbeck process as a linear system with noise, its stationary variance and autocorrelation (Tutorial 3); autoregressive models and how their coefficients are fitted by least squares (Tutorial 4), which closes a loop with unit 2. For this learner the mathematics is familiar; the unit's work is reading the models as descriptions of neural signals, with the fitted coefficients interpreted as statistics of a recording, not as mechanisms.
+
+**What preparation will add.** A full lesson, original exercises with hint ladders and rubrics (eigen-analysis of a two-neuron linear circuit, derivation of the Ornstein–Uhlenbeck stationary variance, and a least-squares fit of an AR model to synthetic data labelled as such with a held-out check), instructor reference reasoning, an exit check and the unit's common misconceptions. Until then the reading list above is accurate and the tutor can discuss the material, but there is no assessed work for this unit.

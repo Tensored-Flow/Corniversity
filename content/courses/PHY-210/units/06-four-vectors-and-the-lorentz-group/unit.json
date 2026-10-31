@@ -1,0 +1,32 @@
+{
+  "id": "PHY-210-u06",
+  "courseId": "PHY-210",
+  "sequence": 6,
+  "title": "Four-vectors and the Lorentz group",
+  "summary": "The Minkowski inner product and the Lorentz group Λᵀ η Λ = η; its dimension and components; four-vectors by transformation law; four-velocity and four-acceleration with their invariants; raising and lowering indices.",
+  "objectives": [
+    { "id": "u06-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Tong, Dynamics and Relativity, Sections 7.3.2 and 7.4, Spacetime Physics Section 7.2, and MIT 8.20 Week 3 (Lectures 8.1–8.3)." }
+  ],
+  "prerequisiteConceptIds": ["lorentz-transformation", "linear-algebra-vector-spaces"],
+  "teachesConceptIds": ["four-vectors", "lorentzian-metric"],
+  "preparation": [
+    { "description": "Read Tong, Dynamics and Relativity, Section 7.3 The Geometry of Spacetime, especially 7.3.2 The Lorentz Group (reference-only; signature (+,−,−,−)).", "locatorId": "tong-dr-ch7-s3", "estimatedMinutes": 30 },
+    { "description": "Read Tong, Section 7.4 Relativistic Kinematics: 7.4.1 Proper Time and 7.4.7 Indices Up, Indices Down (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 30 },
+    { "description": "Read Spacetime Physics Chapter 7, Section 7.2 Momenergy Arrow (pp. 191–195), for the book's four-vector picture.", "locatorId": "stp-ch7", "estimatedMinutes": 15 },
+    { "description": "Optional: MIT 8.20 Week 3 videos, Lectures 8.1–8.3.", "locatorId": "sr21-week3", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u06-a1", "type": "reading", "title": "Reading: four-vectors", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["tong-dr-ch7-s3", "tong-dr-ch7-s4", "stp-ch7", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 230,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Tong Sections 7.3.2, 7.4.1 and 7.4.7 headings verified in dynrel7.pdf on 2026-10-30; Spacetime Physics Chapter 7 PDF listed on the download page with section titles and pages from the contents PDF; MIT 8.20 Week 3 page opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

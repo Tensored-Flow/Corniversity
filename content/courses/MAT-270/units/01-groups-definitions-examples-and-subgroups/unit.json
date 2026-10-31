@@ -1,0 +1,44 @@
+{
+  "id": "MAT-270-u01",
+  "courseId": "MAT-270",
+  "sequence": 1,
+  "title": "Groups: definitions, examples and subgroups",
+  "summary": "Two sources of examples (the integers mod n and the symmetries of a figure); the group axioms with examples and non-examples; uniqueness of identity and inverses, cancellation, exponent laws and the order of an element; subgroups, the subgroup tests and why the operation must be the same; subgroup structure as a first invariant.",
+  "objectives": [
+    { "id": "u01-o1", "description": "State the group axioms and decide with proof whether a given set with operation is a group, naming the axiom that fails when it is not." },
+    { "id": "u01-o2", "description": "Prove uniqueness of the identity and of inverses, the cancellation laws and (ab)^{-1} = b^{-1}a^{-1}, and say which axiom each proof uses." },
+    { "id": "u01-o3", "description": "Prove that a nonzero class a in Z_n has a multiplicative inverse iff gcd(a, n) = 1, and explain why U(n) is a group while (Z_n, ·) is not." },
+    { "id": "u01-o4", "description": "Apply the two subgroup tests to subsets of concrete groups, including matrix groups, and produce a counterexample to closure in a non-abelian group." }
+  ],
+  "prerequisiteConceptIds": ["linear-algebra-vector-spaces", "proof-writing"],
+  "teachesConceptIds": ["integers-mod-n", "group-basics"],
+  "preparation": [
+    { "description": "Read Section 3.1: the integers mod n (Examples 3.1.1–3.1.2, Proposition 3.1.4 with its proof of parts 1 and 6) and the symmetries of a rectangle and an equilateral triangle (Figures 3.1.5–3.1.7).", "locatorId": "aata-s3-1", "estimatedMinutes": 25 },
+    { "description": "Read Section 3.2: the definition of a group and of an abelian group, Examples 3.2.1–3.2.9, Propositions 3.2.10–3.2.15 and Theorem 3.2.16. Write the proof of Proposition 3.2.15 (cancellation), which the text leaves as an exercise, before reading on.", "locatorId": "aata-s3-2", "estimatedMinutes": 30 },
+    { "description": "Read Section 3.3: subgroups, Examples 3.3.1–3.3.5 and the subgroup tests, Propositions 3.3.7–3.3.8, with their proofs.", "locatorId": "aata-s3-3", "estimatedMinutes": 20 }
+  ],
+  "activities": [
+    { "id": "u01-a1", "type": "reading", "title": "Chapter 3: groups and subgroups", "instructions": "Read the lesson alongside Sections 3.1–3.3 of Judson. For every example in the text, name the axiom that would fail if one hypothesis were dropped (for instance, drop 'invertible' from GL_2(R)). Optional: compare with lecture 1 of the MIT student notes, which reach the same definitions from matrix groups.", "estimatedMinutes": 60, "sourceLocatorIds": ["aata-prop-3-1-4", "aata-def-group", "aata-ex-3-2-4", "aata-ex-3-2-6", "aata-ex-3-2-7", "aata-ex-3-2-8", "aata-prop-3-2-10", "aata-prop-3-2-11", "aata-prop-3-2-12", "aata-prop-3-2-14", "aata-prop-3-2-15", "aata-thm-3-2-16", "aata-ex-3-3-4", "aata-ex-3-3-5", "aata-prop-3-3-7", "aata-prop-3-3-8", "an21-lec01"], "exerciseIds": [], "sessionKind": "lecture" },
+    { "id": "u01-a2", "type": "proof_workshop", "title": "Tutorial: involutions and subgroups of GL_2", "instructions": "Attempt exercise 1 before asking for any hint, then exercise 2. For each subset in exercise 2 write 'identity, closure, inverses' and tick or cross each one with a reason. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 85, "sourceLocatorIds": ["aata-def-group", "aata-prop-3-2-12", "aata-prop-3-3-7", "aata-prop-3-3-8", "aata-ex-3-2-7"], "exerciseIds": ["MAT-270-u01-ex1", "MAT-270-u01-ex2"], "sessionKind": "tutorial" },
+    { "id": "u01-a3", "type": "explain_back", "title": "Explain: the same operation", "instructions": "Write exercise 3 without the text open, then compare with Examples 3.2.4 and 3.3.4.", "estimatedMinutes": 15, "sourceLocatorIds": ["aata-ex-3-2-4", "aata-ex-3-3-4"], "exerciseIds": ["MAT-270-u01-ex3"], "sessionKind": "oral" },
+    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the three group axioms; the definition of U(n) and the criterion for a to be a unit mod n; the two subgroup tests; the definition of the order of an element.", "estimatedMinutes": 10, "sourceLocatorIds": ["aata-def-group", "aata-prop-3-1-4", "aata-prop-3-3-8"], "exerciseIds": [], "sessionKind": "revision" }
+  ],
+  "exerciseIds": ["MAT-270-u01-ex1", "MAT-270-u01-ex2", "MAT-270-u01-ex3"],
+  "exitCheck": { "description": "Exercise 1 accepted: the three statements about involutions proved, with the pairing argument for even order and an explicit non-abelian group in which the involutions fail to form a subgroup.", "exerciseId": "MAT-270-u01-ex1" },
+  "commonMisconceptions": [
+    { "claim": "A nonempty subset closed under the operation is a subgroup.", "correction": "True for finite subsets (powers of an element repeat, so e and the inverse appear among them), false in general: N is closed under addition inside Z but has no inverses. The subgroup tests of Propositions 3.3.7–3.3.8 require inverses.", "correctionLocatorIds": ["aata-prop-3-3-7", "aata-prop-3-3-8"] },
+    { "claim": "Cancellation ab = ac ⇒ b = c holds in any set with an associative operation and an identity.", "correction": "It uses inverses: in (Z_6, ·) one has 2·1 = 2·4 but 1 ≠ 4. Proposition 3.2.15 is a statement about groups.", "correctionLocatorIds": ["aata-prop-3-2-15", "aata-ex-3-2-4"] },
+    { "claim": "A subgroup can have an identity element different from the identity of G.", "correction": "If e_H is the identity of H then e_H e_H = e_H = e_H e in G, and cancellation gives e_H = e; likewise inverses in H are the inverses in G, by uniqueness.", "correctionLocatorIds": ["aata-prop-3-2-10", "aata-prop-3-2-11"] },
+    { "claim": "GL_2(R) is a subset of the 2×2 matrices, so it is a subgroup of (M_2(R), +).", "correction": "A subgroup uses the operation of the ambient group. GL_2(R) is not closed under addition (A + (−A) = 0 is not invertible), so it is a group under multiplication and not a subgroup of the additive group (Example 3.3.4).", "correctionLocatorIds": ["aata-ex-3-3-4"] }
+  ],
+  "estimatedMinutes": 245,
+  "status": "ready",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Section pages 3.1, 3.2 and 3.3 of the HTML edition opened 2026-10-30; all statement numbers (Proposition 3.1.4, the group definition, Examples 3.2.4–3.2.9, Propositions 3.2.10–3.2.15, Theorem 3.2.16, Examples 3.3.4–3.3.5, Propositions 3.3.7–3.3.8) and their HTML anchors recorded from the pages. The MIT student-notes lecture 1 PDF URL was recorded from its resource page; the file was not opened." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: units mod n via Bézout in both directions; uniqueness of identity and inverses and cancellation from the axioms; the finite-closure remark; x² = e ⇒ abelian via (ab)^{-1} = b^{-1}a^{-1}; the inverse-pairing parity argument for even order; (12)(13) = (132) in S_3; the five GL_2(R) subsets (upper triangular, det ±1, integer entries, GL_2(Z) via the adjugate, centraliser) and |GL_2(Z_2)| = (4−1)(4−2) = 6 with a non-commuting pair of unipotent matrices." },
+    { "name": "answer-leakage", "result": "pass", "evidence": "Reference reasoning lives only in instructor/. The lesson's remark that finite closed subsets are subgroups is stated as a remark, and the lesson's warning about GL_2 and addition is the subject of the explain-back, as in the exemplar; the counts and witnesses for exercises 1 and 2 appear nowhere in the lesson or prompts." },
+    { "name": "workload-sanity", "result": "pass", "evidence": "60 + 85 + 15 + 10 minutes of activities plus 75 minutes of preparation ≈ 4.1 hours; together with unit 2 this is the first teaching week, within the 10–12 hours per week budget." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": ["MAT-270-u01-ex1.reference-solution.md", "MAT-270-u01-ex2.reference-solution.md", "MAT-270-u01-ex3.grading-notes.md", "lesson-notes.md"]
+}

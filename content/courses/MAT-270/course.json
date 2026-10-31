@@ -2,38 +2,49 @@
   "id": "MAT-270",
   "version": 1,
   "title": "Abstract Algebra I: Groups and Structure",
-  "departmentIds": [
-    "mathematics"
-  ],
+  "departmentIds": ["mathematics"],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Abstract Algebra I: Groups and Structure. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "MAT-270-linear-algebra-and-proof"
+  "purpose": "Groups from the axioms to the Sylow theorems: subgroups, cyclic and permutation groups, cosets and Lagrange's theorem, isomorphisms and direct products, normal subgroups, factor groups and the isomorphism theorems, matrix and symmetry groups, group actions and the class equation, the structure of finite abelian groups and the Sylow theorems, studied with complete proofs from Judson's open textbook and original Corniversity exercises.",
+  "description": "Group theory is the study of symmetry made algebraic: a single associative operation with an identity and inverses, and the surprisingly rigid structure that follows. The course moves from examples (integers mod n, symmetries of figures, matrices) to the axioms and subgroups; through cyclic groups and the arithmetic that controls them, permutation and dihedral groups, cosets and Lagrange's theorem; to the central constructions of isomorphism, direct product, normal subgroup, factor group and homomorphism with the isomorphism theorems; and then to structure: matrix and symmetry groups, group actions and the class equation, the classification of finite abelian groups, and the Sylow theorems, ending with the classification of groups of small order.\n\n**How this adaptation works.** The spine is Thomas W. Judson's open textbook *Abstract Algebra: Theory and Applications* (HTML edition at judsonbooks.org, GNU Free Documentation License), whose group-theory chapters 2–6 and 9–15 are followed in order with chapters 7–8 (cryptography and coding theory) left as enrichment. Every statement is cited by the book's own number and section page so that citations reopen exactly. Corniversity re-paces the chapters as 10 units for a term of ten teaching weeks plus a reading week and a synthesis week, and sets its own exercises with hint ladders and rubrics. MIT OpenCourseWare's RES.18-011 Algebra I Student Notes (Fall 2021) and the 18.701 Algebra I (Fall 2010) syllabus pages are linked as optional supplements; the student notes are unchecked by MIT faculty and are never the authority for a statement.\n\n**What is prepared now.** The unit list below shows the exact status of each unit: prepared units have a full lesson, exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Verify or refute the group axioms and the subgroup tests for concrete sets and operations, naming the axiom that fails, and prove the basic consequences of the axioms.", "evidenceExpected": "Axiom and subgroup exercises including matrix groups and the units mod n, with each failing axiom named and witnessed." },
+    { "id": "o2", "description": "Work with cyclic and permutation groups: orders of elements, generators, subgroup lattices, cycle decompositions and parity.", "evidenceExpected": "Proofs counting elements by order in a cyclic group, computations in cycle notation and a parity argument." },
+    { "id": "o3", "description": "Prove Lagrange's theorem and its corollaries and compute with cosets, including applications to the orders of elements and to Fermat's and Euler's theorems.", "evidenceExpected": "Coset computations in concrete groups and proofs applying Lagrange's theorem, with the failure of its converse exhibited." },
+    { "id": "o4", "description": "Construct factor groups and use homomorphisms and the isomorphism theorems to identify groups up to isomorphism.", "evidenceExpected": "The mid-course synthesis: a written account of quotients, the first isomorphism theorem and the correspondence theorem with a worked example chosen by the learner." },
+    { "id": "o5", "description": "Use group actions, the orbit–stabiliser relation and the class equation to prove structural results about finite groups and to count orbits.", "evidenceExpected": "Action-based proofs (p-groups have nontrivial centre; groups of order p² are abelian) and Burnside counting exercises." },
+    { "id": "o6", "description": "Prove and apply the Sylow theorems and the structure theorem for finite abelian groups to classify groups of small order.", "evidenceExpected": "The final synthesis: a classification of the groups of order at most 15 up to isomorphism, with every Sylow and structure step justified." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["MAT-270-linear-algebra-and-proof", "MAT-270-induction-and-divisibility"],
+  "recommendedConceptIds": ["linear-algebra-vector-spaces", "proof-writing"],
+  "teachesConceptIds": [
+    "integers-mod-n", "group-basics", "cyclic-groups", "permutation-groups", "cosets-lagrange", "group-isomorphisms", "quotient-groups", "group-homomorphisms",
+    "matrix-and-symmetry-groups", "group-actions", "finite-abelian-groups", "sylow-theory", "simple-groups"
+  ],
+  "primarySourceIds": ["judson-aata"],
+  "supplementalSourceIds": ["mit-algebra-notes-2021", "mit-algebra-2010"],
+  "unitIds": ["MAT-270-u01", "MAT-270-u02", "MAT-270-u03", "MAT-270-u04", "MAT-270-u05", "MAT-270-u06", "MAT-270-u07", "MAT-270-u08", "MAT-270-u09", "MAT-270-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "proof_portfolio", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Revision is expected; the portfolio is the record of attempts and revisions, not a single mark.", "weight": 0.5, "rubricSummary": ["statement fidelity", "hypotheses and quantifiers", "logical steps", "boundary cases and counterexamples", "distinction between computation and proof"] },
+    { "id": "a2", "title": "Mid-course synthesis: quotients and the isomorphism theorems", "kind": "written_explanation", "description": "After unit 7: a written account of why normality is exactly what makes the coset multiplication well defined, of the first isomorphism theorem and the correspondence theorem, with one worked example chosen by the learner (for instance the determinant on GL_2 or the sign on S_n). Open book, untimed by default.", "weight": 0.25, "rubricSummary": ["correctness", "choice and handling of hypotheses", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: groups of order at most 15", "kind": "project", "description": "A classification, up to isomorphism, of all groups of order at most 15, using Lagrange's theorem, the class equation, the structure theorem for finite abelian groups and the Sylow theorems, with every step justified and the non-abelian cases (orders 6, 8, 10, 12, 14) handled explicitly. Optional oral explanation to the tutor.", "weight": 0.25, "rubricSummary": ["correct use of the Sylow and structure theorems", "completeness of the case analysis", "exposition"] }
+  ],
+  "workloadHours": { "minimum": 90, "typical": 120, "maximum": 160 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified HTML edition of Judson's Abstract Algebra: Theory and Applications at judsonbooks.org (landing, title, colophon, chapter and section pages opened on 2026-10-30; the GFDL notice read on the colophon; statement numbers and HTML anchors recorded as locators), with MIT OCW RES.18-011 student notes and 18.701 Fall 2010 pages opened the same day as supplements. Exercises are original. Workload estimated from fourteen textbook chapters at roughly 10–12 hours per teaching week over ten units.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The spine is an openly licensed textbook (GFDL 1.2 or later, no invariant sections); no acquisition request is needed. The MIT 18.701 textbook (Artin, Algebra) is commercial and is not used.",
+      "The MIT student notes are explicitly unchecked by MIT faculty (OCW's statement); they are cited as optional supplements only and never as the authority for a statement.",
+      "Chapters 7 (cryptography) and 8 (coding theory) of the spine are omitted from the study path and can be read as enrichment; chapters 16–23 (rings and fields) belong to MAT-271."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "convenorPersonaId": "halvard-brekke",
+  "tutorPersonaId": "halvard-brekke",
+  "externalSyllabusNote": "Adapted study path using Thomas W. Judson's open textbook Abstract Algebra: Theory and Applications (HTML edition, GNU Free Documentation License) as the spine, with MIT OpenCourseWare RES.18-011 Algebra I Student Notes (Fall 2021) and the 18.701 Algebra I (Fall 2010) syllabus pages (CC BY-NC-SA 4.0) as supplements. The MIT course covered groups, linear algebra and geometry over 38 sessions following Artin's Algebra; Corniversity instead follows the group-theory chapters of Judson in 10 units, cites statements by the book's own numbers, and sets its own exercises and assessments. This is not a course of any of those institutions and confers no credit anywhere."
 }

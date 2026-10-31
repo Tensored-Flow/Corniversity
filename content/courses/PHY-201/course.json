@@ -2,38 +2,48 @@
   "id": "PHY-201",
   "version": 1,
   "title": "Classical Mechanics",
-  "departmentIds": [
-    "physics"
-  ],
+  "departmentIds": ["physics"],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
-  "purpose": "A proposed course concept in the Corniversity catalogue (Launch). Its purpose statement will be written when the course is sourced.",
-  "description": "Proposed course: Classical Mechanics. Source verification and syllabus design have not started, so no teaching material exists yet. Catalogue position: Launch. You may register interest; the director will say honestly that this course is not prepared.",
-  "outcomes": [],
-  "prerequisiteRuleIds": [
-    "PHY-201-calculus"
+  "purpose": "Analytical mechanics for a mathematically prepared learner: the stationary-action principle, constraints and Noether's theorem, central forces, small oscillations, rigid bodies, Hamiltonian mechanics, canonical transformations, Hamilton–Jacobi theory and the onset of chaos, taught from the MIT 8.09 (Fall 2014) chapter notes with David Tong's Cambridge notes as a second voice and original Corniversity exercises.",
+  "description": "Newton's laws answer 'what happens next' one force at a time. Analytical mechanics asks a different question — which path makes the action stationary — and the answer is the same physics in a form that survives any choice of coordinates, absorbs constraints without ever computing the forces that enforce them, turns symmetries into conservation laws, and reorganises dynamics as geometry on phase space. That reorganisation is what later physics is built on: quantum mechanics quantises Poisson brackets, field theory varies an action, general relativity takes the geodesic equation as its law of motion.\n\n**How this adaptation works.** The spine is the set of typed chapter notes from MIT OpenCourseWare 8.09 Classical Mechanics III, Fall 2014 (Prof. Iain Stewart; CC BY-NC-SA 4.0): Chapter 1 (a dense review of Lagrangian and Hamiltonian mechanics, symmetries, constraints and Lagrange multipliers), Chapters 2–5 (rigid bodies, oscillations, canonical transformations and Hamilton–Jacobi theory, perturbation theory) and Chapter 7 (chaos). Corniversity slows the first chapter down into two full units, inserts a central-force unit drawn from David Tong's *Dynamics and Relativity* notes, uses Tong's *Classical Dynamics* notes (free to read on the author's page, reference-only) as a parallel account, and omits 8.09's fluid-mechanics chapter. Every unit cites the exact section and page used; equation numbers are the notes' own. Exercises are original unless labelled adapted.\n\n**Conventions.** SI units throughout, with every derived quantity carrying its units to the final line; vectors in bold, generalized coordinates as $q_i$, canonical momenta $p_i = \\partial L/\\partial \\dot q_i$; summation over repeated indices only where a unit says so. Every approximation names what it neglects and the regime where the neglect fails.\n\n**What is prepared now.** The unit list shows the status of each unit. Prepared units have a full lesson, original exercises with hint ladders and rubrics, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "outcomes": [
+    { "id": "o1", "description": "Write the Lagrangian of a constrained mechanical system in well-chosen generalized coordinates, derive its equations of motion from Hamilton's principle, and check them by units and limiting cases.", "evidenceExpected": "Derivation exercises in which the Lagrangian, the Euler–Lagrange equations and at least one limiting case are written out and checked." },
+    { "id": "o2", "description": "Classify constraints as holonomic, non-holonomic or semi-holonomic, and compute forces of constraint with Lagrange multipliers.", "evidenceExpected": "A multiplier calculation yielding a constraint force, with the integrability test applied to at least one differential constraint." },
+    { "id": "o3", "description": "Use Noether's theorem and cyclic coordinates to find conserved quantities, and distinguish conservation of the Hamiltonian from conservation of energy.", "evidenceExpected": "A Noether calculation for a continuous symmetry and a written analysis of a case where H and E differ." },
+    { "id": "o4", "description": "Solve the central-force, small-oscillation and rigid-body problems of the middle units: effective potentials and Kepler orbits, normal modes, the inertia tensor and Euler's equations.", "evidenceExpected": "Worked calculations with explicit frequencies, orbits or principal axes, each checked in a limiting case." },
+    { "id": "o5", "description": "Pass between the Lagrangian and Hamiltonian pictures, use Poisson brackets and canonical transformations, and apply Hamilton–Jacobi theory and action–angle variables to an integrable system.", "evidenceExpected": "A canonical-transformation or Hamilton–Jacobi calculation for a named system, and the final synthesis project." }
   ],
-  "recommendedConceptIds": [],
-  "teachesConceptIds": [],
-  "primarySourceIds": [],
-  "supplementalSourceIds": [],
-  "unitIds": [],
-  "assessmentSpecs": [],
-  "workloadHours": {
-    "minimum": 40,
-    "typical": 60,
-    "maximum": 90
-  },
-  "readiness": "proposed",
+  "prerequisiteRuleIds": ["PHY-201-calculus", "PHY-201-newtonian-foundations"],
+  "recommendedConceptIds": ["multivariable-calculus", "ode-basics", "linear-algebra-vector-spaces", "newtonian-mechanics"],
+  "teachesConceptIds": [
+    "lagrangian-mechanics", "constraints-generalised-coordinates", "noether-symmetry", "central-force-motion", "small-oscillations",
+    "rigid-body-dynamics", "hamiltonian-mechanics", "canonical-transformations", "classical-perturbation-chaos"
+  ],
+  "primarySourceIds": ["mit-cm3-2014"],
+  "supplementalSourceIds": ["tong-classical-dynamics", "tong-dynamics-relativity"],
+  "unitIds": ["PHY-201-u01", "PHY-201-u02", "PHY-201-u03", "PHY-201-u04", "PHY-201-u05", "PHY-201-u06", "PHY-201-u07", "PHY-201-u08", "PHY-201-u09", "PHY-201-u10"],
+  "assessmentSpecs": [
+    { "id": "a1", "title": "Problem sets", "kind": "problem_set", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Derivations must carry units and at least one limiting case; revision is expected and the record of attempts is the assessment, not a single mark.", "weight": 0.5, "rubricSummary": ["correct Lagrangian or Hamiltonian for the stated system", "equations of motion derived, not asserted", "units carried to the final line", "limiting cases and physical interpretation", "hypotheses of theorems named when used"] },
+    { "id": "a2", "title": "Mid-course synthesis: symmetry and conservation", "kind": "written_explanation", "description": "After unit 5: a written account of how symmetries become conservation laws in the Lagrangian and Hamiltonian pictures, with one worked system chosen by the learner in which the Hamiltonian is conserved but is not the energy, or the energy is conserved but the Hamiltonian is not. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["correct statement and proof of Noether's theorem in the form used", "correct handling of the Hamiltonian-versus-energy distinction", "clarity of exposition"] },
+    { "id": "a3", "title": "Final synthesis: one system, three pictures", "kind": "project", "description": "A single integrable system (for example the Kepler problem, the heavy symmetric top or a charged particle in a uniform magnetic field) treated in the Lagrangian, Hamiltonian and Hamilton–Jacobi pictures, with action–angle variables and a perturbation of the learner's choice. Optional oral explanation to the tutor.", "weight": 0.3, "rubricSummary": ["correctness of each picture and of the passages between them", "action–angle variables correctly constructed", "perturbation analysed with its regime of validity stated", "exposition"] }
+  ],
+  "workloadHours": { "minimum": 80, "typical": 110, "maximum": 150 },
+  "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "catalogue seed (owner's COURSE_CATALOGUE_SEED.json, 2026-10-30); workload is a placeholder range pending a syllabus",
+    "authoringMethod": "Hand-authored by the build agent from the verified MIT 8.09 Fall 2014 chapter notes (Chapter 1 PDF opened and its text extracted on 2026-10-30; section and equation numbers recorded as page-level locators; Chapters 2–5 and 7 located at file level from their OCW resource pages) and from David Tong's Classical Dynamics and Dynamics and Relativity pages (opened 2026-10-30; Chapter 2 and Chapter 7 PDFs read to verify headings). Exercises are original and every reference solution was re-derived. Workload estimated from ten units at roughly 9–13 hours each including reading and problem work.",
+    "verifiedAt": "2026-10-30",
     "reviewerNotes": [
-      "Not yet sourced. Workload estimate is a generic placeholder and is shown as such."
+      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
+      "The MIT syllabus names Goldstein, Poole and Safko as its textbook; Corniversity does not require it, and no acquisition request is needed for this course.",
+      "8.09's fluid-mechanics chapter is deliberately omitted; chaos is kept as the closing unit.",
+      "Tong's notes carry no licence statement and are cited as reference-only; nothing from them is copied."
     ]
   },
-  "modesOffered": [
-    "audit"
-  ]
+  "modesOffered": ["enrolled", "audit"],
+  "convenorPersonaId": "ines-valdivia",
+  "tutorPersonaId": "ines-valdivia",
+  "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 8.09 Classical Mechanics III (Fall 2014) chapter notes under CC BY-NC-SA 4.0, with David Tong's Cambridge lecture notes as reference reading. The original MIT course ran 26 lectures with ten problem sets, a midterm and a final and assumed two earlier mechanics courses; Corniversity re-paces the material as 10 units, adds a central-force unit, omits fluid mechanics, and sets its own exercises and assessments. This is not an MIT or Cambridge course and confers no credit anywhere."
 }

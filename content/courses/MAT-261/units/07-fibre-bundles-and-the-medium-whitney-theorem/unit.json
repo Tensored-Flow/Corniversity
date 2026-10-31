@@ -1,0 +1,30 @@
+{
+  "id": "MAT-261-u07",
+  "courseId": "MAT-261",
+  "sequence": 7,
+  "title": "Fibre bundles and the medium Whitney embedding theorem",
+  "summary": "Locally trivial fibre bundles with fibre F (Definition 14.2) and examples; Whitney's embedding theorem in the medium version (Theorem 15.1): using Sard's theorem to project a compact n-manifold embedded in R^N down to R^{2n+1}.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 13–14 of the 18.965 notes (Definition 14.2, Theorem 15.1)." }
+  ],
+  "prerequisiteConceptIds": ["vector-bundles", "sard-theorem", "whitney-embedding"],
+  "teachesConceptIds": ["fibre-bundles", "whitney-embedding"],
+  "preparation": [
+    { "description": "Read lecture 13: §14 fibre bundles, Definition 14.2 and examples.", "locatorId": "gm04-l13-def14-2", "estimatedMinutes": 30 },
+    { "description": "Read lecture 14: §15 Theorem 15.1 (Whitney embedding theorem, medium version) with proof.", "locatorId": "gm04-l14-thm15-1", "estimatedMinutes": 40 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "Lectures 13–14: fibre bundles and the medium Whitney theorem", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 80, "sourceLocatorIds": ["gm04-lec13", "gm04-lec14", "gm04-l13-def14-2", "gm04-l14-thm15-1"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 220,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Lecture 13 and 14 PDFs downloaded and text-extracted 2026-10-30: Definition 14.2 on PDF page 1 of lecture13.pdf; Theorem 15.1 on page 1 of lecture14.pdf." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

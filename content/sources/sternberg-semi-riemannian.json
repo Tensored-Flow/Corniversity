@@ -1,0 +1,60 @@
+{
+  "id": "sternberg-semi-riemannian",
+  "title": "Semi-Riemann Geometry and General Relativity",
+  "authors": ["Shlomo Sternberg"],
+  "institution": "Harvard University (author-hosted free book)",
+  "kind": "book",
+  "canonicalUrl": "https://people.math.harvard.edu/~shlomo/",
+  "description": "Free online book (251 PDF pages, dated 24 September 2003) from an undergraduate course introducing Riemannian geometry and general relativity: principal curvatures and Gauss's theorema egregium; rules of calculus (forms, Lie derivative, frames, structure equations, parallel transport along ribbons); Levi-Civita connections (linear connections, Christoffel symbols, parallel transport, geodesics, torsion, curvature, Levi-Civita's theorem, sectional and Ricci curvature, bi-invariant metrics, frame fields and curvature forms, the Schwarzschild metric); the bundle of frames; connections on principal bundles; Gauss's lemma (exponential map, normal coordinates, minimisation of arc length); special relativity; the Einstein–Hilbert functional; Riemannian submersions; Petrov types; the star operator.",
+  "rightsNotes": [
+    "The author's books page states 'These books are licensed under a Creative Commons License' and links creativecommons.org/licenses/by-nc-sa/2.0/ (CC BY-NC-SA 2.0): attribution and share-alike required, commercial use excluded. Corniversity is private and non-commercial; importing the PDF for study and citation is within the licence.",
+    "The book treats semi-Riemannian (indefinite) metrics alongside Riemannian ones and is used in MAT-262 as the open-licensed alternative reading and for the Lorentzian contrast; the Corniversity lessons keep the Riemannian (positive-definite) case separate and say so.",
+    "The style (Cartan calculus, frames, physics applications) differs from the primary notes; citations name the section so the learner can choose."
+  ],
+  "currentVersionId": "sternberg-srg-2003",
+  "versions": [
+    {
+      "id": "sternberg-srg-2003",
+      "label": "24 September 2003 (author-hosted PDF)",
+      "url": "https://people.math.harvard.edu/~shlomo/docs/semi_riemannian_geometry.pdf",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the author's books page (licence statement seen), downloaded the PDF and extracted its text to verify the contents and section pages",
+      "componentsSeen": [
+        "books page: list of free PDF textbooks (Theory of Functions of a Real Variable, Advanced Calculus, Dynamical Systems, Lie Algebras, Semiriemannian Geometry, Semi-classical Analysis) with the statement 'These books are licensed under a Creative Commons License' linking CC BY-NC-SA 2.0",
+        "the PDF: title page 'Semi-Riemann Geometry and General Relativity, Shlomo Sternberg, September 24, 2003'; §0.1 Introduction describing chapters I–XI; contents on PDF pages 5–9; 251 pages; printed page numbers in running heads (printed page = PDF index + 1)"
+      ],
+      "licence": "CC BY-NC-SA 2.0 (stated on the author's books page)",
+      "licenceUrl": "http://creativecommons.org/licenses/by-nc-sa/2.0/",
+      "accessStatus": "open",
+      "importAllowed": true,
+      "importHosts": ["people.math.harvard.edu"],
+      "limitations": [
+        "The PDF has no page-label metadata; printed labels below are read from the running heads in the extracted text.",
+        "Chapter-level and section-level locators only; statement numbers were not recorded.",
+        "The licence statement is on the books page, not inside the PDF.",
+        "Coverage of global Riemannian geometry (Hopf–Rinow, Jacobi fields, comparison theorems) is limited; those topics cite the primary notes."
+      ],
+      "locators": [
+        { "id": "stb-books-page", "label": "Author's books page with the Creative Commons licence statement", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "sternberg-srg-2003", "url": "https://people.math.harvard.edu/~shlomo/", "heading": "Semiriemannian Geometry (1 Meg PDF)" } },
+        { "id": "stb-pdf", "label": "Semi-Riemann Geometry and General Relativity (PDF, 251 pages)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "sternberg-srg-2003", "url": "https://people.math.harvard.edu/~shlomo/docs/semi_riemannian_geometry.pdf", "heading": "Semi-Riemann Geometry and General Relativity" } },
+        { "id": "stb-intro", "label": "§0.1 Introduction (chapter-by-chapter description), p. 2", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 1, "printedPageLabel": "2", "sectionLabel": "§0.1 Introduction" } },
+        { "id": "stb-ch1", "label": "Chapter 1 The principal curvatures (volume of a thickened hypersurface, Gauss and Weingarten maps, theorema egregium), p. 11", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 10, "printedPageLabel": "11", "sectionLabel": "Chapter 1" } },
+        { "id": "stb-ch2", "label": "Chapter 2 Rules of calculus (forms, d, Lie derivative, Stokes, frames, structure equations, parallel transport along a ribbon), p. 31", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 30, "printedPageLabel": "31", "sectionLabel": "Chapter 2" } },
+        { "id": "stb-ch3", "label": "Chapter 3 Levi-Civita Connections; §3.1 Definition of a linear connection on the tangent bundle, p. 57", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 56, "printedPageLabel": "57", "sectionLabel": "§3.1" } },
+        { "id": "stb-s3-2", "label": "§3.2 Christoffel symbols; §3.3 Parallel transport, p. 58", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 57, "printedPageLabel": "58", "sectionLabel": "§3.2–3.3" } },
+        { "id": "stb-s3-4", "label": "§3.4 Geodesics, p. 60", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 59, "printedPageLabel": "60", "sectionLabel": "§3.4 Geodesics" } },
+        { "id": "stb-s3-7", "label": "§3.6 Torsion; §3.7 Curvature, p. 63", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 62, "printedPageLabel": "63", "sectionLabel": "§3.6–3.7" } },
+        { "id": "stb-s3-9", "label": "§3.8 Isometric connections; §3.9 Levi-Civita's theorem, p. 65", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 64, "printedPageLabel": "65", "sectionLabel": "§3.8–3.9" } },
+        { "id": "stb-s3-12", "label": "§3.12 Sectional curvature; §3.13 Ricci curvature, p. 69", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 68, "printedPageLabel": "69", "sectionLabel": "§3.12–3.13" } },
+        { "id": "stb-s4-5", "label": "§4.5 Gauss' theorems (structure equations of a surface, theorema egregium, holonomy, §4.5.5 Gauss–Bonnet), pp. 103–105", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 102, "printedPageLabel": "103", "sectionLabel": "§4.5 Gauss' theorems" }, "note": "§4.5.5 Gauss-Bonnet is on p. 105 (PDF index 104)." },
+        { "id": "stb-ch6", "label": "Chapter 6 Gauss's lemma; §6.1 The exponential map; §6.2 Normal coordinates, p. 125", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 124, "printedPageLabel": "125", "sectionLabel": "Chapter 6" } },
+        { "id": "stb-s6-5", "label": "§6.5 Gauss' lemma, p. 129", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 128, "printedPageLabel": "129", "sectionLabel": "§6.5 Gauss' lemma" } },
+        { "id": "stb-s6-6", "label": "§6.6 Minimization of arc length, p. 131", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 130, "printedPageLabel": "131", "sectionLabel": "§6.6 Minimization of arc length" } },
+        { "id": "stb-ch7", "label": "Chapter 7 Special relativity; §7.1 Two-dimensional Lorentz transformations, p. 133", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 132, "printedPageLabel": "133", "sectionLabel": "Chapter 7" } },
+        { "id": "stb-s7-2", "label": "§7.2 Minkowski space, p. 142", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 141, "printedPageLabel": "142", "sectionLabel": "§7.2 Minkowski space" } },
+        { "id": "stb-ch8", "label": "Chapter 8 Die Grundlagen der Physik; §8.1 Preliminaries (densities, divergence on a semi-Riemannian manifold, Lie derivative of a semi-Riemann metric), p. 157", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 156, "printedPageLabel": "157", "sectionLabel": "Chapter 8" } },
+        { "id": "stb-s9-3", "label": "§9.3 Curvature (of Riemannian submersions; O'Neill formulas), p. 186", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "sternberg-srg-2003", "fileLabel": "semi_riemannian_geometry.pdf", "physicalPageIndex": 185, "printedPageLabel": "186", "sectionLabel": "§9.3 Curvature" } }
+      ]
+    }
+  ]
+}

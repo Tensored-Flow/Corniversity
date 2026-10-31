@@ -1,0 +1,76 @@
+{
+  "id": "PHY-201-u02-ex1",
+  "sequence": 1,
+  "title": "Rolling downhill with a multiplier",
+  "kind": "derivation",
+  "promptMarkdown": "A round body of mass $m$ and radius $a$ rolls without slipping down a plane inclined at angle $\\alpha$ to the horizontal. Its moment of inertia about its centre is $I = \\beta m a^2$ ($\\beta = 1$ for a thin hoop, $\\tfrac12$ for a uniform disc, $\\tfrac25$ for a uniform solid sphere). Let $x$ be the distance travelled down the slope and $\\phi$ the angle through which the body has turned.\n\n1. Write the rolling constraint in differential form and show that it is holonomic.\n2. Nevertheless keep both coordinates. Write the Lagrangian $L(x,\\phi,\\dot x,\\dot\\phi)$ and the Euler–Lagrange equations with a Lagrange multiplier $\\lambda$ for the constraint.\n3. Solve for the acceleration $\\ddot x$ and for $\\lambda$. Identify the physical force represented by the multiplier term in the $x$ equation, give its direction, and check its units.\n4. Check the limit $\\beta\\to 0$ and interpret it. Which of the three bodies reaches the bottom first?\n5. If the coefficient of static friction between body and plane is $\\mu$, for which angles $\\alpha$ is rolling without slipping actually possible? (You may use that the normal force is $mg\\cos\\alpha$.)",
+  "conceptIds": ["constraints-generalised-coordinates", "lagrangian-mechanics"],
+  "hintLadder": [
+    "Rolling without slipping means the contact point is instantaneously at rest: relate $\\dot x$ to $a\\dot\\phi$. Can you integrate that relation?",
+    "The constraint $g = \\dot x - a\\dot\\phi = 0$ has coefficients $a_x = 1$ and $a_\\phi = -a$. The multiplier equations are $\\frac{d}{dt}\\frac{\\partial L}{\\partial\\dot q_j} - \\frac{\\partial L}{\\partial q_j} = \\lambda a_j$ for $q_j = x,\\phi$.",
+    "Use the $\\phi$ equation to express $\\lambda$ through $\\ddot\\phi$, then the constraint to express $\\ddot\\phi$ through $\\ddot x$, and substitute into the $x$ equation.",
+    "The multiplier term has the units of a force and acts along $x$. Which real force acts on the body along the slope besides gravity?",
+    "For part 5 compare the magnitude of the constraint force you found with the largest friction force the surface can supply."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "acceleration",
+      "kind": "expression_present",
+      "description": "the acceleration g sin α/(1 + β) appears",
+      "params": {
+        "patterns": [
+          "g\\\\?sin\\(?\\\\?(α|alpha)\\)?/\\(1\\+\\\\?(β|beta)\\)",
+          "\\(g\\\\?sin\\(?\\\\?(α|alpha)\\)?\\)/\\(1\\+\\\\?(β|beta)\\)",
+          "g\\\\?sin\\(?\\\\?(α|alpha)\\)?\\(1\\+\\\\?(β|beta)\\)\\^\\(?-1"
+        ]
+      }
+    },
+    {
+      "id": "friction-no-work",
+      "kind": "forbidden_claim",
+      "description": "claiming that the static friction force does work or dissipates energy in rolling without slipping",
+      "params": {
+        "patterns": [
+          "friction[^.]{0,40}(does|did|doing|is doing) (positive |negative )?work",
+          "energy (is |was |gets )?(lost|dissipated)[^.]{0,40}friction",
+          "friction[^.]{0,40}dissipates"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "constraint", "criterion": "The rolling constraint ẋ − a φ̇ = 0 is written and integrated to x − aφ = const, hence holonomic.", "weight": 0.15, "levels": [ { "label": "met", "description": "Correct with integration shown." }, { "label": "partially met", "description": "Constraint right, holonomy asserted." }, { "label": "not met", "description": "Wrong constraint." } ] },
+      { "id": "multiplier-equations", "criterion": "L = ½mẋ² + ½βma²φ̇² + mgx sin α (or equivalent potential) and the two multiplier equations m ẍ − mg sin α = λ, β m a² φ̈ = −λa are derived.", "weight": 0.3, "levels": [ { "label": "met", "description": "Both equations correct with the right signs of a_j." }, { "label": "partially met", "description": "A sign error in the multiplier terms." }, { "label": "not met", "description": "Equations wrong." } ] },
+      { "id": "solution", "criterion": "ẍ = g sin α/(1 + β) and λ = −β mg sin α/(1 + β) obtained; the multiplier term identified as the static friction force acting up the slope, with units of newtons.", "weight": 0.3, "levels": [ { "label": "met", "description": "All identified correctly." }, { "label": "partially met", "description": "Acceleration right, force or direction not identified." }, { "label": "not met", "description": "Acceleration wrong." } ] },
+      { "id": "limits", "criterion": "β → 0 gives frictionless sliding ẍ = g sin α with zero friction; the solid sphere wins; the no-slip condition tan α ≤ μ(1 + β)/β is derived.", "weight": 0.25, "levels": [ { "label": "met", "description": "All three present." }, { "label": "partially met", "description": "Two of three." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX solution",
+      "text": "The constraint $\\dot x = a\\dot\\phi$ integrates to $x = a\\phi + x_0$. With $L = \\tfrac12 m\\dot x^2 + \\tfrac12\\beta m a^2\\dot\\phi^2 + mgx\\sin\\alpha$ the multiplier equations give $m\\ddot x - mg\\sin\\alpha = \\lambda$ and $\\beta m a^2\\ddot\\phi = -\\lambda a$, so $\\ddot x = \\frac{g\\sin\\alpha}{1+\\beta}$ and $\\lambda = -\\frac{\\beta m g\\sin\\alpha}{1+\\beta}$, the static friction force up the slope. Friction does no work here since the contact point is at rest. Rolling is possible if $\\tan\\alpha \\le \\mu(1+\\beta)/\\beta$.",
+      "expect": { "acceleration": true, "friction-no-work": true }
+    },
+    {
+      "label": "plain-text solution",
+      "text": "x'' = g sin(α)/(1+β); the friction force is β m g sin α/(1+β) acting up the slope and the sphere arrives first.",
+      "expect": { "acceleration": true, "friction-no-work": true }
+    },
+    {
+      "label": "friction misconception",
+      "text": "The acceleration is reduced because the friction does negative work on the body and energy is lost to friction.",
+      "expect": { "friction-no-work": false }
+    },
+    {
+      "label": "no acceleration",
+      "text": "I wrote the Lagrangian and the constraint but could not solve the multiplier equations.",
+      "expect": { "acceleration": false }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "MAT-210-u01-ex3",
+  "sequence": 3,
+  "title": "Why countable",
+  "kind": "explanation",
+  "promptMarkdown": "In under 250 words and without the notes open, explain why the definition of a σ-algebra asks for closure under **countable** unions: not merely finite unions, and not arbitrary unions.\n\nGive one concrete use of countable unions from this unit (a measurability statement whose proof would fail if only finite unions were available), and one reason arbitrary unions would be too much: what would a σ-algebra on $\\mathbb R$ containing all singletons look like if it were closed under arbitrary unions, and why would that conflict with the project of measuring length? You may cite, as a forward reference, that the course proves in unit 5 that no translation-invariant measure extending the length of intervals is defined on all subsets of $\\mathbb R$.",
+  "conceptIds": [
+    "sigma-algebra"
+  ],
+  "hintLadder": [
+    "Which theorem of this unit is proved by writing a set as $\\bigcup_n\\{f_n>\\alpha\\}$? What kind of union is that?",
+    "Every subset of $\\mathbb R$ is a union of singletons. What does that say about a σ-algebra containing the singletons if arbitrary unions were allowed?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "countable-versus-finite",
+        "criterion": "Explains that limits and suprema of sequences are countable operations and names a concrete theorem (sup or pointwise limit of measurable functions is measurable; or the generated σ-algebra containing a countable union of generators) that needs countable unions.",
+        "weight": 0.4,
+        "levels": [
+          { "label": "met", "description": "Clear reason and a correct concrete instance." },
+          { "label": "partially met", "description": "Reason without an instance, or instance without the reason." },
+          { "label": "not met", "description": "Missing or confused." }
+        ]
+      },
+      {
+        "id": "countable-versus-arbitrary",
+        "criterion": "Explains that arbitrary unions of singletons give every subset, so the σ-algebra would be P(ℝ), and connects this to the forward reference that no translation-invariant extension of length lives on P(ℝ).",
+        "weight": 0.4,
+        "levels": [
+          { "label": "met", "description": "Both steps." },
+          { "label": "partially met", "description": "One step." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "labelling",
+        "criterion": "Distinguishes what has been proved in this unit from what is cited as a forward reference, and stays within the word limit.",
+        "weight": 0.2,
+        "levels": [
+          { "label": "met", "description": "Clear labelling, concise." },
+          { "label": "partially met", "description": "Blurs the distinction or runs long." },
+          { "label": "not met", "description": "Presents the forward reference as already proved here." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 15
+}

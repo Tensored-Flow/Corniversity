@@ -1,0 +1,22 @@
+[
+  {
+    "id": "CSA-210-mathematics",
+    "courseId": "CSA-210",
+    "strength": "soft",
+    "description": "Deep Learning Foundations uses linear algebra (matrices, eigenvalues, the SVD) and multivariable calculus (gradients, the chain rule) throughout; the Neuromatch prerequisites page lists linear algebra, basic statistics and calculus. Probability is used at the level of expectations and the binomial distribution.",
+    "alternatives": [
+      { "label": "Demonstrated concepts", "conceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus"] },
+      { "label": "Mathematical methods bridge", "bridgeCourseId": "PHY-100" }
+    ]
+  },
+  {
+    "id": "CSA-210-programming",
+    "courseId": "CSA-210",
+    "strength": "soft",
+    "description": "The tutorials and labs are in Python with array programming; the Neuromatch prerequisites page expects Python basics, NumPy and Matplotlib.",
+    "alternatives": [
+      { "label": "Demonstrated Python for scientific computing", "conceptIds": ["python-scientific-computing"] },
+      { "label": "Python bridge", "bridgeCourseId": "CSA-100" }
+    ]
+  }
+]

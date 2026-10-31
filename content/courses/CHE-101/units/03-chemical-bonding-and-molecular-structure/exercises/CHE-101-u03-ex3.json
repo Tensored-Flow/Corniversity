@@ -1,0 +1,65 @@
+{
+  "id": "CHE-101-u03-ex3",
+  "sequence": 3,
+  "title": "Bond orders from molecular orbitals: O2, O2⁺ and O2⁻",
+  "kind": "short_answer",
+  "promptMarkdown": "Use the molecular-orbital energy ordering for the heavier second-period homonuclear diatomics, in which $\\sigma_{2p}$ lies below the degenerate pair $\\pi_{2p}$, followed by $\\pi^*_{2p}$ and then $\\sigma^*_{2p}$ (OpenStax 8.4; lecture 13).\n\n1. Write the valence molecular-orbital configuration of $\\ce{O2}$, compute its bond order, state how many unpaired electrons it has and what magnetic property follows.\n2. Repeat for $\\ce{O2^+}$ and $\\ce{O2^-}$. Rank the three species by bond length, shortest first, and justify the ranking.\n3. The Lewis structure $\\ce{O=O}$ shows a double bond with every electron paired. State precisely which observation it fails to predict and why molecular-orbital theory succeeds.\n4. In one or two sentences, say what bond order means physically and why a bond order of 2.5 is a sensible quantity.",
+  "conceptIds": ["molecular-orbital-theory"],
+  "hintLadder": [
+    "$\\ce{O2}$ has $2 \\times 6 = 12$ valence electrons. Fill $\\sigma_{2s}, \\sigma^*_{2s}, \\sigma_{2p}, \\pi_{2p}$ (two orbitals), $\\pi^*_{2p}$ (two orbitals), $\\sigma^*_{2p}$ in order, two electrons per orbital, Hund's rule in the degenerate pairs.",
+    "Bond order $= \\tfrac12(\\text{bonding} - \\text{antibonding})$; the $\\sigma_{2s}$ and $\\sigma^*_{2s}$ electrons cancel.",
+    "Adding an electron to $\\ce{O2}$ goes into an antibonding orbital; removing one takes it from an antibonding orbital. Which direction strengthens the bond?",
+    "Where in the $\\ce{O2}$ configuration does Hund's rule leave unpaired electrons?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "bond-order-cation",
+      "kind": "numeric_value",
+      "description": "bond order 2.5 for O2⁺",
+      "params": { "expected": 2.5, "tolerance": 0.01 }
+    },
+    {
+      "id": "bond-order-anion",
+      "kind": "numeric_value",
+      "description": "bond order 1.5 for O2⁻",
+      "params": { "expected": 1.5, "tolerance": 0.01 }
+    },
+    {
+      "id": "paramagnetic",
+      "kind": "expression_present",
+      "description": "O2 described as paramagnetic",
+      "params": { "patterns": ["paramagnetic"] }
+    },
+    {
+      "id": "no-diamagnetic-o2",
+      "kind": "forbidden_claim",
+      "description": "claiming that O2 is diamagnetic",
+      "params": { "patterns": ["o2 (is|has bond order \\d+ and is) diamagnetic", "o2(is|hasbondorder\\d+andis)diamagnetic", "o_2 (is|has bond order \\d+ and is) diamagnetic", "o_2isdiamagnetic", "oxygen (is|molecule is) diamagnetic", "oxygen(is|moleculeis)diamagnetic"] }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "o2", "criterion": "O2: (σ2s)²(σ*2s)²(σ2p)²(π2p)⁴(π*2p)², bond order 2, two unpaired electrons, paramagnetic.", "weight": 0.3, "levels": [{ "label": "met", "description": "Configuration, bond order, unpaired count and magnetism." }, { "label": "partially met", "description": "Bond order right but unpaired electrons or magnetism wrong." }, { "label": "not met", "description": "Wrong configuration." }] },
+      { "id": "ions", "criterion": "O2⁺ bond order 2.5 (one unpaired); O2⁻ bond order 1.5 (one unpaired); lengths O2⁺ < O2 < O2⁻ because electrons are removed from or added to antibonding orbitals.", "weight": 0.35, "levels": [{ "label": "met", "description": "Both bond orders and the justified ranking." }, { "label": "partially met", "description": "Bond orders right, ranking unjustified or reversed." }, { "label": "not met", "description": "Bond orders wrong." }] },
+      { "id": "lewis-failure", "criterion": "Lewis predicts a diamagnetic molecule; O2 is observed to be paramagnetic (attracted into a magnetic field). MO theory places the last two electrons in degenerate π* orbitals with parallel spins.", "weight": 0.2, "levels": [{ "label": "met", "description": "Observation named precisely and the MO reason given." }, { "label": "partially met", "description": "One of the two." }, { "label": "not met", "description": "Neither." }] },
+      { "id": "meaning", "criterion": "Bond order counts net bonding electron pairs; fractional orders describe electron sharing that is not an integer number of pairs and correlate with bond length and strength.", "weight": 0.15, "levels": [{ "label": "met", "description": "Clear." }, { "label": "partially met", "description": "Partial." }, { "label": "not met", "description": "Missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 30,
+  "checkExamples": [
+    {
+      "label": "correct answer",
+      "text": "O2: (σ2s)^2 (σ*2s)^2 (σ2p)^2 (π2p)^4 (π*2p)^2, bond order (8 − 4)/2 = 2, two unpaired electrons in the π* orbitals, so O2 is paramagnetic. O2+ loses a π* electron: bond order 2.5, one unpaired electron. O2− gains a π* electron: bond order 1.5, one unpaired electron. Bond lengths: O2+ < O2 < O2− since higher bond order means a shorter, stronger bond. The Lewis structure predicts all electrons paired and so a diamagnetic molecule; liquid oxygen is attracted into a magnetic field. MO theory succeeds because Hund's rule puts the last two electrons into the two degenerate π* orbitals with parallel spins. Bond order counts net bonding pairs; 2.5 means five net bonding electrons shared.",
+      "expect": { "bond-order-cation": true, "bond-order-anion": true, "paramagnetic": true, "no-diamagnetic-o2": true }
+    },
+    {
+      "label": "Lewis reasoning carried over",
+      "text": "O2 has bond order 2 and is diamagnetic because all electrons are paired. O2+ has bond order 3 and O2− has bond order 1.",
+      "expect": { "no-diamagnetic-o2": false, "bond-order-cation": false, "bond-order-anion": false, "paramagnetic": false }
+    }
+  ]
+}

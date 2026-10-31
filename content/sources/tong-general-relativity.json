@@ -1,0 +1,56 @@
+{
+  "id": "tong-general-relativity",
+  "title": "General Relativity (lecture notes)",
+  "authors": ["David Tong"],
+  "institution": "University of Cambridge, DAMTP (Part III Mathematical Tripos)",
+  "kind": "notes",
+  "canonicalUrl": "https://davidtong.org/teaching/general-relativity/",
+  "description": "Masters-level (Part III) general relativity, written to be accessible without a prior GR course: 1 Geodesics in Spacetime; 2 Introducing Differential Geometry; 3 Introducing Riemannian Geometry; 4 The Einstein Equations; 5 When Gravity is Weak; 6 Black Holes. Four problem sheets and an HTML version.",
+  "rightsNotes": [
+    "The notes page states no licence and no copyright or reuse terms. Author copyright is assumed; Corniversity treats the notes as reference-only (cite and link, do not copy or ingest).",
+    "The historic DAMTP address https://www.damtp.cam.ac.uk/user/tong/gr.html returned a 301 redirect to davidtong.org on 2026-10-30.",
+    "Convention: the introduction states 'We use the metric with signature (−+++)' (verified in the HTML version and in the Chapter 1 PDF), matching Corniversity's convention."
+  ],
+  "currentVersionId": "tong-gr-web",
+  "versions": [
+    {
+      "id": "tong-gr-web",
+      "label": "Web edition on davidtong.org (undated; HTML version generated 2021-10-15)",
+      "url": "https://davidtong.org/teaching/general-relativity/",
+      "verifiedAt": "2026-10-30",
+      "verifiedBy": "Claude (build agent) — opened the notes page and the HTML version; read the text of the Chapter 1 PDF to verify its section headings and the signature statement",
+      "componentsSeen": [
+        "notes page: course description, 'Full Lecture Notes' (gr.pdf), chapter PDFs 1–6, problem sheets 1–4, HTML version link",
+        "HTML version: chapter list (0 Introduction, 1 Geodesics in Spacetime, 2 Introducing Differential Geometry, 3 Introducing Riemannian Geometry, 4 The Einstein Equations, 5 When Gravity is Weak, 6 Black Holes) and the conventions statement on the signature",
+        "Chapter 1 PDF (gr1.pdf, 55 pages including the front matter and full contents): 1.1 Non-Relativistic Particles (1.1.1 The Geodesic Equation); 1.2 Relativistic Particles (1.2.1 A Particle in Minkowski Spacetime, 1.2.2 Why You Get Old, 1.2.3 Rediscovering the Forces of Nature, 1.2.4 The Equivalence Principle, 1.2.5 Gravitational Time Dilation, 1.2.6 Geodesics in Spacetime); 1.3 A First Look at the Schwarzschild Metric (1.3.1 The Geodesic Equations, 1.3.2 Planetary Orbits in Newtonian Mechanics, 1.3.3 Planetary Orbits in General Relativity, 1.3.4 The Pull of Other Planets, 1.3.5 Light Bending)"
+      ],
+      "licence": "No licence stated; author copyright (free to read on the author's page)",
+      "accessStatus": "open_restricted_reuse",
+      "importAllowed": false,
+      "importHosts": [],
+      "limitations": [
+        "Chapters 2–6 and the problem sheets were listed on the page but not opened; locators to them are file-level.",
+        "Section-level locators for Chapter 1 are web locators whose headings were verified in the PDF text; no page-level pdf locators are recorded because the material is reference-only.",
+        "No year is stated on the page."
+      ],
+      "locators": [
+        { "id": "tong-gr-index", "label": "General Relativity notes page", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/teaching/general-relativity/", "heading": "General Relativity" } },
+        { "id": "tong-gr-html", "label": "HTML version: contents and conventions (signature (−+++))", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/teaching/general-relativity/grhtml/grhtml.html", "heading": "General Relativity (HTML): Introduction and conventions" } },
+        { "id": "tong-gr-full", "label": "Full lecture notes (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr.pdf", "heading": "Full Lecture Notes" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-ch1", "label": "Chapter 1: Geodesics in Spacetime (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr1.pdf", "heading": "1. Geodesics in Spacetime" }, "note": "Opened; section headings and the signature statement verified from the PDF text." },
+        { "id": "tong-gr-ch1-s1", "label": "Chapter 1, Section 1.1 Non-Relativistic Particles (1.1.1 The Geodesic Equation)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr1.pdf", "heading": "1.1 Non-Relativistic Particles" } },
+        { "id": "tong-gr-ch1-s2", "label": "Chapter 1, Section 1.2 Relativistic Particles (1.2.1 A Particle in Minkowski Spacetime; 1.2.2 Why You Get Old; 1.2.3 Rediscovering the Forces of Nature; 1.2.4 The Equivalence Principle; 1.2.5 Gravitational Time Dilation; 1.2.6 Geodesics in Spacetime)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr1.pdf", "heading": "1.2 Relativistic Particles" } },
+        { "id": "tong-gr-ch1-s3", "label": "Chapter 1, Section 1.3 A First Look at the Schwarzschild Metric (geodesic equations, planetary orbits in Newtonian mechanics and in GR, perihelion precession, light bending)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr1.pdf", "heading": "1.3 A First Look at the Schwarzschild Metric" } },
+        { "id": "tong-gr-ch2", "label": "Chapter 2: Introducing Differential Geometry (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr2.pdf", "heading": "2. Introducing Differential Geometry" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-ch3", "label": "Chapter 3: Introducing Riemannian Geometry (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr3.pdf", "heading": "3. Introducing Riemannian Geometry" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-ch4", "label": "Chapter 4: The Einstein Equations (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr4.pdf", "heading": "4. The Einstein Equations" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-ch5", "label": "Chapter 5: When Gravity is Weak (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr5.pdf", "heading": "5. When Gravity is Weak" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-ch6", "label": "Chapter 6: Black Holes (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/gr6.pdf", "heading": "6. Black Holes" }, "note": "Linked from the notes page; file not opened." },
+        { "id": "tong-gr-sheet1", "label": "Problem Sheet 1: Differential Geometry (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/idk1.pdf", "heading": "Problem Sheet 1: Differential Geometry" }, "note": "Linked from the notes page; file not opened. Optional practice." },
+        { "id": "tong-gr-sheet2", "label": "Problem Sheet 2: Riemannian Geometry (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/idk2.pdf", "heading": "Problem Sheet 2: Riemannian Geometry" }, "note": "Linked from the notes page; file not opened. Optional practice." },
+        { "id": "tong-gr-sheet3", "label": "Problem Sheet 3: Gravity (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/idk3.pdf", "heading": "Problem Sheet 3: Gravity" }, "note": "Linked from the notes page; file not opened. Optional practice." },
+        { "id": "tong-gr-sheet4", "label": "Problem Sheet 4: Linearised Gravity (PDF)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "tong-gr-web", "url": "https://davidtong.org/pdfs/teaching/general-relativity/idk4.pdf", "heading": "Problem Sheet 4: Linearised Gravity" }, "note": "Linked from the notes page; file not opened. Optional practice." }
+      ]
+    }
+  ]
+}

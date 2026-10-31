@@ -1,0 +1,58 @@
+{
+  "id": "MAT-262-u02-ex2",
+  "sequence": 2,
+  "title": "The tangential connection of a submanifold",
+  "kind": "proof",
+  "promptMarkdown": "Let $(N,h)$ be a Riemannian manifold, $M\\subseteq N$ a submanifold with the induced metric $g$, and $\\nabla$ the Levi-Civita connection of $(N,h)$. For vector fields $\\tilde X,\\tilde Y$ on $M$ with local extensions $X,Y$ to $N$, define\n$$\\tilde\\nabla_{\\tilde X}\\tilde Y=(\\nabla_XY)^\\top,\\qquad B(\\tilde X,\\tilde Y)=(\\nabla_XY)^\\perp$$\nalong $M$. You may take as known (Remark 6.18) that these do not depend on the extensions chosen.\n\n1. Prove that $\\tilde\\nabla$ is a connection on $TM$.\n2. Prove that $\\tilde\\nabla$ is torsion-free. (You will need that $[X,Y]$ is tangent to $M$ along $M$ and restricts to $[\\tilde X,\\tilde Y]$; prove this, for instance in a slice chart.)\n3. Prove that $\\tilde\\nabla$ is compatible with $g$.\n4. Conclude from the fundamental theorem that $\\tilde\\nabla$ is the Levi-Civita connection of $(M,g)$ (this is Theorem 6.20 of the notes), and show that $B$ is symmetric.\n5. Apply this to $S^2_R\\subseteq\\mathbb{R}^3$ with $\\nabla=\\partial$ the directional derivative: show that for tangent fields $X,Y$ and $p\\in S^2_R$,\n$$\\tilde\\nabla_XY=\\partial_XY+\\frac{1}{R^2}\\langle X,Y\\rangle\\,p,\\qquad B(X,Y)=-\\frac{1}{R^2}\\langle X,Y\\rangle\\,p .$$",
+  "conceptIds": ["levi-civita-connection", "riemannian-submanifolds"],
+  "hintLadder": [
+    "Tangential projection $v\\mapsto v^\\top$ is linear on each $T_pN$; what does that give for $\\tilde\\nabla_{\\tilde X}(f\\tilde Y)$ once you extend $f$ to $N$?",
+    "In a slice chart $M=\\{x^{m+1}=\\dots=x^n=0\\}$, tangency of $X$ to $M$ means $X^\\alpha=0$ on $M$ for $\\alpha>m$. Compute $[X,Y]^\\alpha$ on $M$.",
+    "For compatibility: $\\tilde Xg(\\tilde Y,\\tilde Z)=Xh(Y,Z)$ along $M$; expand with the ambient compatibility and use that $Z$ is tangent to kill the normal part.",
+    "For the sphere, the normal space at $p$ is $\\mathbb{R}p$. Differentiate the identity $\\langle Y,p\\rangle=0$ along $X$, remembering that $\\partial_X$ of the position vector field is $X$."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "sphere-formula",
+      "kind": "expression_present",
+      "description": "the sphere formula ∇̃_X Y = ∂_X Y + R^{-2}⟨X,Y⟩ p appears with the plus sign",
+      "params": {
+        "patterns": [
+          "\\+\\(?(\\(1\\)/\\(r\\^2\\)|1/r\\^2|r\\^-2)\\)?(\\\\langle|⟨|<)x,y(\\\\rangle|⟩|>)p",
+          "\\+(\\\\langle|⟨|<)x,y(\\\\rangle|⟩|>)p/r\\^2",
+          "\\+\\(?(\\(1\\)/\\(r\\^2\\)|1/r\\^2|r\\^-2)\\)?(g|h)\\(x,y\\)p"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "connection", "criterion": "C^∞(M)-linearity in X̃ and the Leibniz rule in Ỹ derived from the ambient axioms and linearity of the projection.", "weight": 0.2, "levels": [ { "label": "met", "description": "Both axioms with the extension of f handled." }, { "label": "partially met", "description": "One axiom, or extensions not mentioned." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "torsion", "criterion": "Tangency of [X,Y] along M proved (slice chart or equivalent) and torsion-freeness deduced from the ambient one by projecting.", "weight": 0.25, "levels": [ { "label": "met", "description": "Tangency proved and used correctly." }, { "label": "partially met", "description": "Tangency asserted without proof." }, { "label": "not met", "description": "Missing or circular." } ] },
+      { "id": "metric", "criterion": "Compatibility derived from the ambient compatibility, with the normal part eliminated because Z is tangent.", "weight": 0.2, "levels": [ { "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Normal part not addressed." }, { "label": "not met", "description": "Missing." } ] },
+      { "id": "conclusion-and-sphere", "criterion": "Uniqueness invoked correctly; symmetry of B from torsion-freeness of both connections; the sphere formulas derived from ⟨Y,p⟩ = 0 with the correct sign.", "weight": 0.35, "levels": [ { "label": "met", "description": "All three, signs correct." }, { "label": "partially met", "description": "Sphere formula with a sign error, or symmetry of B omitted." }, { "label": "not met", "description": "Missing." } ] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "checkExamples": [
+    {
+      "label": "correct LaTeX sphere formula",
+      "text": "Along $S^2_R$ we have $\\langle Y,p\\rangle=0$, so $0=X\\langle Y,p\\rangle=\\langle\\partial_XY,p\\rangle+\\langle Y,X\\rangle$ and $(\\partial_XY)^\\perp=\\frac{1}{R^2}\\langle\\partial_XY,p\\rangle p=-\\frac{1}{R^2}\\langle X,Y\\rangle p$. Hence $\\tilde\\nabla_XY=\\partial_XY+\\frac{1}{R^2}\\langle X,Y\\rangle p$ and $B(X,Y)=-\\frac{1}{R^2}\\langle X,Y\\rangle p$.",
+      "expect": { "sphere-formula": true }
+    },
+    {
+      "label": "plain-text sphere formula",
+      "text": "The tangential connection is D_X Y + (1/R^2) <X,Y> p and the second fundamental form is -(1/R^2) <X,Y> p.",
+      "expect": { "sphere-formula": true }
+    },
+    {
+      "label": "sign error",
+      "text": "We get the tangential connection D_X Y - (1/R^2) <X,Y> p on the sphere.",
+      "expect": { "sphere-formula": false }
+    }
+  ]
+}

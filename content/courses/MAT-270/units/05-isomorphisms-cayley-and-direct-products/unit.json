@@ -1,0 +1,31 @@
+{
+  "id": "MAT-270-u05",
+  "courseId": "MAT-270",
+  "sequence": 5,
+  "title": "Isomorphisms, Cayley's theorem and direct products",
+  "summary": "Isomorphisms as structure-preserving bijections and the invariants they preserve; classification of cyclic groups (infinite cyclic groups are isomorphic to Z, cyclic groups of order n to Z_n); isomorphism as an equivalence relation; Cayley's theorem; external and internal direct products and when Z_m × Z_n is cyclic.",
+  "objectives": [
+    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is chapter 9 of Judson (Sections 9.1–9.2)." }
+  ],
+  "prerequisiteConceptIds": ["group-basics", "cyclic-groups", "permutation-groups"],
+  "teachesConceptIds": ["group-isomorphisms"],
+  "preparation": [
+    { "description": "Read Section 9.1: definition and examples, Theorem 9.1.6 (invariants), Theorems 9.1.7–9.1.8 and Corollary 9.1.9 (classification of cyclic groups), Theorem 9.1.10, Cayley's theorem (Theorem 9.1.12).", "locatorId": "aata-s9-1", "estimatedMinutes": 50 },
+    { "description": "Read Section 9.2 (external and internal direct products) from the chapter page.", "locatorId": "aata-ch09", "estimatedMinutes": 40 },
+    { "description": "Optional supplement: MIT student notes, lecture 3 (Homomorphisms and Isomorphisms).", "locatorId": "an21-lec03", "estimatedMinutes": 30 }
+  ],
+  "activities": [
+    { "id": "u05-a1", "type": "reading", "title": "Chapter 9: isomorphisms and direct products", "instructions": "Read the chapter for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["aata-ch09", "aata-s9-1", "an21-lec03"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 270,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Chapter 9 page and Section 9.1 page of the HTML edition opened 2026-10-30 (statement numbers recorded for 9.1). MIT student-notes lecture 3 PDF URL recorded from its resource page; the file was not opened." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}

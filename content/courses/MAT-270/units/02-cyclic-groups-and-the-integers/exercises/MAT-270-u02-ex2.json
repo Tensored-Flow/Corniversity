@@ -1,0 +1,129 @@
+{
+  "id": "MAT-270-u02-ex2",
+  "sequence": 2,
+  "title": "Roots of unity and common orders",
+  "kind": "proof",
+  "promptMarkdown": "1. Let $G$ be a group and $a\\in G$ with $a^m=e$ and $a^n=e$ for positive integers $m,n$. Prove that $a^{\\gcd(m,n)}=e$. Deduce that if $a$ has finite order $k$ then $a^j=e$ if and only if $k\\mid j$.\n2. For $n\\ge1$ let $\\mu_n=\\{z\\in\\mathbb C: z^n=1\\}$. Prove that $\\mu_m\\cap\\mu_n=\\mu_{\\gcd(m,n)}$, and determine $\\mu_{12}\\cap\\mu_8$ explicitly as a set of complex numbers.\n3. Let $\\omega=\\operatorname{cis}(2\\pi/n)$. Prove that $\\omega^k$ is a primitive $n$th root of unity (that is, generates $\\mu_n$) if and only if $\\gcd(k,n)=1$, and list the primitive $12$th roots of unity as powers of $\\omega$.",
+  "conceptIds": [
+    "cyclic-groups",
+    "integers-mod-n"
+  ],
+  "hintLadder": [
+    "Bézout: $\\gcd(m,n)=mr+ns$ for some integers $r,s$, possibly negative. Raise $a$ to that power using the exponent laws.",
+    "For the deduction, apply part 1 to $j$ and $k$ and compare $\\gcd(j,k)$ with the minimality of $k$.",
+    "An element of $\\mu_m\\cap\\mu_n$ satisfies two equations at once; part 1 applies in the group $\\mathbb C^*$. For the reverse inclusion, $\\gcd(m,n)$ divides both $m$ and $n$.",
+    "$|\\omega^k|=n/\\gcd(k,n)$ by Theorem 4.1.13; when does this equal $n$? Which $k\\in\\{1,\\dots,12\\}$ are coprime to $12$?"
+  ],
+  "deterministicChecks": [
+    {
+      "id": "gcd-named",
+      "kind": "expression_present",
+      "description": "gcd(m, n) appears in the argument (Bézout or the intersection formula)",
+      "params": {
+        "patterns": [
+          "gcd\\(m,n\\)",
+          "gcd\\(n,m\\)",
+          "hcf\\(m,n\\)"
+        ]
+      }
+    },
+    {
+      "id": "mu4-elements",
+      "kind": "expression_present",
+      "description": "μ_12 ∩ μ_8 is identified as μ_4 = {1, i, −1, −i}",
+      "params": {
+        "patterns": [
+          "μ_4(?![0-9])",
+          "\\\\mu_4(?![0-9])",
+          "(?<![a-z])mu_4(?![0-9])",
+          "fourthrootsofunity",
+          "(?<![0-9])4throotsofunity",
+          "\\{1,i,-1,-i\\\\?\\}",
+          "\\{1,-1,i,-i\\\\?\\}",
+          "\\{±1,±i\\\\?\\}",
+          "\\\\?\\{\\\\?pm1,\\\\?pmi\\\\?\\}"
+        ]
+      }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "bezout-power",
+        "criterion": "a^{gcd(m,n)} = (a^m)^r (a^n)^s = e via Bézout; then a^j = e ⇒ a^{gcd(j,k)} = e with 0 < gcd(j,k) ≤ k forces gcd(j,k) = k, i.e. k | j, and the converse is immediate.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Bézout used correctly (negative exponents allowed) and the divisibility deduced from minimality." },
+          { "label": "partially met", "description": "Bézout step right, deduction incomplete." },
+          { "label": "not met", "description": "Missing, or argues with mn instead of the gcd." }
+        ]
+      },
+      {
+        "id": "intersection",
+        "criterion": "Both inclusions: μ_{gcd} ⊂ μ_m ∩ μ_n because gcd divides m and n; μ_m ∩ μ_n ⊂ μ_{gcd} by part 1 in C*.",
+        "weight": 0.25,
+        "levels": [
+          { "label": "met", "description": "Both inclusions." },
+          { "label": "partially met", "description": "One inclusion." },
+          { "label": "not met", "description": "Missing." }
+        ]
+      },
+      {
+        "id": "mu4",
+        "criterion": "μ_12 ∩ μ_8 = μ_4 = {1, i, −1, −i}.",
+        "weight": 0.15,
+        "levels": [
+          { "label": "met", "description": "Correct set." },
+          { "label": "partially met", "description": "μ_4 named without the elements, or one element wrong." },
+          { "label": "not met", "description": "Wrong (e.g. μ_24 or μ_96)." }
+        ]
+      },
+      {
+        "id": "primitive-roots",
+        "criterion": "ω^k generates μ_n iff its order n/gcd(k,n) equals n iff gcd(k,n) = 1 (using that μ_n = ⟨ω⟩ has order n); the primitive 12th roots are ω, ω^5, ω^7, ω^11.",
+        "weight": 0.3,
+        "levels": [
+          { "label": "met", "description": "Argument via the order formula and the correct list of four." },
+          { "label": "partially met", "description": "List right, argument incomplete, or argument right with a slip in the list." },
+          { "label": "not met", "description": "Missing or wrong." }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 40,
+  "checkExamples": [
+    {
+      "label": "LaTeX argument",
+      "text": "By Bézout write gcd(m,n) = mr + ns with $r,s\\in\\mathbb Z$, so $a^{\\gcd(m,n)}=(a^m)^r(a^n)^s=e$. Applying this in $\\mathbb C^*$, $\\mu_{12}\\cap\\mu_8=\\mu_{\\gcd(12,8)}=\\mu_4=\\{1,i,-1,-i\\}$.",
+      "expect": {
+        "gcd-named": true,
+        "mu4-elements": true
+      }
+    },
+    {
+      "label": "plain-text fourth roots",
+      "text": "gcd(12,8) = 4, so the common solutions are the fourth roots of unity: 1, i, -1 and -i.",
+      "expect": {
+        "mu4-elements": true
+      }
+    },
+    {
+      "label": "lcm confusion",
+      "text": "μ_12 ∩ μ_8 = μ_24, the 24th roots of unity, since lcm(12,8) = 24.",
+      "expect": {
+        "mu4-elements": false
+      }
+    },
+    {
+      "label": "product instead of gcd",
+      "text": "Since a^m = e and a^n = e we have a^{mn} = e, so the order of a divides mn.",
+      "expect": {
+        "gcd-named": false
+      }
+    }
+  ]
+}

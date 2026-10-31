@@ -1,0 +1,29 @@
+{
+  "id": "CSA-210-u07",
+  "courseId": "CSA-210",
+  "sequence": 7,
+  "title": "Regularisation: L1 and L2, dropout, data augmentation and hyperparameter search",
+  "summary": "L1 and L2 penalties as shrinkage and their effect on the optimisation problem; dropout and its implementation caveats; data augmentation; stochastic gradient descent and the learning rate as regularisers; hyperparameter tuning and its perils.",
+  "objectives": [
+    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D1 Tutorial 2 (Regularization techniques part 2) of the Neuromatch Deep Learning ebook." }
+  ],
+  "prerequisiteConceptIds": ["overfitting-and-early-stopping", "gradient-descent"],
+  "teachesConceptIds": ["regularisation-dl"],
+  "preparation": [
+    { "description": "Read W2D1 Tutorial 2: L1 and L2 regularisation, dropout and its caveats, data augmentation, SGD and the learning rate, hyperparameter tuning.", "locatorId": "nmadl-w2d1-t2", "estimatedMinutes": 60 }
+  ],
+  "activities": [
+    { "id": "u07-a1", "type": "reading", "title": "W2D1 Tutorial 2: Regularization techniques part 2", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d1", "nmadl-w2d1-t2"], "exerciseIds": [], "sessionKind": "lecture" }
+  ],
+  "exerciseIds": [],
+  "exitCheck": { "description": "To be defined when the unit is prepared." },
+  "commonMisconceptions": [],
+  "estimatedMinutes": 240,
+  "status": "draft",
+  "checks": [
+    { "name": "source-locators", "result": "pass", "evidence": "Tutorial 2 opened 2026-10-30 (HTTP 200; title 'Tutorial 2: Regularization techniques part 2'; sections 'Section 1: L1 and L2 Regularization', 'Section 2: Dropout', 'Section 3: Data Augmentation', 'Section 4: Stochastic Gradient Descent', 'Section 5: Hyperparameter Tuning' recorded)." },
+    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+  ],
+  "lessonFile": "lesson.md",
+  "instructorFiles": []
+}
