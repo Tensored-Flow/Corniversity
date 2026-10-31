@@ -5,39 +5,195 @@
   "title": "Normed and Banach spaces",
   "summary": "Why infinite dimensions need new machinery; norms and the metric they induce; the sup norm, ℓ^p and C_∞(X); completeness and the first Banach spaces; the first failure of a finite-dimensional comfort: norm equivalence.",
   "objectives": [
-    { "id": "u01-o1", "description": "State the norm axioms and verify them for the sup norm on C_∞(X)." },
-    { "id": "u01-o2", "description": "Explain why convergence in the sup norm is uniform convergence and why C_∞(X) is complete." },
-    { "id": "u01-o3", "description": "Show by explicit computation that the sup norm and the integral norm on C([0,1]) are not equivalent, and name the finite-dimensional hypothesis that fails." },
-    { "id": "u01-o4", "description": "Produce a Cauchy sequence in (C([0,1]), ‖·‖₁) with no continuous limit." }
+    {
+      "id": "u01-o1",
+      "description": "State the norm axioms and verify them for the sup norm on C_∞(X)."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Explain why convergence in the sup norm is uniform convergence and why C_∞(X) is complete."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Show by explicit computation that the sup norm and the integral norm on C([0,1]) are not equivalent, and name the finite-dimensional hypothesis that fails."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Produce a Cauchy sequence in (C([0,1]), ‖·‖₁) with no continuous limit."
+    }
   ],
-  "prerequisiteConceptIds": ["real-analysis-sequences", "metric-spaces", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["normed-space", "equivalent-norms", "banach-space"],
+  "prerequisiteConceptIds": [
+    "real-analysis-sequences",
+    "metric-spaces",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "normed-space",
+    "equivalent-norms",
+    "banach-space"
+  ],
   "preparation": [
-    { "description": "Read lecture 1 notes, pages 1–5: vector spaces, finite versus infinite dimension (the x^n example), the norm axioms and the induced metric.", "locatorId": "fa21-l1-def7", "estimatedMinutes": 25 },
-    { "description": "Read the sup norm on C_∞(X) (Definition 10, Proposition 11) and the definition of ℓ^p (Definition 12).", "locatorId": "fa21-l1-prop11", "estimatedMinutes": 15 },
-    { "description": "Read Definition 14 (Banach space) and Theorem 16 with its proof; note the three-step pattern: candidate limit, candidate in the space, convergence in norm.", "locatorId": "fa21-l1-thm16", "estimatedMinutes": 20 }
+    {
+      "description": "Read lecture 1 notes, pages 1–5: vector spaces, finite versus infinite dimension (the x^n example), the norm axioms and the induced metric.",
+      "locatorId": "fa21-l1-def7",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read the sup norm on C_∞(X) (Definition 10, Proposition 11) and the definition of ℓ^p (Definition 12).",
+      "locatorId": "fa21-l1-prop11",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read Definition 14 (Banach space) and Theorem 16 with its proof; note the three-step pattern: candidate limit, candidate in the space, convergence in norm.",
+      "locatorId": "fa21-l1-thm16",
+      "estimatedMinutes": 20
+    }
   ],
   "activities": [
-    { "id": "u01-a1", "type": "reading", "title": "Lecture 1: normed and Banach spaces", "instructions": "Read the lesson alongside lecture 1 of the notes. Stop at each definition and write the definition in your own words in the notebook before reading on. The lesson's worked example on the sup norm should be checked line by line.", "estimatedMinutes": 60, "sourceLocatorIds": ["fa21-l1-def3", "fa21-l1-def5", "fa21-l1-ex6", "fa21-l1-def7", "fa21-l1-prop8", "fa21-l1-ex9", "fa21-l1-def10", "fa21-l1-prop11", "fa21-l1-def12", "fa21-l1-def14", "fa21-l1-thm16"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u01-a2", "type": "proof_workshop", "title": "Tutorial: two norms on C([0,1])", "instructions": "Attempt exercise 1 before asking for any hint. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 75, "sourceLocatorIds": ["fa21-l1-def7", "fa21-l1-prop11", "fa21-l1-def14"], "exerciseIds": ["MAT-230-u01-ex1", "MAT-230-u01-ex2"], "sessionKind": "tutorial" },
-    { "id": "u01-a3", "type": "explain_back", "title": "Explain: what completeness buys", "instructions": "Write a short explanation (exercise 3) without looking at the notes, then compare with them.", "estimatedMinutes": 15, "sourceLocatorIds": ["fa21-l1-def14"], "exerciseIds": ["MAT-230-u01-ex3"], "sessionKind": "oral" },
-    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: the three norm axioms; the definition of a Banach space; the sup norm; what convergence in the sup norm means for functions.", "estimatedMinutes": 10, "sourceLocatorIds": ["fa21-l1-def7", "fa21-l1-def14"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "Lecture 1: normed and Banach spaces",
+      "instructions": "Read the lesson alongside lecture 1 of the notes. Stop at each definition and write the definition in your own words in the notebook before reading on. The lesson's worked example on the sup norm should be checked line by line.",
+      "estimatedMinutes": 60,
+      "sourceLocatorIds": [
+        "fa21-l1-def3",
+        "fa21-l1-def5",
+        "fa21-l1-ex6",
+        "fa21-l1-def7",
+        "fa21-l1-prop8",
+        "fa21-l1-ex9",
+        "fa21-l1-def10",
+        "fa21-l1-prop11",
+        "fa21-l1-def12",
+        "fa21-l1-def14",
+        "fa21-l1-thm16"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "proof_workshop",
+      "title": "Tutorial: two norms on C([0,1])",
+      "instructions": "Attempt exercise 1 before asking for any hint. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "fa21-l1-def7",
+        "fa21-l1-prop11",
+        "fa21-l1-def14"
+      ],
+      "exerciseIds": [
+        "MAT-230-u01-ex1",
+        "MAT-230-u01-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "explain_back",
+      "title": "Explain: what completeness buys",
+      "instructions": "Write a short explanation (exercise 3) without looking at the notes, then compare with them.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "fa21-l1-def14"
+      ],
+      "exerciseIds": [
+        "MAT-230-u01-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a4",
+      "type": "retrieval_practice",
+      "title": "Retrieval: definitions of the unit",
+      "instructions": "From memory: the three norm axioms; the definition of a Banach space; the sup norm; what convergence in the sup norm means for functions.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "fa21-l1-def7",
+        "fa21-l1-def14"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    },
+    {
+      "id": "u01-a5",
+      "type": "lab",
+      "title": "Laboratory: two norms on C([0,1]), by computation",
+      "instructions": "After the tutorial: compute ‖x^n‖∞ and ‖x^n‖₁ for several n by hand, then check each value against the laboratory's numerical integral. The laboratory does not state the closed forms until your tutorial attempt has been assessed; a grid supremum and a quadrature are approximations, not a proof. Record what the plot of x^n shows as n grows and why it bears on norm equivalence.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "fa21-l1-def7",
+        "fa21-l1-prop11"
+      ],
+      "exerciseIds": [],
+      "labId": "norm-comparison",
+      "sessionKind": "lab"
+    }
   ],
-  "exerciseIds": ["MAT-230-u01-ex1", "MAT-230-u01-ex2", "MAT-230-u01-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: both norms of x^n computed and non-equivalence concluded with the finite-dimensional hypothesis named.", "exerciseId": "MAT-230-u01-ex1" },
+  "exerciseIds": [
+    "MAT-230-u01-ex1",
+    "MAT-230-u01-ex2",
+    "MAT-230-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 1 accepted: both norms of x^n computed and non-equivalence concluded with the finite-dimensional hypothesis named.",
+    "exerciseId": "MAT-230-u01-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "All norms on a vector space are equivalent, so the choice of norm on C([0,1]) does not matter.", "correction": "Equivalence of all norms is a theorem about finite-dimensional spaces. On C([0,1]) the sequence x^n has sup norm 1 and integral norm 1/(n+1); no constant C gives ‖f‖_∞ ≤ C‖f‖₁.", "correctionLocatorIds": ["fa21-l1-ex6", "fa21-l1-ex9"] },
-    { "claim": "Convergence in the integral norm implies pointwise convergence.", "correction": "It does not: the functions can converge to 0 in ‖·‖₁ while taking the value 1 somewhere for every n (narrow spikes). The sup norm, by contrast, controls every point.", "correctionLocatorIds": ["fa21-l1-prop11"] },
-    { "claim": "A closed and bounded subset of a Banach space is compact.", "correction": "Heine–Borel fails in infinite dimensions; the notes flag this at the outset. The unit ball of ℓ^p is closed and bounded but not compact.", "correctionLocatorIds": ["fa21-l1-ex6"] }
+    {
+      "claim": "All norms on a vector space are equivalent, so the choice of norm on C([0,1]) does not matter.",
+      "correction": "Equivalence of all norms is a theorem about finite-dimensional spaces. On C([0,1]) the sequence x^n has sup norm 1 and integral norm 1/(n+1); no constant C gives ‖f‖_∞ ≤ C‖f‖₁.",
+      "correctionLocatorIds": [
+        "fa21-l1-ex6",
+        "fa21-l1-ex9"
+      ]
+    },
+    {
+      "claim": "Convergence in the integral norm implies pointwise convergence.",
+      "correction": "It does not: the functions can converge to 0 in ‖·‖₁ while taking the value 1 somewhere for every n (narrow spikes). The sup norm, by contrast, controls every point.",
+      "correctionLocatorIds": [
+        "fa21-l1-prop11"
+      ]
+    },
+    {
+      "claim": "A closed and bounded subset of a Banach space is compact.",
+      "correction": "Heine–Borel fails in infinite dimensions; the notes flag this at the outset. The unit ball of ℓ^p is closed and bounded but not compact.",
+      "correctionLocatorIds": [
+        "fa21-l1-ex6"
+      ]
+    }
   ],
-  "estimatedMinutes": 220,
+  "estimatedMinutes": 245,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All eleven locators opened 2026-10-30; page indices verified against text extracted from MIT18_102s21_lec1.pdf (7 pages, no printed labels): Definition 7 on PDF page 2 (index 1), Theorem 16 on page 5 (index 4)." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: sup_{[0,1]} x^n = 1; ∫₀¹ x^n = 1/(n+1); ratio n+1 unbounded; the ‖·‖₁-Cauchy sequence f_n (ramp on [1/2, 1/2+1/n]) has ‖f_n − f_m‖₁ ≤ 1/min(n,m) and no continuous limit." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "Reference reasoning lives only in instructor/; the lesson and exercise prompts do not state the computed values or the counterexample's limit argument." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "60 + 75 + 15 + 10 minutes of activities plus 60 minutes preparation ≈ 3.7 hours, within the 10–12 hours per week budget alongside unit 2." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All eleven locators opened 2026-10-30; page indices verified against text extracted from MIT18_102s21_lec1.pdf (7 pages, no printed labels): Definition 7 on PDF page 2 (index 1), Theorem 16 on page 5 (index 4)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Build agent re-derived: sup_{[0,1]} x^n = 1; ∫₀¹ x^n = 1/(n+1); ratio n+1 unbounded; the ‖·‖₁-Cauchy sequence f_n (ramp on [1/2, 1/2+1/n]) has ‖f_n − f_m‖₁ ≤ 1/min(n,m) and no continuous limit."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "Reference reasoning lives only in instructor/; the lesson and exercise prompts do not state the computed values or the counterexample's limit argument."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "60 + 75 + 15 + 10 minutes of activities plus 60 minutes preparation ≈ 3.7 hours, within the 10–12 hours per week budget alongside unit 2."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-230-u01-ex1.reference-solution.md", "MAT-230-u01-ex1.grading-notes.md", "MAT-230-u01-ex2.reference-solution.md", "MAT-230-u01-ex3.grading-notes.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "MAT-230-u01-ex1.reference-solution.md",
+    "MAT-230-u01-ex1.grading-notes.md",
+    "MAT-230-u01-ex2.reference-solution.md",
+    "MAT-230-u01-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
 }

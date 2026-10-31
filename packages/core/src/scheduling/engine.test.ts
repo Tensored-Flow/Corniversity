@@ -15,9 +15,45 @@ function activities(enrolmentId: string, courseId: string, units: number, perUni
     const oral = `${unitId}:a3`;
     const prevTutorial = u > 1 ? `${courseId}-u${String(u - 1).padStart(2, "0")}:a2` : null;
     out.push(
-      { key: lecture, enrolmentId, courseId, unitId, unitSequence: u, activityId: "a1", title: `Unit ${u} lecture`, sessionKind: "lecture", estimatedMinutes: perUnitMinutes[0]!, dependsOn: prevTutorial ? [prevTutorial] : [], earliestWeek: u - 1 },
-      { key: tutorial, enrolmentId, courseId, unitId, unitSequence: u, activityId: "a2", title: `Unit ${u} tutorial`, sessionKind: "tutorial", estimatedMinutes: perUnitMinutes[1]!, dependsOn: [lecture], earliestWeek: u - 1 },
-      { key: oral, enrolmentId, courseId, unitId, unitSequence: u, activityId: "a3", title: `Unit ${u} explain-back`, sessionKind: "oral", estimatedMinutes: perUnitMinutes[2]!, dependsOn: [tutorial], earliestWeek: u - 1 },
+      {
+        key: lecture,
+        enrolmentId,
+        courseId,
+        unitId,
+        unitSequence: u,
+        activityId: "a1",
+        title: `Unit ${u} lecture`,
+        sessionKind: "lecture",
+        estimatedMinutes: perUnitMinutes[0]!,
+        dependsOn: prevTutorial ? [prevTutorial] : [],
+        earliestWeek: u - 1,
+      },
+      {
+        key: tutorial,
+        enrolmentId,
+        courseId,
+        unitId,
+        unitSequence: u,
+        activityId: "a2",
+        title: `Unit ${u} tutorial`,
+        sessionKind: "tutorial",
+        estimatedMinutes: perUnitMinutes[1]!,
+        dependsOn: [lecture],
+        earliestWeek: u - 1,
+      },
+      {
+        key: oral,
+        enrolmentId,
+        courseId,
+        unitId,
+        unitSequence: u,
+        activityId: "a3",
+        title: `Unit ${u} explain-back`,
+        sessionKind: "oral",
+        estimatedMinutes: perUnitMinutes[2]!,
+        dependsOn: [tutorial],
+        earliestWeek: u - 1,
+      },
     );
   }
   return out;
@@ -37,7 +73,9 @@ function baseInput(overrides: Partial<SchedulerInput> = {}): SchedulerInput {
     ],
     commitments: [{ id: "algo", title: "Algocourse", weekday: 4, startMinute: 18 * 60, endMinute: 20 * 60, protected: true }],
     daysOff: ["2026-11-10"],
-    courses: [{ enrolmentId: "e1", courseId: "MAT-230", title: "Functional Analysis I", priority: 1, activities: activities("e1", "MAT-230", 4) }],
+    courses: [
+      { enrolmentId: "e1", courseId: "MAT-230", title: "Functional Analysis I", priority: 1, activities: activities("e1", "MAT-230", 4) },
+    ],
     weeklyCapMinutes: 8 * 60,
     preferredSessionMinutes: 60,
     minSessionMinutes: 30,
@@ -104,7 +142,9 @@ describe("schedule", () => {
   it("never exceeds the weekly cap and splits long activities into parts", () => {
     const input = baseInput({
       weeklyCapMinutes: 3 * 60,
-      courses: [{ enrolmentId: "e1", courseId: "MAT-230", title: "FA", priority: 1, activities: activities("e1", "MAT-230", 2, [150, 60, 15]) }],
+      courses: [
+        { enrolmentId: "e1", courseId: "MAT-230", title: "FA", priority: 1, activities: activities("e1", "MAT-230", 2, [150, 60, 15]) },
+      ],
     });
     const result = schedule(input);
     for (const w of result.weekly) expect(w.plannedMinutes).toBeLessThanOrEqual(w.capMinutes);
@@ -123,7 +163,13 @@ describe("schedule", () => {
     const input = baseInput({
       courses: [
         { enrolmentId: "e1", courseId: "MAT-230", title: "FA", priority: 1, activities: activities("e1", "MAT-230", 12, [180, 180, 60]) },
-        { enrolmentId: "e2", courseId: "MAT-261", title: "Manifolds", priority: 2, activities: activities("e2", "MAT-261", 12, [180, 180, 60]) },
+        {
+          enrolmentId: "e2",
+          courseId: "MAT-261",
+          title: "Manifolds",
+          priority: 2,
+          activities: activities("e2", "MAT-261", 12, [180, 180, 60]),
+        },
       ],
       weeklyCapMinutes: 5 * 60,
     });
@@ -151,8 +197,32 @@ describe("schedule", () => {
           title: "FA",
           priority: 1,
           activities: [
-            { key: "u1:a", enrolmentId: "e1", courseId: "MAT-230", unitId: "u1", unitSequence: 1, activityId: "a", title: "A", sessionKind: "lecture", estimatedMinutes: 60, dependsOn: [], earliestWeek: 0 },
-            { key: "u2:a", enrolmentId: "e1", courseId: "MAT-230", unitId: "u2", unitSequence: 2, activityId: "a", title: "B", sessionKind: "lecture", estimatedMinutes: 60, dependsOn: ["u1:a"], earliestWeek: 1 },
+            {
+              key: "u1:a",
+              enrolmentId: "e1",
+              courseId: "MAT-230",
+              unitId: "u1",
+              unitSequence: 1,
+              activityId: "a",
+              title: "A",
+              sessionKind: "lecture",
+              estimatedMinutes: 60,
+              dependsOn: [],
+              earliestWeek: 0,
+            },
+            {
+              key: "u2:a",
+              enrolmentId: "e1",
+              courseId: "MAT-230",
+              unitId: "u2",
+              unitSequence: 2,
+              activityId: "a",
+              title: "B",
+              sessionKind: "lecture",
+              estimatedMinutes: 60,
+              dependsOn: ["u1:a"],
+              earliestWeek: 1,
+            },
           ],
         },
       ],
@@ -210,7 +280,12 @@ describe("ics", () => {
 
   it("emits a valid calendar with UTC times and stable uids", () => {
     const result = schedule(baseInput());
-    const ics = buildIcs(result.sessions.slice(0, 2), { calendarName: "Corniversity", detail: "full", baseUrl: "https://example.test", dtstamp: "2026-10-30T12:00:00Z" });
+    const ics = buildIcs(result.sessions.slice(0, 2), {
+      calendarName: "Corniversity",
+      detail: "full",
+      baseUrl: "https://example.test",
+      dtstamp: "2026-10-30T12:00:00Z",
+    });
     expect(ics.startsWith("BEGIN:VCALENDAR\r\n")).toBe(true);
     expect(ics.endsWith("END:VCALENDAR\r\n")).toBe(true);
     expect((ics.match(/BEGIN:VEVENT/g) ?? []).length).toBe(2);

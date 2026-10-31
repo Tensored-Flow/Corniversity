@@ -1,9 +1,9 @@
+import { isBootstrapComplete } from "@corniversity/db/services/bootstrap";
 import { redirect } from "next/navigation";
 import { Crest } from "@/components/Crest";
 import { LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { getOptionalSession } from "@/lib/session";
-import { isBootstrapComplete } from "@corniversity/db/services/bootstrap";
 
 export default async function ArrivalPage() {
   const session = await getOptionalSession();
@@ -17,9 +17,8 @@ export default async function ArrivalPage() {
           <p className="text-sm uppercase tracking-[0.18em] text-brass">A personal university</p>
           <h1 className="mt-3 text-4xl text-ink sm:text-5xl">Corniversity</h1>
           <p className="prose-reading mt-6 text-ink-2">
-            One learner, six departments, and the time to read properly. Choose what you want to
-            study; a director of studies helps shape it into a coherent programme; then attend
-            lectures, tutorials and laboratories built on real university materials, attempt serious
+            One learner, six departments, and the time to read properly. Choose what you want to study; a director of studies helps shape it
+            into a coherent programme; then attend lectures, tutorials and laboratories built on real university materials, attempt serious
             work, and keep a durable record of what you have understood.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -33,9 +32,8 @@ export default async function ArrivalPage() {
             </LinkButton>
           </div>
           <p className="mt-6 max-w-prose text-xs text-ink-3">
-            Independent and non-accredited. Teaching staff and classmates are clearly labelled AI
-            personas. Courses adapt openly licensed materials from universities and authors, with
-            exact sources shown; nothing here is an official delivery of another institution's
+            Independent and non-accredited. Teaching staff and classmates are clearly labelled AI personas. Courses adapt openly licensed
+            materials from universities and authors, with exact sources shown; nothing here is an official delivery of another institution's
             course.
           </p>
         </div>

@@ -79,7 +79,10 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
         }
         return known.length > 0 ? `[${known.join(", ")}]` : "";
       });
-      cleaned = cleaned.replace(/[ \t]{2,}/g, " ").replace(/ +([.,;:])/g, "$1").trim();
+      cleaned = cleaned
+        .replace(/[ \t]{2,}/g, " ")
+        .replace(/ +([.,;:])/g, "$1")
+        .trim();
       if (hadUnknown && citationTags.length === 0) {
         uncitedClaims.push(cleaned);
         labels.add("needs_checking");
@@ -105,9 +108,10 @@ function tagNumber(tag: string): number {
 }
 
 /** Builds the evidence section shown to a model, numbering blocks deterministically. */
-export function formatEvidenceBlocks(
-  blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[],
-): { prompt: string; refs: EvidenceRef[] } {
+export function formatEvidenceBlocks(blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[]): {
+  prompt: string;
+  refs: EvidenceRef[];
+} {
   const refs: EvidenceRef[] = [];
   const parts: string[] = [];
   blocks.forEach((block, index) => {

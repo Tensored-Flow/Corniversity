@@ -1,4 +1,5 @@
 import { renderMarkdown } from "@/lib/markdown";
+import { RenderedHtml } from "./RenderedHtml";
 
 interface Props {
   source: string;
@@ -8,11 +9,5 @@ interface Props {
 /** Server component: Markdown with mathematics, rendered and sanitised on the server. */
 export async function Markdown({ source, className }: Props) {
   const html = await renderMarkdown(source);
-  return (
-    <div
-      className={["prose-reading", className].filter(Boolean).join(" ")}
-      // Output of renderMarkdown is sanitised by rehype-sanitize with a strict schema.
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
+  return <RenderedHtml html={html} className={className} />;
 }

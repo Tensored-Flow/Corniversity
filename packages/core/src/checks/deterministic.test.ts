@@ -69,7 +69,9 @@ describe("runDeterministicChecks on the x^n norm task", () => {
 
   it("accepts a value at the end of a sentence but not a decimal continuation", () => {
     expect(runDeterministicChecks("The sup norm is 1.", normChecks).find((r) => r.checkId === "sup-norm-one")?.passed).toBe(true);
-    expect(runDeterministicChecks("The sup norm is 1.5 at most.", normChecks).find((r) => r.checkId === "sup-norm-one")?.passed).toBe(false);
+    expect(runDeterministicChecks("The sup norm is 1.5 at most.", normChecks).find((r) => r.checkId === "sup-norm-one")?.passed).toBe(
+      false,
+    );
   });
 
   it("flags the over-generalisation that all norms are equivalent", () => {

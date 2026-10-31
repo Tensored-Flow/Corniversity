@@ -1,10 +1,17 @@
-import Link from "next/link";
 import { listJobs } from "@corniversity/db/services/jobs-admin";
-import { companionState, getPermissions, listAssets, listPairings, listResourceRequests, listSourceRegistry } from "@corniversity/db/services/library";
+import {
+  companionState,
+  getPermissions,
+  listAssets,
+  listPairings,
+  listResourceRequests,
+  listSourceRegistry,
+} from "@corniversity/db/services/library";
+import Link from "next/link";
 import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { AssetStatusBadge, FlashNotices, LibraryHeader, PermissionSummary, assetTitle } from "./shared";
+import { AssetStatusBadge, assetTitle, FlashNotices, LibraryHeader, PermissionSummary } from "./shared";
 
 export const metadata = { title: "Library" };
 
@@ -43,7 +50,9 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
       <FlashNotices error={error} />
       {deleted ? (
         <div className="mb-4">
-          <Notice tone="moss">Item deleted: original bytes, extracted text and index removed. Notes on it are kept and marked for repair.</Notice>
+          <Notice tone="moss">
+            Item deleted: original bytes, extracted text and index removed. Notes on it are kept and marked for repair.
+          </Notice>
         </div>
       ) : null}
 
@@ -124,7 +133,13 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
                     </Link>
                   </h2>
                   <p className="text-sm text-ink-2">
-                    {[asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author, asset.confirmedEdition, asset.pageCount ? `${asset.pageCount} pages` : null].filter(Boolean).join(" · ") || "Metadata not confirmed yet"}
+                    {[
+                      asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author,
+                      asset.confirmedEdition,
+                      asset.pageCount ? `${asset.pageCount} pages` : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ") || "Metadata not confirmed yet"}
                   </p>
                   <p className="mt-1 truncate text-xs text-ink-3">
                     {asset.filename} · {asset.origin.replace("_", " ")}

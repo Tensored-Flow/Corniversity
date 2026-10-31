@@ -163,7 +163,13 @@ test.describe("library, companion and reading room", () => {
     const lectureCard = page.locator("li", { hasText: "Lecture 1" }).first();
     const start = lectureCard.getByRole("button", { name: /start|resume|continue/i }).first();
     if (await start.isVisible().catch(() => false)) await start.click();
-    else await page.locator("li", { hasText: /Lecture/ }).first().getByRole("button").first().click();
+    else
+      await page
+        .locator("li", { hasText: /Lecture/ })
+        .first()
+        .getByRole("button")
+        .first()
+        .click();
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     await page.getByLabel("Message to the tutor").fill(`Can you check what Riemannian reference ${run} says about completeness?`);
     await page.getByRole("button", { name: "Send" }).click();
@@ -172,7 +178,9 @@ test.describe("library, companion and reading room", () => {
     await screenshot(page, "21-tutor-local-only-note");
   });
 
-  test("journey 5b: grant private storage, receive the bytes through the companion, confirm, extract and read with printed labels", async ({ page }) => {
+  test("journey 5b: grant private storage, receive the bytes through the companion, confirm, extract and read with printed labels", async ({
+    page,
+  }) => {
     test.setTimeout(300_000);
     await signInOrBootstrap(page);
     await page.goto("/library");
@@ -244,7 +252,12 @@ test.describe("library, companion and reading room", () => {
       selection.addRange(range);
       document.dispatchEvent(new Event("mouseup"));
     });
-    await expect(page.getByText("Selected passage").locator("..").getByText(/Banach space/)).toBeVisible();
+    await expect(
+      page
+        .getByText("Selected passage")
+        .locator("..")
+        .getByText(/Banach space/),
+    ).toBeVisible();
     await page.getByLabel(/Question for/).fill("What hypotheses does this definition rely on?");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     await expect(page.getByText("Recent answers")).toBeVisible({ timeout: 60_000 });
@@ -268,11 +281,18 @@ test.describe("library, companion and reading room", () => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);
     await page.goto("/library/upload");
-    await page.getByLabel(/^File/).setInputFiles({ name: `fake-${run}.pdf`, mimeType: "application/pdf", buffer: Buffer.from("MZ not a pdf at all") });
+    await page
+      .getByLabel(/^File/)
+      .setInputFiles({ name: `fake-${run}.pdf`, mimeType: "application/pdf", buffer: Buffer.from("MZ not a pdf at all") });
     await page.getByRole("button", { name: /upload to quarantine/i }).click();
     await expect(page.getByRole("alert").filter({ hasText: /PDF signature/ })).toContainText("does not start with a PDF signature");
 
-    await page.getByLabel(/^File/).setInputFiles({ name: `corrupt-${run}.pdf`, mimeType: "application/pdf", buffer: Buffer.from(`%PDF-1.7\n${"garbage ".repeat(300)}`, "latin1") });
+    // Unique bytes per run: identical content would be deduplicated onto an earlier run's rejected item.
+    await page.getByLabel(/^File/).setInputFiles({
+      name: `corrupt-${run}.pdf`,
+      mimeType: "application/pdf",
+      buffer: Buffer.from(`%PDF-1.7\n% run ${run}\n${"garbage ".repeat(300)}`, "latin1"),
+    });
     await page.getByRole("button", { name: /upload to quarantine/i }).click();
     await expect(page).toHaveURL(/\/library\/items\//, { timeout: 30_000 });
     await page.getByLabel("Title").fill(`Corrupt file ${run}`);
@@ -281,6 +301,9 @@ test.describe("library, companion and reading room", () => {
     const extractRow = page.locator("li", { hasText: "Extract and index the text" });
     await extractRow.getByPlaceholder(/Basis/).fill("test file");
     await extractRow.getByRole("button", { name: "Allow" }).click();
+    await expect(page.getByText("Permission recorded.")).toBeVisible();
+    await expect(page.locator("li", { hasText: "Extract and index the text" }).getByText("allowed", { exact: true })).toBeVisible();
+    await expect(page.getByText("Confirmed", { exact: true }).first()).toBeVisible();
     await page.getByRole("button", { name: /^extract and index$/i }).click();
     await expect(page.getByText("Rejected", { exact: true }).first()).toBeVisible({ timeout: 120_000 });
     await expect(page.getByText(/could not be parsed/).first()).toBeVisible();
@@ -293,12 +316,14 @@ test.describe("library, companion and reading room", () => {
   });
 
   test("security: an unauthenticated browser cannot read files or the library", async ({ browser }) => {
-    const context = await browser.newContext();
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
     const anonymous = await context.newPage();
     const id = permittedItemUrl.split("/").pop()!;
     const file = await anonymous.request.get(`/api/library/assets/${id}/file`);
     expect(file.status()).toBe(401);
-    const ask = await anonymous.request.post("/api/library/ask", { data: { assetId: id, physicalIndex: 0, selectedText: "x", question: "y" } });
+    const ask = await anonymous.request.post("/api/library/ask", {
+      data: { assetId: id, physicalIndex: 0, selectedText: "x", question: "y" },
+    });
     expect(ask.status()).toBe(401);
     const register = await anonymous.request.post("/api/companion/register", { data: {} });
     expect(register.status()).toBe(401);

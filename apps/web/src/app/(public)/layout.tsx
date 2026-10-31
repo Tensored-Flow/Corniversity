@@ -25,8 +25,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       </main>
       <footer className="border-t border-stone">
         <div className="mx-auto w-full max-w-5xl px-4 py-6 text-xs text-ink-3 sm:px-8">
-          Corniversity is a private, independent, non-accredited personal university. Faculty and
-          classmates here are AI personas and are labelled as such. Records are informal.
+          Corniversity is a private, independent, non-accredited personal university. Faculty and classmates here are AI personas and are
+          labelled as such. Records are informal.
         </div>
       </footer>
     </div>

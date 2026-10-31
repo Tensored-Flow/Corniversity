@@ -1,13 +1,13 @@
-import Link from "next/link";
-import { DateTime } from "luxon";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { getTimetable, listCalendarTokens, listOpenProposals } from "@corniversity/db/services/timetable";
+import { DateTime } from "luxon";
+import Link from "next/link";
 import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { SessionActions } from "./SessionActions";
 import { catchUpAction, createCalendarLinkAction, decideProposalAction, revokeCalendarLinksAction } from "./actions";
+import { SessionActions } from "./SessionActions";
 
 export const metadata = { title: "Timetable" };
 
@@ -85,7 +85,10 @@ export default async function TimetablePage({
               key={v}
               href={`/timetable?view=${v}${params.course ? `&course=${params.course}` : ""}`}
               aria-current={view === v ? "page" : undefined}
-              className={["rounded-[var(--radius-control)] border px-3 py-1.5", view === v ? "border-brass bg-brass-soft text-brass-strong" : "border-stone bg-paper-2 text-ink-2 hover:text-ink"].join(" ")}
+              className={[
+                "rounded-[var(--radius-control)] border px-3 py-1.5",
+                view === v ? "border-brass bg-brass-soft text-brass-strong" : "border-stone bg-paper-2 text-ink-2 hover:text-ink",
+              ].join(" ")}
             >
               {v[0]!.toUpperCase() + v.slice(1)}
             </Link>
@@ -101,7 +104,8 @@ export default async function TimetablePage({
       {params.token ? (
         <div className="mb-4">
           <Notice tone="moss" title="Calendar subscription link created">
-            Copy it now; it is shown once. <code className="break-all font-mono text-xs">{`${process.env.BETTER_AUTH_URL ?? ""}/api/calendar/${params.token}.ics`}</code>
+            Copy it now; it is shown once.{" "}
+            <code className="break-all font-mono text-xs">{`${process.env.BETTER_AUTH_URL ?? ""}/api/calendar/${params.token}.ics`}</code>
             <br />
             Subscribing in a calendar app keeps it updated; importing a downloaded file is a one-off snapshot.
           </Notice>
@@ -123,10 +127,20 @@ export default async function TimetablePage({
               <p className="mt-1 text-sm text-ink-2">{p.rationale}</p>
               <form action={decideProposalAction} className="mt-3 flex gap-2">
                 <input type="hidden" name="proposalId" value={p.id} />
-                <button type="submit" name="decision" value="confirmed" className="rounded-[var(--radius-control)] bg-brass px-3 py-1.5 text-sm text-paper-2 hover:bg-brass-strong">
+                <button
+                  type="submit"
+                  name="decision"
+                  value="confirmed"
+                  className="rounded-[var(--radius-control)] bg-brass px-3 py-1.5 text-sm text-paper-2 hover:bg-brass-strong"
+                >
                   Confirm
                 </button>
-                <button type="submit" name="decision" value="rejected" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3">
+                <button
+                  type="submit"
+                  name="decision"
+                  value="rejected"
+                  className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3"
+                >
                   Reject
                 </button>
               </form>
@@ -140,7 +154,10 @@ export default async function TimetablePage({
           <Notice tone="neutral" title={`${missed.length} session${missed.length === 1 ? "" : "s"} passed without being marked`}>
             Life happens. A catch-up plan moves only what needs moving and shows you the difference before anything changes.
             <form action={catchUpAction} className="mt-2">
-              <button type="submit" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3">
+              <button
+                type="submit"
+                className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3"
+              >
                 Propose a catch-up plan
               </button>
             </form>
@@ -156,7 +173,11 @@ export default async function TimetablePage({
         {enrolments
           .filter((e) => e.enrolment.status === "active")
           .map((e) => (
-            <Link key={e.course.id} href={`/timetable?view=${view}&course=${e.course.id}`} className={params.course === e.course.id ? "font-medium text-ink" : "text-ink-2"}>
+            <Link
+              key={e.course.id}
+              href={`/timetable?view=${view}&course=${e.course.id}`}
+              className={params.course === e.course.id ? "font-medium text-ink" : "text-ink-2"}
+            >
               {e.course.id}
             </Link>
           ))}
@@ -185,17 +206,34 @@ export default async function TimetablePage({
             {Array.from({ length: 7 }, (_, i) => weekStart.plus({ days: i })).map((day) => {
               const items = inWeek.filter((s) => DateTime.fromJSDate(s.startsAt).setZone(zone).hasSame(day, "day"));
               return (
-                <div key={day.toISODate()} className={["rounded-[var(--radius-panel)] border bg-paper-2 p-2", day.hasSame(now, "day") ? "border-brass" : "border-stone"].join(" ")}>
+                <div
+                  key={day.toISODate()}
+                  className={[
+                    "rounded-[var(--radius-panel)] border bg-paper-2 p-2",
+                    day.hasSame(now, "day") ? "border-brass" : "border-stone",
+                  ].join(" ")}
+                >
                   <p className="text-xs uppercase tracking-wide text-ink-3">{day.toFormat("ccc d")}</p>
                   <ul className="mt-2 flex flex-col gap-2">
                     {items.map((s) => (
-                      <li key={s.id} className={["rounded-[var(--radius-control)] border border-stone p-2 text-xs", s.status === "completed" ? "opacity-60" : "", s.status === "cancelled" ? "line-through opacity-50" : ""].join(" ")}>
+                      <li
+                        key={s.id}
+                        className={[
+                          "rounded-[var(--radius-control)] border border-stone p-2 text-xs",
+                          s.status === "completed" ? "opacity-60" : "",
+                          s.status === "cancelled" ? "line-through opacity-50" : "",
+                        ].join(" ")}
+                      >
                         <p className="text-ink-3">
-                          {DateTime.fromJSDate(s.startsAt).setZone(zone).toFormat("HH:mm")}–{DateTime.fromJSDate(s.endsAt).setZone(zone).toFormat("HH:mm")}
+                          {DateTime.fromJSDate(s.startsAt).setZone(zone).toFormat("HH:mm")}–
+                          {DateTime.fromJSDate(s.endsAt).setZone(zone).toFormat("HH:mm")}
                         </p>
                         <Badge tone={KIND_TONE[s.sessionKind] ?? "neutral"}>{s.sessionKind.replace("_", " ")}</Badge>
                         {s.unitId ? (
-                          <Link href={`/courses/${courseOf.get(s.enrolmentId)?.id}/units/${s.unitId}`} className="mt-1 block text-ink underline-offset-4 hover:underline">
+                          <Link
+                            href={`/courses/${courseOf.get(s.enrolmentId)?.id}/units/${s.unitId}`}
+                            className="mt-1 block text-ink underline-offset-4 hover:underline"
+                          >
                             {s.title}
                           </Link>
                         ) : (
@@ -221,7 +259,10 @@ export default async function TimetablePage({
             {filtered
               .filter((s) => s.status === "planned" || DateTime.fromJSDate(s.endsAt) >= DateTime.now().minus({ days: 1 }))
               .map((s) => (
-                <li key={s.id} className="flex flex-wrap items-center gap-3 rounded-[var(--radius-control)] border border-stone bg-paper-2 px-3 py-2 text-sm">
+                <li
+                  key={s.id}
+                  className="flex flex-wrap items-center gap-3 rounded-[var(--radius-control)] border border-stone bg-paper-2 px-3 py-2 text-sm"
+                >
                   <span className="w-44 text-ink-3">{DateTime.fromJSDate(s.startsAt).setZone(zone).toFormat("ccc d LLL HH:mm")}</span>
                   <Badge tone={KIND_TONE[s.sessionKind] ?? "neutral"}>{s.sessionKind.replace("_", " ")}</Badge>
                   <span className="flex-1 text-ink">{s.title}</span>
@@ -292,24 +333,40 @@ export default async function TimetablePage({
           Calendar export
         </h2>
         <p className="mt-1 max-w-prose text-sm text-ink-2">
-          Download a snapshot, or create a private subscription link that your calendar app refreshes itself. The link is a secret: anyone holding it can read your timetable (minimal detail by default). Revoke it here at any time. Nothing is written to any external calendar.
+          Download a snapshot, or create a private subscription link that your calendar app refreshes itself. The link is a secret: anyone
+          holding it can read your timetable (minimal detail by default). Revoke it here at any time. Nothing is written to any external
+          calendar.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <a href="/api/calendar/export.ics" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3">
+          <a
+            href="/api/calendar/export.ics"
+            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3"
+          >
             Download .ics snapshot
           </a>
           <form action={createCalendarLinkAction} className="flex items-center gap-2">
-            <select name="detail" defaultValue="minimal" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5 text-sm">
+            <select
+              name="detail"
+              aria-label="Calendar detail level"
+              defaultValue="minimal"
+              className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5 text-sm"
+            >
               <option value="minimal">Minimal detail (busy blocks)</option>
               <option value="full">Full detail (course and unit)</option>
             </select>
-            <button type="submit" className="rounded-[var(--radius-control)] bg-brass px-3 py-1.5 text-sm text-paper-2 hover:bg-brass-strong">
+            <button
+              type="submit"
+              className="rounded-[var(--radius-control)] bg-brass px-3 py-1.5 text-sm text-paper-2 hover:bg-brass-strong"
+            >
               Create subscription link
             </button>
           </form>
           {activeTokens.length ? (
             <form action={revokeCalendarLinksAction}>
-              <button type="submit" className="rounded-[var(--radius-control)] border border-rust px-3 py-1.5 text-sm text-rust hover:bg-rust-soft">
+              <button
+                type="submit"
+                className="rounded-[var(--radius-control)] border border-rust px-3 py-1.5 text-sm text-rust hover:bg-rust-soft"
+              >
                 Revoke {activeTokens.length} link{activeTokens.length === 1 ? "" : "s"}
               </button>
             </form>

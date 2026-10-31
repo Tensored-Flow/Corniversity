@@ -37,9 +37,12 @@ squeeze. Lists may scroll in their own region; instructions never require page s
 
 ## Screens (brief §5) → routes
 
-1 Arrival `/` · 2 Onboarding `/onboarding/[step]` · 3 Welcome `/welcome` · 4 Campus `/campus` ·
-5 Department `/departments/[id]` · 6 Catalogue `/catalogue` · 7 Course foyer `/courses/[id]` ·
-8 Lecture room `/sessions/[id]` (lecture type) · 9 Tutorial workbench `/sessions/[id]` (tutorial
-type) · 10 Library `/library`, requests `/library/requests` · 11 Reading room
-`/library/[assetId]/read` · 12 Lab `/labs/[id]` · 13 Timetable `/timetable` · 14 Common room
-`/common-room` · 15 Notebook `/notebook` · 16 Records `/records` · 17 Settings `/settings/*`.
+1 Arrival `/` · 2 Onboarding `/onboarding/[step]` · 3 Welcome `/welcome` · 4 Campus `/campus`
+(map `/campus/map`) · 5 Department `/departments/[id]` · 6 Catalogue `/catalogue` · 7 Course foyer
+`/courses/[id]` · 8 Lecture room `/sessions/[id]` (reading activity) · 9 Tutorial workbench
+`/sessions/[id]` (activity with exercises) · 10 Library `/library`, sources `/library/sources`,
+requests `/library/requests`, upload `/library/upload`, item `/library/items/[id]`, desktop sync
+`/library/sync`, jobs `/library/jobs` · 11 Reading room `/library/read/[id]` · 12 Laboratory
+`/sessions/[id]` (activity with a `labId`; the lab panel sits above the report) · 13 Timetable
+`/timetable` · 14 Common room `/common-room`, discussion `/common-room/[id]` · 15 Notebook
+`/notebook`, entry `/notebook/[id]` · 16 Records `/records` · 17 Settings `/settings`.

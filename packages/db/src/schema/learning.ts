@@ -1,19 +1,8 @@
 import { type SQL, sql } from "drizzle-orm";
-import {
-  boolean,
-  index,
-  integer,
-  jsonb,
-  pgTable,
-  primaryKey,
-  real,
-  text,
-  uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, evidenceStateEnum, submissionStateEnum, tsvector, tz, updatedAt } from "./_shared";
-import { user } from "./auth";
 import { concept, course, teachingUnit, unitExercise } from "./academic";
+import { user } from "./auth";
 import { enrolment, scheduledSession } from "./planning";
 
 export interface Citation {
@@ -182,14 +171,9 @@ export const assessmentRun = pgTable(
       .notNull()
       .references(() => submissionVersion.id, { onDelete: "cascade" }),
     rubricVersion: integer("rubric_version").notNull(),
-    graderConfig: jsonb("grader_config")
-      .$type<{ provider: string; model: string; promptVersion: string; roleVersion: string }>()
-      .notNull(),
+    graderConfig: jsonb("grader_config").$type<{ provider: string; model: string; promptVersion: string; roleVersion: string }>().notNull(),
     providerRunId: uuid("provider_run_id"),
-    status: text("status")
-      .$type<"queued" | "reviewing" | "feedback_ready" | "needs_review" | "failed">()
-      .notNull()
-      .default("queued"),
+    status: text("status").$type<"queued" | "reviewing" | "feedback_ready" | "needs_review" | "failed">().notNull().default("queued"),
     deterministicResults: jsonb("deterministic_results")
       .$type<{ checkId: string; passed: boolean; detail: string }[]>()
       .notNull()
@@ -240,10 +224,7 @@ export const evidenceEvent = pgTable(
     source: text("source").notNull(),
     observedAt: tz("observed_at").notNull().defaultNow(),
     assistance: text("assistance").notNull().default("none"),
-    reviewStatus: text("review_status")
-      .$type<"provisional" | "reviewed" | "disputed">()
-      .notNull()
-      .default("provisional"),
+    reviewStatus: text("review_status").$type<"provisional" | "reviewed" | "disputed">().notNull().default("provisional"),
     interpretation: text("interpretation").notNull(),
     createdAt: createdAt(),
   },
@@ -325,16 +306,12 @@ export const notebookEntry = pgTable(
     unitId: text("unit_id"),
     resolved: boolean("resolved").notNull().default(false),
     tsv: tsvector("tsv").generatedAlwaysAs(
-      (): SQL =>
-        sql`to_tsvector('english', coalesce(${notebookEntry.title}, '') || ' ' || coalesce(${notebookEntry.bodyMarkdown}, ''))`,
+      (): SQL => sql`to_tsvector('english', coalesce(${notebookEntry.title}, '') || ' ' || coalesce(${notebookEntry.bodyMarkdown}, ''))`,
     ),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [
-    index("notebook_owner_idx").on(t.ownerId, t.kind),
-    index("notebook_tsv_idx").using("gin", t.tsv),
-  ],
+  (t) => [index("notebook_owner_idx").on(t.ownerId, t.kind), index("notebook_tsv_idx").using("gin", t.tsv)],
 );
 
 export const portfolioArtifact = pgTable(

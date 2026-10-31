@@ -2,12 +2,12 @@
 // Corniversity, so this is the recovery path. Usage: pnpm owner:reset-password
 // Reads the new password from stdin without echo.
 import { createInterface } from "node:readline";
-import { eq } from "drizzle-orm";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { account, user } from "@corniversity/db/schema/auth";
 import { getOwnerUserId } from "@corniversity/db/services/bootstrap";
 import { hashPassword } from "better-auth/crypto";
+import { eq } from "drizzle-orm";
 
 async function askHidden(prompt: string): Promise<string> {
   return new Promise((resolve) => {

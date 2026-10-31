@@ -1,23 +1,26 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { ASSESSOR_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
 import { getEnv } from "@corniversity/db/env";
+import { teachingUnit } from "@corniversity/db/schema/index";
+import { getUnitDetail } from "@corniversity/db/services/catalogue";
 import { recordEvidence } from "@corniversity/db/services/evidence";
 import {
-  LearningError,
   completeSession,
   fileReview,
   getOrCreateAttempt,
   getSession,
+  LearningError,
   requestHint,
   revealReference,
   saveDraft,
   submitAttempt,
 } from "@corniversity/db/services/learning";
+import { createEntry } from "@corniversity/db/services/notebook";
 import { resolveProviderConfig } from "@corniversity/db/services/provider-config";
-import { teachingUnit } from "@corniversity/db/schema/index";
+import { scheduleRevisionForUnit } from "@corniversity/db/services/revision";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
 import { requireSession } from "@/lib/session";
@@ -117,12 +120,61 @@ export async function fileReviewAction(_prev: ActionResult, formData: FormData):
     });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid request." };
   try {
-    await fileReview(db(), { ownerId: auth.user.id, assessmentRunId: parsed.data.assessmentRunId, kind: parsed.data.kind, note: parsed.data.note });
+    await fileReview(db(), {
+      ownerId: auth.user.id,
+      assessmentRunId: parsed.data.assessmentRunId,
+      kind: parsed.data.kind,
+      note: parsed.data.note,
+    });
   } catch (error) {
     if (error instanceof LearningError) return { ok: false, error: error.message };
     throw error;
   }
   revalidatePath(`/sessions/${parsed.data.sessionId}`);
+  return { ok: true };
+}
+
+/**
+ * A laboratory records nothing by itself. The learner's interpretation becomes a notebook entry
+ * linked to the activity's sources; when the laboratory has no graded report it also counts as
+ * practice evidence (never as a demonstration) for the unit's concepts.
+ */
+export async function recordLabInterpretationAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const auth = await requireSession();
+  const sessionId = String(formData.get("sessionId") ?? "");
+  const text = String(formData.get("interpretation") ?? "").trim();
+  if (!/^[0-9a-f-]{36}$/.test(sessionId)) return { ok: false, error: "Invalid session." };
+  if (text.length < 40)
+    return { ok: false, error: "Say what the model did and why, in a few sentences; a number alone is not an interpretation." };
+  const session = await getSession(db(), auth.user.id, sessionId);
+  if (!session) return { ok: false, error: "Session not found." };
+  const unitDetail = await getUnitDetail(db(), session.unitId);
+  const activity = unitDetail?.unit.activities.find((a) => a.id === session.activityId);
+  if (!unitDetail || !activity?.labId) return { ok: false, error: "This session has no laboratory." };
+  const locators = unitDetail.locators.filter((l) => activity.sourceLocatorIds.includes(l.id));
+  await createEntry(db(), auth.user.id, {
+    title: `Laboratory: ${activity.title}`,
+    bodyMarkdown: text.slice(0, 20_000),
+    kind: "calculation",
+    tags: ["lab", activity.labId, unitDetail.course.id],
+    sourceLinks: locators.map((l, i) => ({ tag: `L${i + 1}`, locatorId: l.id, label: l.label })),
+    courseId: unitDetail.course.id,
+    unitId: unitDetail.unit.id,
+  });
+  if (activity.exerciseIds.length === 0) {
+    await recordEvidence(db(), {
+      ownerId: auth.user.id,
+      conceptIds: unitDetail.unit.teachesConceptIds,
+      activityRef: `activity:${activity.id}`,
+      evidenceType: "practice",
+      source: "laboratory interpretation written by the learner",
+      assistance: "none",
+      interpretation: `The learner interpreted the ${activity.labId} laboratory in their own words (${text.length} characters). Practice evidence; not an assessment.`,
+    });
+  }
+  revalidatePath(`/sessions/${sessionId}`);
+  revalidatePath("/notebook");
+  revalidatePath("/studies");
   return { ok: true };
 }
 
@@ -143,6 +195,7 @@ export async function completeSessionAction(formData: FormData): Promise<void> {
       assistance: "none",
       interpretation: "Reading completed; this introduces the concepts and is not evidence of understanding.",
     });
+    await scheduleRevisionForUnit(db(), auth.user.id, unit.id);
   }
   revalidatePath(`/sessions/${sessionId}`);
   revalidatePath("/campus");

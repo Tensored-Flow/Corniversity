@@ -1,22 +1,22 @@
-import { notFound, redirect } from "next/navigation";
-import { ONBOARDING_STEPS, getOnboardingStep } from "@corniversity/core/onboarding/steps";
+import { getOnboardingStep, ONBOARDING_STEPS } from "@corniversity/core/onboarding/steps";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { notFound, redirect } from "next/navigation";
 import { Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { StepOneForm } from "./StepOneForm";
 import { saveStepOneAction } from "./actions";
+import { StepOneForm } from "./StepOneForm";
+import { StepConfirm } from "./steps/StepConfirm";
 import { StepInterests } from "./steps/StepInterests";
 import { StepKnowledge } from "./steps/StepKnowledge";
-import { StepStyle } from "./steps/StepStyle";
-import { StepTime } from "./steps/StepTime";
-import { StepRhythm } from "./steps/StepRhythm";
+import { StepMeet } from "./steps/StepMeet";
+import { StepModes } from "./steps/StepModes";
 import { StepPlacement } from "./steps/StepPlacement";
 import { StepPlans } from "./steps/StepPlans";
-import { StepModes } from "./steps/StepModes";
+import { StepRhythm } from "./steps/StepRhythm";
+import { StepStyle } from "./steps/StepStyle";
+import { StepTime } from "./steps/StepTime";
 import { StepTimetable } from "./steps/StepTimetable";
-import { StepConfirm } from "./steps/StepConfirm";
-import { StepMeet } from "./steps/StepMeet";
 
 export const metadata = { title: "Orientation" };
 
@@ -45,7 +45,6 @@ export default async function OnboardingStepPage({
   const profile = await ensureProfile(db(), session.user.id);
   // Step 12 (meet the college) is always open once the plan is confirmed; other steps are
   // sequential: a learner may revisit earlier steps but not skip ahead.
-  if (profile.onboardingCompletedAt && number < 12) redirect("/campus");
   if (!profile.onboardingCompletedAt && number > profile.onboardingStep) redirect(`/onboarding/${profile.onboardingStep}`);
 
   const common = { userId: session.user.id, profile };
@@ -61,7 +60,11 @@ export default async function OnboardingStepPage({
                 aria-hidden="true"
                 className={[
                   "mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[0.65rem]",
-                  state === "done" ? "border-moss bg-moss-soft text-moss" : state === "current" ? "border-brass bg-brass-soft text-brass-strong" : "border-stone-2 text-ink-3",
+                  state === "done"
+                    ? "border-moss bg-moss-soft text-moss"
+                    : state === "current"
+                      ? "border-brass bg-brass-soft text-brass-strong"
+                      : "border-stone-2 text-ink-3",
                 ].join(" ")}
               >
                 {s.number}

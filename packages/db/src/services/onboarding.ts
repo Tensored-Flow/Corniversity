@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { DbOrTx } from "../client";
-import { learnerProfile, type OnboardingAnswers } from "../schema/learner";
 import { user } from "../schema/auth";
+import { learnerProfile, type OnboardingAnswers } from "../schema/learner";
 
 export type LearnerProfileRow = typeof learnerProfile.$inferSelect;
 
@@ -81,8 +81,5 @@ export async function saveStepOne(db: DbOrTx, userId: string, input: StepOneInpu
 }
 
 export async function completeOnboarding(db: DbOrTx, userId: string): Promise<void> {
-  await db
-    .update(learnerProfile)
-    .set({ onboardingCompletedAt: new Date(), onboardingStep: 12 })
-    .where(eq(learnerProfile.userId, userId));
+  await db.update(learnerProfile).set({ onboardingCompletedAt: new Date(), onboardingStep: 12 }).where(eq(learnerProfile.userId, userId));
 }

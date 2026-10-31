@@ -1,16 +1,16 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { desc, eq } from "drizzle-orm";
 import { auditEvent } from "@corniversity/db/schema/index";
 import { listCatalogue } from "@corniversity/db/services/catalogue";
 import { latestIngestJob } from "@corniversity/db/services/jobs-admin";
 import { companionState, getAsset, getPermissions, listPairings } from "@corniversity/db/services/library";
+import { desc, eq } from "drizzle-orm";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "../../../sessions/[id]/AutoRefresh";
 import { confirmMetadataAction, deleteAssetAction, requestIngestionAction, setPermissionAction } from "../../actions";
-import { ASSET_STATUS, AssetStatusBadge, FlashNotices, LibraryHeader, PERMISSIONS, assetTitle } from "../../shared";
+import { ASSET_STATUS, AssetStatusBadge, assetTitle, FlashNotices, LibraryHeader, PERMISSIONS } from "../../shared";
 
 export const metadata = { title: "Library item" };
 
@@ -19,7 +19,13 @@ export const metadata = { title: "Library item" };
  * done. Metadata confirmation, each processing permission and the extraction request are separate
  * decisions, each recorded with its basis in the audit trail shown at the bottom.
  */
-export default async function ItemPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string; saved?: string }> }) {
+export default async function ItemPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
+}) {
   const session = await requireSession("/library");
   const { id } = await params;
   const flash = await searchParams;
@@ -35,7 +41,10 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
   ]);
   const title = assetTitle(asset);
   const courses = catalogue.filter((c) => c.course.launch || asset.courseIds.includes(c.course.id));
-  const canProcess = Boolean(asset.storageKey) && (asset.status === "validated" || asset.status === "processed") && permissions.local_extract.status === "allowed";
+  const canProcess =
+    Boolean(asset.storageKey) &&
+    (asset.status === "validated" || asset.status === "processed") &&
+    permissions.local_extract.status === "allowed";
   const processBlocker = !asset.storageKey
     ? asset.localOnly
       ? "The file is on your desktop only. Grant 'Store a private copy' below; the companion then sends it on its next sync."
@@ -45,7 +54,7 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
       : asset.status === "processing"
         ? "Extraction is running."
         : asset.status === "rejected"
-          ? asset.rejectionReason ?? "The file was rejected."
+          ? (asset.rejectionReason ?? "The file was rejected.")
           : permissions.local_extract.status !== "allowed"
             ? "Allow 'Extract and index the text' first."
             : null;
@@ -62,7 +71,8 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
         {asset.localOnly ? <Badge tone="slate">Local only</Badge> : null}
         <Badge tone="neutral">{asset.origin.replace("_", " ")}</Badge>
         <span className="text-ink-3">
-          {asset.filename} · {(asset.sizeBytes / 1_048_576).toFixed(2)} MB{asset.pageCount ? ` · ${asset.pageCount} pages` : ""} · sha256 {asset.sha256.slice(0, 12)}…
+          <span className="break-all">{asset.filename}</span> · {(asset.sizeBytes / 1_048_576).toFixed(2)} MB
+          {asset.pageCount ? ` · ${asset.pageCount} pages` : ""} · sha256 {asset.sha256.slice(0, 12)}…
         </span>
       </div>
       <p className="mb-6 max-w-prose text-sm text-ink-2">{ASSET_STATUS[asset.status].help}</p>
@@ -70,7 +80,9 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
       {asset.localOnly ? (
         <div className="mb-6">
           <Notice tone="slate" title="Reference only: nothing but metadata has left your device">
-            This item was registered by the companion{asset.localPathHint ? ` from ${asset.localPathHint}` : ""}. No tutor or lecturer can read it, and the reading room cannot open it, until you grant private storage and it is uploaded. You can still cite it by hand in your notebook.
+            This item was registered by the companion{asset.localPathHint ? ` from ${asset.localPathHint}` : ""}. No tutor or lecturer can
+            read it, and the reading room cannot open it, until you grant private storage and it is uploaded. You can still cite it by hand
+            in your notebook.
           </Notice>
         </div>
       ) : null}
@@ -82,21 +94,34 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2 [&>*]:min-w-0">
         <Card as="section" aria-labelledby="meta-heading">
           <h2 id="meta-heading" className="text-lg text-ink">
             What this is
           </h2>
           <p className="mt-1 text-sm text-ink-2">
-            Pre-filled from the file where possible{asset.candidateMetadata.author ? ` (PDF author field: ${asset.candidateMetadata.author})` : ""}. Confirm it; a wrong title here becomes a wrong citation later.
+            Pre-filled from the file where possible
+            {asset.candidateMetadata.author ? ` (PDF author field: ${asset.candidateMetadata.author})` : ""}. Confirm it; a wrong title here
+            becomes a wrong citation later.
           </p>
           <form action={confirmMetadataAction} className="mt-4 flex flex-col gap-4">
             <input type="hidden" name="assetId" value={asset.id} />
             <Field label="Title" htmlFor="meta-title">
-              <Input id="meta-title" name="title" required maxLength={300} defaultValue={asset.confirmedTitle ?? asset.candidateMetadata.title ?? ""} />
+              <Input
+                id="meta-title"
+                name="title"
+                required
+                maxLength={300}
+                defaultValue={asset.confirmedTitle ?? asset.candidateMetadata.title ?? ""}
+              />
             </Field>
             <Field label="Authors (comma-separated)" htmlFor="meta-authors">
-              <Input id="meta-authors" name="authors" maxLength={300} defaultValue={asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author ?? ""} />
+              <Input
+                id="meta-authors"
+                name="authors"
+                maxLength={300}
+                defaultValue={asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author ?? ""}
+              />
             </Field>
             <Field label="Edition or year" htmlFor="meta-edition">
               <Input id="meta-edition" name="edition" maxLength={120} defaultValue={asset.confirmedEdition ?? ""} />
@@ -123,7 +148,8 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
             Processing permissions
           </h2>
           <p className="mt-1 text-sm text-ink-2">
-            Each is a separate decision and defaults to unknown, which means reference only. Owning a copy does not settle what its licence permits; write the basis you are relying on.
+            Each is a separate decision and defaults to unknown, which means reference only. Owning a copy does not settle what its licence
+            permits; write the basis you are relying on.
           </p>
           <ul className="mt-4 flex flex-col gap-4">
             {PERMISSIONS.map((p) => {
@@ -132,7 +158,9 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
                 <li key={p.action} className="border-t border-stone pt-3 first:border-t-0 first:pt-0">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-sm font-medium text-ink">{p.label}</span>
-                    <Badge tone={current.status === "allowed" ? "moss" : current.status === "denied" ? "rust" : "neutral"}>{current.status}</Badge>
+                    <Badge tone={current.status === "allowed" ? "moss" : current.status === "denied" ? "rust" : "neutral"}>
+                      {current.status}
+                    </Badge>
                   </div>
                   <p className="mt-1 text-xs text-ink-2">{p.explain}</p>
                   {current.basis ? <p className="mt-1 text-xs text-ink-3">Basis: {current.basis}</p> : null}
@@ -143,7 +171,13 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
                       <label htmlFor={`basis-${p.action}`} className="sr-only">
                         Basis for {p.label}
                       </label>
-                      <Input id={`basis-${p.action}`} name="basis" placeholder="Basis, e.g. CC BY-NC-SA 4.0, or my own notes" maxLength={300} defaultValue={current.basis ?? ""} />
+                      <Input
+                        id={`basis-${p.action}`}
+                        name="basis"
+                        placeholder="Basis, e.g. CC BY-NC-SA 4.0, or my own notes"
+                        maxLength={300}
+                        defaultValue={current.basis ?? ""}
+                      />
                     </div>
                     <Button type="submit" name="status" value="allowed" variant="secondary">
                       Allow
@@ -165,7 +199,20 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
           {job ? (
             <div className="mt-2 text-sm">
               <p className="text-ink">
-                Last job: <Badge tone={job.status === "completed" ? "moss" : job.status === "failed" ? "rust" : job.status === "cancelled" ? "neutral" : "brass"}>{job.status}</Badge>{" "}
+                Last job:{" "}
+                <Badge
+                  tone={
+                    job.status === "completed"
+                      ? "moss"
+                      : job.status === "failed"
+                        ? "rust"
+                        : job.status === "cancelled"
+                          ? "neutral"
+                          : "brass"
+                  }
+                >
+                  {job.status}
+                </Badge>{" "}
                 <span className="text-ink-3">
                   {job.progress.stage}
                   {typeof job.progress.percent === "number" ? ` · ${job.progress.percent}%` : ""}
@@ -173,7 +220,7 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
               </p>
               {job.error ? <p className="mt-1 text-rust">{job.error}</p> : null}
               <p className="mt-1 text-xs text-ink-3">
-                Idempotency key <span className="font-mono">{job.idempotencyKey}</span> ·{" "}
+                Idempotency key <span className="break-all font-mono">{job.idempotencyKey}</span> ·{" "}
                 <Link href="/library/jobs" className="text-brass underline underline-offset-4">
                   all jobs
                 </Link>
@@ -194,8 +241,11 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
           {processBlocker ? <p className="mt-2 text-xs text-ink-3">{processBlocker}</p> : null}
           {asset.status === "processed" ? (
             <p className="mt-2 text-xs text-ink-3">
-              {asset.pageCount} pages indexed{asset.printedLabelsPresent ? " with printed page labels" : "; the PDF carries no printed page labels, so citations use the physical page index"}.
-              {asset.rejectionReason ? ` ${asset.rejectionReason}.` : ""}
+              {asset.pageCount} pages indexed
+              {asset.printedLabelsPresent
+                ? " with printed page labels"
+                : "; the PDF carries no printed page labels, so citations use the physical page index"}
+              .{asset.rejectionReason ? ` ${asset.rejectionReason}.` : ""}
             </p>
           ) : null}
         </Card>
@@ -207,7 +257,8 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
           <ul className="mt-2 flex flex-col gap-1 text-xs text-ink-2">
             {audit.map((e) => (
               <li key={e.id}>
-                <span className="font-mono text-ink-3">{e.createdAt.toISOString().slice(0, 16).replace("T", " ")}</span> · {e.actor} · {e.action}
+                <span className="font-mono text-ink-3">{e.createdAt.toISOString().slice(0, 16).replace("T", " ")}</span> · {e.actor} ·{" "}
+                {e.action}
                 {typeof (e.details as { basis?: string }).basis === "string" ? ` — ${(e.details as { basis: string }).basis}` : ""}
               </li>
             ))}
@@ -222,7 +273,10 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
               Delete item
             </Button>
           </form>
-          <p className="mt-2 text-xs text-ink-3">Your notes on it stay, marked as needing repair. Nightly backups of the database may hold the bytes for their retention period; a provider that received passages keeps them under its own policy.</p>
+          <p className="mt-2 text-xs text-ink-3">
+            Your notes on it stay, marked as needing repair. Nightly backups of the database may hold the bytes for their retention period;
+            a provider that received passages keeps them under its own policy.
+          </p>
         </Card>
       </div>
     </div>

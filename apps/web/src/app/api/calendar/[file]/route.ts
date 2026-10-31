@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
 import { buildIcs } from "@corniversity/core/scheduling/ics";
 import { getEnv } from "@corniversity/db/env";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { getTimetable, resolveCalendarToken } from "@corniversity/db/services/timetable";
+import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
 

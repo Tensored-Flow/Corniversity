@@ -1,17 +1,7 @@
-import {
-  boolean,
-  date,
-  index,
-  integer,
-  jsonb,
-  pgTable,
-  text,
-  uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, jsonb, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, learningModeEnum, tz, updatedAt } from "./_shared";
-import { user } from "./auth";
 import { courseVersion, teachingUnit } from "./academic";
+import { user } from "./auth";
 
 export const term = pgTable(
   "term",
@@ -46,10 +36,7 @@ export const enrolment = pgTable(
       .notNull()
       .references(() => courseVersion.id),
     mode: learningModeEnum("mode").notNull(),
-    status: text("status")
-      .$type<"active" | "paused" | "withdrawn" | "completed">()
-      .notNull()
-      .default("active"),
+    status: text("status").$type<"active" | "paused" | "withdrawn" | "completed">().notNull().default("active"),
     priority: integer("priority").notNull().default(1),
     idempotencyKey: text("idempotency_key").notNull().unique(),
     enrolledAt: createdAt(),
@@ -156,10 +143,7 @@ export const scheduledSession = pgTable(
     title: text("title").notNull(),
     startsAt: tz("starts_at").notNull(),
     endsAt: tz("ends_at").notNull(),
-    status: text("status")
-      .$type<"planned" | "completed" | "attempted" | "cancelled" | "moved">()
-      .notNull()
-      .default("planned"),
+    status: text("status").$type<"planned" | "completed" | "attempted" | "cancelled" | "moved">().notNull().default("planned"),
     locked: boolean("locked").notNull().default(false),
     uid: text("uid").notNull(), // stable across plan versions for the same activity
     movedFromSessionId: uuid("moved_from_session_id"),
@@ -167,10 +151,7 @@ export const scheduledSession = pgTable(
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [
-    index("scheduled_session_owner_time_idx").on(t.ownerId, t.startsAt),
-    index("scheduled_session_plan_idx").on(t.planVersionId),
-  ],
+  (t) => [index("scheduled_session_owner_time_idx").on(t.ownerId, t.startsAt), index("scheduled_session_plan_idx").on(t.planVersionId)],
 );
 
 export const changeProposal = pgTable(

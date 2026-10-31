@@ -13,7 +13,7 @@
   --stone-2: #b9ae98;
   --ink: #1f1b16;
   --ink-2: #554d41;
-  --ink-3: #7d745f;
+  --ink-3: #6a624c;
   --brass: #7d5f28;
   --brass-strong: #5f4719;
   --brass-soft: #e8d9b8;
@@ -104,7 +104,9 @@ h3,
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.15;
-  font-variation-settings: "opsz" 72, "SOFT" 30;
+  font-variation-settings:
+    "opsz" 72,
+    "SOFT" 30;
 }
 
 .prose-reading {
@@ -264,17 +266,16 @@ math {
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: the reduced-motion preference must win over every component transition */
     animation-duration: 0.001ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: see above */
     transition-duration: 0.001ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: see above */
     scroll-behavior: auto !important;
   }
 }
 
 /* Subtle paper linework for large empty surfaces; never behind reading text. */
 .paper-lines {
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent 0 31px,
-    color-mix(in srgb, var(--stone) 55%, transparent) 31px 32px
-  );
+  background-image: repeating-linear-gradient(180deg, transparent 0 31px, color-mix(in srgb, var(--stone) 55%, transparent) 31px 32px);
 }

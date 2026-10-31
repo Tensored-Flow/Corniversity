@@ -1,4 +1,3 @@
-import { z } from "zod";
 import {
   ConceptSpec,
   CourseSpec,
@@ -9,6 +8,7 @@ import {
   SourceRecord,
   TeachingUnitSpec,
 } from "@corniversity/core";
+import { z } from "zod";
 
 export { ConceptSpec, CourseSpec, DepartmentSpec, ExerciseSpec, PrerequisiteRule, ProgrammeSpec, SourceRecord, TeachingUnitSpec };
 
@@ -47,7 +47,12 @@ export interface LoadedUnit {
   spec: TeachingUnitSpec;
   lessonMarkdown: string;
   exercises: ExerciseSpec[];
-  instructor: { file: string; kind: "reference_solution" | "grading_notes" | "misconception_notes" | "lesson_notes"; exerciseId?: string; markdown: string }[];
+  instructor: {
+    file: string;
+    kind: "reference_solution" | "grading_notes" | "misconception_notes" | "lesson_notes";
+    exerciseId?: string;
+    markdown: string;
+  }[];
   dir: string;
 }
 

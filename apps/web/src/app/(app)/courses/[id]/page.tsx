@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getEnrolmentForCourse } from "@corniversity/db/services/enrolment";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Markdown } from "@/components/Markdown";
-import { ReadinessBadge, UnitStatusBadge, readinessHelp } from "@/components/Readiness";
+import { ReadinessBadge, readinessHelp, UnitStatusBadge } from "@/components/Readiness";
 import { AiLabel, Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { EnrolControls } from "./EnrolControls";
 import { enrolAction, withdrawAction } from "./actions";
+import { EnrolControls } from "./EnrolControls";
 
 export default async function CourseFoyerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -51,7 +51,8 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
             {enrolment && enrolment.version.version !== version.version ? (
               <div className="mt-3">
                 <Notice tone="brass" title={`Course updated to version ${version.version}`}>
-                  You enrolled under version {enrolment.version.version}. The syllabus has since been updated; everything you submitted and every piece of feedback is kept exactly as it was, and you now see the current units.
+                  You enrolled under version {enrolment.version.version}. The syllabus has since been updated; everything you submitted and
+                  every piece of feedback is kept exactly as it was, and you now see the current units.
                 </Notice>
               </div>
             ) : null}
@@ -82,7 +83,10 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
             ) : (
               <ol className="mt-3 flex flex-col gap-2">
                 {detail.units.map((u) => (
-                  <li key={u.id} className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3">
+                  <li
+                    key={u.id}
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3"
+                  >
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="w-6 font-mono text-xs text-ink-3">{String(u.sequence).padStart(2, "0")}</span>
                       {u.status === "ready" && enrolment ? (
@@ -121,7 +125,8 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
                 ))}
               </ul>
               <p className="mt-2 text-xs text-ink-3">
-                All feedback is provisional and produced by an AI assessor; appeals are available on every piece of work. Records here are informal.
+                All feedback is provisional and produced by an AI assessor; appeals are available on every piece of work. Records here are
+                informal.
               </p>
             </section>
           ) : null}
@@ -135,7 +140,9 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
                 courseId={course.id}
                 modesOffered={version.modesOffered}
                 prepared={prepared}
-                enrolment={enrolment ? { id: enrolment.enrolment.id, mode: enrolment.enrolment.mode, status: enrolment.enrolment.status } : null}
+                enrolment={
+                  enrolment ? { id: enrolment.enrolment.id, mode: enrolment.enrolment.mode, status: enrolment.enrolment.status } : null
+                }
                 enrolAction={enrolAction}
                 withdrawAction={withdrawAction}
               />
@@ -193,7 +200,7 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
               <h2 className="text-lg text-ink">Teaching</h2>
               <div className="mt-2 flex items-center gap-2">
                 <span className="font-medium text-ink">{detail.tutor.name}</span>
-                <AiLabel role={detail.tutor.title} />
+                <AiLabel kind={detail.tutor.title} />
               </div>
               <p className="mt-1 text-sm text-ink-2">{detail.tutor.introduction}</p>
               <p className="mt-2 text-xs text-ink-3">{detail.tutor.style.officeHours}</p>
@@ -210,9 +217,7 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
                       <Badge tone={r.strength === "hard" ? "rust" : "neutral"}>{r.strength}</Badge>
                     </div>
                     <p className="mt-1 text-ink-2">{r.description}</p>
-                    <p className="mt-1 text-xs text-ink-3">
-                      Satisfied by any of: {r.alternatives.map((a) => a.label).join("; ")}.
-                    </p>
+                    <p className="mt-1 text-xs text-ink-3">Satisfied by any of: {r.alternatives.map((a) => a.label).join("; ")}.</p>
                   </li>
                 ))}
               </ul>

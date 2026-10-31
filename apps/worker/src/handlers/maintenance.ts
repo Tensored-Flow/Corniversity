@@ -1,6 +1,6 @@
-import { and, isNull, lt, sql } from "drizzle-orm";
 import { MaintenancePayload } from "@corniversity/db/jobs";
 import { pairingCode } from "@corniversity/db/schema/learner";
+import { and, isNull, lt, sql } from "drizzle-orm";
 import type { HandlerContext } from "./index";
 
 export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Promise<Record<string, unknown>> {
@@ -16,9 +16,7 @@ export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Pro
     case "revision-due": {
       // Revision items are surfaced by query at read time; this pass only records the run so
       // the owner can see maintenance is alive. No content is generated here.
-      const result = await ctx.db.execute(
-        sql`select count(*)::int as due from revision_item where due_at <= now()`,
-      );
+      const result = await ctx.db.execute(sql`select count(*)::int as due from revision_item where due_at <= now()`);
       const due = (result.rows[0] as { due?: number } | undefined)?.due ?? 0;
       return { revisionItemsDue: due };
     }

@@ -2,8 +2,9 @@
 // per-page text with physical index and printed page label. Used to verify locators while
 // authoring content, and as the reference behaviour for the ingestion pipeline.
 // Usage: pnpm tsx scripts/pdf-dump.ts <url-or-path> [maxChars]
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+
 import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
 
@@ -39,13 +40,17 @@ console.log(`sha256 ${createHash("sha256").update(data).digest("hex")}`);
 const pdf = await getDocumentProxy(data, { maxImageSize: 16_777_216 });
 const labels = (await pdf.getPageLabels()) ?? null;
 const { info } = await getMeta(pdf);
-console.log(`pages ${pdf.numPages}; printed labels ${labels ? "present" : "absent"}; title=${JSON.stringify(info?.Title ?? null)} author=${JSON.stringify(info?.Author ?? null)}`);
+console.log(
+  `pages ${pdf.numPages}; printed labels ${labels ? "present" : "absent"}; title=${JSON.stringify(info?.Title ?? null)} author=${JSON.stringify(info?.Author ?? null)}`,
+);
 const { text } = await extractText(pdf);
 const { pages } = await inspectPages(pdf);
 const perPage = Array.isArray(text) ? text : [text];
 perPage.forEach((pageText, i) => {
   const label = labels?.[i] ?? null;
   const q = pages[i];
-  console.log(`\n===== physical ${i} | printed ${label ?? "-"} | chars ${pageText.length} | imageCoverage ${q?.imageCoverage.toFixed(2)} =====`);
+  console.log(
+    `\n===== physical ${i} | printed ${label ?? "-"} | chars ${pageText.length} | imageCoverage ${q?.imageCoverage.toFixed(2)} =====`,
+  );
   console.log(pageText.slice(0, maxChars));
 });

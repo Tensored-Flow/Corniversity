@@ -1,2 +1,12 @@
+import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
-export default defineConfig({ test: { name: "web", include: ["src/**/*.test.ts"] } });
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "server-only": resolve(__dirname, "test/server-only-stub.ts"),
+      "@": resolve(__dirname, "src"),
+    },
+  },
+  test: { name: "web", include: ["src/**/*.test.ts"] },
+});

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getEnrolmentForCourse } from "@corniversity/db/services/enrolment";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import { LocatorLink } from "@/components/LocatorLink";
 import { Markdown } from "@/components/Markdown";
 import { UnitStatusBadge } from "@/components/Readiness";
@@ -36,7 +36,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
         <div className="flex flex-wrap items-center gap-2">
           <UnitStatusBadge status={unit.status} />
           <Badge>{mode.replace("_", " ")}</Badge>
-          <span className="text-xs text-ink-3">about {Math.round(unit.estimatedMinutes / 60 * 10) / 10} hours in total</span>
+          <span className="text-xs text-ink-3">about {Math.round((unit.estimatedMinutes / 60) * 10) / 10} hours in total</span>
         </div>
         <h1 className="mt-2 text-3xl text-ink">{unit.title}</h1>
         <p className="mt-3 max-w-prose text-ink-2">{unit.summary}</p>
@@ -44,7 +44,8 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
 
       {unit.status !== "ready" ? (
         <Notice tone="neutral" title="This unit is an outline">
-          The reading list is verified, but the lesson, exercises and feedback for this unit have not been prepared yet. Nothing is generated when you click Start; the unit is prepared through the content pipeline first.
+          The reading list is verified, but the lesson, exercises and feedback for this unit have not been prepared yet. Nothing is
+          generated when you click Start; the unit is prepared through the content pipeline first.
         </Notice>
       ) : null}
 
@@ -153,7 +154,9 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
                 );
               })}
             </ol>
-            <p className="mt-3 text-xs text-ink-3">Sources open in a new tab. Locators were verified on the date shown in the source record.</p>
+            <p className="mt-3 text-xs text-ink-3">
+              Sources open in a new tab. Locators were verified on the date shown in the source record.
+            </p>
           </Card>
           <Card as="aside">
             <h2 className="text-lg text-ink">Exit check</h2>

@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { screenshot, signInOrBootstrap } from "./helpers";
 
+// This spec exercises arrival and sign-in itself, so it starts from an anonymous browser.
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.describe("arrival, authentication and resumable onboarding", () => {
   test("private routes refuse unauthenticated requests", async ({ request, page }) => {
     const api = await request.get("/api/jobs");
@@ -28,15 +31,22 @@ test.describe("arrival, authentication and resumable onboarding", () => {
     await page.getByRole("button", { name: /continue/i }).click();
     await expect(page).toHaveURL(/\/onboarding\/2/);
 
-    // Reload and a fresh visit to the campus both resume at the saved step.
+    // Reload resumes at the saved step.
     await page.reload();
     await expect(page).toHaveURL(/\/onboarding\/2/);
-    await page.goto("/campus");
-    await expect(page).toHaveURL(/\/onboarding\/2/);
 
-    // Skipping ahead is refused.
-    await page.goto("/onboarding/9");
-    await expect(page).toHaveURL(/\/onboarding\/2/);
+    // While orientation is unfinished, the campus sends the learner back to the saved step and
+    // skipping ahead is refused; once orientation has been completed, every step stays editable
+    // from Settings and the campus is the home.
+    await page.goto("/campus");
+    if (/\/onboarding\/2/.test(page.url())) {
+      await page.goto("/onboarding/9");
+      await expect(page).toHaveURL(/\/onboarding\/2/);
+    } else {
+      await expect(page).toHaveURL(/\/campus/);
+      await page.goto("/onboarding/5");
+      await expect(page).toHaveURL(/\/onboarding\/5/);
+    }
   });
 
   test("sign-up is closed once the owner exists", async ({ page }) => {

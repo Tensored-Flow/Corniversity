@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { getDocumentProxy, getMeta } from "unpdf";
 import { getEnv } from "@corniversity/db/env";
 import { LibraryError, receiveUpload, setCandidateMetadata } from "@corniversity/db/services/library";
+import { NextResponse } from "next/server";
+import { getDocumentProxy, getMeta } from "unpdf";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
@@ -21,7 +21,8 @@ export async function POST(request: Request): Promise<Response> {
   const form = await request.formData().catch(() => null);
   const file = form?.get("file");
   if (!(file instanceof File)) return NextResponse.json({ error: "Choose a file to upload." }, { status: 400 });
-  if (file.size > maxBytes) return NextResponse.json({ error: `The file is larger than the ${env.MAX_UPLOAD_MB} MB limit.` }, { status: 413 });
+  if (file.size > maxBytes)
+    return NextResponse.json({ error: `The file is larger than the ${env.MAX_UPLOAD_MB} MB limit.` }, { status: 413 });
   const data = Buffer.from(await file.arrayBuffer());
   try {
     const result = await receiveUpload(db(), blobs(), {
@@ -38,7 +39,13 @@ export async function POST(request: Request): Promise<Response> {
         const meta = await getMeta(pdf).catch(() => ({ info: {} as Record<string, unknown> }));
         const info = (meta.info ?? {}) as Record<string, unknown>;
         const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim().slice(0, 300) : undefined);
-        await setCandidateMetadata(db(), authed.session.user.id, result.asset.id, { title: str(info.Title), author: str(info.Author), producer: str(info.Producer), pageCount: pdf.numPages }, pdf.numPages);
+        await setCandidateMetadata(
+          db(),
+          authed.session.user.id,
+          result.asset.id,
+          { title: str(info.Title), author: str(info.Author), producer: str(info.Producer), pageCount: pdf.numPages },
+          pdf.numPages,
+        );
       } catch {
         // Unreadable metadata is not an error at this stage; ingestion will report a corrupt file properly.
       }

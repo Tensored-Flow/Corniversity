@@ -1,9 +1,9 @@
-import { eq } from "drizzle-orm";
-import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
 import { createBlobStore } from "@corniversity/db/blob";
 import { IngestAssetPayload } from "@corniversity/db/jobs";
 import { extractedPage, passage, resourceAsset } from "@corniversity/db/schema/index";
-import { MAX_PDF_PAGES, getAsset, isAllowed } from "@corniversity/db/services/library";
+import { getAsset, isAllowed, MAX_PDF_PAGES } from "@corniversity/db/services/library";
+import { eq } from "drizzle-orm";
+import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
 import { type HandlerContext, NonRetryableError } from "./index";
 import { reportProgress } from "./job-record";
 
@@ -27,7 +27,10 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
   const blobs = createBlobStore(ctx.env.BLOB_STORE, db, ctx.env.CORNIVERSITY_DATA_ROOT);
   const data = await blobs.get(asset.storageKey);
   if (!data) {
-    await db.update(resourceAsset).set({ status: "rejected", rejectionReason: "stored bytes missing" }).where(eq(resourceAsset.id, asset.id));
+    await db
+      .update(resourceAsset)
+      .set({ status: "rejected", rejectionReason: "stored bytes missing" })
+      .where(eq(resourceAsset.id, asset.id));
     return { failed: true, reason: "stored bytes missing" };
   }
 
@@ -50,7 +53,11 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
       const extracted = await extractText(pdf);
       pagesText = Array.isArray(extracted.text) ? extracted.text : [extracted.text];
       const inspection = await inspectPages(pdf);
-      quality = inspection.pages.map((p) => ({ textLength: p.textLength, invisibleTextLength: p.invisibleTextLength, imageCoverage: p.imageCoverage }));
+      quality = inspection.pages.map((p) => ({
+        textLength: p.textLength,
+        invisibleTextLength: p.invisibleTextLength,
+        imageCoverage: p.imageCoverage,
+      }));
     } catch (error) {
       // A file that cannot be parsed will not parse better on retry: record why, keep the
       // original bytes (the owner may still read them in the source view) and stop.
@@ -96,13 +103,33 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
         .returning({ id: extractedPage.id });
       const segments = segmentPage(text);
       if (segments.length) {
-        await tx.insert(passage).values(segments.map((seg, ordinal) => ({ assetId: asset.id, pageId: page!.id, ordinal, heading: seg.heading, kind: seg.kind, text: seg.text })));
+        await tx.insert(passage).values(
+          segments.map((seg, ordinal) => ({
+            assetId: asset.id,
+            pageId: page!.id,
+            ordinal,
+            heading: seg.heading,
+            kind: seg.kind,
+            text: seg.text,
+          })),
+        );
       }
     }
-    const candidate = { ...asset.candidateMetadata, title: asset.candidateMetadata.title ?? title, author: asset.candidateMetadata.author ?? author, pageCount: pagesText.length };
+    const candidate = {
+      ...asset.candidateMetadata,
+      title: asset.candidateMetadata.title ?? title,
+      author: asset.candidateMetadata.author ?? author,
+      pageCount: pagesText.length,
+    };
     await tx
       .update(resourceAsset)
-      .set({ status: "processed", pageCount: pagesText.length, printedLabelsPresent: Boolean(labels), candidateMetadata: candidate, rejectionReason: scanned > 0 ? `${scanned} page(s) look scanned; their text is unreliable and OCR was not run` : null })
+      .set({
+        status: "processed",
+        pageCount: pagesText.length,
+        printedLabelsPresent: Boolean(labels),
+        candidateMetadata: candidate,
+        rejectionReason: scanned > 0 ? `${scanned} page(s) look scanned; their text is unreliable and OCR was not run` : null,
+      })
       .where(eq(resourceAsset.id, asset.id));
   });
   await reportProgress(db, raw, { stage: "done", percent: 100 });
@@ -112,7 +139,9 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
 const HEADING = /^(definition|theorem|proposition|lemma|corollary|example|remark|exercise|proof|chapter|section|§)\b.{0,80}$/i;
 
 /** Splits a page into passages at blank lines and mathematical headings; keeps theorem labels with their statements. */
-export function segmentPage(text: string): { heading: string | null; kind: "paragraph" | "theorem" | "definition" | "exercise" | "proof" | "other"; text: string }[] {
+export function segmentPage(
+  text: string,
+): { heading: string | null; kind: "paragraph" | "theorem" | "definition" | "exercise" | "proof" | "other"; text: string }[] {
   const blocks = text
     .replace(/\r\n/g, "\n")
     .split(/\n{2,}|\n(?=(?:Definition|Theorem|Proposition|Lemma|Corollary|Example|Remark|Exercise|Proof)\b)/)
@@ -123,9 +152,18 @@ export function segmentPage(text: string): { heading: string | null; kind: "para
     const firstLine = block.split("\n")[0] ?? "";
     const heading = HEADING.test(firstLine) ? firstLine.slice(0, 120) : null;
     const lower = firstLine.toLowerCase();
-    const kind = lower.startsWith("definition") ? "definition" : lower.startsWith("exercise") ? "exercise" : lower.startsWith("proof") ? "proof" : /^(theorem|proposition|lemma|corollary)/.test(lower) ? "theorem" : "paragraph";
+    const kind = lower.startsWith("definition")
+      ? "definition"
+      : lower.startsWith("exercise")
+        ? "exercise"
+        : lower.startsWith("proof")
+          ? "proof"
+          : /^(theorem|proposition|lemma|corollary)/.test(lower)
+            ? "theorem"
+            : "paragraph";
     // Merge very long blocks into ~1,200-character passages so evidence windows stay bounded.
-    for (let i = 0; i < block.length; i += 1200) out.push({ heading: i === 0 ? heading : null, kind: i === 0 ? kind : "paragraph", text: block.slice(i, i + 1200) });
+    for (let i = 0; i < block.length; i += 1200)
+      out.push({ heading: i === 0 ? heading : null, kind: i === 0 ? kind : "paragraph", text: block.slice(i, i + 1200) });
   }
   return out;
 }

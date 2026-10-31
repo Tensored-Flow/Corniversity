@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { listEntries } from "@corniversity/db/services/notebook";
 import { getOrCreateConversation, listMessages } from "@corniversity/db/services/tutoring";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { LocatorLink } from "@/components/LocatorLink";
 import { Markdown } from "@/components/Markdown";
 import { AiLabel, Badge, Card } from "@/components/ui";
@@ -10,10 +11,19 @@ import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "./AutoRefresh";
+import {
+  completeSessionAction,
+  fileReviewAction,
+  requestHintAction,
+  revealReferenceAction,
+  saveDraftAction,
+  submitAttemptAction,
+} from "./actions";
 import { FeedbackCard } from "./FeedbackCard";
+import { LabInterpretation } from "./labs/LabInterpretation";
+import { LabPanel } from "./labs/LabPanel";
 import { TutorPanel } from "./TutorPanel";
 import { Workbench } from "./Workbench";
-import { completeSessionAction, fileReviewAction, requestHintAction, revealReferenceAction, saveDraftAction, submitAttemptAction } from "./actions";
 
 export default async function SessionPage({
   params,
@@ -57,7 +67,14 @@ export default async function SessionPage({
     messages.map(async (m) => ({
       id: m.id,
       sender: m.sender,
-      html: await renderMarkdown(m.contentMarkdown.replace(/\[(E\d+(?:,\s*E\d+)*)\]/g, (_s, g: string) => g.split(/,\s*/).map((t) => `[${t}](#cite-${t})`).join(" "))),
+      html: await renderMarkdown(
+        m.contentMarkdown.replace(/\[(E\d+(?:,\s*E\d+)*)\]/g, (_s, g: string) =>
+          g
+            .split(/,\s*/)
+            .map((t) => `[${t}](#cite-${t})`)
+            .join(" "),
+        ),
+      ),
       citations: m.citations,
       labels: m.labels,
       uncited: m.uncitedClaims.length,
@@ -66,6 +83,30 @@ export default async function SessionPage({
 
   const isWorkbench = exercises.length > 0;
   const revealedHints = selected && latestAttempt ? selected.hintLadder.slice(0, latestAttempt.hintsUsed) : [];
+
+  // A mathematics laboratory shows closed forms only after the unit's tutorial attempt has been
+  // assessed or its reference revealed; until then it checks the learner's own numbers.
+  const labId = activity.labId ?? null;
+  const ASSESSED = new Set(["feedback_ready", "revision_requested", "needs_review", "accepted", "revised"]);
+  let revealFormulas = false;
+  let labNotes: { id: string; title: string; excerpt: string; when: string }[] = [];
+  if (labId) {
+    for (const exercise of unitDetail.exercises) {
+      const attempts = await getAttemptHistory(db(), auth.user.id, exercise.id);
+      if (attempts.some((h) => Boolean(h.attempt.solutionRevealedAt) || ASSESSED.has(h.attempt.state))) revealFormulas = true;
+    }
+    labNotes = (await listEntries(db(), auth.user.id, { unitId: unitDetail.unit.id, tag: labId, limit: 5 })).map((e) => ({
+      id: e.id,
+      title: e.title,
+      excerpt: e.bodyMarkdown.replace(/\s+/g, " ").slice(0, 160),
+      when: e.createdAt.toISOString().slice(0, 10),
+    }));
+  }
+  const LAB_PROMPTS = [
+    "What did the model do, and which equation or assumption explains that behaviour?",
+    "Which setting changed the outcome most, and what stayed invariant when you changed it?",
+    "What would you check next: an out-of-sample case, a limit, or a counterexample?",
+  ];
 
   return (
     <div className="mx-auto w-full max-w-7xl">
@@ -90,6 +131,28 @@ export default async function SessionPage({
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="flex min-w-0 flex-col gap-6">
+          {labId ? (
+            <>
+              <LabPanel labId={labId} revealFormulas={revealFormulas} />
+              <Card>
+                <p className="text-sm text-ink-2">{activity.instructions}</p>
+                <div className="mt-4">
+                  <LabInterpretation sessionId={id} prompts={LAB_PROMPTS} previous={labNotes} />
+                </div>
+                {!isWorkbench && session.status !== "completed" ? (
+                  <form action={completeSessionAction} className="mt-4">
+                    <input type="hidden" name="sessionId" value={id} />
+                    <button
+                      type="submit"
+                      className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3"
+                    >
+                      Finish this laboratory
+                    </button>
+                  </form>
+                ) : null}
+              </Card>
+            </>
+          ) : null}
           {isWorkbench && selected ? (
             <>
               {exercises.length > 1 ? (
@@ -101,7 +164,9 @@ export default async function SessionPage({
                       aria-current={e.id === selected.id ? "page" : undefined}
                       className={[
                         "rounded-[var(--radius-control)] border px-3 py-1.5",
-                        e.id === selected.id ? "border-brass bg-brass-soft text-brass-strong" : "border-stone bg-paper-2 text-ink-2 hover:text-ink",
+                        e.id === selected.id
+                          ? "border-brass bg-brass-soft text-brass-strong"
+                          : "border-stone bg-paper-2 text-ink-2 hover:text-ink",
                       ].join(" ")}
                     >
                       {e.sequence}. {e.title}
@@ -111,7 +176,7 @@ export default async function SessionPage({
               ) : null}
               <Card>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge>{selected.kind}</Badge>
+                  <Badge>{selected.kind.replace(/_/g, " ")}</Badge>
                   <span className="text-xs text-ink-3">about {selected.estimatedMinutes} min</span>
                   <span className="text-xs text-ink-3">· rubric v{selected.rubricVersion}</span>
                 </div>
@@ -151,14 +216,17 @@ export default async function SessionPage({
                   )),
               )}
             </>
-          ) : (
+          ) : labId ? null : (
             <Card>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm text-ink-2">{activity.instructions}</p>
                 {session.status !== "completed" ? (
                   <form action={completeSessionAction}>
                     <input type="hidden" name="sessionId" value={id} />
-                    <button type="submit" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3">
+                    <button
+                      type="submit"
+                      className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm hover:bg-paper-3"
+                    >
                       Mark as read
                     </button>
                   </form>
@@ -175,7 +243,7 @@ export default async function SessionPage({
           <Card as="aside">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-lg text-ink">{tutor?.name ?? "Tutor"}</h2>
-              <AiLabel role={tutor?.title ?? "tutor"} />
+              <AiLabel kind={tutor?.title ?? "tutor"} />
             </div>
             <TutorPanel
               sessionId={id}

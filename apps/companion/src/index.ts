@@ -9,7 +9,6 @@ import { CompanionClient, CompanionError, type PendingTask } from "./client";
 import {
   type CompanionConfig,
   type CompanionState,
-  VERSION,
   configPath,
   defaultRoot,
   isPaused,
@@ -19,9 +18,23 @@ import {
   saveConfig,
   saveState,
   setPaused,
+  VERSION,
 } from "./config";
 import { pdfCandidateMetadata } from "./pdf-meta";
-import { DEPARTMENT_FOLDERS, type SyncOutcome, departmentHint, fileFacts, hashFile, isCandidate, mediaTypeFor, pathHint, planFor, summarise, waitForStable, walk } from "./scan";
+import {
+  DEPARTMENT_FOLDERS,
+  departmentHint,
+  fileFacts,
+  hashFile,
+  isCandidate,
+  mediaTypeFor,
+  pathHint,
+  planFor,
+  type SyncOutcome,
+  summarise,
+  waitForStable,
+  walk,
+} from "./scan";
 
 /**
  * The desktop companion. It is the only thing that can see the drop folder on this computer:
@@ -38,7 +51,9 @@ const unauthorised = (error: unknown) => error instanceof CompanionError && erro
 function requireConfig(): CompanionConfig {
   const config = loadConfig();
   if (!config) {
-    console.error(`Not paired. Create a code under Library → Desktop sync, then run:\n  pnpm library:pair -- --server <url> --code <code>\n(configuration file: ${configPath()})`);
+    console.error(
+      `Not paired. Create a code under Library → Desktop sync, then run:\n  pnpm library:pair -- --server <url> --code <code>\n(configuration file: ${configPath()})`,
+    );
     process.exit(2);
   }
   return config;
@@ -53,7 +68,12 @@ function pendingCount(state: CompanionState): number {
   return Object.values(state.files).filter((f) => f.status === "upload_requested").length;
 }
 
-async function registerFiles(config: CompanionConfig, state: CompanionState, client: CompanionClient, options: { dryRun: boolean; patient: boolean }): Promise<SyncOutcome[]> {
+async function registerFiles(
+  config: CompanionConfig,
+  state: CompanionState,
+  client: CompanionClient,
+  options: { dryRun: boolean; patient: boolean },
+): Promise<SyncOutcome[]> {
   const outcomes: SyncOutcome[] = [];
   for (const root of config.roots) {
     for await (const file of walk(inboxFor(root))) {
@@ -103,12 +123,18 @@ async function registerFiles(config: CompanionConfig, state: CompanionState, cli
 async function uploadTask(state: CompanionState, client: CompanionClient, task: PendingTask): Promise<SyncOutcome> {
   const entry = Object.entries(state.files).find(([, e]) => e.sha256 === task.sha256);
   const hint = task.localPathHint ?? task.sha256.slice(0, 12);
-  if (!entry) return { path: hint, action: "error", detail: "the university is waiting for this file, but it is not under the configured roots any more" };
+  if (!entry)
+    return {
+      path: hint,
+      action: "error",
+      detail: "the university is waiting for this file, but it is not under the configured roots any more",
+    };
   const [absolutePath, known] = entry;
   try {
     const bytes = await readFile(absolutePath);
     const digest = createHash("sha256").update(bytes).digest("hex");
-    if (digest !== task.sha256) return { path: hint, action: "error", detail: "the file changed since it was registered; it will be re-registered on the next sync" };
+    if (digest !== task.sha256)
+      return { path: hint, action: "error", detail: "the file changed since it was registered; it will be re-registered on the next sync" };
     const result = await client.upload(task.assetId, bytes, basename(absolutePath), mediaTypeFor(absolutePath));
     state.files[absolutePath] = { ...known, status: result.status, uploadedAt: new Date().toISOString() };
     return { path: hint, action: "upload", detail: `${result.outcome} (${result.status})` };
@@ -120,7 +146,13 @@ async function uploadTask(state: CompanionState, client: CompanionClient, task: 
 
 async function heartbeat(state: CompanionState, client: CompanionClient, watching: boolean, paused = false): Promise<PendingTask[]> {
   try {
-    const { pending } = await client.heartbeat({ watching, paused, pendingFiles: pendingCount(state), version: VERSION, reportedAt: new Date().toISOString() });
+    const { pending } = await client.heartbeat({
+      watching,
+      paused,
+      pendingFiles: pendingCount(state),
+      version: VERSION,
+      reportedAt: new Date().toISOString(),
+    });
     state.lastHeartbeat = { at: new Date().toISOString(), ok: true };
     for (const task of pending) {
       const entry = Object.entries(state.files).find(([, e]) => e.sha256 === task.sha256);
@@ -134,7 +166,11 @@ async function heartbeat(state: CompanionState, client: CompanionClient, watchin
   }
 }
 
-async function syncOnce(config: CompanionConfig, state: CompanionState, options: { dryRun: boolean; watching: boolean }): Promise<SyncOutcome[]> {
+async function syncOnce(
+  config: CompanionConfig,
+  state: CompanionState,
+  options: { dryRun: boolean; watching: boolean },
+): Promise<SyncOutcome[]> {
   const client = new CompanionClient(config.server, config.token);
   const outcomes = await registerFiles(config, state, client, { dryRun: options.dryRun, patient: options.watching });
   if (!options.dryRun) {
@@ -157,7 +193,9 @@ function report(outcomes: SyncOutcome[]): void {
 
 const program = new Command()
   .name("corniversity-companion")
-  .description("Desktop companion for Corniversity: pairs this computer, watches the library inbox, registers files and uploads only what you have permitted.")
+  .description(
+    "Desktop companion for Corniversity: pairs this computer, watches the library inbox, registers files and uploads only what you have permitted.",
+  )
   .version(VERSION);
 
 program
@@ -171,12 +209,20 @@ program
     const roots = options.root.map((r) => resolve(r));
     for (const root of roots) {
       for (const department of DEPARTMENT_FOLDERS) mkdirSync(join(root, "inbox", department), { recursive: true });
-      for (const folder of ["originals", "processed", "exports", "requests", "quarantine"]) mkdirSync(join(root, folder), { recursive: true });
+      for (const folder of ["originals", "processed", "exports", "requests", "quarantine"])
+        mkdirSync(join(root, folder), { recursive: true });
     }
     try {
       const client = new CompanionClient(options.server, null);
       const result = await client.pair(options.code.trim(), options.name, roots);
-      saveConfig({ server: options.server, token: result.token, deviceName: result.deviceName, pairingId: result.pairingId, roots, pairedAt: new Date().toISOString() });
+      saveConfig({
+        server: options.server,
+        token: result.token,
+        deviceName: result.deviceName,
+        pairingId: result.pairingId,
+        roots,
+        pairedAt: new Date().toISOString(),
+      });
       log(`Paired as "${result.deviceName}" with ${options.server}.`);
       log(`Configuration: ${configPath()} (the device token lives here; revoke it any time from the Library).`);
       log(`Library root(s): ${roots.join(", ")} — put files in inbox/<department>/.`);
@@ -219,7 +265,9 @@ program
     const shutdown = async (code = 0) => {
       clearInterval(timer);
       await watcher.close().catch(() => undefined);
-      await client.heartbeat({ watching: false, pendingFiles: pendingCount(state), version: VERSION, reportedAt: new Date().toISOString() }).catch(() => undefined);
+      await client
+        .heartbeat({ watching: false, pendingFiles: pendingCount(state), version: VERSION, reportedAt: new Date().toISOString() })
+        .catch(() => undefined);
       saveState(state);
       log("stopped; the Library will show desktop sync as offline");
       process.exit(code);
@@ -260,13 +308,21 @@ program
       }
     };
 
-    const watcher = watch(inboxes, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 2000, pollInterval: 500 }, depth: 8, followSymlinks: false });
+    const watcher = watch(inboxes, {
+      ignoreInitial: true,
+      awaitWriteFinish: { stabilityThreshold: 2000, pollInterval: 500 },
+      depth: 8,
+      followSymlinks: false,
+    });
     let debounce: NodeJS.Timeout | undefined;
     const schedule = () => {
       clearTimeout(debounce);
       debounce = setTimeout(() => void runSync(), 1500);
     };
-    watcher.on("add", schedule).on("change", schedule).on("error", (error) => log(`watcher error: ${describe(error)}`));
+    watcher
+      .on("add", schedule)
+      .on("change", schedule)
+      .on("error", (error) => log(`watcher error: ${describe(error)}`));
     const timer = setInterval(() => void tick(), Math.max(15, Number(options.interval) || 60) * 1000);
     process.on("SIGINT", () => void shutdown());
     process.on("SIGTERM", () => void shutdown());
@@ -291,7 +347,9 @@ program
     console.log(`Paused:         ${isPaused() ? "yes" : "no"}`);
     console.log(`Known files:    ${Object.keys(state.files).length} (${pendingCount(state)} waiting for permitted upload)`);
     console.log(`Last sync:      ${state.lastSyncAt ?? "never"}${state.lastSummary ? ` — ${state.lastSummary}` : ""}`);
-    console.log(`Last heartbeat: ${state.lastHeartbeat ? `${state.lastHeartbeat.at} (${state.lastHeartbeat.ok ? "ok" : state.lastHeartbeat.detail})` : "never"}`);
+    console.log(
+      `Last heartbeat: ${state.lastHeartbeat ? `${state.lastHeartbeat.at} (${state.lastHeartbeat.ok ? "ok" : state.lastHeartbeat.detail})` : "never"}`,
+    );
     try {
       const me = await new CompanionClient(config.server, config.token).whoami();
       console.log(`Token:          valid; the university knows this device as "${me.deviceName}" with ${me.pending} upload(s) waiting`);
@@ -324,8 +382,11 @@ program
     log("local pairing removed; revoke the device in the Library to invalidate the token server-side");
   });
 
-// `pnpm --filter … start -- pair …` forwards the literal `--`; drop any leading ones so the
-// command name is seen, whichever way the companion was launched.
+// pnpm forwards the literal `--`: `pnpm --filter … start -- pair …` delivers it before the command
+// name and `pnpm library:pair -- --server …` delivers it just after. Commander would treat every
+// option behind it as a positional argument, so drop a separator in either place. No companion
+// command takes a positional argument, so nothing legitimate is lost.
 const userArguments = process.argv.slice(2);
 while (userArguments[0] === "--") userArguments.shift();
+if (userArguments[1] === "--") userArguments.splice(1, 1);
 await program.parseAsync([...process.argv.slice(0, 2), ...userArguments]);

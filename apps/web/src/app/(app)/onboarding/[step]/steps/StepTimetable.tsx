@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { and, desc, eq } from "drizzle-orm";
-import { DateTime } from "luxon";
 import { planVersion } from "@corniversity/db/schema/index";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { getActiveTerm, listSessions } from "@corniversity/db/services/timetable";
+import { and, desc, eq } from "drizzle-orm";
+import { DateTime } from "luxon";
+import Link from "next/link";
 import { Badge, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { acceptTimetableAction } from "../actions";
@@ -32,7 +32,10 @@ export async function StepTimetable({ userId, profile }: StepProps) {
   return (
     <form action={acceptTimetableAction} className="flex max-w-3xl flex-col gap-6">
       <input type="hidden" name="planId" value={plan.id} />
-      <Notice tone={plan.summary.feasible ? "moss" : "rust"} title={plan.summary.feasible ? "The timetable fits" : "The timetable does not fully fit"}>
+      <Notice
+        tone={plan.summary.feasible ? "moss" : "rust"}
+        title={plan.summary.feasible ? "The timetable fits" : "The timetable does not fully fit"}
+      >
         <ul className="list-disc pl-5">
           {plan.summary.explanations.map((e) => (
             <li key={e}>{e}</li>
@@ -40,7 +43,8 @@ export async function StepTimetable({ userId, profile }: StepProps) {
         </ul>
         {!plan.summary.feasible ? (
           <p className="mt-2">
-            {plan.summary.unplaced.length} activities are unplaced. You can continue with this shortfall (they appear as unscheduled work), or{" "}
+            {plan.summary.unplaced.length} activities are unplaced. You can continue with this shortfall (they appear as unscheduled work),
+            or{" "}
             <Link href="/onboarding/5" className="underline underline-offset-4">
               adjust your hours
             </Link>{" "}
@@ -86,7 +90,10 @@ export async function StepTimetable({ userId, profile }: StepProps) {
         ) : (
           <ul className="mt-2 flex flex-col gap-1 text-sm">
             {firstTwoWeeks.map((s) => (
-              <li key={s.id} className="flex flex-wrap items-center gap-2 rounded-[var(--radius-control)] border border-stone bg-paper-2 px-3 py-2">
+              <li
+                key={s.id}
+                className="flex flex-wrap items-center gap-2 rounded-[var(--radius-control)] border border-stone bg-paper-2 px-3 py-2"
+              >
                 <span className="w-40 text-ink-3">{DateTime.fromJSDate(s.startsAt).setZone(zone).toFormat("ccc d LLL HH:mm")}</span>
                 <Badge>{s.sessionKind.replace("_", " ")}</Badge>
                 <span className="text-ink">{s.title}</span>
@@ -101,12 +108,15 @@ export async function StepTimetable({ userId, profile }: StepProps) {
           Resources and access
         </h2>
         {unprepared.length === 0 ? (
-          <p className="mt-2 text-sm text-ink-2">Every enrolled course has prepared units and verified open sources; nothing needs to be obtained before you begin.</p>
+          <p className="mt-2 text-sm text-ink-2">
+            Every enrolled course has prepared units and verified open sources; nothing needs to be obtained before you begin.
+          </p>
         ) : (
           <ul className="mt-2 flex flex-col gap-2 text-sm">
             {unprepared.map((e) => (
               <li key={e.enrolment.id} className="rounded-[var(--radius-control)] border border-stone bg-paper-2 px-3 py-2 text-ink-2">
-                <span className="font-mono text-xs text-ink-3">{e.course.id}</span> {e.course.title}: no prepared units yet, so only its verified reading list is available until the content pipeline prepares it. No sessions are scheduled for it.
+                <span className="font-mono text-xs text-ink-3">{e.course.id}</span> {e.course.title}: no prepared units yet, so only its
+                verified reading list is available until the content pipeline prepares it. No sessions are scheduled for it.
               </li>
             ))}
           </ul>

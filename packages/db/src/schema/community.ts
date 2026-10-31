@@ -1,7 +1,7 @@
 import { boolean, index, integer, jsonb, pgTable, primaryKey, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, tz } from "./_shared";
-import { user } from "./auth";
 import { department } from "./academic";
+import { user } from "./auth";
 import { learningSession } from "./learning";
 
 export type PersonaRole =

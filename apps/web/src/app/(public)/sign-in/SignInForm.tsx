@@ -22,9 +22,7 @@ export function SignInForm({ next, bootstrapped }: { next: string; bootstrapped:
     setPending(false);
     if (result.error) {
       setError(
-        result.error.status === 429
-          ? "Too many attempts. Please wait a minute and try again."
-          : "That email and password did not match.",
+        result.error.status === 429 ? "Too many attempts. Please wait a minute and try again." : "That email and password did not match.",
       );
       return;
     }
@@ -54,8 +52,8 @@ export function SignInForm({ next, bootstrapped }: { next: string; bootstrapped:
         </p>
       ) : (
         <p className="text-xs text-ink-3">
-          Forgotten your password? Run <code className="font-mono">pnpm owner:reset-password</code> on
-          the machine that hosts Corniversity. Email delivery is not configured.
+          Forgotten your password? Run <code className="font-mono">pnpm owner:reset-password</code> on the machine that hosts Corniversity.
+          Email delivery is not configured.
         </p>
       )}
     </form>

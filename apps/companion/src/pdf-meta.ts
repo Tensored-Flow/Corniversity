@@ -8,7 +8,9 @@ const str = (value: unknown): string | undefined => (typeof value === "string" &
  * guess for the owner to confirm in the app; a file that cannot be parsed still registers (the
  * server's own validation decides what happens to its bytes, if they are ever sent).
  */
-export async function pdfCandidateMetadata(filePath: string): Promise<{ title?: string; author?: string; pageCount?: number; producer?: string }> {
+export async function pdfCandidateMetadata(
+  filePath: string,
+): Promise<{ title?: string; author?: string; pageCount?: number; producer?: string }> {
   try {
     const data = await readFile(filePath);
     const pdf = await getDocumentProxy(new Uint8Array(data));

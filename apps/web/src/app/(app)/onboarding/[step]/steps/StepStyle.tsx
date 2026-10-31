@@ -23,7 +23,10 @@ export async function StepStyle({ profile }: StepProps) {
         <Fieldset key={d.id} legend={d.title}>
           <div className="grid gap-2 sm:grid-cols-2">
             {STYLES.map((s) => (
-              <label key={s.value} className="flex items-start gap-3 rounded-[var(--radius-control)] border border-stone bg-paper-2 p-3 text-sm has-[:checked]:border-brass">
+              <label
+                key={s.value}
+                className="flex items-start gap-3 rounded-[var(--radius-control)] border border-stone bg-paper-2 p-3 text-sm has-[:checked]:border-brass"
+              >
                 <input
                   type="radio"
                   name={`style:${d.id}`}

@@ -43,7 +43,10 @@ export async function enrol(db: DbOrTx, input: EnrolInput): Promise<{ enrolment:
     .limit(1);
   if (!version) throw new EnrolmentError("no_current_version", `Course ${input.courseId} has no published version.`);
   if (!version.modesOffered.includes(input.mode)) {
-    throw new EnrolmentError("not_offered", `${input.courseId} is not offered in ${input.mode} mode (offered: ${version.modesOffered.join(", ") || "none"}).`);
+    throw new EnrolmentError(
+      "not_offered",
+      `${input.courseId} is not offered in ${input.mode} mode (offered: ${version.modesOffered.join(", ") || "none"}).`,
+    );
   }
   const active = await db
     .select()

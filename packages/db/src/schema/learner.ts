@@ -1,14 +1,4 @@
-import {
-  boolean,
-  index,
-  integer,
-  jsonb,
-  numeric,
-  pgTable,
-  real,
-  text,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, numeric, pgTable, real, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, immersionEnum, tz, updatedAt } from "./_shared";
 import { user } from "./auth";
 
@@ -54,10 +44,7 @@ export const learnerProfile = pgTable("learner_profile", {
   studyRhythm: text("study_rhythm").$type<"term" | "rolling" | "reading_course">(),
   goalsText: text("goals_text"),
   socialLayerEnabled: boolean("social_layer_enabled").notNull().default(true),
-  notifications: jsonb("notifications")
-    .$type<{ inApp: boolean; email: boolean }>()
-    .notNull()
-    .default({ inApp: true, email: false }),
+  notifications: jsonb("notifications").$type<{ inApp: boolean; email: boolean }>().notNull().default({ inApp: true, email: false }),
   onboardingStep: integer("onboarding_step").notNull().default(1),
   onboardingAnswers: jsonb("onboarding_answers").$type<OnboardingAnswers>().notNull().default({}),
   onboardingCompletedAt: tz("onboarding_completed_at"),
@@ -115,8 +102,13 @@ export const devicePairing = pgTable(
     name: text("name").notNull(),
     tokenHash: text("token_hash").notNull().unique(),
     roots: jsonb("roots").$type<string[]>().notNull().default([]),
-    lastStatus: jsonb("last_status")
-      .$type<{ watching: boolean; paused?: boolean; pendingFiles: number; version: string; reportedAt: string }>(),
+    lastStatus: jsonb("last_status").$type<{
+      watching: boolean;
+      paused?: boolean;
+      pendingFiles: number;
+      version: string;
+      reportedAt: string;
+    }>(),
     createdAt: createdAt(),
     lastSeenAt: tz("last_seen_at"),
     revokedAt: tz("revoked_at"),

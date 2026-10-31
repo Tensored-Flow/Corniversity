@@ -1,16 +1,15 @@
-import { and, eq } from "drizzle-orm";
-import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
-import { annotateTurn } from "@corniversity/core/grounding/citations";
 import {
   ASSESSOR_PROMPT_VERSION,
   AssessorFeedbackSchema,
-  ROLE_CONTRACTS,
   buildAssessorSystemPrompt,
-  numberLines,
-  ProviderError,
   estimateCostUsd,
+  numberLines,
   PRICING_VERSION,
+  ProviderError,
+  ROLE_CONTRACTS,
 } from "@corniversity/ai";
+import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
+import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
 import {
   assessmentRun,
@@ -23,8 +22,9 @@ import {
 } from "@corniversity/db/schema/index";
 import { recordEvidence } from "@corniversity/db/services/evidence";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
-import type { HandlerContext } from "./index";
+import { and, eq } from "drizzle-orm";
 import { providerFor } from "../provider";
+import type { HandlerContext } from "./index";
 
 /**
  * Assessment job. Idempotent on the assessment run: a completed run is never re-graded.
@@ -96,7 +96,9 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
       role: "assessor",
       purpose: "assess-submission",
       system,
-      messages: [{ role: "user", content: "Assess the numbered submission according to the standard and return the structured judgement." }],
+      messages: [
+        { role: "user", content: "Assess the numbered submission according to the standard and return the structured judgement." },
+      ],
       schema: AssessorFeedbackSchema,
       schemaName: "AssessorFeedback",
       maxTokens: contract.limits.maxOutputTokens,

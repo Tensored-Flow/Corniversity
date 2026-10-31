@@ -40,10 +40,7 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
   return (
     <span className="inline-flex items-center gap-3 text-ink">
       <Crest size={compact ? 28 : 36} className="text-brass" />
-      <span
-        className="display"
-        style={{ fontSize: compact ? "1.25rem" : "1.6rem", letterSpacing: "0.005em" }}
-      >
+      <span className="display" style={{ fontSize: compact ? "1.25rem" : "1.6rem", letterSpacing: "0.005em" }}>
         Corniversity
       </span>
     </span>

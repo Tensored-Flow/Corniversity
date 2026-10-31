@@ -1,6 +1,4 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import {
   createCalendarToken,
   decideProposal,
@@ -10,6 +8,8 @@ import {
   setSessionLock,
   setSessionStatus,
 } from "@corniversity/db/services/timetable";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 

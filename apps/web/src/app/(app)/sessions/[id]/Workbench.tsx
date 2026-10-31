@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
+import { RenderedHtml } from "@/components/RenderedHtml";
 import { Badge, Button, Notice } from "@/components/ui";
 import type { ActionResult } from "./actions";
 
@@ -163,13 +164,14 @@ export function Workbench(props: Props) {
         ) : null}
       </div>
       <p className="mt-2 text-xs text-ink-3">
-        Hints and reveals are recorded as assistance, not as failure. Submitting creates an immutable version; feedback is provisional and can be appealed.
+        Hints and reveals are recorded as assistance, not as failure. Submitting creates an immutable version; feedback is provisional and
+        can be appealed.
       </p>
 
       {revealHtml ? (
         <div className="mt-4 rounded-[var(--radius-panel)] border border-brass/40 bg-brass-soft/30 p-4">
           <p className="text-xs uppercase tracking-wide text-brass">Reference reasoning (practice mode)</p>
-          <div className="prose-reading mt-2 text-sm" dangerouslySetInnerHTML={{ __html: revealHtml }} />
+          <RenderedHtml html={revealHtml} className="mt-2 text-sm" />
         </div>
       ) : null}
     </section>

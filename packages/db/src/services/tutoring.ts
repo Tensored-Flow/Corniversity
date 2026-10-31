@@ -1,5 +1,5 @@
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { annotateTurn, type EvidenceRef, formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { conversation, locator, message, persona, teachingUnit, unitExercise } from "../schema/index";
 import { localOnlyAssetsForCourse, permittedPassagesForCourse } from "./library";
@@ -22,7 +22,12 @@ export async function buildUnitEvidence(
   const ids = new Set<string>();
   for (const p of unit.preparation) ids.add(p.locatorId);
   for (const a of unit.activities) for (const l of a.sourceLocatorIds) ids.add(l);
-  const locators = ids.size ? await db.select().from(locator).where(inArray(locator.id, [...ids])) : [];
+  const locators = ids.size
+    ? await db
+        .select()
+        .from(locator)
+        .where(inArray(locator.id, [...ids]))
+    : [];
   const ordered = [...ids].map((id) => locators.find((l) => l.id === id)).filter((l): l is typeof locator.$inferSelect => Boolean(l));
   const blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[] = ordered.map((l) => ({
     label: l.label,
@@ -58,7 +63,13 @@ export async function latestConversationForAsset(db: DbOrTx, ownerId: string, as
   const rows = await db
     .select()
     .from(conversation)
-    .where(and(eq(conversation.ownerId, ownerId), eq(conversation.purpose, "reading-room"), sql`${conversation.context}->'allowedAssetIds' ? ${assetId}`))
+    .where(
+      and(
+        eq(conversation.ownerId, ownerId),
+        eq(conversation.purpose, "reading-room"),
+        sql`${conversation.context}->'allowedAssetIds' ? ${assetId}`,
+      ),
+    )
     .orderBy(desc(conversation.createdAt))
     .limit(1);
   return rows[0] ?? null;
@@ -101,7 +112,12 @@ export async function getOrCreateConversation(
       role: input.role,
       personaId: input.personaId ?? null,
       purpose: input.purpose,
-      context: { unitId: input.unitId, exerciseId: input.exerciseId, allowedLocatorIds: input.allowedLocatorIds, allowedAssetIds: input.allowedAssetIds ?? [] },
+      context: {
+        unitId: input.unitId,
+        exerciseId: input.exerciseId,
+        allowedLocatorIds: input.allowedLocatorIds,
+        allowedAssetIds: input.allowedAssetIds ?? [],
+      },
     })
     .returning();
   if (!created) throw new Error("conversation insert returned nothing");
@@ -109,7 +125,11 @@ export async function getOrCreateConversation(
 }
 
 export async function getConversation(db: DbOrTx, ownerId: string, id: string): Promise<ConversationRow | null> {
-  const rows = await db.select().from(conversation).where(and(eq(conversation.id, id), eq(conversation.ownerId, ownerId))).limit(1);
+  const rows = await db
+    .select()
+    .from(conversation)
+    .where(and(eq(conversation.id, id), eq(conversation.ownerId, ownerId)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -118,7 +138,12 @@ export async function listMessages(db: DbOrTx, conversationId: string): Promise<
 }
 
 export async function appendLearnerMessage(db: DbOrTx, conversationId: string, content: string): Promise<MessageRow> {
-  const last = await db.select({ sequence: message.sequence }).from(message).where(eq(message.conversationId, conversationId)).orderBy(desc(message.sequence)).limit(1);
+  const last = await db
+    .select({ sequence: message.sequence })
+    .from(message)
+    .where(eq(message.conversationId, conversationId))
+    .orderBy(desc(message.sequence))
+    .limit(1);
   const [row] = await db
     .insert(message)
     .values({ conversationId, sequence: (last[0]?.sequence ?? 0) + 1, sender: "learner", contentMarkdown: content })
@@ -132,7 +157,12 @@ export async function appendPersonaMessage(
   input: { conversationId: string; personaId: string | null; rawText: string; allowed: EvidenceRef[]; providerRunId?: string },
 ): Promise<{ message: MessageRow; unknownTags: string[] }> {
   const annotated = annotateTurn(input.rawText, input.allowed);
-  const last = await db.select({ sequence: message.sequence }).from(message).where(eq(message.conversationId, input.conversationId)).orderBy(desc(message.sequence)).limit(1);
+  const last = await db
+    .select({ sequence: message.sequence })
+    .from(message)
+    .where(eq(message.conversationId, input.conversationId))
+    .orderBy(desc(message.sequence))
+    .limit(1);
   const [row] = await db
     .insert(message)
     .values({
@@ -141,7 +171,13 @@ export async function appendPersonaMessage(
       sender: "persona",
       personaId: input.personaId,
       contentMarkdown: annotated.markdown,
-      citations: annotated.citations.map((c) => ({ tag: c.tag, locatorId: c.locatorId, assetId: c.assetId, passageId: c.passageId, label: c.label })),
+      citations: annotated.citations.map((c) => ({
+        tag: c.tag,
+        locatorId: c.locatorId,
+        assetId: c.assetId,
+        passageId: c.passageId,
+        label: c.label,
+      })),
       labels: annotated.labels,
       uncitedClaims: annotated.uncitedClaims,
       providerRunId: input.providerRunId ?? null,

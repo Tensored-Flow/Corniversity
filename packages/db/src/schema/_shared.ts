@@ -12,8 +12,7 @@ export const tsvector = customType<{ data: string }>({
   },
 });
 
-export const createdAt = () =>
-  timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow();
+export const createdAt = () => timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow();
 export const updatedAt = () =>
   timestamp("updated_at", { withTimezone: true, mode: "date" })
     .notNull()
@@ -30,13 +29,7 @@ export const courseReadinessEnum = pgEnum("course_readiness", [
 ]);
 export const unitStatusEnum = pgEnum("unit_status", ["draft", "checking", "ready", "blocked"]);
 export const learningModeEnum = pgEnum("learning_mode", ["enrolled", "audit", "reading_seminar"]);
-export const evidenceStateEnum = pgEnum("evidence_state", [
-  "unassessed",
-  "introduced",
-  "practised",
-  "demonstrated",
-  "revisit",
-]);
+export const evidenceStateEnum = pgEnum("evidence_state", ["unassessed", "introduced", "practised", "demonstrated", "revisit"]);
 export const processingActionEnum = pgEnum("processing_action", [
   "local_read",
   "local_extract",

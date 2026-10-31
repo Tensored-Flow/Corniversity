@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { getEnv } from "@corniversity/db/env";
 import { listResourceRequests, renderRequestsMarkdown, requestsToJson, suggestedRequests } from "@corniversity/db/services/library";
+import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
 
@@ -12,7 +12,10 @@ export async function GET(request: Request): Promise<Response> {
   if ("response" in authed) return authed.response;
   const format = new URL(request.url).searchParams.get("format") === "json" ? "json" : "md";
   const database = db();
-  const [requests, suggestions] = await Promise.all([listResourceRequests(database, authed.session.user.id), suggestedRequests(database, authed.session.user.id)]);
+  const [requests, suggestions] = await Promise.all([
+    listResourceRequests(database, authed.session.user.id),
+    suggestedRequests(database, authed.session.user.id),
+  ]);
   const institution = getEnv().INSTITUTION_NAME;
   if (format === "json") {
     return NextResponse.json(requestsToJson(requests, suggestions, institution), {
@@ -20,6 +23,10 @@ export async function GET(request: Request): Promise<Response> {
     });
   }
   return new Response(renderRequestsMarkdown(requests, institution, suggestions), {
-    headers: { "content-type": "text/markdown; charset=utf-8", "content-disposition": 'attachment; filename="requests.md"', "cache-control": "private, no-store" },
+    headers: {
+      "content-type": "text/markdown; charset=utf-8",
+      "content-disposition": 'attachment; filename="requests.md"',
+      "cache-control": "private, no-store",
+    },
   });
 }

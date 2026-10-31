@@ -2,9 +2,9 @@
 // package's tests can run at the same time. Migrations are applied once per run.
 import { mkdirSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
-import EmbeddedPostgres from "embedded-postgres";
 import { createDb } from "@corniversity/db/client";
 import { runMigrations } from "@corniversity/db/migrate";
+import EmbeddedPostgres from "embedded-postgres";
 
 export const TEST_PORT = 5439;
 export const TEST_DATABASE_URL = `postgres://corniversity:corniversity@127.0.0.1:${TEST_PORT}/corniversity_worker_test`;

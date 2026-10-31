@@ -1,6 +1,6 @@
+import { getDepartment, listCatalogue, listPersonas } from "@corniversity/db/services/catalogue";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDepartment, listCatalogue, listPersonas } from "@corniversity/db/services/catalogue";
 import { ReadinessBadge } from "@/components/Readiness";
 import { AiLabel, Card } from "@/components/ui";
 import { db } from "@/lib/db";
@@ -65,7 +65,7 @@ export default async function DepartmentPage({ params }: { params: Promise<{ id:
                 <li key={p.id}>
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-ink">{p.name}</span>
-                    <AiLabel role={p.title} />
+                    <AiLabel kind={p.title} />
                   </div>
                   <p className="mt-1 text-sm text-ink-2">{p.style.approach}</p>
                 </li>

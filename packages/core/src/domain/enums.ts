@@ -1,12 +1,6 @@
 import { z } from "zod";
 
-export const CourseReadiness = z.enum([
-  "proposed",
-  "source_verified",
-  "syllabus_ready",
-  "teaching_ready",
-  "resource_blocked",
-]);
+export const CourseReadiness = z.enum(["proposed", "source_verified", "syllabus_ready", "teaching_ready", "resource_blocked"]);
 export type CourseReadiness = z.infer<typeof CourseReadiness>;
 
 export const UnitStatus = z.enum(["draft", "checking", "ready", "blocked"]);

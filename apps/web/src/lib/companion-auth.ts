@@ -1,6 +1,6 @@
 import "server-only";
+import { authenticateDevice, type PairingRow } from "@corniversity/db/services/library";
 import { NextResponse } from "next/server";
-import { type PairingRow, authenticateDevice } from "@corniversity/db/services/library";
 import { db } from "./db";
 
 /**

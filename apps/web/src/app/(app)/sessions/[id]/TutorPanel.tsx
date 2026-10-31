@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import { RenderedHtml } from "@/components/RenderedHtml";
 import { Badge, Button } from "@/components/ui";
 
 interface RenderedMessage {
@@ -40,7 +41,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight });
-  }, [initialMessages.length, pending]);
+  }, []);
 
   async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,7 +79,8 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
       <div ref={scroller} className="flex max-h-[28rem] flex-col gap-3 overflow-y-auto pr-1" aria-live="polite">
         {initialMessages.length === 0 && pending === null ? (
           <p className="text-sm text-ink-2">
-            Ask about the material or about your attempt. {personaName} works from what you have tried and gives hints before answers; ask directly if you want a full explanation.
+            Ask about the material or about your attempt. {personaName} works from what you have tried and gives hints before answers; ask
+            directly if you want a full explanation.
           </p>
         ) : null}
         {initialMessages.map((m) => (
@@ -90,7 +92,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
             ].join(" ")}
           >
             <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{m.sender === "learner" ? "You" : personaName}</p>
-            <div className="prose-reading text-sm" dangerouslySetInnerHTML={{ __html: m.html }} />
+            <RenderedHtml html={m.html} className="text-sm" />
             {m.sender === "persona" && (m.labels.length || m.citations.length || m.uncited) ? (
               <div className="mt-2 flex flex-wrap items-center gap-1">
                 {m.labels.map((l) => (

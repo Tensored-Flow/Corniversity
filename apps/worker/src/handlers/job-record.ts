@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
 import type { Database } from "@corniversity/db/client";
 import { jobRecord } from "@corniversity/db/schema/operations";
+import { eq } from "drizzle-orm";
 
 interface Carrier {
   jobRecordId?: string;

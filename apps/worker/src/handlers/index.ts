@@ -1,8 +1,9 @@
-import type { PgBoss } from "pg-boss";
 import type { Database } from "@corniversity/db/client";
 import type { Env } from "@corniversity/db/env";
 import { QUEUES } from "@corniversity/db/jobs";
+import type { PgBoss } from "pg-boss";
 import { assessHandler } from "./assess";
+import { exportHandler } from "./export";
 import { ingestHandler } from "./ingest";
 import { markJob } from "./job-record";
 import { maintenanceHandler } from "./maintenance";
@@ -34,23 +35,26 @@ export class NonRetryableError extends Error {
 export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Promise<void> {
   const ctx: HandlerContext = { db, env, boss };
 
-  const wrap = (handler: Handler) => async ([job]: { data: unknown }[]) => {
-    if (!job) return;
-    await markJob(db, job.data, "active");
-    try {
-      const result = await handler(ctx, job.data);
-      await markJob(db, job.data, "completed", { result });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      await markJob(db, job.data, "failed", { error: message });
-      if (error instanceof NonRetryableError) return;
-      throw error;
-    }
-  };
+  const wrap =
+    (handler: Handler) =>
+    async ([job]: { data: unknown }[]) => {
+      if (!job) return;
+      await markJob(db, job.data, "active");
+      try {
+        const result = await handler(ctx, job.data);
+        await markJob(db, job.data, "completed", { result });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        await markJob(db, job.data, "failed", { error: message });
+        if (error instanceof NonRetryableError) return;
+        throw error;
+      }
+    };
 
   await boss.work(QUEUES.maintenance, { batchSize: 1 }, wrap(maintenanceHandler));
   await boss.work(QUEUES.assessSubmission, { batchSize: 1, pollingIntervalSeconds: 1 }, wrap(assessHandler));
   await boss.work(QUEUES.ingestAsset, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(ingestHandler));
+  await boss.work(QUEUES.exportRecords, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(exportHandler));
 
   // Nightly revision-due pass; cheap, idempotent by key per day.
   await boss.schedule(QUEUES.maintenance, "15 3 * * *", {

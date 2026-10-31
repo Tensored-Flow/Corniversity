@@ -1,6 +1,6 @@
 "use server";
-import { redirect } from "next/navigation";
 import { LearningError, startOrResumeSession } from "@corniversity/db/services/learning";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 

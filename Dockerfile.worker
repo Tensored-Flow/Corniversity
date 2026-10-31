@@ -1,0 +1,16 @@
+# Worker service (pg-boss handlers). Built from the monorepo root:
+#   docker build -f Dockerfile.worker -t corniversity-worker .
+# The worker runs from TypeScript source with tsx so that workspace packages, the SQL
+# migrations folder and unpdf's assets resolve exactly as they do in development.
+FROM node:22-alpine
+RUN corepack enable && corepack prepare pnpm@12.16.1 --activate
+WORKDIR /app
+COPY . .
+RUN pnpm install --frozen-lockfile --ignore-scripts --filter @corniversity/worker... --filter .
+ENV NODE_ENV=production \
+    WORKER_HEALTH_PORT=3100
+RUN addgroup -S corniversity && adduser -S corniversity -G corniversity && chown -R corniversity:corniversity /app
+USER corniversity
+EXPOSE 3100
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s CMD wget -qO- http://127.0.0.1:3100/health || exit 1
+CMD ["pnpm", "exec", "tsx", "apps/worker/src/index.ts"]

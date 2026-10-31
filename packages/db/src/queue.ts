@@ -1,10 +1,9 @@
-import { PgBoss } from "pg-boss";
 import { sql } from "drizzle-orm";
-import { fromDrizzle } from "pg-boss";
-import { DEAD_LETTER_QUEUES, QUEUES, QUEUE_CONFIG, type QueueName } from "./jobs";
+import { fromDrizzle, PgBoss } from "pg-boss";
 import type { DbOrTx } from "./client";
-import { jobRecord } from "./schema/operations";
 import { getEnv } from "./env";
+import { DEAD_LETTER_QUEUES, QUEUE_CONFIG, QUEUES, type QueueName } from "./jobs";
+import { jobRecord } from "./schema/operations";
 
 let boss: PgBoss | undefined;
 let starting: Promise<PgBoss> | undefined;
@@ -96,10 +95,14 @@ export async function enqueue<T extends { idempotencyKey: string; ownerId?: stri
     .returning({ id: jobRecord.id });
   if (!record) throw new Error("job record insert returned nothing");
 
-  const jobId = await instance.send(input.queue, { ...input.payload, jobRecordId: record.id }, {
-    singletonKey: input.singletonKey ?? input.payload.idempotencyKey,
-    db: fromDrizzle(db as never, sql),
-  });
+  const jobId = await instance.send(
+    input.queue,
+    { ...input.payload, jobRecordId: record.id },
+    {
+      singletonKey: input.singletonKey ?? input.payload.idempotencyKey,
+      db: fromDrizzle(db as never, sql),
+    },
+  );
   if (jobId) {
     await db.update(jobRecord).set({ pgbossJobId: jobId }).where(sql`${jobRecord.id} = ${record.id}`);
   }

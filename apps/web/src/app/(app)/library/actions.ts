@@ -1,20 +1,18 @@
 "use server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getEnv } from "@corniversity/db/env";
 import { cancelJob, retryJob } from "@corniversity/db/services/jobs-admin";
 import {
-  LibraryError,
-  type ProcessingAction,
   confirmMetadata,
   createAnnotation,
   createPairingCode,
   createResourceRequest,
   deleteAnnotation,
   deleteAsset,
+  LibraryError,
   listResourceRequests,
+  type ProcessingAction,
   renderRequestsMarkdown,
   requestIngestion,
   requestsToJson,
@@ -24,17 +22,30 @@ import {
   setRequestStatus,
   suggestedRequests,
 } from "@corniversity/db/services/library";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
 import { importOpenResource } from "@/lib/open-import";
 import { requireSession } from "@/lib/session";
 
-const PERMISSION_ACTIONS: readonly ProcessingAction[] = ["local_read", "local_extract", "private_cloud_store", "external_ai", "external_embedding", "share"];
+const PERMISSION_ACTIONS: readonly ProcessingAction[] = [
+  "local_read",
+  "local_extract",
+  "private_cloud_store",
+  "external_ai",
+  "external_embedding",
+  "share",
+];
 const UUID = /^[0-9a-f-]{36}$/;
 const COURSE_ID = /^[A-Z]{3}-\d{3}$/;
 
 const text = (form: FormData, key: string): string => String(form.get(key) ?? "").trim();
-const lines = (form: FormData, key: string): string[] => text(form, key).split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+const lines = (form: FormData, key: string): string[] =>
+  text(form, key)
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
 function failTo(path: string, message: string): never {
   redirect(`${path}?error=${encodeURIComponent(message)}`);
 }
@@ -46,9 +57,15 @@ export async function confirmMetadataAction(form: FormData): Promise<void> {
   const item = `/library/items/${assetId}`;
   const title = text(form, "title");
   if (!title) failTo(item, "A title is required.");
-  const authors = text(form, "authors").split(/[;,]/).map((s) => s.trim()).filter(Boolean);
+  const authors = text(form, "authors")
+    .split(/[;,]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
   const edition = text(form, "edition") || undefined;
-  const courseIds = form.getAll("courseIds").map(String).filter((id) => COURSE_ID.test(id));
+  const courseIds = form
+    .getAll("courseIds")
+    .map(String)
+    .filter((id) => COURSE_ID.test(id));
   await confirmMetadata(db(), session.user.id, assetId, { title, authors, edition, courseIds });
   revalidatePath(item);
   revalidatePath("/library");
@@ -64,7 +81,11 @@ export async function setPermissionAction(form: FormData): Promise<void> {
   const status = text(form, "status");
   const basis = text(form, "basis").slice(0, 300);
   if (!PERMISSION_ACTIONS.includes(action) || (status !== "allowed" && status !== "denied")) failTo(item, "Unknown permission.");
-  if (!basis) failTo(item, "Say briefly on what basis you are deciding (for example the licence, or 'my own notes'). It is recorded with the decision.");
+  if (!basis)
+    failTo(
+      item,
+      "Say briefly on what basis you are deciding (for example the licence, or 'my own notes'). It is recorded with the decision.",
+    );
   await setPermission(db(), session.user.id, assetId, action, status, basis);
   revalidatePath(item);
   revalidatePath("/library");
@@ -76,7 +97,10 @@ export async function requestIngestionAction(form: FormData): Promise<void> {
   const assetId = text(form, "assetId");
   if (!UUID.test(assetId)) redirect("/library");
   const item = `/library/items/${assetId}`;
-  const result = await requestIngestion(db(), session.user.id, assetId).catch((error: unknown) => ({ queued: false, reason: error instanceof LibraryError ? error.message : "The request failed." }));
+  const result = await requestIngestion(db(), session.user.id, assetId).catch((error: unknown) => ({
+    queued: false,
+    reason: error instanceof LibraryError ? error.message : "The request failed.",
+  }));
   if (!result.queued) failTo(item, result.reason ?? "Processing could not be started.");
   revalidatePath(item);
   revalidatePath("/library/jobs");
@@ -120,7 +144,9 @@ export async function createRequestAction(form: FormData): Promise<void> {
     acceptedFormats: ["pdf"],
     destinationFolder: text(form, "destinationFolder") || "inbox",
     caveats: text(form, "caveats") || null,
-    minPermission: PERMISSION_ACTIONS.includes(text(form, "minPermission") as ProcessingAction) ? text(form, "minPermission") : "local_read",
+    minPermission: PERMISSION_ACTIONS.includes(text(form, "minPermission") as ProcessingAction)
+      ? text(form, "minPermission")
+      : "local_read",
     status: "open",
   });
   revalidatePath("/library/requests");
@@ -167,8 +193,12 @@ export async function setRequestStatusAction(form: FormData): Promise<void> {
 export async function writeRequestsToDataFolderAction(): Promise<void> {
   const session = await requireSession("/library/requests");
   const env = getEnv();
-  if (env.DEPLOYMENT_MODE !== "local") failTo("/library/requests", "In production the data root is the server's; use the download buttons instead.");
-  const [requests, suggestions] = await Promise.all([listResourceRequests(db(), session.user.id), suggestedRequests(db(), session.user.id)]);
+  if (env.DEPLOYMENT_MODE !== "local")
+    failTo("/library/requests", "In production the data root is the server's; use the download buttons instead.");
+  const [requests, suggestions] = await Promise.all([
+    listResourceRequests(db(), session.user.id),
+    suggestedRequests(db(), session.user.id),
+  ]);
   const dir = join(env.CORNIVERSITY_DATA_ROOT, "requests");
   await mkdir(dir, { recursive: true });
   await writeFile(join(dir, "requests.md"), renderRequestsMarkdown(requests, env.INSTITUTION_NAME, suggestions), "utf8");
@@ -203,7 +233,12 @@ export async function saveAnnotationAction(form: FormData): Promise<void> {
   const selectedText = text(form, "selectedText").slice(0, 2000) || undefined;
   const back = `/library/read/${assetId}?page=${Number.isFinite(physicalIndex) ? physicalIndex + 1 : 1}`;
   if (!note) failTo(back, "Write a note before saving.");
-  await createAnnotation(db(), session.user.id, { assetId, physicalIndex: Number.isFinite(physicalIndex) ? physicalIndex : 0, selectedText, noteMarkdown: note });
+  await createAnnotation(db(), session.user.id, {
+    assetId,
+    physicalIndex: Number.isFinite(physicalIndex) ? physicalIndex : 0,
+    selectedText,
+    noteMarkdown: note,
+  });
   revalidatePath(`/library/read/${assetId}`);
   redirect(`${back}&saved=note`);
 }

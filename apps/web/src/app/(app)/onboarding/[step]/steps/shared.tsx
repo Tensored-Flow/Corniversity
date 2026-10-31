@@ -1,6 +1,6 @@
+import type { LearnerProfileRow } from "@corniversity/db/services/onboarding";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { LearnerProfileRow } from "@corniversity/db/services/onboarding";
 import { Button } from "@/components/ui";
 
 export interface StepProps {
@@ -9,7 +9,17 @@ export interface StepProps {
 }
 
 /** Shared footer: back link, a sentence about saving, and the continue button. */
-export function StepFooter({ step, continueLabel = "Continue", pending = false, extra }: { step: number; continueLabel?: string; pending?: boolean; extra?: ReactNode }) {
+export function StepFooter({
+  step,
+  continueLabel = "Continue",
+  pending = false,
+  extra,
+}: {
+  step: number;
+  continueLabel?: string;
+  pending?: boolean;
+  extra?: ReactNode;
+}) {
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-stone pt-4">
       <div className="flex items-center gap-4 text-sm">

@@ -1,15 +1,13 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
 import {
-  PRICING_VERSION,
-  ProviderError,
-  READING_PROMPT_VERSION,
-  ROLE_CONTRACTS,
   buildReadingPrompt,
   createProvider,
   decideBudget,
   estimateCostUsd,
   estimateRunCostUsd,
+  PRICING_VERSION,
+  ProviderError,
+  READING_PROMPT_VERSION,
+  ROLE_CONTRACTS,
 } from "@corniversity/ai";
 import { formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
@@ -18,6 +16,8 @@ import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getAsset, getPage, isAllowed, passagesForPage } from "@corniversity/db/services/library";
 import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
 import { appendLearnerMessage, appendPersonaMessage, getOrCreateConversation } from "@corniversity/db/services/tutoring";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
 
@@ -59,7 +59,10 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
   if (asset.status !== "processed") {
-    return NextResponse.json({ error: "not_processed", message: "This item has not been indexed yet, so there is no passage text to discuss." }, { status: 409 });
+    return NextResponse.json(
+      { error: "not_processed", message: "This item has not been indexed yet, so there is no passage text to discuss." },
+      { status: 409 },
+    );
   }
   if (!(await isAllowed(database, ownerId, asset.id, "external_ai"))) {
     return NextResponse.json(
@@ -73,10 +76,17 @@ export async function POST(request: Request): Promise<Response> {
   const page = await getPage(database, asset.id, physicalIndex);
   if (!page) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const pagePassages = await passagesForPage(database, page.id);
-  const pageDescription = page.printedLabel ? `p. ${page.printedLabel} (PDF page ${page.physicalIndex + 1})` : `PDF page ${page.physicalIndex + 1}`;
+  const pageDescription = page.printedLabel
+    ? `p. ${page.printedLabel} (PDF page ${page.physicalIndex + 1})`
+    : `PDF page ${page.physicalIndex + 1}`;
   const probe = selectedText.slice(0, 80);
   const evidence = formatEvidenceBlocks([
-    { label: `${title}, ${pageDescription}: selected passage`, text: selectedText, assetId: asset.id, passageId: pagePassages.find((p) => p.text.includes(probe))?.id },
+    {
+      label: `${title}, ${pageDescription}: selected passage`,
+      text: selectedText,
+      assetId: asset.id,
+      passageId: pagePassages.find((p) => p.text.includes(probe))?.id,
+    },
     { label: `${title}, ${pageDescription}: rest of the page`, text: page.text.slice(0, 6000), assetId: asset.id },
   ]);
 
@@ -92,13 +102,32 @@ export async function POST(request: Request): Promise<Response> {
       personaName = detail.tutor.name;
     }
   }
-  const system = buildReadingPrompt({ institutionName: env.INSTITUTION_NAME, personaName, itemTitle: title, pageDescription, courseTitles, evidencePrompt: evidence.prompt });
-  const conversation = await getOrCreateConversation(database, { ownerId, role: "lecturer", personaId, purpose: "reading-room", allowedLocatorIds: [], allowedAssetIds: [asset.id] });
+  const system = buildReadingPrompt({
+    institutionName: env.INSTITUTION_NAME,
+    personaName,
+    itemTitle: title,
+    pageDescription,
+    courseTitles,
+    evidencePrompt: evidence.prompt,
+  });
+  const conversation = await getOrCreateConversation(database, {
+    ownerId,
+    role: "lecturer",
+    personaId,
+    purpose: "reading-room",
+    allowedLocatorIds: [],
+    allowedAssetIds: [asset.id],
+  });
   await appendLearnerMessage(database, conversation.id, `> ${selectedText.slice(0, 600)}\n\n${question}`);
   const chat = [{ role: "user" as const, content: `Selected passage:\n"""\n${selectedText}\n"""\n\nQuestion: ${question}` }];
 
   const config = await resolveProviderConfig(database, ownerId, env);
-  const { provider, live } = createProvider({ provider: config.provider, anthropicApiKey: config.anthropicApiKey, defaultModel: config.defaultModel, modelMap: config.modelMap });
+  const { provider, live } = createProvider({
+    provider: config.provider,
+    anthropicApiKey: config.anthropicApiKey,
+    defaultModel: config.defaultModel,
+    modelMap: config.modelMap,
+  });
   const model = config.modelMap.lecturer ?? config.defaultModel;
   const contract = ROLE_CONTRACTS.lecturer;
   if (live) {
@@ -108,8 +137,16 @@ export async function POST(request: Request): Promise<Response> {
     const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
     if (!decision.allowed) {
       await database.insert(providerRun).values({
-        ownerId, role: "lecturer", provider: provider.name, model, purpose: "reading-passage", pricingVersion: PRICING_VERSION,
-        promptVersion: `${READING_PROMPT_VERSION};role:${contract.version}`, status: "budget_blocked", error: decision.reason, finishedAt: new Date(),
+        ownerId,
+        role: "lecturer",
+        provider: provider.name,
+        model,
+        purpose: "reading-passage",
+        pricingVersion: PRICING_VERSION,
+        promptVersion: `${READING_PROMPT_VERSION};role:${contract.version}`,
+        status: "budget_blocked",
+        error: decision.reason,
+        finishedAt: new Date(),
       });
       return NextResponse.json({ error: "budget", message: decision.reason }, { status: 402 });
     }
@@ -125,7 +162,15 @@ export async function POST(request: Request): Promise<Response> {
       let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
       let usedModel = live ? model : "fixture";
       try {
-        const generator = provider.streamText({ role: "lecturer", purpose: "reading-passage", system, messages: chat, model, maxTokens: contract.limits.maxOutputTokens, scenario: "reading-passage" });
+        const generator = provider.streamText({
+          role: "lecturer",
+          purpose: "reading-passage",
+          system,
+          messages: chat,
+          model,
+          maxTokens: contract.limits.maxOutputTokens,
+          scenario: "reading-passage",
+        });
         let next = await generator.next();
         while (!next.done) {
           raw += next.value;
@@ -169,12 +214,23 @@ export async function POST(request: Request): Promise<Response> {
         })
         .returning({ id: providerRun.id });
       if (raw.trim().length > 0) {
-        await appendPersonaMessage(database, { conversationId: conversation.id, personaId: personaId ?? null, rawText: raw, allowed: evidence.refs, providerRunId: run?.id });
+        await appendPersonaMessage(database, {
+          conversationId: conversation.id,
+          personaId: personaId ?? null,
+          rawText: raw,
+          allowed: evidence.refs,
+          providerRunId: run?.id,
+        });
       }
       controller.close();
     },
   });
   return new Response(stream, {
-    headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store", "x-accel-buffering": "no", "x-provider": provider.name },
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+      "x-accel-buffering": "no",
+      "x-provider": provider.name,
+    },
   });
 }

@@ -3,13 +3,13 @@
 | ID | Requirement | Code | Tests / evidence | Status |
 |---|---|---|---|---|
 | UNI-01 | Dedicated private project; no Kalibr modification | repo root `C:\Users\leona\Documents\Corniversity` | git history | done |
-| UNI-02 | Resumable onboarding, editable baseline | `apps/web/src/app/(app)/onboarding`, `learner_profile`, `onboarding_answers` | e2e journeys 1 and 3 | done: 12 resumable steps; every answer editable from Settings later (M6) |
+| UNI-02 | Resumable onboarding, editable baseline | `apps/web/src/app/(app)/onboarding`, `learner_profile`, `onboarding_answers`, Settings (profile, experience, review link to every step) | e2e journeys 1 and 3; settings spec | done: 12 resumable steps; completed orientation stays editable step by step and from Settings |
 | UNI-03 | Source-mapped programmes, prerequisite alternatives | `content/programmes`, `content/prerequisites`, `services/programme.ts` (evidence vs self-report, candidate plans) | journey 3 placement and plan steps | done for the launch catalogue |
 | UNI-04 | Six departments, catalogue breadth | `content/departments`, `content/courses` | validator | done: six departments, 74-course catalogue with honest readiness, 12 launch courses teaching_ready |
 | UNI-05 | Twelve launch syllabi, unit-level readiness | `content/courses/*`, validator | validator: 0 errors; 125 units (31 prepared), 93 exercises, 894 locators | done; ≥4 prepared units for MAT-230 (4), CHE-101 (5), NEU-220 (4) |
 | UNI-06 | Welcome, induction, first week | `/welcome`, `/campus` next session, confirmed first-week plan | e2e journey 3 | done |
-| UNI-07 | Distinct faculty roles, restricted tools, memory | `packages/ai/src/roles` | unit tests | role contracts + tutor/assessor done; others M6 |
-| UNI-08 | Optional labelled peers, bounded interaction | `discussion` services | e2e journey 8 | todo |
+| UNI-07 | Distinct faculty roles, restricted tools, memory | `packages/ai/src/roles`, prompts for tutor, assessor, director, reading room, chair and peer; `persona_memory` inspection and deletion in Settings | unit tests; journey 8 spec; settings spec | done |
+| UNI-08 | Optional labelled peers, bounded interaction | `services/community.ts`, `/common-room`, `/api/discussions/turn` (rounds fixed at opening, released material only, mute, no unprompted turns) | journey 8 spec | done |
 | UNI-09 | Source-grounded lecture/tutorial/reading | sessions, grounding | e2e journey 2 | done for prepared units |
 | UNI-10 | Serious proof assessment, revision, uncertainty | assessment worker, `packages/core/src/checks` | evals | done (fixture); appeals filed as records |
 | UNI-11 | Exact locators, citation validation | `locator`, grounding, extracted pages with physical index + printed label, annotations anchored to locators with visible repair | unit tests; worker tests; journey 5b | done |
@@ -19,12 +19,12 @@
 | UNI-15 | Durable jobs | `apps/worker`, pg-boss queues, idempotency keys, non-retryable failures, cancel/retry UI | worker tests; journeys 2 and 5 | done (export jobs M5) |
 | UNI-16 | Deterministic timetabling, catch-up | `packages/core/src/scheduling`, `services/timetable.ts` (proposed vs confirmed plans, diff, catch-up proposals) | 12 scheduler unit tests (overlaps, availability, dependencies, daily cap, DST, determinism, stable UIDs); journey 3 | done |
 | UNI-17 | ICS workflow, no false sync claims | `/api/calendar/export.ics`, tokenised subscription (hashed tokens) | ICS unit tests; journey 3 (valid file; invalid token refused) | done; copy says subscription, never two-way sync |
-| UNI-18 | Durable notebook, portfolio, records | notebook/records services | e2e | evidence + My Studies done; notebook/records M5 |
-| UNI-19 | Subject-specific computational activities | `apps/web/src/labs` | unit tests of equations | todo |
+| UNI-18 | Durable notebook, portfolio, records | `services/notebook.ts`, `services/records.ts`, `/notebook`, `/records`, exports built by the worker | journey spec 05 (notebook, records, export download) | done |
+| UNI-19 | Subject-specific computational activities | `packages/core/src/labs` (7 laboratories), `sessions/[id]/labs`, interpretation recorded to notebook and evidence | 20 unit tests of the equations; journeys 3 and 4 | done |
 | UNI-20 | Private access, hidden solutions, safe files | auth, server-only instructor artifacts, signature/size/type validation, sandboxed file route, hashed device tokens, SSRF-guarded imports | journey 5/6 security test; db tests | done for the library; full sweep M7 |
-| UNI-21 | Budgets, provider failure, non-AI fallback | `packages/ai/src/budget` | tests, journey 9 | budget decisions + provider failure path done |
-| UNI-22 | Responsive scholarly design, accessibility | design system, axe | screenshots, axe report | todo |
-| UNI-23 | Export, backup, restore, deletion | export service, scripts | restore rehearsal | todo |
-| UNI-24 | Local reproducibility, truthful deployment | README, infra | QA_REPORT | todo |
-| UNI-25 | Software QA plus educational evaluations | tests, evals | QA_REPORT | todo |
+| UNI-21 | Budgets, provider failure, non-AI fallback | `packages/ai/src/budget`, Settings budgets, every route's labelled failure note | 8 unit tests; fixture mode exercised throughout | done at unit level; live provider unverified |
+| UNI-22 | Responsive scholarly design, accessibility | design tokens (contrast corrected), both viewports, axe spec | 35 screenshots at both viewports; axe: no serious/critical findings | done; WCAG criteria checked, not certified |
+| UNI-23 | Export, backup, restore, deletion | Records exports (JSON, Markdown), `scripts/backup.ts`, `scripts/restore.ts` (dry run, transaction), library item deletion with retention note | restore rehearsal into a throw-away database: counts match | done |
+| UNI-24 | Local reproducibility, truthful deployment | README, Dockerfiles, `infra/`, `pnpm health` | local stack reproduced; deployment prepared, not executed | partial: deployment waits on owner login |
+| UNI-25 | Software QA plus educational evaluations | 116 unit/integration tests, 8 journey specs, 13 academic evaluations | QA_REPORT | done |
 | UNI-26 | Accurate handoff, minimal manual steps | STATUS, USER_ACTIONS | – | todo |

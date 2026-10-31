@@ -62,8 +62,7 @@ export class AnthropicProvider implements ModelProvider {
         model: final.model,
         provider: "anthropic",
         stopReason,
-        refusalCategory:
-          final.stop_reason === "refusal" && final.stop_details ? (final.stop_details.category ?? undefined) : undefined,
+        refusalCategory: final.stop_reason === "refusal" && final.stop_details ? (final.stop_details.category ?? undefined) : undefined,
       };
     } catch (error) {
       throw mapError(error);

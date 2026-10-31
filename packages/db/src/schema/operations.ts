@@ -14,10 +14,7 @@ export const jobRecord = pgTable(
     pgbossJobId: text("pgboss_job_id"),
     idempotencyKey: text("idempotency_key").notNull().unique(),
     status: text("status").$type<JobStatus>().notNull().default("queued"),
-    progress: jsonb("progress")
-      .$type<{ stage: string; percent?: number; detail?: string }>()
-      .notNull()
-      .default({ stage: "queued" }),
+    progress: jsonb("progress").$type<{ stage: string; percent?: number; detail?: string }>().notNull().default({ stage: "queued" }),
     payload: jsonb("payload").notNull(),
     result: jsonb("result"),
     error: text("error"),

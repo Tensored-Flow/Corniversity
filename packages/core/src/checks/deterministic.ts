@@ -47,6 +47,7 @@ function toRegExps(raw: unknown): RegExp[] {
 export function runDeterministicChecks(submission: string, checks: DeterministicCheck[]): CheckResult[] {
   const normalised = normaliseMath(submission);
   const lower = submission.toLowerCase();
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: every branch of the exhaustive switch returns a result
   return checks.map((check) => {
     switch (check.kind) {
       case "expression_present": {

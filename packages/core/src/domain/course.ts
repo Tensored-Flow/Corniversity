@@ -1,14 +1,7 @@
 import { z } from "zod";
 import { CourseReadiness, LearningMode, UnitStatus } from "./enums";
 
-export const DepartmentId = z.enum([
-  "mathematics",
-  "physics",
-  "chemistry",
-  "computer-science-ai",
-  "neuroscience",
-  "cognitive-science",
-]);
+export const DepartmentId = z.enum(["mathematics", "physics", "chemistry", "computer-science-ai", "neuroscience", "cognitive-science"]);
 export type DepartmentId = z.infer<typeof DepartmentId>;
 
 export const CourseId = z.string().regex(/^[A-Z]{3}-\d{3}$/, "course ids look like MAT-230");
@@ -106,16 +99,7 @@ export const ActivityType = z.enum([
 ]);
 export type ActivityType = z.infer<typeof ActivityType>;
 
-export const SessionKind = z.enum([
-  "lecture",
-  "tutorial",
-  "problem_class",
-  "seminar",
-  "lab",
-  "revision",
-  "oral",
-  "project",
-]);
+export const SessionKind = z.enum(["lecture", "tutorial", "problem_class", "seminar", "lab", "revision", "oral", "project"]);
 export type SessionKind = z.infer<typeof SessionKind>;
 
 export const Activity = z.object({
@@ -156,13 +140,7 @@ export const HintLadder = z.array(z.string().min(1)).max(6);
 
 export const DeterministicCheck = z.object({
   id: z.string().min(1),
-  kind: z.enum([
-    "expression_present",
-    "numeric_value",
-    "forbidden_claim",
-    "requires_hypothesis",
-    "finite_examples_not_proof",
-  ]),
+  kind: z.enum(["expression_present", "numeric_value", "forbidden_claim", "requires_hypothesis", "finite_examples_not_proof"]),
   description: z.string().min(1),
   params: z.record(z.string(), z.unknown()),
 });

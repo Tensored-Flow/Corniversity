@@ -2,16 +2,7 @@ import type { ZodType } from "zod";
 
 export type ProviderName = "fixture" | "anthropic";
 
-export type RoleName =
-  | "director"
-  | "convenor"
-  | "lecturer"
-  | "tutor"
-  | "librarian"
-  | "assessor"
-  | "seminar_chair"
-  | "supervisor"
-  | "peer";
+export type RoleName = "director" | "convenor" | "lecturer" | "tutor" | "librarian" | "assessor" | "seminar_chair" | "supervisor" | "peer";
 
 export interface ChatMessage {
   role: "user" | "assistant";

@@ -42,21 +42,14 @@ export const BookReferenceLocator = z.object({
   exerciseLabel: z.string().optional(),
 });
 
-export const Locator = z.discriminatedUnion("kind", [
-  PdfLocator,
-  WebLocator,
-  VideoLocator,
-  BookReferenceLocator,
-]);
+export const Locator = z.discriminatedUnion("kind", [PdfLocator, WebLocator, VideoLocator, BookReferenceLocator]);
 export type Locator = z.infer<typeof Locator>;
 
 /** Human-readable short form used in citations and the notebook. */
 export function describeLocator(locator: Locator, sourceTitle: string): string {
   switch (locator.kind) {
     case "pdf": {
-      const page = locator.printedPageLabel
-        ? `p. ${locator.printedPageLabel}`
-        : `PDF page ${locator.physicalPageIndex + 1}`;
+      const page = locator.printedPageLabel ? `p. ${locator.printedPageLabel}` : `PDF page ${locator.physicalPageIndex + 1}`;
       const file = locator.fileLabel ? `${sourceTitle}, ${locator.fileLabel}` : sourceTitle;
       return locator.sectionLabel ? `${file}, ${locator.sectionLabel}, ${page}` : `${file}, ${page}`;
     }

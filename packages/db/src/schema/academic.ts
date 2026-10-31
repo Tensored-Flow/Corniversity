@@ -1,14 +1,3 @@
-import {
-  boolean,
-  index,
-  integer,
-  jsonb,
-  pgTable,
-  primaryKey,
-  text,
-  uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
 import type {
   Activity,
   AssessmentSpec,
@@ -23,6 +12,7 @@ import type {
   UnitCheck,
   Workload,
 } from "@corniversity/core";
+import { boolean, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { z } from "zod";
 import { courseReadinessEnum, createdAt, tz, unitStatusEnum, updatedAt } from "./_shared";
 
@@ -121,10 +111,7 @@ export const courseVersion = pgTable(
     isCurrent: boolean("is_current").notNull().default(true),
     publishedAt: tz("published_at").notNull().defaultNow(),
   },
-  (t) => [
-    uniqueIndex("course_version_unique").on(t.courseId, t.version),
-    index("course_version_current_idx").on(t.courseId, t.isCurrent),
-  ],
+  (t) => [uniqueIndex("course_version_unique").on(t.courseId, t.version), index("course_version_current_idx").on(t.courseId, t.isCurrent)],
 );
 
 export const prerequisiteRule = pgTable(
@@ -202,23 +189,13 @@ export const instructorArtifact = pgTable(
       .notNull()
       .references(() => teachingUnit.id, { onDelete: "cascade" }),
     exerciseId: text("exercise_id").references(() => unitExercise.id, { onDelete: "cascade" }),
-    kind: text("kind")
-      .$type<"reference_solution" | "grading_notes" | "misconception_notes" | "lesson_notes">()
-      .notNull(),
+    kind: text("kind").$type<"reference_solution" | "grading_notes" | "misconception_notes" | "lesson_notes">().notNull(),
     markdown: text("markdown").notNull(),
-    releasePolicy: text("release_policy")
-      .$type<"never" | "after_accepted" | "on_request_practice">()
-      .notNull()
-      .default("never"),
+    releasePolicy: text("release_policy").$type<"never" | "after_accepted" | "on_request_practice">().notNull().default("never"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
   (t) => [index("instructor_artifact_unit_idx").on(t.unitId)],
 );
 
-export const InstructorArtifactKind = z.enum([
-  "reference_solution",
-  "grading_notes",
-  "misconception_notes",
-  "lesson_notes",
-]);
+export const InstructorArtifactKind = z.enum(["reference_solution", "grading_notes", "misconception_notes", "lesson_notes"]);

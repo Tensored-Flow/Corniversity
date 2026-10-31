@@ -14,7 +14,11 @@ export const metadata = { title: "Director of Studies" };
 export default async function DirectorPage() {
   const session = await requireSession("/director");
   const profile = await ensureProfile(db(), session.user.id);
-  const [personas, enrolments, proposals] = await Promise.all([listPersonas(db()), listEnrolments(db(), session.user.id), listOpenProposals(db(), session.user.id)]);
+  const [personas, enrolments, proposals] = await Promise.all([
+    listPersonas(db()),
+    listEnrolments(db(), session.user.id),
+    listOpenProposals(db(), session.user.id),
+  ]);
   const director = personas.find((p) => p.role === "director");
   const conversation = await getOrCreateConversation(db(), {
     ownerId: session.user.id,
@@ -24,7 +28,9 @@ export default async function DirectorPage() {
     allowedLocatorIds: [],
   });
   const messages = await listMessages(db(), conversation.id);
-  const rendered = await Promise.all(messages.map(async (m) => ({ id: m.id, sender: m.sender, html: await renderMarkdown(m.contentMarkdown) })));
+  const rendered = await Promise.all(
+    messages.map(async (m) => ({ id: m.id, sender: m.sender, html: await renderMarkdown(m.contentMarkdown) })),
+  );
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -32,7 +38,7 @@ export default async function DirectorPage() {
         <p className="text-sm uppercase tracking-[0.18em] text-brass">Director of Studies</p>
         <div className="mt-1 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl text-ink">{director?.name ?? "Director of Studies"}</h1>
-          <AiLabel role="Director" />
+          <AiLabel kind="Director" />
         </div>
         <p className="mt-2 max-w-prose text-sm text-ink-2">{director?.introduction}</p>
       </header>
@@ -59,7 +65,9 @@ export default async function DirectorPage() {
           <Card as="aside">
             <h2 className="text-lg text-ink">Proposals</h2>
             {proposals.length === 0 ? (
-              <p className="mt-2 text-sm text-ink-2">None open. Changes the director suggests become drafts here, and on the timetable page, for you to confirm or reject.</p>
+              <p className="mt-2 text-sm text-ink-2">
+                None open. Changes the director suggests become drafts here, and on the timetable page, for you to confirm or reject.
+              </p>
             ) : (
               <ul className="mt-2 flex flex-col gap-2 text-sm">
                 {proposals.map((p) => (
@@ -70,7 +78,9 @@ export default async function DirectorPage() {
               </ul>
             )}
           </Card>
-          <Notice tone="neutral">The director cannot enrol, withdraw, change grades or touch external calendars. Every change is a draft you confirm.</Notice>
+          <Notice tone="neutral">
+            The director cannot enrol, withdraw, change grades or touch external calendars. Every change is a draft you confirm.
+          </Notice>
         </div>
       </div>
     </div>

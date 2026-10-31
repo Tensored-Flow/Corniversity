@@ -1,12 +1,12 @@
 import "server-only";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
-import { betterAuth } from "better-auth";
-import { APIError, createAuthMiddleware } from "better-auth/api";
-import { nextCookies } from "better-auth/next-js";
 import { getDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { account, session, user, verification } from "@corniversity/db/schema/auth";
 import { assertBootstrapAllowed, completeBootstrap, isBootstrapComplete } from "@corniversity/db/services/bootstrap";
+import { betterAuth } from "better-auth";
+import { APIError, createAuthMiddleware } from "better-auth/api";
+import { nextCookies } from "better-auth/next-js";
 
 const env = getEnv();
 const { db } = getDb();

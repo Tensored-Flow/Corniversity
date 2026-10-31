@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Locator, describeLocator } from "./locator";
+import { describeLocator, Locator } from "./locator";
 
 describe("Locator", () => {
   it("describes a pdf locator with file, section and physical page when no printed label exists", () => {

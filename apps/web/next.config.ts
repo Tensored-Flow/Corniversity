@@ -1,6 +1,6 @@
-import type { NextConfig } from "next";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import type { NextConfig } from "next";
 
 // The whole monorepo shares one .env at the repository root.
 const rootEnv = resolve(process.cwd(), "../../.env");
@@ -10,12 +10,7 @@ if (existsSync(rootEnv)) {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: [
-    "@corniversity/core",
-    "@corniversity/db",
-    "@corniversity/ai",
-    "@corniversity/content",
-  ],
+  transpilePackages: ["@corniversity/core", "@corniversity/db", "@corniversity/ai", "@corniversity/content"],
   serverExternalPackages: ["pg", "pg-boss", "@anthropic-ai/sdk", "unpdf"],
   poweredByHeader: false,
   output: "standalone",

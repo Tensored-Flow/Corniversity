@@ -3,11 +3,7 @@ import { useActionState } from "react";
 import { Button, Field, Input, Notice } from "@/components/ui";
 import type { JoinState } from "./actions";
 
-export function JoinForm({
-  action,
-}: {
-  action: (prev: JoinState, formData: FormData) => Promise<JoinState>;
-}) {
+export function JoinForm({ action }: { action: (prev: JoinState, formData: FormData) => Promise<JoinState> }) {
   const [state, formAction, pending] = useActionState(action, {} as JoinState);
   return (
     <form action={formAction} className="flex flex-col gap-5" noValidate>

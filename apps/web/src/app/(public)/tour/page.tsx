@@ -18,12 +18,30 @@ export default function TourPage() {
       </p>
       <ol className="mt-8 flex flex-col gap-4">
         {[
-          ["Orientation", "Twelve short steps: who you are, what you want to study, what you already know, how you like to learn, and how much time you really have. Everything is saved as you go."],
-          ["A programme, not a playlist", "A director of studies (an AI persona, labelled as such) proposes a coherent first term: usually one demanding core course and a lighter reading seminar, with prerequisites explained and workload estimated honestly."],
-          ["Real materials", "Courses adapt openly licensed university materials and author-hosted notes. Every reading has an exact source and page; the catalogue says plainly which courses are fully prepared and which are still proposals."],
-          ["Lectures, tutorials, laboratories", "A lecture room with equations and sources; a tutorial workbench with a hint ladder rather than instant answers; computational laboratories with models you can actually change."],
-          ["Serious work, careful feedback", "Proof attempts are kept as immutable versions. Feedback localises the first substantive gap, accepts valid alternative proofs, and says when it is unsure. Progress is shown as evidence, never as a percentage."],
-          ["A record you keep", "A notebook of definitions, attempts and unresolved questions; an unofficial transcript; portable exports. Yours, in formats you can read without the software."],
+          [
+            "Orientation",
+            "Twelve short steps: who you are, what you want to study, what you already know, how you like to learn, and how much time you really have. Everything is saved as you go.",
+          ],
+          [
+            "A programme, not a playlist",
+            "A director of studies (an AI persona, labelled as such) proposes a coherent first term: usually one demanding core course and a lighter reading seminar, with prerequisites explained and workload estimated honestly.",
+          ],
+          [
+            "Real materials",
+            "Courses adapt openly licensed university materials and author-hosted notes. Every reading has an exact source and page; the catalogue says plainly which courses are fully prepared and which are still proposals.",
+          ],
+          [
+            "Lectures, tutorials, laboratories",
+            "A lecture room with equations and sources; a tutorial workbench with a hint ladder rather than instant answers; computational laboratories with models you can actually change.",
+          ],
+          [
+            "Serious work, careful feedback",
+            "Proof attempts are kept as immutable versions. Feedback localises the first substantive gap, accepts valid alternative proofs, and says when it is unsure. Progress is shown as evidence, never as a percentage.",
+          ],
+          [
+            "A record you keep",
+            "A notebook of definitions, attempts and unresolved questions; an unofficial transcript; portable exports. Yours, in formats you can read without the software.",
+          ],
         ].map(([title, body], index) => (
           <li key={title}>
             <Card>

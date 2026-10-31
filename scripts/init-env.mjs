@@ -1,7 +1,8 @@
 // Creates the local environment file from the example with freshly generated secrets.
 // Never prints secret values. Safe to re-run: refuses to overwrite an existing file.
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+
 import { randomBytes } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const target = resolve(process.cwd(), ".env");

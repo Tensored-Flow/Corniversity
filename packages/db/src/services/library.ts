@@ -1,6 +1,6 @@
 import { createHash, randomBytes, randomInt } from "node:crypto";
-import { and, asc, desc, eq, gt, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import type { Locator } from "@corniversity/core";
+import { and, asc, desc, eq, gt, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import type { BlobStore } from "../blob";
 import type { DbOrTx } from "../client";
 import { IngestAssetPayload, QUEUES } from "../jobs";
@@ -33,7 +33,16 @@ const ACCEPTED_MEDIA = new Set(["application/pdf", "text/plain", "text/markdown"
 
 export class LibraryError extends Error {
   constructor(
-    readonly code: "too_large" | "unsupported_type" | "not_pdf" | "duplicate" | "not_found" | "permission_denied" | "invalid_state" | "bad_code" | "revoked",
+    readonly code:
+      | "too_large"
+      | "unsupported_type"
+      | "not_pdf"
+      | "duplicate"
+      | "not_found"
+      | "permission_denied"
+      | "invalid_state"
+      | "bad_code"
+      | "revoked",
     message: string,
   ) {
     super(message);
@@ -51,19 +60,27 @@ function hashToken(token: string): string {
 
 /** Validation at the quarantine boundary: size, declared type, and the file's real signature. */
 export function validateUpload(data: Buffer, mediaType: string, filename: string, maxBytes: number): { mediaType: string } {
-  if (data.byteLength > maxBytes) throw new LibraryError("too_large", `The file is ${(data.byteLength / 1_048_576).toFixed(1)} MB; the limit is ${(maxBytes / 1_048_576).toFixed(0)} MB.`);
+  if (data.byteLength > maxBytes)
+    throw new LibraryError(
+      "too_large",
+      `The file is ${(data.byteLength / 1_048_576).toFixed(1)} MB; the limit is ${(maxBytes / 1_048_576).toFixed(0)} MB.`,
+    );
   if (data.byteLength === 0) throw new LibraryError("unsupported_type", "The file is empty.");
   const lower = filename.toLowerCase();
   let type = mediaType.split(";")[0]?.trim() ?? "";
   if (lower.endsWith(".pdf") || type === "application/pdf") {
-    if (data.subarray(0, 5).toString("latin1") !== "%PDF-") throw new LibraryError("not_pdf", "The file does not start with a PDF signature; it was not stored.");
+    if (data.subarray(0, 5).toString("latin1") !== "%PDF-")
+      throw new LibraryError("not_pdf", "The file does not start with a PDF signature; it was not stored.");
     type = "application/pdf";
   } else if (lower.endsWith(".md") || type === "text/markdown") {
     type = "text/markdown";
   } else if (lower.endsWith(".txt") || type === "text/plain") {
     type = "text/plain";
   } else {
-    throw new LibraryError("unsupported_type", "Only PDF, Markdown and plain-text files are accepted as library assets. Scripts, notebooks and executables are refused.");
+    throw new LibraryError(
+      "unsupported_type",
+      "Only PDF, Markdown and plain-text files are accepted as library assets. Scripts, notebooks and executables are refused.",
+    );
   }
   if (!ACCEPTED_MEDIA.has(type)) throw new LibraryError("unsupported_type", `Unsupported type ${type}.`);
   if (/[\\/]|\.\./.test(filename) || filename.length > 200) throw new LibraryError("unsupported_type", "The filename is not acceptable.");
@@ -76,12 +93,29 @@ export function validateUpload(data: Buffer, mediaType: string, filename: string
  */
 export async function registerLocalAsset(
   db: DbOrTx,
-  input: { ownerId: string; devicePairingId: string; filename: string; mediaType: string; sizeBytes: number; sha256: string; candidateMetadata: AssetRow["candidateMetadata"]; localPathHint: string },
+  input: {
+    ownerId: string;
+    devicePairingId: string;
+    filename: string;
+    mediaType: string;
+    sizeBytes: number;
+    sha256: string;
+    candidateMetadata: AssetRow["candidateMetadata"];
+    localPathHint: string;
+  },
 ): Promise<{ asset: AssetRow; outcome: "registered" | "duplicate" | "known" }> {
-  const [existing] = await db.select().from(resourceAsset).where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, input.sha256))).limit(1);
+  const [existing] = await db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, input.sha256)))
+    .limit(1);
   if (existing) {
     if (existing.filename !== input.filename || existing.localPathHint !== input.localPathHint) {
-      const [updated] = await db.update(resourceAsset).set({ localPathHint: input.localPathHint, devicePairingId: input.devicePairingId }).where(eq(resourceAsset.id, existing.id)).returning();
+      const [updated] = await db
+        .update(resourceAsset)
+        .set({ localPathHint: input.localPathHint, devicePairingId: input.devicePairingId })
+        .where(eq(resourceAsset.id, existing.id))
+        .returning();
       return { asset: updated!, outcome: "duplicate" };
     }
     return { asset: existing, outcome: "known" };
@@ -102,7 +136,14 @@ export async function registerLocalAsset(
       localPathHint: input.localPathHint,
     })
     .returning();
-  await db.insert(auditEvent).values({ ownerId: input.ownerId, actor: `companion:${input.devicePairingId}`, action: "asset:register", entity: "resource_asset", entityId: asset!.id, details: { filename: input.filename, sizeBytes: input.sizeBytes } });
+  await db.insert(auditEvent).values({
+    ownerId: input.ownerId,
+    actor: `companion:${input.devicePairingId}`,
+    action: "asset:register",
+    entity: "resource_asset",
+    entityId: asset!.id,
+    details: { filename: input.filename, sizeBytes: input.sizeBytes },
+  });
   return { asset: asset!, outcome: "registered" };
 }
 
@@ -113,17 +154,31 @@ export async function registerLocalAsset(
 export async function receiveUpload(
   db: DbOrTx,
   blobs: BlobStore,
-  input: { ownerId: string; filename: string; mediaType: string; data: Buffer; origin: "web_upload" | "companion" | "open_import"; maxBytes: number; devicePairingId?: string; assetId?: string },
+  input: {
+    ownerId: string;
+    filename: string;
+    mediaType: string;
+    data: Buffer;
+    origin: "web_upload" | "companion" | "open_import";
+    maxBytes: number;
+    devicePairingId?: string;
+    assetId?: string;
+  },
 ): Promise<{ asset: AssetRow; outcome: "stored" | "duplicate" }> {
   const { mediaType } = validateUpload(input.data, input.mediaType, input.filename, input.maxBytes);
   const hash = sha256(input.data);
-  const [existing] = await db.select().from(resourceAsset).where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, hash))).limit(1);
-  if (existing && existing.storageKey) return { asset: existing, outcome: "duplicate" };
+  const [existing] = await db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, hash)))
+    .limit(1);
+  if (existing?.storageKey) return { asset: existing, outcome: "duplicate" };
 
   const stored = await blobs.put(input.data);
   if (existing) {
     // A locally registered asset whose bytes have now been permitted to arrive.
-    if (existing.status !== "upload_requested" && existing.status !== "registered_local") throw new LibraryError("invalid_state", `Asset is ${existing.status}; bytes were not expected.`);
+    if (existing.status !== "upload_requested" && existing.status !== "registered_local")
+      throw new LibraryError("invalid_state", `Asset is ${existing.status}; bytes were not expected.`);
     const [updated] = await db
       .update(resourceAsset)
       .set({ storageKey: stored.key, status: "quarantined", localOnly: false, mediaType })
@@ -146,12 +201,28 @@ export async function receiveUpload(
       devicePairingId: input.devicePairingId ?? null,
     })
     .returning();
-  await db.insert(auditEvent).values({ ownerId: input.ownerId, actor: input.origin === "companion" ? `companion:${input.devicePairingId}` : "learner", action: "asset:upload", entity: "resource_asset", entityId: asset!.id, details: { filename: input.filename, sizeBytes: input.data.byteLength, mediaType } });
+  await db.insert(auditEvent).values({
+    ownerId: input.ownerId,
+    actor: input.origin === "companion" ? `companion:${input.devicePairingId}` : "learner",
+    action: "asset:upload",
+    entity: "resource_asset",
+    entityId: asset!.id,
+    details: { filename: input.filename, sizeBytes: input.data.byteLength, mediaType },
+  });
   return { asset: asset!, outcome: "stored" };
 }
 
-export async function setCandidateMetadata(db: DbOrTx, ownerId: string, assetId: string, metadata: AssetRow["candidateMetadata"], pageCount?: number): Promise<void> {
-  await db.update(resourceAsset).set({ candidateMetadata: metadata, pageCount: pageCount ?? undefined }).where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)));
+export async function setCandidateMetadata(
+  db: DbOrTx,
+  ownerId: string,
+  assetId: string,
+  metadata: AssetRow["candidateMetadata"],
+  pageCount?: number,
+): Promise<void> {
+  await db
+    .update(resourceAsset)
+    .set({ candidateMetadata: metadata, pageCount: pageCount ?? undefined })
+    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)));
 }
 
 /** Owner confirms what the file is and which courses it supports; validated assets may be processed. */
@@ -161,12 +232,23 @@ export async function confirmMetadata(
   assetId: string,
   input: { title: string; authors: string[]; edition?: string; courseIds: string[]; sourceVersionId?: string | null },
 ): Promise<AssetRow> {
-  const [asset] = await db.select().from(resourceAsset).where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId))).limit(1);
+  const [asset] = await db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)))
+    .limit(1);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
   const nextStatus = asset.status === "quarantined" ? "validated" : asset.status;
   const [updated] = await db
     .update(resourceAsset)
-    .set({ confirmedTitle: input.title, confirmedAuthors: input.authors, confirmedEdition: input.edition ?? null, courseIds: input.courseIds, sourceVersionId: input.sourceVersionId ?? null, status: nextStatus })
+    .set({
+      confirmedTitle: input.title,
+      confirmedAuthors: input.authors,
+      confirmedEdition: input.edition ?? null,
+      courseIds: input.courseIds,
+      sourceVersionId: input.sourceVersionId ?? null,
+      status: nextStatus,
+    })
     .where(eq(resourceAsset.id, assetId))
     .returning();
   return updated!;
@@ -175,11 +257,17 @@ export async function confirmMetadata(
 export type ProcessingAction = "local_read" | "local_extract" | "private_cloud_store" | "external_ai" | "external_embedding" | "share";
 
 /** Latest non-revoked decision per action; unknown by default (reference-only). */
-export async function getPermissions(db: DbOrTx, ownerId: string, assetId: string): Promise<Record<ProcessingAction, { status: "unknown" | "allowed" | "denied"; basis?: string }>> {
+export async function getPermissions(
+  db: DbOrTx,
+  ownerId: string,
+  assetId: string,
+): Promise<Record<ProcessingAction, { status: "unknown" | "allowed" | "denied"; basis?: string }>> {
   const rows = await db
     .select()
     .from(processingPermission)
-    .where(and(eq(processingPermission.ownerId, ownerId), eq(processingPermission.assetId, assetId), isNull(processingPermission.revokedAt)))
+    .where(
+      and(eq(processingPermission.ownerId, ownerId), eq(processingPermission.assetId, assetId), isNull(processingPermission.revokedAt)),
+    )
     .orderBy(desc(processingPermission.recordedAt));
   const result: Record<ProcessingAction, { status: "unknown" | "allowed" | "denied"; basis?: string }> = {
     local_read: { status: "unknown" },
@@ -190,7 +278,8 @@ export async function getPermissions(db: DbOrTx, ownerId: string, assetId: strin
     share: { status: "unknown" },
   };
   for (const r of rows) {
-    if (result[r.action as ProcessingAction].status === "unknown") result[r.action as ProcessingAction] = { status: r.status, basis: r.basis };
+    if (result[r.action as ProcessingAction].status === "unknown")
+      result[r.action as ProcessingAction] = { status: r.status, basis: r.basis };
   }
   return result;
 }
@@ -216,9 +305,23 @@ export async function setPermission(
   await db
     .update(processingPermission)
     .set({ revokedAt: new Date() })
-    .where(and(eq(processingPermission.ownerId, ownerId), eq(processingPermission.assetId, assetId), eq(processingPermission.action, action), isNull(processingPermission.revokedAt)));
+    .where(
+      and(
+        eq(processingPermission.ownerId, ownerId),
+        eq(processingPermission.assetId, assetId),
+        eq(processingPermission.action, action),
+        isNull(processingPermission.revokedAt),
+      ),
+    );
   await db.insert(processingPermission).values({ ownerId, assetId, action, status, basis });
-  await db.insert(auditEvent).values({ ownerId, actor: "learner", action: `permission:${action}:${status}`, entity: "resource_asset", entityId: assetId, details: { basis } });
+  await db.insert(auditEvent).values({
+    ownerId,
+    actor: "learner",
+    action: `permission:${action}:${status}`,
+    entity: "resource_asset",
+    entityId: assetId,
+    details: { basis },
+  });
   if (action === "private_cloud_store") {
     const [asset] = await db.select().from(resourceAsset).where(eq(resourceAsset.id, assetId)).limit(1);
     if (asset && status === "allowed" && asset.status === "registered_local") {
@@ -228,11 +331,19 @@ export async function setPermission(
 }
 
 export async function listAssets(db: DbOrTx, ownerId: string): Promise<AssetRow[]> {
-  return db.select().from(resourceAsset).where(and(eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt))).orderBy(desc(resourceAsset.createdAt));
+  return db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt)))
+    .orderBy(desc(resourceAsset.createdAt));
 }
 
 export async function getAsset(db: DbOrTx, ownerId: string, assetId: string): Promise<AssetRow | null> {
-  const rows = await db.select().from(resourceAsset).where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt))).limit(1);
+  const rows = await db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -240,12 +351,19 @@ export async function getAsset(db: DbOrTx, ownerId: string, assetId: string): Pr
 export async function requestIngestion(db: DbOrTx, ownerId: string, assetId: string): Promise<{ queued: boolean; reason?: string }> {
   const asset = await getAsset(db, ownerId, assetId);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
-  if (!asset.storageKey) return { queued: false, reason: "The file has not been stored; grant private cloud storage first (or upload it)." };
+  if (!asset.storageKey)
+    return { queued: false, reason: "The file has not been stored; grant private cloud storage first (or upload it)." };
   if (asset.status === "processing") return { queued: false, reason: "This item is already being processed." };
-  if (asset.status === "rejected") return { queued: false, reason: `This file was rejected: ${asset.rejectionReason ?? "unknown reason"}. Retry from the jobs page if the cause was transient.` };
-  if (asset.status !== "validated" && asset.status !== "processed") return { queued: false, reason: `Confirm the metadata first (status: ${asset.status}).` };
+  if (asset.status === "rejected")
+    return {
+      queued: false,
+      reason: `This file was rejected: ${asset.rejectionReason ?? "unknown reason"}. Retry from the jobs page if the cause was transient.`,
+    };
+  if (asset.status !== "validated" && asset.status !== "processed")
+    return { queued: false, reason: `Confirm the metadata first (status: ${asset.status}).` };
   const permitted = await isAllowed(db, ownerId, assetId, "local_extract");
-  if (!permitted) return { queued: false, reason: "Text extraction is not permitted for this item. Allow 'extraction and indexing' on the item page." };
+  if (!permitted)
+    return { queued: false, reason: "Text extraction is not permitted for this item. Allow 'extraction and indexing' on the item page." };
   await db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, assetId));
   const payload = IngestAssetPayload.parse({ idempotencyKey: `ingest:${asset.sha256}:${asset.id}`, ownerId, assetId });
   await enqueue(db, { queue: QUEUES.ingestAsset, kind: "ingest-asset", payload, singletonKey: asset.sha256 });
@@ -261,7 +379,14 @@ export async function deleteAsset(db: DbOrTx, blobs: BlobStore, ownerId: string,
   await db.delete(extractedPage).where(eq(extractedPage.assetId, assetId));
   await db.update(annotation).set({ assetId: null, mappingStatus: "needs_repair" }).where(eq(annotation.assetId, assetId));
   await db.update(resourceAsset).set({ status: "deleted", deletedAt: new Date(), storageKey: null }).where(eq(resourceAsset.id, assetId));
-  await db.insert(auditEvent).values({ ownerId, actor: "learner", action: "asset:delete", entity: "resource_asset", entityId: assetId, details: { filename: asset.filename } });
+  await db.insert(auditEvent).values({
+    ownerId,
+    actor: "learner",
+    action: "asset:delete",
+    entity: "resource_asset",
+    entityId: assetId,
+    details: { filename: asset.filename },
+  });
 }
 
 export async function listPages(db: DbOrTx, assetId: string) {
@@ -269,7 +394,11 @@ export async function listPages(db: DbOrTx, assetId: string) {
 }
 
 export async function getPage(db: DbOrTx, assetId: string, physicalIndex: number) {
-  const rows = await db.select().from(extractedPage).where(and(eq(extractedPage.assetId, assetId), eq(extractedPage.physicalIndex, physicalIndex))).limit(1);
+  const rows = await db
+    .select()
+    .from(extractedPage)
+    .where(and(eq(extractedPage.assetId, assetId), eq(extractedPage.physicalIndex, physicalIndex)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -297,7 +426,14 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
   const assets = await db
     .select()
     .from(resourceAsset)
-    .where(and(eq(resourceAsset.ownerId, ownerId), eq(resourceAsset.status, "processed"), isNull(resourceAsset.deletedAt), sql`${resourceAsset.courseIds} ? ${courseId}`));
+    .where(
+      and(
+        eq(resourceAsset.ownerId, ownerId),
+        eq(resourceAsset.status, "processed"),
+        isNull(resourceAsset.deletedAt),
+        sql`${resourceAsset.courseIds} ? ${courseId}`,
+      ),
+    );
   const allowed: AssetRow[] = [];
   for (const a of assets) if (await isAllowed(db, ownerId, a.id, "external_ai")) allowed.push(a);
   if (allowed.length === 0 || !query.trim()) return [];
@@ -307,7 +443,17 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
     from passage p join extracted_page e on e.id = p.page_id
     where p.asset_id in ${sql.raw(`(${allowed.map((a) => `'${a.id}'`).join(",")})`)} and p.tsv @@ websearch_to_tsquery('english', ${query})
     order by rank desc limit ${limit}`);
-  return (rows.rows as { id: string; asset_id: string; text: string; heading: string | null; physical_index: number; printed_label: string | null; rank: number }[]).map((r) => ({
+  return (
+    rows.rows as {
+      id: string;
+      asset_id: string;
+      text: string;
+      heading: string | null;
+      physical_index: number;
+      printed_label: string | null;
+      rank: number;
+    }[]
+  ).map((r) => ({
     ...r,
     asset: allowed.find((a) => a.id === r.asset_id)!,
   }));
@@ -316,21 +462,40 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
 // ---------------------------------------------------------------------------------------------
 // Resource requests
 
-export async function createResourceRequest(db: DbOrTx, ownerId: string, input: Omit<typeof resourceRequest.$inferInsert, "ownerId" | "id" | "createdAt" | "updatedAt">): Promise<RequestRow> {
-  const [row] = await db.insert(resourceRequest).values({ ...input, ownerId }).returning();
+export async function createResourceRequest(
+  db: DbOrTx,
+  ownerId: string,
+  input: Omit<typeof resourceRequest.$inferInsert, "ownerId" | "id" | "createdAt" | "updatedAt">,
+): Promise<RequestRow> {
+  const [row] = await db
+    .insert(resourceRequest)
+    .values({ ...input, ownerId })
+    .returning();
   return row!;
 }
 
 export async function listResourceRequests(db: DbOrTx, ownerId: string): Promise<RequestRow[]> {
-  return db.select().from(resourceRequest).where(eq(resourceRequest.ownerId, ownerId)).orderBy(asc(resourceRequest.status), desc(resourceRequest.createdAt));
+  return db
+    .select()
+    .from(resourceRequest)
+    .where(eq(resourceRequest.ownerId, ownerId))
+    .orderBy(asc(resourceRequest.status), desc(resourceRequest.createdAt));
 }
 
 export async function setRequestStatus(db: DbOrTx, ownerId: string, id: string, status: "open" | "obtained" | "declined"): Promise<void> {
-  await db.update(resourceRequest).set({ status }).where(and(eq(resourceRequest.id, id), eq(resourceRequest.ownerId, ownerId)));
+  await db
+    .update(resourceRequest)
+    .set({ status })
+    .where(and(eq(resourceRequest.id, id), eq(resourceRequest.ownerId, ownerId)));
 }
 
 export function renderRequestsMarkdown(requests: RequestRow[], institution: string, suggestions: SuggestedRequest[] = []): string {
-  const lines = [`# ${institution}: books and materials to obtain`, "", `Generated ${new Date().toISOString().slice(0, 10)}. Obtain through legitimate channels only (publisher, author page, library). Place files in the folder shown; metadata is confirmed in the app before anything is processed.`, ""];
+  const lines = [
+    `# ${institution}: books and materials to obtain`,
+    "",
+    `Generated ${new Date().toISOString().slice(0, 10)}. Obtain through legitimate channels only (publisher, author page, library). Place files in the folder shown; metadata is confirmed in the app before anything is processed.`,
+    "",
+  ];
   for (const r of requests) {
     lines.push(`## ${r.title}${r.authors ? ` — ${r.authors}` : ""}${r.edition ? ` (${r.edition})` : ""}`);
     lines.push("");
@@ -350,7 +515,9 @@ export function renderRequestsMarkdown(requests: RequestRow[], institution: stri
   if (suggestions.length) {
     lines.push("## Suggested by the catalogue (not yet on the list)", "");
     for (const s of suggestions) {
-      lines.push(`- **${s.title}**${s.authors ? ` — ${s.authors}` : ""}${s.edition ? ` (${s.edition})` : ""} · ${s.courseId} · ${s.essential ? "essential" : "optional"} · ${s.caveats}`);
+      lines.push(
+        `- **${s.title}**${s.authors ? ` — ${s.authors}` : ""}${s.edition ? ` (${s.edition})` : ""} · ${s.courseId} · ${s.essential ? "essential" : "optional"} · ${s.caveats}`,
+      );
     }
     lines.push("");
   }
@@ -368,7 +535,12 @@ export async function createPairingCode(db: DbOrTx, ownerId: string): Promise<{ 
 }
 
 /** Exchanges a one-time code for a narrow device token (returned once; stored hashed). */
-export async function redeemPairingCode(db: DbOrTx, code: string, deviceName: string, roots: string[]): Promise<{ token: string; pairing: PairingRow }> {
+export async function redeemPairingCode(
+  db: DbOrTx,
+  code: string,
+  deviceName: string,
+  roots: string[],
+): Promise<{ token: string; pairing: PairingRow }> {
   const [row] = await db
     .select()
     .from(pairingCode)
@@ -377,14 +549,28 @@ export async function redeemPairingCode(db: DbOrTx, code: string, deviceName: st
   if (!row) throw new LibraryError("bad_code", "That pairing code is not valid or has expired. Create a new one in the Library.");
   await db.update(pairingCode).set({ consumedAt: new Date() }).where(eq(pairingCode.id, row.id));
   const token = `cvt_${randomBytes(32).toString("base64url")}`;
-  const [pairing] = await db.insert(devicePairing).values({ userId: row.userId, name: deviceName.slice(0, 80), tokenHash: hashToken(token), roots }).returning();
-  await db.insert(auditEvent).values({ ownerId: row.userId, actor: "learner", action: "companion:pair", entity: "device_pairing", entityId: pairing!.id, details: { deviceName } });
+  const [pairing] = await db
+    .insert(devicePairing)
+    .values({ userId: row.userId, name: deviceName.slice(0, 80), tokenHash: hashToken(token), roots })
+    .returning();
+  await db.insert(auditEvent).values({
+    ownerId: row.userId,
+    actor: "learner",
+    action: "companion:pair",
+    entity: "device_pairing",
+    entityId: pairing!.id,
+    details: { deviceName },
+  });
   return { token, pairing: pairing! };
 }
 
 export async function authenticateDevice(db: DbOrTx, token: string): Promise<PairingRow | null> {
   if (!token.startsWith("cvt_")) return null;
-  const rows = await db.select().from(devicePairing).where(and(eq(devicePairing.tokenHash, hashToken(token)), isNull(devicePairing.revokedAt))).limit(1);
+  const rows = await db
+    .select()
+    .from(devicePairing)
+    .where(and(eq(devicePairing.tokenHash, hashToken(token)), isNull(devicePairing.revokedAt)))
+    .limit(1);
   const row = rows[0];
   if (row) await db.update(devicePairing).set({ lastSeenAt: new Date() }).where(eq(devicePairing.id, row.id));
   return row ?? null;
@@ -399,15 +585,24 @@ export async function listPairings(db: DbOrTx, ownerId: string): Promise<Pairing
 }
 
 export async function revokePairing(db: DbOrTx, ownerId: string, pairingId: string): Promise<void> {
-  await db.update(devicePairing).set({ revokedAt: new Date() }).where(and(eq(devicePairing.id, pairingId), eq(devicePairing.userId, ownerId)));
+  await db
+    .update(devicePairing)
+    .set({ revokedAt: new Date() })
+    .where(and(eq(devicePairing.id, pairingId), eq(devicePairing.userId, ownerId)));
 }
 
 /** Work for the companion: assets whose bytes the owner has permitted to be stored. */
-export async function pendingUploadTasks(db: DbOrTx, pairingId: string, ownerId: string): Promise<{ assetId: string; sha256: string; localPathHint: string | null }[]> {
+export async function pendingUploadTasks(
+  db: DbOrTx,
+  pairingId: string,
+  ownerId: string,
+): Promise<{ assetId: string; sha256: string; localPathHint: string | null }[]> {
   const rows = await db
     .select({ assetId: resourceAsset.id, sha256: resourceAsset.sha256, localPathHint: resourceAsset.localPathHint })
     .from(resourceAsset)
-    .where(and(eq(resourceAsset.ownerId, ownerId), eq(resourceAsset.devicePairingId, pairingId), eq(resourceAsset.status, "upload_requested")));
+    .where(
+      and(eq(resourceAsset.ownerId, ownerId), eq(resourceAsset.devicePairingId, pairingId), eq(resourceAsset.status, "upload_requested")),
+    );
   return rows;
 }
 
@@ -433,7 +628,14 @@ export async function localOnlyAssetsForCourse(db: DbOrTx, ownerId: string, cour
   return db
     .select()
     .from(resourceAsset)
-    .where(and(eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt), eq(resourceAsset.localOnly, true), sql`${resourceAsset.courseIds} ? ${courseId}`));
+    .where(
+      and(
+        eq(resourceAsset.ownerId, ownerId),
+        isNull(resourceAsset.deletedAt),
+        eq(resourceAsset.localOnly, true),
+        sql`${resourceAsset.courseIds} ? ${courseId}`,
+      ),
+    );
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -460,7 +662,12 @@ export async function saveReadingProgress(db: DbOrTx, ownerId: string, assetId: 
 /** Headings seen in the extracted text (theorem, definition, chapter labels), in page order. */
 export async function tableOfContents(db: DbOrTx, assetId: string, limit = 400) {
   const rows = await db
-    .select({ heading: passage.heading, kind: passage.kind, physicalIndex: extractedPage.physicalIndex, printedLabel: extractedPage.printedLabel })
+    .select({
+      heading: passage.heading,
+      kind: passage.kind,
+      physicalIndex: extractedPage.physicalIndex,
+      printedLabel: extractedPage.printedLabel,
+    })
     .from(passage)
     .innerJoin(extractedPage, eq(passage.pageId, extractedPage.id))
     .where(and(eq(passage.assetId, assetId), isNotNull(passage.heading)))
@@ -474,7 +681,11 @@ export async function passagesForPage(db: DbOrTx, pageId: string) {
 }
 
 export async function listAnnotations(db: DbOrTx, ownerId: string, assetId: string): Promise<AnnotationRow[]> {
-  return db.select().from(annotation).where(and(eq(annotation.ownerId, ownerId), eq(annotation.assetId, assetId))).orderBy(asc(annotation.createdAt));
+  return db
+    .select()
+    .from(annotation)
+    .where(and(eq(annotation.ownerId, ownerId), eq(annotation.assetId, assetId)))
+    .orderBy(asc(annotation.createdAt));
 }
 
 /**
@@ -516,7 +727,11 @@ export async function deleteAnnotation(db: DbOrTx, ownerId: string, id: string):
   await db.delete(annotation).where(and(eq(annotation.id, id), eq(annotation.ownerId, ownerId)));
 }
 
-export async function reconcileAnnotations(db: DbOrTx, ownerId: string, assetId: string): Promise<{ resolved: number; needsRepair: number }> {
+export async function reconcileAnnotations(
+  db: DbOrTx,
+  ownerId: string,
+  assetId: string,
+): Promise<{ resolved: number; needsRepair: number }> {
   const rows = await listAnnotations(db, ownerId, assetId);
   let resolved = 0;
   let needsRepair = 0;
@@ -524,7 +739,10 @@ export async function reconcileAnnotations(db: DbOrTx, ownerId: string, assetId:
     if (a.locator.kind !== "pdf") continue;
     const page = await getPage(db, assetId, a.locator.physicalPageIndex);
     const ok = Boolean(page) && (!a.selectedText || squash(page!.text).includes(squash(a.selectedText)));
-    await db.update(annotation).set({ mappingStatus: ok ? "resolved" : "needs_repair" }).where(eq(annotation.id, a.id));
+    await db
+      .update(annotation)
+      .set({ mappingStatus: ok ? "resolved" : "needs_repair" })
+      .where(eq(annotation.id, a.id));
     if (ok) resolved++;
     else needsRepair++;
   }
@@ -551,7 +769,11 @@ export async function listSourceRegistry(db: DbOrTx): Promise<SourceRegistryEntr
   const sources = await db.select().from(source).orderBy(asc(source.title));
   const versions = await db.select().from(sourceVersion);
   const counts = await db
-    .select({ sourceVersionId: locator.sourceVersionId, n: sql<number>`count(*)::int`, pdf: sql<number>`count(*) filter (where ${locator.kind} = 'pdf')::int` })
+    .select({
+      sourceVersionId: locator.sourceVersionId,
+      n: sql<number>`count(*)::int`,
+      pdf: sql<number>`count(*) filter (where ${locator.kind} = 'pdf')::int`,
+    })
     .from(locator)
     .groupBy(locator.sourceVersionId);
   const uses = await db
@@ -573,8 +795,10 @@ export async function listSourceRegistry(db: DbOrTx): Promise<SourceRegistryEntr
     const count = counts.find((c) => c.sourceVersionId === version.id);
     const courses: SourceRegistryEntry["courses"] = [];
     for (const u of uses) {
-      if (u.primary.includes(s.id)) courses.push({ id: u.courseId, title: u.title, role: "primary", launch: u.launch, departmentId: u.departmentId });
-      else if (u.supplemental.includes(s.id)) courses.push({ id: u.courseId, title: u.title, role: "supplemental", launch: u.launch, departmentId: u.departmentId });
+      if (u.primary.includes(s.id))
+        courses.push({ id: u.courseId, title: u.title, role: "primary", launch: u.launch, departmentId: u.departmentId });
+      else if (u.supplemental.includes(s.id))
+        courses.push({ id: u.courseId, title: u.title, role: "supplemental", launch: u.launch, departmentId: u.departmentId });
     }
     entries.push({ source: s, version, locatorCount: count?.n ?? 0, pdfLocatorCount: count?.pdf ?? 0, courses });
   }
@@ -623,7 +847,9 @@ export async function suggestedRequests(db: DbOrTx, ownerId: string): Promise<Su
       ),
     ];
     for (const c of entry.courses.filter((x) => x.launch)) {
-      const open = registry.filter((e) => e.version.accessStatus === "open" && e.courses.some((cc) => cc.id === c.id)).map((e) => e.source.title);
+      const open = registry
+        .filter((e) => e.version.accessStatus === "open" && e.courses.some((cc) => cc.id === c.id))
+        .map((e) => e.source.title);
       out.push({
         key: `${entry.source.id}:${c.id}`,
         title: entry.source.title,
@@ -634,13 +860,18 @@ export async function suggestedRequests(db: DbOrTx, ownerId: string): Promise<Su
         why: `${c.role === "primary" ? "Primary" : "Supplemental"} source named by ${c.title} (${c.id}).${entry.source.description ? ` ${entry.source.description}` : ""}`,
         essential: c.role === "primary",
         chaptersNeeded: chapters,
-        links: [{ label: "Canonical page", url: entry.source.canonicalUrl }, ...(entry.version.licenceUrl ? [{ label: "Licence or terms", url: entry.version.licenceUrl }] : [])],
+        links: [
+          { label: "Canonical page", url: entry.source.canonicalUrl },
+          ...(entry.version.licenceUrl ? [{ label: "Licence or terms", url: entry.version.licenceUrl }] : []),
+        ],
         openAlternative: open.length
           ? `Open sources this course already rests on: ${open.join("; ")}. The course page shows which units they cover; they are not claimed to be equivalent to this book.`
           : undefined,
         acceptedFormats: ["pdf"],
         destinationFolder: `inbox/${c.departmentId}`,
-        caveats: [`Access status: ${entry.version.accessStatus}. Licence: ${entry.version.licence}.`, ...entry.version.limitations].join(" "),
+        caveats: [`Access status: ${entry.version.accessStatus}. Licence: ${entry.version.licence}.`, ...entry.version.limitations].join(
+          " ",
+        ),
         minPermission: "local_read",
       });
     }

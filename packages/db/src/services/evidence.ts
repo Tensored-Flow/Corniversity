@@ -87,7 +87,9 @@ export async function getConceptStates(db: DbOrTx, ownerId: string, conceptIds?:
     .select({ state: conceptState, concept })
     .from(conceptState)
     .innerJoin(concept, eq(conceptState.conceptId, concept.id))
-    .where(conceptIds ? and(eq(conceptState.ownerId, ownerId), inArray(conceptState.conceptId, conceptIds)) : eq(conceptState.ownerId, ownerId));
+    .where(
+      conceptIds ? and(eq(conceptState.ownerId, ownerId), inArray(conceptState.conceptId, conceptIds)) : eq(conceptState.ownerId, ownerId),
+    );
   return rows;
 }
 
@@ -111,5 +113,7 @@ export async function clearMisconceptionsFor(db: DbOrTx, ownerId: string, concep
   await db
     .update(misconceptionRecord)
     .set({ status: "cleared", clearedAt: new Date() })
-    .where(and(eq(misconceptionRecord.ownerId, ownerId), eq(misconceptionRecord.conceptId, conceptId), eq(misconceptionRecord.status, "active")));
+    .where(
+      and(eq(misconceptionRecord.ownerId, ownerId), eq(misconceptionRecord.conceptId, conceptId), eq(misconceptionRecord.status, "active")),
+    );
 }

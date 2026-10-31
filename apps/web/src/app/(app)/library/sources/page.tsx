@@ -1,4 +1,3 @@
-import { eq } from "drizzle-orm";
 import { locator } from "@corniversity/db/schema/index";
 import { companionState, listAssets, listPairings, listSourceRegistry } from "@corniversity/db/services/library";
 import { Badge, Button, Card } from "@/components/ui";
@@ -27,7 +26,11 @@ export default async function SourcesPage({ searchParams }: { searchParams: Prom
   const session = await requireSession("/library/sources");
   const { error } = await searchParams;
   const database = db();
-  const [registry, pairings, assets] = await Promise.all([listSourceRegistry(database), listPairings(database, session.user.id), listAssets(database, session.user.id)]);
+  const [registry, pairings, assets] = await Promise.all([
+    listSourceRegistry(database),
+    listPairings(database, session.user.id),
+    listAssets(database, session.user.id),
+  ]);
   const importedTitles = new Set(assets.filter((a) => a.origin === "open_import").map((a) => a.confirmedTitle));
   const allLocators = await database.select({ sourceVersionId: locator.sourceVersionId, payload: locator.payload }).from(locator);
 
@@ -43,7 +46,9 @@ export default async function SourcesPage({ searchParams }: { searchParams: Prom
       <div className="flex flex-col gap-4">
         {registry.map((entry) => {
           const access = ACCESS[entry.version.accessStatus] ?? ACCESS.unknown!;
-          const files = entry.version.importAllowed ? importableFiles(allLocators.filter((l) => l.sourceVersionId === entry.version.id)) : [];
+          const files = entry.version.importAllowed
+            ? importableFiles(allLocators.filter((l) => l.sourceVersionId === entry.version.id))
+            : [];
           return (
             <Card key={entry.source.id} as="article">
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -83,7 +88,9 @@ export default async function SourcesPage({ searchParams }: { searchParams: Prom
                 </div>
                 <div>
                   <dt className="text-xs uppercase tracking-wide text-ink-3">Courses</dt>
-                  <dd className="text-ink">{entry.courses.length ? entry.courses.map((c) => `${c.id} (${c.role})`).join(", ") : "none yet"}</dd>
+                  <dd className="text-ink">
+                    {entry.courses.length ? entry.courses.map((c) => `${c.id} (${c.role})`).join(", ") : "none yet"}
+                  </dd>
                 </div>
               </dl>
               {entry.version.limitations.length ? (
@@ -99,11 +106,13 @@ export default async function SourcesPage({ searchParams }: { searchParams: Prom
               {files.length ? (
                 <div className="mt-4 rounded-[var(--radius-panel)] border border-stone bg-paper p-3">
                   <p className="text-sm text-ink">
-                    Import permitted by the registry ({entry.version.licence}; hosts: {entry.version.importHosts.join(", ")}). Each file is fetched once, stored privately, indexed, and permitted for tutors under that licence; sharing stays off.
+                    Import permitted by the registry ({entry.version.licence}; hosts: {entry.version.importHosts.join(", ")}). Each file is
+                    fetched once, stored privately, indexed, and permitted for tutors under that licence; sharing stays off.
                   </p>
                   <ul className="mt-2 flex flex-col gap-1">
                     {files.map((file) => {
-                      const already = importedTitles.has(`${entry.source.title}: ${file.fileLabel}`) || importedTitles.has(entry.source.title);
+                      const already =
+                        importedTitles.has(`${entry.source.title}: ${file.fileLabel}`) || importedTitles.has(entry.source.title);
                       return (
                         <li key={file.url} className="flex flex-wrap items-center justify-between gap-2 text-sm">
                           <span className="text-ink-2">{file.fileLabel}</span>

@@ -16,9 +16,7 @@ export interface SpendSnapshot {
   monthUsd: number;
 }
 
-export type BudgetDecision =
-  | { allowed: true; warnings: string[] }
-  | { allowed: false; reason: string; warnings: string[] };
+export type BudgetDecision = { allowed: true; warnings: string[] } | { allowed: false; reason: string; warnings: string[] };
 
 export function decideBudget(limits: BudgetLimits, spend: SpendSnapshot, estimatedRunUsd: number): BudgetDecision {
   const warnings: string[] = [];

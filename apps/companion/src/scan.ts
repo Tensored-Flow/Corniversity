@@ -11,7 +11,14 @@ import { basename, extname, join, relative, sep } from "node:path";
  */
 
 export const ACCEPTED_EXTENSIONS = new Set([".pdf", ".md", ".txt"]);
-export const DEPARTMENT_FOLDERS = ["mathematics", "physics", "chemistry", "computer-science-ai", "neuroscience", "cognitive-science"] as const;
+export const DEPARTMENT_FOLDERS = [
+  "mathematics",
+  "physics",
+  "chemistry",
+  "computer-science-ai",
+  "neuroscience",
+  "cognitive-science",
+] as const;
 /** Folders under the data root that are never scanned: they hold derived or private material, not drop-folder input. */
 export const RESERVED_FOLDERS = new Set(["originals", "processed", "exports", "requests", "quarantine", "postgres", "node_modules"]);
 const TEMPORARY_PATTERNS = [/^~\$/, /\.(tmp|part|partial|crdownload|download)$/i, /^\./];
@@ -68,7 +75,8 @@ export type PlanAction = "register" | "rehash" | "skip_unchanged";
 /** Deduplication starts locally: an unchanged file is never re-hashed, let alone re-sent. */
 export function planFor(facts: FileFacts, known: KnownEntry | undefined): { action: PlanAction; reason: string } {
   if (!known) return { action: "register", reason: "new file" };
-  if (known.size === facts.size && known.mtimeMs === facts.mtimeMs) return { action: "skip_unchanged", reason: "unchanged since the last sync" };
+  if (known.size === facts.size && known.mtimeMs === facts.mtimeMs)
+    return { action: "skip_unchanged", reason: "unchanged since the last sync" };
   return { action: "rehash", reason: "size or modification time changed" };
 }
 

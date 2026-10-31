@@ -1,7 +1,7 @@
 "use server";
+import { EnrolmentError, enrol, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { EnrolmentError, enrol, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 

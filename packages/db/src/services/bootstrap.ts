@@ -30,10 +30,7 @@ export interface BootstrapInput {
  * email is the configured owner email, and the one-time code matches. Any other sign-up is
  * refused with a reason that does not leak which condition failed.
  */
-export async function assertBootstrapAllowed(
-  db: DbOrTx,
-  input: BootstrapInput,
-): Promise<{ ok: true } | { ok: false; reason: string }> {
+export async function assertBootstrapAllowed(db: DbOrTx, input: BootstrapInput): Promise<{ ok: true } | { ok: false; reason: string }> {
   if (await isBootstrapComplete(db)) {
     return { ok: false, reason: "Sign-up is closed. This institution has one owner account." };
   }

@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { DateTime } from "luxon";
 import { listPersonas } from "@corniversity/db/services/catalogue";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { getTimetable } from "@corniversity/db/services/timetable";
+import { DateTime } from "luxon";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { AiLabel, Badge, Card, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -30,18 +30,25 @@ export default async function WelcomePage() {
         <h1 className="mt-2 text-3xl text-ink">Congratulations, {profile.displayName}. Welcome to your first term at Corniversity.</h1>
         <div className="prose-reading mt-6 text-ink-2">
           <p>
-            Your programme is confirmed: {active.map((e) => `${e.course.title} (${e.enrolment.mode.replace("_", " ")})`).join("; ")}. It begins on {termStart.toFormat("cccc d LLLL yyyy")} and runs for {tt.term.teachingWeeks} teaching weeks{tt.term.readingWeek ? ", a reading week" : ""}{tt.term.synthesisWeek ? " and a synthesis week" : ""}.
+            Your programme is confirmed: {active.map((e) => `${e.course.title} (${e.enrolment.mode.replace("_", " ")})`).join("; ")}. It
+            begins on {termStart.toFormat("cccc d LLLL yyyy")} and runs for {tt.term.teachingWeeks} teaching weeks
+            {tt.term.readingWeek ? ", a reading week" : ""}
+            {tt.term.synthesisWeek ? " and a synthesis week" : ""}.
           </p>
           <p>
-            The first week is deliberately light: one reading, one tutorial, one attempt at a real problem, a source-backed response, and a clear next session. The point is to find out how the sources read and how the tutorial feels before the load rises. If the timetable is wrong for your life, say so; the timetable moves, not you.
+            The first week is deliberately light: one reading, one tutorial, one attempt at a real problem, a source-backed response, and a
+            clear next session. The point is to find out how the sources read and how the tutorial feels before the load rises. If the
+            timetable is wrong for your life, say so; the timetable moves, not you.
           </p>
           <p>
-            Everything here is honest about what it is. Your teachers and any classmates are AI personas and are labelled as such. Feedback is provisional and can be appealed. Your records are informal and carry no accreditation. Progress is shown as evidence of what you have demonstrated, never as a percentage.
+            Everything here is honest about what it is. Your teachers and any classmates are AI personas and are labelled as such. Feedback
+            is provisional and can be appealed. Your records are informal and carry no accreditation. Progress is shown as evidence of what
+            you have demonstrated, never as a percentage.
           </p>
           <p>
             With warm regards,
             <br />
-            {director?.name ?? "The Director of Studies"} <AiLabel role="Director of Studies" />
+            {director?.name ?? "The Director of Studies"} <AiLabel kind="Director of Studies" />
           </p>
         </div>
       </article>
@@ -62,7 +69,10 @@ export default async function WelcomePage() {
                       <Badge>{s.sessionKind.replace("_", " ")}</Badge>
                     </div>
                     {courseId && s.unitId ? (
-                      <Link href={`/courses/${courseId}/units/${s.unitId}`} className="mt-1 block text-ink underline-offset-4 hover:underline">
+                      <Link
+                        href={`/courses/${courseId}/units/${s.unitId}`}
+                        className="mt-1 block text-ink underline-offset-4 hover:underline"
+                      >
                         {s.title}
                       </Link>
                     ) : (
@@ -84,23 +94,38 @@ export default async function WelcomePage() {
           <dl className="mt-3 flex flex-col gap-3 text-sm">
             <div>
               <dt className="font-medium text-ink">How a unit works</dt>
-              <dd className="text-ink-2">Read the lesson with its sources, attempt the exercises in the tutorial, submit when you believe an argument is complete, revise after feedback. Hints are recorded as assistance, never as failure.</dd>
+              <dd className="text-ink-2">
+                Read the lesson with its sources, attempt the exercises in the tutorial, submit when you believe an argument is complete,
+                revise after feedback. Hints are recorded as assistance, never as failure.
+              </dd>
             </div>
             <div>
               <dt className="font-medium text-ink">How feedback works</dt>
-              <dd className="text-ink-2">Automatic checks run first and are advisory. The AI assessor localises the first substantive gap and records its confidence; low confidence becomes "needs review". Appeal from any feedback card.</dd>
+              <dd className="text-ink-2">
+                Automatic checks run first and are advisory. The AI assessor localises the first substantive gap and records its confidence;
+                low confidence becomes "needs review". Appeal from any feedback card.
+              </dd>
             </div>
             <div>
               <dt className="font-medium text-ink">How progress is shown</dt>
-              <dd className="text-ink-2">Concepts move from introduced to practised to demonstrated on concrete evidence; a later gap marks a concept to revisit. Time spent is activity, not competence.</dd>
+              <dd className="text-ink-2">
+                Concepts move from introduced to practised to demonstrated on concrete evidence; a later gap marks a concept to revisit.
+                Time spent is activity, not competence.
+              </dd>
             </div>
             <div>
               <dt className="font-medium text-ink">Sources</dt>
-              <dd className="text-ink-2">Every reading has an exact source and location; courses say which materials they adapt and under which licence. Nothing here is an official delivery of another institution's course.</dd>
+              <dd className="text-ink-2">
+                Every reading has an exact source and location; courses say which materials they adapt and under which licence. Nothing here
+                is an official delivery of another institution's course.
+              </dd>
             </div>
             <div>
               <dt className="font-medium text-ink">If life intervenes</dt>
-              <dd className="text-ink-2">Missed sessions produce a small catch-up proposal you confirm or reject. Pause a course from its foyer; completed work is kept.</dd>
+              <dd className="text-ink-2">
+                Missed sessions produce a small catch-up proposal you confirm or reject. Pause a course from its foyer; completed work is
+                kept.
+              </dd>
             </div>
           </dl>
           <div className="mt-4 flex gap-3">

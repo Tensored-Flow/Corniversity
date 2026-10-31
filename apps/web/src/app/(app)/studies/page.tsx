@@ -1,11 +1,13 @@
-import Link from "next/link";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
-import { listOpenSessions } from "@corniversity/db/services/learning";
 import { getConceptStates } from "@corniversity/db/services/evidence";
+import { listOpenSessions } from "@corniversity/db/services/learning";
+import { dueRevisionItems, revisionLoad } from "@corniversity/db/services/revision";
+import Link from "next/link";
 import { ReadinessBadge } from "@/components/Readiness";
 import { Badge, Card, EmptyState, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
+import { reviewRevisionAction } from "./actions";
 
 export const metadata = { title: "My Studies" };
 
@@ -19,10 +21,12 @@ const STATE_TONE: Record<string, "neutral" | "brass" | "moss" | "rust" | "slate"
 
 export default async function StudiesPage() {
   const session = await requireSession("/studies");
-  const [enrolments, open, states] = await Promise.all([
+  const [enrolments, open, states, due, load] = await Promise.all([
     listEnrolments(db(), session.user.id),
     listOpenSessions(db(), session.user.id),
     getConceptStates(db(), session.user.id),
+    dueRevisionItems(db(), session.user.id),
+    revisionLoad(db(), session.user.id),
   ]);
   const active = enrolments.filter((e) => e.enrolment.status !== "withdrawn");
 
@@ -70,11 +74,16 @@ export default async function StudiesPage() {
           <ul className="mt-3 flex flex-col gap-2">
             {open.slice(0, 5).map((s) => (
               <li key={s.id}>
-                <Link href={`/sessions/${s.id}`} className="flex items-center justify-between rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3 text-sm hover:border-stone-2">
+                <Link
+                  href={`/sessions/${s.id}`}
+                  className="flex items-center justify-between rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3 text-sm hover:border-stone-2"
+                >
                   <span className="text-ink">
                     {s.sessionKind.replace("_", " ")} · unit {s.unitId}
                   </span>
-                  <span className="text-xs text-ink-3">last active {s.lastActiveAt.toLocaleString("en-GB", { timeZone: "Europe/London" })}</span>
+                  <span className="text-xs text-ink-3">
+                    last active {s.lastActiveAt.toLocaleString("en-GB", { timeZone: "Europe/London" })}
+                  </span>
                 </Link>
               </li>
             ))}
@@ -82,12 +91,49 @@ export default async function StudiesPage() {
         </section>
       ) : null}
 
+      <section className="mt-10" aria-labelledby="revision">
+        <h2 id="revision" className="text-xl text-ink">
+          Revision due
+        </h2>
+        <p className="mt-1 text-sm text-ink-2">
+          Definition prompts created when you complete a reading, capped at {load.cap} a week from your hours ceiling ({load.dueThisWeek}{" "}
+          due this week, {load.total} in all). Recalling a definition reschedules it; it is not evidence of understanding.
+        </p>
+        {due.length === 0 ? (
+          <p className="mt-3 text-sm text-ink-3">Nothing due now.</p>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-2">
+            {due.map((item) => (
+              <li key={item.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3">
+                <p className="text-xs uppercase tracking-wide text-ink-3">{item.conceptTitle}</p>
+                <p className="mt-1 text-sm text-ink">{item.prompt}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(["recalled", "shaky", "forgot"] as const).map((outcome) => (
+                    <form key={outcome} action={reviewRevisionAction}>
+                      <input type="hidden" name="id" value={item.id} />
+                      <input type="hidden" name="outcome" value={outcome} />
+                      <button
+                        type="submit"
+                        className="rounded-[var(--radius-control)] border border-stone-2 bg-paper px-3 py-1 text-xs text-ink hover:bg-paper-3"
+                      >
+                        {outcome === "recalled" ? "Recalled it" : outcome === "shaky" ? "Shaky" : "Forgot"}
+                      </button>
+                    </form>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       <section className="mt-10" aria-labelledby="evidence">
         <h2 id="evidence" className="text-xl text-ink">
           Evidence of understanding
         </h2>
         <p className="mt-1 text-sm text-ink-2">
-          States are derived from concrete attempts and readings, never from time spent. Reading introduces; an accepted unassisted attempt demonstrates; a later gap marks a concept to revisit.
+          States are derived from concrete attempts and readings, never from time spent. Reading introduces; an accepted unassisted attempt
+          demonstrates; a later gap marks a concept to revisit.
         </p>
         {states.length === 0 ? (
           <p className="mt-3 text-sm text-ink-3">Nothing recorded yet.</p>

@@ -58,7 +58,14 @@ export function EnrolControls({
           const disabled = !offered || (mode === "enrolled" && !prepared);
           return (
             <label key={mode} className={["flex items-start gap-2", disabled ? "text-ink-3" : "text-ink"].join(" ")}>
-              <input type="radio" name="mode" value={mode} disabled={disabled} defaultChecked={!disabled && mode === (prepared ? "enrolled" : "audit")} className="mt-1 accent-[var(--brass)]" />
+              <input
+                type="radio"
+                name="mode"
+                value={mode}
+                disabled={disabled}
+                defaultChecked={!disabled && mode === (prepared ? "enrolled" : "audit")}
+                className="mt-1 accent-[var(--brass)]"
+              />
               <span>
                 <span className="block font-medium">{MODE_LABEL[mode]}</span>
                 <span className="block text-xs">

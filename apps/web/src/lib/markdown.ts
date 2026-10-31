@@ -1,7 +1,5 @@
 import "server-only";
-import "katex/contrib/mhchem";
 import { defaultSchema } from "hast-util-sanitize";
-import rehypeKatex from "rehype-katex";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
@@ -9,6 +7,7 @@ import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
+import { rehypeKatexLocal } from "./rehype-katex-local";
 
 /**
  * Markdown → sanitised HTML with mathematics (KaTeX, MathML output) and chemistry (mhchem).
@@ -54,7 +53,20 @@ const schema = {
     ...defaultSchema.attributes,
     "*": [...(defaultSchema.attributes?.["*"] ?? []), "className", "ariaHidden"],
     math: ["display", "xmlns"],
-    mo: ["stretchy", "fence", "separator", "lspace", "rspace", "minsize", "maxsize", "movablelimits", "largeop", "symmetric", "form", "accent"],
+    mo: [
+      "stretchy",
+      "fence",
+      "separator",
+      "lspace",
+      "rspace",
+      "minsize",
+      "maxsize",
+      "movablelimits",
+      "largeop",
+      "symmetric",
+      "form",
+      "accent",
+    ],
     mspace: ["width", "height", "depth"],
     mtable: ["columnalign", "rowspacing", "columnspacing", "rowlines", "columnlines", "frame", "displaystyle"],
     mtd: ["columnalign", "columnspan", "rowspan"],
@@ -79,7 +91,7 @@ const processor = unified()
   .use(remarkGfm)
   .use(remarkMath)
   .use(remarkRehype, { allowDangerousHtml: false })
-  .use(rehypeKatex, { output: "mathml", strict: "ignore", trust: false })
+  .use(rehypeKatexLocal)
   .use(rehypeSanitize, schema)
   .use(rehypeStringify);
 
@@ -88,7 +100,8 @@ const processor = unified()
  * `**Example.**`, `**Warning.**` etc. is wrapped in a styled block. Implemented as a light
  * pre-pass on the Markdown so that the result is still plain HTML the sanitiser understands.
  */
-const ENV_PATTERN = /^\*\*(Definition|Theorem|Lemma|Proposition|Corollary|Example|Non-example|Remark|Warning|Exercise|Proof)(?: \(([^)]+)\))?\.\*\*\s*/;
+const ENV_PATTERN =
+  /^\*\*(Definition|Theorem|Lemma|Proposition|Corollary|Example|Non-example|Remark|Warning|Exercise|Proof)(?: \(([^)]+)\))?\.\*\*\s*/;
 
 export async function renderMarkdown(markdown: string): Promise<string> {
   const blocks = markdown.replace(/\r\n/g, "\n").split(/\n{2,}/);

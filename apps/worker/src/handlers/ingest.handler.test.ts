@@ -1,15 +1,23 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { eq } from "drizzle-orm";
-import type { PgBoss } from "pg-boss";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { FsBlobStore } from "@corniversity/db/blob";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { user } from "@corniversity/db/schema/auth";
 import { resourceAsset } from "@corniversity/db/schema/index";
-import { confirmMetadata, getAsset, listPages, permittedPassagesForCourse, receiveUpload, searchAsset, setPermission } from "@corniversity/db/services/library";
+import {
+  confirmMetadata,
+  getAsset,
+  listPages,
+  permittedPassagesForCourse,
+  receiveUpload,
+  searchAsset,
+  setPermission,
+} from "@corniversity/db/services/library";
+import { eq } from "drizzle-orm";
+import type { PgBoss } from "pg-boss";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { type HandlerContext, NonRetryableError } from "./index";
 import { ingestHandler } from "./ingest";
 
@@ -30,7 +38,9 @@ export function makePdf(pages: string[], withLabels: boolean): Buffer {
     // pdf.js drops glyphs placed beyond the page edge, as a real viewer would, so wrap at ~75 characters.
     const lines = text.split("\n").flatMap((line) => line.match(/.{1,75}(?:\s|$)|\S+/g) ?? [""]);
     const stream = `BT /F1 12 Tf 72 720 Td 14 TL ${lines.map((l) => `(${esc(l.trimEnd())}) Tj T*`).join(" ")} ET`;
-    pageObjects.push(`${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`);
+    pageObjects.push(
+      `${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`,
+    );
     pageObjects.push(`${contentId} 0 obj\n<< /Length ${Buffer.byteLength(stream, "latin1")} >>\nstream\n${stream}\nendstream\nendobj\n`);
   }
   const labels = withLabels ? " /PageLabels << /Nums [0 << /S /r >> 2 << /S /D >>] >>" : "";
@@ -74,7 +84,14 @@ afterAll(async () => {
 });
 
 async function storedAsset(filename: string, bytes: Buffer, options: { permit?: boolean } = {}): Promise<string> {
-  const { asset } = await receiveUpload(handle.db, blobs, { ownerId: OWNER, filename, mediaType: "application/pdf", data: bytes, origin: "web_upload", maxBytes: 50_000_000 });
+  const { asset } = await receiveUpload(handle.db, blobs, {
+    ownerId: OWNER,
+    filename,
+    mediaType: "application/pdf",
+    data: bytes,
+    origin: "web_upload",
+    maxBytes: 50_000_000,
+  });
   await confirmMetadata(handle.db, OWNER, asset.id, { title: filename, authors: [], courseIds: ["MAT-230"] });
   if (options.permit ?? true) await setPermission(handle.db, OWNER, asset.id, "local_extract", "allowed", "test");
   // requestIngestion would do this before enqueueing; the test calls the handler directly.

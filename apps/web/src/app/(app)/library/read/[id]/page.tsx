@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import {
   companionState,
@@ -13,13 +11,16 @@ import {
   tableOfContents,
 } from "@corniversity/db/services/library";
 import { latestConversationForAsset, listMessages } from "@corniversity/db/services/tutoring";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Markdown } from "@/components/Markdown";
+import { RenderedHtml } from "@/components/RenderedHtml";
 import { AiLabel, Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
 import { requireSession } from "@/lib/session";
 import { deleteAnnotationAction, saveAnnotationAction } from "../../actions";
-import { FlashNotices, LibraryHeader, assetTitle } from "../../shared";
+import { assetTitle, FlashNotices, LibraryHeader } from "../../shared";
 import { ProgressSaver } from "./ProgressSaver";
 import { ReaderTools } from "./ReaderTools";
 
@@ -30,7 +31,13 @@ export const metadata = { title: "Reading room" };
  * item, the page's extracted text with quality flags, the original PDF at the same page, notes
  * anchored to a locator, and passage questions that the server permits or refuses explicitly.
  */
-export default async function ReadPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ page?: string; q?: string; error?: string; saved?: string }> }) {
+export default async function ReadPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string; q?: string; error?: string; saved?: string }>;
+}) {
   const session = await requireSession("/library");
   const { id } = await params;
   const query = await searchParams;
@@ -61,7 +68,10 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
 
   const remembered = await getReadingProgress(database, ownerId, asset.id);
   const requested = Number(query.page);
-  const physicalIndex = Math.min(asset.pageCount - 1, Math.max(0, Number.isFinite(requested) && requested >= 1 ? requested - 1 : remembered));
+  const physicalIndex = Math.min(
+    asset.pageCount - 1,
+    Math.max(0, Number.isFinite(requested) && requested >= 1 ? requested - 1 : remembered),
+  );
   const [page, toc, annotations, hits, conversation] = await Promise.all([
     getPage(database, asset.id, physicalIndex),
     tableOfContents(database, asset.id),
@@ -103,7 +113,8 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
       {needsRepair.length ? (
         <div className="mb-4">
           <Notice tone="brass" title={`${needsRepair.length} note(s) need repair`}>
-            Their anchors no longer match this version of the text after re-extraction. They are listed in the notes panel with their original page; they were not moved automatically.
+            Their anchors no longer match this version of the text after re-extraction. They are listed in the notes panel with their
+            original page; they were not moved automatically.
           </Notice>
         </div>
       ) : null}
@@ -134,7 +145,15 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
             <label htmlFor="jump" className="text-sm text-ink-2">
               Go to PDF page
             </label>
-            <input id="jump" name="page" type="number" min={1} max={asset.pageCount} defaultValue={physicalIndex + 1} className="w-20 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1 text-sm text-ink" />
+            <input
+              id="jump"
+              name="page"
+              type="number"
+              min={1}
+              max={asset.pageCount}
+              defaultValue={physicalIndex + 1}
+              className="w-20 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1 text-sm text-ink"
+            />
             <Button type="submit" variant="secondary">
               Go
             </Button>
@@ -152,7 +171,13 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
               <ul className="mt-2 max-h-[60vh] overflow-y-auto text-sm">
                 {toc.map((entry, i) => (
                   <li key={`${entry.physicalIndex}-${i}`}>
-                    <Link href={href(entry.physicalIndex)} className={["block truncate py-0.5", entry.physicalIndex === physicalIndex ? "text-ink" : "text-ink-2 hover:text-ink"].join(" ")}>
+                    <Link
+                      href={href(entry.physicalIndex)}
+                      className={[
+                        "block truncate py-0.5",
+                        entry.physicalIndex === physicalIndex ? "text-ink" : "text-ink-2 hover:text-ink",
+                      ].join(" ")}
+                    >
                       <span className="text-ink-3">{entry.printedLabel ?? entry.physicalIndex + 1}</span> {entry.heading}
                     </Link>
                   </li>
@@ -180,7 +205,12 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
             </div>
             {asset.mediaType === "application/pdf" ? (
               <p className="mt-4 text-xs text-ink-3">
-                <a href={`/api/library/assets/${asset.id}/file#page=${physicalIndex + 1}`} target="_blank" rel="noreferrer" className="text-brass underline underline-offset-4">
+                <a
+                  href={`/api/library/assets/${asset.id}/file#page=${physicalIndex + 1}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-brass underline underline-offset-4"
+                >
                   Open the original PDF at this page
                 </a>{" "}
                 (private; your session only)
@@ -196,7 +226,13 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
                 Search this item
               </label>
               <div className="flex gap-2">
-                <input id="search" name="q" defaultValue={query.q ?? ""} className="w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm text-ink" placeholder="e.g. Cauchy sequence" />
+                <input
+                  id="search"
+                  name="q"
+                  defaultValue={query.q ?? ""}
+                  className="w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm text-ink"
+                  placeholder="e.g. Cauchy sequence"
+                />
                 <Button type="submit" variant="secondary">
                   Search
                 </Button>
@@ -213,7 +249,15 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
                         {hit.printed_label ? `p. ${hit.printed_label}` : `PDF page ${hit.physical_index + 1}`}
                       </Link>
                       <p className="text-xs text-ink-2">
-                        {hit.snippet.split(/\[\[|\]\]/).map((part, i) => (i % 2 === 1 ? <mark key={`${hit.physical_index}-${i}`}>{part}</mark> : <span key={`${hit.physical_index}-${i}`}>{part}</span>))}
+                        {hit.snippet
+                          .split(/\[\[|\]\]/)
+                          .map((part, i) =>
+                            i % 2 === 1 ? (
+                              <mark key={`${hit.physical_index}-${i}`}>{part}</mark>
+                            ) : (
+                              <span key={`${hit.physical_index}-${i}`}>{part}</span>
+                            ),
+                          )}
                       </p>
                     </li>
                   ))}
@@ -242,12 +286,18 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
               <div className="mt-4 flex flex-col gap-2 border-t border-stone pt-3">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-medium text-ink">Recent answers</h3>
-                  <AiLabel role="lecturer" />
+                  <AiLabel kind="lecturer" />
                 </div>
                 {rendered.map((m) => (
-                  <div key={m.id} className={["rounded-[var(--radius-panel)] px-3 py-2 text-sm", m.sender === "learner" ? "border border-stone bg-paper" : "border border-stone bg-paper-3/60"].join(" ")}>
+                  <div
+                    key={m.id}
+                    className={[
+                      "rounded-[var(--radius-panel)] px-3 py-2 text-sm",
+                      m.sender === "learner" ? "border border-stone bg-paper" : "border border-stone bg-paper-3/60",
+                    ].join(" ")}
+                  >
                     <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{m.sender === "learner" ? "You" : personaName}</p>
-                    <div className="prose-reading text-sm" dangerouslySetInnerHTML={{ __html: m.html }} />
+                    <RenderedHtml html={m.html} className="text-sm" />
                     {m.sender === "persona" ? (
                       <div className="mt-1 flex flex-wrap gap-1">
                         {m.labels.map((l) => (
@@ -275,7 +325,9 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
             <ul className="mt-2 flex flex-col gap-3">
               {pageAnnotations.map((a) => (
                 <li key={a.id} className="text-sm">
-                  {a.selectedText ? <blockquote className="border-l-2 border-stone-2 pl-2 text-xs text-ink-3">{a.selectedText.slice(0, 240)}</blockquote> : null}
+                  {a.selectedText ? (
+                    <blockquote className="border-l-2 border-stone-2 pl-2 text-xs text-ink-3">{a.selectedText.slice(0, 240)}</blockquote>
+                  ) : null}
                   <Markdown source={a.noteMarkdown} className="text-sm" />
                   <form action={deleteAnnotationAction} className="mt-1">
                     <input type="hidden" name="id" value={a.id} />
@@ -294,7 +346,10 @@ export default async function ReadPage({ params, searchParams }: { params: Promi
                   {needsRepair.map((a) => (
                     <li key={a.id}>
                       {a.locator.kind === "pdf" ? (
-                        <Link href={href(Math.min(asset.pageCount! - 1, a.locator.physicalPageIndex))} className="text-brass underline underline-offset-4">
+                        <Link
+                          href={href(Math.min(asset.pageCount! - 1, a.locator.physicalPageIndex))}
+                          className="text-brass underline underline-offset-4"
+                        >
                           originally PDF page {a.locator.physicalPageIndex + 1}
                         </Link>
                       ) : null}{" "}

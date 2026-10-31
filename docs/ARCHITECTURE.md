@@ -38,10 +38,15 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 ## Domain operations (service names)
 
 `bootstrapOwner`, `saveOnboardingStep`, `proposeProgramme`, `confirmPlan`, `enrol`, `withdraw`,
-`pauseCourse`, `prepareUnit`, `startSession`, `recordTurn`, `submitAttempt`, `reviewAttempt`,
-`publishFeedback`, `requestResource`, `registerAsset`, `confirmAssetMetadata`,
-`setProcessingPermission`, `ingestAsset`, `proposeReschedule`, `applyReschedule`,
-`exportRecords`, `recordEvidence`. UI and model tools both call these; models never write.
+`pauseCourse`, `startSession`, `recordTurn`, `submitAttempt`, `reviewAttempt`, `publishFeedback`,
+`revealReference`, `recordEvidence`, `recordLabInterpretation`, `createNotebookEntry`,
+`scheduleRevision`, `reviewRevisionItem`, `requestResource`, `registerAsset`, `receiveUpload`,
+`confirmAssetMetadata`, `setProcessingPermission`, `requestIngestion`, `ingestAsset`,
+`importOpenResource`, `createAnnotation`, `proposeReschedule`, `applyReschedule`,
+`requestExport`, `buildRecordsBundle`, `openDiscussion`, `recordDiscussionTurn`,
+`setPeerMembership`, `updateProfileSettings`, `saveProviderSetting`, `saveBudgetLimits`,
+`deletePersonaMemory`. UI and model tools both call these; models never write. (`prepareUnit`
+is reserved for the content pipeline; units are currently prepared in `content/` and validated.)
 
 ## Data model (areas → tables)
 

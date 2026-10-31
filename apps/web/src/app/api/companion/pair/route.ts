@@ -1,6 +1,6 @@
+import { LibraryError, redeemPairingCode } from "@corniversity/db/services/library";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { LibraryError, redeemPairingCode } from "@corniversity/db/services/library";
 import { clientKey, withinRateLimit } from "@/lib/companion-auth";
 import { db } from "@/lib/db";
 

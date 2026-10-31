@@ -1,0 +1,33 @@
+# Web service (Next.js standalone). Built from the monorepo root:
+#   docker build -f Dockerfile.web -t corniversity-web .
+# Runtime configuration comes from environment variables (see .env.example); the placeholder
+# values below exist only so the build can parse its configuration and are never used to run.
+FROM node:22-alpine AS builder
+RUN corepack enable && corepack prepare pnpm@12.16.1 --activate
+WORKDIR /app
+COPY . .
+RUN pnpm install --frozen-lockfile --ignore-scripts
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    DEPLOYMENT_MODE=local \
+    DATABASE_URL=postgres://build:build@localhost:5432/build \
+    BETTER_AUTH_URL=http://localhost:3000 \
+    BETTER_AUTH_SECRET=build-time-placeholder-secret-not-used-at-runtime \
+    OWNER_EMAIL=build@example.com \
+    OWNER_BOOTSTRAP_CODE=build-time-placeholder \
+    CORNIVERSITY_DATA_ROOT=/tmp/corniversity-build
+RUN pnpm --filter @corniversity/web build
+
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+RUN addgroup -S corniversity && adduser -S corniversity -G corniversity
+COPY --from=builder --chown=corniversity:corniversity /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=corniversity:corniversity /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=corniversity:corniversity /app/apps/web/public ./apps/web/public
+USER corniversity
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD wget -qO- http://127.0.0.1:3000/api/health || exit 1
+CMD ["node", "apps/web/server.js"]

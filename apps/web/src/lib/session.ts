@@ -19,9 +19,7 @@ export async function getOptionalSession(): Promise<Session | null> {
 }
 
 /** Route handlers: 401 JSON instead of a redirect. */
-export async function requireApiSession(
-  request: Request,
-): Promise<{ session: Session } | { response: NextResponse }> {
+export async function requireApiSession(request: Request): Promise<{ session: Session } | { response: NextResponse }> {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) {
     return {

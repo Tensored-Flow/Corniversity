@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
+import Link from "next/link";
 import { ReadinessBadge } from "@/components/Readiness";
 import { Badge } from "@/components/ui";
 import { db } from "@/lib/db";
@@ -16,10 +16,7 @@ export default async function CataloguePage({
 }) {
   await requireSession("/catalogue");
   const params = await searchParams;
-  const [departments, entries] = await Promise.all([
-    listDepartments(db()),
-    listCatalogue(db(), { departmentId: params.department }),
-  ]);
+  const [departments, entries] = await Promise.all([listDepartments(db()), listCatalogue(db(), { departmentId: params.department })]);
   const filtered = entries.filter((e) => {
     if (params.readiness && e.version.readiness !== params.readiness) return false;
     if (params.launch === "1" && !e.course.launch) return false;
@@ -28,8 +25,7 @@ export default async function CataloguePage({
   });
   const sorted = [...filtered].sort(
     (a, b) =>
-      READINESS_ORDER.indexOf(a.version.readiness) - READINESS_ORDER.indexOf(b.version.readiness) ||
-      a.course.id.localeCompare(b.course.id),
+      READINESS_ORDER.indexOf(a.version.readiness) - READINESS_ORDER.indexOf(b.version.readiness) || a.course.id.localeCompare(b.course.id),
   );
   const counts = entries.reduce<Record<string, number>>((acc, e) => {
     acc[e.version.readiness] = (acc[e.version.readiness] ?? 0) + 1;
@@ -42,16 +38,20 @@ export default async function CataloguePage({
         <p className="text-sm uppercase tracking-[0.18em] text-brass">Catalogue</p>
         <h1 className="mt-1 text-3xl text-ink">Courses</h1>
         <p className="mt-2 max-w-prose text-sm text-ink-2">
-          Every course shows the readiness it has actually earned. {counts.teaching_ready ?? 0} of {entries.length} have prepared
-          teaching units; the rest are source-verified, syllabus-ready or still proposals. You can register interest in any of them,
-          and audit anything that is prepared.
+          Every course shows the readiness it has actually earned. {counts.teaching_ready ?? 0} of {entries.length} have prepared teaching
+          units; the rest are source-verified, syllabus-ready or still proposals. You can register interest in any of them, and audit
+          anything that is prepared.
         </p>
       </header>
 
       <form className="mb-6 flex flex-wrap items-end gap-3 text-sm" method="get">
         <label className="flex flex-col gap-1">
           <span className="text-xs text-ink-3">Department</span>
-          <select name="department" defaultValue={params.department ?? ""} className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5">
+          <select
+            name="department"
+            defaultValue={params.department ?? ""}
+            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
+          >
             <option value="">All departments</option>
             {departments.map((d) => (
               <option key={d.id} value={d.id}>
@@ -62,7 +62,11 @@ export default async function CataloguePage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs text-ink-3">Readiness</span>
-          <select name="readiness" defaultValue={params.readiness ?? ""} className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5">
+          <select
+            name="readiness"
+            defaultValue={params.readiness ?? ""}
+            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
+          >
             <option value="">Any</option>
             <option value="teaching_ready">Teaching ready</option>
             <option value="syllabus_ready">Syllabus ready</option>
@@ -73,7 +77,11 @@ export default async function CataloguePage({
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-xs text-ink-3">Level</span>
-          <select name="level" defaultValue={params.level ?? ""} className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5">
+          <select
+            name="level"
+            defaultValue={params.level ?? ""}
+            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
+          >
             <option value="">Any</option>
             <option value="bridge">Bridge</option>
             <option value="foundation">Foundation</option>

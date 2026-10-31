@@ -1,16 +1,12 @@
+import { isBootstrapComplete } from "@corniversity/db/services/bootstrap";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { getOptionalSession, safeNextPath } from "@/lib/session";
-import { isBootstrapComplete } from "@corniversity/db/services/bootstrap";
 import { SignInForm } from "./SignInForm";
 
 export const metadata = { title: "Sign in" };
 
-export default async function SignInPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ next?: string }>;
-}) {
+export default async function SignInPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
   const session = await getOptionalSession();
   const { next } = await searchParams;
   const target = safeNextPath(next);

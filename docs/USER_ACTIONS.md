@@ -5,11 +5,13 @@ Nothing here is required to run Corniversity on your own computer.
 
 1. Deploy to Railway (needed for the private website to exist outside your PC).
    Why: the Railway command-line tool on this machine is not signed in and no token is available.
-   Step: open PowerShell in the project folder and run `railway login`, then run
-   `pnpm deploy:railway`. The script creates a dedicated project with the pgvector PostgreSQL
-   template, a web service and a worker service, sets the secrets it generates locally, runs the
-   database migrations and prints the private URL. The expected monthly cost is recorded in
-   docs/QA_REPORT.md.
+   Step: open PowerShell in the project folder and run `railway login`, then
+   `pwsh -File infra/deploy-railway.ps1 -DryRun` to see the plan, then `pnpm deploy:railway`.
+   The script creates a dedicated project with PostgreSQL, a web service and a worker service,
+   generates and sets the secrets, deploys both services from their Dockerfiles (the worker applies
+   the migrations on start) and prints the private URL and the one-time bootstrap code. The
+   Dockerfiles could not be built on this machine (no Docker), so the first deploy may need a
+   small fix; the expected monthly cost is recorded in docs/QA_REPORT.md.
 
 2. Enable live AI teaching (optional; the site works without it in reading and notes mode).
    Why: no model-provider key is configured, so tutors currently run on deterministic fixtures.

@@ -21,7 +21,14 @@ export type AssessmentRunRow = typeof assessmentRun.$inferSelect;
 
 export class LearningError extends Error {
   constructor(
-    readonly code: "not_enrolled" | "unit_not_ready" | "activity_not_found" | "attempt_not_found" | "not_practice_mode" | "no_reference" | "attempt_closed",
+    readonly code:
+      | "not_enrolled"
+      | "unit_not_ready"
+      | "activity_not_found"
+      | "attempt_not_found"
+      | "not_practice_mode"
+      | "no_reference"
+      | "attempt_closed",
     message: string,
   ) {
     super(message);
@@ -46,7 +53,11 @@ export async function startOrResumeSession(
   // Enrolments record the course version they were made under; the learner always studies the
   // current version of the same course, and earlier work is kept. Resolve by course, not version.
   const { courseVersion } = await import("../schema/index");
-  const [currentVersion] = await db.select({ courseId: courseVersion.courseId }).from(courseVersion).where(eq(courseVersion.id, unit.courseVersionId)).limit(1);
+  const [currentVersion] = await db
+    .select({ courseId: courseVersion.courseId })
+    .from(courseVersion)
+    .where(eq(courseVersion.id, unit.courseVersionId))
+    .limit(1);
   if (!currentVersion) throw new LearningError("activity_not_found", "Course version not found.");
   const [enrolled] = await db
     .select({ enrolment })
@@ -149,7 +160,11 @@ export async function getOrCreateAttempt(
 }
 
 export async function getAttempt(db: DbOrTx, ownerId: string, attemptId: string): Promise<AttemptRow | null> {
-  const rows = await db.select().from(attempt).where(and(eq(attempt.id, attemptId), eq(attempt.ownerId, ownerId))).limit(1);
+  const rows = await db
+    .select()
+    .from(attempt)
+    .where(and(eq(attempt.id, attemptId), eq(attempt.ownerId, ownerId)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -162,7 +177,11 @@ export async function saveDraft(db: DbOrTx, ownerId: string, attemptId: string, 
 }
 
 /** The hint ladder is learner-facing content; revealing a step is recorded, never penalised. */
-export async function requestHint(db: DbOrTx, ownerId: string, attemptId: string): Promise<{ hint: string | null; index: number; total: number }> {
+export async function requestHint(
+  db: DbOrTx,
+  ownerId: string,
+  attemptId: string,
+): Promise<{ hint: string | null; index: number; total: number }> {
   const a = await getAttempt(db, ownerId, attemptId);
   if (!a) throw new LearningError("attempt_not_found", "Attempt not found.");
   const [exercise] = await db.select().from(unitExercise).where(eq(unitExercise.id, a.exerciseId)).limit(1);
@@ -170,7 +189,10 @@ export async function requestHint(db: DbOrTx, ownerId: string, attemptId: string
   const total = exercise.hintLadder.length;
   if (a.hintsUsed >= total) return { hint: null, index: a.hintsUsed, total };
   const hint = exercise.hintLadder[a.hintsUsed] ?? null;
-  await db.update(attempt).set({ hintsUsed: a.hintsUsed + 1 }).where(eq(attempt.id, attemptId));
+  await db
+    .update(attempt)
+    .set({ hintsUsed: a.hintsUsed + 1 })
+    .where(eq(attempt.id, attemptId));
   return { hint, index: a.hintsUsed + 1, total };
 }
 
@@ -226,7 +248,10 @@ export async function submitAttempt(
     .returning();
   if (!run) throw new Error("assessment run insert returned nothing");
 
-  await db.update(attempt).set({ state: version === 1 ? "submitted" : "revised" }).where(eq(attempt.id, a.id));
+  await db
+    .update(attempt)
+    .set({ state: version === 1 ? "submitted" : "revised" })
+    .where(eq(attempt.id, a.id));
   await db.update(attempt).set({ state: "reviewing" }).where(eq(attempt.id, a.id));
 
   const payload = AssessSubmissionPayload.parse({
@@ -270,13 +295,34 @@ export async function getAttemptHistory(db: DbOrTx, ownerId: string, exerciseId:
   const versions = await db
     .select()
     .from(submissionVersion)
-    .where(inArray(submissionVersion.attemptId, attempts.map((a) => a.id)))
+    .where(
+      inArray(
+        submissionVersion.attemptId,
+        attempts.map((a) => a.id),
+      ),
+    )
     .orderBy(asc(submissionVersion.version));
   const runs = versions.length
-    ? await db.select().from(assessmentRun).where(inArray(assessmentRun.submissionVersionId, versions.map((v) => v.id)))
+    ? await db
+        .select()
+        .from(assessmentRun)
+        .where(
+          inArray(
+            assessmentRun.submissionVersionId,
+            versions.map((v) => v.id),
+          ),
+        )
     : [];
   const reviews = runs.length
-    ? await db.select().from(feedbackReview).where(inArray(feedbackReview.assessmentRunId, runs.map((r) => r.id)))
+    ? await db
+        .select()
+        .from(feedbackReview)
+        .where(
+          inArray(
+            feedbackReview.assessmentRunId,
+            runs.map((r) => r.id),
+          ),
+        )
     : [];
   return attempts.map((a) => ({
     attempt: a,
@@ -307,7 +353,13 @@ export async function revealReference(db: DbOrTx, ownerId: string, attemptId: st
   const [artifact] = await db
     .select()
     .from(instructorArtifact)
-    .where(and(eq(instructorArtifact.exerciseId, a.exerciseId), eq(instructorArtifact.kind, "reference_solution"), eq(instructorArtifact.releasePolicy, "on_request_practice")))
+    .where(
+      and(
+        eq(instructorArtifact.exerciseId, a.exerciseId),
+        eq(instructorArtifact.kind, "reference_solution"),
+        eq(instructorArtifact.releasePolicy, "on_request_practice"),
+      ),
+    )
     .limit(1);
   if (!artifact) throw new LearningError("no_reference", "No reference reasoning is available for this exercise.");
   const [exercise] = await db.select().from(unitExercise).where(eq(unitExercise.id, a.exerciseId)).limit(1);

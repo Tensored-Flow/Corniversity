@@ -1,15 +1,13 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
 import {
-  PRICING_VERSION,
-  ProviderError,
-  ROLE_CONTRACTS,
-  TUTOR_PROMPT_VERSION,
   buildTutorSystemPrompt,
   createProvider,
   decideBudget,
   estimateCostUsd,
   estimateRunCostUsd,
+  PRICING_VERSION,
+  ProviderError,
+  ROLE_CONTRACTS,
+  TUTOR_PROMPT_VERSION,
 } from "@corniversity/ai";
 import { getEnv } from "@corniversity/db/env";
 import { providerRun } from "@corniversity/db/schema/index";
@@ -25,6 +23,8 @@ import {
   getOrCreateConversation,
   listMessages,
 } from "@corniversity/db/services/tutoring";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
 
@@ -60,7 +60,7 @@ export async function POST(request: Request): Promise<Response> {
   const courseDetail = await getCourseDetail(database, unitDetail.course.id);
   const tutor = courseDetail?.tutor ?? null;
   const profile = await ensureProfile(database, ownerId);
-  const exercise = exerciseId ? unitDetail.exercises.find((e) => e.id === exerciseId) ?? null : null;
+  const exercise = exerciseId ? (unitDetail.exercises.find((e) => e.id === exerciseId) ?? null) : null;
   const history = exercise ? await getAttemptHistory(database, ownerId, exercise.id) : [];
   const latestAttempt = history.at(-1)?.attempt ?? null;
   const latestVersion = history.at(-1)?.versions.at(-1) ?? null;
@@ -93,16 +93,28 @@ export async function POST(request: Request): Promise<Response> {
     assistanceMode: latestAttempt?.mode ?? "practice",
     learnerStyle: profile.learningStyles[unitDetail.course.primaryDepartmentId],
     evidencePrompt: evidence.prompt,
-    relevantAttempts: latestVersion ? [`Submission v${latestVersion.version} (${latestAttempt?.state}): ${latestVersion.contentMarkdown.slice(0, 1500)}`] : latestAttempt?.draftMarkdown ? [`Current draft: ${latestAttempt.draftMarkdown.slice(0, 1500)}`] : [],
+    relevantAttempts: latestVersion
+      ? [`Submission v${latestVersion.version} (${latestAttempt?.state}): ${latestVersion.contentMarkdown.slice(0, 1500)}`]
+      : latestAttempt?.draftMarkdown
+        ? [`Current draft: ${latestAttempt.draftMarkdown.slice(0, 1500)}`]
+        : [],
     approvedSummaries: [],
   });
   const chat = [
-    ...priorMessages.map((m) => ({ role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant", content: m.contentMarkdown })),
+    ...priorMessages.map((m) => ({
+      role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant",
+      content: m.contentMarkdown,
+    })),
     { role: "user" as const, content: message },
   ];
 
   const config = await resolveProviderConfig(database, ownerId, env);
-  const { provider, live } = createProvider({ provider: config.provider, anthropicApiKey: config.anthropicApiKey, defaultModel: config.defaultModel, modelMap: config.modelMap });
+  const { provider, live } = createProvider({
+    provider: config.provider,
+    anthropicApiKey: config.anthropicApiKey,
+    defaultModel: config.defaultModel,
+    modelMap: config.modelMap,
+  });
   const model = config.modelMap.tutor ?? config.defaultModel;
   const contract = ROLE_CONTRACTS.tutor;
 
@@ -113,8 +125,16 @@ export async function POST(request: Request): Promise<Response> {
     const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
     if (!decision.allowed) {
       await database.insert(providerRun).values({
-        ownerId, role: "tutor", provider: provider.name, model, purpose: "tutor-turn", pricingVersion: PRICING_VERSION,
-        promptVersion: `${TUTOR_PROMPT_VERSION};role:${contract.version}`, status: "budget_blocked", error: decision.reason, finishedAt: new Date(),
+        ownerId,
+        role: "tutor",
+        provider: provider.name,
+        model,
+        purpose: "tutor-turn",
+        pricingVersion: PRICING_VERSION,
+        promptVersion: `${TUTOR_PROMPT_VERSION};role:${contract.version}`,
+        status: "budget_blocked",
+        error: decision.reason,
+        finishedAt: new Date(),
       });
       return NextResponse.json({ error: decision.reason }, { status: 402 });
     }
@@ -142,7 +162,15 @@ export async function POST(request: Request): Promise<Response> {
       let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
       let usedModel = live ? model : "fixture";
       try {
-        const generator = provider.streamText({ role: "tutor", purpose: "tutor-turn", system, messages: chat, model, maxTokens: contract.limits.maxOutputTokens, scenario });
+        const generator = provider.streamText({
+          role: "tutor",
+          purpose: "tutor-turn",
+          system,
+          messages: chat,
+          model,
+          maxTokens: contract.limits.maxOutputTokens,
+          scenario,
+        });
         let next = await generator.next();
         while (!next.done) {
           raw += next.value;
@@ -186,12 +214,23 @@ export async function POST(request: Request): Promise<Response> {
         })
         .returning({ id: providerRun.id });
       if (raw.trim().length > 0) {
-        await appendPersonaMessage(database, { conversationId: conversation.id, personaId: tutor?.id ?? null, rawText: raw, allowed: evidence.refs, providerRunId: run?.id });
+        await appendPersonaMessage(database, {
+          conversationId: conversation.id,
+          personaId: tutor?.id ?? null,
+          rawText: raw,
+          allowed: evidence.refs,
+          providerRunId: run?.id,
+        });
       }
       controller.close();
     },
   });
   return new Response(stream, {
-    headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store", "x-accel-buffering": "no", "x-provider": provider.name },
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+      "x-accel-buffering": "no",
+      "x-provider": provider.name,
+    },
   });
 }

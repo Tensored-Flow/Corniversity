@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { DateTime } from "luxon";
 import { listJobs } from "@corniversity/db/services/jobs-admin";
 import { companionState, listPairings } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { DateTime } from "luxon";
+import Link from "next/link";
 import { Badge, Button, Card } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -12,7 +12,13 @@ import { FlashNotices, LibraryHeader } from "../shared";
 
 export const metadata = { title: "Jobs" };
 
-const TONE: Record<string, "neutral" | "brass" | "moss" | "rust"> = { queued: "brass", active: "brass", completed: "moss", failed: "rust", cancelled: "neutral" };
+const TONE: Record<string, "neutral" | "brass" | "moss" | "rust"> = {
+  queued: "brass",
+  active: "brass",
+  completed: "moss",
+  failed: "rust",
+  cancelled: "neutral",
+};
 
 /**
  * Background jobs: ingestion, assessment, exports and maintenance, each with its idempotency
@@ -23,7 +29,11 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   const session = await requireSession("/library/jobs");
   const { error } = await searchParams;
   const database = db();
-  const [jobs, pairings, profile] = await Promise.all([listJobs(database, session.user.id, 80), listPairings(database, session.user.id), ensureProfile(database, session.user.id)]);
+  const [jobs, pairings, profile] = await Promise.all([
+    listJobs(database, session.user.id, 80),
+    listPairings(database, session.user.id),
+    ensureProfile(database, session.user.id),
+  ]);
   const zone = profile.timezone;
   const when = (d: Date | null) => (d ? DateTime.fromJSDate(d).setZone(zone).toFormat("d LLL HH:mm:ss") : "—");
   const live = jobs.some((j) => j.status === "queued" || j.status === "active");
@@ -31,7 +41,12 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   return (
     <div className="mx-auto w-full max-w-6xl">
       <AutoRefresh active={live} intervalMs={4000} />
-      <LibraryHeader title="Background jobs" lede="Every job carries an idempotency key, so a duplicate delivery or a retry can never grade twice or index twice." active="/library/jobs" sync={companionState(pairings)} />
+      <LibraryHeader
+        title="Background jobs"
+        lede="Every job carries an idempotency key, so a duplicate delivery or a retry can never grade twice or index twice."
+        active="/library/jobs"
+        sync={companionState(pairings)}
+      />
       <FlashNotices error={error} />
       {jobs.length === 0 ? (
         <Card>

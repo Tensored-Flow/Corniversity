@@ -1,6 +1,6 @@
 "use client";
-import { useActionState } from "react";
 import { TIMEZONE_SUGGESTIONS } from "@corniversity/core/onboarding/steps";
+import { useActionState } from "react";
 import { Button, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import type { StepState } from "./actions";
 
@@ -102,7 +102,11 @@ export function StepOneForm({
             <option value="1.5">Largest (1.5)</option>
           </Select>
         </Field>
-        <Field label="Anything else we should know?" htmlFor="accessibilityNotes" hint="Optional. Read by the system when preparing materials, not by any person.">
+        <Field
+          label="Anything else we should know?"
+          htmlFor="accessibilityNotes"
+          hint="Optional. Read by the system when preparing materials, not by any person."
+        >
           <Textarea id="accessibilityNotes" name="accessibilityNotes" defaultValue={initial.accessibilityNotes} rows={3} />
         </Field>
       </fieldset>

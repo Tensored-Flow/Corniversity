@@ -1,16 +1,16 @@
 import { createHash, randomBytes } from "node:crypto";
-import { and, asc, desc, eq, inArray, isNull } from "drizzle-orm";
 import {
-  type PlanActivity,
-  type PlanCourse,
-  type ScheduleResult,
-  type ScheduledSessionPlan,
-  type SchedulerInput,
-  type Weekday,
   diffPlans,
   missedSessions,
+  type PlanActivity,
+  type PlanCourse,
+  type ScheduledSessionPlan,
+  type ScheduleResult,
+  type SchedulerInput,
   schedule,
+  type Weekday,
 } from "@corniversity/core/scheduling/index";
+import { and, asc, desc, eq, inArray, isNull } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import {
   auditEvent,
@@ -107,7 +107,12 @@ export async function buildSchedulerInput(
 
   const input: SchedulerInput = {
     timezone: termRow.timezone,
-    term: { startDate: termRow.startDate, teachingWeeks: termRow.teachingWeeks, readingWeek: termRow.readingWeek, synthesisWeek: termRow.synthesisWeek },
+    term: {
+      startDate: termRow.startDate,
+      teachingWeeks: termRow.teachingWeeks,
+      readingWeek: termRow.readingWeek,
+      synthesisWeek: termRow.synthesisWeek,
+    },
     availability: availability.map((w) => ({ weekday: w.weekday as Weekday, startMinute: w.startMinute, endMinute: w.endMinute })),
     commitments: commitments.map((c) => ({
       id: c.id,
@@ -186,13 +191,21 @@ export async function proposePlan(
   const existing = current ? await listSessions(db, ownerId, current.id) : [];
   const now = options.notBefore ?? new Date().toISOString();
   const pinned = options.keepExisting
-    ? existing.filter((s) => s.status === "planned" && s.startsAt.toISOString() >= now).map((s) => ({ uid: s.uid, startsAt: s.startsAt.toISOString(), endsAt: s.endsAt.toISOString() }))
+    ? existing
+        .filter((s) => s.status === "planned" && s.startsAt.toISOString() >= now)
+        .map((s) => ({ uid: s.uid, startsAt: s.startsAt.toISOString(), endsAt: s.endsAt.toISOString() }))
     : undefined;
-  const { input, unpreparedUnits } = await buildSchedulerInput(db, ownerId, termRow, { weeklyCapMinutes: options.weeklyCapMinutes, notBefore: options.notBefore, pinned });
+  const { input, unpreparedUnits } = await buildSchedulerInput(db, ownerId, termRow, {
+    weeklyCapMinutes: options.weeklyCapMinutes,
+    notBefore: options.notBefore,
+    pinned,
+  });
 
   // Completed sessions are history: their activities are removed from the plan input and their
   // rows are copied into the new version unchanged.
-  const completedKeys = new Set(existing.filter((s) => s.status === "completed" || s.status === "attempted").map((s) => `${s.unitId}:${s.activityId}`));
+  const completedKeys = new Set(
+    existing.filter((s) => s.status === "completed" || s.status === "attempted").map((s) => `${s.unitId}:${s.activityId}`),
+  );
   for (const course of input.courses) {
     course.activities = course.activities.filter((a) => !completedKeys.has(a.key));
     for (const a of course.activities) a.dependsOn = a.dependsOn.filter((d) => !completedKeys.has(d));
@@ -240,15 +253,30 @@ export async function proposePlan(
 
 /** Confirms a proposed plan and supersedes the previous confirmed one. */
 export async function confirmPlan(db: DbOrTx, ownerId: string, planId: string): Promise<PlanVersionRow> {
-  const [plan] = await db.select().from(planVersion).where(and(eq(planVersion.id, planId), eq(planVersion.ownerId, ownerId))).limit(1);
+  const [plan] = await db
+    .select()
+    .from(planVersion)
+    .where(and(eq(planVersion.id, planId), eq(planVersion.ownerId, ownerId)))
+    .limit(1);
   if (!plan) throw new Error("plan not found");
   await db
     .update(planVersion)
     .set({ status: "superseded" })
     .where(and(eq(planVersion.termId, plan.termId), eq(planVersion.status, "confirmed")));
-  const [confirmed] = await db.update(planVersion).set({ status: "confirmed", confirmedAt: new Date() }).where(eq(planVersion.id, planId)).returning();
+  const [confirmed] = await db
+    .update(planVersion)
+    .set({ status: "confirmed", confirmedAt: new Date() })
+    .where(eq(planVersion.id, planId))
+    .returning();
   await db.update(term).set({ status: "active" }).where(eq(term.id, plan.termId));
-  await db.insert(auditEvent).values({ ownerId, actor: "learner", action: "plan:confirm", entity: "plan_version", entityId: planId, details: { version: plan.version } });
+  await db.insert(auditEvent).values({
+    ownerId,
+    actor: "learner",
+    action: "plan:confirm",
+    entity: "plan_version",
+    entityId: planId,
+    details: { version: plan.version },
+  });
   return confirmed!;
 }
 
@@ -257,7 +285,13 @@ export async function discardProposedPlans(db: DbOrTx, ownerId: string, termId: 
     .select({ id: planVersion.id })
     .from(planVersion)
     .where(and(eq(planVersion.ownerId, ownerId), eq(planVersion.termId, termId), eq(planVersion.status, "proposed")));
-  if (proposed.length) await db.delete(planVersion).where(inArray(planVersion.id, proposed.map((p) => p.id)));
+  if (proposed.length)
+    await db.delete(planVersion).where(
+      inArray(
+        planVersion.id,
+        proposed.map((p) => p.id),
+      ),
+    );
 }
 
 export async function setSessionStatus(
@@ -276,7 +310,10 @@ export async function setSessionStatus(
 }
 
 export async function setSessionLock(db: DbOrTx, ownerId: string, sessionId: string, locked: boolean): Promise<void> {
-  await db.update(scheduledSession).set({ locked }).where(and(eq(scheduledSession.id, sessionId), eq(scheduledSession.ownerId, ownerId)));
+  await db
+    .update(scheduledSession)
+    .set({ locked })
+    .where(and(eq(scheduledSession.id, sessionId), eq(scheduledSession.ownerId, ownerId)));
 }
 
 /**
@@ -289,7 +326,11 @@ export async function moveSession(
   sessionId: string,
   newStartIso: string,
 ): Promise<{ ok: true; session: ScheduledSessionRow } | { ok: false; reason: string }> {
-  const [s] = await db.select().from(scheduledSession).where(and(eq(scheduledSession.id, sessionId), eq(scheduledSession.ownerId, ownerId))).limit(1);
+  const [s] = await db
+    .select()
+    .from(scheduledSession)
+    .where(and(eq(scheduledSession.id, sessionId), eq(scheduledSession.ownerId, ownerId)))
+    .limit(1);
   if (!s) return { ok: false, reason: "Session not found." };
   if (s.status !== "planned") return { ok: false, reason: "Only planned sessions can be moved." };
   const [plan] = await db.select().from(planVersion).where(eq(planVersion.id, s.planVersionId)).limit(1);
@@ -316,7 +357,14 @@ export async function moveSession(
     .set({ startsAt: start.toJSDate(), endsAt: end.toJSDate() })
     .where(eq(scheduledSession.id, s.id))
     .returning();
-  await db.insert(auditEvent).values({ ownerId, actor: "learner", action: "session:move", entity: "scheduled_session", entityId: s.id, details: { from: s.startsAt.toISOString(), to: start.toUTC().toISO() } });
+  await db.insert(auditEvent).values({
+    ownerId,
+    actor: "learner",
+    action: "session:move",
+    entity: "scheduled_session",
+    entityId: s.id,
+    details: { from: s.startsAt.toISOString(), to: start.toUTC().toISO() },
+  });
   return { ok: true, session: moved! };
 }
 
@@ -330,11 +378,29 @@ export async function proposeCatchUp(db: DbOrTx, ownerId: string, now = new Date
   const current = await getCurrentPlan(db, ownerId, termRow.id);
   if (!current) return null;
   const existing = await listSessions(db, ownerId, current.id);
-  const missed = missedSessions(existing.map((s) => ({ ...s, endsAt: s.endsAt.toISOString() })), now);
+  const missed = missedSessions(
+    existing.map((s) => ({ ...s, endsAt: s.endsAt.toISOString() })),
+    now,
+  );
   const proposed = await proposePlan(db, ownerId, termRow, { notBefore: now, keepExisting: true });
   const previous: ScheduledSessionPlan[] = existing
     .filter((s) => s.status === "planned")
-    .map((s) => ({ uid: s.uid, key: `${s.unitId}:${s.activityId}`, enrolmentId: s.enrolmentId, courseId: "", unitId: s.unitId ?? "", activityId: s.activityId, title: s.title, sessionKind: s.sessionKind as ScheduledSessionPlan["sessionKind"], startsAt: s.startsAt.toISOString(), endsAt: s.endsAt.toISOString(), weekIndex: 0, part: 1, parts: 1, minutes: 0 }));
+    .map((s) => ({
+      uid: s.uid,
+      key: `${s.unitId}:${s.activityId}`,
+      enrolmentId: s.enrolmentId,
+      courseId: "",
+      unitId: s.unitId ?? "",
+      activityId: s.activityId,
+      title: s.title,
+      sessionKind: s.sessionKind as ScheduledSessionPlan["sessionKind"],
+      startsAt: s.startsAt.toISOString(),
+      endsAt: s.endsAt.toISOString(),
+      weekIndex: 0,
+      part: 1,
+      parts: 1,
+      minutes: 0,
+    }));
   const diff = diffPlans(previous, proposed.result.sessions);
   const [proposal] = await db
     .insert(changeProposal)
@@ -344,15 +410,26 @@ export async function proposeCatchUp(db: DbOrTx, ownerId: string, now = new Date
       proposedBy: "system",
       title: `Catch-up plan: ${missed.length} missed session(s) rescheduled`,
       rationale: `${missed.length} planned session(s) passed without being marked attempted or completed. The plan below moves ${diff.moved.length} session(s), adds ${diff.added.length} and leaves ${diff.unchanged} unchanged. Nothing changes until you confirm.`,
-      diff: { planVersionId: proposed.plan.id, moved: diff.moved.length, added: diff.added.length, removed: diff.removed.length, unchanged: diff.unchanged, unplaced: proposed.result.unplaced.length },
+      diff: {
+        planVersionId: proposed.plan.id,
+        moved: diff.moved.length,
+        added: diff.added.length,
+        removed: diff.removed.length,
+        unchanged: diff.unchanged,
+        unplaced: proposed.result.unplaced.length,
+      },
     })
     .returning();
   return { proposal: proposal!, plan: proposed.plan, diff, result: proposed.result, missed };
 }
 
 export async function decideProposal(db: DbOrTx, ownerId: string, proposalId: string, decision: "confirmed" | "rejected"): Promise<void> {
-  const [p] = await db.select().from(changeProposal).where(and(eq(changeProposal.id, proposalId), eq(changeProposal.ownerId, ownerId))).limit(1);
-  if (!p || p.status !== "draft") return;
+  const [p] = await db
+    .select()
+    .from(changeProposal)
+    .where(and(eq(changeProposal.id, proposalId), eq(changeProposal.ownerId, ownerId)))
+    .limit(1);
+  if (p?.status !== "draft") return;
   const diff = p.diff as { planVersionId?: string };
   if (decision === "confirmed" && diff.planVersionId) {
     await confirmPlan(db, ownerId, diff.planVersionId);
@@ -393,7 +470,10 @@ export async function resolveCalendarToken(db: DbOrTx, token: string) {
 }
 
 export async function revokeCalendarTokens(db: DbOrTx, ownerId: string): Promise<void> {
-  await db.update(calendarToken).set({ revokedAt: new Date() }).where(and(eq(calendarToken.ownerId, ownerId), isNull(calendarToken.revokedAt)));
+  await db
+    .update(calendarToken)
+    .set({ revokedAt: new Date() })
+    .where(and(eq(calendarToken.ownerId, ownerId), isNull(calendarToken.revokedAt)));
 }
 
 export async function listCalendarTokens(db: DbOrTx, ownerId: string) {

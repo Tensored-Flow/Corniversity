@@ -1,6 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { type Page, expect } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
+
+/** Where the setup project stores the owner's signed-in cookies for the other projects. */
+export const AUTH_STATE = "tests/e2e/.auth/owner.json";
 
 /**
  * The owner credentials used by the journeys. They come from the local environment file (never
@@ -23,9 +26,11 @@ export function ownerEnv(): { email: string; code: string; password: string } {
   };
 }
 
+/** Ensures the page is signed in: a no-op when the project's stored session is valid. */
 export async function signInOrBootstrap(page: Page): Promise<void> {
+  await page.goto("/campus");
+  if (!/\/sign-in/.test(page.url())) return;
   const owner = ownerEnv();
-  await page.goto("/sign-in");
   const joinLink = page.getByRole("link", { name: /create the owner account/i });
   if (await joinLink.isVisible().catch(() => false)) {
     await page.goto("/join");

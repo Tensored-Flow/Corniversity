@@ -4,8 +4,8 @@ import type {
   Commitment,
   PlanActivity,
   PlanDiff,
-  ScheduleResult,
   ScheduledSessionPlan,
+  ScheduleResult,
   SchedulerInput,
   UnplacedActivity,
   WeekSummary,
@@ -46,10 +46,6 @@ function buildWeeks(input: SchedulerInput): Week[] {
     index++;
   }
   return weeks;
-}
-
-function minuteOfDay(dt: DateTime): number {
-  return dt.hour * 60 + dt.minute;
 }
 
 /** Subtracts [bStart, bEnd) from a list of [start, end) minute intervals. */
@@ -97,7 +93,9 @@ function orderActivities(input: SchedulerInput): PlanActivity[] {
   const all: { a: PlanActivity; priority: number; order: number }[] = [];
   const courses = [...input.courses].sort((x, y) => x.priority - y.priority || x.courseId.localeCompare(y.courseId));
   courses.forEach((c, ci) => {
-    c.activities.forEach((a, ai) => all.push({ a, priority: ci, order: ai }));
+    c.activities.forEach((a, ai) => {
+      all.push({ a, priority: ci, order: ai });
+    });
   });
   all.sort(
     (x, y) =>
@@ -186,7 +184,12 @@ export function schedule(input: SchedulerInput): ScheduleResult {
       if (afterGap > earliest) earliest = afterGap;
     }
     if (blocked) {
-      unplaced.push({ key: activity.key, title: activity.title, minutes: activity.estimatedMinutes, reason: `waits for ${blocked}, which could not be scheduled` });
+      unplaced.push({
+        key: activity.key,
+        title: activity.title,
+        minutes: activity.estimatedMinutes,
+        reason: `waits for ${blocked}, which could not be scheduled`,
+      });
       continue;
     }
 
@@ -202,7 +205,10 @@ export function schedule(input: SchedulerInput): ScheduleResult {
         const ps = DateTime.fromISO(pin.startsAt, { zone });
         const pe = DateTime.fromISO(pin.endsAt, { zone });
         const weekIndex = weeks.find((w) => ps >= w.start && ps < w.start.plus({ weeks: 1 }))?.index;
-        const fitsCap = weekIndex !== undefined && (weekPlanned.get(weekIndex) ?? 0) + minutes <= input.weeklyCapMinutes && (dayPlanned.get(dayKey(ps)) ?? 0) + minutes <= dailyCap;
+        const fitsCap =
+          weekIndex !== undefined &&
+          (weekPlanned.get(weekIndex) ?? 0) + minutes <= input.weeklyCapMinutes &&
+          (dayPlanned.get(dayKey(ps)) ?? 0) + minutes <= dailyCap;
         const inFreeSlot = weekIndex !== undefined && (slotsByWeek.get(weekIndex) ?? []).some((s) => ps >= s.start && pe <= s.end);
         if (ps >= earliest && fitsCap && inFreeSlot && !overlaps(ps, pe) && pe.diff(ps, "minutes").minutes === minutes) {
           const session = toSession(activity, uid, ps, pe, weekIndex, p + 1, parts.length, minutes);
@@ -290,16 +296,31 @@ export function schedule(input: SchedulerInput): ScheduleResult {
 
   const explanations: string[] = [];
   const suggestions: string[] = [];
-  explanations.push(`${activities.length} activities, ${Math.round(requiredMinutes / 60)} hours of work, against about ${Math.round(availableMinutes / 60)} usable hours in ${weeks.length} weeks (availability capped at ${Math.round(input.weeklyCapMinutes / 60)} hours a week).`);
+  explanations.push(
+    `${activities.length} activities, ${Math.round(requiredMinutes / 60)} hours of work, against about ${Math.round(availableMinutes / 60)} usable hours in ${weeks.length} weeks (availability capped at ${Math.round(input.weeklyCapMinutes / 60)} hours a week).`,
+  );
   if (!feasible) {
-    explanations.push(`${unplaced.length} activities could not be placed; the shortfall is about ${Math.ceil(shortfallMinutes / 60)} hours.`);
+    explanations.push(
+      `${unplaced.length} activities could not be placed; the shortfall is about ${Math.ceil(shortfallMinutes / 60)} hours.`,
+    );
     const perWeek = shortfallMinutes / Math.max(1, weeks.length);
     suggestions.push(`Raise the weekly cap by about ${Math.ceil(perWeek / 60)} hour(s), or add availability on another day.`);
     suggestions.push("Switch one course to audit or reading-seminar mode (fewer assessed sessions).");
-    suggestions.push(`Extend the term by ${Math.ceil(shortfallMinutes / Math.max(60, availableMinutes / Math.max(1, weeks.length)))} week(s).`);
+    suggestions.push(
+      `Extend the term by ${Math.ceil(shortfallMinutes / Math.max(60, availableMinutes / Math.max(1, weeks.length)))} week(s).`,
+    );
     suggestions.push("Take one course fewer this term.");
   }
-  return { sessions: placed, unplaced, weekly, totals: { requiredMinutes, plannedMinutes, availableMinutes }, feasible, shortfallMinutes, explanations, suggestions };
+  return {
+    sessions: placed,
+    unplaced,
+    weekly,
+    totals: { requiredMinutes, plannedMinutes, availableMinutes },
+    feasible,
+    shortfallMinutes,
+    explanations,
+    suggestions,
+  };
 }
 
 function roundUp(dt: DateTime, minutes: number): DateTime {
@@ -308,7 +329,16 @@ function roundUp(dt: DateTime, minutes: number): DateTime {
   return m === 0 ? base : base.plus({ minutes: minutes - m });
 }
 
-function toSession(a: PlanActivity, uid: string, start: DateTime, end: DateTime, weekIndex: number, part: number, parts: number, minutes: number): ScheduledSessionPlan {
+function toSession(
+  a: PlanActivity,
+  uid: string,
+  start: DateTime,
+  end: DateTime,
+  weekIndex: number,
+  part: number,
+  parts: number,
+  minutes: number,
+): ScheduledSessionPlan {
   return {
     uid,
     key: a.key,
@@ -356,7 +386,8 @@ export function estimateWeeklyMinutes(availability: AvailabilityWindow[], commit
   let total = 0;
   for (let d = 1 as AvailabilityWindow["weekday"]; d <= 7; d = (d + 1) as AvailabilityWindow["weekday"]) {
     let intervals: [number, number][] = availability.filter((w) => w.weekday === d).map((w) => [w.startMinute, w.endMinute]);
-    for (const c of commitments.filter((c) => c.weekday === d)) intervals = subtract(intervals, c.startMinute - breakMinutes, c.endMinute + breakMinutes);
+    for (const c of commitments.filter((c) => c.weekday === d))
+      intervals = subtract(intervals, c.startMinute - breakMinutes, c.endMinute + breakMinutes);
     total += intervals.reduce((acc, [s, e]) => acc + Math.max(0, e - s), 0);
   }
   return total;

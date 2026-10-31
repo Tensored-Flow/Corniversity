@@ -107,7 +107,12 @@ export async function getCourseDetail(db: DbOrTx, courseId: string): Promise<Cou
     ? await db
         .select()
         .from(sourceVersion)
-        .where(inArray(sourceVersion.id, sources.map((s) => s.currentVersionId)))
+        .where(
+          inArray(
+            sourceVersion.id,
+            sources.map((s) => s.currentVersionId),
+          ),
+        )
     : [];
   const withVersion = (ids: string[]) =>
     ids
@@ -153,16 +158,17 @@ export async function getUnitDetail(db: DbOrTx, unitId: string): Promise<UnitDet
   if (!version) return null;
   const [c] = await db.select().from(course).where(eq(course.id, version.courseId)).limit(1);
   if (!c) return null;
-  const exercises = await db
-    .select()
-    .from(unitExercise)
-    .where(eq(unitExercise.unitId, unitId))
-    .orderBy(asc(unitExercise.sequence));
+  const exercises = await db.select().from(unitExercise).where(eq(unitExercise.unitId, unitId)).orderBy(asc(unitExercise.sequence));
   const locatorIds = new Set<string>();
   for (const p of unit.preparation) locatorIds.add(p.locatorId);
   for (const a of unit.activities) for (const l of a.sourceLocatorIds) locatorIds.add(l);
   for (const e of exercises) if (e.externalLocatorId) locatorIds.add(e.externalLocatorId);
-  const locators = locatorIds.size ? await db.select().from(locator).where(inArray(locator.id, [...locatorIds])) : [];
+  const locators = locatorIds.size
+    ? await db
+        .select()
+        .from(locator)
+        .where(inArray(locator.id, [...locatorIds]))
+    : [];
   const siblings = await db
     .select({ id: teachingUnit.id, title: teachingUnit.title, sequence: teachingUnit.sequence })
     .from(teachingUnit)

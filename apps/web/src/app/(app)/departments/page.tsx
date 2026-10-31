@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 
@@ -20,7 +20,10 @@ export default async function DepartmentsPage() {
           const ready = mine.filter((e) => e.version.readiness === "teaching_ready").length;
           return (
             <li key={d.id}>
-              <Link href={`/departments/${d.id}`} className="block rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-5 hover:border-stone-2">
+              <Link
+                href={`/departments/${d.id}`}
+                className="block rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-5 hover:border-stone-2"
+              >
                 <h2 className="text-xl text-ink">{d.title}</h2>
                 <p className="mt-2 line-clamp-3 text-sm text-ink-2">{d.identity}</p>
                 <p className="mt-3 text-xs text-ink-3">

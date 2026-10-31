@@ -7,13 +7,13 @@ that up yourself.
 
 What it does, in order:
 
-1. **Pair** once with a one-time code from *Library → Desktop sync*. The university returns a
+1. **Pair** once with a one-time code from _Library → Desktop sync_. The university returns a
    narrow device token (stored in your user profile, never in the library folder or the repo).
    Revoke it any time from the Library page.
 2. **Register** each file in the inbox: filename, size, SHA-256, PDF title/author/page count.
-   Only these facts leave the device. The file appears in the Library as *registered on your
-   desktop*, reference-only.
-3. **Upload** a file's bytes only after you grant *private storage* for that item in the Library.
+   Only these facts leave the device. The file appears in the Library as _registered on your
+   desktop_, reference-only.
+3. **Upload** a file's bytes only after you grant _private storage_ for that item in the Library.
    Extraction, indexing and tutor access are separate permissions you grant per item.
 
 ## Commands (PowerShell-friendly)
@@ -67,8 +67,8 @@ names. Accepted: `.pdf`, `.md`, `.txt`. Temporary and hidden files, and symbolic
 - **Retries**: network errors and server errors back off exponentially (1 s, 2 s, 4 s, …, max 60 s).
   A refused token is not retried: the watcher stops and tells you to pair again.
 - **Pause**: `pause` keeps the watcher alive but registers and uploads nothing; the Library shows
-  *paused*. `resume` continues.
-- **Offline state**: when the watcher is not running, the Library says *desktop sync offline*.
+  _paused_. `resume` continues.
+- **Offline state**: when the watcher is not running, the Library says _desktop sync offline_.
   Items whose bytes were already stored remain fully usable.
 
 State (which files have been seen) lives next to the configuration:

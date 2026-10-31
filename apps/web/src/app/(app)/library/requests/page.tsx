@@ -15,7 +15,11 @@ export const metadata = { title: "Books to obtain" };
  * verified; the owner adds their own requests and marks items obtained. Exportable as Markdown
  * and JSON, and written into the data root's requests folder in local mode.
  */
-export default async function RequestsPage({ searchParams }: { searchParams: Promise<{ error?: string; saved?: string; written?: string }> }) {
+export default async function RequestsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; saved?: string; written?: string }>;
+}) {
   const session = await requireSession("/library/requests");
   const params = await searchParams;
   const database = db();
@@ -156,19 +160,25 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
           <h2 id="suggested-heading" className="text-xl text-ink">
             Suggested by the catalogue
           </h2>
-          <p className="mt-1 text-sm text-ink-2">Commercial or institutional sources that launch courses name. Everything shown comes from the verified source record.</p>
+          <p className="mt-1 text-sm text-ink-2">
+            Commercial or institutional sources that launch courses name. Everything shown comes from the verified source record.
+          </p>
           <ul className="mt-3 flex flex-col gap-3">
             {suggestions.map((s) => (
               <Card key={s.key} as="li">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <h3 className="text-lg text-ink">{s.title}</h3>
-                    <p className="text-sm text-ink-2">{[s.authors, s.edition, s.isbn ? `ISBN ${s.isbn}` : null].filter(Boolean).join(" · ")}</p>
+                    <p className="text-sm text-ink-2">
+                      {[s.authors, s.edition, s.isbn ? `ISBN ${s.isbn}` : null].filter(Boolean).join(" · ")}
+                    </p>
                   </div>
                   <Badge tone={s.essential ? "rust" : "neutral"}>{s.essential ? "essential" : "optional"}</Badge>
                 </div>
                 <p className="mt-2 text-sm text-ink">{s.why}</p>
-                {s.chaptersNeeded.length ? <p className="mt-1 text-sm text-ink-2">Sections referenced by prepared material: {s.chaptersNeeded.join("; ")}</p> : null}
+                {s.chaptersNeeded.length ? (
+                  <p className="mt-1 text-sm text-ink-2">Sections referenced by prepared material: {s.chaptersNeeded.join("; ")}</p>
+                ) : null}
                 {s.openAlternative ? <p className="mt-1 text-sm text-ink-2">{s.openAlternative}</p> : null}
                 <p className="mt-1 text-xs text-ink-3">{s.caveats}</p>
                 <form action={addSuggestedRequestAction} className="mt-3">
@@ -227,7 +237,11 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
             <Field label="Sections needed, one per line (only if verified)" htmlFor="req-chapters">
               <Textarea id="req-chapters" name="chaptersNeeded" rows={3} />
             </Field>
-            <Field label="Links, one per line as label | https://…" htmlFor="req-links" hint="Publisher, author page, library search or open-access link.">
+            <Field
+              label="Links, one per line as label | https://…"
+              htmlFor="req-links"
+              hint="Publisher, author page, library search or open-access link."
+            >
               <Textarea id="req-links" name="links" rows={3} />
             </Field>
             <Field label="Open alternative, with differences" htmlFor="req-open">

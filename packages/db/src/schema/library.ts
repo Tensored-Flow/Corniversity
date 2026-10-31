@@ -1,29 +1,9 @@
-import { type SQL, sql } from "drizzle-orm";
-import {
-  bigint,
-  boolean,
-  date,
-  index,
-  integer,
-  jsonb,
-  pgTable,
-  primaryKey,
-  text,
-  uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
 import type { Locator } from "@corniversity/core";
-import {
-  bytea,
-  createdAt,
-  permissionStatusEnum,
-  processingActionEnum,
-  tsvector,
-  tz,
-  updatedAt,
-} from "./_shared";
-import { user } from "./auth";
+import { type SQL, sql } from "drizzle-orm";
+import { bigint, boolean, date, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import { bytea, createdAt, permissionStatusEnum, processingActionEnum, tsvector, tz, updatedAt } from "./_shared";
 import { course } from "./academic";
+import { user } from "./auth";
 import { devicePairing } from "./learner";
 
 export const source = pgTable("source", {
@@ -167,9 +147,7 @@ export const extractedPage = pgTable(
     quality: jsonb("quality")
       .$type<{ scannedSuspected: boolean; lowText: boolean; invisibleText: number; imageCoverage: number }>()
       .notNull(),
-    tsv: tsvector("tsv").generatedAlwaysAs(
-      (): SQL => sql`to_tsvector('english', coalesce(${extractedPage.text}, ''))`,
-    ),
+    tsv: tsvector("tsv").generatedAlwaysAs((): SQL => sql`to_tsvector('english', coalesce(${extractedPage.text}, ''))`),
   },
   (t) => [
     uniqueIndex("extracted_page_asset_index_unique").on(t.assetId, t.physicalIndex),
@@ -189,14 +167,9 @@ export const passage = pgTable(
       .references(() => extractedPage.id, { onDelete: "cascade" }),
     ordinal: integer("ordinal").notNull(),
     heading: text("heading"),
-    kind: text("kind")
-      .$type<"paragraph" | "theorem" | "definition" | "exercise" | "proof" | "other">()
-      .notNull()
-      .default("paragraph"),
+    kind: text("kind").$type<"paragraph" | "theorem" | "definition" | "exercise" | "proof" | "other">().notNull().default("paragraph"),
     text: text("text").notNull(),
-    tsv: tsvector("tsv").generatedAlwaysAs(
-      (): SQL => sql`to_tsvector('english', coalesce(${passage.text}, ''))`,
-    ),
+    tsv: tsvector("tsv").generatedAlwaysAs((): SQL => sql`to_tsvector('english', coalesce(${passage.text}, ''))`),
   },
   (t) => [index("passage_asset_idx").on(t.assetId), index("passage_tsv_idx").using("gin", t.tsv)],
 );

@@ -73,7 +73,10 @@ export class CompanionClient {
         }
         throw new CompanionError("server", body.error ?? `Server error (${response.status}).`, true);
       } catch (error) {
-        const wrapped = error instanceof CompanionError ? error : new CompanionError("network", error instanceof Error ? error.message : String(error), true);
+        const wrapped =
+          error instanceof CompanionError
+            ? error
+            : new CompanionError("network", error instanceof Error ? error.message : String(error), true);
         if (!wrapped.retryable || attempt > retries) throw wrapped;
         await new Promise((r) => setTimeout(r, backoffDelay(attempt)));
       }
@@ -90,7 +93,11 @@ export class CompanionClient {
   }
 
   heartbeat(status: HeartbeatStatus): Promise<{ pending: PendingTask[]; serverTime: string }> {
-    return this.request("/api/companion/status", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(status) });
+    return this.request("/api/companion/status", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(status),
+    });
   }
 
   whoami(): Promise<{ deviceName: string; roots: string[]; pending: number; serverTime: string }> {
@@ -98,7 +105,11 @@ export class CompanionClient {
   }
 
   register(input: RegisterInput): Promise<RegisterResponse> {
-    return this.request("/api/companion/register", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input) });
+    return this.request("/api/companion/register", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(input),
+    });
   }
 
   upload(assetId: string, bytes: Buffer, filename: string, mediaType: string): Promise<{ status: string; outcome: string }> {

@@ -1,8 +1,8 @@
-import { and, desc, eq } from "drizzle-orm";
-import { DateTime } from "luxon";
 import { planVersion } from "@corniversity/db/schema/index";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { getActiveTerm } from "@corniversity/db/services/timetable";
+import { and, desc, eq } from "drizzle-orm";
+import { DateTime } from "luxon";
 import { Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { confirmPlanAction } from "../actions";
@@ -28,7 +28,9 @@ export async function StepConfirm({ userId, profile }: StepProps) {
       <Card>
         <h2 className="text-lg text-ink">{termRow.title}</h2>
         <p className="mt-1 text-sm text-ink-2">
-          {start.toFormat("d LLLL yyyy")} to {end.toFormat("d LLLL yyyy")} · {termRow.teachingWeeks} teaching weeks{termRow.readingWeek ? " + reading week" : ""}{termRow.synthesisWeek ? " + synthesis week" : ""} · {profile.timezone}
+          {start.toFormat("d LLLL yyyy")} to {end.toFormat("d LLLL yyyy")} · {termRow.teachingWeeks} teaching weeks
+          {termRow.readingWeek ? " + reading week" : ""}
+          {termRow.synthesisWeek ? " + synthesis week" : ""} · {profile.timezone}
         </p>
         <ul className="mt-4 flex flex-col gap-2">
           {enrolments.map((e) => (
@@ -40,12 +42,16 @@ export async function StepConfirm({ userId, profile }: StepProps) {
           ))}
         </ul>
         <p className="mt-4 text-sm text-ink-2">
-          {(plan.summary.plannedMinutes / 60).toFixed(0)} hours scheduled across the term, within your weekly ceiling of {profile.weeklyHoursCeiling ?? "–"} hours.
-          {plan.summary.feasible ? "" : ` ${plan.summary.unplaced.length} activities remain unscheduled; they stay visible as work to place.`}
+          {(plan.summary.plannedMinutes / 60).toFixed(0)} hours scheduled across the term, within your weekly ceiling of{" "}
+          {profile.weeklyHoursCeiling ?? "–"} hours.
+          {plan.summary.feasible
+            ? ""
+            : ` ${plan.summary.unplaced.length} activities remain unscheduled; they stay visible as work to place.`}
         </p>
       </Card>
       <Notice tone="neutral" title="What confirming does">
-        Your timetable becomes live and appears on the campus page and in the calendar export. Enrolments stay as shown. Nothing is sent to any external calendar or service. You can pause, withdraw or re-plan at any time, and completed work is never rewritten.
+        Your timetable becomes live and appears on the campus page and in the calendar export. Enrolments stay as shown. Nothing is sent to
+        any external calendar or service. You can pause, withdraw or re-plan at any time, and completed work is never rewritten.
       </Notice>
       <StepFooter step={11} continueLabel="Confirm and receive your welcome letter" />
     </form>

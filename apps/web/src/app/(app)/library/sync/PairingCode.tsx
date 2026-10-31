@@ -1,7 +1,7 @@
 "use client";
 import { useActionState } from "react";
 import { Button } from "@/components/ui";
-import { type PairingCodeState, createPairingCodeAction } from "../actions";
+import { createPairingCodeAction, type PairingCodeState } from "../actions";
 
 /** Creates a one-time pairing code and shows it once; it never appears in a URL or a log line. */
 export function PairingCode({ server }: { server: string }) {
@@ -20,7 +20,7 @@ export function PairingCode({ server }: { server: string }) {
             {state.code}
           </p>
           <p className="mt-2 text-xs text-ink-2">On your desktop, in PowerShell at the repository:</p>
-          <pre className="mt-1 overflow-x-auto rounded bg-paper p-2 font-mono text-xs text-ink">{`pnpm library:pair -- --server ${server} --code ${state.code} --name "My desktop"`}</pre>
+          <pre tabIndex={0} className="mt-1 overflow-x-auto rounded bg-paper p-2 font-mono text-xs text-ink">{`pnpm library:pair -- --server ${server} --code ${state.code} --name "My desktop"`}</pre>
         </div>
       ) : null}
       {state && "error" in state ? <p className="text-sm text-rust">{state.error}</p> : null}

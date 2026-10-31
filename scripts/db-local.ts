@@ -1,6 +1,6 @@
 // Starts (or stops) an embedded PostgreSQL 17 cluster for local development.
 // No Docker required. Data persists under <CORNIVERSITY_DATA_ROOT>/postgres.
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import EmbeddedPostgres from "embedded-postgres";
 

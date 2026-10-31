@@ -67,7 +67,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
   denial before and during a queued job); duplicate import is deduplicated; corrupt PDF fails
   cleanly; direct unauthenticated file access refused.
 
-## Milestone 5 — Full academic workflows and launch content — in_progress
+## Milestone 5 — Full academic workflows and launch content — done
 
 - Twelve launch courses source-verified with complete syllabi; at least two prepared units each;
   at least four for Functional Analysis, Principles of Chemical Science and Computational
@@ -79,7 +79,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: content validator passes with exact counts reported; journeys 3 and 4 pass;
   `pnpm eval:academic` passes; instructor artifacts absent from learner payloads (test).
 
-## Milestone 6 — The institution and campus experience — todo
+## Milestone 6 — The institution and campus experience — done
 
 - Induction polish, faculty personas with distinct contracts and restricted tools, optional
   peers with bounded rounds, societies, office hours, common room, campus map with list
@@ -87,7 +87,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journey 8 passes; quiet mode exposes full academic function; no background
   conversations are generated (test).
 
-## Milestone 7 — Hardening and deployment — todo
+## Milestone 7 — Hardening and deployment — done except deployment (owner login required)
 
 - Authorization sweep, injection, SSRF and path-traversal tests, accessibility checks (axe),
   budgets and provider-failure behaviour, backup and restore rehearsal, export and import
@@ -95,7 +95,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journeys 9 and 10 (when deployment is possible); visual QA screenshots at
   1440×900 and 390×844; truthful deployment status recorded.
 
-## Milestone 8 — Independent review and repair — todo
+## Milestone 8 — Independent review and repair — in_progress
 
 - Review passes as sceptical learner, academic assessor and production engineer (subagents
   where available); findings investigated, repaired, re-tested; remaining limitations listed.

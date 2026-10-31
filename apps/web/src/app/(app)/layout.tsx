@@ -1,3 +1,4 @@
+import { ensureProfile } from "@corniversity/db/services/onboarding";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AccountMenu } from "@/components/AccountMenu";
@@ -5,7 +6,6 @@ import { Wordmark } from "@/components/Crest";
 import { SideNav } from "@/components/SideNav";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { ensureProfile } from "@corniversity/db/services/onboarding";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const session = await requireSession();

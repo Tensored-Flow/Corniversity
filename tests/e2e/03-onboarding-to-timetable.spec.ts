@@ -14,7 +14,10 @@ test.describe("orientation to a confirmed first term", () => {
 
     if (/\/onboarding\/2/.test(page.url())) {
       // Step 2: interests
-      await page.getByLabel(/Mathematics/).first().check();
+      await page
+        .getByLabel(/Mathematics/)
+        .first()
+        .check();
       await page.getByRole("checkbox", { name: /MAT-230/ }).check();
       await page.getByLabel(/In your own words/).fill("Functional analysis properly, with proofs, and then measure theory.");
       await page.getByRole("button", { name: /continue/i }).click();
@@ -107,10 +110,13 @@ test.describe("orientation to a confirmed first term", () => {
     expect(body).toContain("BEGIN:VEVENT");
   });
 
-  test("calendar subscription requires a valid token", async ({ request }) => {
-    const bad = await request.get("/api/calendar/this-is-not-a-valid-token-at-all.ics");
+  test("calendar subscription requires a valid token", async ({ playwright, baseURL }) => {
+    // An anonymous request context: the project's shared sign-in must not apply here.
+    const anonymous = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
+    const bad = await anonymous.get("/api/calendar/this-is-not-a-valid-token-at-all.ics");
     expect(bad.status()).toBe(404);
-    const unauth = await request.get("/api/calendar/export.ics");
+    const unauth = await anonymous.get("/api/calendar/export.ics");
     expect(unauth.status()).toBe(401);
+    await anonymous.dispose();
   });
 });

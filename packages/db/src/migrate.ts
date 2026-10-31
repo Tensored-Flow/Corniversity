@@ -16,9 +16,7 @@ export const migrationsFolder = resolve(here, "..", "drizzle");
 export async function runMigrations(handle: DbHandle): Promise<{ pgvector: boolean }> {
   await migrate(handle.db, { migrationsFolder });
 
-  const available = await handle.db.execute(
-    sql`select 1 from pg_available_extensions where name = 'vector'`,
-  );
+  const available = await handle.db.execute(sql`select 1 from pg_available_extensions where name = 'vector'`);
   let pgvector = false;
   if (available.rows.length > 0) {
     try {

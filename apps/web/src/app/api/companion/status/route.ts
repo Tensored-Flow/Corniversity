@@ -1,6 +1,6 @@
+import { pendingUploadTasks, reportDeviceStatus } from "@corniversity/db/services/library";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { pendingUploadTasks, reportDeviceStatus } from "@corniversity/db/services/library";
 import { requireDevice } from "@/lib/companion-auth";
 import { db } from "@/lib/db";
 
@@ -30,5 +30,10 @@ export async function GET(request: Request): Promise<Response> {
   const authed = await requireDevice(request);
   if ("response" in authed) return authed.response;
   const pending = await pendingUploadTasks(db(), authed.pairing.id, authed.pairing.userId);
-  return NextResponse.json({ deviceName: authed.pairing.name, roots: authed.pairing.roots, pending: pending.length, serverTime: new Date().toISOString() });
+  return NextResponse.json({
+    deviceName: authed.pairing.name,
+    roots: authed.pairing.roots,
+    pending: pending.length,
+    serverTime: new Date().toISOString(),
+  });
 }

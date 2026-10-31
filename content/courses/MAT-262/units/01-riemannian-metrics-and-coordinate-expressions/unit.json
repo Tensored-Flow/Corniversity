@@ -5,42 +5,217 @@
   "title": "Riemannian metrics, coordinate expressions and coordinate singularities",
   "summary": "Conventions (signature, index placement, summation); the definition of a Riemannian metric and arc length; metric coefficients in a chart and the transformation law under change of coordinates; induced metrics computed from a parametrisation and the ambient inner product; the Gram criterion separating coordinate singularities from geometric ones; isometries, conformal maps, homogeneous spaces and local orthonormal frames; existence of metrics via partitions of unity; the Lorentzian case named and kept apart.",
   "objectives": [
-    { "id": "u01-o1", "description": "State the definition of a Riemannian metric with the conventions (signature, index placement, Einstein summation) and compute arc lengths." },
-    { "id": "u01-o2", "description": "Derive the metric coefficients of a submanifold of Euclidean space from a parametrisation, including the sphere of radius R in spherical coordinates, and identify the chart domain." },
-    { "id": "u01-o3", "description": "Prove the transformation law of the metric coefficients and its consequences for the determinant and positive definiteness, and explain a coordinate singularity via the Gram criterion." },
-    { "id": "u01-o4", "description": "Define isometries and conformal maps, recognise the round sphere as a homogeneous space, and state which constructions of the unit survive in Lorentzian signature." }
+    {
+      "id": "u01-o1",
+      "description": "State the definition of a Riemannian metric with the conventions (signature, index placement, Einstein summation) and compute arc lengths."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Derive the metric coefficients of a submanifold of Euclidean space from a parametrisation, including the sphere of radius R in spherical coordinates, and identify the chart domain."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Prove the transformation law of the metric coefficients and its consequences for the determinant and positive definiteness, and explain a coordinate singularity via the Gram criterion."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Define isometries and conformal maps, recognise the round sphere as a homogeneous space, and state which constructions of the unit survive in Lorentzian signature."
+    }
   ],
-  "prerequisiteConceptIds": ["smooth-manifold", "tangent-bundle-vector-fields", "linear-algebra-vector-spaces", "multivariable-calculus"],
-  "teachesConceptIds": ["riemannian-metric", "metric-coefficients-charts", "isometries-and-model-spaces"],
+  "prerequisiteConceptIds": [
+    "smooth-manifold",
+    "tangent-bundle-vector-fields",
+    "linear-algebra-vector-spaces",
+    "multivariable-calculus"
+  ],
+  "teachesConceptIds": [
+    "riemannian-metric",
+    "metric-coefficients-charts",
+    "isometries-and-model-spaces"
+  ],
   "preparation": [
-    { "description": "Read Gudmundsson chapter 5, p. 63: Definition 5.5 (Riemannian metric), Example 5.6 (Euclidean space), Definition 5.7 (arc length).", "locatorId": "gud-def5-5", "estimatedMinutes": 15 },
-    { "description": "Read p. 64: Example 5.8 (the punctured round sphere), Example 5.9 (hyperbolic ball), Proposition 5.10 (distance function); then p. 65: Definition 5.11 (induced metric) and Example 5.12.", "locatorId": "gud-ex5-8", "estimatedMinutes": 25 },
-    { "description": "Read pp. 66–67: Fact 5.15 and Theorem 5.16 (existence of metrics), Definition 5.17 (conformal, isometric, isometry), Example 5.21 (the sphere is homogeneous).", "locatorId": "gud-thm5-16", "estimatedMinutes": 20 },
-    { "description": "Read p. 71: Remark 5.30 (pull-back metric in a parametrisation) and Example 5.32 (coordinate and orthonormal frames); glance at Exercise 5.2 (p. 74) after attempting exercise 1.", "locatorId": "gud-ex5-32", "estimatedMinutes": 15 },
-    { "description": "Optional, if you have the book: Lee, chapter 2 (Riemannian Metrics), including the section on pseudo-Riemannian metrics for exercise 3. Commercial reference; not required.", "locatorId": "lee-rm-ch2", "estimatedMinutes": 30 }
+    {
+      "description": "Read Gudmundsson chapter 5, p. 63: Definition 5.5 (Riemannian metric), Example 5.6 (Euclidean space), Definition 5.7 (arc length).",
+      "locatorId": "gud-def5-5",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read p. 64: Example 5.8 (the punctured round sphere), Example 5.9 (hyperbolic ball), Proposition 5.10 (distance function); then p. 65: Definition 5.11 (induced metric) and Example 5.12.",
+      "locatorId": "gud-ex5-8",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read pp. 66–67: Fact 5.15 and Theorem 5.16 (existence of metrics), Definition 5.17 (conformal, isometric, isometry), Example 5.21 (the sphere is homogeneous).",
+      "locatorId": "gud-thm5-16",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read p. 71: Remark 5.30 (pull-back metric in a parametrisation) and Example 5.32 (coordinate and orthonormal frames); glance at Exercise 5.2 (p. 74) after attempting exercise 1.",
+      "locatorId": "gud-ex5-32",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Optional, if you have the book: Lee, chapter 2 (Riemannian Metrics), including the section on pseudo-Riemannian metrics for exercise 3. Commercial reference; not required.",
+      "locatorId": "lee-rm-ch2",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u01-a1", "type": "reading", "title": "Chapter 5 with the lesson: metrics and their coordinates", "instructions": "Read the lesson alongside Gudmundsson chapter 5. Write the conventions block in your own notebook before anything else. For the graph example, recompute the three coefficients by hand; for Example 5.8 note that the formula is stated for the unit sphere and do not read Exercise 5.2 until you have attempted exercise 1.", "estimatedMinutes": 70, "sourceLocatorIds": ["gud-ch5", "gud-def5-5", "gud-ex5-8", "gud-def5-11", "gud-thm5-16", "gud-def5-17", "gud-ex5-32", "gud-def5-33", "gud-exercise5-2", "stb-ch1", "lee-rm-ch2"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u01-a2", "type": "proof_workshop", "title": "Tutorial: the sphere of radius R and the polar plane", "instructions": "Attempt exercise 1 before asking for any hint; state the chart domain before computing anything, and keep the pole discussion in a separate paragraph headed 'coordinates' and 'geometry'. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 100, "sourceLocatorIds": ["gud-def5-5", "gud-def5-11", "gud-ex5-32", "gud-exercise5-2"], "exerciseIds": ["MAT-262-u01-ex1", "MAT-262-u01-ex2"], "sessionKind": "tutorial" },
-    { "id": "u01-a3", "type": "explain_back", "title": "Explain: Riemannian or Lorentzian", "instructions": "Exercise 3, written without the notes, then compared with Sternberg §7.2 (Minkowski space) and, if available, Lee's section on pseudo-Riemannian metrics.", "estimatedMinutes": 15, "sourceLocatorIds": ["stb-s7-2", "lee-rm-ch2-pseudo"], "exerciseIds": ["MAT-262-u01-ex3"], "sessionKind": "oral" },
-    { "id": "u01-a4", "type": "retrieval_practice", "title": "Retrieval: definitions and conventions", "instructions": "From memory: the definition of a Riemannian metric; g_ij and the transformation law; the induced metric from a parametrisation; the Gram criterion; isometry versus conformal map; the signature convention and why Lorentzian is not Riemannian.", "estimatedMinutes": 10, "sourceLocatorIds": ["gud-def5-5", "gud-def5-17"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "Chapter 5 with the lesson: metrics and their coordinates",
+      "instructions": "Read the lesson alongside Gudmundsson chapter 5. Write the conventions block in your own notebook before anything else. For the graph example, recompute the three coefficients by hand; for Example 5.8 note that the formula is stated for the unit sphere and do not read Exercise 5.2 until you have attempted exercise 1.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "gud-ch5",
+        "gud-def5-5",
+        "gud-ex5-8",
+        "gud-def5-11",
+        "gud-thm5-16",
+        "gud-def5-17",
+        "gud-ex5-32",
+        "gud-def5-33",
+        "gud-exercise5-2",
+        "stb-ch1",
+        "lee-rm-ch2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "proof_workshop",
+      "title": "Tutorial: the sphere of radius R and the polar plane",
+      "instructions": "Attempt exercise 1 before asking for any hint; state the chart domain before computing anything, and keep the pole discussion in a separate paragraph headed 'coordinates' and 'geometry'. Then attempt exercise 2. Submit each attempt when you believe it is complete; revise after feedback.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "gud-def5-5",
+        "gud-def5-11",
+        "gud-ex5-32",
+        "gud-exercise5-2"
+      ],
+      "exerciseIds": [
+        "MAT-262-u01-ex1",
+        "MAT-262-u01-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "explain_back",
+      "title": "Explain: Riemannian or Lorentzian",
+      "instructions": "Exercise 3, written without the notes, then compared with Sternberg §7.2 (Minkowski space) and, if available, Lee's section on pseudo-Riemannian metrics.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "stb-s7-2",
+        "lee-rm-ch2-pseudo"
+      ],
+      "exerciseIds": [
+        "MAT-262-u01-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a4",
+      "type": "retrieval_practice",
+      "title": "Retrieval: definitions and conventions",
+      "instructions": "From memory: the definition of a Riemannian metric; g_ij and the transformation law; the induced metric from a parametrisation; the Gram criterion; isometry versus conformal map; the signature convention and why Lorentzian is not Riemannian.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "gud-def5-5",
+        "gud-def5-17"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    },
+    {
+      "id": "u01-a5",
+      "type": "lab",
+      "title": "Laboratory: metric coefficients on the sphere",
+      "instructions": "After deriving the metric of the sphere of radius R in spherical coordinates: compare the parallel lengths your formula predicts with the lengths the laboratory measures in ℝ³, watch det g as θ approaches 0 and π, and inspect the graph chart at the pole, where the metric is non-degenerate. Scope is one surface with two charts; the laboratory shows closed forms only after your tutorial attempt has been assessed. Record why the degeneracy belongs to the chart and not to the sphere.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "gud-def5-5",
+        "gud-def5-11"
+      ],
+      "exerciseIds": [],
+      "labId": "sphere-metric",
+      "sessionKind": "lab"
+    }
   ],
-  "exerciseIds": ["MAT-262-u01-ex1", "MAT-262-u01-ex2", "MAT-262-u01-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: the chart domain identified; g_θθ = R², g_θφ = 0, g_φφ = R² sin²θ derived from the ambient inner product with conventions stated; the pole analysed as a coordinate singularity with a second chart showing g positive definite there; the lengths of a parallel and a meridian arc computed.", "exerciseId": "MAT-262-u01-ex1" },
+  "exerciseIds": [
+    "MAT-262-u01-ex1",
+    "MAT-262-u01-ex2",
+    "MAT-262-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 1 accepted: the chart domain identified; g_θθ = R², g_θφ = 0, g_φφ = R² sin²θ derived from the ambient inner product with conventions stated; the pole analysed as a coordinate singularity with a second chart showing g positive definite there; the lengths of a parallel and a meridian arc computed.",
+    "exerciseId": "MAT-262-u01-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "The metric of the sphere is singular at the poles because g_φφ = R² sin²θ vanishes there.", "correction": "The vanishing is a property of the spherical-coordinate parametrisation, which is not an immersion at θ = 0, π (the whole φ-segment collapses to a point). In a graph or stereographic chart the metric coefficients at the pole form a positive definite matrix. The Gram criterion makes this precise: det(g_ij) → 0 exactly where the parametrisation loses rank.", "correctionLocatorIds": ["gud-def5-11", "gud-ex5-32"] },
-    { "claim": "det(g_ij) is a function on the manifold.", "correction": "It transforms by the square of the Jacobian determinant under change of chart, so it is a density, not a function; only its combination with dx¹…dxⁿ is chart-independent.", "correctionLocatorIds": ["gud-ex5-32"] },
-    { "claim": "A Lorentzian metric is a Riemannian metric with one sign changed, so everything in this unit applies.", "correction": "Positive definiteness is used in the arc-length formula, in the distance function (Proposition 5.10) and in the existence proof via convex combinations (Theorem 5.16); each fails or needs modification in signature (−,+,+,+). The transformation law and the invertibility of (g_ij) do carry over.", "correctionLocatorIds": ["gud-thm5-16", "stb-s7-2"] },
-    { "claim": "An isometry is any smooth map preserving the metric tensor.", "correction": "An isometric map preserves g (it is then an immersion); an isometry is additionally a diffeomorphism. Stereographic projection restricted to the punctured sphere is an isometry onto the conformal model, not onto Euclidean space.", "correctionLocatorIds": ["gud-def5-17", "gud-exercise5-2"] }
+    {
+      "claim": "The metric of the sphere is singular at the poles because g_φφ = R² sin²θ vanishes there.",
+      "correction": "The vanishing is a property of the spherical-coordinate parametrisation, which is not an immersion at θ = 0, π (the whole φ-segment collapses to a point). In a graph or stereographic chart the metric coefficients at the pole form a positive definite matrix. The Gram criterion makes this precise: det(g_ij) → 0 exactly where the parametrisation loses rank.",
+      "correctionLocatorIds": [
+        "gud-def5-11",
+        "gud-ex5-32"
+      ]
+    },
+    {
+      "claim": "det(g_ij) is a function on the manifold.",
+      "correction": "It transforms by the square of the Jacobian determinant under change of chart, so it is a density, not a function; only its combination with dx¹…dxⁿ is chart-independent.",
+      "correctionLocatorIds": [
+        "gud-ex5-32"
+      ]
+    },
+    {
+      "claim": "A Lorentzian metric is a Riemannian metric with one sign changed, so everything in this unit applies.",
+      "correction": "Positive definiteness is used in the arc-length formula, in the distance function (Proposition 5.10) and in the existence proof via convex combinations (Theorem 5.16); each fails or needs modification in signature (−,+,+,+). The transformation law and the invertibility of (g_ij) do carry over.",
+      "correctionLocatorIds": [
+        "gud-thm5-16",
+        "stb-s7-2"
+      ]
+    },
+    {
+      "claim": "An isometry is any smooth map preserving the metric tensor.",
+      "correction": "An isometric map preserves g (it is then an immersion); an isometry is additionally a diffeomorphism. Stereographic projection restricted to the punctured sphere is an isometry onto the conformal model, not onto Euclidean space.",
+      "correctionLocatorIds": [
+        "gud-def5-17",
+        "gud-exercise5-2"
+      ]
+    }
   ],
-  "estimatedMinutes": 300,
+  "estimatedMinutes": 325,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All Gudmundsson locators verified against text extracted from Riemann.pdf (version 1.438, printed labels present) on 2026-10-30: Definition 5.5 and Example 5.6 on p. 63 (PDF index 64), Examples 5.8–5.9 and Proposition 5.10 on p. 64, Definition 5.11 on p. 65, Theorem 5.16 on p. 66, Definition 5.17 and Example 5.21 on p. 67, Example 5.32 on p. 71, Exercise 5.2 on p. 74. Sternberg §7.2 on p. 142 (index 141) verified likewise; Lee chapter 2 and its pseudo-Riemannian section are chapter-level pointers from the author-hosted table of contents." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: ∂_θF, ∂_φF for F(θ,φ) = (R sinθ cosφ, R sinθ sinφ, R cosθ); g_θθ = R², g_θφ = 0, g_φφ = R² sin²θ; ∂_θF × ∂_φF = R sinθ · F so rank drops exactly at θ ∈ {0, π}; graph-chart coefficients (1 + x²/(R²−x²−y²), xy/(R²−x²−y²), 1 + y²/(R²−x²−y²)) equal to the identity at the pole; lengths 2πR sinθ₀ and R(θ₂−θ₁); polar metric dr² + r² dθ² with det J = r; the Gram criterion; the congruence argument for the transformation law." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson gives the graph example and the Gram criterion but not the sphere's coefficients, the pole analysis, the polar-coordinate computation or the Lorentzian answers; those live only in instructor/ files." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 100 + 15 + 10 minutes of activities plus 75 minutes of required preparation (105 with the optional Lee reading) ≈ 4.5–5 hours, within the 10–14 hours per week budget alongside unit 2." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All Gudmundsson locators verified against text extracted from Riemann.pdf (version 1.438, printed labels present) on 2026-10-30: Definition 5.5 and Example 5.6 on p. 63 (PDF index 64), Examples 5.8–5.9 and Proposition 5.10 on p. 64, Definition 5.11 on p. 65, Theorem 5.16 on p. 66, Definition 5.17 and Example 5.21 on p. 67, Example 5.32 on p. 71, Exercise 5.2 on p. 74. Sternberg §7.2 on p. 142 (index 141) verified likewise; Lee chapter 2 and its pseudo-Riemannian section are chapter-level pointers from the author-hosted table of contents."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Build agent re-derived: ∂_θF, ∂_φF for F(θ,φ) = (R sinθ cosφ, R sinθ sinφ, R cosθ); g_θθ = R², g_θφ = 0, g_φφ = R² sin²θ; ∂_θF × ∂_φF = R sinθ · F so rank drops exactly at θ ∈ {0, π}; graph-chart coefficients (1 + x²/(R²−x²−y²), xy/(R²−x²−y²), 1 + y²/(R²−x²−y²)) equal to the identity at the pole; lengths 2πR sinθ₀ and R(θ₂−θ₁); polar metric dr² + r² dθ² with det J = r; the Gram criterion; the congruence argument for the transformation law."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson gives the graph example and the Gram criterion but not the sphere's coefficients, the pole analysis, the polar-coordinate computation or the Lorentzian answers; those live only in instructor/ files."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "70 + 100 + 15 + 10 minutes of activities plus 75 minutes of required preparation (105 with the optional Lee reading) ≈ 4.5–5 hours, within the 10–14 hours per week budget alongside unit 2."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-262-u01-ex1.reference-solution.md", "MAT-262-u01-ex1.grading-notes.md", "MAT-262-u01-ex2.reference-solution.md", "MAT-262-u01-ex3.grading-notes.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "MAT-262-u01-ex1.reference-solution.md",
+    "MAT-262-u01-ex1.grading-notes.md",
+    "MAT-262-u01-ex2.reference-solution.md",
+    "MAT-262-u01-ex3.grading-notes.md",
+    "lesson-notes.md"
+  ]
 }

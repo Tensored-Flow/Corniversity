@@ -12,7 +12,11 @@ export async function listJobs(db: DbOrTx, ownerId: string, limit = 50): Promise
 }
 
 export async function getJob(db: DbOrTx, ownerId: string, jobId: string): Promise<JobRow | null> {
-  const rows = await db.select().from(jobRecord).where(and(eq(jobRecord.id, jobId), eq(jobRecord.ownerId, ownerId))).limit(1);
+  const rows = await db
+    .select()
+    .from(jobRecord)
+    .where(and(eq(jobRecord.id, jobId), eq(jobRecord.ownerId, ownerId)))
+    .limit(1);
   return rows[0] ?? null;
 }
 
@@ -40,10 +44,17 @@ export async function cancelJob(db: DbOrTx, ownerId: string, jobId: string): Pro
     const boss = await getBoss();
     await boss.cancel(job.queue, job.pgbossJobId).catch(() => undefined);
   }
-  await db.update(jobRecord).set({ status: "cancelled", finishedAt: new Date(), progress: { stage: "cancelled" } }).where(eq(jobRecord.id, job.id));
+  await db
+    .update(jobRecord)
+    .set({ status: "cancelled", finishedAt: new Date(), progress: { stage: "cancelled" } })
+    .where(eq(jobRecord.id, job.id));
   if (job.kind === "ingest-asset") {
     const assetId = (job.payload as { assetId?: string }).assetId;
-    if (assetId) await db.update(resourceAsset).set({ status: "validated" }).where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.status, "processing")));
+    if (assetId)
+      await db
+        .update(resourceAsset)
+        .set({ status: "validated" })
+        .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.status, "processing")));
   }
   return { ok: true };
 }
@@ -59,16 +70,28 @@ export async function retryJob(db: DbOrTx, ownerId: string, jobId: string): Prom
   if (!Object.values(QUEUES).includes(job.queue as QueueName)) return { ok: false, reason: "Unknown queue." };
   const base = job.idempotencyKey.replace(/#r\d+$/, "");
   const previous = Number(/#r(\d+)$/.exec(job.idempotencyKey)?.[1] ?? "1");
-  const payload = { ...(job.payload as Record<string, unknown>), idempotencyKey: `${base}#r${previous + 1}`, ownerId } as { idempotencyKey: string; ownerId: string };
+  const payload = { ...(job.payload as Record<string, unknown>), idempotencyKey: `${base}#r${previous + 1}`, ownerId } as {
+    idempotencyKey: string;
+    ownerId: string;
+  };
   if (job.kind === "ingest-asset") {
     const assetId = (job.payload as { assetId?: string }).assetId;
     if (assetId) {
-      const [asset] = await db.select().from(resourceAsset).where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId))).limit(1);
+      const [asset] = await db
+        .select()
+        .from(resourceAsset)
+        .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)))
+        .limit(1);
       if (!asset || asset.deletedAt) return { ok: false, reason: "The asset no longer exists." };
       if (!asset.storageKey) return { ok: false, reason: "The asset's bytes are not stored." };
       await db.update(resourceAsset).set({ status: "processing", rejectionReason: null }).where(eq(resourceAsset.id, assetId));
     }
   }
-  const result = await enqueue(db, { queue: job.queue as QueueName, kind: job.kind, payload, singletonKey: `${job.kind}:${payload.idempotencyKey}` });
+  const result = await enqueue(db, {
+    queue: job.queue as QueueName,
+    kind: job.kind,
+    payload,
+    singletonKey: `${job.kind}:${payload.idempotencyKey}`,
+  });
   return { ok: true, newJobId: result.jobRecordId };
 }

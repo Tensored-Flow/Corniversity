@@ -1,9 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const AUTH_STATE = "tests/e2e/.auth/owner.json";
+
 /**
  * End-to-end journeys run against the local stack (embedded Postgres + web + worker) with the
- * fixture AI provider. Start the stack first: `pnpm db:local`, `pnpm dev`. Screenshots land in
- * docs/qa/screenshots and are referenced from docs/QA_REPORT.md.
+ * fixture AI provider. Start the stack first: `pnpm db:local`, `pnpm dev`. A setup project signs
+ * the owner in once and the journey projects reuse that session; specs that need an anonymous
+ * browser opt out with `test.use({ storageState: { cookies: [], origins: [] } })`. Screenshots
+ * land in docs/qa/screenshots and are referenced from docs/QA_REPORT.md.
  */
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -22,7 +26,16 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
-    { name: "mobile", use: { ...devices["Pixel 7"], viewport: { width: 390, height: 844 } } },
+    { name: "setup", testMatch: /auth\.setup\.ts/, use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "desktop",
+      dependencies: ["setup"],
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 }, storageState: AUTH_STATE },
+    },
+    {
+      name: "mobile",
+      dependencies: ["setup"],
+      use: { ...devices["Pixel 7"], viewport: { width: 390, height: 844 }, storageState: AUTH_STATE },
+    },
   ],
 });

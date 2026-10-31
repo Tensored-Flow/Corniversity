@@ -10,8 +10,6 @@ import { user } from "../schema/auth";
 import { annotation } from "../schema/library";
 import { jobRecord } from "../schema/operations";
 import {
-  LibraryError,
-  type RequestRow,
   authenticateDevice,
   confirmMetadata,
   createAnnotation,
@@ -20,8 +18,10 @@ import {
   getAsset,
   getPermissions,
   isAllowed,
+  LibraryError,
   pendingUploadTasks,
   permittedPassagesForCourse,
+  type RequestRow,
   receiveUpload,
   redeemPairingCode,
   registerLocalAsset,
@@ -63,7 +63,9 @@ describe("validateUpload (the quarantine boundary)", () => {
     expect(validateUpload(PDF, "application/pdf", "notes.pdf", 1_000_000).mediaType).toBe("application/pdf");
   });
   it("refuses a file named .pdf that lacks the signature", () => {
-    expect(() => validateUpload(Buffer.from("MZ\u0090\u0000 not a pdf"), "application/pdf", "trojan.pdf", 1_000_000)).toThrowError(/signature/);
+    expect(() => validateUpload(Buffer.from("MZ\u0090\u0000 not a pdf"), "application/pdf", "trojan.pdf", 1_000_000)).toThrowError(
+      /signature/,
+    );
   });
   it("refuses executables, notebooks and scripts as library assets", () => {
     for (const name of ["run.exe", "notebook.ipynb", "macro.docm", "script.js", "archive.zip"]) {
@@ -82,8 +84,22 @@ describe("uploads, deduplication and processing permissions", () => {
   let assetId = "";
 
   it("stores the bytes once and reports a duplicate for the same content under another name", async () => {
-    const first = await receiveUpload(handle.db, blobs, { ownerId: OWNER, filename: "norms.pdf", mediaType: "application/pdf", data: PDF, origin: "web_upload", maxBytes: 1_000_000 });
-    const second = await receiveUpload(handle.db, blobs, { ownerId: OWNER, filename: "norms-copy.pdf", mediaType: "application/pdf", data: PDF, origin: "web_upload", maxBytes: 1_000_000 });
+    const first = await receiveUpload(handle.db, blobs, {
+      ownerId: OWNER,
+      filename: "norms.pdf",
+      mediaType: "application/pdf",
+      data: PDF,
+      origin: "web_upload",
+      maxBytes: 1_000_000,
+    });
+    const second = await receiveUpload(handle.db, blobs, {
+      ownerId: OWNER,
+      filename: "norms-copy.pdf",
+      mediaType: "application/pdf",
+      data: PDF,
+      origin: "web_upload",
+      maxBytes: 1_000_000,
+    });
     expect(first.outcome).toBe("stored");
     expect(first.asset.status).toBe("quarantined");
     expect(second.outcome).toBe("duplicate");
@@ -103,7 +119,11 @@ describe("uploads, deduplication and processing permissions", () => {
     expect(unconfirmed.queued).toBe(false);
     expect(unconfirmed.reason).toMatch(/confirm the metadata/i);
 
-    const confirmed = await confirmMetadata(handle.db, OWNER, assetId, { title: "Notes on norms", authors: ["Leon"], courseIds: ["MAT-230"] });
+    const confirmed = await confirmMetadata(handle.db, OWNER, assetId, {
+      title: "Notes on norms",
+      authors: ["Leon"],
+      courseIds: ["MAT-230"],
+    });
     expect(confirmed.status).toBe("validated");
 
     const unpermitted = await requestIngestion(handle.db, OWNER, assetId);
@@ -118,7 +138,9 @@ describe("uploads, deduplication and processing permissions", () => {
     const second = await requestIngestion(handle.db, OWNER, assetId);
     expect(second.queued).toBe(false);
     expect(second.reason).toMatch(/already being processed/i);
-    const jobs = (await handle.db.select().from(jobRecord).where(eq(jobRecord.kind, "ingest-asset"))).filter((j) => (j.payload as { assetId?: string }).assetId === assetId);
+    const jobs = (await handle.db.select().from(jobRecord).where(eq(jobRecord.kind, "ingest-asset"))).filter(
+      (j) => (j.payload as { assetId?: string }).assetId === assetId,
+    );
     expect(jobs).toHaveLength(1);
     expect(jobs[0]!.idempotencyKey).toContain("ingest:");
   });
@@ -137,7 +159,11 @@ describe("uploads, deduplication and processing permissions", () => {
   });
 
   it("deleting removes the bytes and leaves annotations visibly in need of repair", async () => {
-    const note = await createAnnotation(handle.db, OWNER, { assetId, physicalIndex: 0, noteMarkdown: "check the triangle inequality here" });
+    const note = await createAnnotation(handle.db, OWNER, {
+      assetId,
+      physicalIndex: 0,
+      noteMarkdown: "check the triangle inequality here",
+    });
     expect(note.mappingStatus).toBe("needs_repair"); // no extracted page exists yet
     const key = (await getAsset(handle.db, OWNER, assetId))!.storageKey!;
     await deleteAsset(handle.db, blobs, OWNER, assetId);
@@ -233,7 +259,20 @@ describe("acquisition request export", () => {
       updatedAt: new Date(),
     };
     const markdown = renderRequestsMarkdown([row], "Corniversity", [
-      { key: "x", title: "Another book", authors: "A. Author", courseId: "PHY-210", why: "w", essential: false, chaptersNeeded: [], links: [], acceptedFormats: ["pdf"], destinationFolder: "inbox/physics", caveats: "Access status: commercial.", minPermission: "local_read" },
+      {
+        key: "x",
+        title: "Another book",
+        authors: "A. Author",
+        courseId: "PHY-210",
+        why: "w",
+        essential: false,
+        chaptersNeeded: [],
+        links: [],
+        acceptedFormats: ["pdf"],
+        destinationFolder: "inbox/physics",
+        caveats: "Access status: commercial.",
+        minPermission: "local_read",
+      },
     ]);
     expect(markdown).toContain("# Corniversity: books and materials to obtain");
     expect(markdown).toContain("## Introduction to Riemannian Manifolds — John M. Lee (2nd edition (2018))");

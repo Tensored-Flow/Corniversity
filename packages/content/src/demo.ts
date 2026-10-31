@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { eq } from "drizzle-orm";
 import type { Database } from "@corniversity/db/client";
 import { account, learnerProfile, user } from "@corniversity/db/schema/index";
 import { hashPassword } from "better-auth/crypto";
+import { eq } from "drizzle-orm";
 
 export const DEMO_EMAIL = "demo@corniversity.invalid";
 export const DEMO_PASSWORD = "demo-learner-not-a-real-person";

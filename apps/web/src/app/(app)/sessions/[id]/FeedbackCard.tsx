@@ -1,8 +1,8 @@
 import type { AssessmentRunRow } from "@corniversity/db/services/learning";
 import { Markdown } from "@/components/Markdown";
 import { Badge } from "@/components/ui";
-import { ReviewForm } from "./ReviewForm";
 import type { ActionResult } from "./actions";
+import { ReviewForm } from "./ReviewForm";
 
 interface Review {
   id: string;
@@ -76,7 +76,9 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
       ) : null}
 
       {run?.status === "failed" ? (
-        <p className="mt-4 text-sm text-rust">The assessment could not run: {run.error}. Your attempt is safe; try submitting again later or configure a provider in Settings.</p>
+        <p className="mt-4 text-sm text-rust">
+          The assessment could not run: {run.error}. Your attempt is safe; try submitting again later or configure a provider in Settings.
+        </p>
       ) : null}
 
       {fb ? (
@@ -111,7 +113,13 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
                   <tr key={c.criterionId} className="border-t border-stone align-top">
                     <td className="py-1.5 pr-3 font-mono text-xs text-ink-2">{c.criterionId}</td>
                     <td className="py-1.5 pr-3">
-                      <Badge tone={c.status === "met" ? "moss" : c.status === "partially_met" ? "brass" : c.status === "not_met" ? "rust" : "neutral"}>{c.status.replace("_", " ")}</Badge>
+                      <Badge
+                        tone={
+                          c.status === "met" ? "moss" : c.status === "partially_met" ? "brass" : c.status === "not_met" ? "rust" : "neutral"
+                        }
+                      >
+                        {c.status.replace("_", " ")}
+                      </Badge>
                     </td>
                     <td className="py-1.5 text-ink-2">{c.comment}</td>
                   </tr>
@@ -135,7 +143,11 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
               <Markdown source={fb.nextStep} />
             </div>
           </div>
-          {fb.alternateApproachRecognised ? <p className="text-xs text-ink-3">The assessor recognised an approach different from the reference; the reference is not exhaustive.</p> : null}
+          {fb.alternateApproachRecognised ? (
+            <p className="text-xs text-ink-3">
+              The assessor recognised an approach different from the reference; the reference is not exhaustive.
+            </p>
+          ) : null}
           {fb.citations.length ? (
             <p className="text-xs text-ink-3">Evidence used: {fb.citations.map((c) => `${c.tag} ${c.label}`).join("; ")}</p>
           ) : null}

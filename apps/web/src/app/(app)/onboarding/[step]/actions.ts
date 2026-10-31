@@ -1,12 +1,12 @@
 "use server";
-import { and, eq, inArray } from "drizzle-orm";
-import { redirect } from "next/navigation";
-import { z } from "zod";
 import { learnerConceptOverride, learnerProfile, peerMembership, prerequisiteRule } from "@corniversity/db/schema/index";
 import { enrol, listEnrolments, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
 import { completeOnboarding, saveOnboardingStep, saveStepOne } from "@corniversity/db/services/onboarding";
 import { candidatePlans, ensureTerm, saveAvailability, setConceptSelfReport } from "@corniversity/db/services/programme";
 import { confirmPlan, discardProposedPlans, proposePlan } from "@corniversity/db/services/timetable";
+import { and, eq, inArray } from "drizzle-orm";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { COMMITMENT_SUGGESTIONS } from "./steps/StepTime";
@@ -66,7 +66,9 @@ export async function saveInterestsAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/2");
   const departmentIds = all(formData, "departmentIds");
   const interestCourseIds = all(formData, "interestCourseIds").filter((id) => /^[A-Z]{3}-\d{3}$/.test(id));
-  const goalsText = String(formData.get("goalsText") ?? "").trim().slice(0, 4000);
+  const goalsText = String(formData.get("goalsText") ?? "")
+    .trim()
+    .slice(0, 4000);
   if (departmentIds.length === 0 && interestCourseIds.length === 0) redirect("/onboarding/2?error=choose_department");
   // Courses imply their departments.
   if (interestCourseIds.length) {
@@ -84,11 +86,15 @@ export async function saveKnowledgeAction(formData: FormData): Promise<void> {
   for (const [key, value] of formData.entries()) {
     if (key.startsWith("prior:")) priorKnowledge[key.slice(6)] = String(value).trim().slice(0, 4000);
   }
-  const allIds = String(formData.get("allConceptIds") ?? "").split(",").filter(Boolean);
+  const allIds = String(formData.get("allConceptIds") ?? "")
+    .split(",")
+    .filter(Boolean);
   const known = all(formData, "knownConceptIds");
   await db().transaction(async (tx) => {
     if (allIds.length) {
-      await tx.delete(learnerConceptOverride).where(and(eq(learnerConceptOverride.userId, session.user.id), inArray(learnerConceptOverride.conceptId, allIds)));
+      await tx
+        .delete(learnerConceptOverride)
+        .where(and(eq(learnerConceptOverride.userId, session.user.id), inArray(learnerConceptOverride.conceptId, allIds)));
     }
     await setConceptSelfReport(tx, session.user.id, known, true, "orientation step 3: self-reported as already known");
     await saveOnboardingStep(tx, session.user.id, 3, { priorKnowledge });
@@ -146,14 +152,17 @@ export async function saveRhythmAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/6");
   const rhythm = String(formData.get("rhythm") ?? "term");
   const termStart = String(formData.get("termStart") ?? "");
-  if (!["term", "rolling", "reading_course"].includes(rhythm) || !/^\d{4}-\d{2}-\d{2}$/.test(termStart)) redirect("/onboarding/6?error=invalid");
+  if (!["term", "rolling", "reading_course"].includes(rhythm) || !/^\d{4}-\d{2}-\d{2}$/.test(termStart))
+    redirect("/onboarding/6?error=invalid");
   await saveOnboardingStep(db(), session.user.id, 6, { rhythm: rhythm as never, termStart }, { studyRhythm: rhythm as never });
   redirect("/onboarding/7");
 }
 
 export async function savePlacementAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/7");
-  const ruleIds = String(formData.get("ruleIds") ?? "").split(",").filter(Boolean);
+  const ruleIds = String(formData.get("ruleIds") ?? "")
+    .split(",")
+    .filter(Boolean);
   const rules = ruleIds.length ? await db().select().from(prerequisiteRule).where(inArray(prerequisiteRule.id, ruleIds)) : [];
   const placement: Record<string, "passed" | "skipped" | "attempted"> = {};
   const known: string[] = [];
@@ -183,14 +192,23 @@ export async function choosePlanAction(formData: FormData): Promise<void> {
   const planId = String(formData.get("planId") ?? "");
   const [profile] = await db().select().from(learnerProfile).where(eq(learnerProfile.userId, session.user.id)).limit(1);
   if (!profile) redirect("/onboarding/8?error=invalid");
-  const plans = await candidatePlans(db(), session.user.id, profile.onboardingAnswers, profile.onboardingAnswers.rhythm === "reading_course" ? 8 : 10);
+  const plans = await candidatePlans(
+    db(),
+    session.user.id,
+    profile.onboardingAnswers,
+    profile.onboardingAnswers.rhythm === "reading_course" ? 8 : 10,
+  );
   const chosen = plans.find((p) => p.id === planId);
   if (!chosen) redirect("/onboarding/8?error=choose_plan");
   const modes: Record<string, "enrolled" | "audit" | "reading_seminar"> = {};
   for (const c of chosen.courses) modes[c.courseId] = c.mode;
   await saveOnboardingStep(db(), session.user.id, 8, {
     chosenPlanId: chosen.id,
-    chosenPlan: { id: chosen.id, title: chosen.title, courses: chosen.courses.map((c) => ({ courseId: c.courseId, role: c.role, mode: c.mode })) },
+    chosenPlan: {
+      id: chosen.id,
+      title: chosen.title,
+      courses: chosen.courses.map((c) => ({ courseId: c.courseId, role: c.role, mode: c.mode })),
+    },
     modes,
   });
   redirect("/onboarding/9");
@@ -217,9 +235,21 @@ export async function saveModesAction(formData: FormData): Promise<void> {
       const current = existing.find((e) => e.course.id === c.courseId && e.enrolment.status !== "withdrawn");
       if (current && current.enrolment.mode !== modes[c.courseId]) {
         await setEnrolmentStatus(tx, session.user.id, current.enrolment.id, "withdrawn");
-        await enrol(tx, { ownerId: session.user.id, courseId: c.courseId, mode: modes[c.courseId]!, termId: termRow.id, idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}` });
+        await enrol(tx, {
+          ownerId: session.user.id,
+          courseId: c.courseId,
+          mode: modes[c.courseId]!,
+          termId: termRow.id,
+          idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
+        });
       } else if (!current) {
-        await enrol(tx, { ownerId: session.user.id, courseId: c.courseId, mode: modes[c.courseId]!, termId: termRow.id, idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}` });
+        await enrol(tx, {
+          ownerId: session.user.id,
+          courseId: c.courseId,
+          mode: modes[c.courseId]!,
+          termId: termRow.id,
+          idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
+        });
       }
     }
     // Withdraw from courses no longer in the plan (made during onboarding only).
@@ -260,7 +290,8 @@ export async function saveMeetAction(formData: FormData): Promise<void> {
   const next = String(formData.get("next") ?? "/campus");
   await db().transaction(async (tx) => {
     await tx.delete(peerMembership).where(eq(peerMembership.ownerId, session.user.id));
-    if (peers.length) await tx.insert(peerMembership).values(peers.map((personaId) => ({ ownerId: session.user.id, personaId, enabled: true })));
+    if (peers.length)
+      await tx.insert(peerMembership).values(peers.map((personaId) => ({ ownerId: session.user.id, personaId, enabled: true })));
     await saveOnboardingStep(tx, session.user.id, 12, { peerPersonaIds: peers });
   });
   redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/campus");
