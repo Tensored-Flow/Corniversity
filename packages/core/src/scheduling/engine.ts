@@ -157,6 +157,9 @@ export function schedule(input: SchedulerInput): ScheduleResult {
   const placed: ScheduledSessionPlan[] = [];
   const unplaced: UnplacedActivity[] = [];
   const weekPlanned = new Map<number, number>(weeks.map((w) => [w.index, 0]));
+  const dayPlanned = new Map<string, number>();
+  const dailyCap = input.dailyCapMinutes ?? 180;
+  const dayKey = (dt: DateTime) => dt.toISODate() ?? "";
   const finishedAt = new Map<string, DateTime>(); // activity key → end of its last part
   const occupied: { start: DateTime; end: DateTime }[] = [];
   const pinned = new Map((input.pinned ?? []).map((p) => [p.uid, p]));
@@ -172,13 +175,15 @@ export function schedule(input: SchedulerInput): ScheduleResult {
     const earliestWeekStart: DateTime = weeks[activity.earliestWeek]?.start ?? weeks[weeks.length - 1]?.start ?? notBefore;
     if (earliestWeekStart > earliest) earliest = earliestWeekStart;
     let blocked: string | null = null;
+    const gap = input.minDependencyGapMinutes ?? 18 * 60;
     for (const dep of activity.dependsOn) {
       const end = finishedAt.get(dep);
       if (!end) {
         if (byKey.has(dep)) blocked = dep; // dependency exists but could not be placed (or comes later in order)
         continue;
       }
-      if (end > earliest) earliest = end;
+      const afterGap = end.plus({ minutes: gap });
+      if (afterGap > earliest) earliest = afterGap;
     }
     if (blocked) {
       unplaced.push({ key: activity.key, title: activity.title, minutes: activity.estimatedMinutes, reason: `waits for ${blocked}, which could not be scheduled` });
@@ -197,13 +202,14 @@ export function schedule(input: SchedulerInput): ScheduleResult {
         const ps = DateTime.fromISO(pin.startsAt, { zone });
         const pe = DateTime.fromISO(pin.endsAt, { zone });
         const weekIndex = weeks.find((w) => ps >= w.start && ps < w.start.plus({ weeks: 1 }))?.index;
-        const fitsCap = weekIndex !== undefined && (weekPlanned.get(weekIndex) ?? 0) + minutes <= input.weeklyCapMinutes;
+        const fitsCap = weekIndex !== undefined && (weekPlanned.get(weekIndex) ?? 0) + minutes <= input.weeklyCapMinutes && (dayPlanned.get(dayKey(ps)) ?? 0) + minutes <= dailyCap;
         const inFreeSlot = weekIndex !== undefined && (slotsByWeek.get(weekIndex) ?? []).some((s) => ps >= s.start && pe <= s.end);
         if (ps >= earliest && fitsCap && inFreeSlot && !overlaps(ps, pe) && pe.diff(ps, "minutes").minutes === minutes) {
           const session = toSession(activity, uid, ps, pe, weekIndex, p + 1, parts.length, minutes);
           partsPlaced.push(session);
           occupied.push({ start: ps, end: pe });
           weekPlanned.set(weekIndex, (weekPlanned.get(weekIndex) ?? 0) + minutes);
+          dayPlanned.set(dayKey(ps), (dayPlanned.get(dayKey(ps)) ?? 0) + minutes);
           earliest = pe.plus({ minutes: input.breakMinutes });
           continue;
         }
@@ -214,6 +220,7 @@ export function schedule(input: SchedulerInput): ScheduleResult {
         if ((weekPlanned.get(week.index) ?? 0) + minutes > input.weeklyCapMinutes) continue;
         for (const slot of slotsByWeek.get(week.index) ?? []) {
           if (slot.end <= earliest) continue;
+          if ((dayPlanned.get(dayKey(slot.start)) ?? 0) + minutes > dailyCap) continue;
           // Walk the slot in 15-minute steps so a partially used slot can still host a session.
           let cursor = slot.start > earliest ? slot.start : roundUp(earliest, 15);
           while (cursor.plus({ minutes }) <= slot.end) {
@@ -236,6 +243,7 @@ export function schedule(input: SchedulerInput): ScheduleResult {
       partsPlaced.push(session);
       occupied.push({ start: found.start, end: found.end });
       weekPlanned.set(found.weekIndex, (weekPlanned.get(found.weekIndex) ?? 0) + minutes);
+      dayPlanned.set(dayKey(found.start), (dayPlanned.get(dayKey(found.start)) ?? 0) + minutes);
       earliest = found.end.plus({ minutes: input.breakMinutes });
     }
 
@@ -245,6 +253,8 @@ export function schedule(input: SchedulerInput): ScheduleResult {
         const idx = occupied.findIndex((o) => o.start.toISO() === DateTime.fromISO(s.startsAt).setZone(zone).toISO());
         if (idx >= 0) occupied.splice(idx, 1);
         weekPlanned.set(s.weekIndex, (weekPlanned.get(s.weekIndex) ?? 0) - s.minutes);
+        const dk = DateTime.fromISO(s.startsAt, { zone }).toISODate() ?? "";
+        dayPlanned.set(dk, (dayPlanned.get(dk) ?? 0) - s.minutes);
       }
       unplaced.push({
         key: activity.key,

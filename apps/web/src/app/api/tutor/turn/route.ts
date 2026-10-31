@@ -15,6 +15,7 @@ import { getEnv } from "@corniversity/db/env";
 import { providerRun } from "@corniversity/db/schema/index";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { localOnlyAssetsForCourse } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
 import {
@@ -77,7 +78,7 @@ export async function POST(request: Request): Promise<Response> {
   const priorMessages = await listMessages(database, conversation.id);
   await appendLearnerMessage(database, conversation.id, message);
 
-  const evidence = await buildUnitEvidence(database, unitDetail.unit.id);
+  const evidence = await buildUnitEvidence(database, unitDetail.unit.id, { ownerId, courseId: unitDetail.course.id, query: message });
   const system = buildTutorSystemPrompt({
     institutionName: env.INSTITUTION_NAME,
     personaName: tutor?.name ?? "the tutor",
@@ -120,11 +121,22 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const scenario = priorMessages.some((m) => m.sender === "persona") ? "default" : `${unitDetail.unit.id}-intro`;
+  const haystack = message.toLowerCase();
+  const localOnlyMentioned = (await localOnlyAssetsForCourse(database, ownerId, unitDetail.course.id)).filter((a) =>
+    [a.confirmedTitle, a.candidateMetadata.title, a.filename.replace(/\.[a-z0-9]+$/i, "")]
+      .filter((n): n is string => typeof n === "string" && n.trim().length >= 4)
+      .some((n) => haystack.includes(n.trim().toLowerCase())),
+  );
+  const one = localOnlyMentioned.length === 1;
+  const localOnlyNote = localOnlyMentioned.length
+    ? `*(Note from the university, not from ${tutor?.name ?? "the tutor"}: ${localOnlyMentioned.map((a) => `"${a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}"`).join(", ")} ${one ? "is" : "are"} registered as local-only. Nothing of ${one ? "its" : "their"} contents has left your device, so the tutor has not seen a page of ${one ? "it" : "them"} and cannot comment on ${one ? "its" : "their"} text.)*\n\n`
+    : "";
   const startedAt = new Date();
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      let raw = "";
+      let raw = localOnlyNote;
+      if (localOnlyNote) controller.enqueue(encoder.encode(localOnlyNote));
       let status: "ok" | "error" | "refused" = "ok";
       let errorText: string | undefined;
       let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };

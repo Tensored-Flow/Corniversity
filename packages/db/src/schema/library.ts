@@ -7,6 +7,7 @@ import {
   integer,
   jsonb,
   pgTable,
+  primaryKey,
   text,
   uniqueIndex,
   uuid,
@@ -218,6 +219,22 @@ export const annotation = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [index("annotation_owner_asset_idx").on(t.ownerId, t.assetId)],
+);
+
+/** Where the learner last was in each library item; one row per owner and asset. */
+export const readingProgress = pgTable(
+  "reading_progress",
+  {
+    ownerId: text("owner_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    assetId: uuid("asset_id")
+      .notNull()
+      .references(() => resourceAsset.id, { onDelete: "cascade" }),
+    physicalIndex: integer("physical_index").notNull().default(0),
+    updatedAt: updatedAt(),
+  },
+  (t) => [primaryKey({ columns: [t.ownerId, t.assetId] })],
 );
 
 export const resourceRequest = pgTable(

@@ -116,7 +116,7 @@ export const devicePairing = pgTable(
     tokenHash: text("token_hash").notNull().unique(),
     roots: jsonb("roots").$type<string[]>().notNull().default([]),
     lastStatus: jsonb("last_status")
-      .$type<{ watching: boolean; pendingFiles: number; version: string; reportedAt: string }>(),
+      .$type<{ watching: boolean; paused?: boolean; pendingFiles: number; version: string; reportedAt: string }>(),
     createdAt: createdAt(),
     lastSeenAt: tz("last_seen_at"),
     revokedAt: tz("revoked_at"),

@@ -91,7 +91,7 @@ export function Card({
 }: {
   children: ReactNode;
   className?: string;
-  as?: "section" | "article" | "div" | "aside";
+  as?: "section" | "article" | "div" | "aside" | "li";
 }) {
   return (
     <Tag

@@ -40,7 +40,7 @@ that account exists.
 | `pnpm test:e2e` | Playwright learner journeys (stack must be running) |
 | `pnpm eval:academic` | Academic evaluation set |
 | `pnpm content:validate` | Validates `content/` and reports readiness counts |
-| `pnpm library:pair`, `pnpm library:watch`, `pnpm library:sync --dry-run`, `pnpm library:status` | Desktop companion |
+| `pnpm library:pair -- --server <url> --code <code>`, `pnpm library:sync -- --dry-run`, `pnpm library:watch`, `pnpm library:status` | Desktop companion; see `apps/companion/README.md` |
 | `pnpm backup`, `pnpm restore <file>` | Database backup and restore |
 | `pnpm deploy:railway` | Deploys to a dedicated Railway project after `railway login` |
 

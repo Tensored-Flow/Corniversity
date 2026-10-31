@@ -8,6 +8,7 @@ export * from "./roles/schemas";
 export * from "./prompts/tutor";
 export * from "./prompts/assessor";
 export * from "./prompts/director";
+export * from "./prompts/reading";
 
 import { AnthropicProvider } from "./anthropic";
 import { FixtureProvider } from "./fixture";

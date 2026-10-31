@@ -89,6 +89,18 @@ describe("schedule", () => {
     }
   });
 
+  it("spreads a unit over different days: a tutorial never follows its lecture on the same evening", () => {
+    const result = schedule(baseInput());
+    const byKey = (key: string) => result.sessions.find((s) => s.key === key)!;
+    const lecture = local(byKey("MAT-230-u01:a1").startsAt);
+    const tutorial = local(byKey("MAT-230-u01:a2").startsAt);
+    expect(tutorial.diff(lecture, "hours").hours).toBeGreaterThanOrEqual(18);
+    for (const day of new Set(result.sessions.map((s) => local(s.startsAt).toISODate()))) {
+      const minutes = result.sessions.filter((s) => local(s.startsAt).toISODate() === day).reduce((a, s) => a + s.minutes, 0);
+      expect(minutes).toBeLessThanOrEqual(180);
+    }
+  });
+
   it("never exceeds the weekly cap and splits long activities into parts", () => {
     const input = baseInput({
       weeklyCapMinutes: 3 * 60,

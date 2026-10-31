@@ -71,6 +71,10 @@ export interface SchedulerInput {
   preferredSessionMinutes: number;
   minSessionMinutes: number;
   breakMinutes: number;
+  /** Minimum gap between an activity and anything that depends on it (default 18 hours: next day). */
+  minDependencyGapMinutes?: number;
+  /** Maximum planned minutes on one calendar day (default 180). */
+  dailyCapMinutes?: number;
   /** Nothing is scheduled before this instant (ISO). Defaults to the term start. */
   notBefore?: string;
   /** Existing future sessions to keep in place when they still fit (limits churn on re-planning). */

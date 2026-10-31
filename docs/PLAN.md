@@ -41,7 +41,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journey 2 passes end to end with the fixture provider; feedback persists across
   reload and re-login; assessment retry does not duplicate feedback (test).
 
-## Milestone 3 — Programmes, department breadth, timetabling — in_progress
+## Milestone 3 — Programmes, department breadth, timetabling — done
 
 - Catalogue from Appendix A with honest readiness; six department halls; named programmes;
   concept-level prerequisite graph with alternatives, bridges, co-requisites, cycle detection,
@@ -54,7 +54,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
   stable UIDs); journeys 1 and 7 pass; no course displays a readiness it has not earned
   (content validator test).
 
-## Milestone 4 — Library and durable background processing — todo
+## Milestone 4 — Library and durable background processing — done
 
 - Resource requests (library/requests.md + JSON export); web upload; quarantine and validation;
   metadata confirmation; separate processing permissions; ingestion pipeline (unpdf native text,
@@ -67,7 +67,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
   denial before and during a queued job); duplicate import is deduplicated; corrupt PDF fails
   cleanly; direct unauthenticated file access refused.
 
-## Milestone 5 — Full academic workflows and launch content — todo
+## Milestone 5 — Full academic workflows and launch content — in_progress
 
 - Twelve launch courses source-verified with complete syllabi; at least two prepared units each;
   at least four for Functional Analysis, Principles of Chemical Science and Computational

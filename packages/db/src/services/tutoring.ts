@@ -1,7 +1,8 @@
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { annotateTurn, type EvidenceRef, formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
 import type { DbOrTx } from "../client";
 import { conversation, locator, message, persona, teachingUnit, unitExercise } from "../schema/index";
+import { localOnlyAssetsForCourse, permittedPassagesForCourse } from "./library";
 
 export type ConversationRow = typeof conversation.$inferSelect;
 export type MessageRow = typeof message.$inferSelect;
@@ -11,24 +12,56 @@ export type MessageRow = typeof message.$inferSelect;
  * ingested it is included; otherwise the block carries the location only and says so, so the
  * model cannot pretend to have read a page it has not.
  */
-export async function buildUnitEvidence(db: DbOrTx, unitId: string): Promise<{ prompt: string; refs: EvidenceRef[] }> {
+export async function buildUnitEvidence(
+  db: DbOrTx,
+  unitId: string,
+  library?: { ownerId: string; courseId: string; query: string },
+): Promise<{ prompt: string; refs: EvidenceRef[] }> {
   const [unit] = await db.select().from(teachingUnit).where(eq(teachingUnit.id, unitId)).limit(1);
   if (!unit) return { prompt: "", refs: [] };
   const ids = new Set<string>();
   for (const p of unit.preparation) ids.add(p.locatorId);
   for (const a of unit.activities) for (const l of a.sourceLocatorIds) ids.add(l);
-  if (ids.size === 0) return { prompt: "", refs: [] };
-  const locators = await db.select().from(locator).where(inArray(locator.id, [...ids]));
+  const locators = ids.size ? await db.select().from(locator).where(inArray(locator.id, [...ids])) : [];
   const ordered = [...ids].map((id) => locators.find((l) => l.id === id)).filter((l): l is typeof locator.$inferSelect => Boolean(l));
-  return formatEvidenceBlocks(
-    ordered.map((l) => ({
-      label: l.label,
-      locatorId: l.id,
-      text: l.note
-        ? `Location only (passage text not retrieved). Note: ${l.note}`
-        : "Location only (passage text not retrieved). Cite this tag for statements that come from this source location; do not quote text you have not been given.",
-    })),
-  );
+  const blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[] = ordered.map((l) => ({
+    label: l.label,
+    locatorId: l.id,
+    text: l.note
+      ? `Location only (passage text not retrieved). Note: ${l.note}`
+      : "Location only (passage text not retrieved). Cite this tag for statements that come from this source location; do not quote text you have not been given.",
+  }));
+
+  // The learner's own library: only processed items assigned to this course and permitted for
+  // external AI processing contribute passages. Local-only items are named, never read.
+  let suffix = "";
+  if (library) {
+    const passages = await permittedPassagesForCourse(db, library.ownerId, library.courseId, library.query, 4);
+    for (const p of passages) {
+      const title = p.asset.confirmedTitle ?? p.asset.filename;
+      const page = p.printed_label ? `p. ${p.printed_label} (PDF page ${p.physical_index + 1})` : `PDF page ${p.physical_index + 1}`;
+      blocks.push({ label: `Your library: ${title}, ${page}`, assetId: p.asset_id, passageId: p.id, text: p.text });
+    }
+    const localOnly = await localOnlyAssetsForCourse(db, library.ownerId, library.courseId);
+    if (localOnly.length) {
+      const names = localOnly.map((a) => `"${a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}"`).join(", ");
+      suffix = `\n\nNOT AVAILABLE TO YOU: the learner has registered these items as local-only; their contents have never left the learner's device and you have not seen a single page of them: ${names}. If asked about them, say plainly that you cannot inspect them and work from the evidence above instead.`;
+    }
+  }
+  if (blocks.length === 0 && !suffix) return { prompt: "", refs: [] };
+  const formatted = formatEvidenceBlocks(blocks);
+  return { prompt: formatted.prompt + suffix, refs: formatted.refs };
+}
+
+/** The most recent reading-room conversation about a library item (its context names the item). */
+export async function latestConversationForAsset(db: DbOrTx, ownerId: string, assetId: string): Promise<ConversationRow | null> {
+  const rows = await db
+    .select()
+    .from(conversation)
+    .where(and(eq(conversation.ownerId, ownerId), eq(conversation.purpose, "reading-room"), sql`${conversation.context}->'allowedAssetIds' ? ${assetId}`))
+    .orderBy(desc(conversation.createdAt))
+    .limit(1);
+  return rows[0] ?? null;
 }
 
 export async function getOrCreateConversation(
@@ -42,6 +75,7 @@ export async function getOrCreateConversation(
     unitId?: string;
     exerciseId?: string;
     allowedLocatorIds: string[];
+    allowedAssetIds?: string[];
   },
 ): Promise<ConversationRow> {
   if (input.learningSessionId) {
@@ -67,7 +101,7 @@ export async function getOrCreateConversation(
       role: input.role,
       personaId: input.personaId ?? null,
       purpose: input.purpose,
-      context: { unitId: input.unitId, exerciseId: input.exerciseId, allowedLocatorIds: input.allowedLocatorIds, allowedAssetIds: [] },
+      context: { unitId: input.unitId, exerciseId: input.exerciseId, allowedLocatorIds: input.allowedLocatorIds, allowedAssetIds: input.allowedAssetIds ?? [] },
     })
     .returning();
   if (!created) throw new Error("conversation insert returned nothing");

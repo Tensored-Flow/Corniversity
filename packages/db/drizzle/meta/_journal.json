@@ -15,6 +15,13 @@
       "when": 1793382695128,
       "tag": "0001_attempt-draft",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793386960010,
+      "tag": "0002_reading-progress",
+      "breakpoints": true
     }
   ]
 }
