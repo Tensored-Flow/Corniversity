@@ -49,3 +49,19 @@ describe("formatEvidenceBlocks", () => {
     expect(refs[1]?.passageId).toBe("p");
   });
 });
+
+describe("location-only evidence", () => {
+  const refs = [
+    { tag: "E1", label: "Lecture 1, Definition 7", locatorId: "loc-1", kind: "location" as const },
+    { tag: "E2", label: "Your library: Notes, p. 3", passageId: "p-1", kind: "passage" as const },
+  ];
+  it("never lets a location pointer pass as source-backed text", () => {
+    const pointer = annotateTurn("{source-backed} A norm is positive-definite [E1].", refs);
+    expect(pointer.paragraphs[0]?.labels).toEqual(["location_only"]);
+    expect(pointer.labels).toEqual(["location_only"]);
+    const text = annotateTurn("{source-backed} The passage defines the norm this way [E2].", refs);
+    expect(text.paragraphs[0]?.labels).toEqual(["source_backed"]);
+    const bare = annotateTurn("{source-backed} Trust me.", refs);
+    expect(bare.paragraphs[0]?.labels).toEqual(["needs_checking"]);
+  });
+});

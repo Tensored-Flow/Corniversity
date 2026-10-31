@@ -17,7 +17,7 @@
       "id": "synthetic-labelled",
       "kind": "requires_hypothesis",
       "description": "any mention of the data, tuning or counts must be accompanied by the word synthetic (or simulated/generated)",
-      "params": { "triggerPatterns": ["tuning", "spike count", "data"], "hypothesisPatterns": ["synthetic", "simulated", "generated", "artificial"] }
+      "params": { "triggerPatterns": ["tuning", "spike count", "data"], "hypothesisPatterns": ["synthetic", "simulated", "generated", "artificial"], "scope": "anywhere" }
     },
     {
       "id": "held-out-comparison",

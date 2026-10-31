@@ -52,7 +52,7 @@ The classification is frame independent because $\Delta s^2$ is. Unit 5 develops
 
 ## Same unit for space and time
 
-The book's Section 1.4 makes a point that is worth taking literally: $c$ is a conversion factor between two historically different units for one geometry, like $k = 1609.344\ \mathrm{m\,mile^{-1}}$ in the parable. Measuring time in metres (laboratory physics), seconds or minutes (the solar system: the Sun is $499\ \mathrm{s}$ away) or years (the stars: Proxima Centauri at $4.28\ \mathrm{ly}$) is a choice of unit, not of physics. In this course we write $c$ explicitly in every formula, so that units can be checked, and set it to 1 only in diagrams and quick estimates — saying so each time.
+The book's Section 1.4 makes a point that is worth taking literally: $c$ is a conversion factor between two historically different units for one geometry, like $k = 1609.344\ \mathrm{m\,mile^{-1}}$ in the parable. Measuring time in metres (laboratory physics), seconds or minutes (the solar system: the Sun is $499\ \mathrm{s}$ away) or years (the stars: Proxima Centauri at about $4.25\ \mathrm{ly}$; the book's 1992 figure is $4.28$) is a choice of unit, not of physics. In this course we write $c$ explicitly in every formula, so that units can be checked, and set it to 1 only in diagrams and quick estimates — saying so each time.
 
 **Warning.** "Moving clocks run slow" is shorthand that invites error. A clock does not know it is moving. What is true is frame independent: the proper time along a uniformly moving clock's path between two events is less than the coordinate time between those events in any frame in which they are at different places. Exercise 3 asks you to say this in your own words with numbers.
 

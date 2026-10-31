@@ -18,7 +18,9 @@ export const dynamic = "force-dynamic";
  * expires after ten minutes. The token is returned exactly once and stored only as a hash.
  */
 export async function POST(request: Request): Promise<Response> {
-  if (!withinRateLimit(`pair:${clientKey(request)}`, 10, 10 * 60_000)) {
+  // Per client, and in total: a single owner pairs a handful of devices, so a burst of wrong
+  // codes from anywhere is an attack, whatever addresses it claims.
+  if (!withinRateLimit(`pair:${clientKey(request)}`, 10, 10 * 60_000) || !withinRateLimit("pair:all", 30, 10 * 60_000)) {
     return NextResponse.json({ error: "too_many_attempts" }, { status: 429 });
   }
   const parsed = Body.safeParse(await request.json().catch(() => null));

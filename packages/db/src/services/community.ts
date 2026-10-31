@@ -1,5 +1,6 @@
 import { and, asc, desc, eq, inArray, isNull } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import {
   discussion,
   discussionTurn,
@@ -143,6 +144,7 @@ export async function openDiscussion(
 }
 
 export async function getDiscussion(db: DbOrTx, ownerId: string, id: string): Promise<DiscussionRow | null> {
+  if (!isUuid(id)) return null;
   const rows = await db
     .select()
     .from(discussion)

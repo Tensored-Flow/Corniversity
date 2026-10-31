@@ -20,6 +20,7 @@ function fail(path: string, message: string): never {
 export async function createEntryAction(form: FormData): Promise<void> {
   const session = await requireSession("/notebook");
   const courseId = text(form, "courseId");
+  if (!text(form, "body").trim()) fail("/notebook", "Write the entry itself; a title on its own is not kept.");
   try {
     const entry = await createEntry(db(), session.user.id, {
       title: text(form, "title"),

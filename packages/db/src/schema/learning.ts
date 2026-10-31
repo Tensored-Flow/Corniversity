@@ -13,7 +13,7 @@ export interface Citation {
   label: string;
 }
 
-export type StatementLabel = "source_backed" | "derived" | "conjecture" | "needs_checking";
+export type StatementLabel = "source_backed" | "derived" | "conjecture" | "needs_checking" | "location_only";
 
 export const learningSession = pgTable(
   "learning_session",

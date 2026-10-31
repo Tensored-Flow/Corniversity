@@ -1,5 +1,6 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { QUEUES, type QueueName } from "../jobs";
 import { enqueue, getBoss } from "../queue";
 import { jobRecord, resourceAsset } from "../schema/index";
@@ -12,6 +13,7 @@ export async function listJobs(db: DbOrTx, ownerId: string, limit = 50): Promise
 }
 
 export async function getJob(db: DbOrTx, ownerId: string, jobId: string): Promise<JobRow | null> {
+  if (!isUuid(jobId)) return null;
   const rows = await db
     .select()
     .from(jobRecord)

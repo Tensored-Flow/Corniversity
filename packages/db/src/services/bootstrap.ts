@@ -8,7 +8,8 @@ const BOOTSTRAP_KEY = "bootstrap";
 export async function isBootstrapComplete(db: DbOrTx): Promise<boolean> {
   const [row] = await db.select().from(appSetting).where(eq(appSetting.key, BOOTSTRAP_KEY)).limit(1);
   if (row && (row.value as { completed?: boolean }).completed) return true;
-  const counts = await db.select({ users: count() }).from(user);
+  // Only an owner account closes sign-up; a demo learner seeded first must not lock the owner out.
+  const counts = await db.select({ users: count() }).from(user).where(eq(user.role, "owner"));
   return (counts[0]?.users ?? 0) > 0;
 }
 

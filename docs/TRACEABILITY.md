@@ -11,7 +11,7 @@
 | UNI-07 | Distinct faculty roles, restricted tools, memory | `packages/ai/src/roles`, prompts for tutor, assessor, director, reading room, chair and peer; `persona_memory` inspection and deletion in Settings | unit tests; journey 8 spec; settings spec | done |
 | UNI-08 | Optional labelled peers, bounded interaction | `services/community.ts`, `/common-room`, `/api/discussions/turn` (rounds fixed at opening, released material only, mute, no unprompted turns) | journey 8 spec | done |
 | UNI-09 | Source-grounded lecture/tutorial/reading | sessions, grounding | e2e journey 2 | done for prepared units |
-| UNI-10 | Serious proof assessment, revision, uncertainty | assessment worker, `packages/core/src/checks` | evals | done (fixture); appeals filed as records |
+| UNI-10 | Serious proof assessment, revision, uncertainty | assessment worker, `packages/core/src/checks`, `checks/verdict.ts` | evals, `verdict.test.ts`, journey 2 | done at fixture level: every fixture verdict is withheld (`needs_review`), regrades queue a real re-assessment, appeals filed as records; live-model judgement unverified |
 | UNI-11 | Exact locators, citation validation | `locator`, grounding, extracted pages with physical index + printed label, annotations anchored to locators with visible repair | unit tests; worker tests; journey 5b | done |
 | UNI-12 | Structured acquisition requests | `resource_request`, `/library/requests`, catalogue-derived suggestions, `requests.md` + JSON export, data-folder write | db test (export); page | done |
 | UNI-13 | Windows companion, pairing, offline state | `apps/companion` (pair, sync, watch, status, pause, unpair), `/api/companion/*`, hashed device tokens, online/paused/offline | 10 unit tests; journeys 5a/5b/6 run the CLI | done |

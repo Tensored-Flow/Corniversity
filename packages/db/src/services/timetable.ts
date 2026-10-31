@@ -91,7 +91,7 @@ export async function buildSchedulerInput(
           unitId: unit.id,
           unitSequence: unit.sequence,
           activityId: a.id,
-          title: `${unit.title}: ${a.title}`,
+          title: `${a.title} · ${unit.title}`,
           sessionKind: a.sessionKind,
           estimatedMinutes: a.estimatedMinutes,
           dependsOn: previousKey ? [previousKey] : [],

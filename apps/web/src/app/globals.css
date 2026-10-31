@@ -279,3 +279,13 @@ math {
 .paper-lines {
   background-image: repeating-linear-gradient(180deg, transparent 0 31px, color-mix(in srgb, var(--stone) 55%, transparent) 31px 32px);
 }
+
+/* The focus ring must read on every surface, including a filled button whose text colour would
+   otherwise become the ring colour; the global rule therefore outranks the utility classes. */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  /* biome-ignore lint/complexity/noImportantStyles: the ring must outrank the utility classes on filled buttons */
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 2px;
+}

@@ -26,6 +26,10 @@ async function main() {
       const result = await seedContent(handle.db, bundle);
       console.log(JSON.stringify(result, null, 2));
     } else if (command === "seed-demo") {
+      if (env.DEPLOYMENT_MODE === "production") {
+        console.error("refusing to seed the demo learner in production: its password is public");
+        process.exit(1);
+      }
       const { seedDemoLearner } = await import("./demo");
       const result = await seedDemoLearner(handle.db);
       console.log(JSON.stringify(result, null, 2));

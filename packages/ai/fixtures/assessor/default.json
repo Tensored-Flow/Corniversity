@@ -3,11 +3,11 @@
   "object": {
     "verdict": "needs_review",
     "confidence": 0.1,
-    "summary": "No live assessor is configured, so this submission has not been evaluated. The automatic pattern checks above are the only feedback available. Your attempt is saved and will be assessed when a provider is configured, or you can request a regrade later.",
+    "summary": "No live assessor is configured, so this submission has not been evaluated; the automatic checks above are the only feedback. Your attempt and its versions are kept. Once a provider is configured in Settings, use the regrade request below (or submit a revision) and it will be assessed.",
     "firstGap": null,
     "checks": [],
     "strengths": [],
-    "nextStep": "Keep the attempt; compare it against the unit's exit check yourself, or configure a provider in Settings for a full assessment.",
+    "nextStep": "Compare the attempt against the unit's exit check yourself; configure a provider in Settings, then request a regrade for a full assessment.",
     "alternateApproachRecognised": false,
     "hypothesesChecked": [],
     "citationTags": []

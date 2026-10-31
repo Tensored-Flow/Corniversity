@@ -42,7 +42,6 @@ const EnvSchema = z.object({
   AI_BUDGET_MONTHLY_USD: z.coerce.number().positive().default(40),
   BLOB_STORE: z.enum(["fs", "pg"]).default("fs"),
   MAX_UPLOAD_MB: z.coerce.number().positive().default(200),
-  WORKER_CONCURRENCY: z.coerce.number().int().positive().default(2),
   PORT: z.coerce.number().int().positive().default(3000),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
@@ -68,6 +67,10 @@ export function getEnv(): Env {
     if (!parsed.data.BETTER_AUTH_URL.startsWith("https://")) {
       throw new Error("BETTER_AUTH_URL must use https in production.");
     }
+  } else if (process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID) {
+    // The permissive local defaults (no Secure cookies, placeholder checks skipped) must never
+    // run on the hosting platform by omission.
+    throw new Error("DEPLOYMENT_MODE is 'local' but this process is running on Railway; set DEPLOYMENT_MODE=production.");
   }
   cached = parsed.data;
   return cached;

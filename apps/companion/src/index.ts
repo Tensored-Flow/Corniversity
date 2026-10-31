@@ -7,6 +7,7 @@ import { watch } from "chokidar";
 import { Command } from "commander";
 import { CompanionClient, CompanionError, type PendingTask } from "./client";
 import {
+  assertSafeServerUrl,
   type CompanionConfig,
   type CompanionState,
   configPath,
@@ -206,6 +207,7 @@ program
   .option("--name <name>", "a name for this computer", hostname())
   .option("--root <path...>", "library root folder(s); the inbox inside is watched", [defaultRoot()])
   .action(async (options: { server: string; code: string; name: string; root: string[] }) => {
+    assertSafeServerUrl(options.server);
     const roots = options.root.map((r) => resolve(r));
     for (const root of roots) {
       for (const department of DEPARTMENT_FOLDERS) mkdirSync(join(root, "inbox", department), { recursive: true });

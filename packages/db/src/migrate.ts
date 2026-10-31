@@ -40,6 +40,8 @@ export async function runMigrations(handle: DbHandle): Promise<{ pgvector: boole
   return { pgvector };
 }
 
+export { expectedMigrations, migrationStatus } from "./migration-status";
+
 const isDirectRun = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isDirectRun) {
   const env = getEnv();

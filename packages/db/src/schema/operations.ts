@@ -74,7 +74,7 @@ export const exportRecord = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     kind: text("kind").$type<"full" | "notebook" | "records" | "alter_markdown">().notNull(),
-    status: text("status").$type<"queued" | "ready" | "failed">().notNull().default("queued"),
+    status: text("status").$type<"queued" | "ready" | "failed" | "expired">().notNull().default("queued"),
     storageKey: text("storage_key"),
     createdAt: createdAt(),
     completedAt: tz("completed_at"),

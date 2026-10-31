@@ -16,7 +16,10 @@ seminar chair and research supervisor. All AI, all labelled.
 Course: `proposed` → `source_verified` → `syllabus_ready` → `teaching_ready`; `resource_blocked`
 is a side state with a visible alternative or request. Unit: `draft` → `checking` → `ready`
 (`blocked` side state). A course is `teaching_ready` only when its first two units are `ready`
-and every unit in the syllabus has a verified locator; the validator enforces this.
+and every unit in the syllabus has a verified locator; the validator enforces this structure.
+The substantive checks a unit records (`mathematical-review`, `source-review`) are the content
+author's own review and are shown as such; they are not independent verification, and the
+assessment of the learner's work never depends on them.
 
 ## Prerequisites
 

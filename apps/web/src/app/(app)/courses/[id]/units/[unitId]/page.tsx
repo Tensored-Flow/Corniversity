@@ -12,8 +12,15 @@ import { startActivityAction } from "./actions";
 
 const ASSESSED_KINDS = new Set(["tutorial", "problem_class", "oral", "project", "lab"]);
 
-export default async function UnitPage({ params }: { params: Promise<{ id: string; unitId: string }> }) {
+export default async function UnitPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string; unitId: string }>;
+  searchParams: Promise<{ session?: string }>;
+}) {
   const { id, unitId } = await params;
+  const { session: scheduledSessionId } = await searchParams;
   const session = await requireSession(`/courses/${id}/units/${unitId}`);
   const detail = await getUnitDetail(db(), unitId);
   if (!detail || detail.course.id !== id) notFound();
@@ -51,7 +58,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div className="flex flex-col gap-8">
-          <section aria-labelledby="objectives">
+          <section aria-labelledby="objectives" className="min-w-0 overflow-x-auto">
             <h2 id="objectives" className="text-xl text-ink">
               By the end of this unit
             </h2>
@@ -102,6 +109,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
                           <input type="hidden" name="unitId" value={unit.id} />
                           <input type="hidden" name="activityId" value={a.id} />
                           <input type="hidden" name="courseId" value={id} />
+                          {scheduledSessionId ? <input type="hidden" name="scheduledSessionId" value={scheduledSessionId} /> : null}
                           <Button type="submit" disabled={!allowed} variant={assessed ? "primary" : "secondary"}>
                             {allowed ? "Start" : mode !== "enrolled" && assessed ? "Enrol to attempt" : "Not prepared"}
                           </Button>

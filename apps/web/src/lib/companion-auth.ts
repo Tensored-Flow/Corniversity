@@ -35,6 +35,17 @@ export function withinRateLimit(key: string, max: number, windowMs: number): boo
   return entry.count <= max;
 }
 
+/**
+ * The client address for rate limiting. A proxy appends the address it saw to the end of
+ * X-Forwarded-For, so the rightmost entry is the one the client could not choose; the leftmost
+ * is whatever the client sent.
+ */
 export function clientKey(request: Request): string {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "local";
+  const forwarded =
+    request.headers
+      .get("x-forwarded-for")
+      ?.split(",")
+      .map((part) => part.trim())
+      .filter(Boolean) ?? [];
+  return forwarded.at(-1) || request.headers.get("x-real-ip") || "local";
 }

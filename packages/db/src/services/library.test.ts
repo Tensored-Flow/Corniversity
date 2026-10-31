@@ -7,7 +7,7 @@ import { FsBlobStore } from "../blob";
 import { createDb } from "../client";
 import { stopBoss } from "../queue";
 import { user } from "../schema/auth";
-import { annotation } from "../schema/library";
+import { annotation, resourceAsset } from "../schema/library";
 import { jobRecord } from "../schema/operations";
 import {
   authenticateDevice,
@@ -28,6 +28,7 @@ import {
   renderRequestsMarkdown,
   requestIngestion,
   revokePairing,
+  saveReadingProgress,
   setPermission,
   validateUpload,
 } from "./library";
@@ -281,5 +282,59 @@ describe("acquisition request export", () => {
     expect(markdown).toContain("Sections needed (verified): Chapter 2: Riemannian metrics");
     expect(markdown).toContain("## Suggested by the catalogue");
     expect(markdown).toContain("**Another book**");
+  });
+});
+
+describe("ownership and repeated extraction", () => {
+  it("refuses permission changes and reading progress for an asset the caller does not own", async () => {
+    const [asset] = await handle.db.select().from(resourceAsset).where(eq(resourceAsset.ownerId, OWNER)).limit(1);
+    expect(asset).toBeDefined();
+    await expect(setPermission(handle.db, "someone-else", asset!.id, "external_ai", "allowed", "x")).rejects.toThrow(/not found/i);
+    await expect(saveReadingProgress(handle.db, "someone-else", asset!.id, 3)).rejects.toThrow(/not found/i);
+  });
+
+  it("re-extracting a processed item creates a new job instead of reusing the finished one", async () => {
+    const stored = await receiveUpload(handle.db, blobs, {
+      ownerId: OWNER,
+      filename: "re-extract.pdf",
+      mediaType: "application/pdf",
+      data: Buffer.concat([PDF, Buffer.from("% re-extract copy", "latin1")]),
+      origin: "web_upload",
+      maxBytes: 1_000_000,
+    });
+    const asset = stored.asset;
+    await confirmMetadata(handle.db, OWNER, asset.id, { title: "Re-extract", authors: ["Leon"], courseIds: ["MAT-230"] });
+    await setPermission(handle.db, OWNER, asset.id, "local_extract", "allowed", "my own notes");
+    expect((await requestIngestion(handle.db, OWNER, asset.id)).queued).toBe(true);
+    // The worker finished; the learner asks for a fresh extraction of the processed item.
+    await handle.db.update(resourceAsset).set({ status: "processed" }).where(eq(resourceAsset.id, asset.id));
+    const again = await requestIngestion(handle.db, OWNER, asset.id);
+    expect(again.queued).toBe(true);
+    const jobs = (await handle.db.select().from(jobRecord).where(eq(jobRecord.kind, "ingest-asset"))).filter(
+      (j) => (j.payload as { assetId?: string }).assetId === asset.id,
+    );
+    expect(jobs).toHaveLength(2);
+    expect(jobs.some((j) => j.idempotencyKey.endsWith("#r1"))).toBe(true);
+    expect((await getAsset(handle.db, OWNER, asset.id))!.status).toBe("processing");
+  });
+
+  it("withdrawing private storage removes the stored copy and derived text at once", async () => {
+    const stored = await receiveUpload(handle.db, blobs, {
+      ownerId: OWNER,
+      filename: "withdrawn.pdf",
+      mediaType: "application/pdf",
+      data: Buffer.concat([PDF, Buffer.from("% withdrawn copy\n", "latin1")]),
+      origin: "web_upload",
+      maxBytes: 1_000_000,
+    });
+    expect(stored.outcome).toBe("stored");
+    const key = stored.asset.storageKey!;
+    expect(await blobs.exists(key)).toBe(true);
+    await expect(setPermission(handle.db, OWNER, stored.asset.id, "private_cloud_store", "denied", "changed my mind")).rejects.toThrow(
+      /blob store/,
+    );
+    await setPermission(handle.db, OWNER, stored.asset.id, "private_cloud_store", "denied", "changed my mind", blobs);
+    expect(await blobs.exists(key)).toBe(false);
+    expect(await getAsset(handle.db, OWNER, stored.asset.id)).toBeNull();
   });
 });

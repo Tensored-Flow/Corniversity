@@ -186,6 +186,7 @@ export default async function SessionPage({
                 </div>
               </Card>
               <Workbench
+                key={selected.id}
                 sessionId={id}
                 exerciseId={selected.id}
                 attemptState={latestAttempt?.state ?? "draft"}

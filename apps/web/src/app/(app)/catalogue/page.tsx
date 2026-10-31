@@ -1,7 +1,7 @@
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
 import Link from "next/link";
 import { ReadinessBadge } from "@/components/Readiness";
-import { Badge } from "@/components/ui";
+import { Badge, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 
@@ -16,7 +16,9 @@ export default async function CataloguePage({
 }) {
   await requireSession("/catalogue");
   const params = await searchParams;
-  const [departments, entries] = await Promise.all([listDepartments(db()), listCatalogue(db(), { departmentId: params.department })]);
+  const departments = await listDepartments(db());
+  const unknownDepartment = params.department && !departments.some((d) => d.id === params.department) ? params.department : null;
+  const entries = await listCatalogue(db(), { departmentId: unknownDepartment ? undefined : params.department });
   const filtered = entries.filter((e) => {
     if (params.readiness && e.version.readiness !== params.readiness) return false;
     if (params.launch === "1" && !e.course.launch) return false;
@@ -43,6 +45,11 @@ export default async function CataloguePage({
           anything that is prepared.
         </p>
       </header>
+      {unknownDepartment ? (
+        <div className="mb-4">
+          <Notice tone="rust">There is no department called “{unknownDepartment}”; every department is shown instead.</Notice>
+        </div>
+      ) : null}
 
       <form className="mb-6 flex flex-wrap items-end gap-3 text-sm" method="get">
         <label className="flex flex-col gap-1">

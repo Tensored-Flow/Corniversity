@@ -1,4 +1,5 @@
 import { listEnrolments } from "@corniversity/db/services/enrolment";
+import { listReadingNotes } from "@corniversity/db/services/library";
 import { countEntries, listEntries, listTags, type NotebookKind, questionsShelf, searchEntries } from "@corniversity/db/services/notebook";
 import Link from "next/link";
 import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select, Textarea } from "@/components/ui";
@@ -27,7 +28,7 @@ export default async function NotebookPage({
   const database = db();
   const ownerId = session.user.id;
   const kind = KINDS.includes(params.kind as NotebookKind) ? (params.kind as NotebookKind) : undefined;
-  const [entries, questions, tags, counts, enrolments] = await Promise.all([
+  const [entries, questions, tags, counts, enrolments, readingNotes] = await Promise.all([
     params.q
       ? searchEntries(database, ownerId, params.q)
       : listEntries(database, ownerId, { kind, tag: params.tag, courseId: params.course, limit: 100 }),
@@ -35,6 +36,7 @@ export default async function NotebookPage({
     listTags(database, ownerId),
     countEntries(database, ownerId),
     listEnrolments(database, ownerId),
+    listReadingNotes(database, ownerId, params.q),
   ]);
   const filterHref = (patch: Record<string, string | undefined>) => {
     const next = new URLSearchParams();
@@ -219,6 +221,38 @@ export default async function NotebookPage({
             )}
           </section>
 
+          {readingNotes.length ? (
+            <Card as="section" aria-labelledby="reading-notes-heading">
+              <h2 id="reading-notes-heading" className="text-lg text-ink">
+                Reading notes
+              </h2>
+              <p className="mt-1 text-xs text-ink-3">Written in the reading room; each one opens the page it was made on.</p>
+              <ul className="mt-3 flex flex-col gap-2 text-sm">
+                {readingNotes.map((n) => (
+                  <li key={n.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-3 py-2">
+                    <p className="text-ink">{n.note}</p>
+                    <p className="mt-1 text-xs text-ink-3">
+                      {n.assetId ? (
+                        <Link
+                          href={`/library/read/${n.assetId}${n.page ? `?page=${n.page}` : ""}`}
+                          className="text-brass underline underline-offset-4"
+                        >
+                          {n.item}
+                          {n.page ? `, PDF page ${n.page}` : ""}
+                        </Link>
+                      ) : (
+                        <span>{n.item} (item removed; note kept)</span>
+                      )}
+                      {" · "}
+                      {n.createdAt.toISOString().slice(0, 10)}
+                      {n.mappingStatus === "needs_repair" ? " · needs repair" : ""}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ) : null}
+
           <Card as="section" aria-labelledby="new-heading">
             <h2 id="new-heading" className="text-lg text-ink">
               New entry
@@ -242,11 +276,13 @@ export default async function NotebookPage({
               <Field label="Course" htmlFor="nb-course">
                 <Select id="nb-course" name="courseId" defaultValue="">
                   <option value="">None</option>
-                  {enrolments.map((e) => (
-                    <option key={e.enrolment.id} value={e.course.id}>
-                      {e.course.id} · {e.course.title}
-                    </option>
-                  ))}
+                  {enrolments
+                    .filter((e, i, all) => all.findIndex((o) => o.course.id === e.course.id) === i)
+                    .map((e) => (
+                      <option key={e.course.id} value={e.course.id}>
+                        {e.course.id} · {e.course.title}
+                      </option>
+                    ))}
                 </Select>
               </Field>
               <div className="sm:col-span-2">

@@ -20,7 +20,11 @@ export function PairingCode({ server }: { server: string }) {
             {state.code}
           </p>
           <p className="mt-2 text-xs text-ink-2">On your desktop, in PowerShell at the repository:</p>
-          <pre tabIndex={0} className="mt-1 overflow-x-auto rounded bg-paper p-2 font-mono text-xs text-ink">{`pnpm library:pair -- --server ${server} --code ${state.code} --name "My desktop"`}</pre>
+          <pre
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: the block scrolls sideways and must be reachable by keyboard (axe: scrollable-region-focusable)
+            tabIndex={0}
+            className="mt-1 overflow-x-auto rounded bg-paper p-2 font-mono text-xs text-ink"
+          >{`pnpm library:pair -- --server ${server} --code ${state.code} --name "My desktop"`}</pre>
         </div>
       ) : null}
       {state && "error" in state ? <p className="text-sm text-rust">{state.error}</p> : null}

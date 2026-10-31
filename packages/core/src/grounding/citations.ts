@@ -11,9 +11,11 @@ export interface EvidenceRef {
   locatorId?: string;
   assetId?: string;
   passageId?: string;
+  /** Whether the block carried text the model could read, or only a location. */
+  kind?: "passage" | "location";
 }
 
-export type StatementLabel = "source_backed" | "derived" | "conjecture" | "needs_checking";
+export type StatementLabel = "source_backed" | "derived" | "conjecture" | "needs_checking" | "location_only";
 
 export interface AnnotatedParagraph {
   markdown: string;
@@ -46,7 +48,6 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
   const unknownTags = new Set<string>();
   const usedTags = new Set<string>();
   const uncitedClaims: string[] = [];
-  const allLabels = new Set<StatementLabel>();
 
   const paragraphs = text
     .replace(/\r\n/g, "\n")
@@ -57,10 +58,7 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
       const labels = new Set<StatementLabel>();
       let cleaned = raw.replace(LABEL_MARKER, (_m, key: string) => {
         const label = LABEL_MAP[key];
-        if (label) {
-          labels.add(label);
-          allLabels.add(label);
-        }
+        if (label) labels.add(label);
         return "";
       });
       const citationTags: string[] = [];
@@ -83,10 +81,18 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
         .replace(/[ \t]{2,}/g, " ")
         .replace(/ +([.,;:])/g, "$1")
         .trim();
+      if (labels.has("source_backed")) {
+        // "Source-backed" is reserved for text the model was given. A paragraph that cites only
+        // location pointers is marked as such; one that cites nothing is an unchecked claim.
+        const backedByText = citationTags.some((t) => allowedByTag.get(t)?.kind !== "location");
+        if (!backedByText) {
+          labels.delete("source_backed");
+          labels.add(citationTags.length > 0 ? "location_only" : "needs_checking");
+        }
+      }
       if (hadUnknown && citationTags.length === 0) {
         uncitedClaims.push(cleaned);
         labels.add("needs_checking");
-        allLabels.add("needs_checking");
       }
       return { markdown: cleaned, labels: [...labels], citationTags };
     });
@@ -99,7 +105,7 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
     citations,
     unknownTags: [...unknownTags],
     uncitedClaims,
-    labels: [...allLabels],
+    labels: [...new Set(paragraphs.flatMap((p) => p.labels))],
   };
 }
 
@@ -108,7 +114,9 @@ function tagNumber(tag: string): number {
 }
 
 /** Builds the evidence section shown to a model, numbering blocks deterministically. */
-export function formatEvidenceBlocks(blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[]): {
+export function formatEvidenceBlocks(
+  blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string; kind?: "passage" | "location" }[],
+): {
   prompt: string;
   refs: EvidenceRef[];
 } {
@@ -116,7 +124,14 @@ export function formatEvidenceBlocks(blocks: { label: string; text: string; loca
   const parts: string[] = [];
   blocks.forEach((block, index) => {
     const tag = `E${index + 1}`;
-    refs.push({ tag, label: block.label, locatorId: block.locatorId, assetId: block.assetId, passageId: block.passageId });
+    refs.push({
+      tag,
+      label: block.label,
+      locatorId: block.locatorId,
+      assetId: block.assetId,
+      passageId: block.passageId,
+      kind: block.kind,
+    });
     parts.push(`[${tag}] ${block.label}\n${block.text.trim()}`);
   });
   return { prompt: parts.join("\n\n"), refs };

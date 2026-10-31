@@ -63,7 +63,9 @@ export default async function CampusPage() {
                 <h3 className="mt-2 text-xl text-ink">{next.title}</h3>
                 <div className="mt-4 flex flex-wrap gap-3">
                   {next.unitId ? (
-                    <LinkButton href={`/courses/${courseOf.get(next.enrolmentId)?.id}/units/${next.unitId}`}>Open the material</LinkButton>
+                    <LinkButton href={`/courses/${courseOf.get(next.enrolmentId)?.id}/units/${next.unitId}?session=${next.id}`}>
+                      Open the material
+                    </LinkButton>
                   ) : null}
                   <LinkButton href="/timetable" variant="secondary">
                     Timetable

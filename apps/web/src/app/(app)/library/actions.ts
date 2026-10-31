@@ -86,7 +86,7 @@ export async function setPermissionAction(form: FormData): Promise<void> {
       item,
       "Say briefly on what basis you are deciding (for example the licence, or 'my own notes'). It is recorded with the decision.",
     );
-  await setPermission(db(), session.user.id, assetId, action, status, basis);
+  await setPermission(db(), session.user.id, assetId, action, status, basis, blobs());
   revalidatePath(item);
   revalidatePath("/library");
   redirect(`${item}?saved=permission`);

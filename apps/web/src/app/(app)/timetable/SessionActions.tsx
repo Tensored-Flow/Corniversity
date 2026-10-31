@@ -17,14 +17,14 @@ export function SessionActions({
   const [moving, setMoving] = useState(false);
   if (status === "cancelled" || status === "completed") return null;
   return (
-    <div className="mt-2 flex flex-wrap gap-1 text-[0.7rem]">
+    <div className="mt-2 flex flex-wrap gap-1 text-xs md:text-[0.7rem]">
       <form action={setSessionStatusAction}>
         <input type="hidden" name="sessionId" value={sessionId} />
         <button
           type="submit"
           name="status"
           value="completed"
-          className="rounded border border-stone px-1.5 py-0.5 text-moss hover:bg-moss-soft"
+          className="rounded border border-stone px-2.5 py-1.5 text-moss hover:bg-moss-soft md:px-1.5 md:py-0.5"
         >
           Done
         </button>
@@ -35,7 +35,7 @@ export function SessionActions({
           type="submit"
           name="status"
           value="attempted"
-          className="rounded border border-stone px-1.5 py-0.5 text-ink-2 hover:bg-paper-3"
+          className="rounded border border-stone px-2.5 py-1.5 text-ink-2 hover:bg-paper-3 md:px-1.5 md:py-0.5"
         >
           Attempted
         </button>
@@ -44,7 +44,7 @@ export function SessionActions({
         <button
           type="button"
           onClick={() => setMoving((m) => !m)}
-          className="rounded border border-stone px-1.5 py-0.5 text-ink-2 hover:bg-paper-3"
+          className="rounded border border-stone px-2.5 py-1.5 text-ink-2 hover:bg-paper-3 md:px-1.5 md:py-0.5"
         >
           Move
         </button>
@@ -52,7 +52,7 @@ export function SessionActions({
       <form action={toggleLockAction}>
         <input type="hidden" name="sessionId" value={sessionId} />
         <input type="hidden" name="locked" value={locked ? "0" : "1"} />
-        <button type="submit" className="rounded border border-stone px-1.5 py-0.5 text-ink-2 hover:bg-paper-3">
+        <button type="submit" className="rounded border border-stone px-2.5 py-1.5 text-ink-2 hover:bg-paper-3 md:px-1.5 md:py-0.5">
           {locked ? "Unlock" : "Lock"}
         </button>
       </form>

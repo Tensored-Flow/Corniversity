@@ -17,19 +17,26 @@ export async function getBoss(options: { connectionString?: string; supervise?: 
   if (boss) return boss;
   if (starting) return starting;
   starting = (async () => {
-    const instance = new PgBoss({
-      connectionString: options.connectionString ?? getEnv().DATABASE_URL,
-      schema: "pgboss",
-      max: 4,
-      supervise: options.supervise ?? false,
-      schedule: options.supervise ?? false,
-      application_name: "corniversity",
-    });
-    instance.on("error", (error) => console.error("[queue]", error));
-    await instance.start();
-    await ensureQueues(instance);
-    boss = instance;
-    return instance;
+    try {
+      const instance = new PgBoss({
+        connectionString: options.connectionString ?? getEnv().DATABASE_URL,
+        schema: "pgboss",
+        max: 4,
+        supervise: options.supervise ?? false,
+        schedule: options.supervise ?? false,
+        application_name: "corniversity",
+      });
+      instance.on("error", (error) => console.error("[queue]", error));
+      await instance.start();
+      await ensureQueues(instance);
+      boss = instance;
+      return instance;
+    } catch (error) {
+      // A database blip during start-up must not be cached as a permanent failure: the next
+      // caller gets a fresh attempt instead of the same rejected promise.
+      starting = undefined;
+      throw error;
+    }
   })();
   return starting;
 }

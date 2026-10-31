@@ -105,6 +105,7 @@ export default async function CampusMapPage() {
         </p>
       </header>
       <Card>
+        {/* biome-ignore lint/a11y/useSemanticElements: an SVG plan whose halls are links is a group of controls, not a fieldset */}
         <svg viewBox="0 0 800 570" role="group" aria-labelledby="map-title" className="h-auto w-full">
           <title id="map-title">Plan of the campus with the halls and common buildings</title>
           <rect x="0" y="0" width="800" height="570" fill="var(--paper)" />
@@ -117,9 +118,23 @@ export default async function CampusMapPage() {
               <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="6" fill="var(--paper-2)" stroke="var(--stone-2)" />
               <rect x={p.x} y={p.y} width={p.w} height="6" fill={commons.some((c) => c.id === p.id) ? "var(--brass)" : "var(--slate)"} />
               <text x={p.x + 12} y={p.y + 32} fill="var(--ink)" fontSize="15" fontFamily="var(--font-display)">
-                {p.label}
+                {p.label.includes(" & ") ? (
+                  <>
+                    <tspan x={p.x + 12}>{`${p.label.split(" & ")[0]} &`}</tspan>
+                    <tspan x={p.x + 12} dy="17">
+                      {p.label.split(" & ").slice(1).join(" & ")}
+                    </tspan>
+                  </>
+                ) : (
+                  p.label
+                )}
               </text>
-              <foreignObject x={p.x + 12} y={p.y + 42} width={p.w - 24} height={p.h - 50}>
+              <foreignObject
+                x={p.x + 12}
+                y={p.y + (p.label.includes(" & ") ? 58 : 42)}
+                width={p.w - 24}
+                height={p.h - (p.label.includes(" & ") ? 66 : 50)}
+              >
                 <p style={{ fontSize: "11px", lineHeight: 1.35, color: "var(--ink-3)", fontFamily: "var(--font-ui)" }}>{p.note}</p>
               </foreignObject>
             </a>

@@ -1,22 +1,18 @@
 {
-  "note": "Fixture: the submission lists numerical instances (n=1,2,3) without a general argument. Selected when the finite-examples check fails.",
+  "note": "Fixture selected when the finite-examples check fails. It reports what the check found; it quotes nothing from the submission, because no model has read it, and the worker withholds the verdict of every fixture run.",
   "object": {
-    "verdict": "revision_requested",
-    "confidence": 0.8,
-    "summary": "The computed instances are correct ($\\tfrac12, \\tfrac13, \\tfrac14$ for $n=1,2,3$), but the exercise asks about the sequence for every $n$ and about what it shows for norm equivalence. Three values do not establish $\\int_0^1 x^n\\,dx=\\tfrac{1}{n+1}$ for all $n$, and nothing yet addresses the comparison constant.",
-    "firstGap": {
-      "line": 1,
-      "excerpt": "for n=1",
-      "issue": "A general $n$ is needed: compute $\\int_0^1 x^n\\,dx$ symbolically, then argue about the ratio of the two norms for all $n$."
-    },
+    "verdict": "needs_review",
+    "confidence": 0.5,
+    "summary": "An automatic check found several numerical instances of $n$ and no marker of a general argument. Instances can all be right and still not establish $\\int_0^1 x^n\\,dx=\\tfrac{1}{n+1}$ for every $n$, and the exercise also asks what the sequence shows about a comparison constant. No model has read the text, so this is a prompt to check, not a judgement.",
+    "firstGap": null,
     "checks": [
-      { "criterionId": "sup-norm", "status": "partially_met", "comment": "Instances suggest the value 1 but it is not stated for general n." },
-      { "criterionId": "l1-norm", "status": "partially_met", "comment": "Correct instances; no general formula." },
-      { "criterionId": "conclusion", "status": "not_met", "comment": "No statement about equivalence or a comparison constant." },
-      { "criterionId": "finite-dim-contrast", "status": "not_met", "comment": "Not addressed." }
+      { "criterionId": "sup-norm", "status": "partially_met", "comment": "Not detected for general n by the automatic checks." },
+      { "criterionId": "l1-norm", "status": "partially_met", "comment": "Numerical instances were found; a general formula was not detected." },
+      { "criterionId": "conclusion", "status": "not_met", "comment": "No statement about equivalence or a comparison constant was detected." },
+      { "criterionId": "finite-dim-contrast", "status": "not_met", "comment": "Not detected." }
     ],
-    "strengths": ["The arithmetic is right and points in the correct direction."],
-    "nextStep": "Replace the instances with the general computation and state explicitly what unboundedness of $n+1$ implies for a constant $C$.",
+    "strengths": ["Working instances is a sound way to start; the step to general $n$ is what the exercise assesses."],
+    "nextStep": "Compute $\\int_0^1 x^n\\,dx$ symbolically, then state what the unboundedness of $n+1$ implies for a constant $C$ with $\\|f\\|_\\infty \\le C\\|f\\|_1$.",
     "alternateApproachRecognised": false,
     "hypothesesChecked": [],
     "citationTags": []

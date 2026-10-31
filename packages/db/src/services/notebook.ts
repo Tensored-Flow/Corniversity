@@ -1,5 +1,6 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { type Citation, notebookEntry } from "../schema/index";
 
 export type NotebookEntryRow = typeof notebookEntry.$inferSelect;
@@ -99,6 +100,7 @@ export async function deleteEntry(db: DbOrTx, ownerId: string, id: string): Prom
 }
 
 export async function getEntry(db: DbOrTx, ownerId: string, id: string): Promise<NotebookEntryRow | null> {
+  if (!isUuid(id)) return null;
   const rows = await db
     .select()
     .from(notebookEntry)

@@ -59,7 +59,7 @@ export default async function OnboardingStepPage({
               <span
                 aria-hidden="true"
                 className={[
-                  "mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[0.65rem]",
+                  "mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs",
                   state === "done"
                     ? "border-moss bg-moss-soft text-moss"
                     : state === "current"

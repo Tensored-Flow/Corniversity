@@ -38,7 +38,7 @@ Charge must balance too. $\ce{Fe^3+ + e- -> Fe^2+}$ balances atoms and charge; $
 
 The coefficients of a balanced equation are mole ratios: in the propane equation, 1 mol $\ce{C3H8}$ reacts with 5 mol $\ce{O2}$ to give 3 mol $\ce{CO2}$ and 4 mol $\ce{H2O}$. A mass-to-mass calculation is always the same three steps: mass to moles, mole ratio, moles to mass (OpenStax 4.3).
 
-**Example.** Mass of $\ce{CO2}$ from burning $4.40\ \text{g}$ of propane ($M = 44.10\ \text{g mol}^{-1}$): $n(\ce{C3H8}) = 0.0998\ \text{mol}$; $n(\ce{CO2}) = 3\times0.0998 = 0.299\ \text{mol}$; $m = 0.299\times44.01 = 13.2\ \text{g}$. The check that costs nothing and catches most errors: the total mass of products equals the total mass of reactants, because atoms were conserved.
+**Example.** Mass of $\ce{CO2}$ from burning $4.40\ \text{g}$ of propane ($M = 44.09\ \text{g mol}^{-1}$): $n(\ce{C3H8}) = 0.0998\ \text{mol}$; $n(\ce{CO2}) = 3\times0.0998 = 0.299\ \text{mol}$; $m = 0.299\times44.01 = 13.2\ \text{g}$. The check that costs nothing and catches most errors: the total mass of products equals the total mass of reactants, because atoms were conserved.
 
 **Definition (limiting reactant).** When reactants are not supplied in the stoichiometric ratio, the one used up first is the limiting reactant; it fixes the theoretical yield, and the others are in excess (OpenStax 4.4). Find it by comparing the amount of each reactant with the amount the balanced equation would need; never compare masses.
 

@@ -61,7 +61,11 @@ export default async function SyncPage() {
             <PairingCode server={env.BETTER_AUTH_URL} />
           </div>
           <h3 className="mt-6 text-sm font-medium text-ink">Then, on that computer</h3>
-          <pre tabIndex={0} className="mt-1 overflow-x-auto rounded bg-paper p-3 font-mono text-xs text-ink">{`pnpm library:sync -- --dry-run   # what would be registered (nothing sent)
+          <pre
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: the block scrolls sideways and must be reachable by keyboard (axe: scrollable-region-focusable)
+            tabIndex={0}
+            className="mt-1 overflow-x-auto rounded bg-paper p-3 font-mono text-xs text-ink"
+          >{`pnpm library:sync -- --dry-run   # what would be registered (nothing sent)
 pnpm library:sync                # register files; send permitted uploads
 pnpm library:watch               # keep watching; Ctrl+C stops
 pnpm library:status`}</pre>
@@ -75,6 +79,7 @@ pnpm library:status`}</pre>
           <p className="mt-1 text-sm text-ink-2">
             Pairing creates this under your library root (default: your data root, outside the repository). Only the inbox is watched.
           </p>
+          {/* biome-ignore lint/a11y/noNoninteractiveTabindex: the block scrolls sideways and must be reachable by keyboard (axe: scrollable-region-focusable) */}
           <pre tabIndex={0} className="mt-2 overflow-x-auto rounded bg-paper p-3 font-mono text-xs text-ink">{`<root>/
   inbox/
     mathematics/  physics/  chemistry/
@@ -159,7 +164,7 @@ pnpm library:status`}</pre>
               {waiting.map((a) => (
                 <li key={a.id} className="text-ink">
                   {a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}{" "}
-                  <span className="font-mono text-xs text-ink-3">{a.localPathHint}</span>
+                  <span className="break-all font-mono text-xs text-ink-3">{a.localPathHint}</span>
                 </li>
               ))}
             </ul>
@@ -182,7 +187,7 @@ pnpm library:status`}</pre>
                   <a href={`/library/items/${a.id}`} className="text-brass underline underline-offset-4">
                     {a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}
                   </a>{" "}
-                  <span className="font-mono text-xs text-ink-3">{a.localPathHint}</span>
+                  <span className="break-all font-mono text-xs text-ink-3">{a.localPathHint}</span>
                 </li>
               ))}
             </ul>

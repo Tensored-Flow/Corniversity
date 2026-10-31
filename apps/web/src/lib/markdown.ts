@@ -46,12 +46,26 @@ const mathmlTags = [
   "mstyle",
 ];
 
+/** The only class names allowed through the sanitiser: what the maths and code renderers emit. */
+const ALLOWED_CLASS_NAMES: [string, ...(string | RegExp)[]] = [
+  "className",
+  "math-inline",
+  "math-display",
+  "katex",
+  "katex-display",
+  "katex-mathml",
+  "katex-html",
+  /^language-./,
+];
+
 const schema = {
   ...defaultSchema,
   tagNames: [...(defaultSchema.tagNames ?? []), ...mathmlTags, "span", "div", "sup", "sub"],
   attributes: {
     ...defaultSchema.attributes,
-    "*": [...(defaultSchema.attributes?.["*"] ?? []), "className", "ariaHidden"],
+    // Class names are limited to what the renderer itself emits; otherwise text from a model or
+    // a book could borrow any utility class in the bundle and redraw the page.
+    "*": [...(defaultSchema.attributes?.["*"] ?? []), ALLOWED_CLASS_NAMES, "ariaHidden"],
     math: ["display", "xmlns"],
     mo: [
       "stretchy",

@@ -5,8 +5,8 @@ Nothing here is required to run Corniversity on your own computer.
 
 1. Deploy to Railway (needed for the private website to exist outside your PC).
    Why: the Railway command-line tool on this machine is not signed in and no token is available.
-   Step: open PowerShell in the project folder and run `railway login`, then
-   `pwsh -File infra/deploy-railway.ps1 -DryRun` to see the plan, then `pnpm deploy:railway`.
+   Step: open PowerShell in the project folder and run `pnpm deploy:railway:plan` to see the
+   plan (no login needed), then `railway login`, then `pnpm deploy:railway`.
    The script creates a dedicated project with PostgreSQL, a web service and a worker service,
    generates and sets the secrets, deploys both services from their Dockerfiles (the worker applies
    the migrations on start) and prints the private URL and the one-time bootstrap code. The

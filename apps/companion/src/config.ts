@@ -37,6 +37,16 @@ export const configPath = () => join(configDir(), "companion.json");
 export const statePath = () => join(configDir(), "companion-state.json");
 export const pausePath = () => join(configDir(), "companion.paused");
 
+/** Plain http would send the device token in clear; it is allowed only for a server on this computer. */
+export function assertSafeServerUrl(server: string): URL {
+  const url = new URL(server);
+  const local = ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
+  if (url.protocol !== "https:" && !(url.protocol === "http:" && local)) {
+    throw new Error(`refusing to pair with ${server}: use an https:// address (plain http is allowed only for localhost)`);
+  }
+  return url;
+}
+
 export function defaultRoot(): string {
   return process.env.CORNIVERSITY_DATA_ROOT ?? join(homedir(), "Documents", "Corniversity-Library");
 }

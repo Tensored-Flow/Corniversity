@@ -220,7 +220,7 @@ export default async function TimetablePage({
                         key={s.id}
                         className={[
                           "rounded-[var(--radius-control)] border border-stone p-2 text-xs",
-                          s.status === "completed" ? "opacity-60" : "",
+                          s.status === "completed" ? "bg-paper-3" : "",
                           s.status === "cancelled" ? "line-through opacity-50" : "",
                         ].join(" ")}
                       >
@@ -231,7 +231,7 @@ export default async function TimetablePage({
                         <Badge tone={KIND_TONE[s.sessionKind] ?? "neutral"}>{s.sessionKind.replace("_", " ")}</Badge>
                         {s.unitId ? (
                           <Link
-                            href={`/courses/${courseOf.get(s.enrolmentId)?.id}/units/${s.unitId}`}
+                            href={`/courses/${courseOf.get(s.enrolmentId)?.id}/units/${s.unitId}?session=${s.id}`}
                             className="mt-1 block text-ink underline-offset-4 hover:underline"
                           >
                             {s.title}

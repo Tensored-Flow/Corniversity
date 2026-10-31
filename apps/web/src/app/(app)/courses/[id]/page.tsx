@@ -25,6 +25,9 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-xs text-ink-3">{course.id}</span>
           <ReadinessBadge readiness={version.readiness} />
+          <span className="text-xs text-ink-3">
+            {detail.units.filter((u) => u.status === "ready").length} of {detail.units.length} units prepared
+          </span>
           <Badge>{course.level}</Badge>
           {course.launch ? <Badge tone="brass">Launch course</Badge> : null}
           <span className="text-xs text-ink-3">version {version.version}</span>

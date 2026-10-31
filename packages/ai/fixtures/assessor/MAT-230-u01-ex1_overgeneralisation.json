@@ -1,24 +1,20 @@
 {
-  "note": "Fixture: the submission asserts that all norms on C([0,1]) are equivalent. Selected when the forbidden-claim check fails.",
+  "note": "Fixture selected when the forbidden-claim check fails. It reports what the check found; it quotes nothing from the submission, because no model has read it, and the worker withholds the verdict of every fixture run.",
   "object": {
-    "verdict": "revision_requested",
-    "confidence": 0.88,
-    "summary": "The submission generalises the finite-dimensional theorem to $C([0,1])$. The theorem that all norms are equivalent has finite dimensionality as a hypothesis; $C([0,1])$ is infinite-dimensional, so the theorem does not apply, and the sequence $f_n(x)=x^n$ is exactly a counterexample: $\\|f_n\\|_\\infty=1$ while $\\|f_n\\|_1=\\tfrac{1}{n+1}\\to 0$.",
-    "firstGap": {
-      "line": 1,
-      "excerpt": "all norms are equivalent",
-      "issue": "This holds on finite-dimensional spaces only. The exercise's own sequence shows the sup norm and the integral norm are not equivalent on $C([0,1])$."
-    },
+    "verdict": "needs_review",
+    "confidence": 0.5,
+    "summary": "An automatic check found the claim that all norms are equivalent, applied to $C([0,1])$. That theorem has finite dimensionality as a hypothesis, and $C([0,1])$ is infinite-dimensional; the exercise's own sequence $f_n(x)=x^n$ is the counterexample, with $\\|f_n\\|_\\infty = 1$ while $\\|f_n\\|_1 = \\tfrac{1}{n+1} \\to 0$. No model has read the rest of the text.",
+    "firstGap": null,
     "checks": [
-      { "criterionId": "sup-norm", "status": "not_applicable", "comment": "Not computed." },
-      { "criterionId": "l1-norm", "status": "not_applicable", "comment": "Not computed." },
-      { "criterionId": "conclusion", "status": "not_met", "comment": "The conclusion contradicts the computation the exercise asks for." },
-      { "criterionId": "finite-dim-contrast", "status": "not_met", "comment": "The finite-dimensional hypothesis is the whole point and is missing." }
+      { "criterionId": "sup-norm", "status": "not_applicable", "comment": "Not detected by the automatic checks." },
+      { "criterionId": "l1-norm", "status": "not_applicable", "comment": "Not detected by the automatic checks." },
+      { "criterionId": "conclusion", "status": "not_met", "comment": "A claim contradicting the computation the exercise asks for was detected." },
+      { "criterionId": "finite-dim-contrast", "status": "not_met", "comment": "The finite-dimensional hypothesis is the point of the exercise and was not detected." }
     ],
-    "strengths": ["The finite-dimensional theorem is correctly remembered; the task is to see where its hypothesis is used."],
+    "strengths": ["The finite-dimensional theorem is remembered; the task is to see where its hypothesis is used."],
     "nextStep": "Compute $\\sup_{x\\in[0,1]} x^n$ and $\\int_0^1 x^n\\,dx$, then examine the ratio as $n\\to\\infty$.",
     "alternateApproachRecognised": false,
-    "hypothesesChecked": ["finite dimensionality in the norm-equivalence theorem"],
-    "citationTags": ["E1"]
+    "hypothesesChecked": [],
+    "citationTags": []
   }
 }

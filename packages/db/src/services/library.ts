@@ -1,8 +1,9 @@
 import { createHash, randomBytes, randomInt } from "node:crypto";
 import type { Locator } from "@corniversity/core";
-import { and, asc, desc, eq, gt, inArray, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, inArray, isNotNull, isNull, like, sql } from "drizzle-orm";
 import type { BlobStore } from "../blob";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { IngestAssetPayload, QUEUES } from "../jobs";
 import { enqueue } from "../queue";
 import {
@@ -22,6 +23,7 @@ import {
   source,
   sourceVersion,
 } from "../schema/index";
+import { jobRecord } from "../schema/operations";
 
 export type AssetRow = typeof resourceAsset.$inferSelect;
 export type PermissionRow = typeof processingPermission.$inferSelect;
@@ -291,8 +293,9 @@ export async function isAllowed(db: DbOrTx, ownerId: string, assetId: string, ac
 
 /**
  * Records a permission decision for one action. Denying `private_cloud_store` on a stored asset
- * schedules deletion of the bytes and derived text; denying `external_ai` or `external_embedding`
- * takes effect immediately for every later tutor turn and job (jobs re-check before each step).
+ * removes the stored copy and everything derived from it at once (the blob store is required for
+ * that); denying `external_ai` or `external_embedding` takes effect immediately for every later
+ * tutor turn and job (jobs re-check before each step). The asset must belong to the caller.
  */
 export async function setPermission(
   db: DbOrTx,
@@ -301,7 +304,13 @@ export async function setPermission(
   action: ProcessingAction,
   status: "allowed" | "denied",
   basis: string,
+  blobs?: BlobStore,
 ): Promise<void> {
+  const asset = await getAsset(db, ownerId, assetId);
+  if (!asset) throw new LibraryError("not_found", "Asset not found.");
+  if (action === "private_cloud_store" && status === "denied" && asset.storageKey && !blobs) {
+    throw new Error("withdrawing private storage needs the blob store so the stored copy can be removed");
+  }
   await db
     .update(processingPermission)
     .set({ revokedAt: new Date() })
@@ -323,9 +332,26 @@ export async function setPermission(
     details: { basis },
   });
   if (action === "private_cloud_store") {
-    const [asset] = await db.select().from(resourceAsset).where(eq(resourceAsset.id, assetId)).limit(1);
-    if (asset && status === "allowed" && asset.status === "registered_local") {
+    if (status === "allowed" && asset.status === "registered_local") {
       await db.update(resourceAsset).set({ status: "upload_requested" }).where(eq(resourceAsset.id, assetId));
+    }
+    if (status === "denied" && asset.storageKey && blobs) {
+      // The learner withdrew storage: the copy and everything derived from it go now. A file
+      // the companion registered stays on the shelf as a local-only record; a web upload has
+      // no other home and is deleted.
+      await blobs.delete(asset.storageKey).catch(() => undefined);
+      await db.delete(passage).where(eq(passage.assetId, assetId));
+      await db.delete(extractedPage).where(eq(extractedPage.assetId, assetId));
+      await db.update(annotation).set({ assetId: null, mappingStatus: "needs_repair" }).where(eq(annotation.assetId, assetId));
+      const localOnly = asset.origin === "companion";
+      await db
+        .update(resourceAsset)
+        .set(
+          localOnly
+            ? { status: "registered_local", localOnly: true, storageKey: null, pageCount: null }
+            : { status: "deleted", deletedAt: new Date(), storageKey: null },
+        )
+        .where(eq(resourceAsset.id, assetId));
     }
   }
 }
@@ -339,6 +365,7 @@ export async function listAssets(db: DbOrTx, ownerId: string): Promise<AssetRow[
 }
 
 export async function getAsset(db: DbOrTx, ownerId: string, assetId: string): Promise<AssetRow | null> {
+  if (!isUuid(assetId)) return null;
   const rows = await db
     .select()
     .from(resourceAsset)
@@ -347,7 +374,12 @@ export async function getAsset(db: DbOrTx, ownerId: string, assetId: string): Pr
   return rows[0] ?? null;
 }
 
-/** Queues ingestion when the asset is validated and processing is permitted. Idempotent on the hash. */
+/**
+ * Queues ingestion when the asset is validated and processing is permitted. Every request gets
+ * its own job record (a re-extraction of a processed item, or an extraction after a cancelled
+ * job, must not collide with a finished record under the same key); pg-boss's singleton key on
+ * the hash keeps two jobs for the same bytes from running at once.
+ */
 export async function requestIngestion(db: DbOrTx, ownerId: string, assetId: string): Promise<{ queued: boolean; reason?: string }> {
   const asset = await getAsset(db, ownerId, assetId);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
@@ -364,9 +396,20 @@ export async function requestIngestion(db: DbOrTx, ownerId: string, assetId: str
   const permitted = await isAllowed(db, ownerId, assetId, "local_extract");
   if (!permitted)
     return { queued: false, reason: "Text extraction is not permitted for this item. Allow 'extraction and indexing' on the item page." };
+  const baseKey = `ingest:${asset.sha256}:${asset.id}`;
+  const [prior] = await db
+    .select({ n: count() })
+    .from(jobRecord)
+    .where(like(jobRecord.idempotencyKey, `${baseKey}%`));
+  const idempotencyKey = prior && prior.n > 0 ? `${baseKey}#r${prior.n}` : baseKey;
+  const previousStatus = asset.status;
   await db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, assetId));
-  const payload = IngestAssetPayload.parse({ idempotencyKey: `ingest:${asset.sha256}:${asset.id}`, ownerId, assetId });
-  await enqueue(db, { queue: QUEUES.ingestAsset, kind: "ingest-asset", payload, singletonKey: asset.sha256 });
+  const payload = IngestAssetPayload.parse({ idempotencyKey, ownerId, assetId });
+  const result = await enqueue(db, { queue: QUEUES.ingestAsset, kind: "ingest-asset", payload, singletonKey: asset.sha256 });
+  if (!result.created) {
+    await db.update(resourceAsset).set({ status: previousStatus }).where(eq(resourceAsset.id, assetId));
+    return { queued: false, reason: "A job for this file already exists; see the jobs page." };
+  }
   return { queued: true };
 }
 
@@ -441,7 +484,10 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
     select p.id, p.asset_id, p.text, p.heading, e.physical_index, e.printed_label,
            ts_rank(p.tsv, websearch_to_tsquery('english', ${query})) as rank
     from passage p join extracted_page e on e.id = p.page_id
-    where p.asset_id in ${sql.raw(`(${allowed.map((a) => `'${a.id}'`).join(",")})`)} and p.tsv @@ websearch_to_tsquery('english', ${query})
+    where p.asset_id in (${sql.join(
+      allowed.map((a) => sql`${a.id}::uuid`),
+      sql`, `,
+    )}) and p.tsv @@ websearch_to_tsquery('english', ${query})
     order by rank desc limit ${limit}`);
   return (
     rows.rows as {
@@ -653,6 +699,7 @@ export async function getReadingProgress(db: DbOrTx, ownerId: string, assetId: s
 }
 
 export async function saveReadingProgress(db: DbOrTx, ownerId: string, assetId: string, physicalIndex: number): Promise<void> {
+  if (!(await getAsset(db, ownerId, assetId))) throw new LibraryError("not_found", "Asset not found.");
   await db
     .insert(readingProgress)
     .values({ ownerId, assetId, physicalIndex })
@@ -678,6 +725,41 @@ export async function tableOfContents(db: DbOrTx, assetId: string, limit = 400) 
 
 export async function passagesForPage(db: DbOrTx, pageId: string) {
   return db.select().from(passage).where(eq(passage.pageId, pageId)).orderBy(asc(passage.ordinal));
+}
+
+export interface ReadingNote {
+  id: string;
+  assetId: string | null;
+  item: string;
+  note: string;
+  selectedText: string | null;
+  page: number | null;
+  createdAt: Date;
+  mappingStatus: "resolved" | "needs_repair";
+}
+
+/** Notes written in the reading room, newest first, so the notebook can show and search them. */
+export async function listReadingNotes(db: DbOrTx, ownerId: string, query?: string, limit = 50): Promise<ReadingNote[]> {
+  const rows = await db
+    .select({ annotation, title: resourceAsset.confirmedTitle, filename: resourceAsset.filename })
+    .from(annotation)
+    .leftJoin(resourceAsset, eq(annotation.assetId, resourceAsset.id))
+    .where(and(eq(annotation.ownerId, ownerId), sql`length(${annotation.noteMarkdown}) > 0`))
+    .orderBy(desc(annotation.updatedAt))
+    .limit(limit);
+  const q = query?.trim().toLowerCase();
+  return rows
+    .filter((r) => !q || r.annotation.noteMarkdown.toLowerCase().includes(q) || (r.annotation.selectedText ?? "").toLowerCase().includes(q))
+    .map((r) => ({
+      id: r.annotation.id,
+      assetId: r.annotation.assetId,
+      item: r.title ?? r.filename ?? "(item removed)",
+      note: r.annotation.noteMarkdown,
+      selectedText: r.annotation.selectedText,
+      page: r.annotation.locator.kind === "pdf" ? r.annotation.locator.physicalPageIndex + 1 : null,
+      createdAt: r.annotation.createdAt,
+      mappingStatus: r.annotation.mappingStatus,
+    }));
 }
 
 export async function listAnnotations(db: DbOrTx, ownerId: string, assetId: string): Promise<AnnotationRow[]> {

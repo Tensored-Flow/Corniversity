@@ -45,7 +45,14 @@ describe("pricing", () => {
     // 1000 input tokens * $4/M + 1000 output * $20/M = $0.024
     expect(cost).toBeCloseTo(0.024, 6);
   });
-  it("returns zero for unknown models rather than guessing", () => {
-    expect(estimateCostUsd("unknown-model", { inputTokens: 100, outputTokens: 100, cacheReadTokens: 0, cacheWriteTokens: 0 })).toBe(0);
+  it("prices an unknown model at the dearest known rate so an estimate never under-counts", () => {
+    // 100 input tokens at $10/M plus 100 output tokens at $50/M (the dearest entries in the table).
+    expect(estimateCostUsd("some-new-model", { inputTokens: 100, outputTokens: 100, cacheReadTokens: 0, cacheWriteTokens: 0 })).toBeCloseTo(
+      0.006,
+      9,
+    );
+  });
+  it("the fixture provider costs nothing", () => {
+    expect(estimateCostUsd("fixture", { inputTokens: 100, outputTokens: 100, cacheReadTokens: 0, cacheWriteTokens: 0 })).toBe(0);
   });
 });

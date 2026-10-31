@@ -64,7 +64,8 @@ test.describe("unauthenticated access", () => {
     expect(response.status()).toBe(200);
     const body = (await response.json()) as Record<string, unknown>;
     expect(body.ok).toBe(true);
-    expect(Object.keys(body).sort()).toEqual(["at", "database", "latencyMs", "ok"]);
+    expect(Object.keys(body).sort()).toEqual(["at", "database", "latencyMs", "migrations", "ok"]);
+    expect(body.migrations).toBe("current");
   });
   test("sign-up is closed once the owner exists", async ({ request }) => {
     const response = await request.post("/api/auth/sign-up/email", {

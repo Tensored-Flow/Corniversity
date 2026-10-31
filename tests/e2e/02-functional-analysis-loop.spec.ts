@@ -43,9 +43,11 @@ test.describe("functional analysis learning loop", () => {
         "Since all norms are equivalent, the sup norm and the integral norm are comparable on C([0,1]), so the sequence shows nothing special.",
       );
       await submit.click();
-      await expect(page.getByText("Revision requested").first()).toBeVisible({ timeout: 90_000 });
-      await expect(page.getByText(/finite-dimensional theorem to/i).first()).toBeVisible();
-      await screenshot(page, "05-feedback-revision-requested");
+      // No model read the attempt, so the verdict is withheld; the automatic check still objects.
+      await expect(page.getByText("Needs review").first()).toBeVisible({ timeout: 90_000 });
+      await expect(page.getByText(/verdict is withheld/i).first()).toBeVisible();
+      await expect(page.getByText(/not true in general/i).first()).toBeVisible();
+      await screenshot(page, "05-feedback-withheld-check-failed");
 
       // Revise with a correct argument.
       await attempt.fill(
@@ -57,11 +59,14 @@ test.describe("functional analysis learning loop", () => {
         ].join("\n"),
       );
       await submit.click();
-      await expect(page.getByText("Accepted", { exact: true }).first()).toBeVisible({ timeout: 90_000 });
-      await screenshot(page, "06-feedback-accepted");
+      // Every automatic check passes, and still no acceptance: nobody has read the argument.
+      await expect(page.getByText("Needs review").first()).toBeVisible({ timeout: 90_000 });
+      await expect(page.getByText(/verdict is withheld/i).first()).toBeVisible();
+      await expect(page.getByText("Accepted", { exact: true })).toHaveCount(0);
+      await screenshot(page, "06-feedback-withheld-checks-passed");
     } else {
-      // An earlier run already reached acceptance; the record must still be here.
-      await expect(page.getByText("Accepted", { exact: true }).first()).toBeVisible();
+      // An earlier run already submitted; the withheld record must still be here.
+      await expect(page.getByText("Needs review").first()).toBeVisible();
     }
 
     await page.reload();

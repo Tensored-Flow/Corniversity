@@ -41,8 +41,8 @@ that account exists.
 | `pnpm eval:academic` | Academic evaluation set |
 | `pnpm content:validate` | Validates `content/` and reports readiness counts |
 | `pnpm library:pair -- --server <url> --code <code>`, `pnpm library:sync -- --dry-run`, `pnpm library:watch`, `pnpm library:status` | Desktop companion; see `apps/companion/README.md` |
-| `pnpm backup`, `pnpm restore <file> [--yes]`, `pnpm health` | Logical database backup, restore (dry run by default) and health check |
-| `pnpm deploy:railway` | Deploys to a dedicated Railway project after `railway login` |
+| `pnpm backup`, `pnpm restore <file> [--yes]`, `pnpm health` | Logical database backup (a small document plus a `<file>.blobs/` folder of stored originals; keep them together), restore (dry run by default) and health check |
+| `pnpm deploy:railway:plan`, `pnpm deploy:railway` | Prints the deployment plan; deploys to a dedicated Railway project after `railway login` |
 
 ## Where private data lives
 

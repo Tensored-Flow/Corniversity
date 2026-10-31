@@ -1,5 +1,7 @@
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { learnerVisibleReference } from "@corniversity/core/domain/reference";
+import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { AssessSubmissionPayload, QUEUES } from "../jobs";
 import { enqueue } from "../queue";
 import {
@@ -11,6 +13,7 @@ import {
   feedbackReview,
   instructorArtifact,
   learningSession,
+  scheduledSession,
   teachingUnit,
   unitExercise,
 } from "../schema/index";
@@ -41,9 +44,29 @@ export class LearningError extends Error {
  * and resume at their saved state; a unit that is not prepared cannot be started (audit mode
  * may read the lesson but cannot open a tutorial).
  */
+/**
+ * Ties a learning session to the timetable slot that asked for it, so that completing the work
+ * completes the slot instead of leaving two places to keep in step.
+ */
+async function linkScheduledSession(db: DbOrTx, ownerId: string, learningSessionId: string, scheduledSessionId?: string): Promise<void> {
+  if (!scheduledSessionId || !isUuid(scheduledSessionId)) return;
+  const [slot] = await db
+    .update(scheduledSession)
+    .set({ learningSessionId, status: "attempted" })
+    .where(
+      and(
+        eq(scheduledSession.id, scheduledSessionId),
+        eq(scheduledSession.ownerId, ownerId),
+        inArray(scheduledSession.status, ["planned", "attempted"]),
+      ),
+    )
+    .returning({ id: scheduledSession.id });
+  if (slot) await db.update(learningSession).set({ scheduledSessionId }).where(eq(learningSession.id, learningSessionId));
+}
+
 export async function startOrResumeSession(
   db: DbOrTx,
-  input: { ownerId: string; unitId: string; activityId: string },
+  input: { ownerId: string; unitId: string; activityId: string; scheduledSessionId?: string },
 ): Promise<{ session: LearningSessionRow; created: boolean }> {
   const [unit] = await db.select().from(teachingUnit).where(eq(teachingUnit.id, input.unitId)).limit(1);
   if (!unit) throw new LearningError("activity_not_found", "Unit not found.");
@@ -82,6 +105,7 @@ export async function startOrResumeSession(
     .limit(1);
   if (existing[0]) {
     await db.update(learningSession).set({ lastActiveAt: new Date() }).where(eq(learningSession.id, existing[0].id));
+    await linkScheduledSession(db, input.ownerId, existing[0].id, input.scheduledSessionId);
     return { session: existing[0], created: false };
   }
   const [created] = await db
@@ -96,10 +120,12 @@ export async function startOrResumeSession(
     })
     .returning();
   if (!created) throw new Error("session insert returned nothing");
+  await linkScheduledSession(db, input.ownerId, created.id, input.scheduledSessionId);
   return { session: created, created: true };
 }
 
 export async function getSession(db: DbOrTx, ownerId: string, sessionId: string): Promise<LearningSessionRow | null> {
+  if (!isUuid(sessionId)) return null;
   const rows = await db
     .select()
     .from(learningSession)
@@ -124,6 +150,12 @@ export async function completeSession(db: DbOrTx, ownerId: string, sessionId: st
     .update(learningSession)
     .set({ status: "completed", endedAt: new Date(), state: { ...session.state, summary } })
     .where(eq(learningSession.id, sessionId));
+  if (session.scheduledSessionId) {
+    await db
+      .update(scheduledSession)
+      .set({ status: "completed" })
+      .where(and(eq(scheduledSession.id, session.scheduledSessionId), eq(scheduledSession.ownerId, ownerId)));
+  }
 }
 
 export async function listOpenSessions(db: DbOrTx, ownerId: string) {
@@ -160,6 +192,7 @@ export async function getOrCreateAttempt(
 }
 
 export async function getAttempt(db: DbOrTx, ownerId: string, attemptId: string): Promise<AttemptRow | null> {
+  if (!isUuid(attemptId)) return null;
   const rows = await db
     .select()
     .from(attempt)
@@ -329,14 +362,20 @@ export async function getAttemptHistory(db: DbOrTx, ownerId: string, exerciseId:
     versions: versions
       .filter((v) => v.attemptId === a.id)
       .map((v) => {
-        const run = runs.find((r) => r.submissionVersionId === v.id) ?? null;
+        // A regrade adds a later run for the same version; the card shows the latest judgement
+        // and every review filed against any run of that version.
+        const versionRuns = runs
+          .filter((r) => r.submissionVersionId === v.id)
+          .sort((x, y) => y.createdAt.getTime() - x.createdAt.getTime());
+        const run = versionRuns[0] ?? null;
+        const runIds = new Set(versionRuns.map((r) => r.id));
         return {
           id: v.id,
           version: v.version,
           contentMarkdown: v.contentMarkdown,
           submittedAt: v.submittedAt,
           run,
-          reviews: run ? reviews.filter((r) => r.assessmentRunId === run.id) : [],
+          reviews: reviews.filter((r) => runIds.has(r.assessmentRunId)),
         };
       }),
   }));
@@ -377,7 +416,7 @@ export async function revealReference(db: DbOrTx, ownerId: string, attemptId: st
       });
     }
   }
-  return { markdown: artifact.markdown };
+  return { markdown: learnerVisibleReference(artifact.markdown) };
 }
 
 export async function fileReview(
@@ -386,16 +425,57 @@ export async function fileReview(
 ): Promise<typeof feedbackReview.$inferSelect> {
   const { submissionVersion } = await import("../schema/index");
   const [owned] = await db
-    .select({ id: assessmentRun.id })
+    .select({ run: assessmentRun, attemptId: attempt.id, exerciseId: attempt.exerciseId })
     .from(assessmentRun)
     .innerJoin(submissionVersion, eq(assessmentRun.submissionVersionId, submissionVersion.id))
     .innerJoin(attempt, eq(submissionVersion.attemptId, attempt.id))
     .where(and(eq(assessmentRun.id, input.assessmentRunId), eq(attempt.ownerId, input.ownerId)))
     .limit(1);
   if (!owned) throw new LearningError("attempt_not_found", "Assessment not found.");
+  let newRunId: string | undefined;
+  if (input.kind === "regrade") {
+    // A regrade is a real re-assessment of the same submission version: a fresh run under its
+    // own key, queued like the first one. With the fixture provider it is withheld again, honestly.
+    const [prior] = await db
+      .select({ n: count() })
+      .from(assessmentRun)
+      .where(eq(assessmentRun.submissionVersionId, owned.run.submissionVersionId));
+    const idempotencyKey = `assess:${owned.run.submissionVersionId}#r${prior?.n ?? 1}`;
+    const [rerun] = await db
+      .insert(assessmentRun)
+      .values({
+        submissionVersionId: owned.run.submissionVersionId,
+        rubricVersion: owned.run.rubricVersion,
+        graderConfig: owned.run.graderConfig,
+        status: "queued",
+        idempotencyKey,
+      })
+      .returning({ id: assessmentRun.id });
+    if (!rerun) throw new Error("assessment run insert returned nothing");
+    newRunId = rerun.id;
+    await db.update(attempt).set({ state: "reviewing" }).where(eq(attempt.id, owned.attemptId));
+    const payload = AssessSubmissionPayload.parse({
+      idempotencyKey,
+      ownerId: input.ownerId,
+      submissionVersionId: owned.run.submissionVersionId,
+      assessmentRunId: rerun.id,
+    });
+    await enqueue(db, { queue: QUEUES.assessSubmission, kind: "assess-submission", payload });
+  }
   const [review] = await db
     .insert(feedbackReview)
-    .values({ assessmentRunId: input.assessmentRunId, kind: input.kind, learnerNote: input.note })
+    .values({
+      assessmentRunId: input.assessmentRunId,
+      kind: input.kind,
+      learnerNote: input.note,
+      ...(newRunId
+        ? {
+            status: "resolved" as const,
+            resolution: { outcome: "re-assessed", note: "A new assessment run was queued.", newRunId },
+            resolvedAt: new Date(),
+          }
+        : {}),
+    })
     .returning();
   if (!review) throw new Error("review insert returned nothing");
   await db.insert(auditEvent).values({

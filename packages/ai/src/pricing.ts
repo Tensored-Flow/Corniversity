@@ -27,8 +27,30 @@ export function knownModels(): string[] {
   return Object.keys(PRICES);
 }
 
-export function estimateCostUsd(model: string, usage: Usage): number {
+export function isKnownModel(model: string): boolean {
+  return model in PRICES;
+}
+
+/**
+ * An unknown model id is priced at the dearest known rate for each component, so a budget
+ * estimate can only over-count, never under-count. The fixture provider makes no request and
+ * costs nothing.
+ */
+function priceFor(model: string): Price | null {
+  if (model === "fixture") return null;
   const price = PRICES[model];
+  if (price) return price;
+  const all = Object.values(PRICES);
+  return {
+    inputPerMTok: Math.max(...all.map((p) => p.inputPerMTok)),
+    outputPerMTok: Math.max(...all.map((p) => p.outputPerMTok)),
+    cacheReadPerMTok: Math.max(...all.map((p) => p.cacheReadPerMTok)),
+    cacheWritePerMTok: Math.max(...all.map((p) => p.cacheWritePerMTok)),
+  };
+}
+
+export function estimateCostUsd(model: string, usage: Usage): number {
+  const price = priceFor(model);
   if (!price) return 0;
   const cost =
     (usage.inputTokens * price.inputPerMTok +

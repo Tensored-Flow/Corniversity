@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { DeterministicCheck } from "@corniversity/core";
 import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
+import { reconcileVerdict } from "@corniversity/core/checks/verdict";
 import { annotateTurn, formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
 import { l1NormXn, supNormXn } from "@corniversity/core/labs/index";
 import { describe, expect, it } from "vitest";
@@ -168,5 +169,65 @@ describe("cases that need a live model or a human reviewer (recorded, not claime
       "a peer refusing to retrieve an unreleased solution (common room is Milestone 6)",
     ];
     expect(pending.length).toBe(5);
+  });
+});
+
+describe("honesty of the assessment layer", () => {
+  const ex = exercise("MAT-230", "01-", "MAT-230-u01-ex1");
+
+  it("a fixture run never yields an acceptance, however confident the scripted reply", () => {
+    const out = reconcileVerdict({ verdict: "accepted", confidence: 0.82, live: false, deterministic: [] });
+    expect(out.verdict).toBe("needs_review");
+    expect(out.confidence).toBeLessThanOrEqual(0.5);
+    expect(out.notes.join(" ")).toMatch(/withheld/);
+  });
+
+  it("a live acceptance is held for review when an automatic check found a claim that is not true in general", () => {
+    const over =
+      "Since all norms are equivalent, the sup norm and the integral norm are comparable on C([0,1]), so the sequence shows nothing special.";
+    const out = reconcileVerdict({
+      verdict: "accepted",
+      confidence: 0.9,
+      live: true,
+      deterministic: runDeterministicChecks(over, ex.deterministicChecks),
+    });
+    expect(out.verdict).toBe("needs_review");
+  });
+
+  it("an empty or token submission earns no green tick from an absence check", () => {
+    expect(passedIds("", ex.deterministicChecks)).toEqual([]);
+    expect(passedIds("The norms are not equivalent.", ex.deterministicChecks)).toEqual([]);
+  });
+
+  it("a list of instances introduced by 'Suppose' is still a list of instances", () => {
+    const list =
+      "Suppose n = 1, 2, 3. Then the integrals are 1/2, 1/3 and 1/4 and the sup norm is 1 each time, so the norms are not equivalent.";
+    const failed = failedIds(list, ex.deterministicChecks);
+    expect(failed.some((id) => /example/i.test(id))).toBe(true);
+  });
+
+  it("a hypothesis far from the claim it must support does not count; one beside it does", () => {
+    const check: DeterministicCheck = {
+      id: "closed-needs-complete",
+      kind: "requires_hypothesis",
+      description: "A closed subspace is complete only inside a complete space.",
+      params: { triggerPatterns: ["closed subspace"], hypothesisPatterns: ["banach"] },
+    };
+    const apart =
+      "Every closed subspace of a normed space is complete, so the kernel is complete. Other facts follow. Later we recall that a Banach space is a complete normed space.";
+    const beside = "Let X be a Banach space. Every closed subspace of X is complete, so the kernel is complete.";
+    expect(runDeterministicChecks(apart, [check])[0]?.passed).toBe(false);
+    expect(runDeterministicChecks(beside, [check])[0]?.passed).toBe(true);
+  });
+
+  it("a numeric answer in scientific notation is read rather than marked missing", () => {
+    const check: DeterministicCheck = {
+      id: "wavelength",
+      kind: "numeric_value",
+      description: "656.4 nm",
+      params: { expected: 656.4, tolerance: 0.05 },
+    };
+    expect(runDeterministicChecks("The Balmer line is at 6.564 × 10^2 nm.", [check])[0]?.passed).toBe(true);
+    expect(runDeterministicChecks("The Balmer line is at 6.564e2 nm.", [check])[0]?.passed).toBe(true);
   });
 });

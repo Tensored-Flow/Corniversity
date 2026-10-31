@@ -21,7 +21,12 @@ async function main() {
   await registerHandlers(boss, handle.db, env);
   console.log(`[worker] listening on queues: ${Object.values(QUEUES).join(", ")}`);
 
-  const health = startHealthServer(Number(process.env.WORKER_HEALTH_PORT ?? 3100), () => ({
+  // Railway health-checks the port it injects as PORT (the deploy script sets both to 3100), so
+  // PORT is honoured only on the platform; locally the shared root .env's PORT belongs to the web
+  // app, and the worker keeps 3100 unless WORKER_HEALTH_PORT says otherwise.
+  const onRailway = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID);
+  const healthPort = Number(process.env.WORKER_HEALTH_PORT ?? (onRailway ? process.env.PORT : undefined) ?? 3100);
+  const health = startHealthServer(healthPort, () => ({
     ok: true,
     queues: Object.values(QUEUES),
     pgvector: migrated.pgvector,

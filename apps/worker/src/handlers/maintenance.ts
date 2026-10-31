@@ -1,6 +1,8 @@
+import { createBlobStore } from "@corniversity/db/blob";
 import { MaintenancePayload } from "@corniversity/db/jobs";
 import { pairingCode } from "@corniversity/db/schema/learner";
-import { and, isNull, lt, sql } from "drizzle-orm";
+import { exportRecord } from "@corniversity/db/schema/operations";
+import { and, eq, isNotNull, isNull, lt, sql } from "drizzle-orm";
 import type { HandlerContext } from "./index";
 
 export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Promise<Record<string, unknown>> {
@@ -20,12 +22,21 @@ export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Pro
       const due = (result.rows[0] as { due?: number } | undefined)?.due ?? 0;
       return { revisionItemsDue: due };
     }
-    case "purge-deleted-assets": {
-      const result = await ctx.db.execute(
-        sql`delete from asset_blob where storage_key in (
-              select storage_key from resource_asset where deleted_at is not null and deleted_at < now() - interval '30 days' and storage_key is not null)`,
-      );
-      return { purgedBlobs: result.rowCount ?? 0 };
+    case "expire-old-exports": {
+      // Stored originals go the moment an item is deleted or its storage permission is withdrawn,
+      // so nothing is left to purge there. Export files are kept for 30 days after they are
+      // built, then removed; the export's row stays so the records page can say it expired.
+      const blobs = createBlobStore(ctx.env.BLOB_STORE, ctx.db, ctx.env.CORNIVERSITY_DATA_ROOT);
+      const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      const stale = await ctx.db
+        .select({ id: exportRecord.id, storageKey: exportRecord.storageKey })
+        .from(exportRecord)
+        .where(and(eq(exportRecord.status, "ready"), isNotNull(exportRecord.storageKey), lt(exportRecord.completedAt, cutoff)));
+      for (const row of stale) {
+        if (row.storageKey) await blobs.delete(row.storageKey).catch(() => undefined);
+        await ctx.db.update(exportRecord).set({ status: "expired", storageKey: null }).where(eq(exportRecord.id, row.id));
+      }
+      return { expiredExports: stale.length };
     }
   }
 }

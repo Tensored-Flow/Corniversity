@@ -2,13 +2,16 @@ import {
   ASSESSOR_PROMPT_VERSION,
   AssessorFeedbackSchema,
   buildAssessorSystemPrompt,
+  decideBudget,
   estimateCostUsd,
+  estimateRunCostUsd,
   numberLines,
   PRICING_VERSION,
   ProviderError,
   ROLE_CONTRACTS,
 } from "@corniversity/ai";
 import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
+import { reconcileVerdict } from "@corniversity/core/checks/verdict";
 import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
 import {
@@ -21,6 +24,7 @@ import {
   unitExercise,
 } from "@corniversity/db/schema/index";
 import { recordEvidence } from "@corniversity/db/services/evidence";
+import { getBudgetLimits, getSpend } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, eq } from "drizzle-orm";
 import { providerFor } from "../provider";
@@ -91,22 +95,37 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
   let model = live ? run.graderConfig.model : "fixture";
 
+  if (live) {
+    // The same budget gate as the web routes: a submission must never spend past the owner's
+    // daily or monthly limit just because it arrives through the queue.
+    const limits = await getBudgetLimits(db, payload.ownerId, ctx.env);
+    const spend = await getSpend(db, payload.ownerId);
+    const estimate = estimateRunCostUsd(model, system, contract.limits.maxOutputTokens);
+    const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
+    if (!decision.allowed) {
+      runStatus = "budget_blocked";
+      errorText = decision.reason;
+    }
+  }
+
   try {
-    const result = await provider.generateStructured({
-      role: "assessor",
-      purpose: "assess-submission",
-      system,
-      messages: [
-        { role: "user", content: "Assess the numbered submission according to the standard and return the structured judgement." },
-      ],
-      schema: AssessorFeedbackSchema,
-      schemaName: "AssessorFeedback",
-      maxTokens: contract.limits.maxOutputTokens,
-      scenario,
-    });
-    feedbackObject = result.object;
-    usage = result.usage;
-    model = result.model;
+    if (runStatus === "ok") {
+      const result = await provider.generateStructured({
+        role: "assessor",
+        purpose: "assess-submission",
+        system,
+        messages: [
+          { role: "user", content: "Assess the numbered submission according to the standard and return the structured judgement." },
+        ],
+        schema: AssessorFeedbackSchema,
+        schemaName: "AssessorFeedback",
+        maxTokens: contract.limits.maxOutputTokens,
+        scenario,
+      });
+      feedbackObject = result.object;
+      usage = result.usage;
+      model = result.model;
+    }
   } catch (error) {
     if (error instanceof ProviderError) {
       runStatus = error.kind === "refused" ? "refused" : error.kind === "budget_exceeded" ? "budget_blocked" : "error";
@@ -147,20 +166,14 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     return { status: "failed", error: errorText };
   }
 
-  // Reconciliation: rules only lower confidence or route to review; they never upgrade a verdict.
-  let verdict = feedbackObject.verdict;
-  let confidence = feedbackObject.confidence;
-  const notes: string[] = [];
-  const forbiddenFailed = deterministic.some((d) => !d.passed && /forbidden|not true in general/i.test(d.detail));
-  if (verdict === "accepted" && forbiddenFailed) {
-    verdict = "needs_review";
-    confidence = Math.min(confidence, 0.4);
-    notes.push("An automatic check flagged a claim that is not true in general; the acceptance is held for review.");
-  }
-  if (confidence < 0.6 && verdict !== "needs_review") {
-    verdict = "needs_review";
-    notes.push("The assessor's confidence is below the threshold, so this judgement is provisional.");
-  }
+  // Reconciliation (pure and tested in core): rules only lower confidence or route to review;
+  // they never upgrade a verdict, and a fixture run never yields one.
+  const { verdict, confidence, notes } = reconcileVerdict({
+    verdict: feedbackObject.verdict,
+    confidence: feedbackObject.confidence,
+    live,
+    deterministic,
+  });
   const annotatedSummary = annotateTurn(
     feedbackObject.citationTags.length ? `${feedbackObject.summary} [${feedbackObject.citationTags.join(", ")}]` : feedbackObject.summary,
     evidence.refs,

@@ -19,6 +19,11 @@ export function ownerEnv(): { email: string; code: string; password: string } {
       if (match) values[match[1]!] = match[2]!;
     }
   }
+  const baseUrl = process.env.E2E_BASE_URL ?? "http://localhost:3000";
+  const local = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(baseUrl);
+  if (!local && !process.env.E2E_OWNER_PASSWORD) {
+    throw new Error(`Refusing to use the default test password against ${baseUrl}; set E2E_OWNER_PASSWORD to your own.`);
+  }
   return {
     email: process.env.E2E_OWNER_EMAIL ?? values.OWNER_EMAIL ?? "owner@example.com",
     code: process.env.E2E_BOOTSTRAP_CODE ?? values.OWNER_BOOTSTRAP_CODE ?? "",

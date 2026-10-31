@@ -1,6 +1,7 @@
 import { annotateTurn, type EvidenceRef, formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { conversation, locator, message, persona, teachingUnit, unitExercise } from "../schema/index";
 import { localOnlyAssetsForCourse, permittedPassagesForCourse } from "./library";
 
@@ -29,13 +30,15 @@ export async function buildUnitEvidence(
         .where(inArray(locator.id, [...ids]))
     : [];
   const ordered = [...ids].map((id) => locators.find((l) => l.id === id)).filter((l): l is typeof locator.$inferSelect => Boolean(l));
-  const blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string }[] = ordered.map((l) => ({
-    label: l.label,
-    locatorId: l.id,
-    text: l.note
-      ? `Location only (passage text not retrieved). Note: ${l.note}`
-      : "Location only (passage text not retrieved). Cite this tag for statements that come from this source location; do not quote text you have not been given.",
-  }));
+  const blocks: { label: string; text: string; locatorId?: string; assetId?: string; passageId?: string; kind?: "passage" | "location" }[] =
+    ordered.map((l) => ({
+      label: l.label,
+      locatorId: l.id,
+      kind: "location" as const,
+      text: l.note
+        ? `Location only (passage text not retrieved). Note: ${l.note}`
+        : "Location only (passage text not retrieved). Cite this tag for statements that come from this source location; do not quote text you have not been given.",
+    }));
 
   // The learner's own library: only processed items assigned to this course and permitted for
   // external AI processing contribute passages. Local-only items are named, never read.
@@ -45,7 +48,7 @@ export async function buildUnitEvidence(
     for (const p of passages) {
       const title = p.asset.confirmedTitle ?? p.asset.filename;
       const page = p.printed_label ? `p. ${p.printed_label} (PDF page ${p.physical_index + 1})` : `PDF page ${p.physical_index + 1}`;
-      blocks.push({ label: `Your library: ${title}, ${page}`, assetId: p.asset_id, passageId: p.id, text: p.text });
+      blocks.push({ label: `Your library: ${title}, ${page}`, assetId: p.asset_id, passageId: p.id, text: p.text, kind: "passage" });
     }
     const localOnly = await localOnlyAssetsForCourse(db, library.ownerId, library.courseId);
     if (localOnly.length) {
@@ -103,6 +106,24 @@ export async function getOrCreateConversation(
       .orderBy(desc(conversation.createdAt))
       .limit(1);
     if (existing[0] && !existing[0].closedAt) return existing[0];
+  } else if (!input.allowedAssetIds?.length) {
+    // A conversation that belongs to no learning session and no library item (the director's
+    // programme talk) continues where it left off instead of starting afresh on every visit.
+    const existing = await db
+      .select()
+      .from(conversation)
+      .where(
+        and(
+          eq(conversation.ownerId, input.ownerId),
+          isNull(conversation.learningSessionId),
+          eq(conversation.role, input.role),
+          eq(conversation.purpose, input.purpose),
+          isNull(conversation.closedAt),
+        ),
+      )
+      .orderBy(desc(conversation.createdAt))
+      .limit(1);
+    if (existing[0]) return existing[0];
   }
   const [created] = await db
     .insert(conversation)
@@ -125,6 +146,7 @@ export async function getOrCreateConversation(
 }
 
 export async function getConversation(db: DbOrTx, ownerId: string, id: string): Promise<ConversationRow | null> {
+  if (!isUuid(id)) return null;
   const rows = await db
     .select()
     .from(conversation)

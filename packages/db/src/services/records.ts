@@ -1,5 +1,6 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
 import type { DbOrTx } from "../client";
+import { isUuid } from "../ids";
 import { ExportRecordsPayload, QUEUES } from "../jobs";
 import { enqueue } from "../queue";
 import {
@@ -11,6 +12,7 @@ import {
   courseVersion,
   evidenceEvent,
   exportRecord,
+  feedbackReview,
   learnerProfile,
   learningSession,
   notebookEntry,
@@ -142,7 +144,6 @@ export async function portfolio(db: DbOrTx, ownerId: string): Promise<PortfolioI
     .innerJoin(teachingUnit, eq(unitExercise.unitId, teachingUnit.id))
     .where(and(eq(attempt.ownerId, ownerId), eq(assessmentRun.verdict, "accepted")))
     .orderBy(desc(assessmentRun.completedAt));
-  const enrolments = await listEnrolments(db, ownerId);
   const versions = await db.select({ id: courseVersion.id, courseId: courseVersion.courseId }).from(courseVersion);
   const courseOfVersion = new Map(versions.map((v) => [v.id, v.courseId]));
   const items: PortfolioItem[] = accepted.map((a) => ({
@@ -211,7 +212,15 @@ export async function endOfTermReview(db: DbOrTx, ownerId: string): Promise<EndO
     ? await db
         .select()
         .from(courseVersion)
-        .where(and(inArray(courseVersion.courseId, enrolments.map((e) => e.course.id)), eq(courseVersion.isCurrent, true)))
+        .where(
+          and(
+            inArray(
+              courseVersion.courseId,
+              enrolments.map((e) => e.course.id),
+            ),
+            eq(courseVersion.isCurrent, true),
+          ),
+        )
     : [];
   const allConceptIds = [...new Set(currentVersions.flatMap((v) => v.teachesConceptIds))];
   const concepts = allConceptIds.length ? await db.select().from(concept).where(inArray(concept.id, allConceptIds)) : [];
@@ -260,6 +269,89 @@ export async function endOfTermReview(db: DbOrTx, ownerId: string): Promise<EndO
   };
 }
 
+export interface AttemptRecord {
+  exerciseId: string;
+  exerciseTitle: string;
+  courseId: string | null;
+  version: number;
+  submittedAt: Date;
+  verdict: string | null;
+  confidence: number | null;
+  runStatus: string;
+  checksPassed: number;
+  checksTotal: number;
+  live: boolean;
+}
+
+/** Every submitted version with the outcome of each assessment run, accepted or not. */
+export async function attemptsRecord(db: DbOrTx, ownerId: string): Promise<AttemptRecord[]> {
+  const rows = await db
+    .select({
+      exerciseId: unitExercise.id,
+      exerciseTitle: unitExercise.title,
+      courseVersionId: teachingUnit.courseVersionId,
+      version: submissionVersion.version,
+      submittedAt: submissionVersion.submittedAt,
+      run: assessmentRun,
+    })
+    .from(submissionVersion)
+    .innerJoin(attempt, eq(submissionVersion.attemptId, attempt.id))
+    .innerJoin(unitExercise, eq(attempt.exerciseId, unitExercise.id))
+    .innerJoin(teachingUnit, eq(unitExercise.unitId, teachingUnit.id))
+    .leftJoin(assessmentRun, eq(assessmentRun.submissionVersionId, submissionVersion.id))
+    .where(eq(attempt.ownerId, ownerId))
+    .orderBy(desc(submissionVersion.submittedAt));
+  const versions = await db.select({ id: courseVersion.id, courseId: courseVersion.courseId }).from(courseVersion);
+  const courseOfVersion = new Map(versions.map((v) => [v.id, v.courseId]));
+  return rows.map((r) => {
+    const checks = (r.run?.deterministicResults ?? []) as { passed: boolean }[];
+    const provider = (r.run?.graderConfig as { provider?: string } | null)?.provider;
+    return {
+      exerciseId: r.exerciseId,
+      exerciseTitle: r.exerciseTitle,
+      courseId: courseOfVersion.get(r.courseVersionId) ?? null,
+      version: r.version,
+      submittedAt: r.submittedAt,
+      verdict: r.run?.verdict ?? null,
+      confidence: r.run?.confidence === null || r.run?.confidence === undefined ? null : Number(r.run.confidence),
+      runStatus: r.run?.status ?? "not assessed",
+      checksPassed: checks.filter((c) => c.passed).length,
+      checksTotal: checks.length,
+      live: Boolean(r.run) && provider !== "fixture",
+    };
+  });
+}
+
+export interface ReviewRecord {
+  kind: string;
+  note: string;
+  status: string;
+  createdAt: Date;
+  exerciseTitle: string;
+  version: number;
+}
+
+/** Appeals, regrade requests and challenges the learner filed, with their state. */
+export async function reviewsRecord(db: DbOrTx, ownerId: string): Promise<ReviewRecord[]> {
+  const rows = await db
+    .select({
+      kind: feedbackReview.kind,
+      note: feedbackReview.learnerNote,
+      status: feedbackReview.status,
+      createdAt: feedbackReview.createdAt,
+      exerciseTitle: unitExercise.title,
+      version: submissionVersion.version,
+    })
+    .from(feedbackReview)
+    .innerJoin(assessmentRun, eq(feedbackReview.assessmentRunId, assessmentRun.id))
+    .innerJoin(submissionVersion, eq(assessmentRun.submissionVersionId, submissionVersion.id))
+    .innerJoin(attempt, eq(submissionVersion.attemptId, attempt.id))
+    .innerJoin(unitExercise, eq(attempt.exerciseId, unitExercise.id))
+    .where(eq(attempt.ownerId, ownerId))
+    .orderBy(desc(feedbackReview.createdAt));
+  return rows;
+}
+
 export interface RecordsBundle {
   format: "corniversity-records/1";
   generatedAt: string;
@@ -267,6 +359,8 @@ export interface RecordsBundle {
   disclaimer: string;
   transcript: TranscriptCourse[];
   portfolio: PortfolioItem[];
+  attempts: AttemptRecord[];
+  reviews: ReviewRecord[];
   review: EndOfTermReview;
   concepts: { id: string; title: string; state: string; selfConfidence: number | null }[];
   evidence: { conceptId: string; type: string; observedAt: Date; interpretation: string; reviewStatus: string }[];
@@ -276,7 +370,13 @@ export interface RecordsBundle {
 
 export async function buildRecordsBundle(db: DbOrTx, ownerId: string): Promise<RecordsBundle> {
   const [profile] = await db.select().from(learnerProfile).where(eq(learnerProfile.userId, ownerId)).limit(1);
-  const [tr, pf, review] = await Promise.all([transcript(db, ownerId), portfolio(db, ownerId), endOfTermReview(db, ownerId)]);
+  const [tr, pf, review, attempts, reviews] = await Promise.all([
+    transcript(db, ownerId),
+    portfolio(db, ownerId),
+    endOfTermReview(db, ownerId),
+    attemptsRecord(db, ownerId),
+    reviewsRecord(db, ownerId),
+  ]);
   const states = await db
     .select({ state: conceptState, concept })
     .from(conceptState)
@@ -305,6 +405,8 @@ export async function buildRecordsBundle(db: DbOrTx, ownerId: string): Promise<R
     disclaimer:
       "Informal personal record from a private, independent, non-accredited personal university. Evidence states are derived from recorded attempts and readings; feedback came from AI personas or deterministic checks and is provisional.",
     transcript: tr,
+    attempts,
+    reviews,
     portfolio: pf,
     review,
     concepts: states.map((s) => ({
@@ -364,6 +466,23 @@ export function renderMarkdownExport(bundle: RecordsBundle): string {
     lines.push(
       `- ${p.date.toISOString().slice(0, 10)} · ${p.kind.replace("_", " ")} · **${p.title}**${p.courseId ? ` (${p.courseId})` : ""}: ${p.excerpt}`,
     );
+  lines.push("", "## Attempts", "");
+  if (bundle.attempts.length === 0) lines.push("No submissions yet.", "");
+  for (const a of bundle.attempts) {
+    const outcome = a.verdict ? a.verdict.replace("_", " ") : a.runStatus;
+    const assessedBy = a.live ? "live assessor" : "fixture assessor (verdict withheld)";
+    lines.push(
+      `- ${a.submittedAt.toISOString().slice(0, 10)} · **${a.exerciseTitle}**${a.courseId ? ` (${a.courseId})` : ""} · v${a.version} · ${outcome}${
+        a.confidence === null ? "" : ` (confidence ${a.confidence.toFixed(2)})`
+      } · automatic checks ${a.checksPassed}/${a.checksTotal} · ${assessedBy}`,
+    );
+  }
+  lines.push("", "## Appeals and regrades", "");
+  if (bundle.reviews.length === 0) lines.push("None filed.", "");
+  for (const r of bundle.reviews)
+    lines.push(
+      `- ${r.createdAt.toISOString().slice(0, 10)} · ${r.kind.replace("_", " ")} on **${r.exerciseTitle}** v${r.version} · ${r.status}: ${r.note}`,
+    );
   lines.push("", "## End-of-term review", "", bundle.review.basis, "");
   for (const c of bundle.review.courses) {
     lines.push(`### ${c.courseId} ${c.title}`, "", c.progress, "");
@@ -409,6 +528,7 @@ export async function listExports(db: DbOrTx, ownerId: string) {
 }
 
 export async function getExport(db: DbOrTx, ownerId: string, id: string) {
+  if (!isUuid(id)) return null;
   const rows = await db
     .select()
     .from(exportRecord)

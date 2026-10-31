@@ -2,8 +2,10 @@ import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { endOfTermReview, listExports, portfolio, transcript } from "@corniversity/db/services/records";
 import { DateTime } from "luxon";
 import Link from "next/link";
+import { RenderedHtml } from "@/components/RenderedHtml";
 import { Badge, Button, Card, EmptyState, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { renderMarkdown } from "@/lib/markdown";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "../sessions/[id]/AutoRefresh";
 import { requestExportAction } from "./actions";
@@ -11,7 +13,11 @@ import { requestExportAction } from "./actions";
 export const metadata = { title: "Records" };
 
 const EXPORTS: { kind: "full" | "notebook" | "records" | "alter_markdown"; label: string; help: string }[] = [
-  { kind: "alter_markdown", label: "Markdown record", help: "One readable document: courses, portfolio, review, notebook, reading notes." },
+  {
+    kind: "alter_markdown",
+    label: "Markdown record",
+    help: "One readable document: courses, portfolio, every attempt with its outcome, appeals, review, notebook, reading notes.",
+  },
   { kind: "records", label: "Records (JSON)", help: "Transcript, portfolio, review, concept states and evidence events." },
   { kind: "notebook", label: "Notebook (JSON)", help: "Every notebook entry and reading note with its source links." },
   { kind: "full", label: "Everything (JSON)", help: "The complete bundle, for import into a fresh installation." },
@@ -38,6 +44,7 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
   const when = (d: Date | null) => (d ? DateTime.fromJSDate(d).setZone(zone).toFormat("d LLL yyyy") : "—");
   const pending = exports.some((e) => e.status === "queued");
 
+  const excerptHtml = await Promise.all(items.map((item) => renderMarkdown(item.excerpt)));
   return (
     <div className="mx-auto w-full max-w-6xl">
       <AutoRefresh active={pending} intervalMs={3000} />
@@ -78,7 +85,7 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.courseId} className="border-t border-stone align-top">
+                  <tr key={`${r.courseId}-${r.status}-${r.enrolledAt.toISOString()}`} className="border-t border-stone align-top">
                     <td className="px-4 py-2">
                       <Link href={`/courses/${r.courseId}`} className="text-ink hover:underline">
                         <span className="font-mono text-xs text-ink-3">{r.courseId}</span> {r.title}
@@ -143,7 +150,7 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                     item.title
                   )}
                 </h3>
-                <p className="mt-1 text-sm text-ink-2">{item.excerpt}</p>
+                <RenderedHtml html={excerptHtml[i] ?? ""} className="mt-1 text-sm text-ink-2" />
               </Card>
             ))}
           </ul>
@@ -207,8 +214,8 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
           Exports
         </h2>
         <p className="mt-1 text-sm text-ink-2">
-          Built by the worker from the database, which stays the source of truth. Files are private to your session and kept until you
-          delete the item or the installation.
+          Built by the worker from the database, which stays the source of truth. Files are private to your session and are removed thirty
+          days after they are built; the record itself stays, so build a fresh export whenever you need one.
         </p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {EXPORTS.map((e) => (
@@ -241,7 +248,9 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                     Download
                   </a>
                 ) : (
-                  <Badge tone={e.status === "failed" ? "rust" : "brass"}>{e.status}</Badge>
+                  <Badge tone={e.status === "failed" ? "rust" : e.status === "expired" ? "neutral" : "brass"}>
+                    {e.status === "expired" ? "expired after 30 days" : e.status}
+                  </Badge>
                 )}
               </li>
             ))}

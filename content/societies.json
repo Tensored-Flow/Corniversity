@@ -4,7 +4,7 @@
     "title": "Mathematics Reading Room",
     "description": "A slow reading group: one chapter or paper at a time, discussed for what it proves and how. Optional, bounded conversations with a chair and at most two classmates.",
     "departmentId": "mathematics",
-    "cadence": "After any analysis or geometry tutorial, when invited",
+    "cadence": "After any analysis or geometry tutorial; open a bounded discussion whenever you choose",
     "chairPersonaId": "tamsin-okoro"
   },
   {
@@ -12,7 +12,7 @@
     "title": "Physics Colloquium",
     "description": "Short talks on one idea in physics and the questions it raises, followed by a bounded discussion. No new material is introduced before the course releases it.",
     "departmentId": "physics",
-    "cadence": "After a physics unit is completed, when invited",
+    "cadence": "After a physics unit is completed; open a bounded discussion whenever you choose",
     "chairPersonaId": "ines-valdivia"
   },
   {
@@ -20,7 +20,7 @@
     "title": "Cognitive Science Journal Club",
     "description": "One paper or chapter, read for its claims, its evidence and the gap between them.",
     "departmentId": "cognitive-science",
-    "cadence": "After a cognitive science or neuroscience unit, when invited",
+    "cadence": "After a cognitive science or neuroscience unit; open a bounded discussion whenever you choose",
     "chairPersonaId": "dev-anantharaman"
   },
   {

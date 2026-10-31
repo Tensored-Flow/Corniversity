@@ -54,7 +54,7 @@ export type ExportRecordsPayload = z.infer<typeof ExportRecordsPayload>;
 
 export const MaintenancePayload = z.object({
   idempotencyKey: z.string().min(1),
-  task: z.enum(["revision-due", "revoke-stale-pairing-codes", "purge-deleted-assets"]),
+  task: z.enum(["revision-due", "revoke-stale-pairing-codes", "expire-old-exports"]),
 });
 export type MaintenancePayload = z.infer<typeof MaintenancePayload>;
 

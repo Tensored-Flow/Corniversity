@@ -38,7 +38,8 @@
     "backup": "tsx scripts/backup.ts",
     "restore": "tsx scripts/restore.ts",
     "health": "tsx scripts/health.ts",
-    "deploy:railway": "pwsh -File infra/deploy-railway.ps1"
+    "deploy:railway": "powershell -NoProfile -ExecutionPolicy Bypass -File infra/deploy-railway.ps1",
+    "deploy:railway:plan": "powershell -NoProfile -ExecutionPolicy Bypass -File infra/deploy-railway.ps1 -DryRun"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

@@ -26,6 +26,7 @@ const LABEL_TEXT: Record<string, string> = {
   derived: "derived",
   conjecture: "conjecture",
   needs_checking: "needs checking",
+  location_only: "location cited, text not seen",
 };
 
 /**

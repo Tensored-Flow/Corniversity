@@ -153,7 +153,7 @@ export async function recordLabInterpretationAction(_prev: ActionResult, formDat
   if (!unitDetail || !activity?.labId) return { ok: false, error: "This session has no laboratory." };
   const locators = unitDetail.locators.filter((l) => activity.sourceLocatorIds.includes(l.id));
   await createEntry(db(), auth.user.id, {
-    title: `Laboratory: ${activity.title}`,
+    title: /^laboratory/i.test(activity.title) ? activity.title : `Laboratory: ${activity.title}`,
     bodyMarkdown: text.slice(0, 20_000),
     kind: "calculation",
     tags: ["lab", activity.labId, unitDetail.course.id],
