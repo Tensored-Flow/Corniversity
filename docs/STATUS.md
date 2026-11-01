@@ -37,7 +37,7 @@ executed, which waits on the owner's Railway login).
 | Backup and restore (Node-native, no pg_dump; format 2 with stored originals in sidecar files, dates as text, snapshot read, verified checksum) | yes | 3 integration tests restore a snapshot with a 1 MB original into a fresh database; earlier rehearsal of 65 tables and 2378 rows | `pnpm backup`, `pnpm restore <file> [--yes]`; restore needs a role allowed to set `session_replication_role` |
 | Health checks (web reports not-ready until the schema carries this build's migrations) | yes | security spec (`/api/health`) | `pnpm health` |
 | Production build | pass on 31 Oct 2026: Next production build with every route server-rendered on demand; worker and companion bundles built | | `pnpm build` |
-| Deployment (Dockerfiles, Railway config, deploy script) | prepared, not executed | Dockerfiles unverified locally (no Docker) | needs `railway login`; see USER_ACTIONS.md |
+| Deployment (Dockerfiles, Railway config, deploy script) | prepared and rehearsed, not executed | fresh-deployment rehearsal against an empty database (see QA_REPORT.md); the images themselves build on Railway, since Docker is absent here | needs `railway login`; see USER_ACTIONS.md |
 
 ## Environment facts (verified 31 Oct 2026)
 

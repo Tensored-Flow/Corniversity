@@ -6,17 +6,19 @@
   Runs under Windows PowerShell 5.1 and PowerShell 7. Prerequisites for a real run: the Railway
   CLI is installed and `railway login` has been run on this machine (the script refuses
   otherwise). Nothing here purchases a domain or upgrades a plan; a Railway Hobby plan with one
-  Postgres, one web and one worker service is the expected cost basis (see docs/QA_REPORT.md).
+  Postgres, one web and one worker service is the expected cost basis (see docs/HANDOFF.md).
 
   What it does, in order, printing each step's commands before running them:
-    1. Creates (or links) the project named by -Project.
+    1. Creates (or links) the project named by -Project, in -Workspace when one is given.
     2. Adds a PostgreSQL database service.
     3. Creates the `web` and `worker` services and points each at its Dockerfile.
-    4. Generates BETTER_AUTH_SECRET and OWNER_BOOTSTRAP_CODE locally and sets every variable;
-       the owner email is taken from the local .env (OWNER_EMAIL) or -OwnerEmail.
-    5. Deploys both services (`railway up`), requests a Railway-provided domain for the web
-       service, sets BETTER_AUTH_URL to that https URL and redeploys the web service.
-    6. Prints the URL, the bootstrap code (shown once) and the post-deploy health command.
+    4. Generates BETTER_AUTH_SECRET and OWNER_BOOTSTRAP_CODE locally and sets every variable
+       without deploying; the owner email is taken from the local .env (OWNER_EMAIL) or -OwnerEmail.
+    5. Builds and starts the worker first: on start it applies the database migrations and seeds
+       the institution's content (SEED_CONTENT_ON_START=1). Then builds and starts the web service.
+    6. Requests a Railway-provided domain for the web service, sets BETTER_AUTH_URL to that https
+       URL and redeploys the web service with it.
+    7. Prints the URL, the bootstrap code (shown once) and where to create the owner account.
 
   Use -DryRun to print the plan without changing anything; it needs neither the CLI nor a login.
 
@@ -26,6 +28,7 @@
 #>
 param(
   [string]$Project = "corniversity",
+  [string]$Workspace = "",
   [string]$OwnerEmail = "",
   [switch]$DryRun
 )
@@ -98,7 +101,9 @@ Write-Host "Owner email: $OwnerEmail"
 Write-Host "Secrets: generated locally; the bootstrap code is printed once at the end."
 
 Invoke-Step "Create or link the project" {
-  $created = Invoke-Native { railway init --name $Project }
+  if ($Workspace) { $created = Invoke-Native { railway init --name $Project --workspace $Workspace } }
+  else { $created = Invoke-Native { railway init --name $Project } }
+  Write-Host $created
   if ($LASTEXITCODE -ne 0) { railway link --project $Project }
 }
 
@@ -111,8 +116,8 @@ Invoke-Step "Create the web and worker services" {
   railway add --service worker
 }
 
-Invoke-Step "Configure the web service" {
-  railway variables --service web --set "RAILWAY_DOCKERFILE_PATH=Dockerfile.web" `
+Invoke-Step "Configure the web service (no deploy yet)" {
+  railway variables --service web --skip-deploys --set "RAILWAY_DOCKERFILE_PATH=Dockerfile.web" `
     --set "RAILWAY_CONFIG_FILE=infra/railway.web.json" `
     --set "DEPLOYMENT_MODE=production" `
     --set "INSTITUTION_NAME=Corniversity" `
@@ -129,8 +134,8 @@ Invoke-Step "Configure the web service" {
     --set "PORT=3000"
 }
 
-Invoke-Step "Configure the worker service" {
-  railway variables --service worker --set "RAILWAY_DOCKERFILE_PATH=Dockerfile.worker" `
+Invoke-Step "Configure the worker service (no deploy yet)" {
+  railway variables --service worker --skip-deploys --set "RAILWAY_DOCKERFILE_PATH=Dockerfile.worker" `
     --set "RAILWAY_CONFIG_FILE=infra/railway.worker.json" `
     --set "DEPLOYMENT_MODE=production" `
     --set "INSTITUTION_NAME=Corniversity" `
@@ -143,30 +148,31 @@ Invoke-Step "Configure the worker service" {
     --set "CORNIVERSITY_DATA_ROOT=/data" `
     --set "BLOB_STORE=pg" `
     --set "AI_PROVIDER=fixture" `
+    --set "SEED_CONTENT_ON_START=1" `
     --set "WORKER_HEALTH_PORT=3100" `
     --set "PORT=3100"
 }
 
-Invoke-Step "Deploy the worker (it applies the database migrations on start)" {
-  railway up --service worker --detach
+Invoke-Step "Build and start the worker (it applies the migrations and seeds the content on start)" {
+  railway up --service worker --ci
 }
 
-Invoke-Step "Deploy the web service" {
-  railway up --service web --detach
+Invoke-Step "Build and start the web service" {
+  railway up --service web --ci
 }
 
 $domain = ""
 Invoke-Step "Request a Railway domain for the web service" {
-  $output = Invoke-Native { railway domain --service web }
+  $output = Invoke-Native { railway domain --service web --json }
   Write-Host $output
-  if ($output -match "https?://([a-zA-Z0-9.-]+\.up\.railway\.app)") { $script:domain = $Matches[1] }
+  if ($output -match "([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.up\.railway\.app)") { $script:domain = $Matches[1] }
 }
 
 if ($domain) {
   Invoke-Step "Set BETTER_AUTH_URL to https://$domain and redeploy the web service" {
-    railway variables --service web --set "BETTER_AUTH_URL=https://$domain"
-    railway variables --service worker --set "BETTER_AUTH_URL=https://$domain"
-    railway up --service web --detach
+    railway variables --service worker --skip-deploys --set "BETTER_AUTH_URL=https://$domain"
+    railway variables --service web --skip-deploys --set "BETTER_AUTH_URL=https://$domain"
+    railway redeploy --service web --yes
   }
 }
 

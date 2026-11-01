@@ -91,7 +91,26 @@ PDF's line breaks, which is deliberate (the source view is one click away) but r
 
 ## Deployment
 
-Status: **not deployed**. Railway CLI is installed but not logged in. Prepared: `Dockerfile.web`,
+Status: **not deployed**. The Railway CLI is installed but not logged in.
+
+**Fresh-deployment rehearsal (1 November 2026).** The production web build and the worker ran
+against an empty database, in local mode because production mode refuses an `http://` sign-in
+address. The run went as follows:
+
+- The worker applied the migrations and seeded all 86 courses on start.
+- The web health check reported the database and migrations current.
+- A browser created the owner account through the real join page with the one-time code and
+  landed on orientation.
+- From there the browser checked the catalogue, followed the programme, took a course and
+  opened its first session, rendered the nine main pages, and signed out and in again.
+- Sign-up was closed afterwards.
+
+The rehearsal found that `Dockerfile.web` copied an `apps/web/public` folder that did not exist,
+which would have failed the image build. The folder now holds a `robots.txt` that keeps search
+engines away. Seeding on start was added because nothing else would have loaded the catalogue
+into a new database.
+
+Prepared: `Dockerfile.web`,
 `Dockerfile.worker`, `infra/railway.web.json`, `infra/railway.worker.json`,
 `infra/deploy-railway.ps1` (`pnpm deploy:railway:plan` prints its plan without a login; it runs under Windows PowerShell 5.1 as well as PowerShell 7). The Dockerfiles have not been built
 on this machine (no Docker). Estimated running cost on Railway's Hobby plan (pricing page read on

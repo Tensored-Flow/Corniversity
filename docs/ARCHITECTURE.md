@@ -98,6 +98,8 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 
 ## Jobs
 
+The worker applies pending migrations on start and, when the deployment sets
+`SEED_CONTENT_ON_START=1`, seeds the institution's content (idempotent; never learner data).
 pg-boss 12 (`schema: pgboss`), queues: `ingest-asset` (singletonKey = sha256), `prepare-unit`
 (singletonKey = unit id), `assess-submission` (singletonKey = submission version id),
 `embed-passages`, `export-records`, `maintenance` (cron). Retries with backoff, expiry,

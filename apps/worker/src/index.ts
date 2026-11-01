@@ -5,9 +5,11 @@ import { runMigrations } from "@corniversity/db/migrate";
 import { getBoss, stopBoss } from "@corniversity/db/queue";
 import { registerHandlers } from "./handlers/index";
 import { startHealthServer } from "./health";
+import { seedContentIfRequested } from "./seed-on-start";
 
 /**
  * The durable worker. It applies pending migrations (idempotent; the web app only enqueues),
+ * seeds the institution's content when the deployment sets SEED_CONTENT_ON_START=1,
  * registers one handler per queue, exposes a small health endpoint so a deployment platform can
  * tell it is alive, and shuts down gracefully.
  */
@@ -16,6 +18,11 @@ async function main() {
   const handle = getDb();
   const migrated = await runMigrations(handle);
   console.log(`[worker] migrations ok (pgvector ${migrated.pgvector ? "on" : "off"})`);
+  const seeded = await seedContentIfRequested(handle.db, process.env.SEED_CONTENT_ON_START);
+  if (seeded)
+    console.log(
+      `[worker] content seeded: ${seeded.courseVersionsCreated} course versions created, ${seeded.courseVersionsUnchanged} unchanged`,
+    );
 
   const boss = await getBoss({ supervise: true });
   await registerHandlers(boss, handle.db, env);

@@ -1,0 +1,3 @@
+# Corniversity is a private site: nothing here is for search engines.
+User-agent: *
+Disallow: /

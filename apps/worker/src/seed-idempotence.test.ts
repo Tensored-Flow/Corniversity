@@ -16,6 +16,7 @@ import {
 import { decideProposal } from "@corniversity/db/services/timetable";
 import { count, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { seedContentIfRequested } from "./seed-on-start";
 
 /**
  * Seeding the real catalogue twice changes nothing the second time, and learner records made in
@@ -63,6 +64,16 @@ describe("seeding is idempotent", () => {
     expect(await counts()).toEqual(before);
     expect(await handle.db.select().from(enrolment).where(eq(enrolment.ownerId, OWNER))).toHaveLength(1);
     expect(await handle.db.select().from(programmeParticipation).where(eq(programmeParticipation.ownerId, OWNER))).toHaveLength(1);
+  }, 180_000);
+});
+
+describe("seeding when the worker starts", () => {
+  it("seeds only when the deployment asks for it, and a repeat start creates nothing", async () => {
+    expect(await seedContentIfRequested(handle.db, undefined)).toBeNull();
+    expect(await seedContentIfRequested(handle.db, "0")).toBeNull();
+    const report = await seedContentIfRequested(handle.db, "1");
+    expect(report?.courseVersionsCreated).toBe(0);
+    expect(report?.courseVersionsUnchanged).toBe(bundle.courses.length);
   }, 180_000);
 });
 
