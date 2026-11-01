@@ -11,7 +11,9 @@ if (existsSync(rootEnv)) {
 // Scripts and styles are first-party; inline is still needed for the framework's own bootstrap
 // and (in development) eval for the hot-reload client. Nothing may frame the app, and no
 // plug-in or foreign base URL is allowed. HSTS is sent only when the deployment is https.
-const production = process.env.DEPLOYMENT_MODE === "production";
+// These headers are fixed when the app is built, so the deployment image says it is building for
+// production (CORNIVERSITY_BUILD_TARGET) while its runtime settings arrive only at start.
+const production = process.env.DEPLOYMENT_MODE === "production" || process.env.CORNIVERSITY_BUILD_TARGET === "production";
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${production ? "" : " 'unsafe-eval'"}`,
@@ -40,6 +42,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   output: "standalone",
   outputFileTracingRoot: resolve(process.cwd(), "../../"),
+  // The fixture provider reads its scripted responses from disk at run time, which file tracing
+  // cannot see; carry the folder into the standalone build (it lands at packages/ai/fixtures).
+  outputFileTracingIncludes: { "/**": ["../../packages/ai/fixtures/**/*"] },
   async headers() {
     return [
       {

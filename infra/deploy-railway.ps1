@@ -163,7 +163,7 @@ Invoke-Step "Build and start the web service" {
 
 $domain = ""
 Invoke-Step "Request a Railway domain for the web service" {
-  $output = Invoke-Native { railway domain --service web --json }
+  $output = Invoke-Native { railway domain --service web --port 3000 --json }
   Write-Host $output
   if ($output -match "([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.up\.railway\.app)") { $script:domain = $Matches[1] }
 }

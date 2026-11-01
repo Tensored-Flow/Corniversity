@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile --ignore-scripts
 ENV NEXT_TELEMETRY_DISABLED=1 \
+    CORNIVERSITY_BUILD_TARGET=production \
     DEPLOYMENT_MODE=local \
     DATABASE_URL=postgres://build:build@localhost:5432/build \
     BETTER_AUTH_URL=http://localhost:3000 \

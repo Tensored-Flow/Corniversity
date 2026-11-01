@@ -21,6 +21,25 @@ const here = dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_FIXTURE_ROOT = resolve(here, "..", "fixtures");
 
 /**
+ * The fixtures folder. Beside this source file in development and in the worker, which run from
+ * source; the web app's production build bundles this code elsewhere and carries the folder at
+ * packages/ai/fixtures beside the app, so it is also looked for from the working directory.
+ * AI_FIXTURE_ROOT overrides everything.
+ */
+export function findFixtureRoot(options: { env?: Record<string, string | undefined>; cwd?: string; sourceRoot?: string } = {}): string {
+  const env = options.env ?? process.env;
+  const cwd = options.cwd ?? process.cwd();
+  const sourceRoot = options.sourceRoot ?? DEFAULT_FIXTURE_ROOT;
+  const candidates = [
+    env.AI_FIXTURE_ROOT,
+    sourceRoot,
+    resolve(cwd, "packages", "ai", "fixtures"),
+    resolve(cwd, "..", "..", "packages", "ai", "fixtures"),
+  ].filter((c): c is string => Boolean(c));
+  return candidates.find((c) => existsSync(c)) ?? sourceRoot;
+}
+
+/**
  * Deterministic provider. Responses come from JSON files under fixtures/<role>/<scenario>.json.
  * It exists so the whole product can be exercised and tested without spending money or
  * depending on a network; it is never described as a live model check, and it refuses rather
@@ -28,7 +47,7 @@ export const DEFAULT_FIXTURE_ROOT = resolve(here, "..", "fixtures");
  */
 export class FixtureProvider implements ModelProvider {
   readonly name = "fixture" as const;
-  constructor(private readonly root: string = DEFAULT_FIXTURE_ROOT) {}
+  constructor(private readonly root: string = findFixtureRoot()) {}
 
   private load(role: string, scenario: string | undefined): FixtureFile | null {
     const candidates = [scenario, "default"].filter((s): s is string => Boolean(s));
