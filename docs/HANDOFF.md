@@ -1,14 +1,17 @@
 # Handoff
 
-Written for Leon, the owner. Everything here was checked on 31 October 2026 on the build
-machine (Windows 11). Where something has not been verified, this document says so.
+Written for Leon, the owner. Everything here was checked on 31 October and 1 November 2026, on
+the build machine (Windows 11) and, for the deployment, on the live site. Where something has not
+been verified, this document says so.
 
 ## Where things stand
 
-- **Status: locally working; deployment prepared, not executed.** There is no live URL. The
-  Dockerfiles, Railway configuration and deploy script exist and `pnpm deploy:railway:plan`
-  prints the plan, but nothing has been deployed because the Railway command-line tool on this
-  machine is not signed in and Docker is not installed (so the images were never built here).
+- **Status: deployed.** The site runs at https://web-production-4c692.up.railway.app, in a
+  dedicated Railway project, `corniversity`, with PostgreSQL, a web service and a worker; Railway
+  builds both images from the Dockerfiles. The worker applied the migrations and loaded the
+  catalogue on its first start. Until you create the owner account there, sign-up accepts only
+  the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md), item 1); then it
+  closes.
 - **Live AI: not exercised.** No model-provider key is configured. Tutors, assessors, the
   director, the reading room, the seminar chair and the classmates run on deterministic
   fixtures, labelled as AI everywhere they speak. The Anthropic provider compiles and its
@@ -16,8 +19,9 @@ machine (Windows 11). Where something has not been verified, this document says 
 - **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, not yet published to
   GitHub (see [USER_ACTIONS.md](USER_ACTIONS.md), item 4). Commits: `1246d1e` (Milestone 3),
   `61cbe70` (launch content), `f8330a4` (Milestone 4), `1b26bbd` (Milestones 5–7), `13a447e`
-  (Milestone 8: the three review passes and their repairs), and the last commit on `main`
-  (Milestone 9: the Mind, Brain and AI update; `git log -1` shows it).
+  (Milestone 8: the three review passes and their repairs), `6ea60bb`
+  (Milestone 9: the Mind, Brain and AI update), and the deployment commits after it (`git log`
+  lists them).
 
 ## Start it (two PowerShell windows in the project folder)
 
@@ -115,19 +119,19 @@ runs past its prepared units within three to five weeks; the remaining units are
 through the visible content workflow (unit status `draft` → prepared, validated by
 `pnpm content:validate`), never generated silently when you press *Start*.
 
-## Test and build results (31 October 2026)
+## Test and build results (31 October and 1 November 2026)
 
 | Check | Result |
 |---|---|
 | `pnpm typecheck`, `pnpm lint` | clean (7 packages; Biome) |
-| `pnpm test` and `pnpm test:integration` | 189 unit and integration tests pass: 143 unit tests in 19 files and 46 integration tests in 8 (core, ai, content, db, worker, companion, web) |
+| `pnpm test` and `pnpm test:integration` | 194 unit and integration tests pass: 148 unit tests in 20 files and 46 integration tests in 8 (core, ai, content, db, worker, companion, web) |
 | `pnpm eval:academic` | 19 academic evaluation cases pass (fixture provider; they exercise the check rules and the verdict policy, not a model's judgement) |
 | `pnpm test:e2e` | 35 learner-journey tests pass at 1440×900 and 35 at 390×844, including spec 09 for the Mind, Brain and AI update; axe accessibility checks clean on 12 pages at both sizes |
-| `pnpm build` | production build passes (every route server-rendered on demand) |
+| `pnpm build` | production build passes (every route server-rendered on demand); the 35 desktop journeys also pass against the production web build |
 | `pnpm content:validate` | 0 errors, 0 warnings |
 | Backup and restore | rehearsed: 65 tables, 2378 rows restored into a throw-away database with equal counts |
 | Companion `watch` | rehearsed by hand against the development server: online while running, offline two minutes after stopping |
-| Deployment | plan printed (`pnpm deploy:railway:plan`); not executed |
+| Deployment | live on Railway since 1 November 2026; health, the seeded catalogue, the security headers, the public pages in a browser and the owner-only sign-up checked on the live site ([QA_REPORT.md](QA_REPORT.md)) |
 | Live model | none |
 
 Details, including what each check does and does not prove, are in [QA_REPORT.md](QA_REPORT.md).
@@ -200,8 +204,8 @@ every requirement with its status and the test that checks it.
 
 ## Minimal remaining manual actions
 
-Listed with exact steps in [USER_ACTIONS.md](USER_ACTIONS.md): sign in to Railway and run the
-deploy script; add a provider key and budgets in Settings to enable live teaching; optionally
+Listed with exact steps in [USER_ACTIONS.md](USER_ACTIONS.md): create the owner account on the
+live site with the one-time code; add a provider key and budgets in Settings to enable live teaching; optionally
 configure email for password reset; optionally publish the private GitHub repository; send the
 missing sections of the Mind, Brain and AI update.
 
@@ -215,4 +219,6 @@ source locators, exercises with deterministic checks, structured feedback with a
 notes, evidence and revision all persist and were exercised by the automated journeys. Two
 qualifications: the feedback's prose is fixture-generated until you add a provider key (the
 checks and the feedback structure are real; the careful reading of your argument needs the live
-model), and the site exists only on this computer until the Railway step is done.
+model), and the automated journeys ran on this computer, including against the production
+build, but not on the live site, where they would need the owner account. Your first sign-in
+there is its first real use.

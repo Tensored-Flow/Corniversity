@@ -60,7 +60,9 @@ Journey 9 (provider failure and budget exhaustion leave notes and reading usable
 unit level (budget decisions, provider error path in every route returns a labelled note) and by
 the fixture provider; no live provider has been exercised.
 
-Journey 10 (deployed site) cannot run until the owner deploys.
+Journey 10 (deployed site) is not automated. Against a non-local site the journeys refuse the
+default test password, so they cannot create or use the owner account there. The checks run on
+the live site are listed under Deployment.
 
 ## Source verification
 
@@ -91,7 +93,34 @@ PDF's line breaks, which is deliberate (the source view is one click away) but r
 
 ## Deployment
 
-Status: **not deployed**. The Railway CLI is installed but not logged in.
+Status: **deployed** on 1 November 2026 to a dedicated Railway project, `corniversity`
+(PostgreSQL, web, worker), at https://web-production-4c692.up.railway.app. Checked on the live
+site:
+
+- `/api/health` reports the database and the migrations current.
+- The worker's log shows the migrations applied, with pgvector enabled, and 86 course versions
+  created by seeding on start.
+- The Content-Security-Policy's `script-src` is `'self' 'unsafe-inline'`, without `unsafe-eval`,
+  and HSTS is sent (`max-age=15552000; includeSubDomains`).
+- `robots.txt` disallows every crawler.
+- A headless browser loaded the arrival page, the tour, sign-in and the join page with no policy
+  refusal, console error or page error. The join form accepts typing; nothing was submitted.
+- `/join` offers *Create the owner account*. The account itself is the owner's to create.
+
+Not checked on the live site: anything behind sign-in, including the fixture tutors. The
+container's files were not listed, because running a command inside it was refused by this
+machine's approval controls; the fixture folder's presence rests on the identical local
+production build below.
+
+**Production web build (1 November 2026).** The first deployment served the development
+security policy, with `unsafe-eval` and without HSTS, because Next fixes headers when the app is
+built and the image was built in local mode. The image now builds with
+`CORNIVERSITY_BUILD_TARGET=production`. The standalone build also lacked the fixture folder,
+which the AI package looked for beside its source, so fixture tutors and classmates could not
+answer. The build now carries `packages/ai/fixtures`, and `findFixtureRoot` also looks for it
+from the working directory (4 tests). With both repairs, all 35 desktop journeys pass against the
+production build served locally, and a sweep of 24 pages and 3 study sessions under the
+production policy found no refusals.
 
 **Fresh-deployment rehearsal (1 November 2026).** The production web build and the worker ran
 against an empty database, in local mode because production mode refuses an `http://` sign-in
@@ -110,10 +139,10 @@ which would have failed the image build. The folder now holds a `robots.txt` tha
 engines away. Seeding on start was added because nothing else would have loaded the catalogue
 into a new database.
 
-Prepared: `Dockerfile.web`,
+Deployment files: `Dockerfile.web`,
 `Dockerfile.worker`, `infra/railway.web.json`, `infra/railway.worker.json`,
-`infra/deploy-railway.ps1` (`pnpm deploy:railway:plan` prints its plan without a login; it runs under Windows PowerShell 5.1 as well as PowerShell 7). The Dockerfiles have not been built
-on this machine (no Docker). Estimated running cost on Railway's Hobby plan (pricing page read on
+`infra/deploy-railway.ps1` (`pnpm deploy:railway:plan` prints its plan without a login; it runs under Windows PowerShell 5.1 as well as PowerShell 7). Railway builds both images; Docker
+is not installed on this machine. Estimated running cost on Railway's Hobby plan (pricing page read on
 31 Oct 2026): $5 a month, which includes $5 of usage; usage is billed per second at about $20 per
 vCPU-month, $10 per GB of memory-month and $0.15 per GB of volume-month. Three mostly idle services
 (web, worker, Postgres) at roughly 0.8–1.5 GB of memory and a small fraction of a vCPU come to
@@ -273,9 +302,9 @@ navigations per run outlasted the journeys' 10-second waits. A fresh server comp
   registered as a local-only companion item, the Library read "Desktop sync online" while the
   heartbeat ran and "Desktop sync offline" two minutes after it stopped). The Playwright journeys
   run `pair` and `sync` as child processes, not a long-lived `watch`, so only the rehearsal covers it.
-- Deployment and live-provider behaviour remain unverified until the owner supplies credentials.
+- Live-provider behaviour remains unverified until the owner adds a provider key. On the live site only the checks listed under Deployment were run; the journeys run locally.
 - The three items the production engineer recorded above (per-address sign-in limiting, the
-  provider-key secret, unbuilt images with floating base tags).
+  provider-key secret, floating base-image tags).
 - The timetable-slot linking added in the review was exercised by hand (campus → open the
   material → mark as read → the slot reads completed) and by the service-level logic; no journey
   test covers it yet.

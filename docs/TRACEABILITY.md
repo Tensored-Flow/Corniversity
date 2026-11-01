@@ -25,7 +25,7 @@
 | UNI-21 | Budgets, provider failure, non-AI fallback | `packages/ai/src/budget`, Settings budgets, every route's labelled failure note | 8 unit tests; fixture mode exercised throughout | done at unit level; live provider unverified |
 | UNI-22 | Responsive scholarly design, accessibility | design tokens (contrast corrected), both viewports, axe spec | 35 screenshots at both viewports; axe: no serious/critical findings | done; WCAG criteria checked, not certified |
 | UNI-23 | Export, backup, restore, deletion | Records exports (JSON, Markdown), `scripts/backup.ts`, `scripts/restore.ts` (dry run, transaction), library item deletion with retention note | restore rehearsal into a throw-away database: counts match | done |
-| UNI-24 | Local reproducibility, truthful deployment | README, Dockerfiles, `infra/`, `pnpm health` | local stack reproduced; deployment prepared, not executed | partial: deployment waits on owner login |
+| UNI-24 | Local reproducibility, truthful deployment | README, Dockerfiles, `infra/`, `pnpm health` | local stack reproduced; deployed to Railway, live checks recorded in QA_REPORT | done; the journeys are not run on the live site |
 | UNI-25 | Software QA plus educational evaluations | 116 unit/integration tests, 8 journey specs, 13 academic evaluations | QA_REPORT | done |
 | UNI-26 | Accurate handoff, minimal manual steps | STATUS, USER_ACTIONS, HANDOFF | – | done |
 | MBA-01 | The owner's Mind, Brain and AI update, sections 1 to 12 | see MIND_BRAIN_AI.md, one row per requirement | unit, integration, seed and journey tests listed there | done; sections 13 onward not received |

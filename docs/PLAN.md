@@ -87,7 +87,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: journey 8 passes; quiet mode exposes full academic function; no background
   conversations are generated (test).
 
-## Milestone 7 — Hardening and deployment — done except deployment (owner login required)
+## Milestone 7 — Hardening and deployment — done (deployed on 1 November 2026; journey 10 is checked by hand, see QA_REPORT.md)
 
 - Authorization sweep, injection, SSRF and path-traversal tests, accessibility checks (axe),
   budgets and provider-failure behaviour, backup and restore rehearsal, export and import

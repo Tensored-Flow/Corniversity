@@ -3,16 +3,15 @@
 Written for a non-specialist. Each item says why it is needed and the exact minimal step.
 Nothing here is required to run Corniversity on your own computer.
 
-1. Deploy to Railway (needed for the private website to exist outside your PC).
-   Why: the Railway command-line tool on this machine is not signed in, and signing in needs you.
-   Step: in PowerShell in the project folder, run `railway login` and approve it in the browser,
-   then run `pnpm deploy:railway` (or ask Claude to run it).
-   The script creates a dedicated project with PostgreSQL, a web service and a worker service. It
-   generates the secrets, builds both services from their Dockerfiles on Railway, and the worker
-   applies the migrations and loads the catalogue on its first start. It then prints the address
-   and a one-time code. Open the address, choose *Create your course of study*, and create your
-   account with the owner email from your `.env` and that code; sign-up closes after that. The
-   expected cost is about $10 to $25 a month on Railway's Hobby plan (docs/HANDOFF.md).
+1. Create your owner account on the live site (once).
+   Why: Corniversity is deployed at https://web-production-4c692.up.railway.app, and nobody can
+   use it until the owner account exists.
+   Step: open https://web-production-4c692.up.railway.app/join and fill in your name, the owner
+   email from your `.env`, a password of at least twelve characters, and the one-time code. The
+   code was given to you in the chat when the site was deployed; it is also the
+   `OWNER_BOOTSTRAP_CODE` variable of the `web` service in the Railway dashboard. Choose *Create
+   account and begin*; orientation starts, and sign-up closes for good. The site costs about $10
+   to $25 a month on Railway's Hobby plan (docs/HANDOFF.md).
 
 2. Enable live AI teaching (optional; the site works without it in reading and notes mode).
    Why: no model-provider key is configured, so tutors currently run on deterministic fixtures.
