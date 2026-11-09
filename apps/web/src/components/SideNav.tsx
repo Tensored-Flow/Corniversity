@@ -8,6 +8,7 @@ export const NAV_ITEMS: { href: string; label: string; mobileOnly?: boolean }[] 
   { href: "/timetable", label: "Timetable" },
   { href: "/library", label: "Library" },
   { href: "/notebook", label: "Notebook" },
+  { href: "/studio", label: "Research Studio" },
   { href: "/common-room", label: "Common Room" },
   { href: "/catalogue", label: "Catalogue" },
   { href: "/programmes", label: "Programmes" },

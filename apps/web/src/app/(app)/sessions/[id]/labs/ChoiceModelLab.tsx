@@ -28,7 +28,7 @@ import {
 } from "@corniversity/core/labs/index";
 import { useMemo, useState } from "react";
 import { Badge, Button } from "@/components/ui";
-import { LabNote, NumberField, Plot } from "./Plot";
+import { ContractList, LabNote, NumberField, Plot } from "./Plot";
 import { PredictionGate } from "./PredictionGate";
 
 const fmt = (v: number, d = 2) => (Number.isFinite(v) ? v.toFixed(d) : "n/a");
@@ -632,28 +632,7 @@ export function ChoiceModelLab({ sessionId, predictionRecorded }: { sessionId: s
                 {busy === "heldout" ? "Evaluating…" : "Run the comparison"}
               </Button>
             </div>
-            <dl className="grid gap-x-4 gap-y-1 rounded-[var(--radius-panel)] border border-stone bg-paper p-3 text-xs sm:grid-cols-[14rem_1fr]">
-              <dt className="font-medium text-ink">Observed</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].observed}</dd>
-              <dt className="font-medium text-ink">Prediction target</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].target}</dd>
-              <dt className="font-medium text-ink">History in training</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].historyInTraining}</dd>
-              <dt className="font-medium text-ink">History at inference</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].historyAtInference}</dd>
-              <dt className="font-medium text-ink">Person</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].person}</dd>
-              <dt className="font-medium text-ink">Task</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].task}</dd>
-              <dt className="font-medium text-ink">Later time periods</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].laterPeriods ? "yes" : "no"}</dd>
-              <dt className="font-medium text-ink">Unavailable in real use</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].unavailableInRealUse}</dd>
-              <dt className="font-medium text-ink">Simplest baseline</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].baseline}</dd>
-              <dt className="font-medium text-ink">Claims not tested</dt>
-              <dd className="text-ink-2">{SPLIT_CONTRACT[split].untestedClaims}</dd>
-            </dl>
+            <ContractList contract={SPLIT_CONTRACT[split]} />
             {heldOut ? (
               <>
                 <div className="overflow-x-auto">

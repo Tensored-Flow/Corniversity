@@ -121,14 +121,6 @@ export function Badge({ children, tone = "neutral", title }: { children: ReactNo
 }
 
 /** Every AI participant carries this label wherever they appear. */
-export function AiLabel({ kind }: { kind: string }) {
-  return (
-    <Badge tone="slate" title="This is an AI persona, not a person.">
-      AI {kind}
-    </Badge>
-  );
-}
-
 export function EmptyState({ title, body, action }: { title: string; body: string; action?: ReactNode }) {
   return (
     <div className="rounded-[var(--radius-panel)] border border-dashed border-stone-2 bg-paper-2 p-8 text-center">

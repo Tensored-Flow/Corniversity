@@ -77,6 +77,16 @@ export default async function CampusMapPage() {
       h: 80,
       note: "Notebook, portfolio and your informal record.",
     },
+    {
+      id: "studio",
+      label: "Research studio",
+      href: "/studio",
+      x: 560,
+      y: 200,
+      w: 200,
+      h: 80,
+      note: "Your own questions, from proposal to report.",
+    },
     ...(quiet
       ? []
       : [
@@ -85,9 +95,9 @@ export default async function CampusMapPage() {
             label: "Common Room",
             href: "/common-room",
             x: 560,
-            y: 200,
+            y: 290,
             w: 200,
-            h: 170,
+            h: 80,
             note: "Societies, office hours and labelled AI classmates.",
           },
         ]),

@@ -1,9 +1,9 @@
 "use server";
 import { learnerConceptOverride, learnerProfile, peerMembership, prerequisiteRule } from "@corniversity/db/schema/index";
-import { enrol, listEnrolments, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
-import { completeOnboarding, saveOnboardingStep, saveStepOne } from "@corniversity/db/services/onboarding";
+import { EnrolmentError, enrol, listEnrolments, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
+import { completeOnboarding, ensureProfile, saveOnboardingStep, saveStepOne } from "@corniversity/db/services/onboarding";
 import { candidatePlans, ensureTerm, saveAvailability, setConceptSelfReport } from "@corniversity/db/services/programme";
-import { followProgramme } from "@corniversity/db/services/programmes";
+import { followNewProgrammes } from "@corniversity/db/services/programmes";
 import { updateStudyPreferences } from "@corniversity/db/services/study";
 import { confirmPlan, discardProposedPlans, proposePlan } from "@corniversity/db/services/timetable";
 import { and, eq, inArray } from "drizzle-orm";
@@ -64,6 +64,16 @@ function all(formData: FormData, key: string): string[] {
   return formData.getAll(key).map(String).filter(Boolean);
 }
 
+/**
+ * Steps 8 to 11 build the first plan and make its enrolments. Once orientation is complete they
+ * change nothing: an existing learner's courses, timetable and route are changed on their own
+ * pages, so revisiting orientation can never withdraw an enrolment or replace a plan.
+ */
+async function refuseAfterCompletion(userId: string, step: number): Promise<void> {
+  const profile = await ensureProfile(db(), userId);
+  if (profile.onboardingCompletedAt) redirect(`/onboarding/${step}?error=complete`);
+}
+
 export async function saveInterestsAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/2");
   const departmentIds = all(formData, "departmentIds");
@@ -85,7 +95,19 @@ export async function saveInterestsAction(formData: FormData): Promise<void> {
     const rows = await db().select({ d: programme.departmentIds }).from(programme).where(inArray(programme.id, programmeIds));
     for (const r of rows) for (const d of r.d) if (!departmentIds.includes(d)) departmentIds.push(d);
   }
-  await saveOnboardingStep(db(), session.user.id, 2, { departmentIds, interestCourseIds, programmeIds, goalsText }, { goalsText });
+  const updated = await saveOnboardingStep(
+    db(),
+    session.user.id,
+    2,
+    { departmentIds, interestCourseIds, programmeIds, goalsText },
+    { goalsText },
+  );
+  if (updated.onboardingCompletedAt) {
+    // An existing learner exploring again: newly ticked programmes are followed now; nothing is
+    // unfollowed, resumed or enrolled, and there is no plan to rebuild.
+    const added = await followNewProgrammes(db(), session.user.id, programmeIds, "onboarding");
+    redirect(`/onboarding/2?saved=${added.length}`);
+  }
   redirect("/onboarding/3");
 }
 
@@ -212,6 +234,7 @@ export async function savePlacementAction(formData: FormData): Promise<void> {
 
 export async function choosePlanAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/8");
+  await refuseAfterCompletion(session.user.id, 8);
   const planId = String(formData.get("planId") ?? "");
   const [profile] = await db().select().from(learnerProfile).where(eq(learnerProfile.userId, session.user.id)).limit(1);
   if (!profile) redirect("/onboarding/8?error=invalid");
@@ -239,6 +262,7 @@ export async function choosePlanAction(formData: FormData): Promise<void> {
 
 export async function saveModesAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/9");
+  await refuseAfterCompletion(session.user.id, 9);
   const [profile] = await db().select().from(learnerProfile).where(eq(learnerProfile.userId, session.user.id)).limit(1);
   const chosen = profile?.onboardingAnswers.chosenPlan;
   if (!chosen) redirect("/onboarding/8?error=choose_plan");
@@ -247,48 +271,60 @@ export async function saveModesAction(formData: FormData): Promise<void> {
     const v = String(formData.get(`mode:${c.courseId}`) ?? c.mode);
     modes[c.courseId] = (["enrolled", "audit", "reading_seminar"].includes(v) ? v : c.mode) as never;
   }
-  await db().transaction(async (tx) => {
-    await saveOnboardingStep(tx, session.user.id, 9, { modes });
-    // Create the term and enrolments now so the timetable preview is real; the plan itself is
-    // only proposed until step 11 confirms it.
-    const answers = { ...profile!.onboardingAnswers, modes };
-    const termRow = await ensureTerm(tx, session.user.id, answers, profile!.timezone);
-    const existing = await listEnrolments(tx, session.user.id);
-    for (const c of chosen.courses) {
-      const current = existing.find((e) => e.course.id === c.courseId && e.enrolment.status !== "withdrawn");
-      if (current && current.enrolment.mode !== modes[c.courseId]) {
-        await setEnrolmentStatus(tx, session.user.id, current.enrolment.id, "withdrawn");
-        await enrol(tx, {
-          ownerId: session.user.id,
-          courseId: c.courseId,
-          mode: modes[c.courseId]!,
-          termId: termRow.id,
-          idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
-        });
-      } else if (!current) {
-        await enrol(tx, {
-          ownerId: session.user.id,
-          courseId: c.courseId,
-          mode: modes[c.courseId]!,
-          termId: termRow.id,
-          idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
-        });
+  // A mode the course does not offer is refused by the enrolment service; the transaction then
+  // changes nothing and the step says why, instead of failing the page.
+  await db()
+    .transaction(async (tx) => {
+      await saveOnboardingStep(tx, session.user.id, 9, { modes });
+      // Create the term and enrolments now so the timetable preview is real; the plan itself is
+      // only proposed until step 11 confirms it.
+      const answers = { ...profile!.onboardingAnswers, modes };
+      const termRow = await ensureTerm(tx, session.user.id, answers, profile!.timezone);
+      const existing = await listEnrolments(tx, session.user.id);
+      for (const c of chosen.courses) {
+        const current = existing.find((e) => e.course.id === c.courseId && e.enrolment.status !== "withdrawn");
+        if (current && current.enrolment.mode !== modes[c.courseId]) {
+          await setEnrolmentStatus(tx, session.user.id, current.enrolment.id, "withdrawn");
+          await enrol(tx, {
+            ownerId: session.user.id,
+            courseId: c.courseId,
+            mode: modes[c.courseId]!,
+            termId: termRow.id,
+            idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
+          });
+        } else if (!current) {
+          await enrol(tx, {
+            ownerId: session.user.id,
+            courseId: c.courseId,
+            mode: modes[c.courseId]!,
+            termId: termRow.id,
+            idempotencyKey: `enrol:${session.user.id}:${c.courseId}:${modes[c.courseId]}`,
+          });
+        }
       }
-    }
-    // Withdraw from courses no longer in the plan (made during onboarding only).
-    for (const e of existing) {
-      if (e.enrolment.status === "active" && !chosen.courses.some((c) => c.courseId === e.course.id) && e.enrolment.termId === termRow.id) {
-        await setEnrolmentStatus(tx, session.user.id, e.enrolment.id, "withdrawn");
+      // Withdraw from courses no longer in the plan (made during onboarding only).
+      for (const e of existing) {
+        if (
+          e.enrolment.status === "active" &&
+          !chosen.courses.some((c) => c.courseId === e.course.id) &&
+          e.enrolment.termId === termRow.id
+        ) {
+          await setEnrolmentStatus(tx, session.user.id, e.enrolment.id, "withdrawn");
+        }
       }
-    }
-    await discardProposedPlans(tx, session.user.id, termRow.id);
-    await proposePlan(tx, session.user.id, termRow);
-  });
+      await discardProposedPlans(tx, session.user.id, termRow.id);
+      await proposePlan(tx, session.user.id, termRow);
+    })
+    .catch((error: unknown) => {
+      if (error instanceof EnrolmentError && error.code === "not_offered") redirect("/onboarding/9?error=not_offered");
+      throw error;
+    });
   redirect("/onboarding/10");
 }
 
 export async function acceptTimetableAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/10");
+  await refuseAfterCompletion(session.user.id, 10);
   const planId = String(formData.get("planId") ?? "");
   if (!planId) redirect("/onboarding/10?error=invalid");
   await saveOnboardingStep(db(), session.user.id, 10, {});
@@ -297,15 +333,14 @@ export async function acceptTimetableAction(formData: FormData): Promise<void> {
 
 export async function confirmPlanAction(formData: FormData): Promise<void> {
   const session = await requireSession("/onboarding/11");
+  await refuseAfterCompletion(session.user.id, 11);
   const planId = String(formData.get("planId") ?? "");
   if (!planId) redirect("/onboarding/10?error=invalid");
   await db().transaction(async (tx) => {
     await confirmPlan(tx, session.user.id, planId);
     const updated = await saveOnboardingStep(tx, session.user.id, 11, {});
-    // Programmes chosen in orientation are followed; following one enrols in nothing.
-    for (const programmeId of updated.onboardingAnswers.programmeIds ?? []) {
-      await followProgramme(tx, session.user.id, programmeId, "onboarding").catch(() => undefined);
-    }
+    // Programmes chosen in orientation are followed (never resumed or replaced); following one enrols in nothing.
+    await followNewProgrammes(tx, session.user.id, updated.onboardingAnswers.programmeIds ?? [], "onboarding");
     await completeOnboarding(tx, session.user.id);
   });
   redirect("/welcome");

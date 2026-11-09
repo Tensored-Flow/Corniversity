@@ -1,10 +1,8 @@
 import {
   ASSESSOR_PROMPT_VERSION,
   AssessorFeedbackSchema,
+  type AttemptUsage,
   buildAssessorSystemPrompt,
-  decideBudget,
-  estimateCostUsd,
-  estimateRunCostUsd,
   numberLines,
   PRICING_VERSION,
   ProviderError,
@@ -14,20 +12,12 @@ import { runDeterministicChecks } from "@corniversity/core/checks/deterministic"
 import { reconcileVerdict } from "@corniversity/core/checks/verdict";
 import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
-import {
-  assessmentRun,
-  attempt,
-  instructorArtifact,
-  providerRun,
-  submissionVersion,
-  teachingUnit,
-  unitExercise,
-} from "@corniversity/db/schema/index";
+import { assessmentRun, attempt, instructorArtifact, submissionVersion, teachingUnit, unitExercise } from "@corniversity/db/schema/index";
+import { planRun } from "@corniversity/db/services/ai-runs";
 import { recordEvidence } from "@corniversity/db/services/evidence";
-import { getBudgetLimits, getSpend } from "@corniversity/db/services/provider-config";
+import { type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, eq } from "drizzle-orm";
-import { providerFor } from "../provider";
 import type { HandlerContext } from "./index";
 
 /**
@@ -86,81 +76,66 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   });
 
   const scenario = fixtureScenario(exercise.id, deterministic);
-  const { provider, live } = await providerFor(ctx, payload.ownerId);
-  const contract = ROLE_CONTRACTS.assessor;
+  const instruction = "Assess the numbered submission according to the standard and return the structured judgement.";
+  // The same gate as the web routes: a submission never spends past the owner's limits, and a
+  // blocked provider fails the assessment with its reason instead of answering with fixtures.
+  const plan = await planRun(db, payload.ownerId, ctx.env, "assessor", `${system}\n${instruction}`);
+  const live = plan.kind === "live";
   const startedAt = new Date();
   let feedbackObject: ReturnType<typeof AssessorFeedbackSchema.parse> | null = null;
-  let runStatus: "ok" | "error" | "refused" | "budget_blocked" = "ok";
+  let runStatus: RunStatus = "ok";
   let errorText: string | undefined;
-  let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
-  let model = live ? run.graderConfig.model : "fixture";
+  let attempts: AttemptUsage[] = [];
+  let model = plan.model;
 
-  if (live) {
-    // The same budget gate as the web routes: a submission must never spend past the owner's
-    // daily or monthly limit just because it arrives through the queue.
-    const limits = await getBudgetLimits(db, payload.ownerId, ctx.env);
-    const spend = await getSpend(db, payload.ownerId);
-    const estimate = estimateRunCostUsd(model, system, contract.limits.maxOutputTokens);
-    const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
-    if (!decision.allowed) {
-      runStatus = "budget_blocked";
-      errorText = decision.reason;
-    }
-  }
-
-  try {
-    if (runStatus === "ok") {
-      const result = await provider.generateStructured({
+  if (plan.kind === "refused") {
+    runStatus = plan.status;
+    errorText = plan.reason;
+  } else {
+    try {
+      const result = await plan.provider.generateStructured({
         role: "assessor",
         purpose: "assess-submission",
         system,
-        messages: [
-          { role: "user", content: "Assess the numbered submission according to the standard and return the structured judgement." },
-        ],
+        messages: [{ role: "user", content: instruction }],
         schema: AssessorFeedbackSchema,
         schemaName: "AssessorFeedback",
-        maxTokens: contract.limits.maxOutputTokens,
+        maxTokens: plan.maxTokens,
+        effort: plan.effort,
         scenario,
       });
       feedbackObject = result.object;
-      usage = result.usage;
+      attempts = result.attempts;
       model = result.model;
-    }
-  } catch (error) {
-    if (error instanceof ProviderError) {
-      runStatus = error.kind === "refused" ? "refused" : error.kind === "budget_exceeded" ? "budget_blocked" : "error";
+    } catch (error) {
+      if (!(error instanceof ProviderError)) throw error;
+      runStatus = error.kind === "refused" ? "refused" : "error";
       errorText = error.message;
-    } else {
-      throw error;
+      attempts = error.attempts;
     }
   }
 
-  const [pr] = await db
-    .insert(providerRun)
-    .values({
-      ownerId: payload.ownerId,
-      role: "assessor",
-      provider: provider.name,
-      model,
-      purpose: "assess-submission",
-      inputTokens: usage.inputTokens,
-      outputTokens: usage.outputTokens,
-      cacheReadTokens: usage.cacheReadTokens,
-      cacheWriteTokens: usage.cacheWriteTokens,
-      costUsd: String(estimateCostUsd(model, usage)),
-      pricingVersion: PRICING_VERSION,
-      promptVersion: `${ASSESSOR_PROMPT_VERSION};role:${contract.version}`,
-      status: runStatus,
-      error: errorText ?? null,
-      startedAt,
-      finishedAt: new Date(),
-    })
-    .returning({ id: providerRun.id });
+  const providerRunId = await recordProviderRun(db, {
+    ownerId: payload.ownerId,
+    role: "assessor",
+    provider: plan.kind === "scripted" ? "fixture" : "anthropic",
+    model,
+    purpose: "assess-submission",
+    pricingVersion: PRICING_VERSION,
+    promptVersion: `${ASSESSOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.assessor.version}`,
+    status: runStatus,
+    error: errorText ?? null,
+    attempts,
+    worstCaseUsd: plan.kind === "scripted" ? null : plan.worstCaseUsd,
+    startedAt,
+  });
+  // The run records what actually assessed it, whatever was configured when it was submitted.
+  const graderConfig = { ...run.graderConfig, provider: plan.kind === "scripted" ? "fixture" : "anthropic", model };
 
   if (!feedbackObject) {
     await db
       .update(assessmentRun)
-      .set({ status: "failed", error: errorText ?? "provider failure", providerRunId: pr?.id ?? null, completedAt: new Date() })
+      .set({ status: "failed", error: errorText ?? "provider failure", providerRunId, graderConfig, completedAt: new Date() })
       .where(eq(assessmentRun.id, run.id));
     await db.update(attempt).set({ state: "submitted" }).where(eq(attempt.id, a.id));
     return { status: "failed", error: errorText };
@@ -191,7 +166,7 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   const status = verdict === "needs_review" ? "needs_review" : "feedback_ready";
   await db
     .update(assessmentRun)
-    .set({ status, feedback, verdict, confidence, providerRunId: pr?.id ?? null, completedAt: new Date() })
+    .set({ status, feedback, verdict, confidence, providerRunId, graderConfig, completedAt: new Date() })
     .where(eq(assessmentRun.id, run.id));
 
   const attemptState = verdict === "accepted" ? "accepted" : verdict === "revision_requested" ? "revision_requested" : "needs_review";

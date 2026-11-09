@@ -1,8 +1,9 @@
 import { getDepartment, listCatalogue, listPersonas } from "@corniversity/db/services/catalogue";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiLabel } from "@/components/AiLabel";
 import { ReadinessBadge } from "@/components/Readiness";
-import { AiLabel, Card } from "@/components/ui";
+import { Card } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 

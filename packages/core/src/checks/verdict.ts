@@ -20,7 +20,7 @@ export interface VerdictOutcome {
 }
 
 export const FIXTURE_WITHHELD_NOTE =
-  "No model has read this submission (fixture provider). The automatic checks ran; the verdict is withheld until a live assessor is configured in Settings.";
+  "No model has read this submission (scripted demo). The automatic checks ran; the verdict is withheld until a live assessor is configured in Settings.";
 
 export function reconcileVerdict(input: VerdictInput): VerdictOutcome {
   let { verdict, confidence } = input;

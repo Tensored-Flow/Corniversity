@@ -6,9 +6,11 @@ import {
   blockReadiness,
   type CourseState,
   type EvidenceState,
+  type LearnerProgress,
   type MethodCoverage,
   methodCoverage,
   programmeWorkItems,
+  proposeRoute,
   type WorkItem,
 } from "@corniversity/core";
 import { and, eq, inArray, or } from "drizzle-orm";
@@ -25,6 +27,8 @@ import {
   programmeParticipation,
   teachingUnit,
 } from "../schema/index";
+import { assessPrerequisites } from "./programme";
+import { activeLoad, getStudyPreferences } from "./study";
 
 /**
  * Programmes as the learner meets them: a catalogue of routes, each with blocks whose
@@ -181,6 +185,28 @@ export async function followProgramme(
   return row!;
 }
 
+/**
+ * Follows those of the given programmes the learner has never followed. A programme already
+ * followed, paused or left is left exactly as it is, so choosing programmes in orientation
+ * (again) can add to the learner's choices but never resume, replace or remove one.
+ */
+export async function followNewProgrammes(
+  db: DbOrTx,
+  ownerId: string,
+  programmeIds: string[],
+  source: ParticipationRow["source"],
+): Promise<string[]> {
+  const existing = new Set((await listParticipation(db, ownerId)).map((p) => p.programmeId));
+  const followed: string[] = [];
+  for (const id of programmeIds) {
+    const p = await getProgramme(db, id);
+    if (!p || existing.has(p.id) || followed.includes(p.id)) continue;
+    await followProgramme(db, ownerId, p.id, source);
+    followed.push(p.id);
+  }
+  return followed;
+}
+
 export async function setParticipationStatus(
   db: DbOrTx,
   ownerId: string,
@@ -214,6 +240,20 @@ export interface ProgrammeMapEntry {
  * they have worked; per method, the evidence state of its concept, with introduced, practised
  * and demonstrated kept distinct. Everything is derived; nothing is awarded here.
  */
+/** The courses the learner actively takes and the units they have completed a session of. */
+export async function learnerProgress(db: DbOrTx, ownerId: string): Promise<LearnerProgress> {
+  const active = await db
+    .select({ courseId: courseVersion.courseId })
+    .from(enrolment)
+    .innerJoin(courseVersion, eq(enrolment.courseVersionId, courseVersion.id))
+    .where(and(eq(enrolment.ownerId, ownerId), eq(enrolment.status, "active")));
+  const worked = await db
+    .select({ unitId: learningSession.unitId })
+    .from(learningSession)
+    .where(and(eq(learningSession.ownerId, ownerId), eq(learningSession.status, "completed")));
+  return { activeCourseIds: new Set(active.map((a) => a.courseId)), workedUnitIds: new Set(worked.map((w) => w.unitId)) };
+}
+
 export async function learnerProgrammeMap(db: DbOrTx, ownerId: string): Promise<ProgrammeMapEntry[]> {
   const participation = (await listParticipation(db, ownerId)).filter((p) => p.status !== "left");
   if (participation.length === 0) return [];
@@ -226,18 +266,9 @@ export async function learnerProgrammeMap(db: DbOrTx, ownerId: string): Promise<
         participation.map((p) => p.programmeId),
       ),
     );
-  const active = await db
-    .select({ courseId: courseVersion.courseId })
-    .from(enrolment)
-    .innerJoin(courseVersion, eq(enrolment.courseVersionId, courseVersion.id))
-    .where(and(eq(enrolment.ownerId, ownerId), eq(enrolment.status, "active")));
-  const worked = await db
-    .select({ unitId: learningSession.unitId })
-    .from(learningSession)
-    .where(and(eq(learningSession.ownerId, ownerId), eq(learningSession.status, "completed")));
   const states = await db.select().from(conceptState).where(eq(conceptState.ownerId, ownerId));
   const stateMap = new Map<string, EvidenceState>(states.map((s) => [s.conceptId, s.state]));
-  const learner = { activeCourseIds: new Set(active.map((a) => a.courseId)), workedUnitIds: new Set(worked.map((w) => w.unitId)) };
+  const learner = await learnerProgress(db, ownerId);
   const out: ProgrammeMapEntry[] = [];
   for (const part of participation) {
     const p = programmes.find((x) => x.id === part.programmeId);
@@ -262,54 +293,67 @@ export async function learnerProgrammeMap(db: DbOrTx, ownerId: string): Promise<
 }
 
 /**
- * The director's proposal for a route through a programme, made by fixed rules so it can be
- * inspected: focus on the first blocks that can be studied now, and name the mapped courses with
- * prepared units the learner does not yet take. Nothing changes until the learner confirms it,
- * and confirming it still enrols in nothing.
+ * The director's proposal for a route through a programme (see `proposeRoute`): a small
+ * starting route from the learner's existing courses, focus and chosen load, with every
+ * prerequisite of what it suggests explained rule by rule. The structured route travels with the
+ * proposal so the learner sees exactly what confirming would change. Nothing changes until the
+ * learner confirms it, and confirming it still enrols in nothing.
  */
 export async function proposeProgrammeRoute(db: DbOrTx, ownerId: string, programmeId: string) {
   const detail = await programmeDetail(db, programmeId);
   if (!detail) throw new ProgrammeError("Programme not found.");
-  const open = detail.blocks.filter((b) => b.report.readiness === "teaching_available" || b.report.readiness === "partly_prepared");
-  const focus = open.slice(0, 2).map((b) => b.block.id);
   const active = await db
-    .select({ courseId: courseVersion.courseId })
+    .select({ courseId: courseVersion.courseId, mode: enrolment.mode })
     .from(enrolment)
     .innerJoin(courseVersion, eq(enrolment.courseVersionId, courseVersion.id))
     .where(and(eq(enrolment.ownerId, ownerId), eq(enrolment.status, "active")));
-  const taking = new Set(active.map((a) => a.courseId));
-  const suggested = [
+  const [part] = await db
+    .select()
+    .from(programmeParticipation)
+    .where(and(eq(programmeParticipation.ownerId, ownerId), eq(programmeParticipation.programmeId, detail.programme.id)));
+  const { preferences } = await getStudyPreferences(db, ownerId);
+  const load = await activeLoad(db, ownerId);
+  const candidates = [
     ...new Set(
-      open
-        .filter((b) => focus.includes(b.block.id))
+      detail.blocks
+        .filter((b) => b.report.preparedUnitIds.length > 0)
         .flatMap((b) =>
           b.block.courseMappings.filter((m) => m.unitIds.some((u) => b.report.preparedUnitIds.includes(u))).map((m) => m.courseId),
         ),
     ),
-  ].filter((c) => !taking.has(c));
-  const unprepared = detail.blocks
-    .filter((b) => b.report.readiness === "proposed" || b.report.readiness === "sources_only")
-    .map((b) => b.block.id);
-  const rationale = [
-    focus.length
-      ? `Begin with ${focus.join(" and ")}: their mapped units can be studied now.`
-      : "No block of this programme has a prepared unit yet; following it records your interest and shows each block's status.",
-    suggested.length
-      ? `Courses with prepared units for those blocks that you do not take yet: ${suggested.join(", ")}. Enrol from their course pages if you want them; confirming this proposal enrols you in nothing.`
-      : "You already take the courses that serve those blocks, or none is prepared.",
-    unprepared.length ? `Not yet prepared: ${unprepared.join(", ")}. They stay visible with that label.` : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ];
+  const prerequisites = new Map(await Promise.all(candidates.map(async (c) => [c, await assessPrerequisites(db, ownerId, c)] as const)));
+  const route = proposeRoute({
+    blocks: detail.blocks,
+    courseTitles: new Map([...detail.courses.values()].map((c) => [c.courseId, c.title])),
+    learner: {
+      activeCourses: active,
+      focusBlockIds: part?.status === "following" ? part.focusBlockIds : [],
+      load: {
+        mainCourseLimit: preferences.mainCourseLimit,
+        exploratoryLimit: preferences.exploratoryLimit,
+        main: load.main,
+        exploratory: load.exploratory,
+      },
+    },
+    prerequisites,
+  });
   const [proposal] = await db
     .insert(changeProposal)
     .values({
       ownerId,
       kind: "programme",
       proposedBy: "director",
-      title: `Follow ${detail.programme.title}${focus.length ? `, starting with ${focus.join(" and ")}` : ""}`,
-      rationale,
-      diff: { programmeId: detail.programme.id, action: "follow", focusBlockIds: focus, suggestedCourseIds: suggested },
+      title: `Follow ${detail.programme.title}${route.focusBlockIds.length ? `, starting with ${route.focusBlockIds.join(" and ")}` : ""}`,
+      rationale: route.rationale.join(" "),
+      diff: {
+        programmeId: detail.programme.id,
+        action: "follow",
+        focusBlockIds: route.focusBlockIds,
+        focusBefore: route.focusChange?.before ?? part?.focusBlockIds ?? [],
+        suggestedCourseIds: route.steps.filter((st) => st.action !== "continue").map((st) => st.courseId),
+        route,
+      },
     })
     .returning();
   return proposal!;
@@ -324,6 +368,19 @@ export async function applyProgrammeProposal(db: DbOrTx, ownerId: string, diff: 
 }
 
 /** Titles and links of registered sources named on a programme's shelves and seminar. */
+/** Leads (named sources not yet verified) recorded by the current versions of these courses. */
+export async function courseSourceLeads(db: DbOrTx, courseIds: string[]): Promise<{ courseId: string; name: string; note: string }[]> {
+  const unique = [...new Set(courseIds)];
+  if (unique.length === 0) return [];
+  const rows = await db
+    .select({ courseId: courseVersion.courseId, notes: courseVersion.catalogueNotes })
+    .from(courseVersion)
+    .where(and(eq(courseVersion.isCurrent, true), inArray(courseVersion.courseId, unique)));
+  return rows
+    .sort((a, b) => a.courseId.localeCompare(b.courseId))
+    .flatMap((r) => (r.notes.sourceCandidates ?? []).map((c) => ({ courseId: r.courseId, name: c.name, note: c.note })));
+}
+
 export async function sourceTitles(db: DbOrTx, ids: string[]): Promise<Map<string, { title: string; canonicalUrl: string }>> {
   const unique = [...new Set(ids)];
   if (unique.length === 0) return new Map();

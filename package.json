@@ -2,7 +2,7 @@
   "name": "corniversity",
   "version": "0.1.0",
   "private": true,
-  "description": "Corniversity — Leon's private personal university",
+  "description": "Corniversity \u2014 Leon's private personal university",
   "packageManager": "pnpm@12.16.1",
   "engines": {
     "node": ">=22.12"
@@ -17,6 +17,7 @@
     "db:seed": "pnpm --filter @corniversity/content seed",
     "db:seed:demo": "pnpm --filter @corniversity/content seed:demo",
     "content:validate": "pnpm --filter @corniversity/content validate",
+    "content:coverage": "pnpm --filter @corniversity/content coverage",
     "dev": "pnpm --parallel --filter @corniversity/web --filter @corniversity/worker dev",
     "dev:web": "pnpm --filter @corniversity/web dev",
     "dev:worker": "pnpm --filter @corniversity/worker dev",
@@ -34,7 +35,7 @@
     "library:watch": "tsx apps/companion/src/index.ts watch",
     "library:sync": "tsx apps/companion/src/index.ts sync",
     "library:status": "tsx apps/companion/src/index.ts status",
-    "owner:reset-password": "tsx scripts/owner-reset-password.ts",
+    "owner:reset-password": "tsx apps/worker/src/admin/reset-owner-password.ts",
     "backup": "tsx scripts/backup.ts",
     "restore": "tsx scripts/restore.ts",
     "health": "tsx scripts/health.ts",

@@ -69,8 +69,11 @@ test.describe("functional analysis learning loop", () => {
     expect(versionsAfter).toBeGreaterThanOrEqual(Math.max(2, versionsBefore));
 
     await page.goto("/studies");
-    await expect(page.getByText("Equivalence of norms")).toBeVisible();
-    await expect(page.getByText("demonstrated").first()).toBeVisible();
+    // Submitted work is recorded as practice. Only a verdict makes a concept "demonstrated", and
+    // without a model the verdict is withheld; a database from before that rule can still hold an
+    // older "demonstrated".
+    const concept = page.getByRole("listitem").filter({ hasText: "Equivalence of norms" }).first();
+    await expect(concept).toContainText(/practised|demonstrated/);
     await screenshot(page, "07-my-studies-evidence");
   });
 
@@ -83,8 +86,10 @@ test.describe("functional analysis learning loop", () => {
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     await page.getByLabel("Message to the tutor").fill("Before I start: in finite dimensions, are all norms equivalent?");
     await page.getByRole("button", { name: "Send" }).click();
-    await expect(page.getByText(/norm induces a metric|fixture provider|three properties/).first()).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByText(/source-backed|needs checking/).first()).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText(/norm induces a metric|no model is configured|three properties/).first()).toBeVisible({ timeout: 30_000 });
+    // A citation is labelled source-backed only when the tutor saw the passage's text; until the
+    // library holds that text it reads "location cited, text not seen".
+    await expect(page.getByText(/source-backed|needs checking|location cited, text not seen/).first()).toBeVisible({ timeout: 30_000 });
     await screenshot(page, "08-tutor-turn");
   });
 });

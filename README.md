@@ -44,9 +44,11 @@ that account exists.
 | `pnpm test:e2e` | Playwright learner journeys (stack must be running) |
 | `pnpm eval:academic` | Academic evaluation set |
 | `pnpm content:validate` | Validates `content/` and reports readiness counts |
+| `pnpm content:coverage` | Regenerates the per-block, elective, method and source tables in `docs/MIND_BRAIN_AI.md` |
+| `pnpm owner:reset-password` | Sets a new owner password (asked twice, never echoed) and signs the owner out everywhere; on the live site run it in the worker's shell, see `docs/HANDOFF.md` |
 | `pnpm library:pair -- --server <url> --code <code>`, `pnpm library:sync -- --dry-run`, `pnpm library:watch`, `pnpm library:status` | Desktop companion; see `apps/companion/README.md` |
 | `pnpm backup`, `pnpm restore <file> [--yes]`, `pnpm health` | Logical database backup (a small document plus a `<file>.blobs/` folder of stored originals; keep them together), restore (dry run by default) and health check |
-| `pnpm deploy:railway:plan`, `pnpm deploy:railway` | Prints the deployment plan; deploys to a dedicated Railway project after `railway login` |
+| `pnpm deploy:railway:plan`, `pnpm deploy:railway` | Prints the plan of a first deployment; creates a new Railway project after `railway login`, and refuses to run in a folder already linked to one. Later releases use `railway up --service worker --ci`, then `--service web` |
 
 ## Where private data lives
 
@@ -58,5 +60,6 @@ PostgreSQL cluster. Nothing under it is ever committed.
 
 Readiness states (`proposed`, `source_verified`, `syllabus_ready`, `teaching_ready`,
 `resource_blocked`) are shown everywhere a course appears, at course and unit level. AI
-teaching runs on deterministic fixtures until you configure a provider and budget. Records are
-informal and never imply accreditation.
+teaching is a labelled scripted demo until you choose a live model, store a key and approve paid
+use within finite limits in Settings; a live model that cannot run is reported as blocked, never
+replaced by scripted text. Records are informal and never imply accreditation.

@@ -4,4 +4,8 @@ export * from "./domain/locator";
 export * from "./domain/source";
 export * from "./planning/obligations";
 export * from "./planning/preferences";
+export * from "./planning/workload";
+export * from "./programme/next-step";
 export * from "./programme/progress";
+export * from "./programme/route";
+export * from "./research/studio";

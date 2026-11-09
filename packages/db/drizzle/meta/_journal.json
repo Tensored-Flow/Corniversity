@@ -29,6 +29,27 @@
       "when": 1793462787583,
       "tag": "0003_mind-brain-ai-and-study-defaults",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794186997102,
+      "tag": "0004_live-provider-controls",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794188267172,
+      "tag": "0005_single-owner",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794189717236,
+      "tag": "0006_research-studio",
+      "breakpoints": true
     }
   ]
 }

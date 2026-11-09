@@ -20,6 +20,9 @@ const PAGES = [
   "/common-room",
   "/timetable",
   "/campus/map",
+  "/programmes/mind-and-computation",
+  "/programmes/mind-and-computation/blocks/MBI-09",
+  "/studio",
 ];
 
 test.describe("accessibility (axe)", () => {

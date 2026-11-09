@@ -21,8 +21,10 @@ Read the brief before changing behaviour. Then read [`docs/PLAN.md`](docs/PLAN.m
   Models propose; services decide. Instructor-only artifacts never reach learner payloads.
 - Permissions are separate actions (`local_read`, `local_extract`, `private_cloud_store`,
   `external_ai`, `external_embedding`, `share`); unknown licence ⇒ reference-only.
-- Fixture provider by default. Live-model calls need an explicit provider config and budget;
-  fixture runs are never reported as live integration tests.
+- The scripted demo (fixture provider) by default. A live model runs only with a supported model,
+  a readable key and the owner's approval of paid use within finite limits; a run that cannot is
+  refused with its reason, never replaced by scripted text. Scripted runs and mocked contract tests
+  are never reported as live integration tests.
 - Secrets live in `.env` (gitignored) and the deployment platform, never in code or docs.
 - Keep approval controls on. Ask before anything irreversible, billable or data-destroying.
 

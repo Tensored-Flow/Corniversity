@@ -37,10 +37,12 @@ import {
   simulateEuler,
   simulateRk4,
   sphereMetric,
+  splitByOrientation,
   splitTrials,
   stepsToShrink,
   summarise,
   supNormXn,
+  TUNING_SPLIT_CONTRACT,
   trivialBaselineAccuracy,
   withExtraHypothesis,
 } from "./index";
@@ -222,6 +224,19 @@ describe("synthetic neural tuning fit", () => {
       expect(test.filter((t) => t.thetaDegrees === theta).length).toBe(7);
     }
     expect(train.length + test.length).toBe(30 * ORIENTATIONS.length);
+  });
+  it("can instead hold out one whole orientation, which then never appears in training", () => {
+    const { train, test } = splitByOrientation(generateTrials(truth, 30, 1, 42), 90);
+    expect(test).toHaveLength(30);
+    expect(test.every((t) => t.thetaDegrees === 90)).toBe(true);
+    expect(train.some((t) => t.thetaDegrees === 90)).toBe(false);
+    expect(train).toHaveLength(30 * (ORIENTATIONS.length - 1));
+  });
+  it("labels the two splits as different questions: new trials of a familiar stimulus, or an unseen stimulus", () => {
+    expect(TUNING_SPLIT_CONTRACT.held_out_trials.task).toBe("familiar");
+    expect(TUNING_SPLIT_CONTRACT.held_out_orientation.task).toBe("unseen");
+    expect(TUNING_SPLIT_CONTRACT.held_out_trials.untestedClaims).toMatch(/orientation absent from training/);
+    expect(TUNING_SPLIT_CONTRACT.held_out_orientation.untestedClaims).toMatch(/new trials of the sampled orientations/);
   });
   it("does not favour the tuning model out of sample when the neuron is untuned", () => {
     const flat = generateTrials({ b: 6, A: 0, kappa: 1, thetaPref: 0 }, 30, 1, 7);

@@ -3,17 +3,23 @@ import { screenshot, signInOrBootstrap } from "./helpers";
 
 /**
  * Journey 1 (full): orientation steps 2–12 end in a confirmed first term, a welcome letter,
- * a first week on the timetable and the campus page showing the next real session.
- * Safe to re-run: when onboarding is already complete the test verifies the resulting pages.
+ * a first week on the timetable and the campus page showing the next real session. A new learner
+ * discovers the Mind, Brain and AI programme on the interests step, and confirming the plan
+ * follows it. Safe to re-run: when onboarding is already complete the test verifies the
+ * resulting pages instead of replaying orientation.
  */
 test.describe("orientation to a confirmed first term", () => {
   test("steps 2–12, welcome, timetable, campus", async ({ page }) => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);
-    await page.goto("/onboarding/2");
+    // While orientation is unfinished the campus sends the learner back to it.
+    await page.goto("/campus");
+    const fresh = /\/onboarding\//.test(page.url());
 
-    if (/\/onboarding\/2/.test(page.url())) {
-      // Step 2: interests
+    if (fresh) {
+      await page.goto("/onboarding/2");
+      // Step 2: interests, including a programme
+      await page.getByRole("checkbox", { name: /Mind, Brain and AI/ }).check();
       await page
         .getByLabel(/Mathematics/)
         .first()
@@ -101,6 +107,12 @@ test.describe("orientation to a confirmed first term", () => {
     await page.goto("/campus");
     await expect(page.getByRole("heading", { name: "Next session" })).toBeVisible();
     await screenshot(page, "16-campus-home");
+
+    if (fresh) {
+      // The programme chosen during orientation is followed; following enrols in nothing.
+      await page.goto("/programmes/mind-and-computation");
+      await expect(page.getByText("You follow this programme")).toBeVisible();
+    }
 
     // Calendar snapshot downloads as a real iCalendar file.
     const ics = await page.request.get("/api/calendar/export.ics");

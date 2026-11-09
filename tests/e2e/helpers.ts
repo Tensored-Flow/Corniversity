@@ -62,23 +62,31 @@ export async function screenshot(page: Page, name: string): Promise<void> {
 }
 
 /**
- * Takes a course in full from its page. When the course goes beyond the learner's chosen load
- * the page shows a workload preview first; the journey reads it and confirms, as a learner would.
+ * Takes a course in full from its page. A lighter enrolment (audit or reading seminar, which
+ * orientation's plan can choose) is withdrawn first, as a learner changing mode would. When the
+ * course goes beyond the learner's chosen load the enrolment form asks for the heavier load to be
+ * confirmed first; the journey reads it and confirms, as a learner would.
  */
 export async function takeCourse(page: Page, courseId: string): Promise<void> {
   await page.goto(`/courses/${courseId}`);
   const take = page.getByRole("button", { name: /take this course/i });
   // Only an enrolment shows a Withdraw button; the word "Enrolled" is also the label of a mode
-  // option, so it cannot tell whether the enrolment happened.
+  // option, so it cannot tell whether the enrolment happened. The page's own workload preview is
+  // always shown, so only the confirmation box tells that the enrolment is waiting.
   const withdraw = page.getByRole("button", { name: "Withdraw", exact: true });
+  const lighterMode = page.getByText(/^(Auditing|Reading seminar)$/).first();
+  if ((await withdraw.isVisible().catch(() => false)) && (await lighterMode.isVisible().catch(() => false))) {
+    await withdraw.click();
+    await expect(take).toBeVisible({ timeout: 30_000 });
+  }
   if (await take.isVisible().catch(() => false)) {
     await page.getByLabel(/^Enrolled/).check();
     await take.click();
-    const preview = page.getByText("Workload preview").first();
-    await expect(preview.or(withdraw).first()).toBeVisible({ timeout: 30_000 });
-    if (await preview.isVisible().catch(() => false)) {
+    const confirmLoad = page.getByLabel(/I have read this preview/);
+    await expect(confirmLoad.or(withdraw).first()).toBeVisible({ timeout: 30_000 });
+    if (await confirmLoad.isVisible().catch(() => false)) {
       await page.getByLabel(/^Enrolled/).check();
-      await page.getByLabel(/I have read this preview/).check();
+      await confirmLoad.check();
       await page.getByRole("button", { name: /take this course/i }).click();
     }
   }

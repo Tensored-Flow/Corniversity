@@ -6,7 +6,8 @@ import { getTimetable, listOpenProposals } from "@corniversity/db/services/timet
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AiLabel, Badge, Card, EmptyState, LinkButton } from "@/components/ui";
+import { AiLabel } from "@/components/AiLabel";
+import { Badge, Card, EmptyState, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 

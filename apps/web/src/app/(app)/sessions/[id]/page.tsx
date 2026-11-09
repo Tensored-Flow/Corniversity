@@ -1,14 +1,17 @@
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
+import { labRevealState } from "@corniversity/db/services/lab-predictions";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
 import { listEntries } from "@corniversity/db/services/notebook";
 import { getOrCreateConversation, listMessages } from "@corniversity/db/services/tutoring";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiLabel } from "@/components/AiLabel";
 import { LocatorLink } from "@/components/LocatorLink";
 import { Markdown } from "@/components/Markdown";
-import { AiLabel, Badge, Card } from "@/components/ui";
+import { Badge, Card } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
+import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "./AutoRefresh";
 import {
@@ -63,10 +66,15 @@ export default async function SessionPage({
     allowedLocatorIds: [...new Set([...unitDetail.unit.preparation.map((p) => p.locatorId), ...activity.sourceLocatorIds])],
   });
   const messages = await listMessages(db(), conversation.id);
+  const producedBy = await producerLabels(
+    db(),
+    messages.map((m) => m.providerRunId),
+  );
   const renderedMessages = await Promise.all(
     messages.map(async (m) => ({
       id: m.id,
       sender: m.sender,
+      producedBy: producedBy(m.providerRunId),
       html: await renderMarkdown(
         m.contentMarkdown.replace(/\[(E\d+(?:,\s*E\d+)*)\]/g, (_s, g: string) =>
           g
@@ -96,8 +104,7 @@ export default async function SessionPage({
       const attempts = await getAttemptHistory(db(), auth.user.id, exercise.id);
       if (attempts.some((h) => Boolean(h.attempt.solutionRevealedAt) || ASSESSED.has(h.attempt.state))) revealFormulas = true;
     }
-    const predictions = await listEntries(db(), auth.user.id, { unitId: unitDetail.unit.id, tag: "prediction", limit: 20 });
-    predictionRecorded = predictions.some((e) => e.tags.includes(labId));
+    predictionRecorded = (await labRevealState(db(), auth.user.id, unitDetail.unit.id, labId)).revealed;
     labNotes = (await listEntries(db(), auth.user.id, { unitId: unitDetail.unit.id, tag: labId, limit: 5 })).map((e) => ({
       id: e.id,
       title: e.title,

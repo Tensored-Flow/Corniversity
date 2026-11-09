@@ -1,11 +1,22 @@
 import { randomUUID } from "node:crypto";
 import { defaultContentRoot, loadContent } from "@corniversity/content/load";
 import { seedContent } from "@corniversity/content/seed";
+import type { RouteProposal } from "@corniversity/core";
 import { createDb } from "@corniversity/db/client";
 import { user } from "@corniversity/db/schema/auth";
-import { changeProposal, course, courseVersion, enrolment, programme, programmeParticipation, source } from "@corniversity/db/schema/index";
+import {
+  changeProposal,
+  course,
+  courseVersion,
+  enrolment,
+  learnerConceptOverride,
+  programme,
+  programmeParticipation,
+  source,
+} from "@corniversity/db/schema/index";
 import { enrol } from "@corniversity/db/services/enrolment";
 import { suggestedRequests } from "@corniversity/db/services/library";
+import { assessPrerequisites, candidatePlans, setConceptSelfReport } from "@corniversity/db/services/programme";
 import {
   followProgramme,
   learnerProgrammeMap,
@@ -38,6 +49,7 @@ beforeAll(async () => {
 }, 180_000);
 
 afterAll(async () => {
+  await handle.db.delete(learnerConceptOverride).where(eq(learnerConceptOverride.userId, OWNER));
   await handle.db.delete(changeProposal).where(eq(changeProposal.ownerId, OWNER));
   await handle.db.delete(programmeParticipation).where(eq(programmeParticipation.ownerId, OWNER));
   await handle.db.delete(enrolment).where(eq(enrolment.ownerId, OWNER));
@@ -123,6 +135,49 @@ describe("Mind, Brain and AI against the seeded catalogue", () => {
     expect(method("parameter-recovery").plannedOnly).toBe(false);
     expect(method("model-recovery").preparedUnits.map((u) => u.unitId)).toContain("COG-260-u01");
     expect(method("measurement-reliability-validity").plannedOnly).toBe(true);
+  });
+
+  it("recognises a mathematics background rule by rule: programming and statistics are still asked for", async () => {
+    // A learner who reports every mathematics concept the catalogue's rules mention, and nothing else.
+    const maths = ["linear-algebra-vector-spaces", "multivariable-calculus", "ode-basics", "probability-measure-theoretic"];
+    await setConceptSelfReport(handle.db, OWNER, maths, true, "test: a mathematics background, self-reported");
+    const neu = await assessPrerequisites(handle.db, OWNER, "NEU-220");
+    expect(neu.find((r) => r.ruleId === "NEU-220-mathematics")).toMatchObject({ satisfied: true, basis: "self_report" });
+    expect(neu.find((r) => r.ruleId === "NEU-220-python-and-statistics")).toMatchObject({ satisfied: false, basis: "none" });
+    expect(neu.find((r) => r.ruleId === "NEU-220-python-and-statistics")?.alternativeCourseIds).toContain("CSA-100");
+    const cog = await assessPrerequisites(handle.db, OWNER, "COG-201");
+    expect(cog.find((r) => r.ruleId === "COG-201-probability")?.satisfied).toBe(true);
+    expect(cog.find((r) => r.ruleId === "COG-201-programming")?.satisfied).toBe(false);
+    // The director's route shows the same split, and recommends nothing past an unmet rule silently.
+    const proposal = await proposeProgrammeRoute(handle.db, OWNER, "MIND-BRAIN-AI");
+    const route = (proposal.diff as { route: RouteProposal }).route;
+    // The learner takes NEU-220 (from the first test), so the route starts from it.
+    expect(route.steps.find((st) => st.courseId === "NEU-220")?.action).toBe("continue");
+    expect(route.recognised).toContainEqual(expect.objectContaining({ courseId: "NEU-220", basis: "self_report" }));
+    expect(route.toPrepare.some((r) => r.courseId === "NEU-220" && /Python/.test(r.description))).toBe(true);
+    expect(route.rationale.at(-1)).toMatch(/enrols you in nothing/);
+  });
+
+  it("proposes every first-term plan's courses only in modes they offer, with the programme chosen in orientation", async () => {
+    // Choosing the programme adds its departments, which brings NEU-220 (offered enrolled or
+    // audit, never as a reading seminar) into the plans; its lighter slot must fall back to audit.
+    const answers: Parameters<typeof candidatePlans>[2] = {
+      departmentIds: ["mathematics", "cognitive-science", "neuroscience", "computer-science-ai"],
+      interestCourseIds: ["MAT-230"],
+      programmeIds: ["mind-and-computation"],
+    };
+    const plans = await candidatePlans(handle.db, OWNER, answers);
+    const versions = await handle.db
+      .select({ courseId: courseVersion.courseId, modes: courseVersion.modesOffered })
+      .from(courseVersion)
+      .where(eq(courseVersion.isCurrent, true));
+    const offered = new Map(versions.map((v) => [v.courseId, v.modes as string[]]));
+    const courses = plans.flatMap((p) => p.courses.map((c) => ({ plan: p.id, ...c })));
+    expect(courses.some((c) => c.courseId === "NEU-220")).toBe(true);
+    for (const c of courses) {
+      expect(offered.get(c.courseId), `${c.plan}: ${c.courseId} as ${c.mode}`).toContain(c.mode);
+      if (c.mode === "enrolled") expect(c.preparedUnits, `${c.plan}: ${c.courseId}`).toBeGreaterThan(0);
+    }
   });
 
   it("missing sources reach the library's request list as labelled leads, only while the programme is followed", async () => {

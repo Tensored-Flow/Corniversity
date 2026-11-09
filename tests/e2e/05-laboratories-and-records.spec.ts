@@ -72,9 +72,19 @@ test.describe("laboratories, notebook and records", () => {
     await expect(page.getByRole("heading", { level: 2, name: /Fitting a tuning curve to synthetic spike counts/ })).toBeVisible();
     await expect(page.getByText("Synthetic data").first()).toBeVisible();
     await expect(page.getByText(/not recordings from any neuron or animal/)).toBeVisible();
-    await expect(page.getByText(/Log-likelihood per trial, held out/)).toBeVisible();
+    // The default split holds out new trials of the eight orientations; its contract says the task is familiar.
+    const taskRow = page.locator("dt", { hasText: /^Task$/ }).locator("xpath=following-sibling::dd[1]");
+    await expect(page.getByText(/Log-likelihood per trial, held-out trials \(\d+ trials\)/)).toBeVisible();
+    await expect(taskRow).toHaveText("familiar");
     await page.getByRole("button", { name: /bootstrap the fit/i }).click();
     await expect(page.getByText(/95% percentile intervals/)).toBeVisible({ timeout: 30_000 });
+    // Holding out a whole orientation asks another question, with its own contract; intervals
+    // computed for the other split are not shown against it.
+    await page.getByLabel("Evaluation split").selectOption("held_out_orientation");
+    await page.getByLabel("Held-out orientation").selectOption("67.5");
+    await expect(page.getByText(/Log-likelihood per trial, held-out orientation 67\.5° \(30 trials\)/)).toBeVisible();
+    await expect(taskRow).toHaveText("unseen");
+    await expect(page.getByText(/95% percentile intervals/)).toHaveCount(0);
     await page.getByLabel("Dataset").selectOption("failure");
     await expect(page.getByLabel("Dataset")).toHaveValue("failure");
     await expect(page.getByText("Generating model parameters (hidden by default)")).toHaveCount(0);

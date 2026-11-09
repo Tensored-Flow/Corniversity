@@ -1,3 +1,4 @@
+import { modelLabel } from "@corniversity/ai";
 import type { AssessmentRunRow } from "@corniversity/db/services/learning";
 import { Markdown } from "@/components/Markdown";
 import { Badge } from "@/components/ui";
@@ -47,7 +48,11 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
         {run?.status === "queued" || run?.status === "reviewing" ? <Badge tone="brass">being assessed</Badge> : null}
         {run?.status === "failed" ? <Badge tone="rust">assessment failed</Badge> : null}
         {verdict ? <Badge tone={verdict.tone}>{verdict.label}</Badge> : null}
-        {run ? <Badge tone={live ? "slate" : "neutral"}>{live ? "AI assessor" : "fixture assessor"}</Badge> : null}
+        {run ? (
+          <Badge tone={live ? "slate" : "neutral"}>
+            {live ? `AI assessor · ${modelLabel(run.graderConfig.model)}` : "Scripted demo assessor: no model read this"}
+          </Badge>
+        ) : null}
       </header>
 
       <details className="mt-3 text-sm">

@@ -1,3 +1,4 @@
+import type { InformationContract } from "./contract";
 import { mulberry32, type Rng } from "./random";
 
 /**
@@ -71,6 +72,65 @@ export function splitTrials(trials: Trial[], holdOutEvery = 4): { train: Trial[]
   }
   return { train, test };
 }
+
+/** Every trial of one orientation is held out, so the fit never sees that stimulus. */
+export function splitByOrientation(trials: Trial[], thetaDegrees: number): { train: Trial[]; test: Trial[] } {
+  return {
+    train: trials.filter((t) => t.thetaDegrees !== thetaDegrees),
+    test: trials.filter((t) => t.thetaDegrees === thetaDegrees),
+  };
+}
+
+/**
+ * The laboratory's two evaluation questions. Held-out trials test new trials of orientations the
+ * fit has seen; a held-out orientation tests a stimulus absent from training. Either can be
+ * useful; they are not interchangeable, and a result from one is never reported as the other.
+ */
+export type TuningSplitKind = "held_out_trials" | "held_out_orientation";
+
+export const TUNING_SPLITS: Record<TuningSplitKind, { label: string; question: string }> = {
+  held_out_trials: {
+    label: "Held-out trials: every fourth repetition of each orientation",
+    question: "Does the tuning model predict new trials of the eight sampled orientations better than the constant-rate baseline?",
+  },
+  held_out_orientation: {
+    label: "Held-out orientation: every trial at one orientation",
+    question: "Does the tuning model predict the counts at an orientation absent from training better than the constant-rate baseline?",
+  },
+};
+
+const OBSERVED = "Synthetic spike counts from one known model neuron at eight orientations, labelled synthetic.";
+const KNOWN_MODEL = "The generating model is known here; recorded data come with no such guarantee.";
+const BASELINE = "The constant-rate model fitted on the same training trials.";
+
+export const TUNING_SPLIT_CONTRACT: Record<TuningSplitKind, InformationContract> = {
+  held_out_trials: {
+    observed: OBSERVED,
+    target: "The spike count of each held-out trial.",
+    historyInTraining: "Three of every four repetitions of each orientation; parameters are fitted on those only.",
+    historyAtInference: "The held-out trial's orientation, which the fit has seen on other trials.",
+    person: "not_applicable",
+    task: "familiar",
+    laterPeriods: false,
+    unavailableInRealUse: KNOWN_MODEL,
+    baseline: BASELINE,
+    untestedClaims:
+      "Prediction at an orientation absent from training, which the held-out-orientation split asks; anything about biological neurons; recordings whose properties change over time.",
+  },
+  held_out_orientation: {
+    observed: OBSERVED,
+    target: "The spike count of every trial at the held-out orientation.",
+    historyInTraining: "Every trial of the other seven orientations; the held-out orientation never appears in the fit.",
+    historyAtInference: "The held-out orientation, a stimulus the fit has not seen.",
+    person: "not_applicable",
+    task: "unseen",
+    laterPeriods: false,
+    unavailableInRealUse: KNOWN_MODEL,
+    baseline: BASELINE,
+    untestedClaims:
+      "Other unseen orientations, since one held-out orientation is a single test across a 45° gap; how well new trials of the sampled orientations are predicted, which the held-out-trials split asks; anything about biological neurons.",
+  },
+};
 
 function logFactorial(n: number): number {
   let s = 0;

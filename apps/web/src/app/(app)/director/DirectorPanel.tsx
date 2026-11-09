@@ -7,6 +7,8 @@ import { Button } from "@/components/ui";
 interface Rendered {
   id: string;
   sender: "learner" | "persona" | "system";
+  /** What wrote a stored reply: a model's name, or "Scripted demo". */
+  producedBy: string | null;
   html: string;
 }
 
@@ -22,6 +24,7 @@ export function DirectorPanel({
   const router = useRouter();
   const [input, setInput] = useState("");
   const [pending, setPending] = useState<string | null>(null);
+  const [pendingLabel, setPendingLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function send(event: FormEvent<HTMLFormElement>) {
@@ -40,8 +43,12 @@ export function DirectorPanel({
       const body = await response.json().catch(() => ({}));
       setError(body.error ?? `The director could not reply (${response.status}).`);
       setPending(null);
+      // A refused run has already stored the message; anything else may not have.
+      if (response.status === 402 || response.status === 409) router.refresh();
+      else setInput(message);
       return;
     }
+    setPendingLabel(response.headers.get("x-provider-label"));
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let acc = "";
@@ -52,6 +59,7 @@ export function DirectorPanel({
       setPending(acc);
     }
     setPending(null);
+    setPendingLabel(null);
     router.refresh();
   }
 
@@ -72,18 +80,27 @@ export function DirectorPanel({
               m.sender === "learner" ? "ml-8 border border-stone bg-paper" : "border border-stone bg-paper-3/60",
             ].join(" ")}
           >
-            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{m.sender === "learner" ? "You" : personaName}</p>
+            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+              {m.sender === "learner" ? "You" : `${personaName}${m.producedBy ? ` · ${m.producedBy}` : ""}`}
+            </p>
             <RenderedHtml html={m.html} className="text-sm" />
           </div>
         ))}
         {pending !== null ? (
           <div className="rounded-[var(--radius-panel)] border border-stone bg-paper-3/60 px-3 py-2 text-sm">
-            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{personaName} · writing</p>
+            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+              {personaName}
+              {pendingLabel ? ` · ${pendingLabel}` : ""} · writing
+            </p>
             <p className="whitespace-pre-wrap text-ink-2">{pending || "…"}</p>
           </div>
         ) : null}
       </div>
-      {error ? <p className="text-sm text-rust">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="text-sm text-rust">
+          {error}
+        </p>
+      ) : null}
       <form onSubmit={send} className="flex flex-col gap-2">
         <label htmlFor="director-input" className="sr-only">
           Message to the director

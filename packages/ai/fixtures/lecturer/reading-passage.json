@@ -1,4 +1,4 @@
 {
   "note": "Deterministic fixture used when no model provider is configured. It is a scripted placeholder and says so; it cites the selected passage tag so the citation pipeline is exercised end to end.",
-  "text": "{needs-checking} *(Scripted fixture response: no model provider is configured, so this is not an explanation of your passage.)*\n\nThe only material I have been shown is the passage you selected and the rest of its page [E1]. With a provider configured in Settings, I would unpack the definitions and hypotheses it states and give the intuition behind them, citing this passage and nothing beyond it.\n\nNothing beyond the selected page has been read."
+  "text": "{needs-checking} *(Scripted demo response: no model is configured, so this is not an explanation of your passage.)*\n\nThe only material I have been shown is the passage you selected and the rest of its page [E1]. With a provider configured in Settings, I would unpack the definitions and hypotheses it states and give the intuition behind them, citing this passage and nothing beyond it.\n\nNothing beyond the selected page has been read."
 }

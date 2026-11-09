@@ -1,3 +1,4 @@
+import { getEnv } from "@corniversity/db/env";
 import { isBootstrapComplete } from "@corniversity/db/services/bootstrap";
 import { redirect } from "next/navigation";
 import { LinkButton, Notice } from "@/components/ui";
@@ -25,11 +26,18 @@ export default async function JoinPage() {
             Go to sign in
           </LinkButton>
         </div>
+      ) : !getEnv().OWNER_BOOTSTRAP_CODE ? (
+        <div className="mt-6">
+          <Notice tone="rust" title="Setup is not available">
+            The server has no bootstrap code configured, so the owner account cannot be created. Whoever runs the hosting sets
+            OWNER_BOOTSTRAP_CODE and restarts the service.
+          </Notice>
+        </div>
       ) : (
         <>
           <p className="mt-2 text-sm text-ink-2">
-            One-time setup. Use the owner email and the bootstrap code from the environment file on the hosting machine. After this, sign-up
-            closes permanently.
+            One-time setup. Use the owner email and the one-time bootstrap code set on the server (on Railway, the web service&apos;s
+            OWNER_BOOTSTRAP_CODE variable; locally, the .env file). After this, sign-up closes permanently.
           </p>
           <div className="mt-8">
             <JoinForm action={createOwnerAccount} />

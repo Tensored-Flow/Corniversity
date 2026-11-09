@@ -105,7 +105,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 
 - The owner's in-place curriculum and programme update, applied to the running application
   without resetting content or learner records. The message was truncated after section 12;
-  sections 13 onward were not received.
+  sections 13 to 20 arrived later and are Milestone 10.
 - The MIND-BRAIN-AI programme (twelve blocks mapped to existing and new courses, derived block
   readiness, shared units, eight modelling methods, eight proposed electives, a bounded paper
   seminar); programme catalogue, page, following, director routes and the programme map.
@@ -119,3 +119,35 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
 - Acceptance: content validator clean; seeding idempotent; unit, integration and journey suites
   pass at both viewports; an independent review of the two new units, with its findings repaired;
   the requirement classification in [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).
+
+## Milestone 10 — Sections 13 to 20 and the live product — in_progress (release to Railway next)
+
+Reconciled from commit `5faa665`; the requirement checklist is the last part of
+[MIND_BRAIN_AI.md](MIND_BRAIN_AI.md). Order of work, each step with its check:
+
+1. Live tutoring made honest and safe: provider states (scripted demo, live, blocked) with no
+   silent fallback; explicit approval for paid use; a supported-model setting; always-hard,
+   worst-case budget checks; server-side refusal fallback priced per attempt; precise error
+   states; provider-aware labels; a non-sensitive asset diagnostic. Check: unit tests, a
+   contract test of the Anthropic provider against the documented wire format on a local mock,
+   integration tests of the provider states.
+2. Owner setup and recovery: a one-owner database guarantee, a bootstrap code that is optional
+   once the owner exists and never printed, and a recovery command that works inside the worker
+   image and revokes sessions. Check: integration tests, including concurrent sign-ups and the
+   recovery command run end to end against a throw-away database.
+3. The programme experience: block pages, the route and next step on the overview, a workload
+   preview that shows independent work, orientation that cannot displace an existing learner's
+   commitments, a director route that explains prerequisites and prior knowledge, and "predict
+   again" in the laboratories. Check: core and integration tests; journeys.
+4. The research studio. Check: core, integration and journey tests at both viewports.
+5. Teaching and regressions: the modelling standard in the assessor, regression cases for the
+   repaired units, NEU-220's evaluation question and a labelled held-out-orientation split.
+   Check: core and content tests; the content validator.
+6. Coverage, plan, status, academic model and QA records. Check: generated coverage tables match
+   the catalogue.
+7. Verification on a clean development server, then on a local production build, then on the
+   deployed site; release to the existing Railway project (worker first, then web). Check:
+   recorded results, screenshots inspected, live health and diagnostic.
+- Blocked on the owner: creating the owner account (then the authenticated live checks and the
+  retirement of the bootstrap code), and a provider key with an approved budget (then the live
+  tutoring test).

@@ -64,8 +64,8 @@ export class FixtureProvider implements ModelProvider {
     const fixture = this.load(request.role, request.scenario);
     const text =
       fixture?.text ??
-      `*(Fixture provider: no scripted ${request.role} response for scenario "${request.scenario ?? "default"}". ` +
-        "This is a placeholder, not teaching. Configure a model provider in Settings to receive a real response.)*";
+      `*(Scripted demo: there is no scripted ${request.role} response for scenario "${request.scenario ?? "default"}". ` +
+        "This is a placeholder, not teaching. A live model answers only when one is configured and approved in Settings.)*";
     for (const chunk of chunks(text, 48)) {
       yield chunk;
     }
@@ -75,6 +75,8 @@ export class FixtureProvider implements ModelProvider {
       model: "fixture",
       provider: "fixture",
       stopReason: "end_turn",
+      attempts: [],
+      fallbacks: [],
     };
   }
 
@@ -93,7 +95,7 @@ export class FixtureProvider implements ModelProvider {
         `Fixture ${request.role}/${request.scenario ?? "default"} does not match ${request.schemaName}: ${parsed.error.message}`,
       );
     }
-    return { object: parsed.data, usage: { ...EMPTY_USAGE }, model: "fixture", provider: "fixture" };
+    return { object: parsed.data, usage: { ...EMPTY_USAGE }, model: "fixture", provider: "fixture", attempts: [], fallbacks: [] };
   }
 
   /** Lists available scenarios so tests and docs can be explicit about coverage. */

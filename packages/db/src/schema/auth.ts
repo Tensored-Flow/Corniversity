@@ -1,17 +1,24 @@
-import { boolean, index, pgTable, text } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { boolean, index, pgTable, text, uniqueIndex } from "drizzle-orm/pg-core";
 import { createdAt, tz, updatedAt } from "./_shared";
 
 // better-auth core schema (field names must match better-auth's model fields).
-export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").notNull().default(false),
-  image: text("image"),
-  role: text("role").notNull().default("learner"),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
+export const user = pgTable(
+  "user",
+  {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: boolean("email_verified").notNull().default(false),
+    image: text("image"),
+    role: text("role").notNull().default("learner"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  // At most one owner, enforced by the database: two setup submissions racing past the
+  // application's check cannot both create an owner, whatever the casing of their emails.
+  (t) => [uniqueIndex("user_single_owner_idx").on(t.role).where(sql`${t.role} = 'owner'`)],
+);
 
 export const session = pgTable(
   "session",

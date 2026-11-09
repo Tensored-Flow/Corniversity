@@ -7,3 +7,4 @@ export * from "./learning";
 export * from "./library";
 export * from "./operations";
 export * from "./planning";
+export * from "./research";

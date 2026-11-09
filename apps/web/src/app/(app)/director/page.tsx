@@ -1,14 +1,18 @@
+import type { RouteProposal } from "@corniversity/core";
 import { listPersonas } from "@corniversity/db/services/catalogue";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { listOpenProposals } from "@corniversity/db/services/timetable";
 import { getOrCreateConversation, listMessages } from "@corniversity/db/services/tutoring";
-import { AiLabel, Badge, Card, Notice } from "@/components/ui";
+import { AiLabel } from "@/components/AiLabel";
+import { Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
+import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
 import { decideProposalAction } from "../timetable/actions";
 import { DirectorPanel } from "./DirectorPanel";
+import { RouteSummary } from "./RouteSummary";
 
 export const metadata = { title: "Director of Studies" };
 
@@ -30,8 +34,17 @@ export default async function DirectorPage({ searchParams }: { searchParams: Pro
     allowedLocatorIds: [],
   });
   const messages = await listMessages(db(), conversation.id);
+  const producedBy = await producerLabels(
+    db(),
+    messages.map((m) => m.providerRunId),
+  );
   const rendered = await Promise.all(
-    messages.map(async (m) => ({ id: m.id, sender: m.sender, html: await renderMarkdown(m.contentMarkdown) })),
+    messages.map(async (m) => ({
+      id: m.id,
+      sender: m.sender,
+      producedBy: producedBy(m.providerRunId),
+      html: await renderMarkdown(m.contentMarkdown),
+    })),
   );
 
   return (
@@ -79,6 +92,9 @@ export default async function DirectorPage({ searchParams }: { searchParams: Pro
                   <li key={p.id} className="rounded-[var(--radius-control)] border border-stone bg-paper p-2">
                     <Badge tone="brass">{p.kind}</Badge> <span className="text-ink">{p.title}</span>
                     <p className="mt-1 text-xs text-ink-2">{p.rationale}</p>
+                    {p.kind === "programme" && (p.diff as { route?: RouteProposal }).route ? (
+                      <RouteSummary route={(p.diff as { route: RouteProposal }).route} />
+                    ) : null}
                     <form action={decideProposalAction} className="mt-2 flex gap-2">
                       <input type="hidden" name="proposalId" value={p.id} />
                       <input type="hidden" name="returnTo" value="/director" />

@@ -1,4 +1,6 @@
 "use client";
+import type { InformationContract } from "@corniversity/core/labs/index";
+import { Fragment } from "react";
 
 export interface Series {
   label: string;
@@ -222,4 +224,30 @@ export function NumberField({
 
 export function LabNote({ children }: { children: React.ReactNode }) {
   return <p className="rounded-[var(--radius-panel)] border border-stone bg-paper-3/60 px-3 py-2 text-xs text-ink-2">{children}</p>;
+}
+
+/** A split's information contract, shown before any number it qualifies. */
+export function ContractList({ contract }: { contract: InformationContract }) {
+  const rows: [string, string][] = [
+    ["Observed", contract.observed],
+    ["Prediction target", contract.target],
+    ["History in training", contract.historyInTraining],
+    ["History at inference", contract.historyAtInference],
+    ["Person", contract.person === "not_applicable" ? "not applicable" : contract.person],
+    ["Task", contract.task],
+    ["Later time periods", contract.laterPeriods ? "yes" : "no"],
+    ["Unavailable in real use", contract.unavailableInRealUse],
+    ["Simplest baseline", contract.baseline],
+    ["Claims not tested", contract.untestedClaims],
+  ];
+  return (
+    <dl className="grid gap-x-4 gap-y-1 rounded-[var(--radius-panel)] border border-stone bg-paper p-3 text-xs sm:grid-cols-[14rem_1fr]">
+      {rows.map(([term, detail]) => (
+        <Fragment key={term}>
+          <dt className="font-medium text-ink">{term}</dt>
+          <dd className="text-ink-2">{detail}</dd>
+        </Fragment>
+      ))}
+    </dl>
+  );
 }

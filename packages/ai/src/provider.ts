@@ -18,6 +18,18 @@ export interface Usage {
 
 export const EMPTY_USAGE: Usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
 
+/** One model attempt within a run: the requested model, or a fallback model that took over. */
+export interface AttemptUsage extends Usage {
+  model: string;
+  kind: "message" | "fallback_message";
+}
+
+/** A point where the provider handed a declined request to a fallback model. */
+export interface FallbackSwitch {
+  from: string;
+  to: string;
+}
+
 export interface BaseRequest {
   role: RoleName;
   /** Short machine-readable purpose, e.g. "tutor-turn", "assess-proof". Recorded per run. */
@@ -36,11 +48,16 @@ export interface BaseRequest {
 
 export interface TextResult {
   text: string;
+  /** Tokens summed over every attempt. */
   usage: Usage;
+  /** The model that produced the returned message (a fallback model when one took over). */
   model: string;
   provider: ProviderName;
   stopReason: "end_turn" | "max_tokens" | "refusal" | "other";
   refusalCategory?: string;
+  /** Each attempt with its own usage and model, the basis of the recorded cost. */
+  attempts: AttemptUsage[];
+  fallbacks: FallbackSwitch[];
 }
 
 export interface StructuredResult<T> {
@@ -48,6 +65,8 @@ export interface StructuredResult<T> {
   usage: Usage;
   model: string;
   provider: ProviderName;
+  attempts: AttemptUsage[];
+  fallbacks: FallbackSwitch[];
 }
 
 export interface StructuredRequest<T> extends BaseRequest {
@@ -70,6 +89,9 @@ export interface ModelProvider {
 export type ProviderErrorKind =
   | "not_configured"
   | "authentication"
+  | "permission"
+  | "billing"
+  | "model_unavailable"
   | "rate_limited"
   | "bad_request"
   | "unavailable"
@@ -83,6 +105,8 @@ export class ProviderError extends Error {
     readonly kind: ProviderErrorKind,
     message: string,
     readonly retryable = false,
+    /** Usage of attempts that ran before the failure (a refusal is billed), so spend is still recorded. */
+    readonly attempts: AttemptUsage[] = [],
   ) {
     super(message);
     this.name = "ProviderError";

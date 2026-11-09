@@ -56,9 +56,11 @@ but the end-to-end test would need planned sessions in the past; the onboarding 
 future Monday. Verified manually in Milestone 3 against a plan whose sessions were moved into the
 past; recorded here as manual, not automated.
 
-Journey 9 (provider failure and budget exhaustion leave notes and reading usable) is covered at the
-unit level (budget decisions, provider error path in every route returns a labelled note) and by
-the fixture provider; no live provider has been exercised.
+Journey 9 (provider failure and budget exhaustion leave notes and reading usable) is covered in
+part: journey spec 10 chooses a live model that cannot run and checks that the tutor refuses with
+the reason and keeps the learner's message; budget decisions, the error kinds and the refusal
+path are unit and integration tests. Exhausting a real budget needs a live provider, and no live
+provider has been exercised.
 
 Journey 10 (deployed site) is not automated. Against a non-local site the journeys refuse the
 default test password, so they cannot create or use the owner account there. The checks run on
@@ -295,6 +297,117 @@ navigations per run outlasted the journeys' 10-second waits. A fresh server comp
 - **Catalogue count.** The catalogue counted only teaching-ready courses as having prepared units.
 - **Method mapping.** NEU-220 unit 2 was mapped to a method it does not teach. The validator now refuses a method mapped to a unit that does not teach its concept.
 
+## Milestone 10: sections 13 to 20 and the live product
+
+All runs on 9 November 2026, Windows 11, Node 24.19, local embedded PostgreSQL 17, scripted demo
+(no model provider). Three environments are kept apart below: the development server, a local
+production build against new empty databases, and the deployed site. The requirement-by-requirement
+status is in [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).
+
+| Check | Command | Result |
+|---|---|---|
+| Content validation | `pnpm content:validate` | 0 errors, 0 warnings: 86 courses (12 launch, all teaching_ready; COG-250 and COG-260 source_verified), 141 units (33 prepared), 99 exercises, 59 sources, 1121 verified locators, 7 programmes, 12 blocks, 8 electives |
+| Coverage tables | `pnpm content:coverage`; `coverage.test.ts` | regenerated; the test fails when the committed tables differ from the catalogue |
+| Seeding | `pnpm db:seed` on the development database; `seed-idempotence.test.ts` | the NEU-220 change created one course version and left 85 unchanged; the seed test proves a second seed creates nothing and keeps learner records |
+| Type check, lint | `pnpm typecheck`, `pnpm lint` | pass in all 7 packages; Biome clean apart from one notice that its configuration can be migrated |
+| Unit tests | `pnpm test` | 253 pass in 32 files |
+| Integration tests | `pnpm test:integration` | 80 pass in 12 files, against throw-away PostgreSQL clusters |
+| Academic evaluations | `pnpm eval:academic` | 19 pass (check rules and verdict policy; no model's judgement) |
+| Provider contract | `packages/ai/src/anthropic.contract.test.ts` (in `pnpm test`) | 13 pass: the real SDK against a local HTTP server speaking the documented wire format (streaming, structured output, server-side fallback attempts, refusals, truncation, seven error kinds). It proves the request shape and the error mapping, not that Anthropic answers |
+| Journeys, development server | `pnpm test:e2e` (desktop 1440×900, mobile 390×844) | the last full run passed 84 of 85; the one failure was a real accessibility defect, repaired and re-checked at both sizes (below) |
+| Production build | `CORNIVERSITY_BUILD_TARGET=production pnpm --filter @corniversity/web build` | pass: every route server-rendered on demand, no warnings; the standalone server carries the scripted-response folder |
+| Journeys, production build on an empty database | three runs, each on a new database (below) | the final run passed 85 of 85 in 2.5 minutes, at both sizes, with nothing skipped |
+
+**Development-server runs.** The development server and worker were restarted before the runs
+(the old server had been hot-reloading for hours) and the main routes were requested once. The
+first full desktop run passed 33 of 37 tests. The four failures, and what was done:
+
+- *Orientation (spec 03).* The test took a visit to step 2 as proof that orientation was
+  unfinished, so on a completed account it replayed orientation, which before this milestone
+  withdrew enrolments made since. Step 2 now only follows newly chosen programmes, so the test
+  stopped there. It now asks the campus whether orientation is finished, as spec 01 does, and on
+  a new account also chooses the programme during orientation.
+- *Tuning laboratory (spec 05).* The held-out row's label changed from "held out" to "held-out
+  trials (n trials)". The test now also switches to the held-out-orientation split, checks each
+  contract's task row, and checks that bootstrap intervals computed for one split are not shown
+  against the other.
+- *Settings (spec 06) and provider failure (spec 10).* "Scripted demo" matched the state notice
+  and every row of the recent-runs table; the assertions now target the notice. A rerun then
+  showed that the blocked notice is an alert, not a status, and the test was corrected.
+
+The failed tests passed on rerun. A full run of both viewports then passed 84 of 85. The failure
+was the axe sweep at 390 px: the new recent-runs table in Settings scrolls sideways on a phone
+and could not be reached by keyboard (`scrollable-region-focusable`, serious). After that repair
+the sweep reached the programme page, newly added to it, where the methods table had the same
+defect from Milestone 9; both containers are now focusable labelled regions, and the sweep passes
+on all 15 pages at both sizes. No test was skipped and no timeout was raised.
+
+**Production build on an empty database (clean start).** The production web build ran as its
+image runs it (the standalone server with its static files), and the worker ran from source with
+`tsx`, as its image does, both against a new database in the local cluster, with freshly generated
+local-only secrets, in local mode on ports 3200 and 3201 (production mode refuses an `http://`
+address). On each start the worker logged the migrations applied, all 86 course versions seeded,
+and "7 of 7 scripted responses load" with the six prompt versions; the health route reported the
+schema current and the same asset counts; the pages carried the production policy (`script-src`
+without `unsafe-eval`, HSTS). The owner account was created through the real join page each time.
+
+- *First run* (database `corniversity_clean_20261109a`): 51 passed, 12 failed, 22 did not run.
+  - **Product defect.** Choosing Mind, Brain and AI during orientation added its departments, so
+    the default plan took NEU-220 as its lighter course in reading-seminar mode, which NEU-220
+    does not offer; step 9 then failed with an unhandled `EnrolmentError` and showed the error
+    page. It had stayed hidden because no journey had chosen a programme during
+    orientation before. Plans now propose only modes a course offers, falling
+    back to the nearest lighter one (`offeredMode`), and a refused mode returns to step 9 with a
+    notice; the worker's seed test now checks every plan against the real catalogue.
+  - Two assertions in spec 02 depended on data left on the development database: "demonstrated"
+    on My Studies, which no withheld verdict can produce (the old value predates that rule), and
+    "source-backed", which needs the library to hold the passage's text (on a new database the
+    tutor honestly says "location cited, text not seen"). They now check what holds on any
+    database.
+  - Spec 04 paired the companion with a fixed `http://localhost:3000`; it now uses the run's server.
+  - The other failures followed from the unfinished orientation.
+- *Second run* (rebuilt; database `corniversity_clean_20261109b`): 73 passed, 2 failed, 10 did
+  not run. The journey helper that takes a course in full stopped at an existing enrolment, and
+  orientation's plan had now (correctly) chosen to audit NEU-220, so its laboratory could not be
+  attempted. The helper now changes an audit or reading seminar into a full enrolment as a learner
+  would, by withdrawing and taking the course again. Spec 05 then passed in full at both sizes
+  (14 journeys).
+- *Third run* (same build; database `corniversity_clean_20261109c`): 85 passed in 2.5 minutes,
+  at both sizes, nothing skipped, including a new learner choosing the programme during
+  orientation and every journey of spec 10.
+
+The three rehearsal databases remain in the local cluster; they hold only test data.
+
+**Defects found and fixed during the milestone.**
+
+- **Orientation with a programme.** The plan could propose a mode its course does not offer, and
+  the step then crashed (above).
+- **Accessibility.** Two tables that scroll sideways on a phone could not be reached by keyboard.
+- **Block pages.** "Missing resources" listed only the block shelf's own leads, of which there are
+  none; it now lists the leads recorded by the courses the block maps, with the library link. On
+  a phone the next step came after ten screens of detail; it now comes first.
+- **Settings.** The provider select and its card shared the id `provider`, so the "Provider"
+  label pointed at the card, not the control.
+- **Scripted texts.** The scripted replies called themselves "fixture" turns and the withheld
+  verdict said "fixture provider", jargon beside labels that say "scripted demo"; they now say
+  scripted demo.
+- **Asset diagnostic.** It did not report the studio supervisor's prompt version.
+- **Tuning laboratory.** The training-mean plot drew a zero at an orientation with no training
+  trials, and bootstrap intervals stayed on screen after the data or split they described had
+  changed.
+- **Studio copy.** "A computational modelling needs at least 1" now names a project and its
+  verified sources.
+- **Journey helpers.** `takeCourse` read the course page's new workload preview as the
+  enrolment's heavier-load confirmation, and did not take a course in full when it was audited.
+
+**Visual review.** Screenshots inspected on 9 November: at 1440 px, the block page (readiness and
+progress kept apart, prerequisites rule by rule, missing resources with the library link), the
+studio project (versions, provenance, artefact, feedback labelled "Scripted demo: no model read
+this"), the director's route proposal (focus unchanged, each course's action, what is still to
+prepare), the tutor panel with a blocked live model ("model blocked" label, the reason, the
+learner's message kept), settings and the tuning laboratory; at 390 px, the block page (the
+defect above) and the studio project's forms.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -302,17 +415,20 @@ navigations per run outlasted the journeys' 10-second waits. A fresh server comp
   registered as a local-only companion item, the Library read "Desktop sync online" while the
   heartbeat ran and "Desktop sync offline" two minutes after it stopped). The Playwright journeys
   run `pair` and `sync` as child processes, not a long-lived `watch`, so only the rehearsal covers it.
-- Live-provider behaviour remains unverified until the owner adds a provider key. On the live site only the checks listed under Deployment were run; the journeys run locally.
+- Live tutoring is unverified: there is no key and no approved test budget, and the provider
+  contract test runs against a local mock. The modelling standard in the assessor and the studio
+  supervisor's feedback are therefore checked as prompts only, never as a model's behaviour.
+- Nothing behind sign-in has been checked on the live site, because the owner account does not
+  exist yet; the journeys run locally. The clean-start rehearsal runs in local mode over `http`,
+  so secure cookies and https-only behaviour are exercised only by the live site.
 - The three items the production engineer recorded above (per-address sign-in limiting, the
   provider-key secret, floating base-image tags).
 - The timetable-slot linking added in the review was exercised by hand (campus → open the
   material → mark as read → the slot reads completed) and by the service-level logic; no journey
   test covers it yet.
-- Sections 13 onward of the Mind, Brain and AI update were not received, so nothing in them is
-  implemented.
 - COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
-  COG-100 has none. Method 9.6 (measurement, reliability and validity) has no prepared unit.
-- Choosing a programme during orientation is tested at the service level only; journey spec 09
-  follows the programme from its own page.
+  COG-100 has none. Blocks MBI-02, MBI-10 and MBI-12 are proposed, the eight electives are
+  proposed, and method 9.6 (measurement, reliability and validity) has no prepared unit.
 - One saved prediction opens a laboratory for its whole unit, so the choice-model activity asks
-  for both cases' predictions before saving rather than enforcing one per case.
+  for both cases' predictions before saving rather than enforcing one per case; *Predict again*
+  resets the laboratory for the whole unit.

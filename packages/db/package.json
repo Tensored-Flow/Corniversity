@@ -15,6 +15,7 @@
     "build": "echo 'source package; consumed directly'"
   },
   "dependencies": {
+    "@corniversity/ai": "workspace:*",
     "@corniversity/core": "workspace:*",
     "drizzle-orm": "^0.45.4",
     "luxon": "^3.7.2",

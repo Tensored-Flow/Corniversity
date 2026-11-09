@@ -15,6 +15,7 @@
     "@corniversity/content": "workspace:*",
     "@corniversity/core": "workspace:*",
     "@corniversity/db": "workspace:*",
+    "better-auth": "^1.7.14",
     "drizzle-orm": "^0.45.4",
     "pg": "^8.23.1",
     "pg-boss": "^12.38.0",

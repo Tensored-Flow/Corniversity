@@ -1,21 +1,9 @@
-import {
-  buildTutorSystemPrompt,
-  createProvider,
-  decideBudget,
-  estimateCostUsd,
-  estimateRunCostUsd,
-  PRICING_VERSION,
-  ProviderError,
-  ROLE_CONTRACTS,
-  TUTOR_PROMPT_VERSION,
-} from "@corniversity/ai";
+import { buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
 import { getEnv } from "@corniversity/db/env";
-import { providerRun } from "@corniversity/db/schema/index";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
 import { localOnlyAssetsForCourse } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
-import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
 import {
   appendLearnerMessage,
   appendPersonaMessage,
@@ -26,6 +14,7 @@ import {
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { streamPersonaTurn } from "@/lib/model-runs";
 import { requireApiSession } from "@/lib/session";
 
 const Body = z.object({
@@ -37,9 +26,10 @@ const Body = z.object({
 export const dynamic = "force-dynamic";
 
 /**
- * One tutor turn. Authorises, builds the evidence-bounded prompt, checks the budget, streams
- * the reply as plain text, then persists the validated turn. A provider failure is reported
- * in the stream and never replaced by a canned answer.
+ * One tutor turn. Authorises, stores the learner's message, builds the evidence-bounded prompt,
+ * then runs it through the shared gate: the scripted demo, an approved live model within the
+ * budget, or a refusal with its reason. A provider failure is reported in the stream and never
+ * replaced by a canned answer; the reply is stored with its citations checked.
  */
 export async function POST(request: Request): Promise<Response> {
   const authed = await requireApiSession(request);
@@ -86,7 +76,7 @@ export async function POST(request: Request): Promise<Response> {
     courseTitle: unitDetail.course.title,
     unitTitle: unitDetail.unit.title,
     unitObjective: unitDetail.unit.objectives.map((o) => o.description).join(" "),
-    notationConventions: courseDetail ? [] : [],
+    notationConventions: [],
     exercisePrompt: exercise?.promptMarkdown,
     hintLadder: exercise?.hintLadder,
     hintsAlreadyGiven: latestAttempt?.hintsUsed ?? 0,
@@ -108,39 +98,6 @@ export async function POST(request: Request): Promise<Response> {
     { role: "user" as const, content: message },
   ];
 
-  const config = await resolveProviderConfig(database, ownerId, env);
-  const { provider, live } = createProvider({
-    provider: config.provider,
-    anthropicApiKey: config.anthropicApiKey,
-    defaultModel: config.defaultModel,
-    modelMap: config.modelMap,
-  });
-  const model = config.modelMap.tutor ?? config.defaultModel;
-  const contract = ROLE_CONTRACTS.tutor;
-
-  if (live) {
-    const limits = await getBudgetLimits(database, ownerId, env);
-    const spend = await getSpend(database, ownerId);
-    const estimate = estimateRunCostUsd(model, system + chat.map((c) => c.content).join("\n"), 1200);
-    const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
-    if (!decision.allowed) {
-      await database.insert(providerRun).values({
-        ownerId,
-        role: "tutor",
-        provider: provider.name,
-        model,
-        purpose: "tutor-turn",
-        pricingVersion: PRICING_VERSION,
-        promptVersion: `${TUTOR_PROMPT_VERSION};role:${contract.version}`,
-        status: "budget_blocked",
-        error: decision.reason,
-        finishedAt: new Date(),
-      });
-      return NextResponse.json({ error: decision.reason }, { status: 402 });
-    }
-  }
-
-  const scenario = priorMessages.some((m) => m.sender === "persona") ? "default" : `${unitDetail.unit.id}-intro`;
   const haystack = message.toLowerCase();
   const localOnlyMentioned = (await localOnlyAssetsForCourse(database, ownerId, unitDetail.course.id)).filter((a) =>
     [a.confirmedTitle, a.candidateMetadata.title, a.filename.replace(/\.[a-z0-9]+$/i, "")]
@@ -151,86 +108,27 @@ export async function POST(request: Request): Promise<Response> {
   const localOnlyNote = localOnlyMentioned.length
     ? `*(Note from the university, not from ${tutor?.name ?? "the tutor"}: ${localOnlyMentioned.map((a) => `"${a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}"`).join(", ")} ${one ? "is" : "are"} registered as local-only. Nothing of ${one ? "its" : "their"} contents has left your device, so the tutor has not seen a page of ${one ? "it" : "them"} and cannot comment on ${one ? "its" : "their"} text.)*\n\n`
     : "";
-  const startedAt = new Date();
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream<Uint8Array>({
-    async start(controller) {
-      let raw = localOnlyNote;
-      if (localOnlyNote) controller.enqueue(encoder.encode(localOnlyNote));
-      let status: "ok" | "error" | "refused" = "ok";
-      let errorText: string | undefined;
-      let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
-      let usedModel = live ? model : "fixture";
-      try {
-        const generator = provider.streamText({
-          role: "tutor",
-          purpose: "tutor-turn",
-          system,
-          messages: chat,
-          model,
-          maxTokens: contract.limits.maxOutputTokens,
-          scenario,
-        });
-        let next = await generator.next();
-        while (!next.done) {
-          raw += next.value;
-          controller.enqueue(encoder.encode(next.value));
-          next = await generator.next();
-        }
-        usage = next.value.usage;
-        usedModel = next.value.model;
-        if (next.value.stopReason === "refusal") {
-          status = "refused";
-          const note = "\n\n*(The model declined to continue this turn. Nothing has been lost; try rephrasing.)*";
-          raw += note;
-          controller.enqueue(encoder.encode(note));
-        }
-      } catch (error) {
-        status = "error";
-        errorText = error instanceof ProviderError ? error.message : "The provider failed.";
-        const note = `\n\n*(The tutor could not reply: ${errorText} Your work is saved; the sources and your notes remain available.)*`;
-        raw += note;
-        controller.enqueue(encoder.encode(note));
-      }
-      const [run] = await database
-        .insert(providerRun)
-        .values({
-          ownerId,
-          role: "tutor",
-          provider: provider.name,
-          model: usedModel,
-          purpose: "tutor-turn",
-          inputTokens: usage.inputTokens,
-          outputTokens: usage.outputTokens,
-          cacheReadTokens: usage.cacheReadTokens,
-          cacheWriteTokens: usage.cacheWriteTokens,
-          costUsd: String(estimateCostUsd(usedModel, usage)),
-          pricingVersion: PRICING_VERSION,
-          promptVersion: `${TUTOR_PROMPT_VERSION};role:${contract.version}`,
-          status,
-          error: errorText ?? null,
-          startedAt,
-          finishedAt: new Date(),
-        })
-        .returning({ id: providerRun.id });
-      if (raw.trim().length > 0) {
-        await appendPersonaMessage(database, {
-          conversationId: conversation.id,
-          personaId: tutor?.id ?? null,
-          rawText: raw,
-          allowed: evidence.refs,
-          providerRunId: run?.id,
-        });
-      }
-      controller.close();
-    },
-  });
-  return new Response(stream, {
-    headers: {
-      "content-type": "text/plain; charset=utf-8",
-      "cache-control": "no-store",
-      "x-accel-buffering": "no",
-      "x-provider": provider.name,
+
+  return streamPersonaTurn({
+    database,
+    ownerId,
+    env,
+    role: "tutor",
+    purpose: "tutor-turn",
+    promptVersion: `${TUTOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.tutor.version}`,
+    system,
+    messages: chat,
+    scenario: priorMessages.some((m) => m.sender === "persona") ? "default" : `${unitDetail.unit.id}-intro`,
+    speaker: tutor?.name ?? "The tutor",
+    prefix: localOnlyNote,
+    onFinish: async (raw, runId) => {
+      await appendPersonaMessage(database, {
+        conversationId: conversation.id,
+        personaId: tutor?.id ?? null,
+        rawText: raw,
+        allowed: evidence.refs,
+        providerRunId: runId,
+      });
     },
   });
 }

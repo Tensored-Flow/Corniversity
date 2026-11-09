@@ -37,9 +37,12 @@ export const MAX_EXPLORATORY_COURSES = 3;
 /** Only the keys the learner has actually chosen; nothing here is a default. */
 export type ExplicitStudyPreferences = Partial<StudyPreferences>;
 
+/** A stored value that is missing, undefined or null is unset; false and 0 are choices. */
+const isChosen = (value: unknown) => value !== undefined && value !== null;
+
 /**
  * The effective preferences: explicit choices first, then a rhythm chosen in the older single
- * field (it was always an explicit choice), then the defaults.
+ * field (it was always an explicit choice), then the defaults, which fill only what is unset.
  */
 export function resolveStudyPreferences(
   explicit: ExplicitStudyPreferences | null | undefined,
@@ -49,7 +52,7 @@ export function resolveStudyPreferences(
   return {
     ...DEFAULT_STUDY_PREFERENCES,
     ...(legacyRhythm ? { rhythm: legacyRhythm } : {}),
-    ...Object.fromEntries(Object.entries(chosen).filter(([, v]) => v !== undefined)),
+    ...Object.fromEntries(Object.entries(chosen).filter(([, v]) => isChosen(v))),
   } as StudyPreferences;
 }
 
@@ -60,7 +63,7 @@ export function explicitKeys(
 ): (keyof StudyPreferences)[] {
   const keys = new Set(
     Object.entries(explicit ?? {})
-      .filter(([, v]) => v !== undefined)
+      .filter(([, v]) => isChosen(v))
       .map(([k]) => k as keyof StudyPreferences),
   );
   if (legacyRhythm) keys.add("rhythm");

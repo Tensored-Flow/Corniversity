@@ -1,10 +1,12 @@
+import { WORK_CATEGORY_LABEL, type WorkCategory, workloadBreakdown } from "@corniversity/core";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getEnrolmentForCourse } from "@corniversity/db/services/enrolment";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
 import { ReadinessBadge, readinessHelp, UnitStatusBadge } from "@/components/Readiness";
-import { AiLabel, Badge, Card, Notice } from "@/components/ui";
+import { Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { enrolAction, withdrawAction } from "./actions";
@@ -209,6 +211,25 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
                   ? `${preparedUnits} of ${detail.units.length} units are prepared; about ${version.workload.typical} hours is the estimate for the outlined syllabus, and only the prepared units can be studied now.`
                   : "Workload will be estimated when the syllabus is prepared; the figure in the catalogue is a placeholder."}
             </p>
+            {(() => {
+              const b = workloadBreakdown(detail.units, version.workload.typical);
+              if (!b.preparedUnits) return null;
+              const parts = (Object.keys(b.minutes) as WorkCategory[]).filter((c) => b.minutes[c] > 0);
+              return (
+                <div className="mt-3 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-xs text-ink-2" id="workload">
+                  <p className="font-medium text-ink">Workload preview</p>
+                  <p className="mt-1">
+                    About {b.weeklyHours} hours a week over ten weeks, from the course estimate, which counts independent work as well as
+                    timetabled study.
+                  </p>
+                  <p className="mt-1">
+                    The {b.preparedUnits} prepared unit{b.preparedUnits === 1 ? "" : "s"} plan {b.preparedHours} hours:{" "}
+                    {parts.map((c) => `${WORK_CATEGORY_LABEL[c]} ${Math.round((b.minutes[c] / 60) * 10) / 10} h`).join(", ")}.{" "}
+                    {Math.round(b.independentShare * 100)}% is problems, laboratories and written work done on your own.
+                  </p>
+                </div>
+              );
+            })()}
           </Card>
 
           <Card as="aside">

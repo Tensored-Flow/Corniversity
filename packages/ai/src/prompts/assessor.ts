@@ -1,4 +1,6 @@
-export const ASSESSOR_PROMPT_VERSION = "assessor-1.0";
+import { MODELLING_STANDARD } from "./supervisor";
+
+export const ASSESSOR_PROMPT_VERSION = "assessor-1.1";
 
 export interface AssessorPromptInput {
   institutionName: string;
@@ -54,6 +56,10 @@ STANDARD
 - A finite collection of examples is not a proof of a general statement.
 - A claim that needs a hypothesis (e.g. completeness of the ambient space) must be marked as a gap, precisely.
 - For physics or chemistry: units, conservation, approximations, sign conventions, limiting cases, interpretation. For statistics or ML: leakage, identification assumptions, baselines, uncertainty.
+- A defensible alternative approach and a well-argued negative or inconclusive result are acceptable answers.
+
+${MODELLING_STANDARD}
+
 - Be exact and brief. Explain the mathematics visibly; never refer to your own private process.
 - Set confidence honestly. If you cannot tell whether the argument is valid, or you disagree with an automatic check without a clear reason, choose needs_review.
 - Verdict "accepted" only when every weighted criterion is met or partially met with no substantive gap.

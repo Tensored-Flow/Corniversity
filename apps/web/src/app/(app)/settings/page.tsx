@@ -1,22 +1,21 @@
+import { publicProviderState } from "@corniversity/ai";
 import { TIMEZONE_SUGGESTIONS } from "@corniversity/core/onboarding/steps";
 import { getEnv } from "@corniversity/db/env";
-import { providerSetting } from "@corniversity/db/schema/index";
 import { listPersonaMemory } from "@corniversity/db/services/community";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
-import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
-import { eq } from "drizzle-orm";
+import {
+  getBudgetLimits,
+  getSpend,
+  listRecentRuns,
+  providerSettingView,
+  resolveProviderState,
+} from "@corniversity/db/services/provider-config";
 import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import {
-  deleteMemoryAction,
-  purgeMemoryAction,
-  saveBudgetAction,
-  saveProviderAction,
-  updateExperienceAction,
-  updateProfileAction,
-} from "./actions";
+import { deleteMemoryAction, purgeMemoryAction, updateExperienceAction, updateProfileAction } from "./actions";
+import { LiveTutoring } from "./LiveTutoring";
 import { StudyPreferences } from "./StudyPreferences";
 
 export const metadata = { title: "Settings" };
@@ -32,19 +31,15 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
   const database = db();
   const env = getEnv();
   const ownerId = session.user.id;
-  const [profile, config, limits, spend, memory, setting] = await Promise.all([
+  const [profile, state, view, limits, spend, runs, memory] = await Promise.all([
     ensureProfile(database, ownerId),
-    resolveProviderConfig(database, ownerId, env),
+    resolveProviderState(database, ownerId, env),
+    providerSettingView(database, ownerId, env),
     getBudgetLimits(database, ownerId, env),
     getSpend(database, ownerId),
+    listRecentRuns(database, ownerId),
     listPersonaMemory(database, ownerId),
-    database
-      .select({ hint: providerSetting.apiKeyHint, provider: providerSetting.provider })
-      .from(providerSetting)
-      .where(eq(providerSetting.userId, ownerId))
-      .limit(1),
   ]);
-  const hint = setting[0]?.hint ?? null;
   const fontScale = profile.accessibility.fontScale ?? 1;
 
   return (
@@ -204,73 +199,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
           </form>
         </Card>
 
-        <Card as="section" aria-labelledby="provider-heading" id="provider">
-          <h2 id="provider-heading" className="text-lg text-ink">
-            Model provider
-          </h2>
-          <p className="mt-1 text-sm text-ink-2">
-            Currently:{" "}
-            <Badge tone={config.keyConfigured ? "moss" : "neutral"}>
-              {config.keyConfigured
-                ? `${config.provider} (${config.source.replace("_", " ")})`
-                : "fixture: scripted responses, nothing is sent anywhere"}
-            </Badge>
-            {hint ? <span className="ml-2 font-mono text-xs text-ink-3">key …{hint}</span> : null}
-          </p>
-          <p className="mt-1 text-xs text-ink-3">
-            Keys are stored encrypted with the server secret and shown only by their last characters. Tutors, the assessor, the reading room
-            and discussions use this provider; reading, notes and the timetable never need it.
-          </p>
-          <form action={saveProviderAction} className="mt-3 grid gap-4 sm:grid-cols-2">
-            <Field label="Provider" htmlFor="provider">
-              <Select
-                id="provider"
-                name="provider"
-                defaultValue={setting[0]?.provider ?? (config.provider === "anthropic" ? "anthropic" : "fixture")}
-              >
-                <option value="fixture">Fixture (deterministic, free)</option>
-                <option value="anthropic">Anthropic (default model {env.AI_MODEL_DEFAULT})</option>
-              </Select>
-            </Field>
-            <Field label="API key" htmlFor="apiKey" hint="Write-only; leave blank to keep the stored key.">
-              <Input id="apiKey" name="apiKey" type="password" autoComplete="off" />
-            </Field>
-            <label className="flex items-center gap-2 text-sm text-ink sm:col-span-2">
-              <input type="checkbox" name="clearKey" value="1" /> Remove the stored key
-            </label>
-            <div className="sm:col-span-2">
-              <Button type="submit">Save provider</Button>
-            </div>
-          </form>
-        </Card>
-
-        <Card as="section" aria-labelledby="budgets-heading" id="budgets">
-          <h2 id="budgets-heading" className="text-lg text-ink">
-            Budgets
-          </h2>
-          <p className="mt-1 text-sm text-ink-2">
-            Spent today ${spend.todayUsd.toFixed(2)} · this month ${spend.monthUsd.toFixed(2)}. Every paid run is estimated before it starts
-            and refused when a limit would be crossed; fixture runs cost nothing.
-          </p>
-          <form action={saveBudgetAction} className="mt-3 grid gap-4 sm:grid-cols-3">
-            <Field label="Per run (USD)" htmlFor="perRunUsd">
-              <Input id="perRunUsd" name="perRunUsd" type="number" step="any" min={0.01} defaultValue={limits.perRunUsd} />
-            </Field>
-            <Field label="Per day (USD)" htmlFor="dailyUsd">
-              <Input id="dailyUsd" name="dailyUsd" type="number" step="any" min={0.01} defaultValue={limits.dailyUsd} />
-            </Field>
-            <Field label="Per month (USD)" htmlFor="monthlyUsd">
-              <Input id="monthlyUsd" name="monthlyUsd" type="number" step="any" min={0.01} defaultValue={limits.monthlyUsd} />
-            </Field>
-            <label className="flex items-center gap-2 text-sm text-ink sm:col-span-3">
-              <input type="checkbox" name="hardStop" value="1" defaultChecked={limits.hardStop} /> Hard stop at the limit (no paid runs
-              until the window resets)
-            </label>
-            <div className="sm:col-span-3">
-              <Button type="submit">Save budgets</Button>
-            </div>
-          </form>
-        </Card>
+        <LiveTutoring state={publicProviderState(state)} view={view} limits={limits} spend={spend} runs={runs} />
 
         <Card as="section" aria-labelledby="memory-heading" id="memory">
           <h2 id="memory-heading" className="text-lg text-ink">
@@ -327,7 +256,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
           </h2>
           <ul className="mt-2 list-disc pl-5 text-sm text-ink-2">
             <li>
-              With the fixture provider: nothing. With a live provider: the prompts of the runs you start (tutor, assessor, reading room,
+              With the scripted demo: nothing. With a live provider: the prompts of the runs you start (tutor, assessor, reading room,
               director, discussions), each recorded under Jobs and in the budget ledger.
             </li>
             <li>

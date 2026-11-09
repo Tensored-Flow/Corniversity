@@ -1,4 +1,4 @@
 {
   "note": "Fixture provider response. Shown only when no live model provider is configured. It is deliberately generic and labelled.",
-  "text": "{needs-checking} I am running on the fixture provider, so I cannot read your attempt. Here is what I can still do without a model: the hint ladder for this exercise is available step by step from the panel, the source passages for this unit are listed on the right with exact locations, and your attempt is saved as you type.\n\nWhen a provider is configured in Settings, this tutorial becomes a real conversation about your work."
+  "text": "{needs-checking} This is the scripted demo: no model is configured, so I cannot read your attempt. Here is what I can still do without a model: the hint ladder for this exercise is available step by step from the panel, the source passages for this unit are listed on the right with exact locations, and your attempt is saved as you type.\n\nWhen a provider is configured in Settings, this tutorial becomes a real conversation about your work."
 }

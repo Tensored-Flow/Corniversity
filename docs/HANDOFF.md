@@ -1,27 +1,29 @@
 # Handoff
 
-Written for Leon, the owner. Everything here was checked on 31 October and 1 November 2026, on
-the build machine (Windows 11) and, for the deployment, on the live site. Where something has not
-been verified, this document says so.
+Written for Leon, the owner. Everything here was checked on 31 October, 1 November and
+9 November 2026, on the build machine (Windows 11) and, for the deployment, on the live site.
+Where something has not been verified, this document says so.
 
 ## Where things stand
 
-- **Status: deployed.** The site runs at https://web-production-4c692.up.railway.app, in a
-  dedicated Railway project, `corniversity`, with PostgreSQL, a web service and a worker; Railway
-  builds both images from the Dockerfiles. The worker applied the migrations and loaded the
-  catalogue on its first start. Until you create the owner account there, sign-up accepts only
-  the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md), item 1); then it
-  closes.
-- **Live AI: not exercised.** No model-provider key is configured. Tutors, assessors, the
-  director, the reading room, the seminar chair and the classmates run on deterministic
-  fixtures, labelled as AI everywhere they speak. The Anthropic provider compiles and its
-  budget and pricing logic has unit tests, but no live request has been made.
-- **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, not yet published to
-  GitHub (see [USER_ACTIONS.md](USER_ACTIONS.md), item 4). Commits: `1246d1e` (Milestone 3),
-  `61cbe70` (launch content), `f8330a4` (Milestone 4), `1b26bbd` (Milestones 5–7), `13a447e`
-  (Milestone 8: the three review passes and their repairs), `6ea60bb`
-  (Milestone 9: the Mind, Brain and AI update), and the deployment commits after it (`git log`
-  lists them).
+- **Status: deployed, waiting for your account.** The site runs at
+  https://web-production-4c692.up.railway.app, in the Railway project `corniversity` (PostgreSQL,
+  a web service and a worker). Milestone 10's release is recorded in [QA_REPORT.md](QA_REPORT.md), Deployment. Until you create the owner account there, sign-up
+  accepts only the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md),
+  item 1); then it closes for good.
+- **Live tutoring: blocked, not verified.** No model key is configured and no paid use is
+  approved. Tutors, the assessor, the director, the reading room, the seminar chair, the
+  classmates and the studio's feedback run as a *scripted demo*, labelled so wherever they speak;
+  scripted text never reads your work. The Anthropic integration has been checked against a local
+  server that speaks the documented wire format, but no request has reached Anthropic. If you
+  choose a live model before it can run, it is refused with the reason, and nothing scripted takes
+  its place.
+- **Behind sign-in on the live site: not checked.** Every journey ran on this computer, on the
+  development server and on the production build against an empty database; on the live site only
+  the public pages, the health check and the logs were checked, because no account exists there.
+- **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, with no git remote; it
+  has not been pushed anywhere ([USER_ACTIONS.md](USER_ACTIONS.md), item 6). Milestone 10 started
+  from commit `5faa665` and is committed after it (`git log` lists the commits).
 
 ## Start it (two PowerShell windows in the project folder)
 
@@ -41,184 +43,130 @@ pnpm dev             # web app on http://localhost:3000 plus the background work
 ```
 
 If pages become slow after a long development session, stop `pnpm dev` and start it again.
-The webpack development server compiles each page on first use and slows down after many hours
-of hot reloads.
 
 ## Sign in and begin
 
 - **Fresh database:** open http://localhost:3000, choose *Create your course of study*, and
-  enter the owner email and the one-time bootstrap code from your `.env` file
-  (`OWNER_EMAIL`, `OWNER_BOOTSTRAP_CODE`). Sign-up closes once that account exists.
+  enter the owner email and the one-time bootstrap code from your `.env` file.
 - **The database on the build machine:** the owner account was created by the automated
-  journeys with a test password. Run `pnpm owner:reset-password` to choose your own, then sign
-  in at http://localhost:3000/sign-in.
-- **Then:** Orientation (twelve short steps; every answer stays editable in Settings) proposes a
-  programme and a timetable. From the Campus page, *Timetable* shows the week and the next
-  session; opening a session gives the reading, the exercise and the tutor. *My Studies*,
-  *Notebook* and *Records* hold what you did.
+  journeys with a test password, and its records are test data. Run `pnpm owner:reset-password`
+  to choose your own password, then sign in at http://localhost:3000/sign-in.
+- **Then:** Orientation (twelve short steps) proposes a plan and a timetable; choosing a programme
+  there follows it and enrols you in nothing. Afterwards every step stays visible, but the plan
+  steps change nothing: courses are taken on their own pages after their workload preview.
 
-## What to put in which folder
+## What Milestone 10 added
 
-Your private data root (`CORNIVERSITY_DATA_ROOT`, chosen when you ran `init-env`) is outside
-the repository and never committed. Inside it:
-
-| Folder | Put here | What happens |
-|---|---|---|
-| `inbox/mathematics/`, `inbox/physics/`, `inbox/chemistry/`, `inbox/neuroscience/`, `inbox/cognitive-science/`, `inbox/computer-science-ai/` | PDF, Markdown or text files you own | The desktop companion registers each file as a **local-only** item (metadata only). Nothing leaves your computer until you grant *store a private copy* for that item in the Library; text extraction and any use by the AI faculty need their own permissions, which you grant per item. |
-| `originals/`, `processed/`, `quarantine/` | nothing by hand | Managed by the app: stored copies, extracted text and files that failed validation. |
-| `exports/` | nothing by hand | Records exports, timetable files and database backups (`exports/backups/`). |
-| `requests/` | nothing by hand | The *Books to obtain* list in the formats the Library exports. |
-
-The web upload at *Library → Upload* is the alternative for a file that is not in a watched
-folder. Deleting an item in the Library deletes its stored copy and extracted text; notes that
-pointed into it are kept and marked as needing repair.
-
-## Desktop companion
-
-```powershell
-pnpm library:pair -- --server http://localhost:3000 --code 1234-5678 --name "Leon's desktop" --root "C:\Users\you\Documents\Corniversity-Library"
-pnpm library:sync -- --dry-run     # shows what would be registered
-pnpm library:sync                  # one pass
-pnpm library:watch                 # keeps running; the Library shows "Desktop sync online"
-pnpm library:status                # pairing and last report
-```
-
-The pairing code comes from *Library → Desktop sync* and is valid once. The companion only
-makes outbound HTTPS requests, keeps its device token in `companion.json` under its own
-configuration folder, and can be revoked at any time from the same Library page.
+- **The programme experience.** *Mind, Brain and AI* says where to begin and shows the route by
+  stage. Each of its twelve blocks has a page with its scope, the units that serve it, your
+  prerequisites rule by rule, its sources, what is missing (with the library link), the
+  curriculum's readiness and, separately, your own progress, and one next step. *Ask the director
+  for a route* drafts a small route that shows your focus before and after and what happens to
+  each course before you confirm; confirming enrols you in nothing. A mathematics background is
+  recognised for the mathematics rules only, never for programming, psychology or biology.
+- **Laboratories.** *Predict again* hides a laboratory's results until you save a new prediction.
+  NEU-220's tuning laboratory offers two splits that answer different questions (new trials of
+  the eight orientations, or an orientation the fit never saw), each with its question and
+  contract; the lesson, exercise 3 and its rubric (now version 2) say the same.
+- **The research studio** (side bar, *Research Studio*). A project starts from a question and is
+  conceptual, mathematical, computational, a replication or a critical review. It keeps a focused
+  shelf of verified sources, a proposal, methods and a report as numbered versions, the provenance
+  of every dataset or simulation, notebook entries, small files, feedback on a saved version, an
+  optional oral discussion, and a report you can download as Markdown. It never collects data from
+  people. In the scripted demo its feedback is a set of structural checks that says no model read
+  the work.
+- **Live tutoring settings** (*Settings → Live tutoring and its costs*): the provider, a supported
+  model, the key (stored encrypted, shown only by its ends), the refusal-fallback choice, limits
+  per run, per day and per month (always hard), your approval of paid use, and the recent runs
+  with their actual cost.
+- **Coverage.** [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md) now has one generated row per block,
+  elective, method and shelf source, and the status of every requirement in sections 13 to 20.
 
 ## Course readiness (exact counts from `content/`)
 
-The catalogue holds 86 courses in six departments: the 12 launch courses are `teaching_ready`;
-COG-250 and COG-260, added by the Mind, Brain and AI update, are `source_verified`, each with one
-prepared unit and seven outlined units; the other 72 are `proposed` (named, placed and described, with no syllabus or verified
-sources yet) and are shown with that label everywhere they appear. Across the launch courses:
-125 units, 31 of them prepared (lesson, exercises with feedback criteria, source locators and
-an exit check); the other 94 have verified reading lists only and open with the notice that
-their lesson, exercises and feedback "have not been prepared yet".
-Across the whole catalogue: 141 units (33 prepared), 99 original exercises, 59 verified sources
-and 1121 verified locators.
+The catalogue holds 86 courses in six departments. The 12 launch courses are `teaching_ready`.
+COG-250 and COG-260 are `source_verified`, each with one prepared unit and seven outlined units.
+The other 72 are `proposed`: named and described, without a syllabus or verified sources yet. Across
+the catalogue there are 141 units (33 prepared), 99 original exercises, 59 verified sources and
+1121 verified locators. Of the programme's twelve blocks, eight are partly prepared, MBI-03 has
+verified sources but no prepared unit, and MBI-02, MBI-10 and MBI-12 are proposed; the eight
+electives are proposed and offered for audit only; method 9.6 has no prepared unit yet. Three
+sources are still unresolved leads, listed under Library → Books to obtain. A prepared unit is
+teaching material; it says nothing about what you have understood.
 
-| Course | Units | Prepared | Minimum in the brief |
-|---|---|---|---|
-| CHE-101 Principles of Chemical Science | 10 | 5 | 4 (met) |
-| MAT-230 Functional Analysis I | 12 | 4 | 4 (met) |
-| NEU-220 Computational Neuroscience | 10 | 4 | 4 (met) |
-| COG-201 Computational Cognitive Science | 10 | 2 | 2 (met) |
-| CSA-210 Deep Learning Foundations | 10 | 2 | 2 (met) |
-| MAT-210 Measure and Integration | 10 | 2 | 2 (met) |
-| MAT-261 Smooth Manifolds | 12 | 2 | 2 (met) |
-| MAT-262 Riemannian Geometry | 10 | 2 | 2 (met); the advanced-geometry tutorial is its sphere-metric laboratory unit |
-| MAT-270 Abstract Algebra I | 10 | 2 | 2 (met) |
-| PHY-201 Classical Mechanics | 10 | 2 | 2 (met) |
-| PHY-210 Special Relativity and Minkowski Geometry | 10 | 2 | 2 (met) |
-| PHY-240 General Relativity I | 11 | 2 | 2 (met) |
-
-Shortfall, stated plainly: the minimums are met, and no more. A term's work in any one course
-runs past its prepared units within three to five weeks; the remaining units are produced
-through the visible content workflow (unit status `draft` → prepared, validated by
-`pnpm content:validate`), never generated silently when you press *Start*.
-
-## Test and build results (31 October and 1 November 2026)
+## Test and build results (9 November 2026)
 
 | Check | Result |
 |---|---|
 | `pnpm typecheck`, `pnpm lint` | clean (7 packages; Biome) |
-| `pnpm test` and `pnpm test:integration` | 194 unit and integration tests pass: 148 unit tests in 20 files and 46 integration tests in 8 (core, ai, content, db, worker, companion, web) |
-| `pnpm eval:academic` | 19 academic evaluation cases pass (fixture provider; they exercise the check rules and the verdict policy, not a model's judgement) |
-| `pnpm test:e2e` | 35 learner-journey tests pass at 1440×900 and 35 at 390×844, including spec 09 for the Mind, Brain and AI update; axe accessibility checks clean on 12 pages at both sizes |
-| `pnpm build` | production build passes (every route server-rendered on demand); the 35 desktop journeys also pass against the production web build |
+| `pnpm test` | 253 pass in 32 files |
+| `pnpm test:integration` | 80 pass in 12 files |
+| `pnpm eval:academic` | 19 pass (check rules and the verdict policy, not a model's judgement) |
 | `pnpm content:validate` | 0 errors, 0 warnings |
-| Backup and restore | rehearsed: 65 tables, 2378 rows restored into a throw-away database with equal counts |
-| Companion `watch` | rehearsed by hand against the development server: online while running, offline two minutes after stopping |
-| Deployment | live on Railway since 1 November 2026; health, the seeded catalogue, the security headers, the public pages in a browser and the owner-only sign-up checked on the live site ([QA_REPORT.md](QA_REPORT.md)) |
-| Live model | none |
+| Journeys, development server | the last full run passed 84 of 85 at 1440×900 and 390×844; the one failure, two scrolling tables a keyboard could not reach, was repaired and the accessibility sweep passed at both sizes |
+| Journeys, production build on an empty database | 85 of 85 at both sizes on a new database, after two earlier runs found an orientation defect (repaired) and four faults in the tests themselves |
+| Deployment | recorded in [QA_REPORT.md](QA_REPORT.md), Deployment |
+| Live model | none; live tutoring blocked |
 
-Details, including what each check does and does not prove, are in [QA_REPORT.md](QA_REPORT.md).
-Screenshots of the running application (desktop and mobile) are in `docs/qa/screenshots/` on the
-build machine (about 60 MB of PNGs, kept out of git by the ignore rule); a dozen key desktop views
-are committed alongside so the repository carries evidence of the actual application.
+What each check does and does not prove, every failure and rerun, and the screenshots that were
+inspected are in [QA_REPORT.md](QA_REPORT.md), Milestone 10.
 
-## Independent review (Milestone 8)
+## Operating costs
 
-Three independent passes reviewed the build on 31 October 2026 (a sceptical learner using the
-running application, an academic assessor recomputing the material, a production engineer probing
-the server and the deployment path). Between them they raised 49 findings; 46 were repaired and
-re-tested, and the 3 recorded ones are listed in [QA_REPORT.md](QA_REPORT.md) under "Independent
-review" with every repair. Two of the findings matter most to you: in fixture mode the assessor
-had been able to mark an unread answer "Accepted", which can no longer happen (every fixture
-verdict is withheld until a live assessor exists), and the development server had been reloading
-pages continuously, which is fixed.
+These are estimates with their assumptions, not a verified monthly bill.
 
-## Mind, Brain and AI (Milestone 9)
+- **Hosting (Railway).** Actual configuration: one project with three always-on services, `web`,
+  `worker` and `Postgres` (with one volume), in US West. Railway's Hobby plan was $5 a month
+  including $5 of usage, then about $20 per vCPU-month, $10 per GB of memory-month and $0.15 per
+  GB of volume-month (price page read on 31 October 2026, not re-read since). Three mostly idle
+  services at roughly 0.8–1.5 GB of memory in total and a small fraction of a vCPU suggest about
+  $10–25 a month. The real figure is on Railway's usage page.
+- **Model use (Anthropic).** Nothing so far: no live run has been made. If you enable it, it is
+  billed by Anthropic to your API account, separately from hosting. Prices per million tokens
+  (input/output) in `packages/ai/src/pricing.ts`, read on 6 October 2026: Claude Opus 5.5 $4/$20
+  (the default), Sonnet 5.5 $2/$10, Haiku 5.5 $0.10/$0.50, Fable 5.1 $10/$50. The default limits
+  are $1 per run, $3 a day and $40 a month, never above $5, $50 and $500; a run is refused if its
+  worst case could cross one. A tutor turn usually costs about a cent or two, but its worst case
+  (the whole output allowance) is what the limits are checked against; with refusal fallback on,
+  a declined request can be billed twice.
+- **Everything else.** No email provider, domain, object storage or other paid service is used.
+  The embedded database, the companion and exports run on your own computer at no cost.
 
-Your update arrived cut off after section 12, at "13. PRODUCT E…". Sections 1 to 12 are
-implemented, and the rest waits for you to send it. [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md) lists
-every requirement with its status and the test that checks it.
+## Account recovery
 
-- **Programmes.** *Programmes* in the side bar, also linked from the course catalogue, lists the
-  routes. *Mind, Brain and AI* (reference MIND-BRAIN-AI) shows its twelve blocks with their
-  readiness, shelves, methods, electives and paper seminar before you choose anything.
-  - Following it enrols you in nothing.
-  - *Ask the director for a route* drafts a focus that you confirm or reject on the Director page.
-  - My Studies shows the programme map.
-- **Study defaults.** Settings, under Study, shows which preferences you chose and which are
-  defaults; your earlier choice of term mode is kept. Hard deadlines and examinations stay off
-  unless you switch them on. The Timetable keeps the content sequence, appointments and deadlines
-  apart, and a missed appointment never makes anything late.
-- **New teaching.** Two units are prepared:
-  - COG-260 unit 1, *Building and checking a model of choice behaviour*;
-  - COG-250 unit 1, *Planning strategies and transfer*.
-
-  Each has a laboratory that keeps its results hidden until you have saved a prediction in the
-  notebook. An independent review pass checked both units, and its findings were repaired (see
-  [QA_REPORT.md](QA_REPORT.md)).
-- **Sources.** There are 32 new verified records, including the ten frontier candidates you named.
-  Two items wait for your decision: Psych-101, about 859 MB and not downloaded, and three source
-  leads listed under Library, Books to obtain.
-
-## Operating cost estimate
-
-- **Hosting (Railway):** the Hobby plan is $5 a month and includes $5 of usage; usage is about
-  $20 per vCPU-month, $10 per GB of memory-month and $0.15 per GB of volume-month (price page
-  read on 31 October 2026). Three mostly idle services (web, worker, PostgreSQL) come to roughly
-  **$10–25 a month**. Stopped services cost nothing.
-- **Model usage:** nothing until you add a key. With the default model at $4 per million input
-  tokens and $20 per million output tokens (pricing table in `packages/ai/src/pricing.ts`), a
-  tutor turn of a few thousand tokens costs about a cent; the daily and monthly budgets you set in
-  Settings are enforced before each request.
-- **Everything else** (embedded database, companion, exports) runs on your own computer at no
-  cost.
+There is no password-reset email, because no mail provider is configured. If you forget your
+password: in PowerShell in the project folder run `railway ssh --service worker`, then in that
+shell `node node_modules/tsx/dist/cli.mjs apps/worker/src/admin/reset-owner-password.ts`, and type
+the new password twice (it is not shown). Every signed-in browser is signed out and the reset is
+recorded. Nothing on the website can reset a password. On your own computer the command is
+`pnpm owner:reset-password`. The command is tested against a throw-away database; it has not been
+run on the live site.
 
 ## Backups and exports
 
 - `pnpm backup` writes `exports/backups/corniversity-<timestamp>.json.gz` under your data root
   together with a `…json.gz.blobs/` folder holding the stored originals; keep the two together.
-  `pnpm restore <file>` shows what a restore would do and `pnpm restore <file> --yes` performs it
-  (the database role must be allowed to set `session_replication_role`, as Railway's default is).
+  `pnpm restore <file>` shows what a restore would do and `pnpm restore <file> --yes` performs it.
 - *Records → Exports* builds JSON and Markdown exports of your transcript, portfolio and
-  evidence; *Timetable → Export* gives an `.ics` file, and the subscription link keeps a calendar
-  app in step.
-- Your original files stay in `originals/` under the data root; they are never inside the
-  database when the file store is the local disk.
+  evidence; *Timetable → Export* gives an `.ics` file. A studio project downloads as Markdown.
 
-## Minimal remaining manual actions
+## Remaining actions for you
 
 Listed with exact steps in [USER_ACTIONS.md](USER_ACTIONS.md): create the owner account on the
-live site with the one-time code; add a provider key and budgets in Settings to enable live teaching; optionally
-configure email for password reset; optionally publish the private GitHub repository; send the
-missing sections of the Mind, Brain and AI update.
+live site; then remove the bootstrap code from both services; let the signed-in checks be done;
+optionally enable live tutoring with a key, approval and a small test budget; optionally publish
+the repository. Please also confirm that the tests named in QA_REPORT.md describe the behaviour
+you intend, in particular the studio's rules and the route rules in MIND_BRAIN_AI.md, section 13.
 
 ## The core question
 
-*Can Leon enrol, open tomorrow's real material, attempt meaningful work, receive careful
-feedback, and return next week without losing the thread?*
+*Can Leon choose a coherent programme, access exact teaching material, do meaningful work,
+receive genuine grounded tutoring when a provider is configured, and return with persistent and
+honest records?*
 
-On this machine, yes for the 33 prepared units: enrolment, the timetable, the reading with exact
-source locators, exercises with deterministic checks, structured feedback with an appeal path,
-notes, evidence and revision all persist and were exercised by the automated journeys. Two
-qualifications: the feedback's prose is fixture-generated until you add a provider key (the
-checks and the feedback structure are real; the careful reading of your argument needs the live
-model), and the automated journeys ran on this computer, including against the production
-build, but not on the live site, where they would need the owner account. Your first sign-in
-there is its first real use.
+On this computer, yes, except the tutoring: the programme can be chosen and followed without
+enrolling; its 33 prepared units open with exact source locations; laboratories, exercises,
+notes, the studio and records persist and were exercised by the journeys on an empty database.
+Tutoring is the scripted demo until a key is added and paid use approved, and no live model has
+been tested. On the live site the same build is deployed, but nothing behind sign-in has been
+used yet: your first sign-in there is its first real use.

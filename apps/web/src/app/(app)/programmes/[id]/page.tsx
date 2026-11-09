@@ -1,10 +1,16 @@
-import { BLOCK_READINESS_LABEL, type BlockReadiness } from "@corniversity/core";
+import { BLOCK_READINESS_LABEL, type BlockReadiness, programmeNextStep } from "@corniversity/core";
 import { listDepartments } from "@corniversity/db/services/catalogue";
-import { learnerProgrammeMap, listParticipation, programmeDetail, sourceTitles } from "@corniversity/db/services/programmes";
+import {
+  learnerProgrammeMap,
+  learnerProgress,
+  listParticipation,
+  programmeDetail,
+  sourceTitles,
+} from "@corniversity/db/services/programmes";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReadinessBadge, UnitStatusBadge } from "@/components/Readiness";
-import { Badge, Button, Card, Notice } from "@/components/ui";
+import { Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { askDirectorAction, followProgrammeAction, setProgrammeStatusAction, startPaperReportAction } from "../actions";
@@ -44,10 +50,11 @@ export default async function ProgrammePage({
   const detail = await programmeDetail(db(), id);
   if (!detail) notFound();
   const { programme: p, courses } = detail;
-  const [participation, departments, map] = await Promise.all([
+  const [participation, departments, map, progress] = await Promise.all([
     listParticipation(db(), session.user.id),
     listDepartments(db()),
     learnerProgrammeMap(db(), session.user.id),
+    learnerProgress(db(), session.user.id),
   ]);
   const mine = participation.find((x) => x.programmeId === p.id);
   const mineMap = map.find((m) => m.programme.id === p.id);
@@ -59,6 +66,8 @@ export default async function ProgrammePage({
   const deptTitle = new Map(departments.map((d) => [d.id, d.title]));
   const unitTitle = (courseId: string, unitId: string) => courses.get(courseId)?.units.find((u) => u.id === unitId);
   const shared = detail.workItems.filter((w) => w.blockIds.length > 1);
+  const next = programmeNextStep(mine ?? null, detail.blocks, progress);
+  const bridges = detail.blocks.flatMap(({ block }) => block.bridges.map((b) => ({ ...b, blockId: block.id })));
 
   return (
     <div className="mx-auto w-full max-w-6xl">
@@ -157,6 +166,76 @@ export default async function ProgrammePage({
             </Notice>
           </section>
 
+          <section aria-labelledby="begin-heading" className="grid gap-4 lg:grid-cols-[1fr_2fr]">
+            <Card>
+              <h2 id="begin-heading" className="text-lg text-ink">
+                Where to begin
+              </h2>
+              <p className="mt-1 text-sm text-ink-2">{next.text}</p>
+              <div className="mt-3">
+                {next.kind === "open_unit" ? (
+                  <LinkButton href={`/courses/${next.courseId}/units/${next.unitId}`}>Open {next.unitId}</LinkButton>
+                ) : next.kind === "preview_course" ? (
+                  <LinkButton href={`/courses/${next.courseId}#workload`}>Workload preview of {next.courseId}</LinkButton>
+                ) : next.kind === "obtain_sources" ? (
+                  <LinkButton href="/library/requests" variant="secondary">
+                    Books to obtain
+                  </LinkButton>
+                ) : next.kind === "reflect" ? (
+                  <LinkButton href="/studio" variant="secondary">
+                    Research studio
+                  </LinkButton>
+                ) : null}
+              </div>
+              <p className="mt-3 text-xs text-ink-3">
+                Each course page shows its workload, including the independent work, before you choose to enrol, audit or read it.
+              </p>
+            </Card>
+            <Card as="div">
+              <h3 className="text-lg text-ink">The route, by stage</h3>
+              <p className="mt-1 text-xs text-ink-3">
+                A suggested order of courses, not a chain of prerequisites: each block says what it needs and what can run alongside it.
+              </p>
+              <ol className="mt-3 flex flex-col gap-3">
+                {p.stages.map((stage) => (
+                  <li key={stage.title}>
+                    <p className="text-sm font-medium text-ink">{stage.title}</p>
+                    <ul className="mt-1 flex flex-col gap-1 text-sm">
+                      {stage.courses.map((c) => {
+                        const course = courses.get(c.courseId);
+                        return (
+                          <li key={c.courseId} className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-xs text-ink-3">{c.courseId}</span>
+                            <Link href={`/courses/${c.courseId}`} className="text-ink hover:underline">
+                              {course?.title ?? c.courseId}
+                            </Link>
+                            <Badge>{c.role}</Badge>
+                            {course ? <ReadinessBadge readiness={course.readiness} /> : null}
+                            {progress.activeCourseIds.has(c.courseId) ? <Badge tone="moss">you take it</Badge> : null}
+                            {c.note ? <span className="basis-full text-xs text-ink-3">{c.note}</span> : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
+              {bridges.length ? (
+                <div className="mt-4 border-t border-stone pt-3">
+                  <p className="text-sm font-medium text-ink">Bridges into the blocks</p>
+                  <ul className="mt-1 list-disc pl-5 text-xs text-ink-2">
+                    {bridges.map((b) => (
+                      <li key={`${b.blockId}-${b.title}`}>
+                        {b.blockId}: {b.title}
+                        {b.courseId ? ` (${b.courseId}${b.unitIds.length ? `: ${b.unitIds.join(", ")}` : ""})` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </Card>
+          </section>
+
           <section aria-labelledby="blocks-heading">
             <h2 id="blocks-heading" className="text-xl text-ink">
               The twelve blocks
@@ -178,6 +257,11 @@ export default async function ProgrammePage({
                         </div>
                         <p className="mt-1 text-sm text-ink-2">{block.centralQuestion}</p>
                       </summary>
+                      <p className="mt-2 text-sm">
+                        <Link href={`/programmes/${p.id}/blocks/${block.id}`} className="text-brass underline underline-offset-4">
+                          Open the {block.id} page: prerequisites for you, missing resources and a next step
+                        </Link>
+                      </p>
                       <div className="mt-4 grid gap-4 lg:grid-cols-2">
                         <div className="flex flex-col gap-3 text-sm">
                           <p className="text-ink-2">
@@ -330,7 +414,12 @@ export default async function ProgrammePage({
                 Each method is taught explicitly and has its own evidence state. Running notebook cells is activity; it is not evidence of
                 understanding, and introduced, practised and demonstrated are shown separately.
               </p>
-              <div className="mt-3 overflow-x-auto rounded-[var(--radius-panel)] border border-stone">
+              <section
+                className="mt-3 overflow-x-auto rounded-[var(--radius-panel)] border border-stone"
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: the table scrolls sideways on a phone and must be reachable by keyboard (axe: scrollable-region-focusable)
+                tabIndex={0}
+                aria-label="Modelling methods"
+              >
                 <table className="w-full min-w-[44rem] text-left text-sm">
                   <thead className="bg-paper-3 text-xs uppercase tracking-wide text-ink-3">
                     <tr>
@@ -376,7 +465,7 @@ export default async function ProgrammePage({
                     })}
                   </tbody>
                 </table>
-              </div>
+              </section>
             </section>
           ) : null}
 

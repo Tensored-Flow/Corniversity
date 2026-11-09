@@ -4,6 +4,7 @@ import { getEnv } from "@corniversity/db/env";
 import { teachingUnit } from "@corniversity/db/schema/index";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
 import { recordEvidence } from "@corniversity/db/services/evidence";
+import { requestPredictAgain } from "@corniversity/db/services/lab-predictions";
 import {
   completeSession,
   fileReview,
@@ -16,7 +17,7 @@ import {
   submitAttempt,
 } from "@corniversity/db/services/learning";
 import { createEntry } from "@corniversity/db/services/notebook";
-import { resolveProviderConfig } from "@corniversity/db/services/provider-config";
+import { resolveProviderState } from "@corniversity/db/services/provider-config";
 import { scheduleRevisionForUnit } from "@corniversity/db/services/revision";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -62,7 +63,8 @@ export async function submitAttemptAction(sessionId: string, exerciseId: string,
   const text = content.trim();
   if (text.length < 20) return { ok: false, error: "Write your attempt before submitting; a few words are not an attempt." };
   const env = getEnv();
-  const config = await resolveProviderConfig(db(), auth.user.id, env);
+  // The configuration intended at submission; the worker records what actually assessed it.
+  const state = await resolveProviderState(db(), auth.user.id, env);
   const attempt = await getOrCreateAttempt(db(), { ownerId: auth.user.id, exerciseId, sessionId });
   try {
     await db().transaction(async (tx) => {
@@ -73,8 +75,8 @@ export async function submitAttemptAction(sessionId: string, exerciseId: string,
         contentMarkdown: text,
         assistanceDisclosed: { hintsUsed: attempt.hintsUsed, peersConsulted: false, externalSources: [] },
         graderConfig: {
-          provider: config.provider,
-          model: config.provider === "fixture" ? "fixture" : (config.modelMap.assessor ?? config.defaultModel),
+          provider: state.mode === "scripted" ? "fixture" : "anthropic",
+          model: state.mode === "scripted" ? "fixture" : state.model,
           promptVersion: ASSESSOR_PROMPT_VERSION,
           roleVersion: ROLE_CONTRACTS.assessor.version,
         },
@@ -205,6 +207,21 @@ export async function recordLabPredictionAction(_prev: ActionResult, formData: F
   });
   revalidatePath(`/sessions/${sessionId}`);
   return { ok: true };
+}
+
+/** A deliberate reattempt: the laboratory's results are hidden again until a new prediction is saved. */
+export async function predictAgainAction(formData: FormData): Promise<void> {
+  const auth = await requireSession();
+  const sessionId = String(formData.get("sessionId") ?? "");
+  const labId = String(formData.get("labId") ?? "");
+  if (!/^[0-9a-f-]{36}$/.test(sessionId) || !/^[a-z0-9-]{1,60}$/.test(labId)) return;
+  const session = await getSession(db(), auth.user.id, sessionId);
+  if (!session) return;
+  const unitDetail = await getUnitDetail(db(), session.unitId);
+  const activity = unitDetail?.unit.activities.find((a) => a.id === session.activityId);
+  if (!unitDetail || activity?.labId !== labId) return;
+  await requestPredictAgain(db(), auth.user.id, unitDetail.unit.id, labId);
+  revalidatePath(`/sessions/${sessionId}`);
 }
 
 export async function completeSessionAction(formData: FormData): Promise<void> {

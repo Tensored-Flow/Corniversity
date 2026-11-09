@@ -23,17 +23,22 @@ function safeEqual(a: string, b: string): boolean {
 export interface BootstrapInput {
   email: string;
   code: string;
-  env: { OWNER_EMAIL: string; OWNER_BOOTSTRAP_CODE: string };
+  env: { OWNER_EMAIL: string; OWNER_BOOTSTRAP_CODE?: string };
 }
 
 /**
- * Single-owner bootstrap. Account creation is permitted only when no account exists yet, the
- * email is the configured owner email, and the one-time code matches. Any other sign-up is
- * refused with a reason that does not leak which condition failed.
+ * Single-owner bootstrap. Account creation is permitted only when no owner exists yet, the email
+ * is the configured owner email, and the one-time code matches. Once an owner exists the code is
+ * never compared again (so it can be removed from the deployment), and without a configured code
+ * nobody can sign up. Any refusal gives a reason that does not leak which condition failed. The
+ * database's single-owner index backs this up against simultaneous submissions.
  */
 export async function assertBootstrapAllowed(db: DbOrTx, input: BootstrapInput): Promise<{ ok: true } | { ok: false; reason: string }> {
   if (await isBootstrapComplete(db)) {
     return { ok: false, reason: "Sign-up is closed. This institution has one owner account." };
+  }
+  if (!input.env.OWNER_BOOTSTRAP_CODE) {
+    return { ok: false, reason: "Setup is not available: no bootstrap code is configured on the server." };
   }
   const emailOk = input.email.trim().toLowerCase() === input.env.OWNER_EMAIL.trim().toLowerCase();
   const codeOk = input.code.length > 0 && safeEqual(input.code, input.env.OWNER_BOOTSTRAP_CODE);

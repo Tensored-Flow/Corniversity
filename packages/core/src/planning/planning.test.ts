@@ -8,6 +8,7 @@ import {
   PreferenceError,
   resolveStudyPreferences,
 } from "./preferences";
+import { workloadBreakdown } from "./workload";
 
 describe("study preference defaults", () => {
   it("a new learner gets rolling study, weekly appointments, one main and one lighter course, no deadlines or examinations", () => {
@@ -102,5 +103,64 @@ describe("rolling horizon", () => {
     const late = rollingHorizon("2026-11-02", "2027-01-01T00:00:00Z", 10);
     expect(late.shouldExtend).toBe(true);
     expect(late.weeksRemaining).toBe(1);
+  });
+});
+
+describe("defaults fill only what is genuinely unset", () => {
+  it("keeps explicit off and zero choices, and treats a stored null as unset", () => {
+    const effective = resolveStudyPreferences({ weeklyAppointments: false, exploratoryLimit: 0 });
+    expect(effective.weeklyAppointments).toBe(false);
+    expect(effective.exploratoryLimit).toBe(0);
+    const withNull = resolveStudyPreferences({ hardDeadlines: null, rhythm: null } as never);
+    expect(withNull.hardDeadlines).toBe(false);
+    expect(withNull.rhythm).toBe("rolling");
+    expect(explicitKeys({ hardDeadlines: null } as never, null)).toEqual([]);
+  });
+
+  it("explicit term mode survives a later change to something else", () => {
+    const next = applyPreferenceChange(applyPreferenceChange({}, { rhythm: "term" }), { weeklyAppointments: false });
+    expect(resolveStudyPreferences(next).rhythm).toBe("term");
+    expect(resolveStudyPreferences(next).examinations).toBe(false);
+  });
+
+  it("by default nothing is compulsory: no deadline or examination can fall due", () => {
+    const prefs = resolveStudyPreferences({});
+    expect(deadlineAllowed("assessment", prefs).allowed).toBe(false);
+    expect(deadlineAllowed("examination", prefs).allowed).toBe(false);
+    const due: Deadline = { id: "d", kind: "assessment", dueAt: "2026-11-01T00:00:00Z", binding: true, status: "open" };
+    expect(academicConsequences([due], prefs, "2026-11-10T00:00:00Z")).toEqual([]);
+  });
+});
+
+describe("the workload preview", () => {
+  const units = [
+    {
+      status: "ready",
+      activities: [
+        { type: "reading" as const, estimatedMinutes: 60 },
+        { type: "problem" as const, estimatedMinutes: 45 },
+        { type: "lab" as const, estimatedMinutes: 75 },
+        { type: "project" as const, estimatedMinutes: 90 },
+        { type: "explain_back" as const, estimatedMinutes: 15 },
+        { type: "retrieval_practice" as const, estimatedMinutes: 10 },
+      ],
+    },
+    { status: "draft", activities: [{ type: "reading" as const, estimatedMinutes: 600 }] },
+  ];
+
+  it("shows substantive independent work, not only reading or appointments", () => {
+    const b = workloadBreakdown(units, 60);
+    expect(b.minutes).toEqual({ reading: 60, problems: 45, laboratory: 75, writing: 90, explaining: 25, discussion: 0 });
+    // Problems, laboratories and writing are 210 of the 295 prepared minutes.
+    expect(b.independentShare).toBeCloseTo(0.71, 2);
+    expect(b.preparedHours).toBeCloseTo(4.9, 1);
+  });
+
+  it("counts prepared units only, and gives a weekly figure only when something is prepared", () => {
+    const b = workloadBreakdown(units, 60);
+    expect(b.preparedUnits).toBe(1);
+    expect(b.totalUnits).toBe(2);
+    expect(b.weeklyHours).toBe(6);
+    expect(workloadBreakdown([units[1]!], 60).weeklyHours).toBeNull();
   });
 });

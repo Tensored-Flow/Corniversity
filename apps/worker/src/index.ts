@@ -1,3 +1,4 @@
+import { checkAiAssets } from "@corniversity/ai/assets";
 import { closeDb, getDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { QUEUES } from "@corniversity/db/jobs";
@@ -23,6 +24,11 @@ async function main() {
     console.log(
       `[worker] content seeded: ${seeded.courseVersionsCreated} course versions created, ${seeded.courseVersionsUnchanged} unchanged`,
     );
+  // Counts, role names and prompt versions only: never a response's text or where it is stored.
+  const assets = checkAiAssets();
+  console.log(
+    `[worker] AI assets: ${assets.fixtures.loaded} of ${assets.fixtures.required} scripted responses load${assets.fixtures.missing.length ? ` (missing: ${assets.fixtures.missing.join(", ")})` : ""}; prompts ${Object.values(assets.prompts).join(", ")}`,
+  );
 
   const boss = await getBoss({ supervise: true });
   await registerHandlers(boss, handle.db, env);

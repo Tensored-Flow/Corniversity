@@ -1,10 +1,12 @@
 export * from "./bayesian-concept";
 export * from "./choice-models";
+export * from "./contract";
 export * from "./data-leakage";
 export * from "./gradient-descent";
 export * from "./kinetics";
 export * from "./norms";
 export * from "./planning";
+export * from "./prediction";
 export * from "./random";
 export * from "./sphere-metric";
 export * from "./tuning";
@@ -61,7 +63,7 @@ export const LAB_META: Record<LabId, { title: string; department: string; scope:
     title: "Fitting a tuning curve to synthetic spike counts",
     department: "neuroscience",
     scope:
-      "Poisson counts from a von Mises tuning model; maximum-likelihood fit, a constant-rate baseline, held-out comparison, bootstrap intervals and a failure case. All data are synthetic.",
+      "Poisson counts from a von Mises tuning model; maximum-likelihood fit, a constant-rate baseline, held-out comparisons on new trials and on an orientation absent from training, bootstrap intervals and a failure case. All data are synthetic.",
     synthetic: true,
   },
   "data-leakage-audit": {

@@ -38,6 +38,6 @@ describe("finding the fixtures folder", () => {
       if (next.done) break;
       text += next.value;
     }
-    expect(text).toMatch(/Scripted fixture turn/);
+    expect(text).toMatch(/Scripted demo turn/);
   });
 });

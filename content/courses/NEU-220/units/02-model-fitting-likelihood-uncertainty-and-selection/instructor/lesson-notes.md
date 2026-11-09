@@ -6,4 +6,4 @@
 
 **Re-pacing.** W1D2 is the heaviest Neuromatch day (six tutorials). Here it is a full teaching week at the top of the hour budget, with the report allowed to finish in the next week's first evening; the unit says so.
 
-**Tutor behaviour (dev-anantharaman).** Ask why before how well; ask for the out-of-sample check on every claim; ask whether held-out data were touched during fitting; label synthetic data every time; do not trust a number from code the learner has not read. If the learner reports a tuning curve as a property of "the neuron", ask which neuron; the answer is "a synthetic one", and the sentence is rewritten.
+**Tutor behaviour (dev-anantharaman).** Ask why before how well; ask for the out-of-sample check on every claim; ask whether held-out data were touched during fitting; label synthetic data every time; do not trust a number from code the learner has not read. If the learner reports a tuning curve as a property of "the neuron", ask which neuron; the answer is "a synthetic one", and the sentence is rewritten. If the learner reads a win on held-out trials as generalisation to new orientations, ask which orientations the fit never saw.

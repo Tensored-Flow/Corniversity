@@ -1,3 +1,4 @@
+import type { InformationContract } from "./contract";
 import { mulberry32, type Rng } from "./random";
 
 /**
@@ -389,20 +390,6 @@ export function modelRecovery(
   ) as ConfusionMatrix["probabilities"];
   const diagonalDominant = MODEL_IDS.every((g) => MODEL_IDS.every((f) => f === g || counts[g][g] > counts[g][f]));
   return { counts, datasetsPerModel, probabilities, diagonalDominant };
-}
-
-/** The ten questions every predictive exercise answers before it reports a number. */
-export interface InformationContract {
-  observed: string;
-  target: string;
-  historyInTraining: string;
-  historyAtInference: string;
-  person: "familiar" | "unseen";
-  task: "familiar" | "unseen";
-  laterPeriods: boolean;
-  unavailableInRealUse: string;
-  baseline: string;
-  untestedClaims: string;
 }
 
 export type SplitKind = "later_trials" | "unseen_people" | "random_trials";

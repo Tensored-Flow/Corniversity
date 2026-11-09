@@ -1,46 +1,41 @@
 export * from "./anthropic";
+export * from "./assets";
 export * from "./budget";
 export * from "./fixture";
+export * from "./models";
+export * from "./notes";
 export * from "./pricing";
 export * from "./prompts/assessor";
 export * from "./prompts/director";
 export * from "./prompts/discussion";
 export * from "./prompts/reading";
+export * from "./prompts/supervisor";
 export * from "./prompts/tutor";
 export * from "./provider";
 export * from "./roles/contracts";
 export * from "./roles/schemas";
+export * from "./state";
 
 import { AnthropicProvider } from "./anthropic";
 import { FixtureProvider } from "./fixture";
 import type { ModelProvider } from "./provider";
 
-export interface ProviderConfig {
-  provider: "fixture" | "anthropic";
-  anthropicApiKey?: string;
-  defaultModel: string;
-  modelMap?: Record<string, string>;
-  fixtureRoot?: string;
-}
+export type ProviderChoice =
+  | { provider: "fixture"; fixtureRoot?: string }
+  | { provider: "anthropic"; apiKey: string; model: string; refusalFallback: boolean; baseURL?: string };
 
-/** Builds the configured provider. Falls back to fixtures when a live provider lacks a key. */
-export function createProvider(config: ProviderConfig): { provider: ModelProvider; live: boolean; reason?: string } {
-  if (config.provider === "anthropic") {
-    if (!config.anthropicApiKey) {
-      return {
-        provider: new FixtureProvider(config.fixtureRoot),
-        live: false,
-        reason: "Anthropic selected but no API key is configured; using fixtures.",
-      };
-    }
-    return {
-      provider: new AnthropicProvider({
-        apiKey: config.anthropicApiKey,
-        defaultModel: config.defaultModel,
-        modelMap: config.modelMap,
-      }),
-      live: true,
-    };
+/**
+ * Builds the provider a resolved configuration names. It never substitutes one provider for
+ * another: whether a live model may run at all is decided before this, by the provider state.
+ */
+export function createProvider(choice: ProviderChoice): ModelProvider {
+  if (choice.provider === "anthropic") {
+    return new AnthropicProvider({
+      apiKey: choice.apiKey,
+      model: choice.model,
+      refusalFallback: choice.refusalFallback,
+      baseURL: choice.baseURL,
+    });
   }
-  return { provider: new FixtureProvider(config.fixtureRoot), live: false };
+  return new FixtureProvider(choice.fixtureRoot);
 }

@@ -6,18 +6,25 @@ import {
   generateTrials,
   meanCounts,
   ORIENTATIONS,
+  splitByOrientation,
   splitTrials,
   type Trial,
+  TUNING_SPLIT_CONTRACT,
+  TUNING_SPLITS,
+  type TuningSplitKind,
   tuningRate,
 } from "@corniversity/core/labs/index";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui";
-import { LabNote, NumberField, Plot } from "./Plot";
+import { ContractList, LabNote, NumberField, Plot } from "./Plot";
+
+type Split = { train: Trial[]; test: Trial[] };
 
 /**
  * Synthetic spike counts from a von Mises tuning model, a maximum-likelihood fit, a
- * constant-rate baseline, a held-out comparison, bootstrap intervals and a failure case.
- * Every screen says the data are synthetic; nothing is a recording.
+ * constant-rate baseline, held-out comparisons on new trials or on an orientation absent from
+ * training, bootstrap intervals and a failure case. Every screen says the data are synthetic;
+ * nothing is a recording.
  */
 export function TuningFitLab() {
   const [b, setB] = useState(2);
@@ -29,7 +36,10 @@ export function TuningFitLab() {
   const [seed, setSeed] = useState(42);
   const [showTruth, setShowTruth] = useState(false);
   const [dataset, setDataset] = useState<"tuned" | "failure">("tuned");
-  const [bootstrap, setBootstrap] = useState<ReturnType<typeof bootstrapTuning> | null>(null);
+  const [splitKind, setSplitKind] = useState<TuningSplitKind>("held_out_trials");
+  const [heldOutTheta, setHeldOutTheta] = useState(90);
+  // Intervals belong to the training trials they were computed from; any change hides them.
+  const [bootstrap, setBootstrap] = useState<{ split: Split; intervals: ReturnType<typeof bootstrapTuning> } | null>(null);
 
   const truth = useMemo(() => ({ b: Math.max(0, b), A: Math.max(0, A), kappa: Math.max(0, kappa), thetaPref }), [b, A, kappa, thetaPref]);
   const trials: Trial[] = useMemo(
@@ -39,10 +49,16 @@ export function TuningFitLab() {
         : generateBimodalTrials(Math.max(2, trialsPer), Math.max(0.1, window_), seed),
     [dataset, truth, trialsPer, window_, seed],
   );
-  const split = useMemo(() => splitTrials(trials), [trials]);
+  const split: Split = useMemo(
+    () => (splitKind === "held_out_trials" ? splitTrials(trials) : splitByOrientation(trials, heldOutTheta)),
+    [trials, splitKind, heldOutTheta],
+  );
   const result = useMemo(() => compareModels(split.train, split.test, Math.max(0.1, window_)), [split, window_]);
-  const means = useMemo(() => meanCounts(split.train), [split]);
+  // A held-out orientation has no training trials, so it has no training mean to plot.
+  const means = useMemo(() => meanCounts(split.train).filter((m) => m.n > 0), [split]);
   const curve = Array.from({ length: 73 }, (_, i) => ({ x: i * 2.5, y: tuningRate(result.tuning, i * 2.5) * Math.max(0.1, window_) }));
+  const intervals = bootstrap?.split === split ? bootstrap.intervals : null;
+  const heldOutLabel = splitKind === "held_out_trials" ? "held-out trials" : `held-out orientation ${heldOutTheta}°`;
 
   return (
     <div className="flex flex-col gap-4">
@@ -85,6 +101,48 @@ export function TuningFitLab() {
           </div>
         </details>
       ) : null}
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex max-w-full flex-col gap-1">
+          <label htmlFor="tf-split" className="text-sm font-medium text-ink">
+            Evaluation split
+          </label>
+          <select
+            id="tf-split"
+            value={splitKind}
+            onChange={(e) => setSplitKind(e.target.value as TuningSplitKind)}
+            className="max-w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1 text-sm text-ink"
+          >
+            {(Object.keys(TUNING_SPLITS) as TuningSplitKind[]).map((kind) => (
+              <option key={kind} value={kind}>
+                {TUNING_SPLITS[kind].label}
+              </option>
+            ))}
+          </select>
+        </div>
+        {splitKind === "held_out_orientation" ? (
+          <div className="flex flex-col gap-1">
+            <label htmlFor="tf-held-out-theta" className="text-sm font-medium text-ink">
+              Held-out orientation
+            </label>
+            <select
+              id="tf-held-out-theta"
+              value={heldOutTheta}
+              onChange={(e) => setHeldOutTheta(Number(e.target.value))}
+              className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1 text-sm text-ink"
+            >
+              {ORIENTATIONS.map((theta) => (
+                <option key={theta} value={theta}>
+                  {theta}°
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+      </div>
+      <p className="text-sm text-ink">
+        <span className="font-medium">The question this split answers:</span> {TUNING_SPLITS[splitKind].question}
+      </p>
+      <ContractList contract={TUNING_SPLIT_CONTRACT[splitKind]} />
       <Plot
         title="Training trials: mean count per orientation, the fitted tuning curve and the constant-rate baseline"
         xLabel="orientation (degrees)"
@@ -136,7 +194,9 @@ export function TuningFitLab() {
             </td>
           </tr>
           <tr className="border-t border-stone">
-            <th className="py-1 pr-3 text-left font-medium text-ink">Log-likelihood per trial, held out ({split.test.length} trials)</th>
+            <th className="py-1 pr-3 text-left font-medium text-ink">
+              Log-likelihood per trial, {heldOutLabel} ({split.test.length} trials)
+            </th>
             <td className="py-1 font-mono text-ink">
               tuning {result.heldOutLogLikPerTrial.tuning.toFixed(3)} · baseline {result.heldOutLogLikPerTrial.baseline.toFixed(3)} ·{" "}
               {result.heldOutAdvantagePerTrial > 0 ? (
@@ -151,23 +211,25 @@ export function TuningFitLab() {
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
-          onClick={() => setBootstrap(bootstrapTuning(split.train, Math.max(0.1, window_), 60, seed + 1))}
+          onClick={() => setBootstrap({ split, intervals: bootstrapTuning(split.train, Math.max(0.1, window_), 60, seed + 1) })}
           className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 text-sm text-ink hover:bg-paper-3"
         >
           Bootstrap the fit (60 resamples)
         </button>
-        {bootstrap ? (
+        {intervals ? (
           <p className="font-mono text-xs text-ink">
-            95% percentile intervals: θ_pref [{bootstrap.thetaPref.low.toFixed(1)}, {bootstrap.thetaPref.high.toFixed(1)}]° · κ [
-            {bootstrap.kappa.low.toFixed(2)}, {bootstrap.kappa.high.toFixed(2)}] · A [{bootstrap.A.low.toFixed(2)},{" "}
-            {bootstrap.A.high.toFixed(2)}] · b [{bootstrap.b.low.toFixed(2)}, {bootstrap.b.high.toFixed(2)}]
+            95% percentile intervals: θ_pref [{intervals.thetaPref.low.toFixed(1)}, {intervals.thetaPref.high.toFixed(1)}]° · κ [
+            {intervals.kappa.low.toFixed(2)}, {intervals.kappa.high.toFixed(2)}] · A [{intervals.A.low.toFixed(2)},{" "}
+            {intervals.A.high.toFixed(2)}] · b [{intervals.b.low.toFixed(2)}, {intervals.b.high.toFixed(2)}]
           </p>
         ) : null}
       </div>
       <LabNote>
         Orientations are the eight values {ORIENTATIONS.join("°, ")}°; the fit is a coarse grid followed by coordinate refinement of the
         Poisson log-likelihood, which can stop at a local optimum for the failure case: that is part of what the failure case is for.
-        Bootstrap intervals are percentile intervals over resampled training trials, not confidence statements about any real neuron.
+        Bootstrap intervals are percentile intervals over resampled training trials, not confidence statements about any real neuron. The
+        two splits answer different questions and neither stands in for the other: held-out trials test new trials of orientations the fit
+        has seen, and a held-out orientation tests a stimulus absent from training.
       </LabNote>
     </div>
   );

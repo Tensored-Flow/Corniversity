@@ -126,7 +126,7 @@
       "id": "u02-a4",
       "type": "lab",
       "title": "Laboratory: fitting a tuning curve to synthetic spike counts",
-      "instructions": "The laboratory generates synthetic spike counts from a known tuning model and labels them synthetic on every screen; nothing in it is a recording. Derive the Poisson log-likelihood and the baseline estimator first (exercise 3, part 1), then fit the tuning model and the baseline on the training trials, compare them on the held-out trials, bootstrap the parameters, run the failure-case dataset and write the report. Every sentence that mentions the data must say it is synthetic.",
+      "instructions": "The laboratory generates synthetic spike counts from a known tuning model and labels them synthetic on every screen; nothing in it is a recording. Derive the Poisson log-likelihood and the baseline estimator first (exercise 3, part 1), then fit the tuning model and the baseline on the training trials, compare them on the held-out trials, hold out one whole orientation and compare them again, keeping the two results apart, bootstrap the parameters, run the failure-case dataset and write the report. Every sentence that mentions the data must say it is synthetic.",
       "estimatedMinutes": 120,
       "sourceLocatorIds": [
         "nma-w1d2-t2",
@@ -174,7 +174,7 @@
     "NEU-220-u02-ex3"
   ],
   "exitCheck": {
-    "description": "Exercise 3 (the laboratory report) accepted: Poisson likelihood and baseline derived, held-out comparison against the baseline reported, parameters interpreted with bootstrap uncertainty, the failure case diagnosed, and the data labelled synthetic throughout with no claim about biological neurons; plus exercise 1 accepted with the least-squares, MLE and weighted estimators derived.",
+    "description": "Exercise 3 (the laboratory report) accepted: Poisson likelihood and baseline derived, held-out comparisons against the baseline reported for new trials and for a held-out orientation and kept apart, parameters interpreted with bootstrap uncertainty, the failure case diagnosed, and the data labelled synthetic throughout with no claim about biological neurons; plus exercise 1 accepted with the least-squares, MLE and weighted estimators derived.",
     "exerciseId": "NEU-220-u02-ex3"
   },
   "commonMisconceptions": [

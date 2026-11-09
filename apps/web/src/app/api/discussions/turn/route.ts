@@ -1,25 +1,14 @@
-import {
-  buildPeerPrompt,
-  buildSeminarChairPrompt,
-  createProvider,
-  DISCUSSION_PROMPT_VERSION,
-  decideBudget,
-  estimateCostUsd,
-  estimateRunCostUsd,
-  PRICING_VERSION,
-  ProviderError,
-  ROLE_CONTRACTS,
-} from "@corniversity/ai";
+import { buildPeerPrompt, buildSeminarChairPrompt, DISCUSSION_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
 import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
-import { providerRun, teachingUnit } from "@corniversity/db/schema/index";
+import { teachingUnit } from "@corniversity/db/schema/index";
 import { appendTurn, completeRound, getDiscussion, getPersonas, listTurns } from "@corniversity/db/services/community";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
-import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
 import { inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { collectPersonaText } from "@/lib/model-runs";
 import { requireApiSession } from "@/lib/session";
 
 const Body = z.object({ discussionId: z.string().uuid(), message: z.string().trim().min(1).max(4000) });
@@ -78,92 +67,36 @@ export async function POST(request: Request): Promise<Response> {
     `${profile.displayName}: ${parsed.data.message}`,
   ];
 
-  const config = await resolveProviderConfig(database, ownerId, env);
-  const { provider, live } = createProvider({
-    provider: config.provider,
-    anthropicApiKey: config.anthropicApiKey,
-    defaultModel: config.defaultModel,
-    modelMap: config.modelMap,
-  });
   const ordered = [...personas.filter((p) => !p.isPeer), ...personas.filter((p) => p.isPeer)];
   const spoken: string[] = [];
   for (const persona of ordered) {
     const role = persona.isPeer ? "peer" : "seminar_chair";
-    const contract = ROLE_CONTRACTS[role];
     const system = persona.isPeer
       ? buildPeerPrompt(context, { name: persona.name, style: persona.style })
       : buildSeminarChairPrompt(context, { name: persona.name, style: persona.style });
-    const model = config.modelMap[role] ?? config.defaultModel;
-    const chat = [
-      {
-        role: "user" as const,
-        content: `Discussion so far:\n${[...transcript, ...spoken].join("\n\n")}\n\nIt is your turn, ${persona.name}.`,
-      },
-    ];
-    if (live) {
-      const [limits, spend] = await Promise.all([getBudgetLimits(database, ownerId, env), getSpend(database, ownerId)]);
-      const decision = decideBudget(
-        limits,
-        spend,
-        Math.min(estimateRunCostUsd(model, system + chat[0]!.content, 400), contract.limits.maxRunUsd),
-      );
-      if (!decision.allowed) {
-        await appendTurn(database, discussion.id, "system", `${persona.name} did not reply: ${decision.reason}`);
-        continue;
-      }
+    const turn = await collectPersonaText({
+      database,
+      ownerId,
+      env,
+      role,
+      purpose: "discussion-turn",
+      promptVersion: `${DISCUSSION_PROMPT_VERSION};role:${ROLE_CONTRACTS[role].version}`,
+      system,
+      messages: [
+        {
+          role: "user",
+          content: `Discussion so far:\n${[...transcript, ...spoken].join("\n\n")}\n\nIt is your turn, ${persona.name}.`,
+        },
+      ],
+      scenario: "default",
+      speaker: persona.name,
+    });
+    if (turn.kind === "refused") {
+      await appendTurn(database, discussion.id, "system", `${persona.name} did not reply: ${turn.reason}`);
+      continue;
     }
-    const startedAt = new Date();
-    let text = "";
-    let status: "ok" | "error" | "refused" = "ok";
-    let errorText: string | undefined;
-    let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
-    let usedModel = live ? model : "fixture";
-    try {
-      const generator = provider.streamText({
-        role,
-        purpose: "discussion-turn",
-        system,
-        messages: chat,
-        model,
-        maxTokens: contract.limits.maxOutputTokens,
-        scenario: "default",
-      });
-      let next = await generator.next();
-      while (!next.done) {
-        text += next.value;
-        next = await generator.next();
-      }
-      usage = next.value.usage;
-      usedModel = next.value.model;
-      if (next.value.stopReason === "refusal") status = "refused";
-    } catch (error) {
-      status = "error";
-      errorText = error instanceof ProviderError ? error.message : "The provider failed.";
-      text = `*(${persona.name} could not reply: ${errorText})*`;
-    }
-    const [run] = await database
-      .insert(providerRun)
-      .values({
-        ownerId,
-        role,
-        provider: provider.name,
-        model: usedModel,
-        purpose: "discussion-turn",
-        inputTokens: usage.inputTokens,
-        outputTokens: usage.outputTokens,
-        cacheReadTokens: usage.cacheReadTokens,
-        cacheWriteTokens: usage.cacheWriteTokens,
-        costUsd: String(estimateCostUsd(usedModel, usage)),
-        pricingVersion: PRICING_VERSION,
-        promptVersion: `${DISCUSSION_PROMPT_VERSION};role:${contract.version}`,
-        status,
-        error: errorText ?? null,
-        startedAt,
-        finishedAt: new Date(),
-      })
-      .returning({ id: providerRun.id });
-    const annotated = annotateTurn(text, []);
-    await appendTurn(database, discussion.id, persona.id, annotated.markdown, annotated.labels, run?.id);
+    const annotated = annotateTurn(turn.text, []);
+    await appendTurn(database, discussion.id, persona.id, annotated.markdown, annotated.labels, turn.runId);
     spoken.push(`${persona.name}: ${annotated.markdown}`);
   }
   const { roundsUsed, closed } = await completeRound(database, discussion.id);

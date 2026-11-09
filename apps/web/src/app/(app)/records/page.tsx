@@ -1,5 +1,7 @@
+import { PROJECT_KIND_INFO } from "@corniversity/core";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { endOfTermReview, listExports, portfolio, transcript } from "@corniversity/db/services/records";
+import { listProjects } from "@corniversity/db/services/research";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { RenderedHtml } from "@/components/RenderedHtml";
@@ -33,13 +35,16 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
   const { requested } = await searchParams;
   const database = db();
   const ownerId = session.user.id;
-  const [rows, items, review, exports, profile] = await Promise.all([
+  const [rows, items, review, exports, profile, projects] = await Promise.all([
     transcript(database, ownerId),
     portfolio(database, ownerId),
     endOfTermReview(database, ownerId),
     listExports(database, ownerId),
     ensureProfile(database, ownerId),
+    listProjects(database, ownerId),
   ]);
+  // Only the learner's own projects; a labelled demonstration is never part of the record.
+  const ownProjects = projects.filter((p) => !p.demo);
   const zone = profile.timezone;
   const when = (d: Date | null) => (d ? DateTime.fromJSDate(d).setZone(zone).toFormat("d LLL yyyy") : "—");
   const pending = exports.some((e) => e.status === "queued");
@@ -151,6 +156,40 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                   )}
                 </h3>
                 <RenderedHtml html={excerptHtml[i] ?? ""} className="mt-1 text-sm text-ink-2" />
+              </Card>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section aria-labelledby="research-heading" className="mt-10">
+        <h2 id="research-heading" className="text-xl text-ink">
+          Research projects
+        </h2>
+        <p className="mt-1 text-sm text-ink-2">
+          Your projects in the research studio, with their status. A project is your own work; its feedback is automatic checks and, where a
+          model was configured, provisional written feedback.
+        </p>
+        {ownProjects.length === 0 ? (
+          <p className="mt-3 text-sm text-ink-3">No projects yet.</p>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-2">
+            {ownProjects.map((p) => (
+              <Card key={p.id} as="li">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone={p.status === "completed" ? "moss" : "neutral"}>{p.status}</Badge>
+                  <span className="text-xs text-ink-3">{PROJECT_KIND_INFO[p.kind].label}</span>
+                  <span className="text-xs text-ink-3">{when(p.updatedAt)}</span>
+                </div>
+                <h3 className="mt-1 text-base text-ink">
+                  <Link href={`/studio/${p.id}`} className="hover:underline">
+                    {p.title}
+                  </Link>
+                </h3>
+                <p className="mt-1 text-sm text-ink-2">{p.question}</p>
+                <a href={`/api/studio/${p.id}/report`} className="mt-1 inline-block text-xs text-brass underline underline-offset-4">
+                  Report as Markdown
+                </a>
               </Card>
             ))}
           </ul>

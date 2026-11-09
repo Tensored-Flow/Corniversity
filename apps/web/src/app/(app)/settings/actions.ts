@@ -1,9 +1,16 @@
 "use server";
+import { BudgetLimitError, isSupportedModel } from "@corniversity/ai";
 import { TIMEZONE_SUGGESTIONS } from "@corniversity/core/onboarding/steps";
 import { getEnv } from "@corniversity/db/env";
 import { deletePersonaMemory, purgePersonaMemory } from "@corniversity/db/services/community";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
-import { getBudgetLimits, saveBudgetLimits, saveProviderSetting } from "@corniversity/db/services/provider-config";
+import {
+  approvePaidUse,
+  ProviderSettingError,
+  saveBudgetLimits,
+  saveProviderSetting,
+  withdrawPaidUseApproval,
+} from "@corniversity/db/services/provider-config";
 import { updateProfileSettings } from "@corniversity/db/services/settings";
 import { StudyError, updateStudyPreferences } from "@corniversity/db/services/study";
 import { revalidatePath } from "next/cache";
@@ -64,31 +71,45 @@ export async function updateExperienceAction(form: FormData): Promise<void> {
   done("experience");
 }
 
-export async function saveProviderAction(form: FormData): Promise<void> {
+/**
+ * Saves the provider, model, key, refusal fallback and limits together, then records approval of
+ * paid use when the owner ticked it. Approval snapshots exactly what was saved, so a later change
+ * of model or a higher limit leaves live runs blocked until it is approved again.
+ */
+export async function saveLiveTutoringAction(form: FormData): Promise<void> {
   const session = await requireSession("/settings");
+  const env = getEnv();
   const provider = text(form, "provider") === "anthropic" ? "anthropic" : "fixture";
   const apiKey = text(form, "apiKey");
-  const clearKey = form.get("clearKey") === "1";
+  const model = text(form, "model");
   if (apiKey && apiKey.length < 20) redirect("/settings?error=The%20key%20looks%20too%20short%20to%20be%20an%20API%20key.#provider");
-  await saveProviderSetting(db(), session.user.id, getEnv(), { provider, apiKey: apiKey || undefined, clearKey });
+  try {
+    await saveBudgetLimits(db(), session.user.id, {
+      perRunUsd: Number(text(form, "perRunUsd")),
+      dailyUsd: Number(text(form, "dailyUsd")),
+      monthlyUsd: Number(text(form, "monthlyUsd")),
+    });
+    await saveProviderSetting(db(), session.user.id, env, {
+      provider,
+      apiKey: apiKey || undefined,
+      clearKey: form.get("clearKey") === "1",
+      model: isSupportedModel(model) ? model : undefined,
+      refusalFallback: form.get("refusalFallback") === "1",
+    });
+    if (provider === "anthropic" && form.get("approvePaidUse") === "1") await approvePaidUse(db(), session.user.id, env);
+  } catch (error) {
+    if (error instanceof BudgetLimitError || error instanceof ProviderSettingError) {
+      redirect(`/settings?error=${encodeURIComponent(error.message)}#provider`);
+    }
+    throw error;
+  }
   done("provider");
 }
 
-export async function saveBudgetAction(form: FormData): Promise<void> {
+export async function withdrawApprovalAction(): Promise<void> {
   const session = await requireSession("/settings");
-  const current = await getBudgetLimits(db(), session.user.id, getEnv());
-  const num = (key: string, fallback: number) => {
-    const v = Number(text(form, key));
-    return Number.isFinite(v) && v > 0 ? Math.min(10_000, v) : fallback;
-  };
-  await saveBudgetLimits(db(), session.user.id, {
-    perRunUsd: num("perRunUsd", current.perRunUsd),
-    dailyUsd: num("dailyUsd", current.dailyUsd),
-    monthlyUsd: num("monthlyUsd", current.monthlyUsd),
-    hardStop: form.get("hardStop") === "1",
-    warnFraction: current.warnFraction,
-  });
-  done("budgets");
+  await withdrawPaidUseApproval(db(), session.user.id);
+  done("provider");
 }
 
 export async function deleteMemoryAction(form: FormData): Promise<void> {

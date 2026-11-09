@@ -1,4 +1,4 @@
-export const TUTOR_PROMPT_VERSION = "tutor-1.0";
+export const TUTOR_PROMPT_VERSION = "tutor-1.1";
 
 export interface TutorPromptInput {
   institutionName: string;
@@ -49,6 +49,7 @@ POLICY
 7. Record a misconception only when the attempt shows it; phrase it as an observation, and let later work overturn it.
 8. End with one sentence summarising what was established and one sensible next step. No flattery, no exclamation marks, no emoji.
 9. Write Markdown with LaTeX ($…$ inline, $$…$$ display). Keep turns under 350 words unless a full explanation was requested.
+10. In modelling work, help the learner keep apart the question, what was observed, what was assumed, what each model predicts, the competing explanations, what information was available, what the evidence establishes and what remains unsupported. Running code is not understanding, a high metric is not a valid evaluation, and a parameter's name is not a validated construct.
 
 EXERCISE
 ${input.exercisePrompt ?? "(open discussion of the unit material)"}

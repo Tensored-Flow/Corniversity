@@ -1,24 +1,13 @@
-import {
-  buildReadingPrompt,
-  createProvider,
-  decideBudget,
-  estimateCostUsd,
-  estimateRunCostUsd,
-  PRICING_VERSION,
-  ProviderError,
-  READING_PROMPT_VERSION,
-  ROLE_CONTRACTS,
-} from "@corniversity/ai";
+import { buildReadingPrompt, READING_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
 import { formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
-import { providerRun } from "@corniversity/db/schema/index";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getAsset, getPage, isAllowed, passagesForPage } from "@corniversity/db/services/library";
-import { getBudgetLimits, getSpend, resolveProviderConfig } from "@corniversity/db/services/provider-config";
 import { appendLearnerMessage, appendPersonaMessage, getOrCreateConversation } from "@corniversity/db/services/tutoring";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { streamPersonaTurn } from "@/lib/model-runs";
 import { requireApiSession } from "@/lib/session";
 
 const Body = z.object({
@@ -121,116 +110,25 @@ export async function POST(request: Request): Promise<Response> {
   await appendLearnerMessage(database, conversation.id, `> ${selectedText.slice(0, 600)}\n\n${question}`);
   const chat = [{ role: "user" as const, content: `Selected passage:\n"""\n${selectedText}\n"""\n\nQuestion: ${question}` }];
 
-  const config = await resolveProviderConfig(database, ownerId, env);
-  const { provider, live } = createProvider({
-    provider: config.provider,
-    anthropicApiKey: config.anthropicApiKey,
-    defaultModel: config.defaultModel,
-    modelMap: config.modelMap,
-  });
-  const model = config.modelMap.lecturer ?? config.defaultModel;
-  const contract = ROLE_CONTRACTS.lecturer;
-  if (live) {
-    const limits = await getBudgetLimits(database, ownerId, env);
-    const spend = await getSpend(database, ownerId);
-    const estimate = estimateRunCostUsd(model, system + chat.map((c) => c.content).join("\n"), 1000);
-    const decision = decideBudget(limits, spend, Math.min(estimate, contract.limits.maxRunUsd));
-    if (!decision.allowed) {
-      await database.insert(providerRun).values({
-        ownerId,
-        role: "lecturer",
-        provider: provider.name,
-        model,
-        purpose: "reading-passage",
-        pricingVersion: PRICING_VERSION,
-        promptVersion: `${READING_PROMPT_VERSION};role:${contract.version}`,
-        status: "budget_blocked",
-        error: decision.reason,
-        finishedAt: new Date(),
+  return streamPersonaTurn({
+    database,
+    ownerId,
+    env,
+    role: "lecturer",
+    purpose: "reading-passage",
+    promptVersion: `${READING_PROMPT_VERSION};role:${ROLE_CONTRACTS.lecturer.version}`,
+    system,
+    messages: chat,
+    scenario: "reading-passage",
+    speaker: personaName.charAt(0).toUpperCase() + personaName.slice(1),
+    onFinish: async (raw, runId) => {
+      await appendPersonaMessage(database, {
+        conversationId: conversation.id,
+        personaId: personaId ?? null,
+        rawText: raw,
+        allowed: evidence.refs,
+        providerRunId: runId,
       });
-      return NextResponse.json({ error: "budget", message: decision.reason }, { status: 402 });
-    }
-  }
-
-  const startedAt = new Date();
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream<Uint8Array>({
-    async start(controller) {
-      let raw = "";
-      let status: "ok" | "error" | "refused" = "ok";
-      let errorText: string | undefined;
-      let usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
-      let usedModel = live ? model : "fixture";
-      try {
-        const generator = provider.streamText({
-          role: "lecturer",
-          purpose: "reading-passage",
-          system,
-          messages: chat,
-          model,
-          maxTokens: contract.limits.maxOutputTokens,
-          scenario: "reading-passage",
-        });
-        let next = await generator.next();
-        while (!next.done) {
-          raw += next.value;
-          controller.enqueue(encoder.encode(next.value));
-          next = await generator.next();
-        }
-        usage = next.value.usage;
-        usedModel = next.value.model;
-        if (next.value.stopReason === "refusal") {
-          status = "refused";
-          const note = "\n\n*(The model declined to continue. Nothing has been lost; try rephrasing.)*";
-          raw += note;
-          controller.enqueue(encoder.encode(note));
-        }
-      } catch (error) {
-        status = "error";
-        errorText = error instanceof ProviderError ? error.message : "The provider failed.";
-        const note = `\n\n*(No reply could be produced: ${errorText} The page, your notes and the source view remain available.)*`;
-        raw += note;
-        controller.enqueue(encoder.encode(note));
-      }
-      const [run] = await database
-        .insert(providerRun)
-        .values({
-          ownerId,
-          role: "lecturer",
-          provider: provider.name,
-          model: usedModel,
-          purpose: "reading-passage",
-          inputTokens: usage.inputTokens,
-          outputTokens: usage.outputTokens,
-          cacheReadTokens: usage.cacheReadTokens,
-          cacheWriteTokens: usage.cacheWriteTokens,
-          costUsd: String(estimateCostUsd(usedModel, usage)),
-          pricingVersion: PRICING_VERSION,
-          promptVersion: `${READING_PROMPT_VERSION};role:${contract.version}`,
-          status,
-          error: errorText ?? null,
-          startedAt,
-          finishedAt: new Date(),
-        })
-        .returning({ id: providerRun.id });
-      if (raw.trim().length > 0) {
-        await appendPersonaMessage(database, {
-          conversationId: conversation.id,
-          personaId: personaId ?? null,
-          rawText: raw,
-          allowed: evidence.refs,
-          providerRunId: run?.id,
-        });
-      }
-      controller.close();
-    },
-  });
-  return new Response(stream, {
-    headers: {
-      "content-type": "text/plain; charset=utf-8",
-      "cache-control": "no-store",
-      "x-accel-buffering": "no",
-      "x-provider": provider.name,
     },
   });
 }

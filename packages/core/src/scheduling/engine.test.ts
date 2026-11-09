@@ -178,6 +178,13 @@ describe("schedule", () => {
     expect(result.unplaced.length).toBeGreaterThan(0);
     expect(result.shortfallMinutes).toBeGreaterThan(0);
     expect(result.suggestions.length).toBeGreaterThanOrEqual(3);
+    // The explanation names the conflict: the work against the usable hours under the weekly cap,
+    // what did not fit and by how much; the suggestions name the constraints that could change.
+    expect(result.explanations[0]).toMatch(/hours of work, against about \d+ usable hours .* capped at 5 hours a week/);
+    expect(result.explanations[1]).toBe(
+      `${result.unplaced.length} activities could not be placed; the shortfall is about ${Math.ceil(result.shortfallMinutes / 60)} hours.`,
+    );
+    expect(result.suggestions.join(" ")).toMatch(/Raise the weekly cap/);
     for (const w of result.weekly) expect(w.plannedMinutes).toBeLessThanOrEqual(w.capMinutes);
     // Higher-priority course gets placed first.
     expect(result.sessions.some((s) => s.courseId === "MAT-230")).toBe(true);

@@ -4,7 +4,14 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../client";
 import { user } from "../schema/auth";
 import { enrolment, programme, programmeParticipation } from "../schema/index";
-import { followProgramme, getProgramme, listParticipation, ProgrammeError, setParticipationStatus } from "./programmes";
+import {
+  followNewProgrammes,
+  followProgramme,
+  getProgramme,
+  listParticipation,
+  ProgrammeError,
+  setParticipationStatus,
+} from "./programmes";
 
 /**
  * Following programmes: by internal or reference id, idempotent, several at once, and never an
@@ -78,6 +85,24 @@ describe("programme participation", () => {
     const rows = await listParticipation(handle.db, OWNER);
     expect(rows.find((p) => p.programmeId === A)?.status).toBe("left");
     expect(rows.find((p) => p.programmeId === B)?.status).toBe("following");
+  });
+
+  it("choosing programmes again in orientation adds new ones but never resumes, replaces or removes existing choices", async () => {
+    // A is left and B is followed (from the test above); pause B, then choose both again plus an unknown id.
+    await setParticipationStatus(handle.db, OWNER, B, "paused");
+    const C = `test-programme-c-${randomUUID().slice(0, 8)}`;
+    await handle.db
+      .insert(programme)
+      .values({ id: C, title: "Test programme C", description: "d", departmentIds: ["physics"], stages: [] });
+    const added = await followNewProgrammes(handle.db, OWNER, [A, B, C, "no-such-programme"], "onboarding");
+    expect(added).toEqual([C]);
+    const rows = await listParticipation(handle.db, OWNER);
+    expect(rows.find((p) => p.programmeId === A)?.status).toBe("left");
+    expect(rows.find((p) => p.programmeId === B)?.status).toBe("paused");
+    expect(rows.find((p) => p.programmeId === C)?.status).toBe("following");
+    expect(await handle.db.select().from(enrolment).where(eq(enrolment.ownerId, OWNER))).toEqual([]);
+    await handle.db.delete(programmeParticipation).where(eq(programmeParticipation.programmeId, C));
+    await handle.db.delete(programme).where(eq(programme.id, C));
   });
 
   it("refuses an unknown programme", async () => {

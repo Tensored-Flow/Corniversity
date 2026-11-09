@@ -1,9 +1,11 @@
 import { getDiscussion, getPersonas, listTurns } from "@corniversity/db/services/community";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
-import { AiLabel, Badge, Button, Card, Notice } from "@/components/ui";
+import { Badge, Button, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
 import { setDiscussionStatusAction } from "../actions";
 import { DiscussionTurn } from "./DiscussionTurn";
@@ -20,6 +22,10 @@ export default async function DiscussionPage({ params }: { params: Promise<{ id:
     listTurns(database, discussion.id),
     getPersonas(database, discussion.participantPersonaIds),
   ]);
+  const producedBy = await producerLabels(
+    database,
+    turns.map((t) => t.providerRunId),
+  );
   const nameOf = (speaker: string) =>
     speaker === "learner" ? "You" : speaker === "system" ? "Common room" : (personas.find((p) => p.id === speaker)?.name ?? speaker);
   const roundsLeft = Math.max(0, discussion.maxRounds - discussion.roundsUsed);
@@ -67,7 +73,10 @@ export default async function DiscussionPage({ params }: { params: Promise<{ id:
                     : "border border-stone bg-paper-3/60",
               ].join(" ")}
             >
-              <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{nameOf(t.speaker)}</p>
+              <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+                {nameOf(t.speaker)}
+                {producedBy(t.providerRunId) ? ` · ${producedBy(t.providerRunId)}` : ""}
+              </p>
               <Markdown source={t.contentMarkdown} className="text-sm" />
               {t.labels.length ? (
                 <div className="mt-1 flex flex-wrap gap-1">

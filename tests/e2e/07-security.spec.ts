@@ -22,6 +22,9 @@ const PRIVATE_PAGES = [
   "/catalogue",
   "/courses/MAT-230",
   "/campus/map",
+  "/programmes",
+  "/programmes/mind-and-computation/blocks/MBI-01",
+  "/studio",
 ];
 const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/tutor/turn", { sessionId: "00000000-0000-4000-8000-000000000000", message: "x" }],
@@ -31,6 +34,7 @@ const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/companion/register", {}],
   ["/api/companion/status", {}],
   ["/api/companion/upload", {}],
+  ["/api/studio/artifacts", {}],
 ];
 const PRIVATE_GETS = [
   "/api/library/assets/00000000-0000-4000-8000-000000000000/file",
@@ -38,6 +42,8 @@ const PRIVATE_GETS = [
   "/api/records/exports/00000000-0000-4000-8000-000000000000",
   "/api/companion/status",
   "/api/calendar/not-a-real-token.ics",
+  "/api/studio/artifacts/00000000-0000-4000-8000-000000000000",
+  "/api/studio/00000000-0000-4000-8000-000000000000/report",
 ];
 
 test.describe("unauthenticated access", () => {
@@ -59,13 +65,18 @@ test.describe("unauthenticated access", () => {
       expect(text).not.toContain("%PDF");
     }
   });
-  test("the health route answers publicly and says only that the database responds", async ({ request }) => {
+  test("the health route answers publicly with liveness and asset counts only", async ({ request }) => {
     const response = await request.get("/api/health");
     expect(response.status()).toBe(200);
     const body = (await response.json()) as Record<string, unknown>;
     expect(body.ok).toBe(true);
-    expect(Object.keys(body).sort()).toEqual(["at", "database", "latencyMs", "migrations", "ok"]);
+    expect(Object.keys(body).sort()).toEqual(["aiAssets", "at", "database", "latencyMs", "migrations", "ok"]);
     expect(body.migrations).toBe("current");
+    // Prompt and scripted-response assets: a count and version names, never their text or location.
+    const assets = body.aiAssets as { ok: boolean; scripted: string; prompts: Record<string, string> };
+    expect(Object.keys(assets).sort()).toEqual(["ok", "prompts", "scripted"]);
+    expect(assets).toMatchObject({ ok: true, scripted: "7 of 7" });
+    for (const [role, version] of Object.entries(assets.prompts)) expect(version).toMatch(new RegExp(`^${role}-\\d+\\.\\d+$`));
   });
   test("sign-up is closed once the owner exists", async ({ request }) => {
     const response = await request.post("/api/auth/sign-up/email", {

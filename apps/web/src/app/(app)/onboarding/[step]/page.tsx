@@ -25,7 +25,10 @@ const ERRORS: Record<string, string> = {
   choose_plan: "Choose one of the plans to continue.",
   no_availability: "Add at least one availability window so a timetable can be built.",
   infeasible: "The proposed timetable does not fit. Adjust your hours or courses, or accept the shortfall.",
+  complete:
+    "Orientation is already complete, so this step changes nothing. Change courses on their own pages, the timetable on the Timetable page, and your route with the director.",
   invalid: "Something in the form was not valid. Please check and try again.",
+  not_offered: "A course in this plan is not offered in the mode chosen for it. Choose one of the modes it offers; nothing was enrolled.",
 };
 
 export default async function OnboardingStepPage({
@@ -33,10 +36,10 @@ export default async function OnboardingStepPage({
   searchParams,
 }: {
   params: Promise<{ step: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
   const { step } = await params;
-  const { error } = await searchParams;
+  const { error, saved } = await searchParams;
   const number = Number(step);
   const def = Number.isInteger(number) ? getOnboardingStep(number) : undefined;
   if (!def) notFound();
@@ -48,6 +51,9 @@ export default async function OnboardingStepPage({
   if (!profile.onboardingCompletedAt && number > profile.onboardingStep) redirect(`/onboarding/${profile.onboardingStep}`);
 
   const common = { userId: session.user.id, profile };
+  const completed = Boolean(profile.onboardingCompletedAt);
+  // After orientation, the plan-building steps are shown for reference only; their actions refuse.
+  const planStep = number >= 8 && number <= 11;
 
   return (
     <div className="mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[220px_1fr]">
@@ -85,6 +91,23 @@ export default async function OnboardingStepPage({
             <Notice tone="rust">{ERRORS[error] ?? ERRORS.invalid}</Notice>
           </div>
         ) : null}
+        {saved !== undefined ? (
+          <div className="mt-4">
+            <Notice tone="moss" title="Saved">
+              {Number(saved) > 0 ? `${saved} newly chosen programme${saved === "1" ? " is" : "s are"} now followed. ` : ""}
+              Nothing else changed: no programme was unfollowed or resumed and nothing was enrolled. Orientation is already complete, so
+              there is no plan to confirm again.
+            </Notice>
+          </div>
+        ) : null}
+        {completed && planStep ? (
+          <div className="mt-4">
+            <Notice tone="neutral" title="Orientation is complete">
+              This step built your first plan. It no longer changes anything: courses are added or withdrawn on their own pages, the
+              timetable is changed on the Timetable page, and the director drafts routes for you to confirm.
+            </Notice>
+          </div>
+        ) : null}
         <div className="mt-8">
           {number === 1 ? (
             <StepOneForm
@@ -106,10 +129,10 @@ export default async function OnboardingStepPage({
           {number === 5 ? <StepTime {...common} /> : null}
           {number === 6 ? <StepRhythm {...common} /> : null}
           {number === 7 ? <StepPlacement {...common} /> : null}
-          {number === 8 ? <StepPlans {...common} /> : null}
-          {number === 9 ? <StepModes {...common} /> : null}
-          {number === 10 ? <StepTimetable {...common} /> : null}
-          {number === 11 ? <StepConfirm {...common} /> : null}
+          {number === 8 && !completed ? <StepPlans {...common} /> : null}
+          {number === 9 && !completed ? <StepModes {...common} /> : null}
+          {number === 10 && !completed ? <StepTimetable {...common} /> : null}
+          {number === 11 && !completed ? <StepConfirm {...common} /> : null}
           {number === 12 ? <StepMeet {...common} /> : null}
         </div>
       </div>

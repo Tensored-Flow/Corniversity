@@ -15,13 +15,17 @@ export interface RoleContract {
   outputSchema: "prose" | "AssessorFeedback" | "ProgrammeDraft" | "SourceMetadataGuess" | "SessionSummary";
   memoryPolicy: string;
   escalation: string;
-  limits: { maxOutputTokens: number; maxRunUsd: number };
+  /**
+   * The output allowance includes thinking, which current models cannot switch off; `effort` sets
+   * thinking depth explicitly per role; `maxRunUsd` is the role's own ceiling on a run's worst case.
+   */
+  limits: { maxOutputTokens: number; maxRunUsd: number; effort: "low" | "medium" | "high" };
 }
 
 export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
   director: {
     role: "director",
-    version: "1.0",
+    version: "1.1",
     purpose: "Maintain the learner's programme, goals, workload and term plan; explain trade-offs; propose changes as drafts.",
     allowedTools: [
       "read_programme",
@@ -35,11 +39,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Academic summaries and stated preferences only; no social memory.",
     escalation: "Any change is a draft requiring learner confirmation through a validated service.",
-    limits: { maxOutputTokens: 6_000, maxRunUsd: 0.4 },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
   },
   convenor: {
     role: "convenor",
-    version: "1.0",
+    version: "1.1",
     purpose: "Draft course syllabi and teaching units from verified sources inside the content pipeline.",
     allowedTools: ["read_source_passages", "read_course_spec", "draft_unit", "draft_exercise", "flag_blocker"],
     requiredContext: ["verified source registry", "course purpose and outcomes", "department conventions"],
@@ -47,11 +51,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "None beyond the pipeline job.",
     escalation: "Drafts enter the review queue; publication is a separate validated step.",
-    limits: { maxOutputTokens: 16_000, maxRunUsd: 0.5 },
+    limits: { maxOutputTokens: 16_000, maxRunUsd: 1, effort: "high" },
   },
   lecturer: {
     role: "lecturer",
-    version: "1.0",
+    version: "1.1",
     purpose: "Explain the current unit's material from its sources, linking intuition to formal content in the course's notation.",
     allowedTools: ["read_unit", "read_source_passages", "read_relevant_attempts"],
     requiredContext: [
@@ -64,11 +68,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Reads approved academic summaries for this course only.",
     escalation: "Says when the material was not retrieved and offers to locate it.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.5 },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
   },
   tutor: {
     role: "tutor",
-    version: "1.0",
+    version: "1.1",
     purpose:
       "Work interactively from the learner's attempts: understand the attempt first, hint before answering, explain fully on request.",
     allowedTools: ["read_exercise", "read_hint_ladder", "read_current_attempt", "read_source_passages", "record_misconception_candidate"],
@@ -87,11 +91,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Relevant attempts and approved academic summaries for this course.",
     escalation: "Direct question answered directly; unresolved doubt labelled {needs-checking}.",
-    limits: { maxOutputTokens: 6_000, maxRunUsd: 0.4 },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
   },
   librarian: {
     role: "librarian",
-    version: "1.0",
+    version: "1.1",
     purpose: "Select, verify, locate and manage access to sources; extract candidate metadata for confirmation.",
     allowedTools: ["read_source_registry", "guess_metadata_from_text", "draft_resource_request"],
     requiredContext: ["bibliographic text excerpts", "course needs"],
@@ -99,11 +103,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "SourceMetadataGuess",
     memoryPolicy: "None.",
     escalation: "Metadata is a guess until the learner confirms it.",
-    limits: { maxOutputTokens: 2_000, maxRunUsd: 0.1 },
+    limits: { maxOutputTokens: 2_000, maxRunUsd: 0.1, effort: "low" },
   },
   assessor: {
     role: "assessor",
-    version: "1.0",
+    version: "1.1",
     purpose:
       "Evaluate a submission against its versioned rubric with the permitted evidence; localise the first substantive gap; record uncertainty.",
     allowedTools: ["read_submission", "read_rubric", "read_reference_reasoning", "read_deterministic_results", "read_source_passages"],
@@ -123,11 +127,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "AssessorFeedback",
     memoryPolicy: "None; each run is independent.",
     escalation: "Confidence below 0.6, or disagreement with deterministic results, becomes needs_review.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.5 },
+    limits: { maxOutputTokens: 12_000, maxRunUsd: 1, effort: "high" },
   },
   seminar_chair: {
     role: "seminar_chair",
-    version: "1.0",
+    version: "1.1",
     purpose: "Run a bounded discussion: a few rounds, released material only, an explicit stop and a user turn.",
     allowedTools: ["read_released_material", "read_discussion"],
     requiredContext: ["released unit ids", "participants", "round limit"],
@@ -135,11 +139,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Discussion transcript only.",
     escalation: "Closes the discussion at the limit with a one-line summary.",
-    limits: { maxOutputTokens: 3_000, maxRunUsd: 0.2 },
+    limits: { maxOutputTokens: 4_000, maxRunUsd: 0.3, effort: "low" },
   },
   supervisor: {
     role: "supervisor",
-    version: "1.0",
+    version: "1.1",
     purpose:
       "Support open-ended project work without pretending uncertainty has disappeared; distinguish interesting negative results from failure.",
     allowedTools: ["read_project", "read_source_passages", "read_relevant_attempts"],
@@ -148,11 +152,11 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Project notes and approved academic summaries.",
     escalation: "Labels conjectures and unchecked claims explicitly.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.5 },
+    limits: { maxOutputTokens: 12_000, maxRunUsd: 1, effort: "high" },
   },
   peer: {
     role: "peer",
-    version: "1.0",
+    version: "1.1",
     purpose:
       "An optional classmate with a distinct reasoning style who discusses released material tentatively and asks clarifying questions.",
     allowedTools: ["read_released_material", "read_discussion"],
@@ -167,6 +171,6 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Social memory is separate and deletable; no access to the academic transcript.",
     escalation: "A staged misconception must be resolved by the teacher in the same discussion.",
-    limits: { maxOutputTokens: 1_500, maxRunUsd: 0.1 },
+    limits: { maxOutputTokens: 3_000, maxRunUsd: 0.2, effort: "low" },
   },
 };

@@ -18,7 +18,12 @@
        the institution's content (SEED_CONTENT_ON_START=1). Then builds and starts the web service.
     6. Requests a Railway-provided domain for the web service, sets BETTER_AUTH_URL to that https
        URL and redeploys the web service with it.
-    7. Prints the URL, the bootstrap code (shown once) and where to create the owner account.
+    7. Prints the URL and where to find the one-time bootstrap code (the web service's
+       OWNER_BOOTSTRAP_CODE variable in the Railway dashboard); no secret is printed.
+
+  It is for a first deployment only: it refuses to run in a folder already linked to a Railway
+  project, because running it again would create a second project with new secrets. Later
+  changes ship with `railway up --service worker --ci` and `railway up --service web --ci`.
 
   Use -DryRun to print the plan without changing anything; it needs neither the CLI nor a login.
 
@@ -81,6 +86,10 @@ if ($DryRun) {
     throw "Not logged in to Railway. Run 'railway login' in this terminal, then run this script again."
   }
   Write-Host "Railway account: $who"
+  $linked = Invoke-Native { railway status }
+  if ($LASTEXITCODE -eq 0 -and $linked -match "Project:\s*(\S+)") {
+    throw "This folder is already linked to the Railway project '$($Matches[1])'. This script is for a first deployment only; running it again would create a second project with new secrets. Ship changes with 'railway up --service worker --ci' and 'railway up --service web --ci'."
+  }
 }
 
 if (-not $OwnerEmail) {
@@ -98,7 +107,7 @@ $authSecret = New-Secret 48
 $bootstrapCode = New-Secret 18
 Write-Host "Project: $Project"
 Write-Host "Owner email: $OwnerEmail"
-Write-Host "Secrets: generated locally; the bootstrap code is printed once at the end."
+Write-Host "Secrets: generated locally and stored only as Railway variables; none is printed."
 
 Invoke-Step "Create or link the project" {
   if ($Workspace) { $created = Invoke-Native { railway init --name $Project --workspace $Workspace } }
@@ -183,7 +192,8 @@ if ($DryRun) {
 } else {
   if ($domain) { Write-Host "Private site: https://$domain" } else { Write-Host "Domain not detected; run 'railway domain --service web' and set BETTER_AUTH_URL on both services." }
   Write-Host "Owner email: $OwnerEmail"
-  Write-Host "One-time bootstrap code (shown once; create the owner account at /join): $bootstrapCode"
+  Write-Host "One-time bootstrap code: the OWNER_BOOTSTRAP_CODE variable of the web service (Railway dashboard, project $Project, service web, Variables). It is not printed here."
+  Write-Host "After the owner account exists, delete OWNER_BOOTSTRAP_CODE from both services; it is no longer needed."
   Write-Host "Check health: pnpm health --web https://$domain   (the worker is internal; its health shows in Railway logs)"
   Write-Host "Then open https://$domain/join in a browser and create the owner account with the code above. Do not run the test journeys against the live site: they would create the owner with the test password."
 }

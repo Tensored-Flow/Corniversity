@@ -76,3 +76,12 @@ export const TranscriptionSchema = z.object({
   confidence: z.number().min(0).max(1),
 });
 export type Transcription = z.infer<typeof TranscriptionSchema>;
+
+/** The research supervisor's provisional feedback on one saved version of a studio document. */
+export const SupervisorFeedbackSchema = z.object({
+  summary: z.string(),
+  strengths: z.array(z.string()),
+  questions: z.array(z.string()),
+  nextStep: z.string(),
+});
+export type SupervisorFeedback = z.infer<typeof SupervisorFeedbackSchema>;

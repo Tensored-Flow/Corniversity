@@ -13,11 +13,13 @@ import {
 import { latestConversationForAsset, listMessages } from "@corniversity/db/services/tutoring";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
 import { RenderedHtml } from "@/components/RenderedHtml";
-import { AiLabel, Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
+import { Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
+import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
 import { deleteAnnotationAction, saveAnnotationAction } from "../../actions";
 import { assetTitle, FlashNotices, LibraryHeader } from "../../shared";
@@ -91,10 +93,15 @@ export default async function ReadPage({
     }
   }
   const messages = conversation ? await listMessages(database, conversation.id) : [];
+  const producedBy = await producerLabels(
+    database,
+    messages.slice(-6).map((m) => m.providerRunId),
+  );
   const rendered = await Promise.all(
     messages.slice(-6).map(async (m) => ({
       id: m.id,
       sender: m.sender,
+      producedBy: producedBy(m.providerRunId),
       html: await renderMarkdown(m.contentMarkdown),
       citations: m.citations,
       labels: m.labels,
@@ -296,7 +303,9 @@ export default async function ReadPage({
                       m.sender === "learner" ? "border border-stone bg-paper" : "border border-stone bg-paper-3/60",
                     ].join(" ")}
                   >
-                    <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{m.sender === "learner" ? "You" : personaName}</p>
+                    <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+                      {m.sender === "learner" ? "You" : `${personaName}${m.producedBy ? ` · ${m.producedBy}` : ""}`}
+                    </p>
                     <RenderedHtml html={m.html} className="text-sm" />
                     {m.sender === "persona" ? (
                       <div className="mt-1 flex flex-wrap gap-1">

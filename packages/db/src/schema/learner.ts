@@ -1,3 +1,4 @@
+import type { PaidUseApproval } from "@corniversity/ai/state";
 import type { ExplicitStudyPreferences } from "@corniversity/core";
 import { boolean, index, integer, jsonb, numeric, pgTable, real, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, immersionEnum, tz, updatedAt } from "./_shared";
@@ -68,7 +69,14 @@ export const providerSetting = pgTable("provider_setting", {
   provider: text("provider").$type<"fixture" | "anthropic">().notNull().default("fixture"),
   apiKeyEncrypted: text("api_key_encrypted"),
   apiKeyHint: text("api_key_hint"),
+  /** No longer read: every role uses `model`, so one approval covers every paid run. */
   modelMap: jsonb("model_map").$type<Record<string, string>>().notNull().default({}),
+  /** The model every role uses; null means the deployment default (AI_MODEL_DEFAULT). */
+  model: text("model"),
+  /** Re-run a declined request on the provider's fallback model; on unless the owner turns it off. */
+  refusalFallback: boolean("refusal_fallback").notNull().default(true),
+  /** Null until the owner approves paid use. */
+  paidUseApproval: jsonb("paid_use_approval").$type<PaidUseApproval>(),
   updatedAt: updatedAt(),
 });
 

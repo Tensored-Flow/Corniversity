@@ -9,8 +9,8 @@ import { screenshot, signInOrBootstrap } from "./helpers";
  *    speaks only after the learner does, and a reload without a new turn adds nothing.
  *
  * Settings: the experience baseline can be changed after orientation; quiet mode removes the
- * social layer from navigation and the common room while every academic surface stays; budgets
- * save; the campus map lists every place it draws.
+ * social layer from navigation and the common room while every academic surface stays; the
+ * live-tutoring limits save; the campus map lists every place it draws.
  */
 test.describe.configure({ mode: "serial" });
 
@@ -59,12 +59,12 @@ test.describe("common room and settings", () => {
       );
     await page.getByRole("button", { name: "Send" }).click();
     await expect(page.getByText("round 1 of 2")).toBeVisible({ timeout: 60_000 });
-    const aiTurns = page.locator("ol > li").filter({ hasText: /Scripted fixture turn/ });
+    const aiTurns = page.locator("ol > li").filter({ hasText: /Scripted demo turn/ });
     await expect(aiTurns).toHaveCount(3);
 
     // Nothing happens while the learner is away: a reload adds no turns.
     await page.reload();
-    await expect(page.locator("ol > li").filter({ hasText: /Scripted fixture turn/ })).toHaveCount(3);
+    await expect(page.locator("ol > li").filter({ hasText: /Scripted demo turn/ })).toHaveCount(3);
 
     await page
       .getByLabel(/Your turn/)
@@ -108,14 +108,17 @@ test.describe("common room and settings", () => {
     await expect(page.getByRole("navigation", { name: "Places on the campus" }).getByRole("link", { name: "Common Room" })).toBeVisible();
   });
 
-  test("settings: budgets save and the provider stays on fixtures without a key", async ({ page }) => {
+  test("settings: live tutoring is a labelled scripted demo without a key, and its limits save", async ({ page }) => {
     await signInOrBootstrap(page);
     await page.goto("/settings");
-    await expect(page.getByText(/fixture: scripted responses, nothing is sent anywhere/)).toBeVisible();
-    await page.getByLabel("Per day (USD)").fill("2.5");
-    await page.locator("#budgets").getByRole("button", { name: "Save budgets" }).click();
+    const card = page.locator("#provider");
+    // The state notice, not the runs table, where every scripted run is also named "Scripted demo".
+    await expect(card.getByRole("status").filter({ hasText: "No model is configured" })).toBeVisible();
+    await expect(page.getByLabel("Provider", { exact: true })).toHaveValue("fixture");
+    await page.getByLabel("Per day", { exact: true }).fill("2.5");
+    await card.getByRole("button", { name: "Save live tutoring settings" }).click();
     await expect(page.getByText("Saved.")).toBeVisible();
-    await expect(page.getByLabel("Per day (USD)")).toHaveValue("2.5");
+    await expect(page.getByLabel("Per day", { exact: true })).toHaveValue("2.5");
     await screenshot(page, "35-settings");
   });
 });

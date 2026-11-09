@@ -1,5 +1,7 @@
+import { resolve } from "node:path";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
+import { writeCoverage } from "./coverage";
 import { defaultContentRoot, loadContent } from "./load";
 import { seedContent } from "./seed";
 import { formatReport, validateContent } from "./validate";
@@ -14,6 +16,12 @@ async function main() {
   const errors = report.issues.filter((i) => i.level === "error").length;
   if (command === "validate") {
     process.exit(errors > 0 ? 1 : 0);
+  }
+  if (command === "coverage") {
+    if (errors > 0) process.exit(1);
+    writeCoverage(resolve(root, "..", "docs", "MIND_BRAIN_AI.md"), bundle, "mind-and-computation");
+    console.log("regenerated the coverage tables in docs/MIND_BRAIN_AI.md");
+    process.exit(0);
   }
   if (errors > 0) {
     console.error("refusing to seed content with validation errors");

@@ -24,6 +24,8 @@ export interface PrerequisiteAssessment {
   satisfied: boolean;
   satisfiedBy: string | null; // label of the alternative that satisfied it
   basis: "evidence" | "self_report" | "none";
+  /** Courses the rule names as alternatives or bridges, which would meet it. */
+  alternativeCourseIds: string[];
 }
 
 /**
@@ -41,6 +43,9 @@ export async function assessPrerequisites(db: DbOrTx, ownerId: string, courseId:
   const overrides = await db.select().from(learnerConceptOverride).where(eq(learnerConceptOverride.userId, ownerId));
   const selfKnown = new Set(overrides.filter((o) => o.claim === "known").map((o) => o.conceptId));
   return rules.map((rule) => {
+    const alternativeCourseIds = [
+      ...new Set(rule.alternatives.flatMap((a) => [...(a.courseIds ?? []), ...(a.bridgeCourseId ? [a.bridgeCourseId] : [])])),
+    ];
     for (const alt of rule.alternatives) {
       if (alt.conceptIds.length > 0 && alt.conceptIds.every((c) => demonstrated.has(c))) {
         return {
@@ -50,6 +55,7 @@ export async function assessPrerequisites(db: DbOrTx, ownerId: string, courseId:
           satisfied: true,
           satisfiedBy: alt.label,
           basis: "evidence",
+          alternativeCourseIds,
         };
       }
     }
@@ -62,10 +68,19 @@ export async function assessPrerequisites(db: DbOrTx, ownerId: string, courseId:
           satisfied: true,
           satisfiedBy: `${alt.label} (self-reported, unverified)`,
           basis: "self_report",
+          alternativeCourseIds,
         };
       }
     }
-    return { ruleId: rule.id, strength: rule.strength, description: rule.description, satisfied: false, satisfiedBy: null, basis: "none" };
+    return {
+      ruleId: rule.id,
+      strength: rule.strength,
+      description: rule.description,
+      satisfied: false,
+      satisfiedBy: null,
+      basis: "none",
+      alternativeCourseIds,
+    };
   });
 }
 
@@ -100,10 +115,26 @@ export interface CandidatePlan {
   warnings: string[];
 }
 
+type PlanMode = CandidatePlan["courses"][number]["mode"];
+
+/**
+ * The preferred mode when the course offers it (enrolled also needs prepared units), otherwise
+ * the nearest lighter mode it does offer, so a plan never proposes a mode its course refuses.
+ */
+export function offeredMode(preferred: PlanMode, offered: readonly string[], preparedUnits: number): PlanMode {
+  const order: Record<PlanMode, PlanMode[]> = {
+    enrolled: ["enrolled", "reading_seminar", "audit"],
+    reading_seminar: ["reading_seminar", "audit"],
+    audit: ["audit", "reading_seminar"],
+  };
+  return order[preferred].find((m) => offered.includes(m) && (m !== "enrolled" || preparedUnits > 0)) ?? preferred;
+}
+
 /**
  * Deterministic candidate first-term plans from the learner's interests. The default is one
  * demanding core course plus a lighter seminar; heavier options are offered with their cost
  * stated. Only courses with prepared units can be taken as enrolled; others are offered as audit.
+ * Every course is proposed in a mode it offers.
  */
 export async function candidatePlans(
   db: DbOrTx,
@@ -137,15 +168,11 @@ export async function candidatePlans(
       return ia - ib || b.prepared - a.prepared || a.course.id.localeCompare(b.course.id);
     });
 
-  const describe = async (
-    c: NonNullable<ReturnType<typeof info.get>>,
-    role: CandidatePlan["courses"][number]["role"],
-    mode: CandidatePlan["courses"][number]["mode"],
-  ) => ({
+  const describe = async (c: NonNullable<ReturnType<typeof info.get>>, role: CandidatePlan["courses"][number]["role"], mode: PlanMode) => ({
     courseId: c.course.id,
     title: c.course.title,
     role,
-    mode,
+    mode: offeredMode(mode, c.version.modesOffered, c.prepared),
     readiness: c.version.readiness,
     preparedUnits: c.prepared,
     totalUnits: c.total,

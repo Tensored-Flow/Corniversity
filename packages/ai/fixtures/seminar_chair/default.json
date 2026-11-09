@@ -1,4 +1,4 @@
 {
   "note": "Deterministic fixture used when no model provider is configured. It is a scripted placeholder and says so.",
-  "text": "*(Scripted fixture turn: no model provider is configured, so this is not a reading of what you said.)*\n\nAs chair I would normally restate what you established, separate it from what is still conjecture, and put one question to the room. With a provider configured in Settings, that is what this turn becomes. {needs-checking} For now: which step of your argument would you least like to defend?"
+  "text": "*(Scripted demo turn: no model is configured, so this is not a reading of what you said.)*\n\nAs chair I would normally restate what you established, separate it from what is still conjecture, and put one question to the room. With a provider configured in Settings, that is what this turn becomes. {needs-checking} For now: which step of your argument would you least like to defend?"
 }

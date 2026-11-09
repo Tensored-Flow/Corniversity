@@ -26,6 +26,8 @@ import { makePdf } from "./pdf";
 test.describe.configure({ mode: "serial" });
 
 const repoRoot = process.cwd();
+// The companion pairs with whichever server the journeys run against.
+const server = process.env.E2E_BASE_URL ?? "http://localhost:3000";
 const run = Date.now().toString(36);
 let root = "";
 let companionHome = "";
@@ -86,11 +88,11 @@ test.describe("library, companion and reading room", () => {
     expect(code).toMatch(/^\d{4}-\d{4}$/);
     await screenshot(page, "18-library-pairing-code");
 
-    const paired = companion(`pair --server http://localhost:3000 --code ${code} --name "E2E desktop" --root "${root}"`);
+    const paired = companion(`pair --server ${server} --code ${code} --name "E2E desktop" --root "${root}"`);
     expect(paired).toContain('Paired as "E2E desktop"');
 
     // A second redemption of the same code must fail.
-    expect(() => companion(`pair --server http://localhost:3000 --code ${code} --name "Impostor" --root "${root}"`)).toThrow();
+    expect(() => companion(`pair --server ${server} --code ${code} --name "Impostor" --root "${root}"`)).toThrow();
 
     const dry = companion("sync --dry-run");
     expect(dry).toContain("would_register");

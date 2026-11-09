@@ -1,5 +1,6 @@
 import { LAB_META, type LabId } from "@corniversity/core/labs/index";
-import { Badge, Card, Notice } from "@/components/ui";
+import { Badge, Button, Card, Notice } from "@/components/ui";
+import { predictAgainAction } from "../actions";
 import { BayesianConceptLab } from "./BayesianConceptLab";
 import { ChoiceModelLab } from "./ChoiceModelLab";
 import { DataLeakageLab } from "./DataLeakageLab";
@@ -9,6 +10,9 @@ import { NormComparisonLab } from "./NormComparisonLab";
 import { PlanningLab } from "./PlanningLab";
 import { SphereMetricLab } from "./SphereMetricLab";
 import { TuningFitLab } from "./TuningFitLab";
+
+/** Laboratories whose results stay hidden until the learner has written a prediction. */
+const PREDICTION_GATED = ["choice-model-loop", "planning-transfer"];
 
 /**
  * Chooses the laboratory a unit activity names. Each lab is audited application code running
@@ -58,6 +62,19 @@ export function LabPanel({
         {labId === "choice-model-loop" ? <ChoiceModelLab sessionId={sessionId} predictionRecorded={predictionRecorded} /> : null}
         {labId === "planning-transfer" ? <PlanningLab sessionId={sessionId} predictionRecorded={predictionRecorded} /> : null}
       </div>
+      {predictionRecorded && PREDICTION_GATED.includes(labId) ? (
+        <form action={predictAgainAction} className="mt-4 border-t border-stone pt-3">
+          <input type="hidden" name="sessionId" value={sessionId} />
+          <input type="hidden" name="labId" value={labId} />
+          <Button type="submit" variant="quiet">
+            Predict again
+          </Button>
+          <span className="ml-2 text-xs text-ink-3">
+            Hides the results until you save a new prediction, for example before changing the design. Your earlier predictions stay in the
+            notebook.
+          </span>
+        </form>
+      ) : null}
     </Card>
   );
 }

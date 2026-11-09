@@ -17,8 +17,8 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 
 - **Local development**: `embedded-postgres` runs PostgreSQL 17 from Node (Docker is not
   installed on the owner's machine). Web and worker are separate processes against it.
-- **Production (prepared)**: one Railway project — PostgreSQL (pgvector template, because the
-  standard Railway image has no pgvector), `web`, `worker`. Files are stored as blobs in
+- **Production (deployed)**: one Railway project, `corniversity` — PostgreSQL (pgvector template,
+  because the standard Railway image has no pgvector), `web`, `worker`. Files are stored as blobs in
   PostgreSQL (`BlobStore` with `pg` and `fs` drivers); a volume would bind to one service only
   and object storage is not available without new billing. Documented deviation from the brief's
   "object storage" preference; S3-compatible driver is a later option.
@@ -27,7 +27,7 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 
 | Package | Owns | Must not |
 |---|---|---|
-| `packages/core` | Zod schemas and types; prerequisite graph; readiness rules; evidence states; scheduling engine; ICS; workload; grounding/citation validation; deterministic academic checks | import DB, Next, or provider SDKs |
+| `packages/core` | Zod schemas and types; prerequisite graph; readiness rules; evidence states; scheduling engine; ICS; workload; grounding/citation validation; deterministic academic checks; laboratories; programme routes and next steps; research-studio checks | import DB, Next, or provider SDKs |
 | `packages/db` | Drizzle schema, migrations, client, `BlobStore`, **services** (all academic state changes), job names/payload schemas | contain UI or prompts |
 | `packages/ai` | `ModelProvider` (Anthropic SDK, fixture), role contracts, prompt templates, structured output parsing, budget accounting, grounding glue | write to the DB directly (services do) |
 | `packages/content` | Content schemas, validator, seeder | be imported by the browser |
@@ -47,7 +47,11 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 `setPeerMembership`, `updateProfileSettings`, `saveProviderSetting`, `saveBudgetLimits`,
 `deletePersonaMemory`, `followProgramme`, `setParticipationStatus`, `proposeProgrammeRoute`,
 `applyProgrammeProposal`, `updateStudyPreferences`, `previewCourseLoad`, `createDeadline`,
-`withdrawDeadline`, `markDeadlinesMet`, `proposeRollingExtension`, `recordLabPrediction`. UI and model tools both call these; models never write. (`prepareUnit`
+`withdrawDeadline`, `markDeadlinesMet`, `proposeRollingExtension`, `recordLabPrediction`,
+`requestPredictAgain`, `followNewProgrammes`, `resolveProviderState`, `approvePaidUse`,
+`withdrawPaidUseApproval`, `planRun`, `recordProviderRun`, `resetOwnerPassword`, and the research
+studio's `createProject`, `setShelf`, `saveDraft`, `saveVersion`, `addProvenance`, `addArtifact`,
+`requestFeedback`, `requestOralDiscussion`, `holdOralDiscussion` and `projectReport`. UI and model tools both call these; models never write. (`prepareUnit`
 is reserved for the content pipeline; units are currently prepared in `content/` and validated.)
 
 ## Data model (areas → tables)
@@ -71,7 +75,16 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   `revision_item`, `notebook_entry`, `portfolio_artifact`.
 - **People/community**: `persona`, `peer_membership`, `society`, `discussion`, `discussion_turn`,
   `persona_memory`.
-- **Operations**: `job_record`, `provider_run`, `audit_event`, `export_record`, `app_setting`.
+- **Research studio**: `research_project` (owner, kind, question, shelf and leads, a demonstration
+  flag), `research_document` (proposal, methods and report drafts), `research_version`
+  (immutable numbered versions), `research_provenance`, `research_artifact` (a blob or a notebook
+  entry), `research_feedback` (scripted, live or blocked, with its checks and the provider run),
+  `research_oral_request`.
+- **Operations**: `job_record`, `provider_run` (per-attempt usage when a server-side fallback
+  ran, the worst-case estimate, and refused runs recorded as `blocked` or `budget_blocked`),
+  `audit_event`, `export_record`, `app_setting`. `provider_setting` holds the provider, the model,
+  the refusal-fallback choice and the owner's approval of paid use. A partial unique index allows
+  one `user` with the role `owner`.
 
 Invariants enforced in services and tests: grades reference exact submission/rubric/run
 versions; citations resolve to immutable `source_version` + `locator`; enrolments reference a
@@ -87,12 +100,23 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 - Grounding: evidence blocks are tagged `[E1]…[En]`; the model cites tags; the server maps tags to
   locator ids and drops unknown tags, flagging the sentence as uncited.
 - Labels: `{source-backed}`, `{derived}`, `{conjecture}`, `{needs-checking}` markers → stored labels.
-- Providers: `anthropic` (official SDK, `messages.stream` for prose, `messages.parse` +
-  `zodOutputFormat` for structured outputs, default model `claude-opus-5-5`, configurable per
-  role) and `fixture` (deterministic, keyed by role and scenario). Runtime defaults to fixture
-  until the owner configures a provider and budget.
-- Budget: per-run, daily and monthly caps; estimate before run; record actual usage per
-  `provider_run`; hard stop; pricing table carries date and source URL.
+- Providers: `anthropic` (official SDK 1.3, beta Messages API: `messages.stream` for prose,
+  `messages.create` with a Zod output format and the application's own validation for structured
+  outputs, an explicit effort per role, optional server-side refusal fallback) and `fixture`, the
+  scripted demo (deterministic, keyed by role and scenario). Supported models are an allow-list
+  (`packages/ai/src/models.ts`); the default is `claude-opus-5-5`.
+- Provider state (`packages/ai/src/state.ts`): `scripted`, `live` (a readable key, a supported
+  model and the owner's approval covering the model, the fallback choice and the limits) or
+  `blocked` with a stated reason. A blocked run is refused and recorded; nothing scripted
+  replaces it. Every stored reply carries the id of the run that produced it, which is how it is
+  labelled live or scripted afterwards.
+- Budget: per-run, daily and monthly limits, always hard and capped by fixed ceilings; before a
+  run its worst case (prompt, the whole output allowance, and a fallback attempt when enabled) is
+  checked against the role's cap and every limit; actual usage is recorded per attempt in
+  `provider_run`; the pricing table carries its date and source URL.
+- Assets: `checkAiAssets` reports whether the scripted responses load and which prompt versions
+  the build carries (counts and version names, never contents or paths); the health route and
+  the worker's start-up log show it.
 - Prompt-injection: retrieved text, uploads and persona messages are data; tools are allow-listed
   server functions; outbound fetches are host-allow-listed with SSRF guards.
 
@@ -108,7 +132,11 @@ heartbeats for ingestion, dead-letter queues. `job_record` mirrors state for the
 ## Security
 
 better-auth sessions (secure cookies, origin checks, rate limiting); owner bootstrap requires
-`OWNER_EMAIL` + `OWNER_BOOTSTRAP_CODE` and closes after the first account; every route handler
+`OWNER_EMAIL` + `OWNER_BOOTSTRAP_CODE` and closes after the first account, which a unique index
+guarantees even for concurrent submissions; the code is optional once the owner exists and can
+then be removed from the deployment. Without email delivery, the owner's password is recovered by
+an administrative command run in the worker's shell, never through the website; it revokes every
+session (`apps/worker/src/admin/reset-owner-password.ts`). Every route handler
 calls `requireSession`; files served only through authorized handlers; companion uses hashed
 device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); uploads validated
 (type, size, page count, decompression limits); secrets redacted from logs.
@@ -137,3 +165,9 @@ device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); upl
     hosts, and an import fetches only an exact verified PDF locator, without following redirects.
 11. `pnpm dev` runs Next's webpack development server, because the Turbopack development server
     reloads pages in a loop in this monorepo layout on the build machine.
+12. No silent fallback: a live model that cannot run is reported as blocked, and the scripted
+    demo is chosen explicitly and labelled wherever it speaks.
+13. Account recovery is an administrative command, not an email flow, because no mail provider
+    is configured; nothing on the website can reset a password.
+14. The research studio works only from published or open material, simulations and the learner's
+    own reasoning; it has no path for collecting data from people.

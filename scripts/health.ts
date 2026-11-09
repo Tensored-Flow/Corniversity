@@ -28,9 +28,10 @@ async function checkDatabase(): Promise<string> {
 
 async function checkHttp(url: string): Promise<string> {
   const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
-  const body = (await response.json().catch(() => ({}))) as { ok?: boolean };
+  const body = (await response.json().catch(() => ({}))) as { ok?: boolean; aiAssets?: { ok: boolean; scripted: string } };
   if (!response.ok || body.ok !== true) throw new Error(`HTTP ${response.status}`);
-  return "ok";
+  if (body.aiAssets && !body.aiAssets.ok) throw new Error(`AI assets incomplete (${body.aiAssets.scripted} scripted responses load)`);
+  return body.aiAssets ? `ok (${body.aiAssets.scripted} scripted responses load)` : "ok";
 }
 
 const checks: [string, () => Promise<string>][] = [
@@ -47,4 +48,5 @@ for (const [name, check] of checks) {
     console.log(`${name.padEnd(9)} FAILED: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
-process.exit(failed === 0 ? 0 : 1);
+// exitCode rather than exit(): exiting while fetch's sockets close crashes Node on Windows.
+process.exitCode = failed === 0 ? 0 : 1;

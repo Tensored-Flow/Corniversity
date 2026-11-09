@@ -33,11 +33,12 @@ const EnvSchema = z.object({
   BETTER_AUTH_URL: z.string().url(),
   BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
   OWNER_EMAIL: z.string().email(),
-  OWNER_BOOTSTRAP_CODE: z.string().min(8),
+  /** Needed only until the owner account exists; it can then be removed from the deployment. */
+  OWNER_BOOTSTRAP_CODE: z.string().min(8).optional(),
   AI_PROVIDER: z.enum(["fixture", "anthropic"]).default("fixture"),
   ANTHROPIC_API_KEY: z.string().optional(),
   AI_MODEL_DEFAULT: z.string().default("claude-opus-5-5"),
-  AI_BUDGET_PER_RUN_USD: z.coerce.number().positive().default(0.5),
+  AI_BUDGET_PER_RUN_USD: z.coerce.number().positive().default(1),
   AI_BUDGET_DAILY_USD: z.coerce.number().positive().default(3),
   AI_BUDGET_MONTHLY_USD: z.coerce.number().positive().default(40),
   BLOB_STORE: z.enum(["fs", "pg"]).default("fs"),
@@ -60,7 +61,7 @@ export function getEnv(): Env {
     const placeholders = ["change-me", "example.com"];
     for (const key of ["BETTER_AUTH_SECRET", "OWNER_EMAIL", "OWNER_BOOTSTRAP_CODE"] as const) {
       const value = parsed.data[key];
-      if (placeholders.some((p) => value.includes(p))) {
+      if (value && placeholders.some((p) => value.includes(p))) {
         throw new Error(`${key} still holds a placeholder value; refusing to start in production.`);
       }
     }

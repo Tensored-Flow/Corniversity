@@ -7,6 +7,8 @@ import { Badge, Button } from "@/components/ui";
 interface RenderedMessage {
   id: string;
   sender: "learner" | "persona" | "system";
+  /** What wrote a stored reply: a model's name, or "Scripted demo". */
+  producedBy: string | null;
   html: string;
   citations: { tag: string; label: string; locatorId?: string }[];
   labels: string[];
@@ -36,7 +38,9 @@ const LABEL_TEXT: Record<string, string> = {
 export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages, locators }: Props) {
   const router = useRouter();
   const [pending, setPending] = useState<string | null>(null);
+  const [pendingLabel, setPendingLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const scroller = useRef<HTMLDivElement>(null);
 
@@ -50,6 +54,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
     if (!message) return;
     setInput("");
     setError(null);
+    setNotice(null);
     setPending("");
     const response = await fetch("/api/tutor/turn", {
       method: "POST",
@@ -60,8 +65,14 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
       const body = await response.json().catch(() => ({}));
       setError(body.error ?? `The tutor could not reply (${response.status}).`);
       setPending(null);
+      // A refused run (provider blocked, or a limit reached) has already stored the message, so
+      // show it; anything else may not have, so the text goes back into the box.
+      if (response.status === 402 || response.status === 409) router.refresh();
+      else setInput(message);
       return;
     }
+    setPendingLabel(response.headers.get("x-provider-label"));
+    const warning = response.headers.get("x-budget-warning");
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let accumulated = "";
@@ -72,6 +83,8 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
       setPending(accumulated);
     }
     setPending(null);
+    setPendingLabel(null);
+    if (warning) setNotice(decodeURIComponent(warning));
     router.refresh();
   }
 
@@ -92,7 +105,9 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
               m.sender === "learner" ? "ml-6 border border-stone bg-paper" : "border border-stone bg-paper-3/60",
             ].join(" ")}
           >
-            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{m.sender === "learner" ? "You" : personaName}</p>
+            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+              {m.sender === "learner" ? "You" : `${personaName}${m.producedBy ? ` · ${m.producedBy}` : ""}`}
+            </p>
             <RenderedHtml html={m.html} className="text-sm" />
             {m.sender === "persona" && (m.labels.length || m.citations.length || m.uncited) ? (
               <div className="mt-2 flex flex-wrap items-center gap-1">
@@ -113,12 +128,20 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
         ))}
         {pending !== null ? (
           <div className="rounded-[var(--radius-panel)] border border-stone bg-paper-3/60 px-3 py-2 text-sm">
-            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">{personaName} · writing</p>
+            <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
+              {personaName}
+              {pendingLabel ? ` · ${pendingLabel}` : ""} · writing
+            </p>
             <p className="whitespace-pre-wrap text-ink-2">{pending || "…"}</p>
           </div>
         ) : null}
       </div>
-      {error ? <p className="text-sm text-rust">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="text-sm text-rust">
+          {error}
+        </p>
+      ) : null}
+      {notice ? <p className="text-xs text-ink-3">{notice}</p> : null}
       <form onSubmit={send} className="flex flex-col gap-2">
         <label htmlFor="tutor-input" className="sr-only">
           Message to the tutor
