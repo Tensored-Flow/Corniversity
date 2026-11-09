@@ -375,8 +375,41 @@ without `unsafe-eval`, HSTS). The owner account was created through the real joi
 - *Third run* (same build; database `corniversity_clean_20261109c`): 85 passed in 2.5 minutes,
   at both sizes, nothing skipped, including a new learner choosing the programme during
   orientation and every journey of spec 10.
+- *Fourth run* (rebuilt with the studio fix described below; database
+  `corniversity_clean_20261109d`): 85 passed in 2.4 minutes.
 
-The three rehearsal databases remain in the local cluster; they hold only test data.
+The four rehearsal databases remain in the local cluster; they hold only test data.
+
+**Release to Railway (9 November 2026).** Before releasing, `railway status` showed the linked
+project `corniversity` (environment `production`; services `web`, `worker` and `Postgres` with its
+volume), and the working tree was clean at commit `1b93eae`. The three new migrations only add
+columns, one unique index and seven tables; the production database held the seeded catalogue and
+no learner data, since no account exists there.
+
+- *Worker first* (`railway up --service worker --ci`, from `1b93eae`). Its log shows
+  `migrations ok (pgvector on)`, `content seeded: 1 course versions created, 85 unchanged` (the
+  NEU-220 change) and `AI assets: 7 of 7 scripted responses load` with the six prompt versions.
+  While the old web build still served, its health check stayed current.
+- *Then web* (`railway up --service web --ci`). The health route reports the schema current and
+  `aiAssets` with "7 of 7" and the six prompt versions.
+- *Checked on the live site without an account:* the production policy (`script-src` without
+  `unsafe-eval`; HSTS); robots.txt disallows every crawler; the arrival, tour, sign-in and join
+  pages load at 1440 and 390 px with no console error, page error or policy refusal; `/join` still
+  offers *Create the owner account*; `/studio`, `/programmes`, a block page, `/settings` and
+  `/campus` redirect to sign-in; the studio and tutor APIs answer 401; a sign-up with an email
+  that is not the owner's was refused with 403 and created nothing (the join page still offers the
+  owner account afterwards).
+- *One defect found there:* `/studio` redirected to sign-in without its return path. It was fixed
+  in `6a01e17` (web only), the 85 journeys passed again against the rebuilt production build on a
+  new database, and the web service was released again; `/studio` now redirects to
+  `/sign-in?next=%2Fstudio`.
+- *Not checked on the live site:* anything behind sign-in (the scripted tutors, the studio, the
+  laboratories), because the owner account does not exist; live tutoring (no key, no approval);
+  the recovery command, which would run in the worker's shell (this machine's approval controls
+  refuse to open one) and needs an owner.
+- *Running now:* the worker built from `1b93eae` and the web service from `6a01e17`; the
+  worker's code is the same in both commits.
+
 
 **Defects found and fixed during the milestone.**
 
@@ -395,6 +428,8 @@ The three rehearsal databases remain in the local cluster; they hold only test d
 - **Tuning laboratory.** The training-mean plot drew a zero at an orientation with no training
   trials, and bootstrap intervals stayed on screen after the data or split they described had
   changed.
+- **Studio sign-in return.** `/studio` was missing from the proxy's private paths, so signing in
+  from it landed on the campus (found on the live site; fixed and released).
 - **Studio copy.** "A computational modelling needs at least 1" now names a project and its
   verified sources.
 - **Journey helpers.** `takeCourse` read the course page's new workload preview as the

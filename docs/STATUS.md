@@ -40,7 +40,7 @@ to be created there, so the checks behind sign-in and the live-tutoring test rem
 | Backup and restore | yes | 3 integration tests restore a snapshot with a 1 MB original into a fresh database | `pnpm backup`, `pnpm restore <file> [--yes]` |
 | Health checks (web reports not-ready until the schema carries this build's migrations; asset counts and prompt versions) | yes | security spec (`/api/health`) | `pnpm health` |
 | Production build | pass on 9 Nov 2026 | the 85 journeys pass at both sizes against the production build on a new, empty database | `pnpm build` |
-| Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026 to the Railway project `corniversity` (PostgreSQL, web, worker) at https://web-production-4c692.up.railway.app; the Milestone 10 release is recorded in QA_REPORT.md, Deployment | public pages, health, assets and headers only; nothing behind sign-in | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved |
+| Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026; Milestone 10 released on 9 Nov 2026 to the Railway project `corniversity` (worker from `1b93eae`, web from `6a01e17`) at https://web-production-4c692.up.railway.app | live: health with the asset diagnostic, the worker's log, production headers, robots, the public pages at both sizes, private routes refusing anonymous requests, a non-owner sign-up refused; nothing behind sign-in (QA_REPORT.md, Milestone 10) | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved |
 
 ## Environment facts (verified 9 Nov 2026)
 

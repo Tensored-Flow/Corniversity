@@ -8,7 +8,9 @@ Where something has not been verified, this document says so.
 
 - **Status: deployed, waiting for your account.** The site runs at
   https://web-production-4c692.up.railway.app, in the Railway project `corniversity` (PostgreSQL,
-  a web service and a worker). Milestone 10's release is recorded in [QA_REPORT.md](QA_REPORT.md), Deployment. Until you create the owner account there, sign-up
+  a web service and a worker). Milestone 10 was released on 9 November 2026: the worker first, which applied the three new
+  migrations and seeded the one changed course version, then the web service
+  ([QA_REPORT.md](QA_REPORT.md), Milestone 10). Until you create the owner account there, sign-up
   accepts only the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md),
   item 1); then it closes for good.
 - **Live tutoring: blocked, not verified.** No model key is configured and no paid use is
@@ -23,7 +25,8 @@ Where something has not been verified, this document says so.
   the public pages, the health check and the logs were checked, because no account exists there.
 - **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, with no git remote; it
   has not been pushed anywhere ([USER_ACTIONS.md](USER_ACTIONS.md), item 6). Milestone 10 started
-  from commit `5faa665` and is committed after it (`git log` lists the commits).
+  from commit `5faa665`. It is commit `1b93eae`, followed by `6a01e17` (the studio's sign-in
+  return, found on the live site) and a last commit that records the release.
 
 ## Start it (two PowerShell windows in the project folder)
 
@@ -105,7 +108,7 @@ teaching material; it says nothing about what you have understood.
 | `pnpm content:validate` | 0 errors, 0 warnings |
 | Journeys, development server | the last full run passed 84 of 85 at 1440×900 and 390×844; the one failure, two scrolling tables a keyboard could not reach, was repaired and the accessibility sweep passed at both sizes |
 | Journeys, production build on an empty database | 85 of 85 at both sizes on a new database, after two earlier runs found an orientation defect (repaired) and four faults in the tests themselves |
-| Deployment | recorded in [QA_REPORT.md](QA_REPORT.md), Deployment |
+| Deployment | released on 9 Nov 2026 (worker from `1b93eae`, web from `6a01e17`); what was checked on the live site without an account is in [QA_REPORT.md](QA_REPORT.md), Milestone 10 |
 | Live model | none; live tutoring blocked |
 
 What each check does and does not prove, every failure and rerun, and the screenshots that were

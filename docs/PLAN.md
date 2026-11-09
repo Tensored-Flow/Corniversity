@@ -120,7 +120,7 @@ Gate: coherent build plan, data and privacy boundaries defined, known deployment
   pass at both viewports; an independent review of the two new units, with its findings repaired;
   the requirement classification in [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md).
 
-## Milestone 10 — Sections 13 to 20 and the live product — in_progress (release to Railway next)
+## Milestone 10 — Sections 13 to 20 and the live product — done (released 9 November 2026; the checks that need the owner's account or a provider key wait for them)
 
 Reconciled from commit `5faa665`; the requirement checklist is the last part of
 [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md). Order of work, each step with its check:
