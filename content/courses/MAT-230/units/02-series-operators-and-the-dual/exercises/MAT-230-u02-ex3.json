@@ -20,5 +20,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 15
+  "estimatedMinutes": 15,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "routine",
+      "basis": "Joins the unit's two strands, the summability criterion (Theorem 19) and the completeness of B(V,W) (Theorem 27), by locating the single step where completeness of W is used; explanation only, no computation."
+    },
+    "knownAmbiguities": []
+  }
 }

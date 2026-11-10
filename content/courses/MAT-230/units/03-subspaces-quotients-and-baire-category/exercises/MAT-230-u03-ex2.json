@@ -136,5 +136,14 @@
         "baire-needs-completeness": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Four linked steps: closedness of finite-dimensional subspaces, empty interior of proper subspaces, a countable cover and the application of Baire's theorem, then locating where completeness of V is used."
+    },
+    "transferNote": "The lesson applies Baire's theorem only inside the proof of uniform boundedness, where the closed sets are handed over. Compared with MAT-230-u03-ex1, which uses Proposition 30 to test one given subspace, the learner must here build a countable cover of the whole space from a hypothetical basis, prove each piece closed and nowhere dense, and turn Baire's theorem into a statement about the size of a basis.",
+    "knownAmbiguities": []
+  }
 }

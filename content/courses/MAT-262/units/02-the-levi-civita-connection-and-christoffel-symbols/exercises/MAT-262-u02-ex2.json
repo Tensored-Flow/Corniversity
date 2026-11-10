@@ -54,5 +54,13 @@
       "text": "We get the tangential connection D_X Y - (1/R^2) <X,Y> p on the sphere.",
       "expect": { "sphere-formula": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "A full proof of Theorem 6.20 organised around the fundamental theorem (connection axioms, torsion through a slice-chart bracket argument, compatibility) and the sphere formulas, drawing on the induced metric and the sphere of unit 1."
+    },
+    "knownAmbiguities": []
+  }
 }

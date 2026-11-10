@@ -202,5 +202,13 @@
         "p-left": true
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Breadth-first path lengths on a small grid, a move-by-move trace of the planner, an arithmetic argument about repeated Q-value updates with a tie rule, and one exploration probability."
+    },
+    "knownAmbiguities": []
+  }
 }

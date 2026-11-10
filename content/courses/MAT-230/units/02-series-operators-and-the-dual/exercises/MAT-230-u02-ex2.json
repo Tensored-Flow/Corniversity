@@ -168,5 +168,14 @@
         "norm-is-one": true
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Four short parts: an upper bound, a witness for sharpness, a description of the range and an unboundedness computation for the inverse; the learner must supply each witness."
+    },
+    "transferNote": "Compared with MAT-230-u02-ex1, which manipulates the definition of the operator norm abstractly, this exercise computes a norm exactly for a concrete operator whose kernel (the indicator of t ≤ x) is not continuous, so the lesson's bound for integral operators with continuous kernels does not apply as stated. It needs a matching lower bound from an explicit function, and it asks about the inverse of a bounded operator defined only on its range, where boundedness fails.",
+    "knownAmbiguities": []
+  }
 }

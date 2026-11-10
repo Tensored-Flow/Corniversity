@@ -21,5 +21,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 15
+  "estimatedMinutes": 15,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Explaining the two roles in the uniqueness proof and producing two explicit connections on Euclidean space, each failing exactly one of the two conditions, with a one-line check of each property."
+    },
+    "knownAmbiguities": []
+  }
 }

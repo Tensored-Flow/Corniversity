@@ -99,5 +99,13 @@
       "text": "We find g = dθ^2 + sin^2 θ dφ^2 on the chart domain 0 < θ < π.",
       "expect": { "metric-coefficients": false, "chart-domain-stated": true }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "A full chart analysis (injectivity, image, openness), the Gram matrix from the ambient inner product, a second chart at the pole and two arc lengths; long, but each step follows the lesson's graph example and Gram criterion."
+    },
+    "knownAmbiguities": []
+  }
 }

@@ -99,5 +99,16 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 60
+  "estimatedMinutes": 60,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Reading whole test episodes in three conditions against saved predictions, judging which observation discriminates (including that none does in one condition), explaining how the averaging window changes the evidence, and designing a discriminating variant."
+    },
+    "transferNote": "Compared with COG-250-u01-ex1, which traces each strategy in fixed situations by hand, this exercise asks which observation after a change tells the strategies apart and how much evidence that observation keeps once averaged over episodes. The learner must also recognise a condition (the shortcut) in which no clean discriminating observation exists, and design a variant in which one does.",
+    "knownAmbiguities": [
+      "Part 4 does not say whether a variant may change the agents (for example by giving the planner an exploration bonus) or only the world and what the agents are told; the rubric accepts a variant that adds a third strategy if it is identified as such."
+    ]
+  }
 }

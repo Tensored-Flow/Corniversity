@@ -182,5 +182,13 @@
         "no-equivalence-claim": true
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Two direct computations (a supremum and an integral of x^n) and one limit argument with the inequality taken in the failing direction; the family is given and the lesson poses the question."
+    },
+    "knownAmbiguities": []
+  }
 }

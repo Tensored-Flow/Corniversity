@@ -1,0 +1,39 @@
+{
+  "id": "CHE-101-u05-ex5",
+  "sequence": 5,
+  "title": "Data that the reversible model cannot fit",
+  "kind": "model_interpretation",
+  "promptMarkdown": "The data below are constructed for this exercise; they are not measurements. A solution was held at constant volume and temperature, starting from pure A ($[\\ce{A}]_0 = 1.0000$ M, $[\\ce{B}]_0 = 0$). Only A and B were monitored, and the investigator intended to describe the run with the reversible first-order model of exercise 3, $\\ce{A <=>[k_f][k_r] B}$.\n\n| $t$ / min | $[\\ce{A}]$ / M | $[\\ce{B}]$ / M |\n|---|---|---|\n| 0 | 1.0000 | 0.0000 |\n| 1 | 0.6987 | 0.2932 |\n| 2 | 0.5312 | 0.4419 |\n| 3 | 0.4359 | 0.5130 |\n| 4 | 0.3798 | 0.5427 |\n| 5 | 0.3449 | 0.5502 |\n| 6 | 0.3216 | 0.5460 |\n| 7 | 0.3048 | 0.5358 |\n| 8 | 0.2915 | 0.5226 |\n| 9 | 0.2803 | 0.5081 |\n| 10 | 0.2703 | 0.4930 |\n| 15 | 0.2288 | 0.4204 |\n| 20 | 0.1946 | 0.3576 |\n\n1. Compute $[\\ce{A}] + [\\ce{B}]$ at each time. What does the model of exercise 3 require of this sum, and what do the data show?\n2. Under that model, starting from pure A, can $[\\ce{B}]$ ever decrease, for any $k_f, k_r \\ge 0$? Argue from the model, not from a fit, and compare with the data.\n3. Show that if $[\\ce{A}]$ had the form $[\\ce{A}]_{eq} + ([\\ce{A}]_0 - [\\ce{A}]_{eq})e^{-t/\\tau}$, its decreases over successive one-minute intervals would form a geometric sequence. Test this on the data from 0 to 10 min.\n4. Suppose that one extra elementary first-order step carries material into a product C that was not monitored: either $\\ce{A -> C}$ or $\\ce{B -> C}$. For each candidate, write $d([\\ce{A}] + [\\ce{B}])/dt$. Use the data to decide which candidate is consistent, estimate its rate constant with units, and write the corrected rate equations together with the quantity they conserve. Name one further measurement that would test your diagnosis.\n5. Between 15 and 20 min the ratio $[\\ce{B}]/[\\ce{A}]$ hardly changes, and the investigator reports it as the equilibrium constant. Using your corrected equations, show that $[\\ce{B}]/[\\ce{A}] < k_f/k_r$ at every time at which $[\\ce{A}]$ is decreasing. Use the data at 15 and 20 min to explain why a steady ratio is not an equilibrium here, and say what the reported value is worth.",
+  "conceptIds": ["kinetic-view-of-equilibrium", "integrated-rate-laws", "reaction-mechanisms"],
+  "hintLadder": [
+    "In the model of exercise 3, add the two rate equations.",
+    "With $[\\ce{B}] = [\\ce{A}]_0 - [\\ce{A}]$ in that model, $[\\ce{B}]$ falls exactly when $[\\ce{A}]$ rises. Can $[\\ce{A}]$ rise on its way from $[\\ce{A}]_0$ towards $[\\ce{A}]_{eq}$?",
+    "Write the decrease of $[\\ce{A}]$ from minute $n$ to minute $n+1$ with the given form, then divide consecutive decreases.",
+    "Over one minute the loss of $[\\ce{A}] + [\\ce{B}]$ is roughly the extra rate constant times the mean concentration of the species that feeds the extra step. Divide each minute's loss by the mean $[\\ce{A}]$ and by the mean $[\\ce{B}]$ over that minute.",
+    "The equation for $d[\\ce{A}]/dt$ is unchanged in the corrected model. What does its sign say about $k_r[\\ce{B}]$ compared with $k_f[\\ce{A}]$?",
+    "Compare the factor by which $[\\ce{A}]$ falls between 15 and 20 min with the factor by which $[\\ce{B}]$ falls."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "mass-balance", "criterion": "[A] + [B] computed (1.0000 falling to 0.5522 M); the model requires a constant sum for every kf and kr; concluded that no choice of the two constants can fit and that a sink is missing.", "weight": 0.2, "levels": [{ "label": "met", "description": "Sums, requirement and conclusion." }, { "label": "partially met", "description": "Sums computed, conclusion not drawn or attributed to wrong constants." }, { "label": "not met", "description": "Mass balance not checked." }] },
+      { "id": "monotonicity", "criterion": "Under the model [B] = [A]0 − [A] with [A] non-increasing from pure A, so [B] never decreases for any kf, kr; the data's maximum of [B] near 5 min contradicts this.", "weight": 0.15, "levels": [{ "label": "met", "description": "General argument and the contradiction." }, { "label": "partially met", "description": "Contradiction noted without a general argument." }, { "label": "not met", "description": "Maximum ignored or called noise." }] },
+      { "id": "single-exponential", "criterion": "Consecutive decreases have the constant ratio e^{−1/τ} under the given form; the data's ratios rise from about 0.56 to about 0.89, so the approach is not a single exponential.", "weight": 0.15, "levels": [{ "label": "met", "description": "Derivation and test." }, { "label": "partially met", "description": "Test without derivation, or derivation without test." }, { "label": "not met", "description": "Missing." }] },
+      { "id": "diagnosis", "criterion": "Loss rates −k'[A] and −ks[B] written; loss divided by mean [B] is constant near 0.050 min⁻¹ while loss divided by mean [A] grows, so B → C with ks ≈ 0.050 min⁻¹; corrected equations with A + B + C conserved; measuring C proposed as the test.", "weight": 0.3, "levels": [{ "label": "met", "description": "Discrimination, estimate, equations, conserved quantity and test." }, { "label": "partially met", "description": "Right candidate with a thin argument, or equations or test missing." }, { "label": "not met", "description": "Wrong candidate, or the identification made from the late minutes alone." }] },
+      { "id": "ratio-not-k", "criterion": "From d[A]/dt = −kf[A] + kr[B] < 0, [B]/[A] < kf/kr; between 15 and 20 min both concentrations fall by the same factor (about 0.85), so the ratio is steady while neither concentration is; the reported value is only a lower bound on kf/kr and there is no equilibrium mixture of A and B.", "weight": 0.2, "levels": [{ "label": "met", "description": "Inequality, the same-factor observation and the verdict." }, { "label": "partially met", "description": "Verdict right with the inequality or the data argument missing." }, { "label": "not met", "description": "Accepts the ratio as K." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Three model-free tests on a table (mass balance, monotonicity, geometric decreases), a choice between two candidate side reactions from finite differences, and a short inequality; each step is elementary, but the learner must reason from the data against a model rather than within it."
+    },
+    "knownAmbiguities": []
+  }
+}

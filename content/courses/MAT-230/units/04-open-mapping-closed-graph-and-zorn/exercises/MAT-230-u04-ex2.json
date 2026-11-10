@@ -135,5 +135,13 @@
         "cgt-needs-banach": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Part 1 is a direct application of the closed graph theorem; part 2 needs a limit interchange under uniform convergence and a reason why the domain of differentiation with the sup norm is not complete."
+    },
+    "knownAmbiguities": []
+  }
 }

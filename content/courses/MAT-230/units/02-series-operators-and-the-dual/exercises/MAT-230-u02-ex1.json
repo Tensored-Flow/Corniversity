@@ -120,5 +120,13 @@
         "examples-only": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "routine",
+      "basis": "Unwinding the definition of the operator norm with homogeneity and linearity, then applying the basic inequality twice; no idea beyond the lesson."
+    },
+    "knownAmbiguities": []
+  }
 }

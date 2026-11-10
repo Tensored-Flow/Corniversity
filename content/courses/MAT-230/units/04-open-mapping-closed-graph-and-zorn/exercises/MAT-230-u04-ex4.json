@@ -1,0 +1,134 @@
+{
+  "id": "MAT-230-u04-ex4",
+  "sequence": 4,
+  "title": "One space, two norms: units 1 to 4 together",
+  "kind": "proof",
+  "promptMarkdown": "Let $C^1([0,1])$ be the space of continuously differentiable functions on $[0,1]$ (one-sided derivatives at the endpoints), with\n$$\\|f\\|_{C^1}=\\|f\\|_\\infty+\\|f'\\|_\\infty .$$\nThe exercise draws on each of units 1 to 4; cite each result by its number where you use it.\n\n1. Prove that $\\|\\cdot\\|_{C^1}$ is a norm and that $(C^1([0,1]),\\|\\cdot\\|_{C^1})$ is a Banach space.\n2. Show that $\\|f\\|_\\infty\\le\\|f\\|_{C^1}$ for every $f\\in C^1([0,1])$, and that the two norms are not equivalent on $C^1([0,1])$.\n3. Without constructing any Cauchy sequence, deduce from parts 1 and 2 and a theorem of unit 4 that $(C^1([0,1]),\\|\\cdot\\|_\\infty)$ is not complete. State the theorem (or the result of exercise 1) and check each of its hypotheses.\n4. Reach the same conclusion by a route from unit 3: show that $C^1([0,1])$ is a dense proper subspace of $(C([0,1]),\\|\\cdot\\|_\\infty)$ and conclude. You may quote the Weierstrass approximation theorem.\n5. Let $Df=f'$. Show that $D:(C^1([0,1]),\\|\\cdot\\|_{C^1})\\to(C([0,1]),\\|\\cdot\\|_\\infty)$ is bounded, find $\\|D\\|$, and decide whether the supremum in its definition is attained. Then, in at most three sentences, contrast this with $D$ on $C^1([0,1])$ carrying the sup norm (unit 2), and say what the exercise shows about the choice of norm and about completeness.",
+  "conceptIds": [
+    "banach-space",
+    "equivalent-norms",
+    "bounded-operator",
+    "open-mapping"
+  ],
+  "hintLadder": [
+    "A Cauchy sequence for $\\|\\cdot\\|_{C^1}$ gives two sequences that are Cauchy for the sup norm. Which theorem of unit 1 supplies their limits, and in which space?",
+    "To show that the limit of the functions is differentiable, write each $f_n$ through the fundamental theorem of calculus from the point $0$, then let $n\\to\\infty$ in that identity.",
+    "For part 2, look for functions with sup norm 1 whose derivatives grow without bound; unit 1 has such a family.",
+    "For part 3, assume the sup norm were complete on $C^1([0,1])$ and look at the identity map from $(C^1([0,1]),\\|\\cdot\\|_{C^1})$ to $(C^1([0,1]),\\|\\cdot\\|_\\infty)$.",
+    "For part 4, which familiar subspace of $C^1([0,1])$ is dense in $C([0,1])$, and which continuous function on $[0,1]$ has a corner?",
+    "For part 5, compare $\\|Df\\|_\\infty$ with $\\|f\\|_{C^1}$ term by term. When could the two be equal?"
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "banach",
+        "criterion": "The norm axioms are checked; a ‖·‖_{C¹}-Cauchy sequence gives uniformly convergent f_n → f and f_n' → h (Theorem 16); f ∈ C¹ with f' = h via the fundamental theorem of calculus and the uniform estimate on the integrals; convergence in ‖·‖_{C¹} is shown.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three steps of the completeness template, with the limit interchange justified."
+          },
+          {
+            "label": "partially met",
+            "description": "Structure right, but f' = h asserted without justification or convergence in the C¹ norm omitted."
+          },
+          {
+            "label": "not met",
+            "description": "Completeness asserted, or derived from completeness of C([0,1]) alone."
+          }
+        ]
+      },
+      {
+        "id": "not-equivalent",
+        "criterion": "‖f‖_∞ ≤ ‖f‖_{C¹} noted; a family such as x^n with ‖x^n‖_{C¹} = n + 1 and ‖x^n‖_∞ = 1 shows that no constant bounds ‖·‖_{C¹} by ‖·‖_∞.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Inequality and an explicit family with the limit argument."
+          },
+          {
+            "label": "partially met",
+            "description": "Family given without the norms computed, or the failing direction muddled."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or claims equivalence."
+          }
+        ]
+      },
+      {
+        "id": "bounded-inverse",
+        "criterion": "Assuming the sup norm complete, the identity from (C¹, ‖·‖_{C¹}) to (C¹, ‖·‖_∞) is a bounded linear bijection between Banach spaces, so its inverse is bounded by the bounded inverse theorem (or exercise 1), contradicting part 2; both completeness hypotheses and the direction of the identity are checked.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Contradiction argued with every hypothesis checked."
+          },
+          {
+            "label": "partially met",
+            "description": "Theorem invoked without checking both completeness hypotheses, or identity taken in the wrong direction."
+          },
+          {
+            "label": "not met",
+            "description": "Missing, or a Cauchy sequence constructed instead."
+          }
+        ]
+      },
+      {
+        "id": "dense-proper",
+        "criterion": "Polynomials lie in C¹([0,1]) and are dense by Weierstrass, so C¹([0,1]) is dense; a continuous function that is not C¹ shows it is proper; Proposition 30 with Theorem 16 gives non-completeness.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Density, properness and Proposition 30 all used correctly."
+          },
+          {
+            "label": "partially met",
+            "description": "One of the three missing or unjustified."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "operator-norm",
+        "criterion": "‖D‖ ≤ 1 from ‖f'‖_∞ ≤ ‖f‖_{C¹}; a sequence with ratio tending to 1 gives ‖D‖ = 1; non-attainment argued (equality would force ‖f‖_∞ = 0); D on the sup norm shown or cited as unbounded; the conclusion relates boundedness to the norm on the domain and completeness to the pair of space and norm.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Norm, non-attainment, contrast and conclusion."
+          },
+          {
+            "label": "partially met",
+            "description": "Norm found but attainment or the contrast missing."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or claims the norm is attained."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Five parts drawing on all four units: a completeness proof by the unit 1 template, a norm comparison, an indirect argument through the bounded inverse theorem, a direct one through density and Proposition 30, and an operator norm that is not attained."
+    },
+    "knownAmbiguities": []
+  }
+}

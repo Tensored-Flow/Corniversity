@@ -23,5 +23,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 25
+  "estimatedMinutes": 25,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "routine",
+      "basis": "The lesson sketches the Zorn argument; the exercise asks for it in full (the partial order, upper bounds for chains, why a maximal element spans) and for a short paragraph linking it to unit 3's result on countable bases."
+    },
+    "knownAmbiguities": []
+  }
 }

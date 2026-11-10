@@ -56,5 +56,13 @@
       "text": "With [NO] = 0.1 the rate is 1.8e-4; with n=1 and n=2 and n=3 the law k[NO]^2[Cl2] fits, so the mechanism works.",
       "expect": { "steady-state-denominator": false, "not-a-proof-by-cases": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "The lesson works the pre-equilibrium and steady-state derivations for the NO + O2 mechanism; this mechanism is structurally similar, so the learner redoes that reasoning with the factor of 2 handled and the limits stated as inequalities."
+    },
+    "knownAmbiguities": []
+  }
 }

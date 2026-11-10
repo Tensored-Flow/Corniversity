@@ -20,5 +20,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 15
+  "estimatedMinutes": 15,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "routine",
+      "basis": "A short explanation of one idea (approximation schemes produce Cauchy sequences whose limits must lie in the space) and one example, which exercise 2 or the rationals can supply."
+    },
+    "knownAmbiguities": []
+  }
 }

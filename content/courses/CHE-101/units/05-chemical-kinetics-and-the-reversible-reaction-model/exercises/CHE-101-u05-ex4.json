@@ -1,0 +1,70 @@
+{
+  "id": "CHE-101-u05-ex4",
+  "sequence": 4,
+  "title": "Two channels from one reactant",
+  "kind": "calculation",
+  "promptMarkdown": "The figures in this exercise are constructed for it; they are not measurements.\n\nIn a well-mixed solution at constant volume and 298 K, a compound A is consumed by two elementary first-order steps that run side by side:\n$$\\ce{A ->[k_1] B}, \\qquad \\ce{A ->[k_2] C}.$$\nNeither step is reversible and no other reaction occurs. Initially $[\\ce{A}]_0 = 0.200$ M and $[\\ce{B}]_0 = [\\ce{C}]_0 = 0$.\n\n1. Write the rate equations for $[\\ce{A}]$, $[\\ce{B}]$ and $[\\ce{C}]$, and show that $[\\ce{A}] + [\\ce{B}] + [\\ce{C}] = [\\ce{A}]_0$ at all times.\n2. Solve for $[\\ce{A}](t)$, $[\\ce{B}](t)$ and $[\\ce{C}](t)$. Show that $[\\ce{B}]/[\\ce{C}]$ takes the same value at every $t > 0$, and identify it.\n3. The half-life of A is 115.5 s, and once A has been used up $[\\ce{B}] = 0.150$ M and $[\\ce{C}] = 0.050$ M. Check these figures against part 1, then find $k_1$ and $k_2$ with units.\n4. A student who monitored only $[\\ce{A}]$ plotted $\\ln[\\ce{A}]$ against $t$ and reported the magnitude of the slope as the rate constant of $\\ce{A -> B}$. What did the student actually measure? Could any record of $[\\ce{A}]$ alone, at any times, separate $k_1$ from $k_2$? What must be measured instead?\n5. Suppose $E_{a,1} - E_{a,2} = 10.0$ kJ mol⁻¹ and the pre-exponential factors do not depend on temperature. Find $k_1/k_2$ at 318 K and the final $[\\ce{B}]$ and $[\\ce{C}]$ of a run at 318 K with the same $[\\ce{A}]_0$. Say in one sentence which channel heating favours, and why.",
+  "conceptIds": ["integrated-rate-laws", "reaction-mechanisms", "arrhenius-temperature-dependence"],
+  "hintLadder": [
+    "Add the three rate equations. What is the time derivative of the sum?",
+    "The equation for $[\\ce{A}]$ involves $[\\ce{A}]$ alone: solve it first, then integrate the equations for $[\\ce{B}]$ and $[\\ce{C}]$ with the $[\\ce{A}](t)$ you found.",
+    "At every instant $d[\\ce{B}]/dt$ and $d[\\ce{C}]/dt$ are both proportional to $[\\ce{A}]$. What does their ratio tell you?",
+    "The half-life of A fixes one combination of $k_1$ and $k_2$; the final amounts of the products fix another.",
+    "Write $k_1/k_2$ from the Arrhenius equation for each step at each temperature; the pre-exponential factors cancel when you divide the ratio at 318 K by the ratio at 298 K."
+  ],
+  "deterministicChecks": [
+    {
+      "id": "ratio-318",
+      "kind": "numeric_value",
+      "description": "k₁/k₂ ≈ 3.87 at 318 K",
+      "params": { "expected": 3.867, "tolerance": 0.03 }
+    },
+    {
+      "id": "final-b-318",
+      "kind": "numeric_value",
+      "description": "final [B] ≈ 0.159 M at 318 K",
+      "params": { "expected": 0.1589, "tolerance": 0.002 }
+    },
+    {
+      "id": "final-c-318",
+      "kind": "numeric_value",
+      "description": "final [C] ≈ 0.041 M at 318 K",
+      "params": { "expected": 0.0411, "tolerance": 0.002 }
+    }
+  ],
+  "checkExamples": [
+    {
+      "label": "correct temperature step",
+      "text": "At 318 K, k1/k2 = 3 x exp((10000/8.314)(1/298 - 1/318)) = 3 x 1.289 = 3.87, so the final [B] = 0.200 x 3.87/4.87 = 0.159 M and [C] = 0.041 M. Heating favours the channel with the larger activation energy, A -> B.",
+      "expect": { "ratio-318": true, "final-b-318": true, "final-c-318": true }
+    },
+    {
+      "label": "ratio left at its 298 K value",
+      "text": "Both channels speed up by the same factor, so k1/k2 stays 3.00 and the final concentrations are again [B] = 0.150 M and [C] = 0.050 M.",
+      "expect": { "ratio-318": false, "final-b-318": false, "final-c-318": false }
+    }
+  ],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      { "id": "mass-balance", "criterion": "d[A]/dt = −(k1 + k2)[A], d[B]/dt = k1[A], d[C]/dt = k2[A]; the sum of the three derivatives is zero, so [A] + [B] + [C] = [A]0.", "weight": 0.15, "levels": [{ "label": "met", "description": "Equations and conservation derived." }, { "label": "partially met", "description": "Equations right, conservation asserted." }, { "label": "not met", "description": "Wrong rate equations." }] },
+      { "id": "solution", "criterion": "[A] = [A]0 e^{−(k1+k2)t}; [B] = k1[A]0(1 − e^{−(k1+k2)t})/(k1 + k2) and the analogue for C; [B]/[C] = k1/k2 at every t > 0.", "weight": 0.25, "levels": [{ "label": "met", "description": "All three solved and the constant ratio identified." }, { "label": "partially met", "description": "[A] right, a product with the wrong exponent or prefactor." }, { "label": "not met", "description": "Wrong." }] },
+      { "id": "identification", "criterion": "Data checked against the mass balance (0.150 + 0.050 = 0.200 M); k1 + k2 = ln 2/115.5 s = 6.00 × 10⁻³ s⁻¹; k1/k2 = 3.00; k1 = 4.50 × 10⁻³ s⁻¹ and k2 = 1.50 × 10⁻³ s⁻¹.", "weight": 0.25, "levels": [{ "label": "met", "description": "Check, both constants and units." }, { "label": "partially met", "description": "Constants right without the mass-balance check, or units missing." }, { "label": "not met", "description": "ln 2/t½ taken as k1, or wrong." }] },
+      { "id": "what-a-shows", "criterion": "The slope gives k1 + k2, not k1; [A](t) depends on the constants only through their sum, so no record of [A] alone separates them; a product measurement (the ratio [B]/[C] or the yield of one product) is needed.", "weight": 0.15, "levels": [{ "label": "met", "description": "All three points." }, { "label": "partially met", "description": "Sum identified, the impossibility or the remedy missing." }, { "label": "not met", "description": "Accepts the student's report." }] },
+      { "id": "temperature", "criterion": "Ratio factor exp[(Ea,1 − Ea,2)/R × (1/298 − 1/318)] = 1.29; k1/k2 = 3.87 at 318 K; final [B] = 0.159 M and [C] = 0.041 M; heating favours the higher-barrier channel A → B because its rate constant is the more sensitive to temperature.", "weight": 0.2, "levels": [{ "label": "met", "description": "Numbers and reason." }, { "label": "partially met", "description": "Direction and reason right, a numerical slip (for example kJ with R in J)." }, { "label": "not met", "description": "Heating said to favour the lower-barrier channel, or missing." }] }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Two first-order integrations and a ratio, a mass-balance check and one two-temperature Arrhenius step; the new idea is which observation identifies which constant, not any new technique."
+    },
+    "transferNote": "Compared with CHE-101-u05-ex1 (part B), where a single first-order process is fixed once k is known, two channels now drain one reactant: the decay of A measures only k1 + k2, the individual constants can be identified only through the products, whose ratio is constant in time, and that ratio moves with temperature through the difference of activation energies. The integration is familiar; the question of what each observation can identify is new.",
+    "knownAmbiguities": []
+  }
+}

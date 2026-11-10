@@ -135,5 +135,13 @@
         "no-dense-complete-claim": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Part 1 reproduces Proposition 30 from the lesson; parts 2 and 3 quote Weierstrass, name a continuous function that is not a polynomial, and give an explicit Cauchy sequence of polynomials with its limit."
+    },
+    "knownAmbiguities": []
+  }
 }

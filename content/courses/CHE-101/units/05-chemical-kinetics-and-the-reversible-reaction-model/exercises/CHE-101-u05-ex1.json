@@ -66,5 +66,13 @@
       "text": "From the equation the reaction is second order in NO and first order in Cl2... actually I get first order in NO from runs 1 and 2 since the rate increases. k = 0.018. t1/2 = 400 s.",
       "expect": { "orders-wrong": false, "rate-constant": false, "half-life": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "routine",
+      "basis": "Ratios of initial rates for two orders, k with units from one run, and two first-order times from ln 2/k and ln 10/k; the lesson works the same steps on other numbers."
+    },
+    "knownAmbiguities": []
+  }
 }

@@ -21,5 +21,14 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 15
+  "estimatedMinutes": 15,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "standard",
+      "basis": "No computation; the learner sorts the unit's constructions by whether they use only invertibility or positive definiteness, and gives one reason for each failure."
+    },
+    "transferNote": "Compared with MAT-262-u01-ex2, where every statement is used under positive definiteness, the learner carries the unit's constructions into a setting the unit never computes in, an indefinite metric of signature (−,+,+,+), and decides for each whether it needs invertibility only or positivity. The degenerate convex combination and the collapse of the distance function are new phenomena, not new numbers.",
+    "knownAmbiguities": []
+  }
 }

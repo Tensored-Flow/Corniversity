@@ -99,5 +99,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 50
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "standard",
+      "basis": "A critique of 400 to 600 words of an invented report that draws the unit's ideas together (dilution by averaging, discriminating observations, a result versus a mechanism) with the information contract and the two-step task."
+    },
+    "knownAmbiguities": []
+  }
 }

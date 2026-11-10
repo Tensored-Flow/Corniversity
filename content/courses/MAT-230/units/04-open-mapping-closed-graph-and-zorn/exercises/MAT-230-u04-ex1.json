@@ -138,5 +138,13 @@
         "inverse-needs-banach": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Recognising the identity map as a bounded bijection and checking the two completeness hypotheses of the bounded inverse theorem; the counterexample in part 3 is the pair of norms from unit 1."
+    },
+    "knownAmbiguities": []
+  }
 }

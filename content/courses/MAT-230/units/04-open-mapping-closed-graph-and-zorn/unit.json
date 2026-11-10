@@ -19,24 +19,24 @@
   ],
   "activities": [
     { "id": "u04-a1", "type": "reading", "title": "Lecture 4: open mapping, closed graph, Zorn", "instructions": "Read the lesson with lecture 4 of the notes. The proof of the open mapping theorem has two halves; identify which half uses Baire and which uses completeness of the domain directly.", "estimatedMinutes": 75, "sourceLocatorIds": ["fa21-l4-thm37", "fa21-l4-cor38", "fa21-l4-prop39", "fa21-l4-thm40", "fa21-l4-def42", "fa21-l4-prop45", "fa21-l4-def46"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u04-a2", "type": "proof_workshop", "title": "Tutorial: consequences of the open mapping theorem", "instructions": "Attempt exercises 1 and 2. In each, write the hypothesis of the theorem you invoke in full before invoking it.", "estimatedMinutes": 80, "sourceLocatorIds": ["fa21-l4-cor38", "fa21-l4-thm40"], "exerciseIds": ["MAT-230-u04-ex1", "MAT-230-u04-ex2"], "sessionKind": "tutorial" },
+    { "id": "u04-a2", "type": "proof_workshop", "title": "Tutorial: consequences of the open mapping theorem", "instructions": "Attempt exercises 1 and 2. In each, write the hypothesis of the theorem you invoke in full before invoking it. Exercise 4 draws units 1 to 4 together and serves as their revision exercise; attempt it last, after exercise 3, and cite each result by its number.", "estimatedMinutes": 140, "sourceLocatorIds": ["fa21-l4-cor38", "fa21-l4-thm40"], "exerciseIds": ["MAT-230-u04-ex1", "MAT-230-u04-ex2", "MAT-230-u04-ex4"], "sessionKind": "tutorial" },
     { "id": "u04-a3", "type": "explain_back", "title": "Explain: Zorn's lemma and Hamel bases", "instructions": "Exercise 3, written without the notes.", "estimatedMinutes": 20, "sourceLocatorIds": ["fa21-l4-prop45", "fa21-l4-def46"], "exerciseIds": ["MAT-230-u04-ex3"], "sessionKind": "oral" }
   ],
-  "exerciseIds": ["MAT-230-u04-ex1", "MAT-230-u04-ex2", "MAT-230-u04-ex3"],
+  "exerciseIds": ["MAT-230-u04-ex1", "MAT-230-u04-ex2", "MAT-230-u04-ex3", "MAT-230-u04-ex4"],
   "exitCheck": { "description": "Exercise 1 accepted: the bounded inverse theorem applied to the identity map to show two complete comparable norms are equivalent, with both completeness hypotheses stated.", "exerciseId": "MAT-230-u04-ex1" },
   "commonMisconceptions": [
     { "claim": "A bijective bounded operator always has a bounded inverse.", "correction": "Only between Banach spaces. The Volterra operator onto its range (with the sup norm) is bijective and bounded, but the range is not complete and the inverse (differentiation) is unbounded.", "correctionLocatorIds": ["fa21-l4-cor38"] },
     { "claim": "The closed graph theorem says a continuous operator has a closed graph.", "correction": "That direction is elementary. The content of the theorem is the converse: between Banach spaces, a linear operator with closed graph is bounded.", "correctionLocatorIds": ["fa21-l4-thm40"] },
     { "claim": "Zorn's lemma can be proved from the other axioms.", "correction": "It is equivalent to the axiom of choice; the notes take it as an axiom. Its use here (Hamel bases, Hahn–Banach) is legitimate but non-constructive.", "correctionLocatorIds": ["fa21-l4-prop45"] }
   ],
-  "estimatedMinutes": 245,
+  "estimatedMinutes": 305,
   "status": "ready",
   "checks": [
     { "name": "source-locators", "result": "pass", "evidence": "All seven locators opened 2026-10-30; page indices verified against text extracted from MIT18_102s21_lec4.pdf (5 pages, no printed labels): Theorem 37 on PDF page 1, Corollary 38 and Proposition 39 on page 2, Theorem 40 on page 3, Definitions 42–46 on page 4." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: equivalence of two complete comparable norms via the bounded inverse theorem applied to the identity; boundedness from a closed graph on C([0,1]); the non-completeness of the Volterra range explaining the unbounded inverse; the Zorn argument for Hamel bases (chains of independent sets have the union as upper bound; a maximal independent set spans)." },
+    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: equivalence of two complete comparable norms via the bounded inverse theorem applied to the identity; boundedness from a closed graph on C([0,1]); the non-completeness of the Volterra range explaining the unbounded inverse; the Zorn argument for Hamel bases (chains of independent sets have the union as upper bound; a maximal independent set spans). Exercise 4 re-derived: completeness of C¹([0,1]) under ‖f‖_∞ + ‖f'‖_∞ (uniform limits of f_n and f_n' with f(x) = f(0) + ∫₀ˣ h); ‖x^n‖_{C¹} = n + 1 against ‖x^n‖_∞ = 1; incompleteness of the sup norm on C¹([0,1]) both through the bounded inverse theorem and through density of polynomials with Proposition 30; ‖D‖ = 1 from x^n/(n + 1), not attained because equality forces ‖f‖_∞ = 0." },
     { "name": "answer-leakage", "result": "pass", "evidence": "Reference reasoning only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "About 4 hours including preparation; units 3 and 4 form the second teaching week." }
+    { "name": "workload-sanity", "result": "pass", "evidence": "About 4 hours including preparation; units 3 and 4 form the second teaching week. Exercise 4, the revision exercise for units 1 to 4, adds 60 minutes to the tutorial, about 5 hours in all." }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-230-u04-ex1.reference-solution.md", "MAT-230-u04-ex2.reference-solution.md", "MAT-230-u04-ex3.grading-notes.md"]
+  "instructorFiles": ["MAT-230-u04-ex1.reference-solution.md", "MAT-230-u04-ex2.reference-solution.md", "MAT-230-u04-ex3.grading-notes.md", "MAT-230-u04-ex4.reference-solution.md"]
 }

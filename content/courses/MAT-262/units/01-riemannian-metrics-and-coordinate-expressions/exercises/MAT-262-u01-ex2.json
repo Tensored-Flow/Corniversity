@@ -72,5 +72,13 @@
       "text": "In polar coordinates the metric is dr^2 + dθ^2 since the coordinates are orthogonal.",
       "expect": { "polar-metric": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "The transformation law from the chain rule and bilinearity, its determinant and congruence consequences, and the polar computation; the lesson states the results and the exercise asks for the proofs and the reading of the polar case."
+    },
+    "knownAmbiguities": []
+  }
 }

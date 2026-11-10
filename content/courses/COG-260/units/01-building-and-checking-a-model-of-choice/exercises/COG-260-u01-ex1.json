@@ -185,5 +185,13 @@
         "p-choose-1": true
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Hand calculations with stated models: one likelihood derivation with a boundary case, three Rescorla-Wagner updates, one softmax probability and two BIC values, then a two-sentence interpretation."
+    },
+    "knownAmbiguities": []
+  }
 }

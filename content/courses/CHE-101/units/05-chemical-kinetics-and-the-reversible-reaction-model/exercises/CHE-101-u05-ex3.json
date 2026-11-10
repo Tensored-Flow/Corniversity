@@ -82,5 +82,15 @@
       "text": "At equilibrium the reaction has stopped and both rates are zero, so A_eq = 0.5 M and K = 1. This is a first-order reaction.",
       "expect": { "reaction-continues": false, "a-equilibrium": false, "assumptions-stated": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "The unit's exit check: a linear system reduced by its conservation law and solved, K = kf/kr linked to the equilibrium of unit 4, ratio separated from sum under parameter changes, observations that distinguish equilibrium from no reaction, and the model's assumptions stated."
+    },
+    "knownAmbiguities": [
+      "Part 5 asks for observations 'available in the virtual model' without saying whether that means runnable in the simulator or derivable from the model's equations; the reference also accepts observations such as tagging the A molecules, which the simulator cannot run."
+    ]
+  }
 }

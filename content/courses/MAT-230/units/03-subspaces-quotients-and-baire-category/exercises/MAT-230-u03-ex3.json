@@ -107,5 +107,13 @@
         "norm-n": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "routine",
+      "basis": "The functionals are given: pointwise boundedness follows from finite support, the norm from testing on e_n, and the explanation locates completeness in a proof read in the lesson."
+    },
+    "knownAmbiguities": []
+  }
 }

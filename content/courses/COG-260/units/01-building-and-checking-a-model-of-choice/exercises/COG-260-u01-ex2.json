@@ -101,5 +101,15 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 60
+  "estimatedMinutes": 60,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Four laboratory tasks whose centre is where the loop fails: model recovery in the ambiguous design, a held-out comparison near chance and a split that leaks. The learner reads each result against its design and contract, writes one contract unaided and reports an inconclusive result as the finding."
+    },
+    "knownAmbiguities": [
+      "Part 1 asks for 'the setting where recovery is worst' without saying for which parameter or by which measure; the laboratory reports a bias for alpha and for beta at each setting, and the reference reads 'worst' as the largest error in beta."
+    ]
+  }
 }

@@ -83,5 +83,13 @@
       "text": "All Christoffel symbols vanish because the metric is diagonal.",
       "expect": { "cot-symbol": false, "sin-cos-symbol": false }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Direct use of the Christoffel formula with a diagonal metric, two checks, and two short arguments (Theorem 6.20 or non-tensoriality for the pole; scaling in the Koszul formula); the lesson works the same computation in polar coordinates."
+    },
+    "knownAmbiguities": []
+  }
 }

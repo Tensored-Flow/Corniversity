@@ -118,5 +118,13 @@
     "referenceIsExhaustive": false
   },
   "origin": "original",
-  "estimatedMinutes": 90
+  "estimatedMinutes": 90,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "A report of 900 to 1,300 words that assembles every stage of the loop with its contracts, tests a design change predicted in advance and states the limits; it is the unit's exit check."
+    },
+    "knownAmbiguities": []
+  }
 }

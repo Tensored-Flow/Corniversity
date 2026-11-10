@@ -135,5 +135,13 @@
         "no-completeness-claim": false
       }
     }
-  ]
+  ],
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "The learner must construct the sequence, prove a Cauchy estimate and then show that no continuous limit exists, which uses continuity on both sides of the jump; three distinct steps, none of them given."
+    },
+    "knownAmbiguities": []
+  }
 }
