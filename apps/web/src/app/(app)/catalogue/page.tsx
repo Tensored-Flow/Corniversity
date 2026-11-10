@@ -49,6 +49,10 @@ export default async function CataloguePage({
           <Link href="/programmes" className="text-brass underline underline-offset-4">
             programme catalogue
           </Link>
+          . Something missing?{" "}
+          <Link href="/proposals" className="text-brass underline underline-offset-4">
+            Propose a subject or reading programme
+          </Link>
           .
         </p>
       </header>

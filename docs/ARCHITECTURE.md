@@ -92,6 +92,11 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   storyboard hash, and a film in the blob store only when it was recorded from the current
   storyboard; otherwise `film_stale` says why it is withheld). Films are recorded locally with
   `pnpm visuals:render <slug>` into `content/visuals/<slug>/render/` and seeded by the worker.
+- **Extension**: `curriculum_proposal` (a subject or reading programme proposed inside an existing
+  department, with reused concepts and prepared units, source leads and a decision per overlapping
+  course) and `curriculum_proposal_version` (every revision as it was). Publishing writes a course,
+  its department link and a version at readiness `proposed` in one transaction, with an id in the
+  department's prefix from 901; the seeder never touches such courses, since they are not in `content/`.
 - **Research studio**: `research_project` (owner, kind, question, shelf and leads, a demonstration
   flag), `research_document` (proposal, methods and report drafts), `research_version`
   (immutable numbered versions), `research_provenance`, `research_artifact` (a blob or a notebook

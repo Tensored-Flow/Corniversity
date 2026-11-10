@@ -27,6 +27,8 @@ const PAGES = [
   "/visuals/lif-membrane-potential",
   "/courses/NEU-220/prepare",
   "/bridges/metric-spaces",
+  "/operations",
+  "/proposals",
 ];
 
 test.describe("accessibility (axe)", () => {

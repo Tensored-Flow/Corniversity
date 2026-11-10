@@ -211,7 +211,7 @@ consent and retention choice, text fallback; visual explanations as checked stor
 deterministically, with captions and transcripts, and short original films rendered locally.
 Gate: voice and visual journeys; the rendered files exist and play; fixture versus live stated.
 
-### Milestone 16 (F) — Faculty, campus, extension, coordination (EXT-03 … EXT-06)
+### Milestone 16 (F) — Faculty, campus, extension, coordination (EXT-03 … EXT-06) — done
 
 Persona teaching styles and purpose-limited memory; at most two peers per discussion; Today, My
 studies and an operations view; the campus map's destinations; the subject/reading-programme

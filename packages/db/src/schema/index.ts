@@ -2,6 +2,7 @@ export * from "./_shared";
 export * from "./academic";
 export * from "./auth";
 export * from "./community";
+export * from "./extension";
 export * from "./learner";
 export * from "./learning";
 export * from "./library";

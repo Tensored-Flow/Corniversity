@@ -26,6 +26,11 @@ const PRIVATE_PAGES = [
   "/programmes",
   "/programmes/mind-and-computation/blocks/MBI-01",
   "/studio",
+  "/operations",
+  "/proposals",
+  "/visuals/lif-membrane-potential",
+  "/courses/NEU-220/prepare",
+  "/bridges/metric-spaces",
 ];
 const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/tutor/turn", { sessionId: "00000000-0000-4000-8000-000000000000", message: "x" }],
@@ -36,6 +41,8 @@ const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/companion/status", {}],
   ["/api/companion/upload", {}],
   ["/api/studio/artifacts", {}],
+  ["/api/tutor/context", { sessionId: "00000000-0000-4000-8000-000000000000", mode: "question" }],
+  ["/api/work-pages", {}],
 ];
 const PRIVATE_GETS = [
   "/api/library/assets/00000000-0000-4000-8000-000000000000/file",
@@ -45,6 +52,9 @@ const PRIVATE_GETS = [
   "/api/calendar/not-a-real-token.ics",
   "/api/studio/artifacts/00000000-0000-4000-8000-000000000000",
   "/api/studio/00000000-0000-4000-8000-000000000000/report",
+  "/api/work-pages/00000000-0000-4000-8000-000000000000",
+  "/api/visuals/lif-membrane-potential/film",
+  "/api/visuals/lif-membrane-potential/captions",
 ];
 
 test.describe("unauthenticated access", () => {

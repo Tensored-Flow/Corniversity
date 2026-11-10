@@ -35,6 +35,9 @@ export class CommunityError extends Error {
  * discussions that stay within material the learner has actually opened. Nothing is generated
  * while the learner is away; every turn is a response to a turn the learner just made.
  */
+/** A discussion has one faculty chair and at most this many classmates, so it stays a conversation the learner leads. */
+export const MAX_DISCUSSION_PEERS = 2;
+
 export async function listSocieties(db: DbOrTx): Promise<(SocietyRow & { chair: PersonaRow | null })[]> {
   const rows = await db
     .select({ society, chair: persona })
@@ -100,7 +103,7 @@ export async function socialLayerEnabled(db: DbOrTx, ownerId: string): Promise<b
 
 /**
  * Opens a bounded discussion. Office hours with faculty are always available; anything with AI
- * classmates needs the social layer on. Muted peers are never added. Released material is
+ * classmates needs the social layer on. Muted peers are never added, and at most two join. Released material is
  * fixed at opening so a discussion cannot drift into units opened later.
  */
 export async function openDiscussion(
@@ -120,6 +123,9 @@ export async function openDiscussion(
   if (!title) throw new CommunityError("invalid", "Give the discussion a title: the question or passage you want to talk about.");
   const social = await socialLayerEnabled(db, ownerId);
   const peers = (await listPeers(db, ownerId)).filter((p) => p.enabled && !p.muted && (input.peerPersonaIds ?? []).includes(p.persona.id));
+  if (peers.length > MAX_DISCUSSION_PEERS) {
+    throw new CommunityError("invalid", "A discussion takes at most two classmates, so that it stays a conversation you lead; choose two.");
+  }
   if (input.kind !== "office_hours" && !social && peers.length > 0) {
     throw new CommunityError(
       "social_layer_off",

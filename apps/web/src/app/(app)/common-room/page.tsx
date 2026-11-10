@@ -104,7 +104,7 @@ export default async function CommonRoomPage({ searchParams }: { searchParams: P
                       </Field>
                       {social && activePeers.length ? (
                         <fieldset>
-                          <legend className="text-sm font-medium text-ink">Classmates to invite (AI)</legend>
+                          <legend className="text-sm font-medium text-ink">Classmates to invite (AI; at most two)</legend>
                           <div className="mt-1 flex flex-wrap gap-3">
                             {activePeers.map((p) => (
                               <label key={p.persona.id} className="flex items-center gap-2 text-sm text-ink">

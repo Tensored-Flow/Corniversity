@@ -56,7 +56,13 @@ export default async function PreparePage({
           </ul>
         </Card>
       ) : null}
-      {outlined.length === 0 ? (
+      {detail.units.length === 0 ? (
+        <Card className="mt-5">
+          <p className="text-sm text-ink-2">
+            This course has no syllabus yet, so there is no outlined unit to draft. Its sources are still leads; a syllabus comes first.
+          </p>
+        </Card>
+      ) : outlined.length === 0 ? (
         <Card className="mt-5">
           <p className="text-sm text-ink-2">Every unit of this course is prepared; there is nothing to draft.</p>
         </Card>

@@ -41,6 +41,8 @@ export const config = {
     "/courses/:path*",
     "/sessions/:path*",
     "/visuals/:path*",
+    "/operations/:path*",
+    "/proposals/:path*",
     "/library/:path*",
     "/timetable/:path*",
     "/notebook/:path*",

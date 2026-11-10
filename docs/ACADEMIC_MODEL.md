@@ -132,6 +132,17 @@ offered only when checked, says whether a second reader has reviewed it, and, wh
 exercise's answer, stays closed until the learner has attempted that exercise or chosen to see
 its reasoning. Watching is never evidence of understanding.
 
+## Extending the catalogue
+
+The six departments stay authoritative. A new focused reading course, seminar, structured
+curriculum or cross-disciplinary programme starts as a proposal inside one of them, with its
+purpose, scope, depth, source leads, and the existing concepts and prepared units it reuses. Before
+publication the courses, units and concepts sharing its distinctive words are listed, and each
+overlapping course needs the owner's decision: reuse its units, or say why the proposal is
+distinct. Publishing lists a catalogue item at readiness "proposed" with its sources marked as
+leads and requested in the library; it enrols nobody, verifies no source and prepares no
+teaching. Every revision of a proposal is kept.
+
 ## Course preparation
 
 A learner may ask for a course to be prepared further. The request records their goal, depth,

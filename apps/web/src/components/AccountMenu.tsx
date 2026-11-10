@@ -13,10 +13,13 @@ export function AccountMenu({ name }: { name: string }) {
   return (
     <div className="flex items-center gap-3 text-sm">
       <span className="hidden text-ink-2 sm:inline">{name}</span>
-      <Link href="/settings" className="text-ink-2 hover:text-ink">
+      <Link href="/operations" className="whitespace-nowrap text-ink-2 hover:text-ink">
+        Operations
+      </Link>
+      <Link href="/settings" className="whitespace-nowrap text-ink-2 hover:text-ink">
         Settings
       </Link>
-      <button type="button" onClick={signOut} className="text-ink-2 hover:text-ink">
+      <button type="button" onClick={signOut} className="whitespace-nowrap text-ink-2 hover:text-ink">
         Sign out
       </button>
     </div>

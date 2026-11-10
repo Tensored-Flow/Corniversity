@@ -593,6 +593,13 @@ than the window once a tutor conversation was long, leaving the send button unre
 panel now has its own scroll and the conversation a height tied to the window. Dictation in
 automation uses a labelled stand-in for the browser's recogniser; real recognition is unverified.
 
+Operations, proposals and discussion bounds (Milestone 16): journey 14 at both viewports, the axe pass
+and the security journey over the new routes. Three defects were found before release: the
+operations page counted outlined units by a status that does not exist (it read 0 of 108; it now
+counts every unit that is not ready, and the journey requires a non-zero count); one write of the
+publication step had escaped its transaction; and three classmates could join one discussion,
+where the brief allows two.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
