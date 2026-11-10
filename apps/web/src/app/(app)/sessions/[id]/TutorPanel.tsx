@@ -69,6 +69,11 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
   const [preview, setPreview] = useState<Preview | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  // Text typed before the page finished loading is in the box but not yet in state; keep it.
+  useEffect(() => {
+    const typed = inputRef.current?.value;
+    if (typed) setInput((current) => current || typed);
+  }, []);
   const { selection, setSelection, helpRequest, voiceAllowed } = useWorkspace();
 
   useEffect(() => {

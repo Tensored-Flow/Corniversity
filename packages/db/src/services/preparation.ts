@@ -646,133 +646,144 @@ async function authorUnit(
  */
 export async function publishDraft(db: DbOrTx, ownerId: string, draftId: string): Promise<void> {
   if (!isUuid(draftId)) throw new PreparationError("Draft not found.");
-  const [draft] = await db
-    .select()
-    .from(unitDraft)
-    .where(and(eq(unitDraft.id, draftId), eq(unitDraft.ownerId, ownerId)))
-    .limit(1);
-  if (!draft) throw new PreparationError("Draft not found.");
-  if (draft.status !== "checked") throw new PreparationError("Only a draft that passed every automatic check can be published.");
-  const [unit] = await db.select().from(teachingUnit).where(eq(teachingUnit.id, draft.unitId)).limit(1);
-  if (!unit) throw new PreparationError("The unit no longer exists.");
-  const [active] = await db
-    .select()
-    .from(unitPublication)
-    .where(and(eq(unitPublication.unitId, unit.id), eq(unitPublication.active, true)))
-    .limit(1);
-  if (unit.status === "ready" && !active) throw new PreparationError("This unit is already prepared; a draft only fills an outlined unit.");
-  const existingExercises = await db.select({ id: unitExercise.id }).from(unitExercise).where(eq(unitExercise.unitId, unit.id));
-  const d = draft.draft;
-  const exerciseIds = d.exercises.map((_, i) => `${unit.id}-p${draft.version}-ex${i + 1}`);
-  for (const [i, e] of d.exercises.entries()) {
-    await db.insert(unitExercise).values({
-      id: exerciseIds[i]!,
-      unitId: unit.id,
-      sequence: 100 * draft.version + i + 1,
-      title: e.title,
-      kind: e.kind,
-      promptMarkdown: e.promptMarkdown,
-      conceptIds: unit.teachesConceptIds,
-      hintLadder: e.hintLadder,
-      rubric: {
-        version: 1,
-        criteria: e.criteria.map((c, j) => ({
-          id: `c${j + 1}`,
-          criterion: c.criterion,
-          weight: c.weight,
-          levels: [
-            { label: "not yet", description: "The criterion is not met." },
-            { label: "met", description: "The criterion is met." },
-          ],
-        })),
-        acceptAlternateApproaches: true,
-        referenceIsExhaustive: false,
-      },
-      rubricVersion: 1,
-      origin: "original",
-      attribution: `Drafted by the AI convenor and published by the owner (draft v${draft.version}).`,
-      estimatedMinutes: 30,
-      progression: {
-        stage: e.stage,
-        difficulty: { level: "standard", basis: "Assigned by the drafting model; not a measured difficulty." },
-        knownAmbiguities: [],
-      },
-    });
-    await db.insert(instructorArtifact).values({
-      unitId: unit.id,
-      exerciseId: exerciseIds[i]!,
-      kind: "reference_solution",
-      markdown: e.referenceSolution,
-      releasePolicy: "on_request_practice",
-    });
-  }
-  const activities = [
-    {
-      id: `p${draft.version}-read`,
-      type: "reading" as const,
-      title: `Lesson: ${unit.title}`,
-      instructions:
-        "Read the lesson with its sources. It was drafted by the AI convenor and published by you; mark anything that looks wrong as a question.",
-      estimatedMinutes: 45,
-      sourceLocatorIds: d.sourceLocatorIds,
-      exerciseIds: [],
-      sessionKind: "lecture" as const,
-    },
-    {
-      id: `p${draft.version}-tutorial`,
-      type: "problem" as const,
-      title: `Problems: ${unit.title}`,
-      instructions: "Work the exercises in order; the progression moves from familiar to unfamiliar.",
-      estimatedMinutes: 60,
-      sourceLocatorIds: d.sourceLocatorIds,
-      exerciseIds,
-      sessionKind: "tutorial" as const,
-    },
-  ];
-  await db
-    .update(teachingUnit)
-    .set({
-      status: "ready",
-      lessonMarkdown: d.lessonMarkdown,
-      objectives: d.objectives.map((o, i) => ({ id: `p-o${i + 1}`, description: o })),
-      activities,
-      misconceptions: d.misconceptions.map((m) => ({ ...m, correctionLocatorIds: [] })),
-      checks: [
-        ...draft.checks.map((c) => ({ name: c.name, result: c.result, evidence: c.detail })),
-        {
-          name: "owner-review",
-          result: "pass" as const,
-          evidence: `Published by the owner on ${new Date().toISOString().slice(0, 10)} after reading draft v${draft.version}; not independent academic verification.`,
+  // One transaction, starting with a conditional claim of the draft: a failure part-way leaves
+  // nothing behind, a second request for the same draft finds it no longer checked, and the unit
+  // row is locked so publications of two drafts for one unit happen one after the other.
+  await db.transaction(async (tx) => {
+    const [draft] = await tx
+      .update(unitDraft)
+      .set({ status: "published", decidedAt: new Date() })
+      .where(and(eq(unitDraft.id, draftId), eq(unitDraft.ownerId, ownerId), eq(unitDraft.status, "checked")))
+      .returning();
+    if (!draft) {
+      const [existing] = await tx
+        .select({ id: unitDraft.id })
+        .from(unitDraft)
+        .where(and(eq(unitDraft.id, draftId), eq(unitDraft.ownerId, ownerId)))
+        .limit(1);
+      throw new PreparationError(existing ? "Only a draft that passed every automatic check can be published." : "Draft not found.");
+    }
+    const [unit] = await tx.select().from(teachingUnit).where(eq(teachingUnit.id, draft.unitId)).for("update").limit(1);
+    if (!unit) throw new PreparationError("The unit no longer exists.");
+    const [active] = await tx
+      .select()
+      .from(unitPublication)
+      .where(and(eq(unitPublication.unitId, unit.id), eq(unitPublication.active, true)))
+      .limit(1);
+    if (unit.status === "ready" && !active)
+      throw new PreparationError("This unit is already prepared; a draft only fills an outlined unit.");
+    const existingExercises = await tx.select({ id: unitExercise.id }).from(unitExercise).where(eq(unitExercise.unitId, unit.id));
+    const d = draft.draft;
+    const exerciseIds = d.exercises.map((_, i) => `${unit.id}-p${draft.version}-ex${i + 1}`);
+    for (const [i, e] of d.exercises.entries()) {
+      await tx.insert(unitExercise).values({
+        id: exerciseIds[i]!,
+        unitId: unit.id,
+        sequence: 100 * draft.version + i + 1,
+        title: e.title,
+        kind: e.kind,
+        promptMarkdown: e.promptMarkdown,
+        conceptIds: unit.teachesConceptIds,
+        hintLadder: e.hintLadder,
+        rubric: {
+          version: 1,
+          criteria: e.criteria.map((c, j) => ({
+            id: `c${j + 1}`,
+            criterion: c.criterion,
+            weight: c.weight,
+            levels: [
+              { label: "not yet", description: "The criterion is not met." },
+              { label: "met", description: "The criterion is met." },
+            ],
+          })),
+          acceptAlternateApproaches: true,
+          referenceIsExhaustive: false,
         },
-      ],
-    })
-    .where(eq(teachingUnit.id, unit.id));
-  if (active) await db.update(unitPublication).set({ active: false }).where(eq(unitPublication.id, active.id));
-  await db.insert(unitPublication).values({
-    unitId: unit.id,
-    draftId: draft.id,
-    ownerId,
-    version: draft.version,
-    previous: { status: unit.status, lessonMarkdown: unit.lessonMarkdown, exerciseIds: existingExercises.map((x) => x.id) },
-  });
-  await db.update(unitDraft).set({ status: "published", decidedAt: new Date() }).where(eq(unitDraft.id, draft.id));
-  await db
-    .update(preparationStage)
-    .set({ status: "done", artifact: { draftId: draft.id, published: true }, finishedAt: new Date() })
-    .where(
-      and(
-        eq(preparationStage.requestId, draft.requestId),
-        eq(preparationStage.stageKey, "publication"),
-        eq(preparationStage.unitKey, unit.id),
-      ),
-    );
-  await db.insert(auditEvent).values({
-    ownerId,
-    actor: "learner",
-    action: "preparation:publish",
-    entity: "teaching_unit",
-    entityId: unit.id,
-    details: { draftId: draft.id, version: draft.version },
+        rubricVersion: 1,
+        origin: "original",
+        attribution: `Drafted by the AI convenor and published by the owner (draft v${draft.version}).`,
+        estimatedMinutes: 30,
+        progression: {
+          stage: e.stage,
+          difficulty: { level: "standard", basis: "Assigned by the drafting model; not a measured difficulty." },
+          knownAmbiguities: [],
+        },
+      });
+      await tx.insert(instructorArtifact).values({
+        unitId: unit.id,
+        exerciseId: exerciseIds[i]!,
+        kind: "reference_solution",
+        markdown: e.referenceSolution,
+        releasePolicy: "on_request_practice",
+      });
+    }
+    const activities = [
+      {
+        id: `p${draft.version}-read`,
+        type: "reading" as const,
+        title: `Lesson: ${unit.title}`,
+        instructions:
+          "Read the lesson with its sources. It was drafted by the AI convenor and published by you; mark anything that looks wrong as a question.",
+        estimatedMinutes: 45,
+        sourceLocatorIds: d.sourceLocatorIds,
+        exerciseIds: [],
+        sessionKind: "lecture" as const,
+      },
+      {
+        id: `p${draft.version}-tutorial`,
+        type: "problem" as const,
+        title: `Problems: ${unit.title}`,
+        instructions: "Work the exercises in order; the progression moves from familiar to unfamiliar.",
+        estimatedMinutes: 60,
+        sourceLocatorIds: d.sourceLocatorIds,
+        exerciseIds,
+        sessionKind: "tutorial" as const,
+      },
+    ];
+    await tx
+      .update(teachingUnit)
+      .set({
+        status: "ready",
+        lessonMarkdown: d.lessonMarkdown,
+        objectives: d.objectives.map((o, i) => ({ id: `p-o${i + 1}`, description: o })),
+        activities,
+        misconceptions: d.misconceptions.map((m) => ({ ...m, correctionLocatorIds: [] })),
+        checks: [
+          ...draft.checks.map((c) => ({ name: c.name, result: c.result, evidence: c.detail })),
+          {
+            name: "owner-review",
+            result: "pass" as const,
+            evidence: `Published by the owner on ${new Date().toISOString().slice(0, 10)} after reading draft v${draft.version}; not independent academic verification.`,
+          },
+        ],
+      })
+      .where(eq(teachingUnit.id, unit.id));
+    if (active) await tx.update(unitPublication).set({ active: false }).where(eq(unitPublication.id, active.id));
+    await tx.insert(unitPublication).values({
+      unitId: unit.id,
+      draftId: draft.id,
+      ownerId,
+      version: draft.version,
+      previous: { status: unit.status, lessonMarkdown: unit.lessonMarkdown, exerciseIds: existingExercises.map((x) => x.id) },
+    });
+    await tx
+      .update(preparationStage)
+      .set({ status: "done", artifact: { draftId: draft.id, published: true }, finishedAt: new Date() })
+      .where(
+        and(
+          eq(preparationStage.requestId, draft.requestId),
+          eq(preparationStage.stageKey, "publication"),
+          eq(preparationStage.unitKey, unit.id),
+        ),
+      );
+    await tx.insert(auditEvent).values({
+      ownerId,
+      actor: "learner",
+      action: "preparation:publish",
+      entity: "teaching_unit",
+      entityId: unit.id,
+      details: { draftId: draft.id, version: draft.version },
+    });
   });
 }
 

@@ -101,6 +101,13 @@ export function Workbench(props: Props) {
   const lastSent = useRef(props.initialDraft);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const area = useRef<HTMLTextAreaElement>(null);
+  // Text typed before the page finished loading is in the box but not yet in state; keep it
+  // (it then saves like any other edit). Runs once, on mount; later changes go through onChange.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only adoption of pre-hydration typing
+  useEffect(() => {
+    const typed = area.current?.value;
+    if (typed !== undefined && typed !== props.initialDraft) setDraft(typed);
+  }, []);
 
   // A newer revision from the server (a submission saved the text, or another tab saved) is
   // adopted when this editor holds no unsaved change; with unsaved changes, a save reports the

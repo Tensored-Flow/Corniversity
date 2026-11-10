@@ -19,6 +19,9 @@ const KINDS = Object.keys(KIND_LABEL) as NotebookKind[];
  * sources, with a standing shelf of questions not yet resolved. The database is the record;
  * exports under Records are derived from it.
  */
+/** How many entries one listing shows; older ones are reached by search or a filter. */
+const LIST_LIMIT = 100;
+
 export default async function NotebookPage({
   searchParams,
 }: {
@@ -32,7 +35,7 @@ export default async function NotebookPage({
   const [entries, questions, tags, counts, enrolments, readingNotes] = await Promise.all([
     params.q
       ? searchEntries(database, ownerId, params.q)
-      : listEntries(database, ownerId, { kind, tag: params.tag, courseId: params.course, limit: 100 }),
+      : listEntries(database, ownerId, { kind, tag: params.tag, courseId: params.course, limit: LIST_LIMIT }),
     questionsShelf(database, ownerId),
     listTags(database, ownerId),
     countEntries(database, ownerId),
@@ -56,6 +59,11 @@ export default async function NotebookPage({
           {counts.total} entries · {counts.openQuestions} open question{counts.openQuestions === 1 ? "" : "s"}. Markdown and LaTeX; every
           entry can carry tags, a course and exact source links. Nothing here is generated for you.
         </p>
+        {!params.q && entries.length === LIST_LIMIT ? (
+          <p className="mt-1 max-w-prose text-xs text-ink-3" data-testid="notebook-limit">
+            Showing the {LIST_LIMIT} most recently updated entries; search, or choose a kind, tag or course, to find older ones.
+          </p>
+        ) : null}
       </header>
       {params.error ? (
         <div className="mb-4">

@@ -157,14 +157,17 @@ test.describe("study continuity, paper work and bridges", () => {
     await expect(attempt).toHaveValue(/Written offline: the integral norm is 1\/\(n\+1\)\./);
 
     // A selected step goes to the tutor with its lines attached.
-    // Select line 2 with the keyboard, as a learner would.
-    await attempt.evaluate((el: HTMLTextAreaElement) => {
-      el.focus();
-      const start = el.value.indexOf("Written");
-      el.setSelectionRange(start, start);
-    });
-    await page.keyboard.press("Shift+End");
-    await expect(page.getByText("Lines 2–2 selected for a step check.")).toBeVisible();
+    // Select line 2 with the keyboard, as a learner would (retried until the reloaded page has
+    // hydrated and listens for the selection).
+    await expect(async () => {
+      await attempt.evaluate((el: HTMLTextAreaElement) => {
+        el.focus();
+        const start = el.value.indexOf("Written");
+        el.setSelectionRange(start, start);
+      });
+      await page.keyboard.press("Shift+End");
+      await expect(page.getByText("Lines 2–2 selected for a step check.")).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 20_000 });
     await page.getByRole("button", { name: "Check this step" }).click();
     await expect(page.getByText(/^Attempt lines 2–2:/)).toBeVisible();
     await page.getByRole("button", { name: "Ask for: check this step" }).click();

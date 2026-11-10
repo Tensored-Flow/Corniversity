@@ -600,6 +600,27 @@ counts every unit that is not ready, and the journey requires a non-zero count);
 publication step had escaped its transaction; and three classmates could join one discussion,
 where the brief allows two.
 
+Hardening (Milestone 17). An independent security review of the routes and services added in
+Milestones 13 to 16 reported no high or medium findings and four low ones, all repaired with
+regression tests: the PDF check now decodes #xx escapes in names and looks for more action types
+(it remains a stated heuristic; PDFs are only downloaded, sandboxed, never sent to a model); JPEG
+uploads keep only decoding segments, follow progressive scans and drop anything after the end
+marker; publishing a draft and publishing a proposal are now conditional claims inside one
+transaction, so a double submit publishes once and a failure part-way leaves nothing behind.
+Migrations 0008 to 0012 are additive (the only data change maps two old issue statuses, scoped by
+WHERE); the production build passes; a history-wide secret scan found only placeholders; the
+source bundle was verified and cloned back.
+
+The full journey suite (103 tests across both viewports) then ran: 95 passed and four tests failed
+at both sizes. Two were journeys left behind by earlier milestones (the review section's new
+wording; a catalogue total that grows when journey 14 publishes a proposal locally). Two were a
+hydration race: text typed, or a selection made, before React attached its handlers was lost at
+the next update. That is also a product risk on slow devices, so the tutor and attempt boxes now
+adopt text typed before the page finished loading. A rerun then showed the notebook silently
+listing only the 100 most recent of 133 entries; it now says so and points to search and filters.
+After the repairs every failing journey passed at both viewports, and the unit (308), worker (36)
+and integration (124) suites passed.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -621,6 +642,10 @@ where the brief allows two.
 - COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
   COG-100 has none. Blocks MBI-02, MBI-10 and MBI-12 are proposed, the eight electives are
   proposed, and method 9.6 (measurement, reliability and validity) has no prepared unit.
+- Error text passed to a page in `?error=` is shown as given in the error notice. React escapes it,
+  so it cannot run script, but a crafted link can make misleading text look like an app message.
+- The PDF active-content check reads the file's uncompressed text; content inside compressed
+  object streams is not seen. PDFs are therefore only offered as downloads under a sandbox.
 - (Repaired in Milestone 13.) MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210
   are proposed with no concepts defined, so no biology prerequisite can be expressed yet; NEU-220,
   the block's teachable course, needs none (its Neuromatch spine asks for no biology).

@@ -281,6 +281,68 @@ describe("publication", () => {
       .values({ requestId: request!.id, ownerId: fx.ownerId, unitId: fx.unitId, version: 1, draft, checks: [], status: "checked" })
       .returning();
     await expect(publishDraft(handle.db, fx.ownerId, hand!.id)).rejects.toThrow(/already prepared/);
+    // The refusal rolled back the claim: the draft is still only checked.
+    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, hand!.id)))[0]?.status).toBe("checked");
     await handle.db.delete(unitDraft).where(eq(unitDraft.id, hand!.id));
+  });
+
+  it("publishes a draft once under a double submit, serialises two drafts for one unit, and leaves nothing behind when it fails part-way", async () => {
+    const [request] = await listPreparations(handle.db, fx.ownerId);
+    const exercise = {
+      title: "Later exercise",
+      kind: "proof" as const,
+      promptMarkdown: "Prove it.",
+      hintLadder: ["Start."],
+      criteria: [{ criterion: "Correct.", weight: 1 }],
+      referenceSolution: "Instructor-only.",
+      stage: "independent" as const,
+    };
+    const draftOf = (lessonMarkdown: string, exercises: unknown[]) => ({
+      lessonMarkdown,
+      objectives: ["Objective."],
+      sourceLocatorIds: [],
+      exercises: exercises as (typeof exercise)[],
+      misconceptions: [],
+    });
+    const insert = async (version: number, d: ReturnType<typeof draftOf>) =>
+      (
+        await handle.db
+          .insert(unitDraft)
+          .values({ requestId: request!.id, ownerId: fx.ownerId, unitId: outlinedUnit(), version, draft: d, checks: [], status: "checked" })
+          .returning()
+      )[0]!;
+    const activeCount = async () =>
+      (await handle.db.select().from(unitPublication).where(eq(unitPublication.unitId, outlinedUnit()))).filter((p) => p.active).length;
+
+    // The same draft, submitted twice at once: exactly one publication.
+    const twice = await insert(3, draftOf("Lesson three.", [exercise]));
+    const results = await Promise.allSettled([
+      publishDraft(handle.db, fx.ownerId, twice.id),
+      publishDraft(handle.db, fx.ownerId, twice.id),
+    ]);
+    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+    const p3 = (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) =>
+      e.id.includes("-p3-"),
+    );
+    expect(p3).toHaveLength(1);
+    expect(await activeCount()).toBe(1);
+
+    // Two drafts for the same unit at once: both publish, one after the other; one stays active.
+    const [four, five] = [await insert(4, draftOf("Lesson four.", [exercise])), await insert(5, draftOf("Lesson five.", [exercise]))];
+    await Promise.all([publishDraft(handle.db, fx.ownerId, four.id), publishDraft(handle.db, fx.ownerId, five.id)]);
+    expect(await activeCount()).toBe(1);
+
+    // A failure part-way (a second exercise with no reference solution) rolls everything back.
+    const [unitBefore] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit()));
+    const broken = await insert(6, draftOf("Lesson six.", [exercise, { ...exercise, referenceSolution: null }]));
+    await expect(publishDraft(handle.db, fx.ownerId, broken.id)).rejects.toThrow();
+    const [unitAfter] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit()));
+    expect(unitAfter?.lessonMarkdown).toBe(unitBefore?.lessonMarkdown);
+    const p6 = (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) =>
+      e.id.includes("-p6-"),
+    );
+    expect(p6).toHaveLength(0);
+    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, broken.id)))[0]?.status).toBe("checked");
+    expect(await activeCount()).toBe(1);
   });
 });

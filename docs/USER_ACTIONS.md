@@ -39,7 +39,7 @@ bootstrap code or an API key into a chat.
    include Console credits (see the link in Settings). Model use is billed by Anthropic to that
    account, separately from Railway.
 
-4. Check the signed-in site and live tutoring yourself (after items 1 and 3; about 20 minutes).
+4. Check the signed-in site and live tutoring yourself (after items 1 and 3; about 35 minutes).
    Why: the build agent cannot sign in as you and must not be given your password. Tell it the
    outcome of each step afterwards (never a password, code or key), and it records them as checks
    you ran on the live site.
@@ -67,6 +67,26 @@ bootstrap code or an API key into a chat.
       own feedback. *Records* lists the attempt with both versions. Sign out and sign in again: the
       versions, the feedback and the tutor conversation are still there, each still labelled with
       what wrote it.
+   f. Study workspace and paper (about 5 minutes): in a session choose *Pause*; from *Campus*,
+      *Resume* returns to the same place. Under the attempt, attach a phone photo of handwritten
+      work, type its transcription with one unsure symbol written as `[[?x]]`, confirm it, then
+      submit: the feedback card says *paper work*. With live tutoring on, *Ask for a draft
+      transcription* stays disabled until you tick the box to send the page images; nothing is sent before that.
+   g. Visual explanations: open NEU-220 unit 1, then *The leaky integrate-and-fire neuron* under
+      *Visual explanations*; step through the scenes and play the film (captions under *CC*).
+      In MAT-230 unit 1, *Two norms on C([0,1])* stays closed until you have submitted an attempt
+      at its exercise or chosen to see the reasoning.
+   h. Voice (Chrome sends dictated audio to Google's speech service; skip if you prefer not to):
+      *Settings → Voice*, tick the box and *Allow dictation*; in a session choose *Dictate*, speak a
+      sentence, correct the text in the box, then send it yourself. *Stop allowing dictation* hides
+      the button again. *Read aloud* under a tutor reply uses a voice on your device only.
+   i. Operations and proposals: *Operations* (top right) shows the figures for your account.
+      *Catalogue → Propose a subject or reading programme* saves a draft; record a decision on each
+      overlapping course. Publishing adds a catalogue item at readiness *proposed* (it stays in the
+      catalogue); choose *Reject* instead if you only want to see the workflow.
+   j. Course preparation with a live model (spends from your budget; only if you want a drafted unit):
+      NEU-220 → *Ask for preparation*, keep the budget at $2 or less, *See the proposal*, then
+      *Confirm*. A draft appears with its checks; *Publish this unit* or *Reject*.
 
 5. If you forget your password.
    Why: no email provider is configured, so there is no reset link; recovery is deliberately

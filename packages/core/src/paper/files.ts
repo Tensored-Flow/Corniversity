@@ -62,45 +62,78 @@ function checkSize(file: PreparedWorkFile): PreparedWorkFile {
   return file;
 }
 
-/** Markers whose segments carry metadata rather than image data: APP1 (EXIF, XMP), APP12–APP15, and comments. */
-const JPEG_METADATA = new Set([0xe1, 0xec, 0xed, 0xee, 0xef, 0xfe]);
 const SOF_MARKERS = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
+/**
+ * The only segments kept: what a decoder needs (APP0 JFIF, APP14 colour transform, quantisation and
+ * Huffman tables, arithmetic conditioning, frame headers, restart interval, line count). Everything
+ * else is dropped, including EXIF and XMP (APP1), ICC and MPF (APP2), JUMBF (APP11) and comments.
+ */
+const JPEG_KEEP = new Set([0xe0, 0xee, 0xdb, 0xc4, 0xcc, 0xdd, 0xdc, ...SOF_MARKERS]);
 
+/**
+ * Rebuilds a JPEG from an allowlist of segments. Scans are followed to their end (a progressive
+ * file interleaves tables, and possibly metadata, between scans), and anything after the end
+ * marker (a second image with its own EXIF, a motion-photo clip) is dropped.
+ */
 export function stripJpeg(bytes: Uint8Array): PreparedWorkFile {
+  if (bytes[0] !== 0xff || bytes[1] !== 0xd8) throw new WorkFileError("malformed", "The JPEG file is damaged.");
   const out: Uint8Array[] = [bytes.subarray(0, 2)];
   let i = 2;
   let stripped = false;
+  let ended = false;
   let width: number | undefined;
   let height: number | undefined;
   while (i < bytes.length) {
     if (bytes[i] !== 0xff) throw new WorkFileError("malformed", "The JPEG file is damaged.");
-    const marker = bytes[i + 1]!;
-    if (marker === 0xd8 || (marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) {
-      out.push(bytes.subarray(i, i + 2));
-      i += 2;
+    const marker = bytes[i + 1];
+    if (marker === undefined) throw new WorkFileError("malformed", "The JPEG file is truncated.");
+    if (marker === 0xff) {
+      i += 1; // a fill byte before a marker
       continue;
     }
     if (marker === 0xd9) {
       out.push(bytes.subarray(i, i + 2));
+      i += 2;
+      ended = true;
       break;
+    }
+    if ((marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) {
+      out.push(bytes.subarray(i, i + 2));
+      i += 2;
+      continue;
     }
     if (i + 4 > bytes.length) throw new WorkFileError("malformed", "The JPEG file is truncated.");
     const length = (bytes[i + 2]! << 8) | bytes[i + 3]!;
     if (length < 2 || i + 2 + length > bytes.length) throw new WorkFileError("malformed", "The JPEG file is truncated.");
-    const segment = bytes.subarray(i, i + 2 + length);
     if (SOF_MARKERS.has(marker) && length >= 7) {
       height = (bytes[i + 5]! << 8) | bytes[i + 6]!;
       width = (bytes[i + 7]! << 8) | bytes[i + 8]!;
     }
     if (marker === 0xda) {
-      // Start of scan: the entropy-coded image data runs to the end; copy it unchanged.
-      out.push(bytes.subarray(i));
-      break;
+      // The scan header, then entropy-coded data up to the next marker that is neither a restart
+      // marker nor a stuffed 0xFF00.
+      let j = i + 2 + length;
+      while (j < bytes.length) {
+        if (bytes[j] === 0xff) {
+          const next = bytes[j + 1];
+          if (next === 0x00 || (next !== undefined && next >= 0xd0 && next <= 0xd7)) {
+            j += 2;
+            continue;
+          }
+          break;
+        }
+        j += 1;
+      }
+      out.push(bytes.subarray(i, j));
+      i = j;
+      continue;
     }
-    if (JPEG_METADATA.has(marker)) stripped = true;
-    else out.push(segment);
+    if (JPEG_KEEP.has(marker)) out.push(bytes.subarray(i, i + 2 + length));
+    else stripped = true;
     i += 2 + length;
   }
+  if (!ended) throw new WorkFileError("malformed", "The JPEG file has no end marker.");
+  if (i < bytes.length) stripped = true;
   return { mime: "image/jpeg", bytes: concat(out), width, height, stripped };
 }
 
@@ -136,13 +169,17 @@ export function stripPng(bytes: Uint8Array): PreparedWorkFile {
 }
 
 /**
- * A PDF is kept as uploaded (its pages are the learner's work) but refused if it declares active
- * content: scripts, launch actions or embedded files. It is served only as a download with a
- * sandboxing policy, never rendered by the application.
+ * A PDF is kept as uploaded (its pages are the learner's work) but refused if it plainly declares
+ * active content: scripts, launch or form-submission actions, automatic actions, remote go-to,
+ * XFA forms, rich media or embedded files. This is a heuristic over the file's uncompressed text
+ * (with #xx escapes in names decoded), not a parser: content inside compressed object streams is
+ * not seen. That is why a PDF is served only as a download under a sandboxing policy, never
+ * rendered by the application, and never sent to a model.
  */
 export function checkPdf(bytes: Uint8Array): PreparedWorkFile {
-  const text = latin1(bytes);
-  if (/\/(JavaScript|JS|Launch|EmbeddedFile|RichMedia|OpenAction\s*<<[^>]*\/S\s*\/JavaScript)\b/.test(text)) {
+  // Names may spell characters as #xx (/J#61vaScript); decode them before looking.
+  const text = latin1(bytes).replace(/#([0-9A-Fa-f]{2})/g, (_m, hex: string) => String.fromCharCode(Number.parseInt(hex, 16)));
+  if (/\/(JavaScript|JS|Launch|SubmitForm|GoToR|AA|XFA|EmbeddedFile|RichMedia)\b/.test(text)) {
     throw new WorkFileError(
       "active_content",
       "This PDF contains scripts or embedded files, so it was not stored. Print it to a new PDF, or photograph the pages.",

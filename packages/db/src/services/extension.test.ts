@@ -101,6 +101,24 @@ describe("proposing a subject or reading programme", () => {
     await expect(publishProposal(handle.db, fx.ownerId, p.id)).rejects.toThrow(/Only a draft/);
   });
 
+  it("publishes once under a double submit: one course, one set of requests", async () => {
+    const p = await createProposal(handle.db, fx.ownerId, input());
+    // Earlier tests published proposals that now overlap too; decide on every overlapping course.
+    for (const c of (await findOverlap(handle.db, `${p.title} ${p.scope}`)).courses) {
+      await decideOverlap(handle.db, fx.ownerId, p.id, { courseId: c.id, decision: "distinct", note: "a narrower reading" });
+    }
+    const results = await Promise.allSettled([publishProposal(handle.db, fx.ownerId, p.id), publishProposal(handle.db, fx.ownerId, p.id)]);
+    const done = results.filter((r): r is PromiseFulfilledResult<{ courseId: string }> => r.status === "fulfilled");
+    const refused = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
+    expect(refused.map((r) => String(r.reason))).toEqual([expect.stringMatching(/changed while it was being published|Only a draft/)]);
+    expect(done).toHaveLength(1);
+    const courseId = done[0]!.value.courseId;
+    published.push(courseId);
+    expect(await handle.db.select().from(resourceRequest).where(eq(resourceRequest.courseId, courseId))).toHaveLength(2);
+    const [row] = await handle.db.select().from(curriculumProposal).where(eq(curriculumProposal.id, p.id));
+    expect(row).toMatchObject({ status: "published", publishedCourseId: courseId });
+  });
+
   it("never publishes a rejected proposal, and refuses a department that does not exist", async () => {
     const p = await createProposal(handle.db, fx.ownerId, input());
     await rejectProposal(handle.db, fx.ownerId, p.id, "overlaps too much");

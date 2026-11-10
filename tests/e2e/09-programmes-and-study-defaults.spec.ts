@@ -52,7 +52,7 @@ test.describe("Mind, Brain and AI and the study defaults", () => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
     await page.goto("/catalogue");
-    await expect(page.getByText(/12 of 86 are fully prepared, and 2 more have a first prepared unit/)).toBeVisible();
+    await expect(page.getByText(/12 of (8[6-9]|9\d|\d{3}) are fully prepared, and 2 more have a first prepared unit/)).toBeVisible();
     await page.getByRole("main").getByRole("link", { name: "programme catalogue" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Routes through the university" })).toBeVisible();
     await page.getByRole("link", { name: "Mind, Brain and AI" }).first().click();
@@ -130,7 +130,8 @@ test.describe("Mind, Brain and AI and the study defaults", () => {
     await screenshot(page, "41-lab-choice-model-loop");
 
     // The saved prediction is a notebook entry, not evidence of understanding.
-    await page.goto("/notebook");
+    // Filtered by its tag, as a learner looking for a prediction would (the full list shows the most recent 100).
+    await page.goto("/notebook?tag=prediction");
     await expect(page.getByText(/Prediction before running: Laboratory: the complete loop/).first()).toBeVisible();
   });
 

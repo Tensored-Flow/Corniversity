@@ -104,6 +104,8 @@ test.describe("voice and visual teaching", () => {
 
     await page.goto(session);
     const message = page.getByLabel("Message to the tutor");
+    // The button appears only once the page has hydrated, so typing below reaches React's state.
+    await expect(page.locator("#panel-tutor").getByRole("button", { name: "Dictate" })).toBeVisible();
     await message.fill("Briefly:");
     const learnerMessages = page.locator("#panel-tutor").getByText("You", { exact: true });
     const before = await learnerMessages.count();

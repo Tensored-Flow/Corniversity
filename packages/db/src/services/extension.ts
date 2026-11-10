@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { and, desc, eq, ilike, inArray, like, or } from "drizzle-orm";
+import { and, desc, eq, ilike, inArray, like, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
@@ -222,6 +222,23 @@ export async function publishProposal(db: DbOrTx, ownerId: string, id: string): 
     : [];
   // One transaction: a failure leaves neither a half-listed course nor a proposal marked published.
   return db.transaction(async (tx) => {
+    // Claim the proposal as it was checked above: a concurrent publish, revision or rejection
+    // changes its status or version, and then this one stops instead of overwriting it.
+    const [claimed] = await tx
+      .update(curriculumProposal)
+      .set({ status: "published", updatedAt: new Date() })
+      .where(
+        and(
+          eq(curriculumProposal.id, row.id),
+          eq(curriculumProposal.ownerId, ownerId),
+          eq(curriculumProposal.status, "draft"),
+          eq(curriculumProposal.version, row.version),
+        ),
+      )
+      .returning({ id: curriculumProposal.id });
+    if (!claimed) throw new ProposalError("The proposal changed while it was being published; open it again.");
+    // One course number at a time per department.
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`proposal-course-id:${row.departmentId}`}))`);
     const courseId = await nextCourseId(tx, row.departmentId);
     const [min, typical, max] = WORKLOAD[row.depth];
     const contentHash = createHash("sha256")
@@ -285,7 +302,7 @@ export async function publishProposal(db: DbOrTx, ownerId: string, id: string): 
     }
     await tx
       .update(curriculumProposal)
-      .set({ status: "published", publishedCourseId: courseId, publishedAt: new Date(), updatedAt: new Date() })
+      .set({ publishedCourseId: courseId, publishedAt: new Date(), updatedAt: new Date() })
       .where(eq(curriculumProposal.id, id));
     await tx.insert(auditEvent).values({
       ownerId,

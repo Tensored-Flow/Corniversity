@@ -182,7 +182,9 @@ test.describe("laboratories, notebook and records", () => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
     await page.goto("/studies");
-    await expect(page.getByRole("heading", { name: "Revision due" })).toBeVisible();
-    await expect(page.getByText(/capped at \d+ a week/)).toBeVisible();
+    // Review states its rule and its weekly bound (Milestone 14 replaced the fixed cap with the learner's own number).
+    await expect(page.getByRole("heading", { level: 2, name: "Review", exact: true })).toBeVisible();
+    await expect(page.getByText(/At most your weekly number of items is offered, five at a time/)).toBeVisible();
+    await expect(page.getByText(/\d+ of \d+ this week/)).toBeVisible();
   });
 });

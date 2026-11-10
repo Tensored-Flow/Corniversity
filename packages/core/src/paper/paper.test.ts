@@ -91,6 +91,51 @@ describe("paper files", () => {
     );
     expect(checkPdf(new Uint8Array(ascii("%PDF-1.7\n1 0 obj << /Type /Page >>\n%%EOF"))).mime).toBe("application/pdf");
   });
+
+  it("keeps only decoding segments: metadata between progressive scans, ICC/MPF/JUMBF and anything after the end marker go", () => {
+    const progressive = new Uint8Array([
+      0xff,
+      0xd8,
+      ...seg(0xe0, ascii("JFIF\0")),
+      ...seg(0xe2, ascii("MPF\0 secondary image")),
+      ...seg(0xeb, ascii("JUMBF c2pa")),
+      ...seg(0xc2, [8, 0, 2, 0, 3, 1, 1, 0x11, 0]),
+      ...seg(0xc4, [0, 1, 2]),
+      ...seg(0xda, [1, 1, 0, 0, 0x3f, 0]),
+      // First scan: a stuffed 0xFF00 and a restart marker are image data and stay.
+      0x12,
+      0xff,
+      0x00,
+      0x34,
+      0xff,
+      0xd0,
+      0x56,
+      // Between scans: a table that stays, and EXIF with a location that goes.
+      ...seg(0xc4, [3, 4, 5]),
+      ...seg(0xe1, ascii("Exif\0\0GPSLatitude 48.8584N")),
+      ...seg(0xda, [1, 1, 0, 0, 0x3f, 0]),
+      0x78,
+      0xff,
+      0xd9,
+      // After the end marker: a second image's EXIF.
+      ...ascii("Exif GPSLongitude 2.2945E"),
+    ]);
+    const out = stripJpeg(progressive);
+    const text = String.fromCharCode(...out.bytes);
+    expect(out.stripped).toBe(true);
+    for (const gone of ["GPSLatitude", "GPSLongitude", "MPF", "c2pa"]) expect(text).not.toContain(gone);
+    expect(text).toContain("JFIF");
+    expect([...out.bytes.slice(-2)]).toEqual([0xff, 0xd9]);
+    expect(String.fromCharCode(...out.bytes)).toContain(String.fromCharCode(0x12, 0xff, 0x00, 0x34, 0xff, 0xd0, 0x56));
+    expect(String.fromCharCode(...out.bytes)).toContain(String.fromCharCode(...seg(0xc4, [3, 4, 5])));
+    expect(() => stripJpeg(jpegWithMetadata().slice(0, -2))).toThrow(/no end marker/);
+  });
+
+  it("decodes #xx escapes in PDF names before looking for active content", () => {
+    for (const body of ["/S /J#61vaScript", "/S /Launc#68", "/AA << /O 2 0 R >>", "/S /SubmitForm", "/XFA 3 0 R"]) {
+      expect(() => checkPdf(new Uint8Array(ascii(`%PDF-1.7\n1 0 obj << ${body} >>\n%%EOF`)))).toThrow(/scripts or embedded files/);
+    }
+  });
 });
 
 describe("transcriptions", () => {
