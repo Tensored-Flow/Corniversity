@@ -16,10 +16,11 @@ const ORIGIN: Record<string, string> = {
   ai_assisted_draft: "AI-assisted draft",
 };
 
-const STATUS: Record<string, string> = {
-  checked: "Its numerical checks pass and its author reviewed it; no second reader yet.",
-  published: "Its numerical checks pass and a second reader reviewed it.",
-};
+/** What the status means, from the record: a published visual names its reviewer. */
+function statusText(status: string, review: { by: string; on: string } | undefined): string {
+  if (status === "published" && review) return `Its numerical checks pass, and ${review.by} reviewed it on ${review.on}.`;
+  return "Its numerical checks pass. No second reader has reviewed it yet.";
+}
 
 /**
  * A visual explanation: the storyboard scene by scene (equations typeset, plots drawn from the
@@ -51,7 +52,7 @@ export default async function VisualPage({ params }: { params: Promise<{ slug: s
         <Badge tone={row.status === "published" ? "moss" : "slate"}>{row.status}</Badge>
         <Badge>{ORIGIN[row.origin] ?? row.origin}</Badge>
         <span className="text-xs text-ink-3">
-          storyboard v{spec.version} · {Math.round(totalDuration(spec))} s · {STATUS[row.status]}
+          storyboard v{spec.version} · {Math.round(totalDuration(spec))} s · {statusText(row.status, spec.review)}
         </span>
       </div>
       <p className="mt-3 max-w-prose text-ink-2">{spec.objective}</p>

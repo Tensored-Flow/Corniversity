@@ -70,9 +70,13 @@ export default async function OperationsPage() {
           <ul className="mt-1 flex flex-col gap-1 text-sm">
             {o.visuals.map((v) => (
               <li key={v.slug}>
-                <Link href={`/visuals/${v.slug}`} className={link}>
-                  {v.title}
-                </Link>{" "}
+                {v.status === "draft" ? (
+                  <span className="text-ink">{v.title}</span>
+                ) : (
+                  <Link href={`/visuals/${v.slug}`} className={link}>
+                    {v.title}
+                  </Link>
+                )}{" "}
                 <span className="text-xs text-ink-3">
                   {v.status} · {v.film ? "film current" : v.stale ? "film withheld (older storyboard)" : "no film"}
                 </span>
@@ -166,7 +170,9 @@ export default async function OperationsPage() {
               ? "Scripted demo: no model is called and nothing is spent."
               : provider.mode === "live"
                 ? `Live model: ${provider.model}.`
-                : `Blocked: ${provider.reason}`}
+                : provider.mode === "plan"
+                  ? `Your ChatGPT plan: ${provider.model}, up to ${provider.dailyRequests} requests a day and ${provider.monthlyRequests} a month.`
+                  : `Blocked: ${provider.reason}`}
           </p>
           <p className="mt-1 text-sm text-ink-2">
             Spent or held today ${spend.todayUsd.toFixed(4)} of ${limits.dailyUsd.toFixed(2)}; this month ${spend.monthUsd.toFixed(4)} of $

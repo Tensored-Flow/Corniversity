@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { defaultContentRoot, loadContent } from "@corniversity/content/load";
@@ -13,6 +13,7 @@ import { attempt, visualExplanation } from "@corniversity/db/schema/index";
 import { getVisualForLearner, listUnitVisuals, VisualError, visualFilm } from "@corniversity/db/services/visuals";
 import { eq, inArray } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { seedContentIfRequested } from "./seed-on-start";
 
 /**
  * Visual explanations against PostgreSQL: a film is stored only when it was recorded from the
@@ -128,5 +129,19 @@ describe("visual explanations", () => {
     await seedVisuals(handle.db, [loaded({ ...spec, slug: slugs[1]!, status: "draft", revealsExerciseIds: [] }, false)]);
     expect(await getVisualForLearner(handle.db, ownerId, slugs[1]!)).toBeNull();
     expect((await listUnitVisuals(handle.db, ownerId, "MAT-230-u01")).some((v) => v.slug === slugs[1])).toBe(false);
+  });
+
+  it("are not seeded on start from content that fails validation (a published visual with no review)", async () => {
+    const copy = mkdtempSync(join(tmpdir(), "content-invalid-"));
+    try {
+      cpSync(defaultContentRoot(), copy, { recursive: true });
+      const file = join(copy, "visuals", "lif-membrane-potential", "visual.json");
+      const spec = JSON.parse(readFileSync(file, "utf8")) as Record<string, unknown>;
+      writeFileSync(file, JSON.stringify({ ...spec, status: "published", review: undefined }));
+      expect(await seedContentIfRequested(handle.db, "1", copy)).toBeNull();
+      expect(await seedContentIfRequested(handle.db, "0", copy)).toBeNull();
+    } finally {
+      rmSync(copy, { recursive: true, force: true });
+    }
   });
 });

@@ -1,7 +1,17 @@
 "use server";
-import { BudgetLimitError, isSupportedModel } from "@corniversity/ai";
+import { BudgetLimitError, isSupportedModel, PlanLimitError } from "@corniversity/ai";
 import { TIMEZONE_SUGGESTIONS } from "@corniversity/core/onboarding/steps";
 import { getEnv } from "@corniversity/db/env";
+import {
+  approvePlanUse,
+  disconnectPlan,
+  PlanSettingError,
+  PlanSignInError,
+  resumePlanUse,
+  savePlanSettings,
+  startPlanSignIn,
+  withdrawPlanApproval,
+} from "@corniversity/db/services/chatgpt-plan";
 import { deletePersonaMemory, purgePersonaMemory } from "@corniversity/db/services/community";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import {
@@ -20,6 +30,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
@@ -82,10 +93,11 @@ export async function updateExperienceAction(form: FormData): Promise<void> {
 export async function saveLiveTutoringAction(form: FormData): Promise<void> {
   const session = await requireSession("/settings");
   const env = getEnv();
-  const provider = text(form, "provider") === "anthropic" ? "anthropic" : "fixture";
+  const chosen = text(form, "provider");
+  const provider = chosen === "anthropic" || chosen === "chatgpt_plan" ? chosen : "fixture";
   const apiKey = text(form, "apiKey");
   const model = text(form, "model");
-  if (apiKey && apiKey.length < 20) redirect("/settings?error=The%20key%20looks%20too%20short%20to%20be%20an%20API%20key.#provider");
+  if (apiKey && apiKey.length < 20) redirect(errorHref("/settings", "key-looks-too-short-api", "#provider"));
   try {
     await saveBudgetLimits(db(), session.user.id, {
       perRunUsd: Number(text(form, "perRunUsd")),
@@ -102,11 +114,65 @@ export async function saveLiveTutoringAction(form: FormData): Promise<void> {
     if (provider === "anthropic" && form.get("approvePaidUse") === "1") await approvePaidUse(db(), session.user.id, env);
   } catch (error) {
     if (error instanceof BudgetLimitError || error instanceof ProviderSettingError) {
-      redirect(`/settings?error=${encodeURIComponent(error.message)}#provider`);
+      redirect(errorHref("/settings", errorCode(error.message), "#provider"));
     }
     throw error;
   }
   done("provider");
+}
+
+/** Back to the ChatGPT plan card with a notice code (`plan`) or an error code (`planError`). */
+function planDone(query: string): never {
+  revalidatePath("/settings");
+  redirect(`/settings?${query}#chatgpt-plan`);
+}
+
+/** Starts the owner's sign-in with OpenAI (local installation only): the browser goes to OpenAI's page. */
+export async function startPlanSignInAction(form: FormData): Promise<void> {
+  const session = await requireSession("/settings");
+  let url: string;
+  try {
+    url = await startPlanSignIn(session.user.id, getEnv(), { otherAccount: form.get("otherAccount") === "1" });
+  } catch (error) {
+    if (error instanceof PlanSignInError) planDone(`planError=${errorCode(error.message)}`);
+    throw error;
+  }
+  redirect(url);
+}
+
+export async function disconnectPlanAction(): Promise<void> {
+  const session = await requireSession("/settings");
+  const { revoked } = await disconnectPlan(db(), getEnv(), session.user.id);
+  planDone(`plan=${revoked ? "signed-out" : "signed-out-unconfirmed"}`);
+}
+
+/** Saves the plan's model and request limits, then records approval when the owner ticked it. */
+export async function savePlanSettingsAction(form: FormData): Promise<void> {
+  const session = await requireSession("/settings");
+  try {
+    await savePlanSettings(db(), session.user.id, {
+      model: text(form, "planModel") || null,
+      dailyRequests: Number(text(form, "planDailyRequests")),
+      monthlyRequests: Number(text(form, "planMonthlyRequests")),
+    });
+    if (form.get("approvePlanUse") === "1") await approvePlanUse(db(), getEnv(), session.user.id);
+  } catch (error) {
+    if (error instanceof PlanLimitError || error instanceof PlanSettingError) planDone(`planError=${errorCode(error.message)}`);
+    throw error;
+  }
+  planDone("plan=saved");
+}
+
+export async function withdrawPlanApprovalAction(): Promise<void> {
+  const session = await requireSession("/settings");
+  await withdrawPlanApproval(db(), session.user.id);
+  planDone("plan=saved");
+}
+
+export async function resumePlanUseAction(): Promise<void> {
+  const session = await requireSession("/settings");
+  await resumePlanUse(db(), session.user.id);
+  planDone("plan=resumed");
 }
 
 export async function withdrawApprovalAction(): Promise<void> {
@@ -122,11 +188,11 @@ export async function withdrawApprovalAction(): Promise<void> {
 export async function settleRunAction(form: FormData): Promise<void> {
   const session = await requireSession("/settings");
   const runId = text(form, "runId");
-  if (!/^[0-9a-f-]{36}$/.test(runId)) redirect("/settings?error=Unknown%20run.#provider");
+  if (!/^[0-9a-f-]{36}$/.test(runId)) redirect(errorHref("/settings", "unknown-run", "#provider"));
   try {
     await settleUnsettledRun(db(), session.user.id, runId, { amountUsd: Number(text(form, "amountUsd")), note: text(form, "note") });
   } catch (error) {
-    if (error instanceof SettlementError) redirect(`/settings?error=${encodeURIComponent(error.message)}#provider`);
+    if (error instanceof SettlementError) redirect(errorHref("/settings", errorCode(error.message), "#provider"));
     throw error;
   }
   done("provider");
@@ -135,7 +201,7 @@ export async function settleRunAction(form: FormData): Promise<void> {
 /** Dictation is allowed only with the box ticked, after reading where the audio goes. */
 export async function allowVoiceAction(form: FormData): Promise<void> {
   const session = await requireSession("/settings");
-  if (form.get("understood") !== "1") redirect("/settings?error=Tick%20the%20box%20to%20allow%20dictation.#voice");
+  if (form.get("understood") !== "1") redirect(errorHref("/settings", "tick-box-allow-dictation", "#voice"));
   await allowVoiceDictation(db(), session.user.id);
   done("voice");
 }
@@ -182,7 +248,7 @@ export async function updateStudyPreferencesAction(form: FormData): Promise<void
   } catch (error) {
     if (error instanceof StudyError) {
       revalidatePath("/settings");
-      redirect(`/settings?section=study&error=${encodeURIComponent(error.message)}#study`);
+      redirect(errorHref("/settings?section=study", errorCode(error.message), "#study"));
     }
     throw error;
   }

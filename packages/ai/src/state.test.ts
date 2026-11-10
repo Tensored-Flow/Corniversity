@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { approvalCovers, decideProviderState, type PaidUseApproval, type ProviderStateInput, publicProviderState } from "./state";
+import {
+  approvalCovers,
+  decidePlanState,
+  decideProviderState,
+  type PaidUseApproval,
+  type PlanStateInput,
+  type ProviderStateInput,
+  providerNameOf,
+  publicProviderState,
+} from "./state";
 
 const limits = { perRunUsd: 1, dailyUsd: 3, monthlyUsd: 40 };
 const env = { provider: "fixture" as const, apiKey: undefined, defaultModel: "claude-opus-5-5" };
@@ -110,5 +119,52 @@ describe("the public view", () => {
     const view = publicProviderState(decideProviderState({ setting: live(), env, limits }));
     expect(JSON.stringify(view)).not.toContain("sk-ant");
     expect(view).toEqual({ mode: "live", model: "claude-opus-5-5", refusalFallback: true, source: "owner_setting" });
+  });
+});
+
+describe("the owner's ChatGPT plan", () => {
+  const ready: PlanStateInput = {
+    unavailableReason: null,
+    connection: "connected",
+    model: "gpt-x",
+    approval: { model: "gpt-x", dailyRequests: 30, monthlyRequests: 300, approvedAt: "2026-11-10T10:00:00.000Z" },
+    limits: { dailyRequests: 30, monthlyRequests: 300 },
+    pausedReason: null,
+  };
+  const code = (plan: PlanStateInput | undefined) => {
+    const s = decidePlanState(plan);
+    return s.mode === "blocked" ? s.code : s.mode;
+  };
+
+  it("teaches only when local, connected, given a model, approved within its limits and not paused", () => {
+    expect(decidePlanState(ready)).toEqual({ mode: "plan", model: "gpt-x", dailyRequests: 30, monthlyRequests: 300 });
+    expect(code(undefined)).toBe("plan_unavailable_here");
+    expect(code({ ...ready, unavailableReason: "hosted" })).toBe("plan_unavailable_here");
+    expect(code({ ...ready, connection: "missing" })).toBe("plan_not_connected");
+    expect(code({ ...ready, connection: "reconnect" })).toBe("plan_reconnect");
+    expect(code({ ...ready, model: null })).toBe("plan_no_model");
+    expect(code({ ...ready, pausedReason: "the usage limit was reached" })).toBe("plan_paused");
+    expect(code({ ...ready, approval: null })).toBe("plan_not_approved");
+    expect(code({ ...ready, model: "gpt-y" })).toBe("plan_approval_outdated");
+    expect(code({ ...ready, limits: { dailyRequests: 31, monthlyRequests: 300 } })).toBe("plan_approval_outdated");
+    // Lowering a limit needs no new approval.
+    expect(code({ ...ready, limits: { dailyRequests: 10, monthlyRequests: 100 } })).toBe("plan");
+  });
+
+  it("is chosen only by the owner's setting and never falls back to an API key from the environment", () => {
+    const state = decideProviderState({
+      setting: { provider: "chatgpt_plan", keyStored: false, key: undefined, model: null, refusalFallback: true, approval: null },
+      env: { provider: "anthropic", apiKey: "sk-ant-environment-key-000000", defaultModel: "claude-opus-5-5" },
+      limits,
+      plan: { ...ready, connection: "missing" },
+    });
+    expect(state).toMatchObject({ mode: "blocked", code: "plan_not_connected" });
+  });
+
+  it("names its provider in records, blocked or not", () => {
+    expect(providerNameOf(decidePlanState(ready))).toBe("chatgpt_plan");
+    expect(providerNameOf(decidePlanState({ ...ready, connection: "missing" }))).toBe("chatgpt_plan");
+    expect(providerNameOf({ mode: "scripted", reason: "not_configured" })).toBe("fixture");
+    expect(providerNameOf({ mode: "blocked", code: "no_key", reason: "", model: "claude-opus-5-5" })).toBe("anthropic");
   });
 });

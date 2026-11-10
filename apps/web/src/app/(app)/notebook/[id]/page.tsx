@@ -7,6 +7,7 @@ import { LocatorLink } from "@/components/LocatorLink";
 import { Markdown } from "@/components/Markdown";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { deleteEntryAction, toggleResolvedAction, updateEntryAction } from "../actions";
 import { excerpt, KIND_OPTIONS, KindBadge } from "../shared";
@@ -51,7 +52,7 @@ export default async function EntryPage({
       </nav>
       {flash.error ? (
         <div className="mb-4">
-          <Notice tone="rust">{flash.error}</Notice>
+          <Notice tone="rust">{errorNotice(flash.error)}</Notice>
         </div>
       ) : null}
       {flash.saved ? (

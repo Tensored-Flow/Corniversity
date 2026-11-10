@@ -2,11 +2,13 @@ import {
   type AttemptUsage,
   costOfAttempts,
   DEFAULT_MODEL,
+  DEFAULT_PLAN_LIMITS,
   decideBudget,
   decideProviderState,
   isSupportedModel,
   microsToUsd,
   type PaidUseApproval,
+  type PlanUseApproval,
   PRICING_VERSION,
   type ProviderState,
   parseUsdMicros,
@@ -16,15 +18,16 @@ import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm";
 import type { Database, DbOrTx } from "../client";
 import type { Env } from "../env";
 import { auditEvent, budgetSetting, providerRun, providerSetting } from "../schema/index";
+import { planStateInput, planUnavailableReason } from "./chatgpt-plan";
 import { decryptSecret, encryptSecret, keyHint } from "./crypto";
 
 export class ProviderSettingError extends Error {}
 
 /**
  * Resolves which provider a learner's runs use (see `decideProviderState`): the scripted demo, a
- * live model the owner approved, or blocked. Precedence: the owner's saved setting > environment
- * configuration > the scripted demo. A key that is stored but unreadable blocks; it never falls
- * back to scripted responses.
+ * live model the owner approved, the owner's ChatGPT plan (local installation only), or blocked.
+ * Precedence: the owner's saved setting > environment configuration > the scripted demo. A key
+ * that is stored but unreadable blocks; it never falls back to scripted responses.
  */
 export async function resolveProviderState(db: DbOrTx, ownerId: string, env: Env): Promise<ProviderState> {
   const [setting] = await db.select().from(providerSetting).where(eq(providerSetting.userId, ownerId)).limit(1);
@@ -42,15 +45,22 @@ export async function resolveProviderState(db: DbOrTx, ownerId: string, env: Env
       : null,
     env: { provider: env.AI_PROVIDER, apiKey: env.ANTHROPIC_API_KEY, defaultModel: env.AI_MODEL_DEFAULT },
     limits,
+    plan: setting?.provider === "chatgpt_plan" ? await planStateInput(env, ownerId, setting) : undefined,
   });
 }
 
 export interface ProviderSettingView {
-  provider: "fixture" | "anthropic";
+  provider: "fixture" | "anthropic" | "chatgpt_plan";
   keyHint: string | null;
   model: string;
   refusalFallback: boolean;
   approval: PaidUseApproval | null;
+  planModel: string | null;
+  planDailyRequests: number;
+  planMonthlyRequests: number;
+  planApproval: PlanUseApproval | null;
+  /** Why plan requests are paused, or null. */
+  planPausedReason: string | null;
 }
 
 /** What the settings page shows: never the key, only its recognisable ends. */
@@ -62,6 +72,11 @@ export async function providerSettingView(db: DbOrTx, ownerId: string, env: Env)
     model: setting?.model ?? (isSupportedModel(env.AI_MODEL_DEFAULT) ? env.AI_MODEL_DEFAULT : DEFAULT_MODEL),
     refusalFallback: setting?.refusalFallback ?? true,
     approval: setting?.paidUseApproval ?? null,
+    planModel: setting?.planModel ?? null,
+    planDailyRequests: setting?.planDailyRequests ?? DEFAULT_PLAN_LIMITS.dailyRequests,
+    planMonthlyRequests: setting?.planMonthlyRequests ?? DEFAULT_PLAN_LIMITS.monthlyRequests,
+    planApproval: setting?.planUseApproval ?? null,
+    planPausedReason: setting?.planPausedAt ? (setting.planPauseReason ?? "paused") : null,
   };
 }
 
@@ -69,9 +84,19 @@ export async function saveProviderSetting(
   db: DbOrTx,
   ownerId: string,
   env: Env,
-  input: { provider: "fixture" | "anthropic"; apiKey?: string; clearKey?: boolean; model?: string; refusalFallback?: boolean },
+  input: {
+    provider: "fixture" | "anthropic" | "chatgpt_plan";
+    apiKey?: string;
+    clearKey?: boolean;
+    model?: string;
+    refusalFallback?: boolean;
+  },
 ): Promise<void> {
   if (input.model !== undefined && !isSupportedModel(input.model)) throw new ProviderSettingError("Choose one of the supported models.");
+  if (input.provider === "chatgpt_plan") {
+    const unavailable = planUnavailableReason(env);
+    if (unavailable) throw new ProviderSettingError(unavailable);
+  }
   const [existing] = await db.select().from(providerSetting).where(eq(providerSetting.userId, ownerId)).limit(1);
   const encrypted = input.clearKey
     ? null
@@ -300,7 +325,7 @@ export async function recordProviderRun(
   input: {
     ownerId: string;
     role: string;
-    provider: "fixture" | "anthropic";
+    provider: "fixture" | "anthropic" | "chatgpt_plan";
     model: string;
     purpose: string;
     pricingVersion: string;
@@ -344,15 +369,22 @@ export async function finishProviderRun(
   runId: string,
   input: { status: Exclude<RunStatus, "running">; model: string; error?: string | null; attempts: readonly AttemptUsage[] },
 ): Promise<void> {
+  const [run] = await db.select({ provider: providerRun.provider }).from(providerRun).where(eq(providerRun.id, runId)).limit(1);
+  // A request through the owner's ChatGPT plan is not billed per request here: it costs $0 and
+  // never counts against the dollar limits (the unknown-model rule would price it at the dearest rate).
+  const plan = run?.provider === "chatgpt_plan";
+  const usage = usageColumns(input.attempts, !plan);
+  // An uncertain failure of a plan request has no amount to settle: it is simply an error.
+  const status = plan && input.status === "unsettled" ? "error" : input.status;
   await db
     .update(providerRun)
-    .set({ status: input.status, model: input.model, error: input.error ?? null, ...usageColumns(input.attempts), finishedAt: new Date() })
+    .set({ status, model: input.model, error: input.error ?? null, ...usage, finishedAt: new Date() })
     .where(and(eq(providerRun.id, runId), eq(providerRun.status, "running")));
 }
 
-/** A run's usage columns: every attempt priced at its own model, and the totals. */
-function usageColumns(attempts: readonly AttemptUsage[]) {
-  const priced = attempts.map((a) => ({ ...a, costUsd: costOfAttempts([a]) }));
+/** A run's usage columns: every attempt priced at its own model (or at nothing), and the totals. */
+function usageColumns(attempts: readonly AttemptUsage[], billed = true) {
+  const priced = attempts.map((a) => ({ ...a, costUsd: billed ? costOfAttempts([a]) : 0 }));
   const total = priced.reduce(
     (s, a) => ({
       inputTokens: s.inputTokens + a.inputTokens,
@@ -362,7 +394,7 @@ function usageColumns(attempts: readonly AttemptUsage[]) {
     }),
     { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 },
   );
-  return { attempts: priced, ...total, costUsd: String(costOfAttempts(attempts)) };
+  return { attempts: priced, ...total, costUsd: String(billed ? costOfAttempts(attempts) : 0) };
 }
 
 /**
@@ -371,6 +403,12 @@ function usageColumns(attempts: readonly AttemptUsage[]) {
  * unsettled and keep holding their worst case; nothing about them is released as free.
  */
 export async function markStaleRunsUnsettled(db: DbOrTx, now = new Date(), maxAgeMs = 30 * 60 * 1000): Promise<number> {
+  const stale = and(eq(providerRun.status, "running"), lt(providerRun.startedAt, new Date(now.getTime() - maxAgeMs)));
+  // A request through the owner's ChatGPT plan has no dollar cost to settle; it simply failed.
+  await db
+    .update(providerRun)
+    .set({ status: "error", error: "The process making this request ended before it finished.", finishedAt: now })
+    .where(and(stale, eq(providerRun.provider, "chatgpt_plan")));
   const rows = await db
     .update(providerRun)
     .set({
@@ -378,7 +416,7 @@ export async function markStaleRunsUnsettled(db: DbOrTx, now = new Date(), maxAg
       error: "The process making this run ended before recording what it cost. It is held at its worst case until settled.",
       finishedAt: now,
     })
-    .where(and(eq(providerRun.status, "running"), lt(providerRun.startedAt, new Date(now.getTime() - maxAgeMs))))
+    .where(stale)
     .returning({ id: providerRun.id, ownerId: providerRun.ownerId });
   for (const r of rows) {
     await db.insert(auditEvent).values({

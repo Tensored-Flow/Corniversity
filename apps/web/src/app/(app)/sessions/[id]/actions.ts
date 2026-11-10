@@ -1,5 +1,5 @@
 "use server";
-import { ASSESSOR_PROMPT_VERSION, modelLabel, ROLE_CONTRACTS } from "@corniversity/ai";
+import { ASSESSOR_PROMPT_VERSION, providerLabel, providerNameOf, publicProviderState, ROLE_CONTRACTS } from "@corniversity/ai";
 import { getEnv } from "@corniversity/db/env";
 import { teachingUnit } from "@corniversity/db/schema/index";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
@@ -133,7 +133,7 @@ export async function submitAttemptAction(sessionId: string, exerciseId: string,
           help: await assistanceCounts(tx, auth.user.id, attempt.id),
         },
         graderConfig: {
-          provider: state.mode === "scripted" ? "fixture" : "anthropic",
+          provider: providerNameOf(state),
           model: state.mode === "scripted" ? "fixture" : state.model,
           promptVersion: ASSESSOR_PROMPT_VERSION,
           roleVersion: ROLE_CONTRACTS.assessor.version,
@@ -365,7 +365,7 @@ export async function submitPaperAction(sessionId: string, exerciseId: string): 
         ownerId,
         attemptId: attempt.id,
         graderConfig: {
-          provider: state.mode === "scripted" ? "fixture" : "anthropic",
+          provider: providerNameOf(state),
           model: state.mode === "scripted" ? "fixture" : state.model,
           promptVersion: ASSESSOR_PROMPT_VERSION,
           roleVersion: ROLE_CONTRACTS.assessor.version,
@@ -380,7 +380,7 @@ export async function requestTranscriptionAction(sessionId: string, exerciseId: 
   return paperAction(sessionId, async () => {
     const { ownerId, attempt } = await ownAttempt(sessionId, exerciseId);
     const state = await resolveProviderState(db(), ownerId, getEnv());
-    if (state.mode !== "live") {
+    if (state.mode !== "live" && state.mode !== "plan") {
       throw new PaperWorkError(
         "unavailable",
         state.mode === "scripted"
@@ -392,7 +392,7 @@ export async function requestTranscriptionAction(sessionId: string, exerciseId: 
       ownerId,
       attemptId: attempt.id,
       consent,
-      providerLabel: `Anthropic (${modelLabel(state.model)})`,
+      providerLabel: providerLabel(publicProviderState(state)),
     });
   });
 }

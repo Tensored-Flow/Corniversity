@@ -349,7 +349,11 @@ export function Workbench(props: Props) {
         id="attempt-text"
         ref={area}
         value={draft}
-        onChange={(e) => setDraft(e.target.value)}
+        onChange={(e) => {
+          setDraft(e.target.value);
+          // Clearing the box clears the mark: nothing dictated is left to call spoken.
+          if (!e.target.value.trim()) setDictated(false);
+        }}
         onSelect={onSelect}
         disabled={accepted || reviewing}
         spellCheck={false}
@@ -361,7 +365,7 @@ export function Workbench(props: Props) {
         <DictationButton
           allowed={voiceAllowed}
           label="Explain aloud"
-          disabled={accepted || reviewing}
+          disabled={pending || accepted || reviewing}
           onText={(t) => {
             setDraft(append(t));
             setDictated(true);

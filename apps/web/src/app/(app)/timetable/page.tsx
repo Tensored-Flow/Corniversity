@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { catchUpAction, createCalendarLinkAction, decideProposalAction, revokeCalendarLinksAction } from "./actions";
 import { Obligations } from "./Obligations";
@@ -37,6 +38,11 @@ export default async function TimetablePage({
     return (
       <div className="mx-auto w-full max-w-5xl">
         <h1 className="text-3xl text-ink">Timetable</h1>
+        {params.error ? (
+          <div className="mt-4">
+            <Notice tone="rust">{errorNotice(params.error)}</Notice>
+          </div>
+        ) : null}
         <div className="mt-6">
           <EmptyState
             title="No confirmed plan yet"
@@ -104,7 +110,7 @@ export default async function TimetablePage({
 
       {params.error ? (
         <div className="mb-4">
-          <Notice tone="rust">{decodeURIComponent(params.error)}</Notice>
+          <Notice tone="rust">{errorNotice(params.error)}</Notice>
         </div>
       ) : null}
       {params.token ? (

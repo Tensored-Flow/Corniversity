@@ -22,6 +22,7 @@
     "dev": "pnpm --parallel --filter @corniversity/web --filter @corniversity/worker dev",
     "dev:web": "pnpm --filter @corniversity/web dev",
     "dev:worker": "pnpm --filter @corniversity/worker dev",
+    "local:owner": "tsx scripts/local-owner.ts",
     "build": "pnpm -r build",
     "start:web": "pnpm --filter @corniversity/web start",
     "start:worker": "pnpm --filter @corniversity/worker start",

@@ -169,7 +169,8 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
           <div
             key={m.id}
             className={[
-              "rounded-[var(--radius-panel)] px-3 py-2 text-sm",
+              // Long unbroken words (an error code, a URL) wrap instead of widening a phone's screen.
+              "rounded-[var(--radius-panel)] px-3 py-2 text-sm [overflow-wrap:anywhere]",
               m.sender === "learner" ? "ml-6 border border-stone bg-paper" : "border border-stone bg-paper-3/60",
             ].join(" ")}
           >

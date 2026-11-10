@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import {
   addProvenanceAction,
@@ -95,7 +96,7 @@ export default async function ProjectPage({
       </header>
       {flash.error ? (
         <div className="mb-4">
-          <Notice tone="rust">{flash.error}</Notice>
+          <Notice tone="rust">{errorNotice(flash.error)}</Notice>
         </div>
       ) : null}
       {flash.saved ? (

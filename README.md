@@ -47,6 +47,7 @@ that account exists.
 | `pnpm content:coverage` | Regenerates the per-block, elective, method and source tables in `docs/MIND_BRAIN_AI.md` |
 | `pnpm owner:reset-password` | Sets a new owner password (asked twice, never echoed) and signs the owner out everywhere; on the live site run it in the worker's shell, see `docs/HANDOFF.md` |
 | `pnpm library:pair -- --server <url> --code <code>`, `pnpm library:sync -- --dry-run`, `pnpm library:watch`, `pnpm library:status` | Desktop companion; see `apps/companion/README.md` |
+| `pnpm local:owner`, `pnpm local:owner backup` | The owner's local installation at http://127.0.0.1:3300 (its own database, data folder and output; after `pnpm db:local`), where teaching through the owner's ChatGPT plan is available; and its backup. Next rewrites the generated `apps/web/next-env.d.ts` to point at whichever development server ran last; discard that change with `git checkout apps/web/next-env.d.ts` |
 | `pnpm backup`, `pnpm restore <file> [--yes]`, `pnpm health` | Logical database backup (a small document plus a `<file>.blobs/` folder of stored originals; keep them together), restore (dry run by default) and health check |
 | `pnpm deploy:railway:plan`, `pnpm deploy:railway` | Prints the plan of a first deployment; creates a new Railway project after `railway login`, and refuses to run in a folder already linked to one. Later releases use `railway up --service worker --ci`, then `--service web` |
 

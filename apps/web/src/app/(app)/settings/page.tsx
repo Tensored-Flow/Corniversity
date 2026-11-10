@@ -1,6 +1,7 @@
 import { publicProviderState } from "@corniversity/ai";
 import { TIMEZONE_SUGGESTIONS } from "@corniversity/core/onboarding/steps";
 import { getEnv } from "@corniversity/db/env";
+import { planConnection, planModels, planRequestCounts, planUnavailableReason } from "@corniversity/db/services/chatgpt-plan";
 import { listPersonaMemory } from "@corniversity/db/services/community";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import {
@@ -15,6 +16,7 @@ import { voiceDictationAllowed } from "@corniversity/db/services/voice";
 import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import {
   allowVoiceAction,
@@ -24,6 +26,7 @@ import {
   updateProfileAction,
   withdrawVoiceAction,
 } from "./actions";
+import { ChatGptPlan } from "./ChatGptPlan";
 import { LiveTutoring } from "./LiveTutoring";
 import { StudyPreferences } from "./StudyPreferences";
 
@@ -34,7 +37,11 @@ export const metadata = { title: "Settings" };
  * (immersion, theme, type size, motion, social layer, notifications), the model provider and
  * its budgets, and the memory each persona holds about the learner, inspectable and deletable.
  */
-export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ saved?: string; error?: string }> }) {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string; error?: string; plan?: string; planError?: string }>;
+}) {
   const session = await requireSession("/settings");
   const flash = await searchParams;
   const database = db();
@@ -52,6 +59,14 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
     voiceDictationAllowed(database, ownerId),
   ]);
   const fontScale = profile.accessibility.fontScale ?? 1;
+  const planUnavailable = planUnavailableReason(env);
+  const [planConn, planCounts] = await Promise.all([planConnection(env, ownerId), planRequestCounts(database, ownerId)]);
+  const planModelList =
+    planConn.state === "connected"
+      ? await planModels(database, env, ownerId).catch((error: unknown) => ({
+          error: error instanceof Error ? error.message : "no answer from ChatGPT.",
+        }))
+      : [];
 
   return (
     <div className="mx-auto w-full max-w-4xl">
@@ -85,7 +100,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
       ) : null}
       {flash.error ? (
         <div className="mb-4">
-          <Notice tone="rust">{flash.error}</Notice>
+          <Notice tone="rust">{errorNotice(flash.error)}</Notice>
         </div>
       ) : null}
 
@@ -211,6 +226,21 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         </Card>
 
         <LiveTutoring state={publicProviderState(state)} view={view} limits={limits} spend={spend} runs={runs} unsettled={unsettled} />
+        <ChatGptPlan
+          unavailableReason={planUnavailable}
+          chosen={view.provider === "chatgpt_plan"}
+          connection={planConn}
+          models={planModelList}
+          settings={{
+            model: view.planModel,
+            dailyRequests: view.planDailyRequests,
+            monthlyRequests: view.planMonthlyRequests,
+            approval: view.planApproval,
+            pausedReason: view.planPausedReason,
+          }}
+          counts={planCounts}
+          flash={{ plan: flash.plan, planError: flash.planError }}
+        />
 
         <Card as="section" aria-labelledby="voice-heading" id="voice">
           <h2 id="voice-heading" className="text-lg text-ink">

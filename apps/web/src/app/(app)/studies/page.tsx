@@ -20,7 +20,8 @@ const STATE_TONE: Record<string, "neutral" | "brass" | "moss" | "rust" | "slate"
   revisit: "rust",
 };
 
-export default async function StudiesPage() {
+export default async function StudiesPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const { error } = await searchParams;
   const session = await requireSession("/studies");
   const [enrolments, open, states, issues] = await Promise.all([
     listEnrolments(db(), session.user.id),
@@ -115,7 +116,7 @@ export default async function StudiesPage() {
         )}
       </section>
 
-      <ReviewSection ownerId={session.user.id} />
+      <ReviewSection ownerId={session.user.id} error={error} />
 
       <section className="mt-10" aria-labelledby="evidence">
         <h2 id="evidence" className="text-xl text-ink">

@@ -9,6 +9,20 @@ const errors = (b: typeof bundle) =>
     .map((i) => i.message);
 
 describe("content validation", () => {
+  it("refuses a checked visual that fails its checks, and a published visual without a review", () => {
+    const failing = structuredClone(bundle);
+    const visual = failing.visuals[0]!;
+    visual.spec.status = "checked";
+    visual.spec.checks = [{ id: "impossible", kind: "series_value", series: "missing", at: 0, expected: 1, tolerance: 0.001 } as never];
+    expect(errors(failing).some((m) => m.includes("visual fails its checks"))).toBe(true);
+    const unreviewed = structuredClone(bundle);
+    unreviewed.visuals[0]!.spec.status = "published";
+    delete unreviewed.visuals[0]!.spec.review;
+    expect(errors(unreviewed)).toContain("a published visual needs a second reader's review (review.by, review.on, review.notes)");
+    unreviewed.visuals[0]!.spec.review = { by: "A second reader", on: "2026-11-10", notes: "Checked the storyboard against the unit." };
+    expect(errors(unreviewed).some((m) => m.includes("second reader"))).toBe(false);
+  });
+
   it("accepts the committed catalogue", () => {
     expect(errors(bundle)).toEqual([]);
   });

@@ -13,6 +13,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 export async function setSessionStatusAction(formData: FormData): Promise<void> {
@@ -36,7 +37,7 @@ export async function moveSessionAction(formData: FormData): Promise<void> {
   const id = String(formData.get("sessionId") ?? "");
   const newStart = String(formData.get("newStart") ?? "");
   const result = await moveSession(db(), session.user.id, id, newStart);
-  if (!result.ok) redirect(`/timetable?error=${encodeURIComponent(result.reason)}`);
+  if (!result.ok) redirect(errorHref("/timetable", errorCode(result.reason)));
   revalidatePath("/timetable");
   revalidatePath("/campus");
 }
@@ -58,9 +59,7 @@ export async function decideProposalAction(formData: FormData): Promise<void> {
   revalidatePath("/studies");
   const back = String(formData.get("returnTo") ?? "") === "/director" ? "/director" : "/timetable";
   if (outcome === "superseded") {
-    redirect(
-      `${back}?error=${encodeURIComponent("That route was proposed for an earlier focus, so nothing changed: your focus stays as you set it since. Ask the director again for a route from where you are now.")}`,
-    );
+    redirect(errorHref(back, "route-was-proposed-earlier-focus"));
   }
   redirect(back);
 }
@@ -92,7 +91,7 @@ export async function createDeadlineAction(formData: FormData): Promise<void> {
   const title = String(formData.get("title") ?? "");
   const due = String(formData.get("dueAt") ?? "");
   const target = String(formData.get("target") ?? "");
-  if (kind !== "assessment" && kind !== "examination" && kind !== "milestone") redirect("/timetable?error=Unknown%20deadline%20kind.");
+  if (kind !== "assessment" && kind !== "examination" && kind !== "milestone") redirect(errorHref("/timetable", "unknown-deadline-kind"));
   const [targetKind, enrolmentId, exerciseId] = target.split(":");
   try {
     await createDeadline(db(), session.user.id, {
@@ -103,7 +102,7 @@ export async function createDeadlineAction(formData: FormData): Promise<void> {
       exerciseId: targetKind === "exercise" ? exerciseId : undefined,
     });
   } catch (error) {
-    if (error instanceof StudyError) redirect(`/timetable?error=${encodeURIComponent(error.message)}#deadlines-heading`);
+    if (error instanceof StudyError) redirect(errorHref("/timetable", errorCode(error.message), "#deadlines-heading"));
     throw error;
   }
   revalidatePath("/timetable");

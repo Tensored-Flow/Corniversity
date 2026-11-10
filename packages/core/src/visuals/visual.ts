@@ -96,6 +96,18 @@ export const VisualSpec = z.object({
     .min(1)
     .max(12),
   checks: z.array(VisualCheck).min(1),
+  /**
+   * A second reader's review, required before a visual may be `published`: who read the storyboard,
+   * its checks and its film, on which date, and what they found. A `checked` visual has passed its
+   * automatic checks only.
+   */
+  review: z
+    .object({
+      by: z.string().min(1),
+      on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      notes: z.string().min(1),
+    })
+    .optional(),
   /** A rendered film of this storyboard, made locally. */
   render: VisualRender.optional(),
 });
@@ -240,7 +252,8 @@ export function captionsVtt(spec: VisualSpec, offsetSeconds = 0): string {
 
 /** A stable hash of the storyboard (FNV-1a over its JSON without the render record). */
 export function storyboardHash(spec: VisualSpec): string {
-  const { render: _render, status: _status, ...rest } = spec;
+  // The film depends on the storyboard only: its status, review and render record are not part of it.
+  const { render: _render, status: _status, review: _review, ...rest } = spec;
   const text = JSON.stringify(rest);
   let h = 0x811c9dc5;
   for (let i = 0; i < text.length; i++) {

@@ -631,6 +631,92 @@ preparation page and a bridge redirect anonymous requests to sign-in; the film, 
 and tutor-context endpoints answer 401; the public pages answer 200. Nothing behind sign-in was
 checked live, because the owner account does not exist yet: that is USER_ACTIONS item 4.
 
+## Final acceptance (10 November 2026)
+
+Evidence is kept apart by kind.
+
+- **Fixture (test double, not OpenAI).** The ChatGPT plan provider, sign-in and refresh run
+  against `packages/ai/src/chatgpt-plan.fake.ts`, a labelled double of OpenAI's documented wire
+  format. It covers discovery, signing keys, the authorize redirect, the code exchange with PKCE,
+  rotating refresh tokens with reuse detection, revocation, the model list and streamed Responses.
+  - **Unit tests in `ai` (14).** The request shape (instructions, history as input, `store: false`,
+    `stream: true`, no unsupported fields, no system-role item). Page images as input images.
+    Structured answers validated. A usage limit before and during the stream, ineligibility, a
+    non-standard 403 body, and a stream cut short, each mapped with nothing retried. The model
+    list, PKCE, the authorization URLs, ID-token audience and nonce, the refresh timing, and the
+    credential files.
+  - **Integration tests in `db` (15).** The hosted site and a non-loopback address are refused.
+    The plan is blocked, never scripted, until connected. A first registration and a returning
+    one, with a different client refused. Declined consent, a missing registration and a forged
+    state are refused. No tokens are kept without plan permission. One refresh when two processes
+    race. Unusable tokens clear and ask for a new sign-in. Approval of the model and limits (a
+    higher limit needs approval again). Plan runs cost $0 and do not touch the dollar limits. The
+    daily request limit. A duplicate call. A usage limit pauses until resumed. Sign-out revokes,
+    clears tokens and approval, keeps the registration, and writes nothing secret to the audit log.
+  - **Journey 16, at both viewports.** Run on a rehearsal stack: a fresh database, the web app at
+    http://127.0.0.1:3400, and plan endpoints pointed at the double. It covers choosing the plan,
+    *Continue with ChatGPT* through consent and back, the account's models (a hidden one not
+    offered), approved limits, a tutor reply labelled *via your ChatGPT plan*, a usage limit
+    keeping the learner's message and pausing, resuming, signing out with revocation confirmed,
+    and the return to the scripted demo.
+  - **Defect found and fixed.** A plan request was first priced at the dearest known model rate,
+    so it would have counted against the dollar limits. Plan runs are now recorded at $0, and a
+    plan run left running becomes an error, not an unsettled charge.
+  - **Independent review.** A fresh reviewer read the code (not these notes) and found nine issues,
+    none high, all fixed with tests:
+    - a sign-out or new sign-in could interleave with a refresh in flight; every change to the token
+      files now takes one lock;
+    - switching ChatGPT accounts kept the old approval and left the old session live; it now revokes
+      the old session and asks for approval again;
+    - plan runs were recorded as `anthropic` in grader configurations and refusals;
+    - an audit row was lost to a rollback;
+    - an uncertain plan failure could land in the settlement list;
+    - a renewed token that could not be saved was hidden;
+    - study-preference errors still went through the address as text;
+    - a crafted `?plan=` value drew an empty notice;
+    - dictation could keep the microphone after a quick Cancel and Dictate, or while a submission
+      was in flight.
+- **Live (OpenAI).** None. No request has reached OpenAI, and the owner's sign-in is theirs to do
+  (USER_ACTIONS 3b). Whether OpenAI's consent page accepts a private, locally hosted app is decided
+  there. OpenAI's help-centre pages on plan sharing refused automated reading (HTTP 403), so the
+  developer pages at developers.openai.com/siwc, read on 10 November 2026, are the source.
+- **Local, scripted demo.** Error notices are codes now.
+  - `notices.test.ts`: crafted text, encoded text, arrays and prototype keys get the neutral notice,
+    and every literal service message is listed.
+  - Journey 15: a crafted message on six pages, a listed code, and a crafted `written=` path.
+  - The unit page and My Studies used to drop their error notices silently, and the timetable did
+    so for an owner without a plan. All three now show them.
+- **Local, voice.** Journey 13 adds a recogniser stand-in that the test drives:
+  - Cancel stops capture, and a result arriving after it is dropped.
+  - Stop keeps what was heard.
+  - Sending stops capture.
+  - A refused microphone is said in words, and a browser without recognition offers typing.
+  - The spoken mark clears with the text.
+- **Local, visuals and campus.**
+  - Visuals: a `published` visual needs a recorded review (validator test), and the worker refuses
+    to seed content with validation errors (seed test). The viewer states only what is recorded.
+  - Campus: lecture and tutorial rooms join the map, and journey 8 checks the skip link and that
+    every place on the map answers.
+  - The session page was 52 px wider than a phone, so its Send button moved under the pointer.
+    Measured with a script, then fixed: the page is now exactly the screen's width.
+- **Local, budget boundary.** A preparation request with a $20 budget is refused when the owner's
+  daily limit has room for less than its worst case, and when paid use is not approved. Nothing is
+  sent in either case (`prepare.handler.test.ts`).
+- **Restore drill (test data only, isolated).** Run on two scratch databases in the local cluster,
+  dropped afterwards.
+  - Through the services, with the production blob driver (`pg`): an enrolment, a permitted upload
+    of 195,020 bytes with its *private cloud storage* permission, a handwritten attempt (a
+    photographed page, a confirmed transcription, *Submission v1* and its assessment run) and a
+    notebook entry.
+  - `pnpm backup` wrote the document and its originals. `pnpm restore --yes` restored them into the
+    second database after a fresh migration.
+  - The user, enrolment, asset, permission, attempt, work page, transcription, submission and
+    notebook rows were identical, and both stored originals matched byte for byte (sha256
+    `d555c554cfb7…` for the upload).
+- **Not verified:** real speech recognition, a live model's tutoring or drafting, OpenAI's plan
+  usage, anything behind sign-in on the hosted site, and the hosted Postgres backup schedule, which
+  the Railway CLI does not report.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -652,8 +738,16 @@ checked live, because the owner account does not exist yet: that is USER_ACTIONS
 - COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
   COG-100 has none. Blocks MBI-02, MBI-10 and MBI-12 are proposed, the eight electives are
   proposed, and method 9.6 (measurement, reliability and validity) has no prepared unit.
-- Error text passed to a page in `?error=` is shown as given in the error notice. React escapes it,
-  so it cannot run script, but a crafted link can make misleading text look like an app message.
+- (Repaired at final acceptance.) Error text passed in `?error=` was shown as given; pages now show
+  only the application's own text for an allowlisted code, and a neutral notice for anything else.
+- Teaching through the owner's ChatGPT plan is verified only against a test double; the first real
+  request will be the owner's. It is available only in the local installation.
+- Spoken read-aloud replaces each formula with "(formula shown on screen)" rather than reading it
+  in words.
+- Films for visual explanations are rendered by a local command (`pnpm visuals:render`), not a
+  queued job with a quota; the plot and check kinds are fixed in code.
+- On phones the campus map is the same drawing scaled down; the list beside it is the usable
+  equivalent.
 - The PDF active-content check reads the file's uncompressed text; content inside compressed
   object streams is not seen. PDFs are therefore only offered as downloads under a sandbox.
 - (Repaired in Milestone 13.) MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210

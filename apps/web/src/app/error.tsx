@@ -13,7 +13,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
     console.error("[page error]", error.digest ?? error.message);
   }, [error]);
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col justify-center px-4 py-12">
+    <main id="main" className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col justify-center px-4 py-12">
       <p className="text-sm uppercase tracking-[0.18em] text-brass">Something went wrong</p>
       <h1 className="mt-2 text-3xl text-ink">This page could not be shown</h1>
       <p className="mt-3 text-sm text-ink-2">

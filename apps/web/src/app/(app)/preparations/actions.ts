@@ -13,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ZodError } from "zod";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
@@ -46,7 +47,7 @@ export async function createPreparationAction(form: FormData): Promise<void> {
         : error instanceof ZodError
           ? "Fill in every field: the goal needs a sentence."
           : null;
-    if (message) redirect(`/courses/${encodeURIComponent(courseId)}/prepare?error=${encodeURIComponent(message)}`);
+    if (message) redirect(errorHref(`/courses/${encodeURIComponent(courseId)}/prepare`, errorCode(message)));
     throw error;
   }
   redirect(`/preparations/${id}`);
@@ -58,7 +59,7 @@ async function act(form: FormData, run: (ownerId: string, id: string) => Promise
   try {
     await run(session.user.id, id);
   } catch (error) {
-    if (error instanceof PreparationError) redirect(`/preparations/${id}?error=${encodeURIComponent(error.message)}`);
+    if (error instanceof PreparationError) redirect(errorHref(`/preparations/${id}`, errorCode(error.message)));
     throw error;
   }
   revalidatePath(`/preparations/${id}`);

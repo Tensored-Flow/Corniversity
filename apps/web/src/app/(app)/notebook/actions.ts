@@ -3,6 +3,7 @@ import { createEntry, deleteEntry, NotebookError, setResolved, updateEntry } fro
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const UUID = /^[0-9a-f-]{36}$/;
@@ -14,7 +15,7 @@ const tags = (form: FormData) =>
     .filter(Boolean);
 
 function fail(path: string, message: string): never {
-  redirect(`${path}?error=${encodeURIComponent(message)}`);
+  redirect(errorHref(path, errorCode(message)));
 }
 
 export async function createEntryAction(form: FormData): Promise<void> {

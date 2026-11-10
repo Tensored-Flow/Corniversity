@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Markdown } from "@/components/Markdown";
 import { Badge, Button, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "../../sessions/[id]/AutoRefresh";
 import {
@@ -104,7 +105,7 @@ export default async function PreparationPage({
       {request.statusNote ? <p className="mt-2 max-w-prose text-sm text-ink-2">{request.statusNote}</p> : null}
       {error ? (
         <div className="mt-3">
-          <Notice tone="rust">{error}</Notice>
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
       ) : null}
 

@@ -38,6 +38,14 @@ const EnvSchema = z.object({
   AI_PROVIDER: z.enum(["fixture", "anthropic"]).default("fixture"),
   ANTHROPIC_API_KEY: z.string().optional(),
   AI_MODEL_DEFAULT: z.string().default("claude-opus-5-5"),
+  /**
+   * ChatGPT plan usage (local installation only): OpenAI's sign-in service and Responses API,
+   * replaceable only so tests can serve the documented wire format locally; and where this
+   * computer keeps the owner-only credential files (default ~/.config/corniversity/chatgpt-plan).
+   */
+  CHATGPT_PLAN_AUTH_BASE: z.string().url().default("https://auth.openai.com"),
+  CHATGPT_PLAN_API_BASE: z.string().url().default("https://api.openai.com/v1"),
+  CHATGPT_PLAN_HOME: z.string().min(1).optional(),
   AI_BUDGET_PER_RUN_USD: z.coerce.number().positive().default(1),
   AI_BUDGET_DAILY_USD: z.coerce.number().positive().default(3),
   AI_BUDGET_MONTHLY_USD: z.coerce.number().positive().default(40),

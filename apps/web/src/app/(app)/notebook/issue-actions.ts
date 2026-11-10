@@ -3,6 +3,7 @@ import { createLearnerIssue, deleteIssue, IssueError, respondToIssue } from "@co
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
@@ -38,7 +39,7 @@ export async function respondIssueAction(form: FormData): Promise<void> {
         return;
     }
   } catch (error) {
-    if (error instanceof IssueError) redirect(`/notebook?error=${encodeURIComponent(error.message)}#issues-heading`);
+    if (error instanceof IssueError) redirect(errorHref("/notebook", errorCode(error.message), "#issues-heading"));
     throw error;
   }
   refresh();
@@ -59,7 +60,7 @@ export async function createIssueAction(form: FormData): Promise<void> {
   try {
     await createLearnerIssue(db(), session.user.id, { statement: text(form, "statement"), exerciseId: text(form, "exerciseId") || null });
   } catch (error) {
-    if (error instanceof IssueError) redirect(`/notebook?error=${encodeURIComponent(error.message)}#issues-heading`);
+    if (error instanceof IssueError) redirect(errorHref("/notebook", errorCode(error.message), "#issues-heading"));
     throw error;
   }
   refresh();

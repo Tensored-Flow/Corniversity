@@ -753,7 +753,7 @@ export async function publishDraft(db: DbOrTx, ownerId: string, draftId: string)
           {
             name: "owner-review",
             result: "pass" as const,
-            evidence: `Published by the owner on ${new Date().toISOString().slice(0, 10)} after reading draft v${draft.version}; not independent academic verification.`,
+            evidence: `Published by the owner's decision on ${new Date().toISOString().slice(0, 10)} from draft v${draft.version}; not independent academic verification.`,
           },
         ],
       })

@@ -40,6 +40,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@corniversity/core", "@corniversity/db", "@corniversity/ai", "@corniversity/content"],
   serverExternalPackages: ["pg", "pg-boss", "@anthropic-ai/sdk", "unpdf"],
   poweredByHeader: false,
+  // The owner's local installation (`pnpm local:owner`) runs its own development server beside
+  // the one the journeys use, so it compiles into its own folder.
+  distDir: process.env.CORNIVERSITY_NEXT_DIST_DIR ?? ".next",
   output: "standalone",
   outputFileTracingRoot: resolve(process.cwd(), "../../"),
   // The fixture provider reads its scripted responses from disk at run time, which file tracing

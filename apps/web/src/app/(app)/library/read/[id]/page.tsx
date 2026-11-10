@@ -194,7 +194,7 @@ export default async function ReadPage({
           </Card>
         </aside>
 
-        <main className="order-1 lg:order-2">
+        <section aria-label="Reading" className="order-1 lg:order-2">
           <Card as="article">
             {page.quality.scannedSuspected ? (
               <div className="mb-3">
@@ -224,7 +224,7 @@ export default async function ReadPage({
               </p>
             ) : null}
           </Card>
-        </main>
+        </section>
 
         <aside className="order-3 flex flex-col gap-4">
           <Card as="div">

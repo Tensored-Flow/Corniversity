@@ -32,6 +32,32 @@ const PAGES = [
 ];
 
 test.describe("accessibility (axe)", () => {
+  test("the skip link reaches the content, and every place on the campus map opens a real page", async ({ page }) => {
+    test.setTimeout(120_000);
+    await signInOrBootstrap(page);
+    await page.goto("/campus");
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#main$/);
+    await expect(page.locator("main#main")).toHaveCount(1);
+
+    await page.goto("/campus/map");
+    const listed = await page
+      .getByRole("navigation", { name: "Places on the campus" })
+      .getByRole("link")
+      .evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    const drawn = await page.locator("svg a").evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    // The list is the drawing's equivalent: the same places, lecture and tutorial rooms among them.
+    expect([...listed].sort()).toEqual([...drawn].sort());
+    expect(listed).toContain("/timetable");
+    for (const href of listed) {
+      const response = await page.request.get(href!);
+      expect(response.status(), href!).toBe(200);
+      expect(response.url(), href!).not.toContain("/sign-in");
+    }
+  });
+
   test("no serious or critical WCAG violations on the main pages", async ({ page }) => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);

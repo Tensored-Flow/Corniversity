@@ -1,4 +1,4 @@
-import type { PaidUseApproval } from "@corniversity/ai/state";
+import type { PaidUseApproval, PlanUseApproval } from "@corniversity/ai/state";
 import type { ExplicitStudyPreferences } from "@corniversity/core";
 import { boolean, index, integer, jsonb, numeric, pgTable, real, text, uuid } from "drizzle-orm/pg-core";
 import { createdAt, immersionEnum, tz, updatedAt } from "./_shared";
@@ -71,7 +71,7 @@ export const providerSetting = pgTable("provider_setting", {
   userId: text("user_id")
     .primaryKey()
     .references(() => user.id, { onDelete: "cascade" }),
-  provider: text("provider").$type<"fixture" | "anthropic">().notNull().default("fixture"),
+  provider: text("provider").$type<"fixture" | "anthropic" | "chatgpt_plan">().notNull().default("fixture"),
   apiKeyEncrypted: text("api_key_encrypted"),
   apiKeyHint: text("api_key_hint"),
   /** No longer read: every role uses `model`, so one approval covers every paid run. */
@@ -82,6 +82,15 @@ export const providerSetting = pgTable("provider_setting", {
   refusalFallback: boolean("refusal_fallback").notNull().default(true),
   /** Null until the owner approves paid use. */
   paidUseApproval: jsonb("paid_use_approval").$type<PaidUseApproval>(),
+  /** The model slug chosen from the owner's ChatGPT account (local installation only). */
+  planModel: text("plan_model"),
+  planDailyRequests: integer("plan_daily_requests").notNull().default(30),
+  planMonthlyRequests: integer("plan_monthly_requests").notNull().default(300),
+  /** Null until the owner approves teaching through their ChatGPT plan within these limits. */
+  planUseApproval: jsonb("plan_use_approval").$type<PlanUseApproval>(),
+  /** Set when a usage limit or an eligibility refusal paused plan requests; cleared only by the owner. */
+  planPausedAt: tz("plan_paused_at"),
+  planPauseReason: text("plan_pause_reason"),
   updatedAt: updatedAt(),
 });
 

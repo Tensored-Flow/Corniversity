@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AiLabel } from "@/components/AiLabel";
 import { Badge, Button, Card, Field, Input, Notice, Select } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { openDiscussionAction, setPeerMembershipAction } from "./actions";
 
@@ -46,7 +47,7 @@ export default async function CommonRoomPage({ searchParams }: { searchParams: P
       </header>
       {error ? (
         <div className="mb-4">
-          <Notice tone="rust">{error}</Notice>
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
       ) : null}
       {!social ? (

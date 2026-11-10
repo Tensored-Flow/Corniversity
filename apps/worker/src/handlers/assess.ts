@@ -7,6 +7,7 @@ import {
   outputSchemaText,
   PRICING_VERSION,
   ProviderError,
+  providerNameOf,
   ROLE_CONTRACTS,
 } from "@corniversity/ai";
 import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
@@ -185,7 +186,7 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     providerRunId = await recordProviderRun(db, {
       ownerId: payload.ownerId,
       role: "assessor",
-      provider: plan.kind === "scripted" ? "fixture" : "anthropic",
+      provider: providerNameOf(plan.state),
       model,
       purpose: "assess-submission",
       pricingVersion: PRICING_VERSION,
@@ -198,7 +199,7 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     });
   }
   // The run records what actually assessed it, whatever was configured when it was submitted.
-  const graderConfig = { ...run.graderConfig, provider: plan.kind === "scripted" ? "fixture" : "anthropic", model };
+  const graderConfig = { ...run.graderConfig, provider: providerNameOf(plan.state), model };
 
   if (!feedbackObject) {
     await db

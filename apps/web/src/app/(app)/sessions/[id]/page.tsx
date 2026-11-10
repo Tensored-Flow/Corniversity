@@ -1,4 +1,4 @@
-import { modelLabel, publicProviderState } from "@corniversity/ai";
+import { providerLabel, publicProviderState } from "@corniversity/ai";
 import { pageOfLine } from "@corniversity/core/paper/transcription";
 import { proposeNextTask, STAGE_LABELS } from "@corniversity/core/progression/progression";
 import { getEnv } from "@corniversity/db/env";
@@ -252,7 +252,8 @@ export default async function SessionPage({
           ) : null}
         </header>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {/* One column on phones that never grows past the screen; wide content scrolls inside its own box. */}
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
           <div className="flex min-w-0 flex-col gap-6">
             {labId ? (
               <>
@@ -405,7 +406,7 @@ export default async function SessionPage({
                     }))}
                     provider={{
                       mode: providerState.mode,
-                      label: providerState.mode === "live" ? `Anthropic (${modelLabel(providerState.model)})` : "",
+                      label: providerState.mode === "live" || providerState.mode === "plan" ? providerLabel(providerState) : "",
                       reason: providerState.mode === "blocked" ? providerState.reason : undefined,
                     }}
                     transcriptionJob={transcriptionJob ? { status: transcriptionJob.status, error: transcriptionJob.error } : null}

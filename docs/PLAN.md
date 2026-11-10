@@ -224,3 +224,14 @@ Authorization sweep over the new routes, accessibility, upgrade test on a popula
 backup/restore including the new tables, a private source backup (git bundle) and secret scan,
 production build on a new empty database, release to the existing Railway project (worker
 first, then web), live checks, records. Gate: evidence recorded; nothing claimed that was not run.
+
+### Milestone 18 — Final acceptance — done
+
+The owner's ChatGPT plan as a teacher, by OpenAI's documented Sign in with ChatGPT for locally
+hosted apps (local installation only, `pnpm local:owner`); the extension workflows checked against
+their code and tests and their genuine gaps repaired; allowlisted error codes in place of text from
+the address; a restore drill of learning records and uploads, and the preparation budget shown to
+sit inside the owner's limits; one owner acceptance journey (USER_ACTIONS 4). Gate: unit,
+integration and journey suites; journey 16 against a test double; independent review; nothing
+claimed live that was not run.
+

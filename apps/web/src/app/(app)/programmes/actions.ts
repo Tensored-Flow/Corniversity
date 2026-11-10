@@ -10,6 +10,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const ID = /^[a-z0-9][a-z0-9-]{0,80}$/;
@@ -27,7 +28,7 @@ export async function followProgrammeAction(form: FormData): Promise<void> {
   try {
     await followProgramme(db(), session.user.id, id, "learner");
   } catch (error) {
-    if (error instanceof ProgrammeError) redirect(`/programmes/${id}?error=${encodeURIComponent(error.message)}`);
+    if (error instanceof ProgrammeError) redirect(errorHref(`/programmes/${id}`, errorCode(error.message)));
     throw error;
   }
   revalidatePath(`/programmes/${id}`);
@@ -53,7 +54,7 @@ export async function askDirectorAction(form: FormData): Promise<void> {
   try {
     await proposeProgrammeRoute(db(), session.user.id, id);
   } catch (error) {
-    if (error instanceof ProgrammeError) redirect(`/programmes/${id}?error=${encodeURIComponent(error.message)}`);
+    if (error instanceof ProgrammeError) redirect(errorHref(`/programmes/${id}`, errorCode(error.message)));
     throw error;
   }
   revalidatePath("/director");

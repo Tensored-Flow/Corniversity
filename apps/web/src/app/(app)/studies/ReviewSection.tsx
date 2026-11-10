@@ -1,6 +1,8 @@
 import { REVIEW_RULE } from "@corniversity/core/review/review";
 import { nextReviewItems } from "@corniversity/db/services/revision";
+import { Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { archiveReviewAction, reviewRevisionAction, saveReviewSettingsAction, snoozeReviewAction } from "./actions";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -20,7 +22,7 @@ const KIND_LABEL: Record<string, string> = {
  * (weekly number, pause, days kept free). Items past their date are not owed; skipping costs
  * nothing, and ordinary study never waits for review.
  */
-export async function ReviewSection({ ownerId }: { ownerId: string }) {
+export async function ReviewSection({ ownerId, error }: { ownerId: string; error?: string }) {
   const { settings, set, items, reviewedThisWeek } = await nextReviewItems(db(), ownerId);
   const state =
     set.kind === "paused"
@@ -38,6 +40,11 @@ export async function ReviewSection({ ownerId }: { ownerId: string }) {
         Review
       </h2>
       <p className="mt-1 max-w-prose text-sm text-ink-2">{REVIEW_RULE}</p>
+      {error ? (
+        <div className="mt-2">
+          <Notice tone="rust">{errorNotice(error)}</Notice>
+        </div>
+      ) : null}
       <p className="mt-2 text-sm text-ink" role="status">
         {state}{" "}
         <span className="text-ink-3">

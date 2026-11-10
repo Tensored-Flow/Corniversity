@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import { getEnv } from "@corniversity/db/env";
 import { listCatalogue } from "@corniversity/db/services/catalogue";
 import { companionState, listPairings, listResourceRequests, suggestedRequests } from "@corniversity/db/services/library";
@@ -39,7 +40,11 @@ export default async function RequestsPage({
         active="/library/requests"
         sync={companionState(pairings)}
       />
-      <FlashNotices error={params.error} saved={params.saved} written={params.written} />
+      <FlashNotices
+        error={params.error}
+        saved={params.saved}
+        written={params.written === "1" ? join(getEnv().CORNIVERSITY_DATA_ROOT, "requests") : undefined}
+      />
 
       <div className="mb-6 flex flex-wrap gap-2">
         <LinkButton href="/api/library/requests?format=md" variant="secondary">

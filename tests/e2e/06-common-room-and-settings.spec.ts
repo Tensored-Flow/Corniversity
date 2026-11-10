@@ -101,9 +101,9 @@ test.describe("common room and settings", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Map of the college" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Places on the campus" }).getByRole("link", { name: "Library" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Places on the campus" }).getByRole("link", { name: "Common Room" })).toHaveCount(0);
+    await screenshot(page, "34-campus-map-quiet");
     await page.goto("/studies");
     await expect(page.getByRole("heading", { level: 1, name: "Your courses" })).toBeVisible();
-    await screenshot(page, "34-campus-map-quiet");
     await setImmersion(page, "collegiate", true);
     await page.goto("/campus/map");
     await expect(page.getByRole("navigation", { name: "Places on the campus" }).getByRole("link", { name: "Common Room" })).toBeVisible();

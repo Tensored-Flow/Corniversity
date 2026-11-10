@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { ReadinessBadge, UnitStatusBadge } from "@/components/Readiness";
 import { Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { askDirectorAction, followProgrammeAction, setProgrammeStatusAction, startPaperReportAction } from "../actions";
 
@@ -132,7 +133,7 @@ export default async function ProgrammePage({
         ) : null}
         {query.error ? (
           <div className="mt-3">
-            <Notice tone="rust">{query.error}</Notice>
+            <Notice tone="rust">{errorNotice(query.error)}</Notice>
           </div>
         ) : null}
       </header>

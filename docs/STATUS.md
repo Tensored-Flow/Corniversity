@@ -1,10 +1,11 @@
 # Status
 
-Last updated: 10 November 2026 (Milestones 0–17 complete; the teaching-experience brief
-(`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`) is in progress as Milestones 11–17. The site is
-deployed on Railway at the teaching-experience release (10 Nov 2026, `6850ec9`); the owner account is still
-to be created there, so the checks behind sign-in and live tutoring wait for the owner's
-checklist).
+Last updated: 10 November 2026 (Milestones 0–18 complete: the teaching-experience brief
+(`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`, Milestones 11–17) and the owner's final
+acceptance request (Milestone 18: teaching through the owner's ChatGPT plan in a local installation,
+the extension workflows' repairs, allowlisted error codes, a restore drill). The owner account is
+still to be created on the hosted site, so the checks behind sign-in, live tutoring and the plan
+connection wait for the owner's acceptance journey, USER_ACTIONS 4).
 
 ## Implemented / tested / blocked
 
@@ -13,7 +14,7 @@ checklist).
 | Planning documents | yes | n/a | docs/ |
 | Monorepo, type checks, Biome, Vitest, Playwright | yes | typecheck green for 7 packages; `pnpm lint` clean | pnpm 12, TS 5.9, Next 16.4 |
 | Embedded PostgreSQL dev cluster | yes | migrations applied | `pnpm db:local`; pgvector absent locally (expected) |
-| Drizzle schema (86 tables, 13 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
+| Drizzle schema (86 tables, 14 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
 | better-auth email+password, owner bootstrap, closed sign-up, sign-in rate limit, one-owner index | yes | owner test (setup, concurrent inserts, restart); journey 1; security spec | the bootstrap code is optional once the owner exists |
 | Owner password recovery without email | yes | owner test; the command run end to end against a throw-away database | `pnpm owner:reset-password` locally; in the worker's shell on Railway (HANDOFF.md); signs the owner out everywhere |
 | Design tokens, fonts, Markdown + KaTeX (MathML) + mhchem | yes | 4 web unit tests (sanitiser, maths, chemistry); axe pass | light + dark roles; `--ink-3` darkened to pass 4.5:1 on every paper surface; chemistry rendered by the app's own KaTeX plugin |
@@ -30,6 +31,7 @@ checklist).
 | Voice and visual teaching (brief EXT-01, EXT-02): dictation after a recorded permission, read-aloud with on-device voices, spoken explanations marked; checked visual explanations with films recorded locally (`pnpm visuals:render`) | yes | visual (8), visuals-seed (4) and speakable (2) tests; journey 13 at both viewports; axe | dictation in automation uses a labelled stand-in for the browser's recogniser; films have no sound (captions carry the words) |
 | Learning issues, bounded review, problem progressions, course preparation (brief CORE-04 to CORE-06) | yes | learning-issues (4), review (6), pipeline (4), preparation (4) and prepare-handler (2) tests; journey 12 at both viewports | issues describe work, not the learner; review owes nothing; progressions tagged on four routes; preparation drafting is blocked in the scripted demo and unverified live |
 | AI package: Anthropic provider (beta Messages API, server-side refusal fallback, SDK retries off), scripted demo, provider states, supported models, approval of paid use, strict worst-case bound (a token per byte, images at the documented ceiling, unknown prices refused), micro-dollar arithmetic, billing certainty of failures, bounded history, per-attempt pricing (table fetched 10 Nov 2026), asset diagnostic, role contracts and prompts | yes | 69 unit tests in `packages/ai`, including a contract test of the real SDK against a local server speaking the documented wire format and role-ceiling usability; the worker assessment test runs the live path against such a server, including a dropped connection (one call, run unsettled) | no request has reached Anthropic; live tutoring waits for the owner's key and approval |
+| Teaching through the owner's ChatGPT plan (local installation only: `pnpm local:owner`, http://127.0.0.1:3300, *Settings → Use your ChatGPT plan*) | yes | `ai` plan tests (14) and `db` plan tests (15) against a labelled test double of OpenAI's documented wire format; journey 16 at both viewports on a rehearsal stack wired to the double; independent review (its findings fixed) | no request has reached OpenAI; the hosted site refuses it (OpenAI documents plan usage for open-source and locally hosted apps); request limits the owner approves; a usage limit pauses until resumed; no fallback to an API key or scripted text |
 | Live-tutoring settings and labels; unsettled runs and their settlement | yes | provider-config tests (20: reservations, the lock, recorded spend, unsettled runs held, stale runs, settlement rules, duplicate calls, UTC boundaries); journeys 6 and 10 (a live model that cannot run is refused and the learner's message kept) | every AI label names the model, "model blocked" or "scripted demo"; Settings explains the Console key and subscription credits with the official link |
 | Worker: assessment, ingestion, export and maintenance handlers; non-retryable failures; asset line on start | yes | handler tests; journeys 2, 5 and records | |
 | Scheduling engine and timetable, proposals, catch-up, director, ICS | yes | 12 unit tests; journey 3 | journey 7 (missed sessions) is exercised at service level only; see QA_REPORT |
@@ -43,7 +45,7 @@ checklist).
 | Research studio: projects of five kinds, focused shelf, versioned proposal, methods and report, provenance, notebook, artefacts, feedback, oral discussion, Markdown report | yes | 15 core and 15 db tests; spec 10 (desktop + mobile) | feedback is structural checks in the scripted demo; no recruitment or new data from people; existing data about people only as its licence or terms permit |
 | Study defaults and obligations: rolling plan, explicit preferences, workload preview with independent work, content sequence, appointments and deadlines kept apart | yes | study and planning tests; journey specs 09 and 10 | |
 | Security: unauthenticated matrix (including the studio), sandboxed file routes, blob key validation, Markdown sanitiser, Content-Security-Policy (HSTS in production), proxy-aware rate-limit keys, global pairing cap, UUID guards | yes | security spec (including a forged session cookie and sign-up after setup with the bootstrap code); blob, markdown and ownership tests | the journeys refuse to run against anything but a local stack in the scripted demo |
-| Backup and restore | yes | 3 integration tests restore a snapshot with a 1 MB original into a fresh database | `pnpm backup`, `pnpm restore <file> [--yes]` |
+| Backup and restore | yes | 3 integration tests restore a snapshot with a 1 MB original into a fresh database; a restore drill on two scratch databases restored learning records and a permitted upload byte for byte (QA_REPORT, "Final acceptance") | `pnpm backup`, `pnpm restore <file> [--yes]`; `pnpm local:owner backup` for the owner's local installation; source bundles in `Documents/Corniversity-backups`; off-device copies and the hosted backup schedule are the owner's |
 | Health checks (web reports not-ready until the schema carries this build's migrations; asset counts and prompt versions) | yes | security spec (`/api/health`) | `pnpm health` |
 | Production build | pass on 10 Nov 2026 | the 87 journeys pass at both sizes against the production build on a new, empty database | `pnpm build` |
 | Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026; Milestone 10 released on 9 Nov 2026; the audit's fixes released on 10 Nov 2026 to the Railway project `corniversity` (worker and web from `40c2624`, migration 0007 applied); the teaching-experience brief released on 10 Nov 2026 (worker, then web, from `6850ec9`; migrations 0008–0012 applied) at https://web-production-4c692.up.railway.app | live: health with the asset diagnostic, the worker's log, production headers, robots, the public pages at both sizes, private routes refusing anonymous requests and a forged session cookie, a non-owner sign-up refused; nothing behind sign-in (QA_REPORT.md, "After the release") | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved |
@@ -60,16 +62,21 @@ checklist).
 
 ## Blocked (owner action required)
 
-See [USER_ACTIONS.md](USER_ACTIONS.md): creating the owner account on the live site, then
-retiring the bootstrap code; optionally a provider key with approved paid use; then the owner's
-short checklist (item 4: sign-in, the live tutor, the limits and one learning journey), because the
-build agent cannot sign in as the owner; optional GitHub publish.
+See [USER_ACTIONS.md](USER_ACTIONS.md): creating the owner account on the hosted site, then
+retiring the bootstrap code; choosing who teaches (an Anthropic key on the hosted site, or the
+owner's ChatGPT plan in the local installation); the owner acceptance journey (item 4), because
+the build agent cannot sign in as the owner or as their ChatGPT account; backups off this computer
+and the hosted backup schedule (item 5); optional GitHub publish.
 
 ## Resume checkpoint
 
 Local stack: `pnpm db:local` (window 1), `pnpm dev` (window 2). Owner account on the local
 database was created by the e2e tests with the test password in `tests/e2e/helpers.ts`; run
-`pnpm owner:reset-password` to choose your own. Playwright signs in once per run through
+`pnpm owner:reset-password` to choose your own. The owner's own local installation is separate:
+`pnpm local:owner` (database `corniversity_owner`, http://127.0.0.1:3300); never run the journeys
+against it. Journey 16 needs a rehearsal stack with `CHATGPT_PLAN_AUTH_BASE` and
+`CHATGPT_PLAN_API_BASE` pointing at the test double's port (`E2E_CHATGPT_PLAN_FAKE_PORT`) and is
+skipped on the ordinary stack. Playwright signs in once per run through
 `tests/e2e/auth.setup.ts`.
 
 Live site: https://web-production-4c692.up.railway.app. To ship a change, commit it and run

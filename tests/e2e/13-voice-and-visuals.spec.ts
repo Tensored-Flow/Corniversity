@@ -9,9 +9,11 @@ import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
  * - dictation is hidden until the learner allows it in Settings; once allowed, recognised text lands
  *   in the learner's own box and is not sent, and a dictated attempt is marked as a spoken explanation.
  *
- * Headless Chromium has no speech service, so the dictation journey installs a stand-in for the
- * browser's SpeechRecognition that returns a fixed phrase. It is a test double: it checks the wiring
- * (permission, editable text, nothing sent automatically), not any vendor's recogniser.
+ * Headless Chromium has no speech service, so the dictation journeys install stand-ins for the
+ * browser's SpeechRecognition: one returns a fixed phrase, the other delivers results only when the
+ * test emits them (to check cancel, stop and capture ending on send). They are test doubles: they
+ * check the wiring (permission, editable text, nothing sent automatically, cancellation, the
+ * fallback to typing), not any vendor's recogniser.
  * Safe to re-run on a database that already holds earlier runs.
  */
 const FAKE_RECOGNITION = `
@@ -137,4 +139,101 @@ test.describe("voice and visual teaching", () => {
     await page.getByRole("button", { name: "Stop allowing dictation" }).click();
     await expect(page.getByRole("button", { name: "Allow dictation" })).toBeVisible();
   });
+
+  test("cancel stops capture at once, stop keeps what was heard, sending stops it, and a browser without recognition offers typing", async ({
+    page,
+  }) => {
+    test.setTimeout(240_000);
+    // A stand-in the test drives: results arrive only when the test emits them, as a live recogniser's would.
+    await page.addInitScript(CONTROLLED_RECOGNITION);
+    await page.goto("/settings#voice");
+    if (
+      await page
+        .getByRole("button", { name: "Allow dictation" })
+        .isVisible()
+        .catch(() => false)
+    ) {
+      await page.getByLabel(/my browser may send the audio to its maker/).check();
+      await page.getByRole("button", { name: "Allow dictation" }).click();
+      await expect(page.getByText("dictation allowed")).toBeVisible();
+    }
+    await takeCourse(page, "MAT-230");
+    await page.goto("/courses/MAT-230/units/MAT-230-u01");
+    await page
+      .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
+      .getByRole("button", { name: /^(Start|Resume|Continue)/ })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/sessions\//);
+    const session = page.url();
+    const panel = page.locator("#panel-tutor");
+    const message = page.getByLabel("Message to the tutor");
+    const emit = (text: string, isFinal: boolean) =>
+      page.evaluate(([t, f]) => (window as unknown as { __rec: { emit(t: string, f: boolean): void } }).__rec.emit(t, f), [
+        text,
+        isFinal,
+      ] as const);
+
+    await expect(panel.getByRole("button", { name: "Dictate" })).toBeVisible();
+    await message.fill("");
+    await panel.getByRole("button", { name: "Dictate" }).click();
+    await expect(panel.getByRole("button", { name: "Stop dictation" })).toBeVisible();
+    await emit("half heard", false);
+    await expect(panel.getByRole("status").filter({ hasText: "Listening: half heard" })).toBeVisible();
+    await emit("first phrase", true);
+    await expect(message).toHaveValue("first phrase");
+    await panel.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(panel.getByRole("button", { name: "Dictate" })).toBeVisible();
+    // Speech arriving after Cancel is dropped; what was already written stays, editable.
+    await emit("late words", true);
+    await expect(message).toHaveValue("first phrase");
+
+    // Stop lets the recogniser finish what it heard.
+    await panel.getByRole("button", { name: "Dictate" }).click();
+    await page.evaluate(() => {
+      (window as unknown as { __onStop: string }).__onStop = "and the rest";
+    });
+    await panel.getByRole("button", { name: "Stop dictation" }).click();
+    await expect(message).toHaveValue("first phrase and the rest");
+
+    // Sending disables the box, which stops capture: nothing more is appended.
+    await panel.getByRole("button", { name: "Dictate" }).click();
+    await panel.getByRole("button", { name: "Send" }).click();
+    await expect(panel.getByRole("button", { name: "Dictate" })).toBeVisible({ timeout: 60_000 });
+    await emit("after sending", true);
+    await expect(message).not.toHaveValue(/after sending/);
+
+    // A refused microphone is said in words, and typing still works.
+    await panel.getByRole("button", { name: "Dictate" }).click();
+    await page.evaluate(() => (window as unknown as { __rec: { fail(e: string): void } }).__rec.fail("not-allowed"));
+    await expect(panel.getByRole("alert").filter({ hasText: /The microphone was refused/ })).toBeVisible();
+
+    // A browser with no recognition says so beside the box.
+    const plain = await page.context().newPage();
+    await plain.addInitScript("delete window.SpeechRecognition; delete window.webkitSpeechRecognition;");
+    await plain.goto(session);
+    await expect(plain.locator("#panel-tutor").getByTestId("dictation-unavailable")).toHaveText(
+      /not available in this browser; type instead/,
+    );
+    await plain.getByLabel("Message to the tutor").fill("Typed instead.");
+    await expect(plain.getByLabel("Message to the tutor")).toHaveValue("Typed instead.");
+    await plain.close();
+  });
 });
+
+const CONTROLLED_RECOGNITION = `
+  class ControlledRecognition {
+    start() { window.__rec = this; this.live = true; }
+    // Delivers even after abort, as a real recogniser's late result can: the page must ignore it.
+    emit(text, isFinal) { if (this.onresult) this.onresult({ resultIndex: 0, results: [{ isFinal, 0: { transcript: text } }] }); }
+    fail(error) { this.live = false; this.onerror && this.onerror({ error }); this.onend && this.onend(); }
+    stop() {
+      if (window.__onStop) this.emit(window.__onStop, true);
+      window.__onStop = "";
+      this.live = false;
+      this.onend && this.onend();
+    }
+    abort() { this.live = false; this.onerror && this.onerror({ error: "aborted" }); this.onend && this.onend(); }
+  }
+  window.SpeechRecognition = ControlledRecognition;
+`;

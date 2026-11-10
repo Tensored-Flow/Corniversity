@@ -9,7 +9,13 @@ import { stopBoss } from "@corniversity/db/queue";
 import { user } from "@corniversity/db/schema/auth";
 import { instructorArtifact, providerRun, teachingUnit, unitDraft, unitExercise, unitPublication } from "@corniversity/db/schema/index";
 import { confirmPreparation, createPreparationRequest, preparationView, publishDraft } from "@corniversity/db/services/preparation";
-import { approvePaidUse, saveBudgetLimits, saveProviderSetting } from "@corniversity/db/services/provider-config";
+import {
+  approvePaidUse,
+  recordProviderRun,
+  saveBudgetLimits,
+  saveProviderSetting,
+  withdrawPaidUseApproval,
+} from "@corniversity/db/services/provider-config";
 import { eq, inArray } from "drizzle-orm";
 import type { PgBoss } from "pg-boss";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -135,6 +141,64 @@ describe("preparation with a live model", () => {
       .from(providerRun)
       .where(eq(providerRun.purpose, `prepare:${request.id}`));
     expect(runs.every((r) => r.status === "budget_blocked" && Number(r.costUsd) === 0)).toBe(true);
+  });
+
+  it("never spends past the owner's daily limit, whatever the request's own budget", async () => {
+    // Limits lowered below what was approved still stand (a lower limit needs no new approval).
+    await saveBudgetLimits(handle.db, OWNER, { perRunUsd: 5, dailyUsd: 5, monthlyUsd: 100 });
+    const spent = await recordProviderRun(handle.db, {
+      ownerId: OWNER,
+      role: "tutor",
+      provider: "anthropic",
+      model: "claude-opus-5-5",
+      purpose: "earlier-today",
+      pricingVersion: "test",
+      promptVersion: "test",
+      status: "ok",
+      attempts: [
+        { kind: "message", model: "claude-opus-5-5", inputTokens: 200_000, outputTokens: 200_000, cacheReadTokens: 0, cacheWriteTokens: 0 },
+      ],
+      startedAt: new Date(),
+    });
+    try {
+      const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
+        courseId: "NEU-220",
+        intake,
+        budgetUsd: 20,
+        autoPrepare: false,
+      });
+      await confirmPreparation(handle.db, OWNER, request.id);
+      calls = 0;
+      const result = await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id });
+      expect(result).toMatchObject({ status: "blocked" });
+      expect(calls).toBe(0);
+      const view = await preparationView(handle.db, OWNER, request.id);
+      expect(view!.stages.find((s) => s.stageKey === "unit_authoring")?.error).toMatch(/today|daily/i);
+    } finally {
+      await handle.db.delete(providerRun).where(eq(providerRun.id, spent));
+      await saveBudgetLimits(handle.db, OWNER, { perRunUsd: 5, dailyUsd: 20, monthlyUsd: 100 });
+    }
+  });
+
+  it("drafts nothing without the owner's approval of paid use", async () => {
+    await withdrawPaidUseApproval(handle.db, OWNER);
+    try {
+      const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
+        courseId: "NEU-220",
+        intake,
+        budgetUsd: 5,
+        autoPrepare: false,
+      });
+      await confirmPreparation(handle.db, OWNER, request.id);
+      calls = 0;
+      const result = await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id });
+      expect(result).toMatchObject({ status: "blocked" });
+      expect(calls).toBe(0);
+      const view = await preparationView(handle.db, OWNER, request.id);
+      expect(view!.stages.find((s) => s.stageKey === "unit_authoring")?.error).toMatch(/not been approved/);
+    } finally {
+      await approvePaidUse(handle.db, OWNER, getEnv());
+    }
   });
 
   it("drafts the next outlined unit, checks it, and publishes it only when the owner does; re-seeding keeps it", async () => {

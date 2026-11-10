@@ -4,6 +4,7 @@ import { listProjects } from "@corniversity/db/services/research";
 import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { createProjectAction } from "./actions";
 
@@ -38,7 +39,7 @@ export default async function StudioPage({ searchParams }: { searchParams: Promi
       </Notice>
       {error ? (
         <div className="mt-4">
-          <Notice tone="rust">{error}</Notice>
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
       ) : null}
 

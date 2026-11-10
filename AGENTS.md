@@ -63,6 +63,7 @@ Run from the repository root with pnpm (`npm i -g pnpm` if missing). Full list i
 | `pnpm db:seed` | Seed institution content from `content/` (no learner data) |
 | `pnpm db:seed:demo` | Seed the clearly labelled demo learner (separate account) |
 | `pnpm dev` | Run web + worker against the local database |
+| `pnpm local:owner` | The owner's own local installation (separate database `corniversity_owner`, http://127.0.0.1:3300); never run journeys against it |
 | `pnpm build` / `pnpm typecheck` / `pnpm lint` | Production build, type check, lint |
 | `pnpm test` / `pnpm test:integration` / `pnpm test:e2e` / `pnpm eval:academic` | Test tiers |
 | `pnpm library:pair` / `pnpm library:watch` / `pnpm library:sync --dry-run` / `pnpm library:status` | Companion |

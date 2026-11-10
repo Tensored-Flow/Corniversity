@@ -10,6 +10,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const UUID = /^[0-9a-f-]{36}$/;
@@ -49,7 +50,7 @@ export async function saveReviewSettingsAction(form: FormData): Promise<void> {
       restWeekdays: form.getAll("restWeekdays").map(Number),
     });
   } catch (error) {
-    if (error instanceof ReviewError) redirect(`/studies?error=${encodeURIComponent(error.message)}#revision`);
+    if (error instanceof ReviewError) redirect(errorHref("/studies", errorCode(error.message), "#revision"));
     throw error;
   }
   revalidatePath("/studies");

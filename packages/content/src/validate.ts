@@ -344,6 +344,9 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
     if (failed.length && v.spec.status !== "draft") {
       err(where, `a ${v.spec.status} visual fails its checks: ${failed.map((f) => `${f.id} (${f.detail})`).join("; ")}`);
     }
+    if (v.spec.status === "published" && !v.spec.review) {
+      err(where, "a published visual needs a second reader's review (review.by, review.on, review.notes)");
+    }
     if (v.spec.render) {
       if (!v.filmPath) err(where, `the render record names ${v.spec.render.file}, which is missing`);
       else if ((v.filmBytes ?? 0) > MAX_FILM_BYTES) err(where, "the film is larger than 8 MB");

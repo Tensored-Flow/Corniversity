@@ -4,6 +4,7 @@ import {
   outputSchemaText,
   PRICING_VERSION,
   ProviderError,
+  providerNameOf,
   ROLE_CONTRACTS,
   TRANSCRIBER_PROMPT_VERSION,
   TranscriptionDraftSchema,
@@ -67,7 +68,7 @@ export async function transcribeHandler(ctx: HandlerContext, raw: unknown): Prom
       await recordProviderRun(db, {
         ownerId: payload.ownerId,
         role: "transcriber",
-        provider: "anthropic",
+        provider: providerNameOf(plan.state),
         model: plan.model,
         purpose: "transcribe-pages",
         pricingVersion: PRICING_VERSION,

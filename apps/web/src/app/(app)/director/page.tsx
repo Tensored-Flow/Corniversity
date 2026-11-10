@@ -8,6 +8,7 @@ import { AiLabel } from "@/components/AiLabel";
 import { Badge, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
+import { errorNotice } from "@/lib/notices";
 import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
 import { decideProposalAction } from "../timetable/actions";
@@ -81,7 +82,7 @@ export default async function DirectorPage({ searchParams }: { searchParams: Pro
             <h2 className="text-lg text-ink">Proposals</h2>
             {flash.error ? (
               <div className="mt-2">
-                <Notice tone="rust">{flash.error}</Notice>
+                <Notice tone="rust">{errorNotice(flash.error)}</Notice>
               </div>
             ) : null}
             {flash.proposed === "programme" ? (

@@ -26,6 +26,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { importOpenResource } from "@/lib/open-import";
 import { requireSession } from "@/lib/session";
 
@@ -47,7 +48,7 @@ const lines = (form: FormData, key: string): string[] =>
     .map((l) => l.trim())
     .filter(Boolean);
 function failTo(path: string, message: string): never {
-  redirect(`${path}?error=${encodeURIComponent(message)}`);
+  redirect(errorHref(path, errorCode(message)));
 }
 
 export async function confirmMetadataAction(form: FormData): Promise<void> {
@@ -203,7 +204,7 @@ export async function writeRequestsToDataFolderAction(): Promise<void> {
   await mkdir(dir, { recursive: true });
   await writeFile(join(dir, "requests.md"), renderRequestsMarkdown(requests, env.INSTITUTION_NAME, suggestions), "utf8");
   await writeFile(join(dir, "requests.json"), JSON.stringify(requestsToJson(requests, suggestions, env.INSTITUTION_NAME), null, 2), "utf8");
-  redirect(`/library/requests?written=${encodeURIComponent(dir)}`);
+  redirect("/library/requests?written=1");
 }
 
 export type PairingCodeState = { code: string; expiresAt: string } | { error: string } | null;

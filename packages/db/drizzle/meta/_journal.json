@@ -92,6 +92,13 @@
       "when": 1794288670633,
       "tag": "0012_curriculum-proposals",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794349681851,
+      "tag": "0013_chatgpt_plan",
+      "breakpoints": true
     }
   ]
 }

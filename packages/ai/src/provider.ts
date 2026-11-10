@@ -1,6 +1,6 @@
 import type { ZodType } from "zod";
 
-export type ProviderName = "fixture" | "anthropic";
+export type ProviderName = "fixture" | "anthropic" | "chatgpt_plan";
 
 export type RoleName =
   | "director"
@@ -90,9 +90,10 @@ export interface StructuredRequest<T> extends BaseRequest {
 }
 
 /**
- * The narrow seam between Corniversity and any model provider. Two implementations exist:
- * the deterministic fixture provider (default; free; never a substitute for a live check) and
- * the Anthropic provider (official SDK). Both stream text and return structured objects.
+ * The narrow seam between Corniversity and any model provider. Three implementations exist:
+ * the deterministic fixture provider (default; free; never a substitute for a live check), the
+ * Anthropic provider (official SDK, an API key) and the owner's ChatGPT plan (Sign in with
+ * ChatGPT, local installation only). Each streams text and returns structured objects.
  */
 export interface ModelProvider {
   readonly name: ProviderName;

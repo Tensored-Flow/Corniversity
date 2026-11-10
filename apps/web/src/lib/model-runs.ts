@@ -5,6 +5,8 @@ import {
   modelLabel,
   PRICING_VERSION,
   ProviderError,
+  providerLabel,
+  providerNameOf,
   type RoleName,
   turnNotes,
 } from "@corniversity/ai";
@@ -123,7 +125,7 @@ async function recordRefusal(input: TurnInput, plan: Refused): Promise<void> {
   await recordProviderRun(input.database, {
     ownerId: input.ownerId,
     role: input.role,
-    provider: "anthropic",
+    provider: providerNameOf(plan.state),
     model: plan.model,
     purpose: input.purpose,
     pricingVersion: PRICING_VERSION,
@@ -180,7 +182,7 @@ export async function streamPersonaTurn(
       "cache-control": "no-store",
       "x-accel-buffering": "no",
       "x-provider-mode": plan.kind,
-      "x-provider-label": modelLabel(plan.model),
+      "x-provider-label": plan.state.mode === "plan" ? providerLabel(plan.state) : modelLabel(plan.model),
       ...(plan.kind === "live" && plan.warnings.length ? { "x-budget-warning": encodeURIComponent(plan.warnings.join(" ")) } : {}),
     },
   });

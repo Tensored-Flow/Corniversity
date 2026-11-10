@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge, Button, Card, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { decideOverlapAction, publishProposalAction, rejectProposalAction, reviseProposalAction } from "../actions";
 
@@ -54,7 +55,7 @@ export default async function ProposalPage({
       <p className="mt-3 max-w-prose text-ink-2">{proposal.purpose}</p>
       {error ? (
         <div className="mt-4">
-          <Notice tone="rust">{error}</Notice>
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
       ) : null}
       {proposal.status === "published" && proposal.publishedCourseId ? (

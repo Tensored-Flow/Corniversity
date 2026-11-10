@@ -8,6 +8,7 @@ import { Markdown } from "@/components/Markdown";
 import { UnitStatusBadge } from "@/components/Readiness";
 import { Badge, Button, Card, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { startActivityAction } from "./actions";
 
@@ -18,10 +19,10 @@ export default async function UnitPage({
   searchParams,
 }: {
   params: Promise<{ id: string; unitId: string }>;
-  searchParams: Promise<{ session?: string }>;
+  searchParams: Promise<{ session?: string; error?: string }>;
 }) {
   const { id, unitId } = await params;
-  const { session: scheduledSessionId } = await searchParams;
+  const { session: scheduledSessionId, error } = await searchParams;
   const session = await requireSession(`/courses/${id}/units/${unitId}`);
   const detail = await getUnitDetail(db(), unitId);
   if (!detail || detail.course.id !== id) notFound();
@@ -50,6 +51,12 @@ export default async function UnitPage({
         <h1 className="mt-2 text-3xl text-ink">{unit.title}</h1>
         <p className="mt-3 max-w-prose text-ink-2">{unit.summary}</p>
       </header>
+
+      {error ? (
+        <div className="mb-4">
+          <Notice tone="rust">{errorNotice(error)}</Notice>
+        </div>
+      ) : null}
 
       {unit.status !== "ready" ? (
         <Notice tone="neutral" title="This unit is an outline">

@@ -4,6 +4,7 @@ import { countEntries, listEntries, listTags, type NotebookKind, questionsShelf,
 import Link from "next/link";
 import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { createEntryAction, toggleResolvedAction } from "./actions";
 import { IssuesSection } from "./IssuesSection";
@@ -67,7 +68,7 @@ export default async function NotebookPage({
       </header>
       {params.error ? (
         <div className="mb-4">
-          <Notice tone="rust">{params.error}</Notice>
+          <Notice tone="rust">{errorNotice(params.error)}</Notice>
         </div>
       ) : null}
       {params.deleted ? (

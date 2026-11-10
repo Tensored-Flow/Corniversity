@@ -1,10 +1,19 @@
 import { supportedModel } from "./models";
 import type { TextResult } from "./provider";
+import type { PublicProviderState } from "./state";
 
 /** A model's display name where it is known, otherwise its identifier. */
 export function modelLabel(id: string): string {
   if (id === "fixture") return "Scripted demo";
   return supportedModel(id)?.label ?? id;
+}
+
+/** Who answers, in a few words: the API model, the owner's ChatGPT plan, the scripted demo or a block. */
+export function providerLabel(state: PublicProviderState): string {
+  if (state.mode === "live") return `Anthropic (${modelLabel(state.model)})`;
+  if (state.mode === "plan") return `${state.model} via your ChatGPT plan`;
+  if (state.mode === "blocked") return "model blocked";
+  return "Scripted demo";
 }
 
 /**

@@ -3,6 +3,7 @@ import { CommunityError, openDiscussion, setDiscussionStatus, setPeerMembership 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const UUID = /^[0-9a-f-]{36}$/;
@@ -29,7 +30,7 @@ export async function openDiscussionAction(form: FormData): Promise<void> {
     });
     id = row.id;
   } catch (error) {
-    if (error instanceof CommunityError) redirect(`/common-room?error=${encodeURIComponent(error.message)}`);
+    if (error instanceof CommunityError) redirect(errorHref("/common-room", errorCode(error.message)));
     throw error;
   }
   revalidatePath("/common-room");

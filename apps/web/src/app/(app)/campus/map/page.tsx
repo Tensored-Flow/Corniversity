@@ -54,8 +54,18 @@ export default async function CampusMapPage() {
       x: 40,
       y: 200,
       w: 200,
-      h: 170,
+      h: 80,
       note: "Sources, your shelf, the reading room and desktop sync.",
+    },
+    {
+      id: "lecture-rooms",
+      label: "Lecture and tutorial rooms",
+      href: "/timetable",
+      x: 40,
+      y: 290,
+      w: 200,
+      h: 80,
+      note: "Your sessions: each one opens from its slot in the timetable.",
     },
     {
       id: "director",
@@ -75,7 +85,7 @@ export default async function CampusMapPage() {
       y: 290,
       w: 200,
       h: 80,
-      note: "Notebook, portfolio and your informal record.",
+      note: "Your informal record, portfolio and exports.",
     },
     {
       id: "studio",

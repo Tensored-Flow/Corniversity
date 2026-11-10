@@ -3,6 +3,7 @@ import { listProposals, PROPOSAL_KINDS } from "@corniversity/db/services/extensi
 import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { createProposalAction } from "./actions";
 
@@ -26,7 +27,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
       </p>
       {error ? (
         <div className="mt-4">
-          <Notice tone="rust">{error}</Notice>
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
       ) : null}
       {proposals.length ? (

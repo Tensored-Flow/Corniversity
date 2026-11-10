@@ -34,7 +34,7 @@ interface Props {
   exerciseId: string;
   pages: PaperPage[];
   transcriptions: PaperTranscription[];
-  provider: { mode: "scripted" | "live" | "blocked"; label: string; reason?: string };
+  provider: { mode: "scripted" | "live" | "plan" | "blocked"; label: string; reason?: string };
   transcriptionJob: { status: string; error: string | null } | null;
   closed: boolean;
 }
@@ -329,8 +329,7 @@ export function PaperWork(props: Props) {
                   <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5" />
                   <span>
                     Send these {props.pages.filter((p) => p.mime !== "application/pdf").length} page images to {props.provider.label} for a
-                    draft transcription. They are sent once, for this reading, within your spending limits; you correct and confirm the
-                    result.
+                    draft transcription. They are sent once, for this reading, within your limits; you correct and confirm the result.
                   </span>
                 </label>
                 <div className="mt-2 flex flex-wrap gap-2">

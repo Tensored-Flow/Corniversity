@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ZodError } from "zod";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
@@ -30,7 +31,7 @@ function sourceLines(raw: string): { title: string; note: string }[] {
 function failure(error: unknown, back: string): never {
   const message =
     error instanceof ProposalError ? error.message : error instanceof ZodError ? (error.issues[0]?.message ?? "Check the fields.") : null;
-  if (message) redirect(`${back}?error=${encodeURIComponent(message)}`);
+  if (message) redirect(errorHref(back, errorCode(message)));
   throw error;
 }
 

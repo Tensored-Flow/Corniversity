@@ -22,6 +22,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
 const text = (form: FormData, key: string) => String(form.get(key) ?? "").trim();
@@ -38,7 +39,7 @@ async function inProject(projectId: string, section: string, change: () => Promi
   try {
     await change();
   } catch (error) {
-    if (error instanceof ResearchError) redirect(`/studio/${projectId}?error=${encodeURIComponent(error.message)}#${section}`);
+    if (error instanceof ResearchError) redirect(errorHref(`/studio/${projectId}`, errorCode(error.message), `#${section}`));
     throw error;
   }
   revalidatePath(`/studio/${projectId}`);
@@ -58,7 +59,7 @@ export async function createProjectAction(form: FormData): Promise<void> {
     });
     id = project.id;
   } catch (error) {
-    if (error instanceof ResearchError) redirect(`/studio?error=${encodeURIComponent(error.message)}`);
+    if (error instanceof ResearchError) redirect(errorHref("/studio", errorCode(error.message)));
     throw error;
   }
   revalidatePath("/studio");
@@ -159,12 +160,12 @@ export async function holdOralAction(form: FormData): Promise<void> {
   const session = await requireSession("/studio");
   const id = projectIdOf(form);
   const director = (await listPersonas(db())).find((p) => p.role === "director");
-  if (!director) redirect(`/studio/${id}?error=${encodeURIComponent("No faculty member is available for office hours.")}#oral`);
+  if (!director) redirect(errorHref(`/studio/${id}`, "no-faculty-member-available-office", "#oral"));
   let discussionId = "";
   try {
     discussionId = (await holdOralDiscussion(db(), session.user.id, text(form, "requestId"), director.id)).id;
   } catch (error) {
-    if (error instanceof ResearchError) redirect(`/studio/${id}?error=${encodeURIComponent(error.message)}#oral`);
+    if (error instanceof ResearchError) redirect(errorHref(`/studio/${id}`, errorCode(error.message), "#oral"));
     throw error;
   }
   redirect(`/common-room/${discussionId}`);

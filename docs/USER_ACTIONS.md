@@ -1,110 +1,167 @@
 # Actions only you can take
 
-Written for a non-specialist. Each item says why it is needed and the exact minimal step.
-Nothing here is required to run Corniversity on your own computer. Never paste a password, the
-bootstrap code or an API key into a chat.
+Written for a non-specialist. Each item says why it is needed and the exact minimal step. Never
+paste a password, the bootstrap code, an API key or any token into a chat. Your Corniversity
+sign-in and any sign-in with a model provider are separate: one never stands in for the other.
 
-1. Create your owner account on the live site (once).
-   Why: Corniversity is deployed at https://web-production-4c692.up.railway.app, and nobody can
-   use it until the owner account exists.
-   Step: in the Railway dashboard open the project `corniversity`, the service `web`, then
-   *Variables*, and reveal `OWNER_BOOTSTRAP_CODE`. Open
-   https://web-production-4c692.up.railway.app/join and fill in your name, the owner email
-   (the deployment's `OWNER_EMAIL` variable, beside the code), a password of at least twelve
-   characters, and the code. Choose *Create account and begin*; orientation starts, and sign-up
-   closes for good.
+There are two installations:
 
-2. Retire the bootstrap code (after item 1).
-   Why: once the owner exists the code can no longer create an account, but it need not stay in
-   the deployment either.
-   Step: in the Railway dashboard delete the variable `OWNER_BOOTSTRAP_CODE` from the service
-   `web` and from the service `worker`. Each service restarts on its own; nothing else changes.
-   Alternatively, tell the build agent that the account exists and approve it doing this.
+- **The hosted site:** https://web-production-4c692.up.railway.app, reachable from any device.
+  It teaches with an Anthropic API key, or with the labelled scripted demo.
+- **Your local installation:** on this computer only, at http://127.0.0.1:3300. It has its own
+  database, separate from the hosted site and from the test stack. It is the only place you can
+  teach through your ChatGPT plan.
 
-3. Enable live tutoring (optional; everything else works without it).
-   Why: no model is configured, so tutors, the assessor and the director answer with a labelled
-   scripted demo that does not read your work.
-   Step: create an API key in the Anthropic console. In Corniversity open *Settings → Live
-   tutoring and its costs*, choose *Anthropic (live model, paid)* and a model, paste the key, set
-   the limits, tick *I approve paid use of the selected model within these limits*, and save; the
-   notice above the form then reads *Live:* and the model. Each run is refused before it starts if
-   its worst case could cross a limit. The worst case counts every byte of the prompt as a token
-   (deliberately pessimistic), so it is several times what a turn usually costs: on Claude Opus 5.5
-   with fallback on, up to about $1.20 for the assessor on a long submission and $0.80 for a tutor
-   turn (about half with fallback off). *Per run* must cover the dearest role you use. Small limits
-   that let every role run: $1.50 per run, $3 per day, $10 per month. A run whose cost the provider
-   could not report (a lost connection) is held at its worst case under *Settings → Unsettled runs*
-   until you enter the amount your Anthropic Console shows for it. An API key from an Anthropic
-   Console organization is required; a Claude subscription does not provide one, though some
-   include Console credits (see the link in Settings). Model use is billed by Anthropic to that
-   account, separately from Railway.
+## 1. Create your owner account on the hosted site (once)
 
-4. Check the signed-in site and live tutoring yourself (after items 1 and 3; about 35 minutes).
-   Why: the build agent cannot sign in as you and must not be given your password. Tell it the
-   outcome of each step afterwards (never a password, code or key), and it records them as checks
-   you ran on the live site.
-   a. Sign-in: choose *Sign out* (top right), then open `/campus`; it must send you to sign-in.
-      Sign in. Close the browser completely and reopen the site: you are still signed in.
-   b. Closed sign-up: `/join` must say *Sign-up is closed*. Then do item 2 and tell the agent; it
-      confirms from outside that sign-up is refused and that the code is gone from both services.
-   c. One live tutoring turn on open material: in *Library → Sources*, under *9.66J Computational
-      Cognitive Science (Fall 2004)*, choose *Import* beside `sept_9_2004.pdf` (its licence permits
-      the import and sets the item's AI permission). When the Library shows it processed, open a
-      session of COG-201 unit 1 (or any prepared unit of a course you take whose source offers
-      *Import*) and ask the tutor: *How does inductive reasoning differ from deductive reasoning?*
-      The reply must be headed with the model's name, not *Scripted demo*; a citation under it
-      must read *Your library: …, PDF page N*, and that page in the reader must say what the reply
-      attributes to it; no *unverifiable citation removed* badge. *Settings → Recent model runs*
-      must show the tutor run as *ok* with tokens and a cost (*Tokens in* counts only uncached
-      input; the cached prompt is included in the cost).
-   d. Limits: set *Per run* to 0.05, save, and send the tutor one more message. It must be refused
-      ("This run could cost up to …, above your per-run limit of $0.05") and Recent model runs must
-      show *budget blocked* with 0 / 0 tokens and $0.0000. Set *Per run* back; a value not above
-      the approved one needs no new approval.
-   e. One learning journey, as real work (it stays in your record): in the same session write an
-      exercise attempt and choose *Submit attempt*; *Submission v1* gets feedback badged
-      *AI assessor ·* and the model. Revise and choose *Submit revision*; *Submission v2* gets its
-      own feedback. *Records* lists the attempt with both versions. Sign out and sign in again: the
-      versions, the feedback and the tutor conversation are still there, each still labelled with
-      what wrote it.
-   f. Study workspace and paper (about 5 minutes): in a session choose *Pause*; from *Campus*,
-      *Resume* returns to the same place. Under the attempt, attach a phone photo of handwritten
-      work, type its transcription with one unsure symbol written as `[[?x]]`, confirm it, then
-      submit: the feedback card says *paper work*. With live tutoring on, *Ask for a draft
-      transcription* stays disabled until you tick the box to send the page images; nothing is sent before that.
-   g. Visual explanations: open NEU-220 unit 1, then *The leaky integrate-and-fire neuron* under
-      *Visual explanations*; step through the scenes and play the film (captions under *CC*).
-      In MAT-230 unit 1, *Two norms on C([0,1])* stays closed until you have submitted an attempt
-      at its exercise or chosen to see the reasoning.
-   h. Voice (Chrome sends dictated audio to Google's speech service; skip if you prefer not to):
-      *Settings → Voice*, tick the box and *Allow dictation*; in a session choose *Dictate*, speak a
-      sentence, correct the text in the box, then send it yourself. *Stop allowing dictation* hides
-      the button again. *Read aloud* under a tutor reply uses a voice on your device only.
-   i. Operations and proposals: *Operations* (top right) shows the figures for your account.
-      *Catalogue → Propose a subject or reading programme* saves a draft; record a decision on each
-      overlapping course. Publishing adds a catalogue item at readiness *proposed* (it stays in the
-      catalogue); choose *Reject* instead if you only want to see the workflow.
-   j. Course preparation with a live model (spends from your budget; only if you want a drafted unit):
-      NEU-220 → *Ask for preparation*, keep the budget at $2 or less, *See the proposal*, then
-      *Confirm*. A draft appears with its checks; *Publish this unit* or *Reject*.
+1. In the Railway dashboard, open project `corniversity`, then service `web`, then *Variables*.
+   Reveal `OWNER_BOOTSTRAP_CODE`. The owner email is `OWNER_EMAIL`, beside it.
+2. Open https://web-production-4c692.up.railway.app/join.
+3. Enter your name, the owner email, a password of at least twelve characters, and the code.
+4. Choose *Create account and begin*. Orientation starts, and sign-up closes for good.
 
-5. If you forget your password.
-   Why: no email provider is configured, so there is no reset link; recovery is deliberately
-   possible only for someone who controls the Railway project.
-   Step: in PowerShell in the project folder run `railway ssh --service worker`, then in that
-   shell `node node_modules/tsx/dist/cli.mjs apps/worker/src/admin/reset-owner-password.ts`.
-   Type the new password twice (it is not shown); every signed-in browser is signed out. On your
-   own computer the same command is `pnpm owner:reset-password`.
+## 2. Retire the bootstrap code (after item 1)
 
-6. Publish the private GitHub repository (optional; the code is committed locally).
-   Why: the build agent's attempt to create the repository was blocked by your approval
-   controls, which treat repository creation as a sharing action.
-   Step: in PowerShell in the project folder run
-   `gh repo create Corniversity --private --source=. --remote=origin --push`
-   (you are already signed in to GitHub as Tensored-Flow on this machine).
+In Railway, delete `OWNER_BOOTSTRAP_CODE` from service `web` and from service `worker`. Each
+restarts by itself. Then tell the build agent: it checks from outside that sign-up is refused and
+that the variable is gone. It checks variable names only, never values.
 
-7. Optional decisions.
-   - Psych-101, the dataset behind Centaur, is about 859 MB and stays undownloaded: say if you
-     want a small labelled sample fetched for an exercise.
-   - Library → Books to obtain lists the three sources still missing from the programme you
-     follow (leads for COG-250 and COG-260). Add any you want to your list; nothing is fetched.
+## 3. Choose who teaches
+
+Everything works without a model: reading, notes, laboratories and prepared activities.
+
+### 3a. Hosted site: an Anthropic API key (optional; paid)
+
+1. Create a key in the Anthropic Console.
+2. Open *Settings → Live tutoring and its costs*. Choose *Anthropic (live model, paid)* and a model.
+3. Paste the key and set your limits. Small limits that let every role run: $1.50 a run, $3 a day,
+   $10 a month.
+4. Tick *I approve paid use…* and save. The notice should now read *Live:* and the model's name.
+
+Each run is refused before it starts if its worst case could cross any limit. That includes course
+preparation: its own budget (at most $20) is a further ceiling inside your limits, never a
+replacement for them. Nothing here buys credits or turns on automatic reloads.
+
+### 3b. Local installation: your ChatGPT plan (optional)
+
+OpenAI documents ChatGPT plan usage for open-source and locally hosted apps. A remotely hosted
+app, like the Railway site, must apply through OpenAI's interest form, so the hosted site does not
+offer it.
+
+Corniversity is a private app running on your own computer. OpenAI decides on its own consent page
+whether to accept it. If OpenAI reports that plan usage is not available for your account,
+Corniversity pauses and does not retry.
+
+1. In PowerShell, in the project folder, start the database: `pnpm db:local`. Leave the window open.
+2. In a second window, start the installation: `pnpm local:owner`. Wait for *Ready*, then open
+   http://127.0.0.1:3300. Use that exact address, not `localhost`.
+3. First time only: create your account at `/join`. Use the owner email and bootstrap code from
+   your `.env` file, not Railway's.
+4. Open *Settings → Live tutoring and its costs*. Choose *Your ChatGPT plan* and save.
+5. In the *Use your ChatGPT plan* card, choose *Continue with ChatGPT*.
+6. On OpenAI's page, sign in and allow plan usage. The app registers as "Corniversity"; you may
+   rename it. Back in Settings you should see *connected* and your ChatGPT email.
+7. Choose a model from your account's list.
+8. Keep or lower the request limits: 30 a day and 300 a month by default.
+9. Tick *I approve teaching through my ChatGPT plan…* and save.
+
+How it behaves once connected:
+- **Cost:** requests count against your plan's usage, and its credits balance if it has one, never
+  against an API key. On Plus, the five-hour limit is shared with every other app that uses your
+  plan.
+- **Usage limits:** when OpenAI reports a usage limit, plan requests pause. They resume only when
+  you choose *Resume plan requests*. *Manage usage* opens ChatGPT's usage settings.
+- **Failures:** a failed request keeps your message. It is never answered by another provider or by
+  scripted text.
+- **Signing out:** choose *Sign out of ChatGPT here*. This revokes the session and deletes the
+  tokens on this computer. You can also disconnect Corniversity in ChatGPT's settings.
+- **Where the tokens live:** only in owner-only files under `~/.config/corniversity/chatgpt-plan`.
+  They are never in the database or the browser.
+
+## 4. The owner acceptance journey (about 35 minutes)
+
+Do this on the hosted site with 3a, or in the local installation with 3b. In the local
+installation, "a second device" means a second browser on this computer, because the local
+installation is not reachable from other devices. This is your real work and stays in your record.
+
+Afterwards, tell the build agent what you saw at each step, never a password, code or key. It
+records them as checks you ran.
+
+1. **Account and bootstrap code.**
+   - Sign out from the top right, then open `/campus`: it must send you to sign-in. Sign in again.
+   - Open `/join`: it must say *Sign-up is closed*.
+   - Complete item 2, and tell the agent so that it can confirm from outside.
+2. **The teacher connection.**
+   - *Settings → Live tutoring* must read *Live:* and the model (3a), or *Your ChatGPT plan:* and the
+     model (3b).
+   - The tutor's badge in a session must say the same, never *scripted demo*.
+3. **A source-backed question.**
+   - In *Library → Sources*, under *9.66J Computational Cognitive Science (Fall 2004)*, choose
+     *Import* beside `sept_9_2004.pdf`. Wait until the Library shows it processed.
+   - In a session of COG-201 unit 1, ask: *How does inductive reasoning differ from deductive
+     reasoning?*
+   - The reply must be headed with the model, and must carry a citation reading *Your library: …,
+     PDF page N*.
+   - Open that page: it must say what the reply attributes to it.
+4. **A handwritten attempt with an ambiguous symbol.**
+   - In MAT-230 unit 1, open *Tutorial: two norms on C([0,1])*.
+   - Under the attempt, open *Working on paper?* and attach a phone photo of handwritten work.
+   - Write the transcription, marking one symbol you are unsure of as `[[?ε or e]]`. With a
+     teacher connected you may instead tick the consent box and choose *Ask for a draft
+     transcription*. Nothing is sent before that tick.
+   - *Confirm* must refuse ("Please confirm this symbol first…"). Replace the mark with what you
+     wrote, confirm, then submit.
+   - *Submission v1* must receive feedback marked *paper work* and labelled with what wrote it.
+5. **Feedback and revision.**
+   - Revise the attempt and choose *Submit revision*.
+   - *Submission v2* must receive its own feedback, while v1 keeps its feedback unchanged.
+6. **Resume on a second device.**
+   - On the first device, choose *Pause* in the session.
+   - On a phone (hosted) or a second browser (local), sign in. *Campus → Resume* must open the same
+     session and exercise, with your draft.
+7. **Both attempts and their sources are kept.**
+   - *Records* must list the attempt with v1 and v2.
+   - Each version must open with its pages, its confirmed transcription and its feedback.
+   - The tutor conversation's citation must still open the source page.
+   - Sign out and back in: everything is unchanged.
+
+## 5. Backups
+
+What the agent has already done:
+- **Source code:** dated, verified git bundles in `C:\Users\leona\Documents\Corniversity-backups\`,
+  each with a `.sha256` checksum. They are on this computer only.
+
+What only you can do:
+- **Hosted records and uploads:** the hosted site keeps both in its Postgres volume
+  (`postgres-volume`). In Railway, open *Postgres → Backups* and check that a schedule exists.
+  Enabling one may affect billing, so the choice is yours.
+- **Local installation records and uploads:** run `pnpm local:owner backup`. It writes one file
+  plus a `.blobs` folder under your data folder's `owner-installation\exports\backups`. Keep them
+  together. A restore of this kind was rehearsed on test data; see `QA_REPORT.md`.
+- **Off this computer:** copy the bundles and those backup files to a place you trust, such as an
+  external drive or a private cloud folder. None of this is copied anywhere automatically.
+
+## 6. If you forget your password
+
+No email provider is configured, so there is no reset link. Recovery needs control of the Railway
+project.
+
+- **Hosted site:** in PowerShell, in the project folder, run `railway ssh --service worker`. In that
+  shell, run `node node_modules/tsx/dist/cli.mjs apps/worker/src/admin/reset-owner-password.ts`.
+- **On this computer:** run `pnpm owner:reset-password`.
+
+Type the new password twice; it is not shown. Every signed-in browser is signed out.
+
+## 7. Publish the private GitHub repository (optional)
+
+In PowerShell, in the project folder, run
+`gh repo create Corniversity --private --source=. --remote=origin --push`. You are signed in to
+GitHub as Tensored-Flow on this machine. The agent's own attempt was blocked by your approval
+controls.
+
+## 8. Optional decisions
+
+- **Psych-101 (about 859 MB):** it stays undownloaded. Say if you want a small labelled sample
+  fetched.
+- **Books to obtain:** *Library → Books to obtain* lists the sources still missing from the
+  programme you follow. Nothing is fetched.

@@ -11,6 +11,7 @@ import {
 } from "@corniversity/ai";
 import type { DbOrTx } from "../client";
 import type { Env } from "../env";
+import { planAccessToken, recordPlanError, reservePlanRun } from "./chatgpt-plan";
 import { reserveLiveRun, resolveProviderState } from "./provider-config";
 
 type Effort = "low" | "medium" | "high";
@@ -73,6 +74,40 @@ export async function planRun(
   }
   if (state.mode === "blocked") {
     return { kind: "refused", status: "blocked", reason: state.reason, model: state.model, worstCaseUsd: null, state: view };
+  }
+  if (state.mode === "plan") {
+    // The owner's ChatGPT plan: no dollar cost here, so the decision is the approved request limits.
+    const reservation = await reservePlanRun(db, {
+      ownerId,
+      role,
+      model: state.model,
+      purpose: run.purpose,
+      promptVersion: run.promptVersion,
+      limits: { dailyRequests: state.dailyRequests, monthlyRequests: state.monthlyRequests },
+      idempotencyKey: run.idempotencyKey,
+      parentRunId: run.parentRunId,
+    });
+    if (!reservation.allowed) {
+      const status = reservation.duplicate ? "duplicate" : "budget_blocked";
+      return { kind: "refused", status, reason: reservation.reason, model: state.model, worstCaseUsd: 0, state: view };
+    }
+    return {
+      kind: "live",
+      provider: createProvider({
+        provider: "chatgpt_plan",
+        model: state.model,
+        apiBase: env.CHATGPT_PLAN_API_BASE,
+        accessToken: () => planAccessToken(db, env, ownerId),
+        onPlanError: (error) => recordPlanError(db, ownerId, error),
+      }),
+      model: state.model,
+      effort,
+      maxTokens,
+      worstCaseUsd: 0,
+      warnings: reservation.warnings,
+      runId: reservation.runId,
+      state: view,
+    };
   }
   let worstCaseUsd: number;
   try {

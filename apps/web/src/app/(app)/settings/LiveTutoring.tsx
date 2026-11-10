@@ -44,6 +44,11 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
             No model is configured. Tutors, the assessor, the director, the reading room and classmates answer with scripted text that does
             not read your work, and every such reply is labelled. Reading, notes, laboratories and prepared material work fully.
           </Notice>
+        ) : state.mode === "plan" ? (
+          <Notice tone="moss" title={`Your ChatGPT plan: ${state.model}`}>
+            Requests go through your own ChatGPT plan, up to {state.dailyRequests} a day and {state.monthlyRequests} a month as you approved
+            below. Nothing is billed to an API key, and a failed request is never answered by another provider or by scripted text.
+          </Notice>
         ) : state.mode === "live" ? (
           <Notice tone="moss" title={`Live: ${modelLabel(state.model)}`}>
             Paid use was approved on {view.approval ? new Date(view.approval.approvedAt).toLocaleDateString("en-GB") : "an earlier date"}{" "}
@@ -76,6 +81,7 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
           <Select id="provider-choice" name="provider" defaultValue={view.provider}>
             <option value="fixture">Scripted demo (no model; nothing is sent anywhere)</option>
             <option value="anthropic">Anthropic (live model, paid)</option>
+            <option value="chatgpt_plan">Your ChatGPT plan (local installation only; set up below)</option>
           </Select>
         </Field>
         <Field label="Model" htmlFor="model" hint={SUPPORTED_MODELS.find((m) => m.id === view.model)?.note}>

@@ -30,15 +30,9 @@ export function ReadAloud({ text, label = "Read aloud" }: { text: string; label?
 
   if (voice === undefined) return null;
   if (voice === null) {
+    // Said in text, not a tooltip on a disabled control, so keyboard and screen-reader users get it too.
     return (
-      <button
-        type="button"
-        disabled
-        title="This browser has no on-device voice, and text is never sent to a network voice."
-        className="rounded-[var(--radius-control)] px-2 py-0.5 text-xs text-ink-3"
-      >
-        {label} (no on-device voice)
-      </button>
+      <span className="text-xs text-ink-3">{label}: no on-device voice in this browser, and text is never sent to a network voice.</span>
     );
   }
 

@@ -29,7 +29,7 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 |---|---|---|
 | `packages/core` | Zod schemas and types; prerequisite graph; readiness rules; evidence states; scheduling engine; ICS; workload; grounding/citation validation; deterministic academic checks; laboratories; programme routes and next steps; research-studio checks | import DB, Next, or provider SDKs |
 | `packages/db` | Drizzle schema, migrations, client, `BlobStore`, **services** (all academic state changes), job names/payload schemas | contain UI or prompts |
-| `packages/ai` | `ModelProvider` (Anthropic SDK, fixture), role contracts, prompt templates, structured output parsing, budget accounting, grounding glue | write to the DB directly (services do) |
+| `packages/ai` | `ModelProvider` (Anthropic SDK, the owner's ChatGPT plan, fixture), Sign in with ChatGPT and its credential files, role contracts, prompt templates, structured output parsing, budget accounting, grounding glue | write to the DB directly (services do) |
 | `packages/content` | Content schemas, validator, seeder | be imported by the browser |
 | `apps/web` | Routes, server components, route handlers, server actions, SSE | run long jobs in requests |
 | `apps/worker` | pg-boss queues and handlers | bypass services |
@@ -106,7 +106,8 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   ran, the worst-case estimate, `running` while a live run holds its worst case, and refused runs
   recorded as `blocked` or `budget_blocked`),
   `audit_event`, `export_record`, `app_setting`. `provider_setting` holds the provider, the model,
-  the refusal-fallback choice and the owner's approval of paid use. A partial unique index allows
+  the refusal-fallback choice, the owner's approval of paid use, and for the ChatGPT plan its model,
+  request limits, approval and pause (migration 0013). A partial unique index allows
   one `user` with the role `owner`.
 
 Invariants enforced in services and tests: grades reference exact submission/rubric/run
@@ -131,9 +132,22 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
   `messages.create` with a Zod output format and the application's own validation for structured
   outputs, an explicit effort per role, optional server-side refusal fallback) and `fixture`, the
   scripted demo (deterministic, keyed by role and scenario). Supported models are an allow-list
-  (`packages/ai/src/models.ts`); the default is `claude-opus-5-5`.
+  (`packages/ai/src/models.ts`); the default is `claude-opus-5-5`. `chatgpt_plan` teaches through
+  the owner's own ChatGPT plan by OpenAI's Sign in with ChatGPT, in a local installation only
+  (`DEPLOYMENT_MODE=local` served on a loopback address; OpenAI documents plan usage for
+  open-source and locally hosted apps and sends remotely hosted ones to its interest form):
+  `packages/ai/src/chatgpt-oauth.ts` (registration of a user-defined agent through
+  `dynamic_agent_client` with this computer's host id, PKCE, the `127.0.0.1/auth/callback`
+  route, ID-token checks, rotating refresh tokens, revocation; tokens only in owner-only files
+  under `~/.config/corniversity/chatgpt-plan`), `packages/ai/src/chatgpt-plan.ts` (the public
+  Responses API with `store: false` and `stream: true`; a request succeeds only on
+  `response.completed`; documented error codes; a usage limit or an eligibility refusal pauses plan
+  requests until the owner resumes them) and `packages/db/src/services/chatgpt-plan.ts` (refresh
+  under a database lock shared by web and worker; request limits a day and a month that the owner
+  approves, decided under the same per-owner lock as paid runs; plan runs cost $0).
 - Provider state (`packages/ai/src/state.ts`): `scripted`, `live` (a readable key, a supported
-  model and the owner's approval covering the model, the fallback choice and the limits) or
+  model and the owner's approval covering the model, the fallback choice and the limits), `plan`
+  (the owner's ChatGPT plan, connected, with an approved model and request limits, not paused) or
   `blocked` with a stated reason. A blocked run is refused and recorded; nothing scripted
   replaces it. Every stored reply carries the id of the run that produced it, which is how it is
   labelled live or scripted afterwards.
@@ -209,9 +223,15 @@ only after the learner's recorded permission; camera and geolocation stay off.
 11. `pnpm dev` runs Next's webpack development server, because the Turbopack development server
     reloads pages in a loop in this monorepo layout on the build machine.
 12. No silent fallback: a live model that cannot run is reported as blocked, and the scripted
-    demo is chosen explicitly and labelled wherever it speaks.
+    demo is chosen explicitly and labelled wherever it speaks. A ChatGPT plan error never moves a
+    request to an API key or to scripted text.
 13. Account recovery is an administrative command, not an email flow, because no mail provider
     is configured; nothing on the website can reset a password.
 14. The research studio works from simulations, published or open material, existing datasets used
     as their licence or terms permit (data about people included) and the learner's own reasoning;
     it has no path for recruiting anyone or collecting new data from people.
+15. The owner's local installation (`pnpm local:owner`, http://127.0.0.1:3300) has its own
+    database (`corniversity_owner`), data folder and compiled output, so the journeys' development
+    stack never touches the owner's records; it keeps uploads in the database so one backup holds
+    records and uploads. Error notices after a redirect carry allowlisted codes
+    (`apps/web/src/lib/notices.ts`), never text from the address.
