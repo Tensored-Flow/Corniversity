@@ -89,7 +89,7 @@ export async function openBridge(
   const step = nextBridgeStep(input.trail, input.conceptId);
   if (!step.ok) return { ok: false, reason: step.reason, message: step.message };
   const bridge = await getBridge(db, input.conceptId);
-  if (!bridge || bridge.status !== "ready") {
+  if (bridge?.status !== "ready") {
     return {
       ok: false,
       reason: "unprepared",

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BudgetLimitError, decideBudget, validateBudgetLimits } from "./budget";
 import { DEFAULT_MODEL } from "./models";
-import { ROLE_CONTRACTS } from "./roles/contracts";
 import {
   costOfAttempts,
   estimateCostUsd,
@@ -16,6 +15,7 @@ import {
   utf8Bytes,
   worstCaseRunUsd,
 } from "./pricing";
+import { ROLE_CONTRACTS } from "./roles/contracts";
 
 const limits = { perRunUsd: 0.5, dailyUsd: 3, monthlyUsd: 40, warnFraction: 0.8 };
 

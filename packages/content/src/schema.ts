@@ -1,4 +1,3 @@
-import { BridgeSpec } from "@corniversity/core/prerequisites/bridges";
 import {
   ConceptSpec,
   CourseSpec,
@@ -9,6 +8,7 @@ import {
   SourceRecord,
   TeachingUnitSpec,
 } from "@corniversity/core";
+import { BridgeSpec } from "@corniversity/core/prerequisites/bridges";
 import { z } from "zod";
 
 export { ConceptSpec, CourseSpec, DepartmentSpec, ExerciseSpec, PrerequisiteRule, ProgrammeSpec, SourceRecord, TeachingUnitSpec };

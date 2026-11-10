@@ -116,8 +116,7 @@ function sanitiseAnchor(a: StudyAnchor): StudyAnchor {
   if (a.locatorId && /^[0-9a-f-]{36}$/.test(a.locatorId)) out.locatorId = a.locatorId;
   if (typeof a.timestampSec === "number" && Number.isFinite(a.timestampSec) && a.timestampSec >= 0)
     out.timestampSec = Math.floor(a.timestampSec);
-  if (a.lines && a.lines.every((n) => Number.isInteger(n) && n > 0))
-    out.lines = [Math.min(...a.lines), Math.max(...a.lines)] as [number, number];
+  if (a.lines?.every((n) => Number.isInteger(n) && n > 0)) out.lines = [Math.min(...a.lines), Math.max(...a.lines)] as [number, number];
   if (a.pageId && /^[0-9a-f-]{36}$/.test(a.pageId)) out.pageId = a.pageId;
   return out;
 }
