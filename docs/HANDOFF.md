@@ -10,7 +10,8 @@ Where something has not been verified, this document says so.
   https://web-production-4c692.up.railway.app, in the Railway project `corniversity` (PostgreSQL,
   a web service and a worker). Milestone 10 was released on 9 November 2026: the worker first, which applied the three new
   migrations and seeded the one changed course version, then the web service
-  ([QA_REPORT.md](QA_REPORT.md), Milestone 10). Until you create the owner account there, sign-up
+  ([QA_REPORT.md](QA_REPORT.md), Milestone 10). The audit's fixes followed on 10 November 2026
+  (commit `40c2624`: the worker first, with migration 0007, then the web service). Until you create the owner account there, sign-up
   accepts only the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md),
   item 1); then it closes for good.
 - **Live tutoring: blocked, not verified.** No model key is configured and no paid use is
@@ -32,7 +33,8 @@ Where something has not been verified, this document says so.
 - **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, with no git remote; it
   has not been pushed anywhere ([USER_ACTIONS.md](USER_ACTIONS.md), item 6). Milestone 10 started
   from commit `5faa665`. It is commit `1b93eae`, followed by `6a01e17` (the studio's sign-in
-  return, found on the live site) and a last commit that records the release.
+  return, found on the live site) and a commit that records the release; the audit's fixes are
+  `40c2624`, followed by a commit that records their release.
 
 ## Start it (two PowerShell windows in the project folder)
 
@@ -114,7 +116,7 @@ teaching material; it says nothing about what you have understood.
 | `pnpm eval:academic` | 19 pass (check rules and the verdict policy, not a model's judgement) |
 | `pnpm content:validate` | 0 errors, 0 warnings |
 | Journeys, production build on an empty database | 87 of 87 at both sizes on a new database (10 November), after the audit's fixes |
-| Deployment | released on 9 Nov 2026 (worker from `1b93eae`, web from `6a01e17`); what was checked on the live site without an account is in [QA_REPORT.md](QA_REPORT.md), Milestone 10 |
+| Deployment | released on 9 Nov 2026 and again on 10 Nov 2026 (worker and web from `40c2624`); what was checked on the live site without an account is in [QA_REPORT.md](QA_REPORT.md), "After the release" |
 | Live model | none; live tutoring blocked |
 
 What each check does and does not prove, every failure and rerun, and the screenshots that were

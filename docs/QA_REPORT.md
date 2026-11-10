@@ -551,6 +551,23 @@ controls refuse a shell inside a Railway container. Those checks are the owner's
 ([USER_ACTIONS.md](USER_ACTIONS.md), item 4); their results are recorded here when the owner
 reports them, apart from the scripted and local checks above.
 
+**Release (10 Nov 2026).** Before releasing, `railway status` showed the linked project
+`corniversity` (environment `production`), the tree was clean at `40c2624`, and the live site still
+offered *Create the owner account*. The worker went first (`railway up --service worker --ci`): its
+log shows `migrations ok`, `content seeded: 0 course versions created, 86 unchanged` (the COG-260
+rule and the MBI-12 change are upserted in place on every start, not as course versions) and the
+prompt versions with `supervisor-1.1`. Then the web service: the health route reports the
+migrations current, so migration 0007 is applied, and `supervisor-1.1`. Checked on the live site
+without an account: the policy headers (no `unsafe-eval`; HSTS); robots disallow every crawler;
+`/campus`, `/studio`, `/programmes` and `/settings` redirect to sign-in with their return path; a
+forged session cookie is turned away by the server itself (`/campus` redirects to sign-in, the tutor
+API answers 401); a sign-up with an email that is not the owner's is refused with 403 and "The owner
+email or bootstrap code is not correct.", the answer before setup; the arrival, tour, sign-in and
+join pages load at 1440 and 390 px with no console error, page error or policy refusal. The
+browser's link prefetches return 200 and the router cancels some of them, which the page check
+lists as aborted requests; a click on a prefetched link navigates on the client as it should.
+Running now: the worker and the web service, both from `40c2624`.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
