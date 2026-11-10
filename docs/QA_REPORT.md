@@ -716,6 +716,25 @@ Evidence is kept apart by kind.
 - **Not verified:** real speech recognition, a live model's tutoring or drafting, OpenAI's plan
   usage, anything behind sign-in on the hosted site, and the hosted Postgres backup schedule, which
   the Railway CLI does not report.
+- **Suites on the final code:** unit 331, worker 39 and integration 139 tests pass. The full journey
+  run passed 118 of 121 at both viewports. Journey 16 was skipped, by design, on the ordinary stack.
+  Journey 2 at desktop size failed while files were being edited under the development server; it
+  passed on rerun with the other changed journeys (2, 8, 11, 13 and 15 at both viewports, 29
+  tests). Journeys 1 and 16 passed at both viewports on a fresh rehearsal database.
+- **Owner's local installation, smoke test.** `pnpm local:owner` created `corniversity_owner`,
+  applied migrations, seeded 86 course versions and answered health at http://127.0.0.1:3300. Settings
+  sent signed-out visitors to sign-in, and a forged sign-in callback returned an allowlisted error
+  code. It holds institution content only; no account was created.
+- **Release, live, checked from outside.** Released from `88e7ece` with
+  `railway up --service worker --ci`, then `railway up --service web --ci`, to the existing project.
+  - The worker's log read migrations ok, content seeded (0 created, 86 unchanged), the prompt
+    versions, and the queues listening.
+  - Health: database ok, migrations current.
+  - `/auth/callback` answers 404 on the hosted site, so the plan sign-in is refused there.
+  - `/settings`, `/studies` and a crafted `/notebook?error=…` redirect anonymous requests to
+    sign-in, and the public pages answer 200.
+  - Headers: Content-Security-Policy, `Permissions-Policy` with `microphone=(self)`, and HSTS.
+  - Nothing behind sign-in was checked live, because the owner account does not exist yet.
 
 ## Remaining defects
 
