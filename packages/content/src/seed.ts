@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import type { Database } from "@corniversity/db/client";
 import {
   concept,
+  conceptBridge,
   course,
   courseDepartment,
   courseVersion,
@@ -35,6 +36,7 @@ export interface SeedReport {
   units: number;
   exercises: number;
   instructorArtifacts: number;
+  bridges: number;
 }
 
 function hashCourse(course: LoadedCourse): string {
@@ -70,6 +72,7 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
     units: 0,
     exercises: 0,
     instructorArtifacts: 0,
+    bridges: 0,
   };
 
   await db.transaction(async (tx) => {
@@ -439,6 +442,32 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
           report.instructorArtifacts++;
         }
       }
+    }
+
+    // Concept bridges: versioned by content hash, so an unchanged bridge keeps its version.
+    for (const b of bundle.bridges) {
+      const contentHash = createHash("sha256").update(JSON.stringify(b.spec)).update(b.bodyMarkdown).digest("hex");
+      const [existing] = await tx.select().from(conceptBridge).where(eq(conceptBridge.conceptId, b.spec.conceptId)).limit(1);
+      if (existing?.contentHash === contentHash) continue;
+      const values = {
+        title: b.spec.title,
+        summary: b.spec.summary,
+        bodyMarkdown: b.bodyMarkdown,
+        check: b.spec.check ?? null,
+        assumesConceptIds: b.spec.assumesConceptIds,
+        sources: b.spec.sources,
+        origin: b.spec.origin,
+        status: b.spec.status,
+        checks: b.spec.checks,
+        contentHash,
+        version: (existing?.version ?? 0) + 1,
+        updatedAt: new Date(),
+      };
+      await tx
+        .insert(conceptBridge)
+        .values({ conceptId: b.spec.conceptId, ...values })
+        .onConflictDoUpdate({ target: conceptBridge.conceptId, set: values });
+      report.bridges++;
     }
   });
   return report;

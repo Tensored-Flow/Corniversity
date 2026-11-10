@@ -8,3 +8,4 @@ export * from "./library";
 export * from "./operations";
 export * from "./planning";
 export * from "./research";
+export * from "./study";

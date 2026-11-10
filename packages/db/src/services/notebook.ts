@@ -1,7 +1,7 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
-import { type Citation, notebookEntry } from "../schema/index";
+import { type Citation, notebookEntry, type StudyAnchor } from "../schema/index";
 
 export type NotebookEntryRow = typeof notebookEntry.$inferSelect;
 export type NotebookKind = NotebookEntryRow["kind"];
@@ -50,12 +50,23 @@ export async function createEntry(
     sourceLinks?: Citation[];
     courseId?: string | null;
     unitId?: string | null;
+    /** The study session the note was written in, and exactly what it points at. */
+    learningSessionId?: string | null;
+    anchor?: StudyAnchor | null;
   },
 ): Promise<NotebookEntryRow> {
   const fields = clean(input);
   const [row] = await db
     .insert(notebookEntry)
-    .values({ ownerId, ...fields, sourceLinks: input.sourceLinks ?? [], courseId: input.courseId ?? null, unitId: input.unitId ?? null })
+    .values({
+      ownerId,
+      ...fields,
+      sourceLinks: input.sourceLinks ?? [],
+      courseId: input.courseId ?? null,
+      unitId: input.unitId ?? null,
+      learningSessionId: input.learningSessionId ?? null,
+      anchor: input.anchor ?? null,
+    })
     .returning();
   return row!;
 }

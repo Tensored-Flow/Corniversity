@@ -1,0 +1,22 @@
+{
+  "conceptId": "membrane-potential-basics",
+  "title": "What the V in an integrate-and-fire model is",
+  "summary": "The biology behind V, E_L, the leak and the membrane time constant, so the integrate-and-fire equation reads as a description of a cell rather than an abstract ODE.",
+  "bodyFile": "bridge.md",
+  "check": {
+    "prompt": "A model neuron sits at V = −50 mV with no input current (I = 0). Using τ_m dV/dt = −(V − E_L) + R I with E_L = −70 mV and τ_m = 20 ms, say where V goes, how fast, and why it heads for E_L rather than for 0 mV.",
+    "guidance": "With I = 0 the solution is V(t) = E_L + (V(0) − E_L) e^{−t/τ_m}: the 20 mV excess decays exponentially, to about 7.4 mV after one time constant (20 ms) and under 1 mV after three. The destination is E_L because that is where the leak current −g_L(V − E_L) vanishes; E_L is set by the ion concentration gradients and the membrane's leak permeabilities (the 'battery' in the circuit). 0 mV would be the resting value only if there were no concentration gradients, or if the membrane were equally permeable to everything, which is not the cell's situation."
+  },
+  "assumesConceptIds": ["ode-basics"],
+  "sources": [
+    { "sourceId": "mit-neural-computation-2018", "locatorId": "mit940-lec01", "note": "Lecture 1 (Overview and Ionic Currents) covers the ionic basis of the membrane potential treated here; the explanation below is original." },
+    { "sourceId": "neuromatch-compneuro", "locatorId": "nma-w1d1-t2", "note": "The leaky integrate-and-fire model in the form NEU-220 unit 1 uses." }
+  ],
+  "origin": "original",
+  "status": "ready",
+  "checks": [
+    { "name": "numerical-check", "result": "pass", "evidence": "E_K = 61.5 mV × log10(5/140) = 61.5 × (−1.447) ≈ −89 mV and E_Na = 61.5 × log10(145/12) ≈ +66.6 mV at 37 °C (RT/F ≈ 26.7 mV); τ_m = r_m c_m = 20 kΩ·cm² × 1 µF/cm² = 20 ms; the check's decay values 20e^{−1} ≈ 7.36 and 20e^{−3} ≈ 0.996 recomputed by the author." },
+    { "name": "consistency-with-unit", "result": "pass", "evidence": "The circuit equation C dV/dt = −g_L(V − E_L) + I multiplied by R = 1/g_L gives NEU-220 unit 1's τ_m dV/dt = −(V − E_L) + RI with τ_m = RC, as the unit states." },
+    { "name": "scope", "result": "pass", "evidence": "Author's own review: concentrations are stated as typical mammalian values, not constants; the Goldman–Hodgkin–Katz equation is named, not derived; the action potential is described only to say what integrate-and-fire leaves out." }
+  ]
+}

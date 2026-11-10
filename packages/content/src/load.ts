@@ -2,11 +2,13 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import type { ZodType } from "zod";
 import {
+  BridgeSpec,
   ConceptSpec,
   type ContentBundle,
   CourseSpec,
   DepartmentSpec,
   ExerciseSpec,
+  type LoadedBridge,
   type LoadedCourse,
   type LoadedUnit,
   PersonaSpec,
@@ -132,7 +134,15 @@ export function loadContent(root: string): ContentBundle {
     personas: listFiles(join(r, "personas"), ".json").map((f) => readJson(f, PersonaSpec)),
     societies: existsSync(join(r, "societies.json")) ? readJsonArray(join(r, "societies.json"), SocietySpec) : [],
     courses: listDirs(join(r, "courses")).map(loadCourse),
+    bridges: existsSync(join(r, "bridges")) ? listDirs(join(r, "bridges")).map(loadBridge) : [],
   };
+}
+
+function loadBridge(dir: string): LoadedBridge {
+  const spec = readJson(join(dir, "bridge.json"), BridgeSpec);
+  const bodyPath = join(dir, spec.bodyFile);
+  if (!existsSync(bodyPath)) throw new ContentError(bodyPath, "missing bridge body");
+  return { spec, bodyMarkdown: readFileSync(bodyPath, "utf8"), dir };
 }
 
 export function defaultContentRoot(): string {

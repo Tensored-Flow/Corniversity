@@ -277,8 +277,16 @@ export async function submitAttempt(
     ownerId: string;
     attemptId: string;
     contentMarkdown: string;
-    assistanceDisclosed?: { hintsUsed: number; peersConsulted: boolean; externalSources: string[]; note?: string };
+    assistanceDisclosed?: {
+      hintsUsed: number;
+      peersConsulted: boolean;
+      externalSources: string[];
+      note?: string;
+      help?: Record<string, number>;
+    };
     graderConfig: { provider: string; model: string; promptVersion: string; roleVersion: string };
+    /** Paper work: the confirmed transcription submitted (its text is `contentMarkdown`) and its pages. */
+    paper?: { transcriptionVersionId: string; pageIds: string[] };
   },
 ): Promise<{ submissionVersionId: string; assessmentRunId: string; version: number }> {
   const a = await getAttempt(db, input.ownerId, input.attemptId);
@@ -301,7 +309,9 @@ export async function submitAttempt(
       attemptId: a.id,
       version,
       contentMarkdown: input.contentMarkdown,
-      contentKind: "text",
+      contentKind: input.paper ? "paper" : "text",
+      transcriptionVersionId: input.paper?.transcriptionVersionId ?? null,
+      pageIds: input.paper?.pageIds ?? [],
       assistanceDisclosed: input.assistanceDisclosed ?? { hintsUsed: a.hintsUsed, peersConsulted: false, externalSources: [] },
     })
     .returning();

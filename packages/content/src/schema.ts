@@ -1,3 +1,4 @@
+import { BridgeSpec } from "@corniversity/core/prerequisites/bridges";
 import {
   ConceptSpec,
   CourseSpec,
@@ -62,6 +63,15 @@ export interface LoadedCourse {
   dir: string;
 }
 
+/** A concept bridge as loaded: its record and the explanation from bridge.md. */
+export { BridgeSpec };
+
+export interface LoadedBridge {
+  spec: BridgeSpec;
+  bodyMarkdown: string;
+  dir: string;
+}
+
 export interface ContentBundle {
   root: string;
   departments: DepartmentSpec[];
@@ -72,4 +82,5 @@ export interface ContentBundle {
   personas: PersonaSpec[];
   societies: SocietySpec[];
   courses: LoadedCourse[];
+  bridges: LoadedBridge[];
 }

@@ -12,6 +12,7 @@ export const QUEUES = {
   embedPassages: "embed-passages",
   exportRecords: "export-records",
   maintenance: "maintenance",
+  transcribePages: "transcribe-pages",
 } as const;
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
 
@@ -51,6 +52,19 @@ export const ExportRecordsPayload = z.object({
   kind: z.enum(["full", "notebook", "records", "alter_markdown"]),
 });
 export type ExportRecordsPayload = z.infer<typeof ExportRecordsPayload>;
+
+/**
+ * A model transcription of paper pages, sent only under the learner's consent for these pages;
+ * the worker re-checks the consent and the pages when it runs.
+ */
+export const TranscribePagesPayload = z.object({
+  idempotencyKey: z.string().min(1),
+  ownerId: z.string().min(1),
+  attemptId: z.string().uuid(),
+  consentId: z.string().uuid(),
+  pageIds: z.array(z.string().uuid()).min(1).max(12),
+});
+export type TranscribePagesPayload = z.infer<typeof TranscribePagesPayload>;
 
 export const MaintenancePayload = z.object({
   idempotencyKey: z.string().min(1),
@@ -110,6 +124,13 @@ export const QUEUE_CONFIG: Record<
     retryDelay: 30,
     retryBackoff: false,
     expireInSeconds: 15 * 60,
+  },
+  "transcribe-pages": {
+    policy: "stately",
+    retryLimit: 0,
+    retryDelay: 0,
+    retryBackoff: false,
+    expireInSeconds: 10 * 60,
   },
   maintenance: {
     policy: "singleton",

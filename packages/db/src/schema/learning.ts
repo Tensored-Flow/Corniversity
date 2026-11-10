@@ -5,6 +5,7 @@ import { createdAt, evidenceStateEnum, submissionStateEnum, tsvector, tz, update
 import { concept, course, teachingUnit, unitExercise } from "./academic";
 import { user } from "./auth";
 import { enrolment, scheduledSession } from "./planning";
+import type { StudyAnchor } from "./study";
 
 export interface Citation {
   tag: string; // E1, E2 … as shown to the model
@@ -39,6 +40,12 @@ export const learningSession = pgTable(
       .$type<{
         currentExerciseId?: string;
         readerLocator?: unknown;
+        /** The heading of the lesson last in view, saved on the server so another device opens there. */
+        readerAnchor?: string;
+        /** What the learner typed about how far they got in an external reading. */
+        externalProgress?: { text: string; at: string };
+        pausedAt?: string;
+        /** The learner's own summary at the close, editable; the facts are computed from records. */
         summary?: string;
         nextStep?: string;
       }>()
@@ -138,14 +145,24 @@ export const submissionVersion = pgTable(
       .references(() => attempt.id, { onDelete: "cascade" }),
     version: integer("version").notNull(),
     contentMarkdown: text("content_markdown").notNull(),
-    contentKind: text("content_kind").$type<"text" | "image" | "code">().notNull().default("text"),
+    contentKind: text("content_kind").$type<"text" | "image" | "code" | "paper" | "oral">().notNull().default("text"),
+    /** For paper work: the confirmed transcription that was submitted, and the pages it reads. */
+    transcriptionVersionId: uuid("transcription_version_id"),
+    pageIds: jsonb("page_ids").$type<string[]>().notNull().default([]),
     transcription: jsonb("transcription").$type<{
       text: string;
       confirmed: boolean;
       uncertainRegions: string[];
     }>(),
     assistanceDisclosed: jsonb("assistance_disclosed")
-      .$type<{ hintsUsed: number; peersConsulted: boolean; externalSources: string[]; note?: string }>()
+      .$type<{
+        hintsUsed: number;
+        peersConsulted: boolean;
+        externalSources: string[];
+        note?: string;
+        /** Help asked for on this attempt before submitting, by kind (small hint, full explanation…). */
+        help?: Record<string, number>;
+      }>()
       .notNull()
       .default({ hintsUsed: 0, peersConsulted: false, externalSources: [] }),
     submittedAt: createdAt(),
@@ -327,6 +344,9 @@ export const notebookEntry = pgTable(
     courseId: text("course_id").references(() => course.id),
     unitId: text("unit_id"),
     resolved: boolean("resolved").notNull().default(false),
+    /** The study session the note was written in, and exactly what it points at. */
+    learningSessionId: uuid("learning_session_id").references(() => learningSession.id, { onDelete: "set null" }),
+    anchor: jsonb("anchor").$type<StudyAnchor>(),
     tsv: tsvector("tsv").generatedAlwaysAs(
       (): SQL => sql`to_tsvector('english', coalesce(${notebookEntry.title}, '') || ' ' || coalesce(${notebookEntry.bodyMarkdown}, ''))`,
     ),

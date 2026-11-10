@@ -24,6 +24,8 @@ export interface ValidationReport {
     programmes: number;
     programmeBlocks: number;
     programmeElectives: number;
+    bridges: number;
+    bridgesReady: number;
   };
 }
 
@@ -287,6 +289,26 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
     if (spec.launch && spec.readiness === "teaching_ready") launchTeachingReady++;
   }
 
+  // Concept bridges: about a known concept, assuming known concepts, citing registered sources
+  // only, and never claiming readiness without the author's own checks recorded.
+  const sourceIdsForBridges = new Set(bundle.sources.map((s) => s.id));
+  for (const b of bundle.bridges) {
+    const where = `bridges/${b.spec.conceptId}`;
+    if (!conceptIds.has(b.spec.conceptId)) err(where, `unknown concept ${b.spec.conceptId}`);
+    if (b.dir.replace(/\\/g, "/").split("/").pop() !== b.spec.conceptId) err(where, "the folder name must be the concept id");
+    for (const c of b.spec.assumesConceptIds) {
+      if (!conceptIds.has(c)) err(where, `assumes unknown concept ${c}`);
+      if (c === b.spec.conceptId) err(where, "a bridge cannot assume its own concept");
+    }
+    for (const s of b.spec.sources) {
+      if (!sourceIdsForBridges.has(s.sourceId)) err(where, `unknown source ${s.sourceId}`);
+      if (s.locatorId && !locatorIds.has(s.locatorId)) err(where, `unknown locator ${s.locatorId}`);
+    }
+    if (b.bodyMarkdown.trim().length < 400) err(where, "the explanation is too short to teach anything");
+    if (b.spec.status === "ready" && b.spec.checks.length === 0) err(where, "a ready bridge records its author's checks");
+    if (b.spec.status === "ready" && b.spec.checks.some((c) => c.result === "fail")) err(where, "a ready bridge has a failed check");
+  }
+
   return {
     issues,
     stats: {
@@ -304,6 +326,8 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
       programmes: bundle.programmes.length,
       programmeBlocks: bundle.programmes.reduce((n, p) => n + (p.blocks?.length ?? 0), 0),
       programmeElectives: bundle.programmes.reduce((n, p) => n + (p.electives?.length ?? 0), 0),
+      bridges: bundle.bridges.length,
+      bridgesReady: bundle.bridges.filter((b) => b.spec.status === "ready").length,
     },
   };
 }
@@ -329,6 +353,7 @@ export function formatReport(report: ValidationReport): string {
     `units ${s.units} (ready ${s.unitsReady}) · exercises ${s.exercises} · sources ${s.sources} · verified locators ${s.verifiedLocators} · personas ${s.personas}`,
   );
   lines.push(`programmes ${s.programmes} · programme blocks ${s.programmeBlocks} · programme electives ${s.programmeElectives}`);
+  lines.push(`concept bridges ${s.bridges} (ready ${s.bridgesReady})`);
   lines.push(`${errors.length} error(s), ${warnings.length} warning(s)`);
   return lines.join("\n");
 }

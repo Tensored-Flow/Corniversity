@@ -1,0 +1,20 @@
+{
+  "conceptId": "tangent-bundle-vector-fields",
+  "title": "How tangent vectors and covectors change with coordinates",
+  "summary": "The transformation law for the components of a tangent vector and a covector, why the two laws are inverse to each other, and how that makes g_ij dx^i dx^j a coordinate-free object.",
+  "bodyFile": "bridge.md",
+  "check": {
+    "prompt": "On ℝ² \\ {0}, the vector field ∂/∂r of polar coordinates is written in Cartesian components. Find its components (vˣ, vʸ) at the point with polar coordinates (r, θ), and check them against the transformation law.",
+    "guidance": "With x = r cos θ, y = r sin θ, the law v'^i = (∂x^i/∂u^j) v^j applied to the polar components (v^r, v^θ) = (1, 0) gives vˣ = ∂x/∂r = cos θ and vʸ = ∂y/∂r = sin θ. So ∂/∂r = cos θ ∂/∂x + sin θ ∂/∂y = (x/r) ∂/∂x + (y/r) ∂/∂y: the unit radial field, as the picture suggests. Note that ∂/∂θ = −r sin θ ∂/∂x + r cos θ ∂/∂y has length r, not 1: coordinate vector fields need not be unit vectors."
+  },
+  "assumesConceptIds": ["multivariable-calculus"],
+  "sources": [
+    { "sourceId": "mit-gm-2004", "locatorId": "gm04-l7-def7-3", "note": "Tangent vectors defined as equivalence classes of chart–vector pairs, related by the derivative of the transition map: the law stated here." }
+  ],
+  "origin": "original",
+  "status": "ready",
+  "checks": [
+    { "name": "mathematical-review", "result": "pass", "evidence": "Author's own review: the vector law v'^i = (∂x'^i/∂x^j) v^j follows from the chain rule on a curve; the covector law ω'_i = (∂x^j/∂x'^i) ω_j follows from ω(v) being chart-independent; their Jacobians are mutually inverse; the metric components transform with two inverse Jacobians so g_ij dx^i dx^j is invariant; the polar example g = dr² + r² dθ² recomputed from dx = cos θ dr − r sin θ dθ, dy = sin θ dr + r cos θ dθ; the check's ∂/∂r = cos θ ∂x + sin θ ∂y." },
+    { "name": "consistency-with-course", "result": "pass", "evidence": "Matches MAT-262 unit 1's coordinate expressions of a metric and its distinction between a coordinate singularity and a property of the metric (the polar metric's det = r² vanishing at r = 0)." }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "conceptId": "metric-spaces",
+  "title": "Completeness: why Banach spaces ask for it",
+  "summary": "Cauchy sequences, what it means for a metric space to be complete, why completeness is intrinsic while closedness is not, and which theorems need it.",
+  "bodyFile": "bridge.md",
+  "check": {
+    "prompt": "Give a normed space in which some absolutely convergent series has no sum, and justify both halves: that the series is absolutely convergent, and that no element of the space is its sum.",
+    "guidance": "One answer: c_00, the finitely supported real sequences, with the sup norm, and the series Σ_{k≥1} 2^{−k} e_k (e_k the k-th unit sequence). It is absolutely convergent because Σ ‖2^{−k} e_k‖_∞ = Σ 2^{−k} = 1. Its partial sums s_n = (1/2, 1/4, …, 2^{−n}, 0, 0, …) converge in sup norm, inside the larger space ℓ^∞, to x = (2^{−k})_k, since ‖x − s_n‖_∞ = 2^{−(n+1)}. Limits in a metric space are unique and c_00 sits inside ℓ^∞ with the same norm, so if the series had a sum in c_00 it would be x; but x has infinitely many non-zero terms, so it is not in c_00. Hence the series has no sum in c_00, which is consistent with c_00 being incomplete."
+  },
+  "assumesConceptIds": ["real-analysis-sequences"],
+  "sources": [
+    { "sourceId": "mit-fa-2021", "locatorId": "fa21-l1-prop8", "note": "The metric induced by a norm." },
+    { "sourceId": "mit-fa-2021", "locatorId": "fa21-l1-def14", "note": "The definition of a Banach space this bridge prepares." },
+    { "sourceId": "mit-fa-2021", "locatorId": "fa21-l1-thm16", "note": "C_∞(X) with the sup norm is complete: the example of a complete space used below." }
+  ],
+  "origin": "original",
+  "status": "ready",
+  "checks": [
+    { "name": "mathematical-review", "result": "pass", "evidence": "Author's own review of each claim: convergent implies Cauchy; the sequence of continuous ramps f_n is L¹-Cauchy with ‖f_m − f_n‖_1 ≤ 1/n for m > n because f_m − f_n vanishes outside [1/2, 1/2 + 1/n] and |f_m − f_n| ≤ 1; an L¹ limit that is continuous would equal 0 on [0,1/2) and 1 on (1/2,1], impossible; a subset of a complete metric space is complete exactly when it is closed; the c_00 example in the self-check." },
+    { "name": "consistency-with-course", "result": "pass", "evidence": "Definitions match MAT-230 unit 1 and the MIT 18.102 lecture 1 locators cited (norm-induced metric, Banach space as a complete normed space, completeness of C_∞(X))." }
+  ]
+}
