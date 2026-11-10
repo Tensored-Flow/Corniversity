@@ -1,4 +1,7 @@
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { filmIsCurrent, runVisualChecks, storyboardHash } from "@corniversity/core/visuals/visual";
+import { type BlobStore, sha256Hex } from "@corniversity/db/blob";
 import type { Database } from "@corniversity/db/client";
 import {
   concept,
@@ -18,9 +21,10 @@ import {
   teachingUnit,
   unitExercise,
   unitPublication,
+  visualExplanation,
 } from "@corniversity/db/schema/index";
 import { and, eq } from "drizzle-orm";
-import type { ContentBundle, LoadedCourse } from "./schema";
+import type { ContentBundle, LoadedCourse, LoadedVisual } from "./schema";
 
 export interface SeedReport {
   departments: number;
@@ -38,6 +42,8 @@ export interface SeedReport {
   exercises: number;
   instructorArtifacts: number;
   bridges: number;
+  visuals: number;
+  visualFilmsStored: number;
 }
 
 function hashCourse(course: LoadedCourse): string {
@@ -56,8 +62,10 @@ function hashCourse(course: LoadedCourse): string {
  * Seeds institution content (never learner data). Courses are versioned by content hash: an
  * unchanged course keeps its current version; a changed one gets a new version row and the old
  * one is marked not current, so existing enrolments keep pointing at the version they used.
+ * With a blob store, a visual's film recorded from its current storyboard is stored too; without
+ * one, films already stored are left as they are.
  */
-export async function seedContent(db: Database, bundle: ContentBundle): Promise<SeedReport> {
+export async function seedContent(db: Database, bundle: ContentBundle, options: { blobs?: BlobStore } = {}): Promise<SeedReport> {
   const report: SeedReport = {
     departments: 0,
     concepts: 0,
@@ -74,6 +82,8 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
     exercises: 0,
     instructorArtifacts: 0,
     bridges: 0,
+    visuals: 0,
+    visualFilmsStored: 0,
   };
 
   await db.transaction(async (tx) => {
@@ -482,5 +492,74 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
       report.bridges++;
     }
   });
+
+  const visuals = await seedVisuals(db, bundle.visuals, options.blobs);
+  report.visuals = visuals.visuals;
+  report.visualFilmsStored = visuals.visualFilmsStored;
+  return report;
+}
+
+/**
+ * Visual explanations, seeded after the catalogue. A film goes into the blob store before its row
+ * points at it, and the blob it replaces is removed only once the row has moved on. Without a blob
+ * store the film columns are left as they are.
+ */
+export async function seedVisuals(
+  db: Database,
+  visuals: LoadedVisual[],
+  blobs?: BlobStore,
+): Promise<{ visuals: number; visualFilmsStored: number }> {
+  const report = { visuals: 0, visualFilmsStored: 0 };
+  const options = { blobs };
+  for (const v of visuals) {
+    const [existing] = await db.select().from(visualExplanation).where(eq(visualExplanation.slug, v.spec.slug)).limit(1);
+    const current = filmIsCurrent(v.spec);
+    const contentHash = createHash("sha256").update(JSON.stringify(v.spec)).digest("hex");
+    const film = options.blobs && current && v.filmPath ? readFileSync(v.filmPath) : null;
+    const filmSha = film ? sha256Hex(film) : null;
+    const filmUnchanged = !options.blobs || (existing?.filmSha256 ?? null) === filmSha;
+    if (existing?.contentHash === contentHash && filmUnchanged) continue;
+
+    let filmColumns = {};
+    let replacedKey: string | null = null;
+    if (options.blobs && !filmUnchanged) {
+      replacedKey = existing?.filmBlobKey ?? null;
+      const stored = film ? await options.blobs.put(film) : null;
+      filmColumns = {
+        filmBlobKey: stored?.key ?? null,
+        filmSha256: filmSha,
+        filmBytes: stored?.sizeBytes ?? null,
+        filmDurationSeconds: film ? (v.spec.render?.durationSeconds ?? null) : null,
+        filmRenderedAt: film && v.spec.render ? new Date(v.spec.render.renderedAt) : null,
+        filmTool: film ? (v.spec.render?.tool ?? null) : null,
+      };
+      if (stored) report.visualFilmsStored++;
+    }
+    const values = {
+      title: v.spec.title,
+      origin: v.spec.origin,
+      status: v.spec.status,
+      specVersion: v.spec.version,
+      unitIds: v.spec.unitIds,
+      revealsExerciseIds: v.spec.revealsExerciseIds,
+      spec: v.spec as Record<string, unknown>,
+      storyboardHash: storyboardHash(v.spec),
+      checkResults: runVisualChecks(v.spec),
+      filmStale:
+        v.spec.render && !current
+          ? `The film was recorded from storyboard ${v.spec.render.storyboardHash}; the storyboard is now ${storyboardHash(v.spec)}.`
+          : null,
+      contentHash,
+      version: existing?.contentHash === contentHash ? existing.version : (existing?.version ?? 0) + 1,
+      updatedAt: new Date(),
+      ...filmColumns,
+    };
+    await db
+      .insert(visualExplanation)
+      .values({ slug: v.spec.slug, ...values })
+      .onConflictDoUpdate({ target: visualExplanation.slug, set: values });
+    if (replacedKey) await options.blobs?.delete(replacedKey);
+    report.visuals++;
+  }
   return report;
 }

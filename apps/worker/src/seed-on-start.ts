@@ -1,5 +1,6 @@
 import { defaultContentRoot, loadContent } from "@corniversity/content/load";
 import { type SeedReport, seedContent } from "@corniversity/content/seed";
+import type { BlobStore } from "@corniversity/db/blob";
 
 /**
  * Seeds the institution's content (departments, catalogue, sources, programmes, personas; never
@@ -11,7 +12,8 @@ export async function seedContentIfRequested(
   db: Parameters<typeof seedContent>[0],
   flag: string | undefined,
   root: string = defaultContentRoot(),
+  blobs?: BlobStore,
 ): Promise<SeedReport | null> {
   if (flag !== "1") return null;
-  return seedContent(db, loadContent(root));
+  return seedContent(db, loadContent(root), { blobs });
 }

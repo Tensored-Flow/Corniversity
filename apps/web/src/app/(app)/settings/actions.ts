@@ -15,6 +15,7 @@ import {
 } from "@corniversity/db/services/provider-config";
 import { updateProfileSettings } from "@corniversity/db/services/settings";
 import { StudyError, updateStudyPreferences } from "@corniversity/db/services/study";
+import { allowVoiceDictation, withdrawVoiceDictation } from "@corniversity/db/services/voice";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -129,6 +130,20 @@ export async function settleRunAction(form: FormData): Promise<void> {
     throw error;
   }
   done("provider");
+}
+
+/** Dictation is allowed only with the box ticked, after reading where the audio goes. */
+export async function allowVoiceAction(form: FormData): Promise<void> {
+  const session = await requireSession("/settings");
+  if (form.get("understood") !== "1") redirect("/settings?error=Tick%20the%20box%20to%20allow%20dictation.#voice");
+  await allowVoiceDictation(db(), session.user.id);
+  done("voice");
+}
+
+export async function withdrawVoiceAction(): Promise<void> {
+  const session = await requireSession("/settings");
+  await withdrawVoiceDictation(db(), session.user.id);
+  done("voice");
 }
 
 export async function deleteMemoryAction(form: FormData): Promise<void> {

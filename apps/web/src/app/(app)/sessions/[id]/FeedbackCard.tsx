@@ -27,6 +27,8 @@ interface Props {
    * each line of the transcription is on, so the first gap points at a page.
    */
   paper?: { transcriptionVersion: number; latestTranscriptionVersion: number; pageOfLine: Record<number, number> };
+  /** A spoken explanation: dictated, then corrected by the learner before submission. */
+  oral?: boolean;
 }
 
 const VERDICT: Record<string, { label: string; tone: "moss" | "rust" | "slate" }> = {
@@ -52,6 +54,7 @@ export async function FeedbackCard({
   reviews,
   fileReview,
   paper,
+  oral = false,
 }: Props) {
   const verdict = run?.verdict ? VERDICT[run.verdict] : null;
   const fb = run?.feedback ?? null;
@@ -65,6 +68,7 @@ export async function FeedbackCard({
         {run?.status === "failed" ? <Badge tone="rust">assessment failed</Badge> : null}
         {verdict ? <Badge tone={verdict.tone}>{verdict.label}</Badge> : null}
         {paper ? <Badge>paper work · transcription v{paper.transcriptionVersion}</Badge> : null}
+        {oral ? <Badge>spoken explanation · dictated, corrected by you</Badge> : null}
         {run ? (
           <Badge tone={live ? "slate" : "neutral"}>
             {live ? `AI assessor · ${modelLabel(run.graderConfig.model)}` : "Scripted demo assessor: no model read this"}

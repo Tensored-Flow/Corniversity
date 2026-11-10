@@ -88,6 +88,10 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   `preparation_request` (intake, budget, status), `preparation_stage` (one row per stage and unit,
   with role, lease, artifact and error), `unit_draft` (numbered drafts with their checks) and
   `unit_publication` (one active publication per unit; the seeder skips content for those units).
+- **Visual explanations**: `visual_explanation` (storyboard with its render record, check results,
+  storyboard hash, and a film in the blob store only when it was recorded from the current
+  storyboard; otherwise `film_stale` says why it is withheld). Films are recorded locally with
+  `pnpm visuals:render <slug>` into `content/visuals/<slug>/render/` and seeded by the worker.
 - **Research studio**: `research_project` (owner, kind, question, shelf and leads, a demonstration
   flag), `research_document` (proposal, methods and report drafts), `research_version`
   (immutable numbered versions), `research_provenance`, `research_artifact` (a blob or a notebook
@@ -171,7 +175,9 @@ an administrative command run in the worker's shell, never through the website; 
 session (`apps/worker/src/admin/reset-owner-password.ts`). Every route handler
 calls `requireSession`; files served only through authorized handlers; companion uses hashed
 device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); uploads validated
-(type, size, page count, decompression limits); secrets redacted from logs.
+(type, size, page count, decompression limits); secrets redacted from logs. `Permissions-Policy`
+allows the microphone to this origin only (`microphone=(self)`), for dictation, which is offered
+only after the learner's recorded permission; camera and geolocation stay off.
 
 ## Significant decisions
 

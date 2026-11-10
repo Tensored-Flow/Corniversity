@@ -12,6 +12,7 @@ import { latestTranscriptionJob, listTranscriptions, listWorkPages } from "@corn
 import { resolveProviderState } from "@corniversity/db/services/provider-config";
 import { resumeSession, sessionContinuity, sessionNotes } from "@corniversity/db/services/study-session";
 import { getOrCreateConversation, listMessages } from "@corniversity/db/services/tutoring";
+import { voiceDictationAllowed } from "@corniversity/db/services/voice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AiLabel } from "@/components/AiLabel";
@@ -22,6 +23,7 @@ import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
 import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
+import { speakableText } from "@/lib/speakable";
 import { AutoRefresh } from "./AutoRefresh";
 import {
   completeSessionAction,
@@ -115,6 +117,7 @@ export default async function SessionPage({
             .join(" "),
         ),
       ),
+      spoken: speakableText(m.contentMarkdown),
       citations: m.citations,
       labels: m.labels,
       uncited: m.uncitedClaims.length,
@@ -186,7 +189,7 @@ export default async function SessionPage({
   const firstSource = sourceLocators[0];
 
   return (
-    <WorkspaceProvider>
+    <WorkspaceProvider voiceAllowed={await voiceDictationAllowed(db(), auth.user.id)}>
       <div className="mx-auto w-full max-w-7xl">
         <AutoRefresh
           active={reviewing || transcriptionJob?.status === "queued" || transcriptionJob?.status === "active"}
@@ -427,6 +430,7 @@ export default async function SessionPage({
                           currentRubricVersion={selected.rubricVersion}
                           reviews={v.reviews}
                           fileReview={fileReviewAction}
+                          oral={v.contentKind === "oral"}
                           paper={
                             tv
                               ? {
@@ -466,7 +470,7 @@ export default async function SessionPage({
             )}
           </div>
 
-          <aside className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
+          <aside className="flex flex-col gap-6 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:self-start lg:overflow-y-auto">
             <ContextPanel
               counts={{ notes: notes.length, prerequisites: prerequisites.filter((p) => p.evidence === "not_shown").length }}
               panels={{

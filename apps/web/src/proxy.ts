@@ -40,6 +40,7 @@ export const config = {
     "/catalogue/:path*",
     "/courses/:path*",
     "/sessions/:path*",
+    "/visuals/:path*",
     "/library/:path*",
     "/timetable/:path*",
     "/notebook/:path*",

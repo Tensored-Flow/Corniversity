@@ -204,7 +204,7 @@ pipeline with intake, staged checkpoints, leases, cancellation, finite budget, d
 from published units and publication by the owner. Gate: review and preparation journeys;
 cancel/resume without duplicates; seeding preserves published preparation.
 
-### Milestone 15 (E) — Voice and visual teaching (EXT-01, EXT-02)
+### Milestone 15 (E) — Voice and visual teaching (EXT-01, EXT-02) — done
 
 Push-to-talk with an editable transcript through the browser's speech service (disclosed as such),
 consent and retention choice, text fallback; visual explanations as checked storyboards rendered

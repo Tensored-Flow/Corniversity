@@ -3,8 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button, Notice } from "@/components/ui";
+import { DictationButton } from "@/components/voice/DictationButton";
 import { addSessionNoteAction } from "./actions";
 import { useWorkspace } from "./Workspace";
+
+/** Appends dictated text to what is already written, with a space between. */
+const append = (text: string) => (prev: string) => (prev === "" || /\s$/.test(prev) ? `${prev}${text}` : `${prev} ${text}`);
 
 interface Note {
   id: string;
@@ -22,7 +26,7 @@ interface Note {
  */
 export function NotesPanel({ sessionId, notes, videos }: { sessionId: string; notes: Note[]; videos: { id: string; label: string }[] }) {
   const router = useRouter();
-  const { selection, noteRequest } = useWorkspace();
+  const { selection, noteRequest, voiceAllowed } = useWorkspace();
   const [kind, setKind] = useState<"note" | "question">("note");
   const [body, setBody] = useState("");
   const [attach, setAttach] = useState(true);
@@ -95,6 +99,7 @@ export function NotesPanel({ sessionId, notes, videos }: { sessionId: string; no
           placeholder={kind === "question" ? "What do you want to understand?" : "Write a note (Markdown and LaTeX work)"}
           className="w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper px-3 py-2 text-sm text-ink"
         />
+        <DictationButton allowed={voiceAllowed} onText={(t) => setBody(append(t))} />
         {videos.length ? (
           <div className="flex flex-wrap items-end gap-2 text-xs">
             <label className="flex flex-col gap-1">

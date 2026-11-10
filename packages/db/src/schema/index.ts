@@ -10,3 +10,4 @@ export * from "./planning";
 export * from "./preparation";
 export * from "./research";
 export * from "./study";
+export * from "./visuals";

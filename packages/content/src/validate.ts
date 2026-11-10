@@ -1,5 +1,9 @@
 import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
+import { filmIsCurrent, runVisualChecks } from "@corniversity/core/visuals/visual";
 import type { ContentBundle, LoadedCourse } from "./schema";
+
+/** The largest film the seeder will put in the blob store. */
+export const MAX_FILM_BYTES = 8 * 1024 * 1024;
 
 export interface Issue {
   level: "error" | "warning";
@@ -26,6 +30,8 @@ export interface ValidationReport {
     programmeElectives: number;
     bridges: number;
     bridgesReady: number;
+    visuals: number;
+    visualFilms: number;
   };
 }
 
@@ -313,6 +319,39 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
     if (b.spec.status === "ready" && b.spec.checks.some((c) => c.result === "fail")) err(where, "a ready bridge has a failed check");
   }
 
+  // Visual explanations: about known units, citing verified locators, revealing only known
+  // exercises, every plot described in words, and never offered unless their numerical checks pass.
+  const allUnitIds = new Set(bundle.courses.flatMap((c) => c.units.map((u) => u.spec.id)));
+  const allExerciseIds = new Set(bundle.courses.flatMap((c) => c.units.flatMap((u) => u.exercises.map((e) => e.id))));
+  let visualFilms = 0;
+  for (const v of bundle.visuals) {
+    const where = `visuals/${v.spec.slug}`;
+    if (v.dir.replace(/\\/g, "/").split("/").pop() !== v.spec.slug) err(where, "the folder name must be the slug");
+    for (const u of v.spec.unitIds) if (!allUnitIds.has(u)) err(where, `unknown unit ${u}`);
+    for (const l of v.spec.sourceLocatorIds) if (!locatorIds.has(l)) err(where, `unknown locator ${l}`);
+    for (const e of v.spec.revealsExerciseIds) if (!allExerciseIds.has(e)) err(where, `reveals unknown exercise ${e}`);
+    const sceneIds = new Set<string>();
+    for (const scene of v.spec.scenes) {
+      if (sceneIds.has(scene.id)) err(where, `duplicate scene ${scene.id}`);
+      sceneIds.add(scene.id);
+      if (scene.plot && !scene.plotDescription) err(where, `scene ${scene.id} has a plot with no description in words`);
+    }
+    for (const check of v.spec.checks) {
+      if ("sceneId" in check && check.sceneId && !sceneIds.has(check.sceneId))
+        err(where, `check ${check.id} names unknown scene ${check.sceneId}`);
+    }
+    const failed = runVisualChecks(v.spec).filter((r) => !r.passed);
+    if (failed.length && v.spec.status !== "draft") {
+      err(where, `a ${v.spec.status} visual fails its checks: ${failed.map((f) => `${f.id} (${f.detail})`).join("; ")}`);
+    }
+    if (v.spec.render) {
+      if (!v.filmPath) err(where, `the render record names ${v.spec.render.file}, which is missing`);
+      else if ((v.filmBytes ?? 0) > MAX_FILM_BYTES) err(where, "the film is larger than 8 MB");
+      if (!filmIsCurrent(v.spec)) warn(where, "the film was recorded from an older storyboard; it is not shown until it is recorded again");
+      else if (v.filmPath) visualFilms++;
+    }
+  }
+
   return {
     issues,
     stats: {
@@ -332,6 +371,8 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
       programmeElectives: bundle.programmes.reduce((n, p) => n + (p.electives?.length ?? 0), 0),
       bridges: bundle.bridges.length,
       bridgesReady: bundle.bridges.filter((b) => b.spec.status === "ready").length,
+      visuals: bundle.visuals.length,
+      visualFilms,
     },
   };
 }
@@ -358,6 +399,7 @@ export function formatReport(report: ValidationReport): string {
   );
   lines.push(`programmes ${s.programmes} · programme blocks ${s.programmeBlocks} · programme electives ${s.programmeElectives}`);
   lines.push(`concept bridges ${s.bridges} (ready ${s.bridgesReady})`);
+  lines.push(`visual explanations ${s.visuals} (current films ${s.visualFilms})`);
   lines.push(`${errors.length} error(s), ${warnings.length} warning(s)`);
   return lines.join("\n");
 }

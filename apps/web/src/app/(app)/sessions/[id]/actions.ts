@@ -106,7 +106,7 @@ export async function requestHintAction(sessionId: string, exerciseId: string): 
   return { ok: true, hint: result.hint, hintIndex: result.index, hintsTotal: result.total };
 }
 
-export async function submitAttemptAction(sessionId: string, exerciseId: string, content: string): Promise<ActionResult> {
+export async function submitAttemptAction(sessionId: string, exerciseId: string, content: string, dictated = false): Promise<ActionResult> {
   const auth = await requireSession();
   const ids = Ids.safeParse({ sessionId, exerciseId });
   if (!ids.success) return { ok: false, error: "Invalid identifiers." };
@@ -125,6 +125,7 @@ export async function submitAttemptAction(sessionId: string, exerciseId: string,
         ownerId: auth.user.id,
         attemptId: attempt.id,
         contentMarkdown: text,
+        oral: dictated === true,
         assistanceDisclosed: {
           hintsUsed: attempt.hintsUsed,
           peersConsulted: false,

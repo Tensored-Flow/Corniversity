@@ -9,6 +9,7 @@ import {
   TeachingUnitSpec,
 } from "@corniversity/core";
 import { BridgeSpec } from "@corniversity/core/prerequisites/bridges";
+import { VisualRender, VisualSpec } from "@corniversity/core/visuals/visual";
 import { z } from "zod";
 
 export { ConceptSpec, CourseSpec, DepartmentSpec, ExerciseSpec, PrerequisiteRule, ProgrammeSpec, SourceRecord, TeachingUnitSpec };
@@ -72,6 +73,16 @@ export interface LoadedBridge {
   dir: string;
 }
 
+export { VisualRender, VisualSpec };
+
+/** A visual explanation as loaded: its storyboard (with render/render.json merged in) and its film file, if present. */
+export interface LoadedVisual {
+  spec: VisualSpec;
+  dir: string;
+  filmPath: string | null;
+  filmBytes: number | null;
+}
+
 export interface ContentBundle {
   root: string;
   departments: DepartmentSpec[];
@@ -83,4 +94,5 @@ export interface ContentBundle {
   societies: SocietySpec[];
   courses: LoadedCourse[];
   bridges: LoadedBridge[];
+  visuals: LoadedVisual[];
 }

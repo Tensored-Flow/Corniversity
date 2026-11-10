@@ -18,6 +18,7 @@
     "db:seed:demo": "pnpm --filter @corniversity/content seed:demo",
     "content:validate": "pnpm --filter @corniversity/content validate",
     "content:coverage": "pnpm --filter @corniversity/content coverage",
+    "visuals:render": "tsx scripts/render-visual.ts",
     "dev": "pnpm --parallel --filter @corniversity/web --filter @corniversity/worker dev",
     "dev:web": "pnpm --filter @corniversity/web dev",
     "dev:worker": "pnpm --filter @corniversity/worker dev",

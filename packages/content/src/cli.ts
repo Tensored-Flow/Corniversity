@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { createBlobStore } from "@corniversity/db/blob";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { writeCoverage } from "./coverage";
@@ -31,7 +32,8 @@ async function main() {
   const handle = createDb(env.DATABASE_URL, { max: 2 });
   try {
     if (command === "seed") {
-      const result = await seedContent(handle.db, bundle);
+      const blobs = createBlobStore(env.BLOB_STORE, handle.db, env.CORNIVERSITY_DATA_ROOT);
+      const result = await seedContent(handle.db, bundle, { blobs });
       console.log(JSON.stringify(result, null, 2));
     } else if (command === "seed-demo") {
       if (env.DEPLOYMENT_MODE === "production") {

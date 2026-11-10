@@ -1,4 +1,5 @@
 import { checkAiAssets } from "@corniversity/ai/assets";
+import { createBlobStore } from "@corniversity/db/blob";
 import { closeDb, getDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { QUEUES } from "@corniversity/db/jobs";
@@ -19,7 +20,12 @@ async function main() {
   const handle = getDb();
   const migrated = await runMigrations(handle);
   console.log(`[worker] migrations ok (pgvector ${migrated.pgvector ? "on" : "off"})`);
-  const seeded = await seedContentIfRequested(handle.db, process.env.SEED_CONTENT_ON_START);
+  const seeded = await seedContentIfRequested(
+    handle.db,
+    process.env.SEED_CONTENT_ON_START,
+    undefined,
+    createBlobStore(env.BLOB_STORE, handle.db, env.CORNIVERSITY_DATA_ROOT),
+  );
   if (seeded)
     console.log(
       `[worker] content seeded: ${seeded.courseVersionsCreated} course versions created, ${seeded.courseVersionsUnchanged} unchanged`,

@@ -1,0 +1,17 @@
+WEBVTT
+
+1
+00:00:00.030 --> 00:00:09.030
+A membrane as a circuit: The membrane stores charge like a capacitor and leaks it through open channels towards the leak reversal potential. Multiplying the current balance by R gives the model's equation.
+
+2
+00:00:09.030 --> 00:00:17.030
+Below threshold: relaxation: With RI = 15 mV the potential relaxes towards E_L + RI = −55 mV, which is below the threshold of −50 mV, so the model never spikes.
+
+3
+00:00:17.030 --> 00:00:26.030
+Above threshold: regular spikes: With RI = 25 mV the target −45 mV lies above threshold. The potential climbs, is reset to −65 mV at each crossing, and climbs again: a regular spike train. The spike itself is a bookkeeping event, not modelled.
+
+4
+00:00:26.030 --> 00:00:34.030
+What the model leaves out: Real spikes come from voltage-gated sodium and potassium channels. The model keeps the passive membrane and replaces the spike with a threshold rule, so it says when a neuron fires, not how.

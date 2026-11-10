@@ -1,0 +1,22 @@
+CREATE TABLE "visual_explanation" (
+	"slug" text PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"origin" text NOT NULL,
+	"status" text NOT NULL,
+	"spec_version" integer NOT NULL,
+	"unit_ids" jsonb NOT NULL,
+	"reveals_exercise_ids" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"spec" jsonb NOT NULL,
+	"storyboard_hash" text NOT NULL,
+	"check_results" jsonb NOT NULL,
+	"film_blob_key" text,
+	"film_sha256" text,
+	"film_bytes" integer,
+	"film_duration_seconds" real,
+	"film_rendered_at" timestamp with time zone,
+	"film_tool" text,
+	"film_stale" text,
+	"content_hash" text NOT NULL,
+	"version" integer DEFAULT 1 NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);

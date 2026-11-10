@@ -3,7 +3,12 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { RenderedHtml } from "@/components/RenderedHtml";
 import { Badge, Button } from "@/components/ui";
+import { DictationButton } from "@/components/voice/DictationButton";
+import { ReadAloud } from "@/components/voice/ReadAloud";
 import { type HelpMode, useWorkspace } from "./Workspace";
+
+/** Appends dictated text to what is already written, with a space between. */
+const append = (text: string) => (prev: string) => (prev === "" || /\s$/.test(prev) ? `${prev}${text}` : `${prev} ${text}`);
 
 const MODES: { mode: HelpMode; label: string; describe: string }[] = [
   { mode: "question", label: "Question", describe: "Ask about the material or your work." },
@@ -25,6 +30,8 @@ interface RenderedMessage {
   /** What wrote a stored reply: a model's name, or "Scripted demo". */
   producedBy: string | null;
   html: string;
+  /** The reply as plain text for reading aloud, formulas replaced by spoken markers. */
+  spoken: string;
   citations: { tag: string; label: string; locatorId?: string }[];
   labels: string[];
   uncited: number;
@@ -62,7 +69,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
   const [preview, setPreview] = useState<Preview | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const { selection, setSelection, helpRequest } = useWorkspace();
+  const { selection, setSelection, helpRequest, voiceAllowed } = useWorkspace();
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight });
@@ -146,7 +153,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
 
   return (
     <div className="mt-3 flex flex-col gap-3">
-      <div ref={scroller} className="flex max-h-[28rem] flex-col gap-3 overflow-y-auto pr-1" aria-live="polite">
+      <div ref={scroller} className="flex max-h-[min(28rem,45vh)] flex-col gap-3 overflow-y-auto pr-1" aria-live="polite">
         {initialMessages.length === 0 && pending === null ? (
           <p className="text-sm text-ink-2">
             Ask about the material or about your attempt. {personaName} works from what you have tried and gives hints before answers; ask
@@ -165,6 +172,11 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
               {m.sender === "learner" ? "You" : `${personaName}${m.producedBy ? ` · ${m.producedBy}` : ""}`}
             </p>
             <RenderedHtml html={m.html} className="text-sm" />
+            {m.sender === "persona" && m.spoken ? (
+              <div className="mt-1">
+                <ReadAloud text={m.spoken} />
+              </div>
+            ) : null}
             {m.sender === "persona" && (m.labels.length || m.citations.length || m.uncited) ? (
               <div className="mt-2 flex flex-wrap items-center gap-1">
                 {m.labels.map((l) => (
@@ -275,7 +287,10 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
           disabled={pending !== null}
         />
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[0.7rem] text-ink-3">{locators.length} source locations available to cite</span>
+          <span className="flex flex-wrap items-center gap-2 text-[0.7rem] text-ink-3">
+            <DictationButton allowed={voiceAllowed} disabled={pending !== null} onText={(t) => setInput(append(t))} />
+            {locators.length} source locations available to cite
+          </span>
           <Button
             type="submit"
             variant="secondary"

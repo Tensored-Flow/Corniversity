@@ -1,0 +1,9 @@
+{
+  "file": "film.webm",
+  "captionsFile": "captions.vtt",
+  "storyboardHash": "ffc8c30f",
+  "durationSeconds": 34,
+  "renderedAt": "2026-11-10T05:07:54.715Z",
+  "tool": "Playwright 1.64.1 (Chromium screen recording)",
+  "leadInSeconds": 0.03
+}

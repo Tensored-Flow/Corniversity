@@ -584,6 +584,15 @@ error, after omissions produced noisy issues. Suites at the close of Milestone 1
 worker unit tests, 119 integration tests, typecheck and lint clean, the content validator with no
 error or warning.
 
+Voice and visual teaching (Milestone 15): journey 13 at both viewports and the axe pass over the
+new pages. Both films were inspected frame by frame from the recorded files; that inspection
+found a missing y-axis label and a recording longer than its storyboard (the extra time is a held
+last frame, and captions are offset by the measured lead-in), and the label was added. A real
+layout defect was found and repaired: on a 900-pixel-tall screen the sticky study panel grew taller
+than the window once a tutor conversation was long, leaving the send button unreachable; the
+panel now has its own scroll and the conversation a height tied to the window. Dictation in
+automation uses a labelled stand-in for the browser's recogniser; real recognition is unverified.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development

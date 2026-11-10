@@ -11,12 +11,15 @@ import {
   type LoadedBridge,
   type LoadedCourse,
   type LoadedUnit,
+  type LoadedVisual,
   PersonaSpec,
   PrerequisiteRule,
   ProgrammeSpec,
   SocietySpec,
   SourceRecord,
   TeachingUnitSpec,
+  VisualRender,
+  VisualSpec,
 } from "./schema";
 
 export class ContentError extends Error {
@@ -135,6 +138,22 @@ export function loadContent(root: string): ContentBundle {
     societies: existsSync(join(r, "societies.json")) ? readJsonArray(join(r, "societies.json"), SocietySpec) : [],
     courses: listDirs(join(r, "courses")).map(loadCourse),
     bridges: existsSync(join(r, "bridges")) ? listDirs(join(r, "bridges")).map(loadBridge) : [],
+    visuals: existsSync(join(r, "visuals")) ? listDirs(join(r, "visuals")).map(loadVisual) : [],
+  };
+}
+
+/** A visual's storyboard, with the record of a locally recorded film (render/render.json) merged in. */
+function loadVisual(dir: string): LoadedVisual {
+  const parsed = readJson(join(dir, "visual.json"), VisualSpec);
+  const renderPath = join(dir, "render", "render.json");
+  const render = existsSync(renderPath) ? readJson(renderPath, VisualRender) : undefined;
+  const filmPath = render ? join(dir, "render", render.file) : null;
+  const present = filmPath !== null && existsSync(filmPath);
+  return {
+    spec: render ? { ...parsed, render } : parsed,
+    dir,
+    filmPath: present ? filmPath : null,
+    filmBytes: present ? statSync(filmPath).size : null,
   };
 }
 

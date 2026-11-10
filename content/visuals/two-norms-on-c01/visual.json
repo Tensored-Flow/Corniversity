@@ -1,0 +1,58 @@
+{
+  "slug": "two-norms-on-c01",
+  "title": "Two norms on C([0,1]): why no constant works",
+  "origin": "original",
+  "status": "checked",
+  "version": 1,
+  "unitIds": ["MAT-230-u01"],
+  "objective": "See, curve by curve, why the sup norm and the integral norm are not equivalent on C([0,1]), and which hypothesis of the finite-dimensional theorem fails.",
+  "sourceLocatorIds": ["fa21-l1-ex6", "fa21-l1-prop11"],
+  "revealsExerciseIds": ["MAT-230-u01-ex1"],
+  "scenes": [
+    {
+      "id": "family",
+      "title": "The family",
+      "caption": "On [0,1] the functions x to the n are continuous. As n grows they stay near zero except close to x = 1.",
+      "equations": ["f_n(x) = x^n,\\qquad x \\in [0,1],\\ n \\ge 1"],
+      "plot": { "kind": "power_family", "exponents": [1, 2, 5, 20], "shadeLast": false },
+      "plotDescription": "Four increasing curves from (0,0) to (1,1): the line y = x, then x², x⁵ and x²⁰, each lower and flatter on most of the interval before rising steeply near x = 1.",
+      "durationSeconds": 7
+    },
+    {
+      "id": "sup",
+      "title": "The sup norm sees the peak",
+      "caption": "Every curve reaches the value 1 at x = 1, so the sup norm of x to the n is 1 for every n.",
+      "equations": ["\\|f_n\\|_\\infty = \\sup_{x\\in[0,1]} x^n = 1"],
+      "plot": { "kind": "power_family", "exponents": [2, 20], "shadeLast": false },
+      "plotDescription": "The curves x² and x²⁰, both ending at height 1 when x = 1.",
+      "durationSeconds": 7
+    },
+    {
+      "id": "area",
+      "title": "The integral norm sees the area",
+      "caption": "The shaded area under x to the 20 is one twenty-first. In general the integral norm is 1 over n plus 1, which tends to 0.",
+      "equations": ["\\|f_n\\|_1 = \\int_0^1 x^n\\,dx = \\frac{1}{n+1} \\longrightarrow 0"],
+      "plot": { "kind": "power_family", "exponents": [20], "shadeLast": true },
+      "plotDescription": "The curve x²⁰ with the thin region beneath it shaded; the region hugs the right-hand edge and has area 1/21.",
+      "durationSeconds": 8
+    },
+    {
+      "id": "no-constant",
+      "title": "No constant can work",
+      "caption": "A bound of the sup norm by C times the integral norm would need n + 1 to be at most C for every n. No constant does that.",
+      "equations": ["\\|f_n\\|_\\infty \\le C\\,\\|f_n\\|_1 \\iff 1 \\le \\frac{C}{n+1} \\iff n+1 \\le C"],
+      "durationSeconds": 8
+    },
+    {
+      "id": "what-fails",
+      "title": "Which hypothesis fails",
+      "caption": "So the two norms are not equivalent on C([0,1]). All norms are equivalent only in finite dimension, and the functions x to the n are linearly independent, so C([0,1]) is infinite-dimensional.",
+      "equations": ["\\{1, x, x^2, \\dots\\}\\ \\text{linearly independent} \\implies \\dim C([0,1]) = \\infty"],
+      "durationSeconds": 9
+    }
+  ],
+  "checks": [
+    { "kind": "power_sup", "id": "sup-is-one", "exponents": [1, 2, 5, 20] },
+    { "kind": "power_l1", "id": "integral-is-one-over-n-plus-one", "exponents": [1, 2, 5, 20] }
+  ]
+}

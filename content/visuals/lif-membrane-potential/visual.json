@@ -1,0 +1,49 @@
+{
+  "slug": "lif-membrane-potential",
+  "title": "The leaky integrate-and-fire neuron, from circuit to spikes",
+  "origin": "original",
+  "status": "checked",
+  "version": 1,
+  "unitIds": ["NEU-220-u01"],
+  "objective": "Connect the membrane-as-circuit picture to the integrate-and-fire equation, and see why a constant input either settles below threshold or produces regular spikes.",
+  "sourceLocatorIds": ["nma-w1d1-t2", "mit940-lec01"],
+  "revealsExerciseIds": [],
+  "scenes": [
+    {
+      "id": "circuit",
+      "title": "A membrane as a circuit",
+      "caption": "The membrane stores charge like a capacitor and leaks it through open channels towards the leak reversal potential. Multiplying the current balance by R gives the model's equation.",
+      "equations": ["C\\,\\frac{dV}{dt} = -g_L\\,(V - E_L) + I", "\\tau_m\\,\\frac{dV}{dt} = -(V - E_L) + RI,\\qquad \\tau_m = RC"],
+      "durationSeconds": 9
+    },
+    {
+      "id": "below",
+      "title": "Below threshold: relaxation",
+      "caption": "With RI = 15 mV the potential relaxes towards E_L + RI = −55 mV, which is below the threshold of −50 mV, so the model never spikes.",
+      "equations": ["V(t) \\to E_L + RI = -55\\ \\text{mV} < V_{th} = -50\\ \\text{mV}"],
+      "plot": { "kind": "lif", "tauMs": 20, "eL": -70, "rI": 15, "vTh": -50, "vReset": -65, "tMaxMs": 200 },
+      "plotDescription": "The membrane potential rises from −70 mV and levels off near −55 mV without reaching the −50 mV threshold.",
+      "durationSeconds": 8
+    },
+    {
+      "id": "above",
+      "title": "Above threshold: regular spikes",
+      "caption": "With RI = 25 mV the target −45 mV lies above threshold. The potential climbs, is reset to −65 mV at each crossing, and climbs again: a regular spike train. The spike itself is a bookkeeping event, not modelled.",
+      "equations": ["E_L + RI = -45\\ \\text{mV} > V_{th} \\implies \\text{periodic firing}"],
+      "plot": { "kind": "lif", "tauMs": 20, "eL": -70, "rI": 25, "vTh": -50, "vReset": -65, "tMaxMs": 200 },
+      "plotDescription": "A sawtooth: the potential repeatedly rises from −65 mV to −50 mV and drops back, several times within 200 ms.",
+      "durationSeconds": 9
+    },
+    {
+      "id": "omits",
+      "title": "What the model leaves out",
+      "caption": "Real spikes come from voltage-gated sodium and potassium channels. The model keeps the passive membrane and replaces the spike with a threshold rule, so it says when a neuron fires, not how.",
+      "equations": ["V \\ge V_{th} \\;\\Rightarrow\\; \\text{spike},\\ V \\leftarrow V_{reset}"],
+      "durationSeconds": 8
+    }
+  ],
+  "checks": [
+    { "kind": "lif_steady_state", "id": "below-threshold-is-silent", "fires": false, "sceneId": "below" },
+    { "kind": "lif_steady_state", "id": "above-threshold-fires", "fires": true, "sceneId": "above" }
+  ]
+}

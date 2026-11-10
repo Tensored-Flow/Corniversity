@@ -22,6 +22,8 @@ interface WorkspaceState {
   /** A note request raised from a lesson selection; the notes panel opens its form. */
   noteRequest: number;
   requestNote: () => void;
+  /** Whether the learner has allowed dictation (the browser's speech recognition). */
+  voiceAllowed: boolean;
 }
 
 const WorkspaceContext = createContext<WorkspaceState | null>(null);
@@ -31,7 +33,7 @@ const WorkspaceContext = createContext<WorkspaceState | null>(null);
  * requests passed between the material and the panels. Nothing here is persisted; the server
  * holds the work, the position and the notes.
  */
-export function WorkspaceProvider({ children }: { children: ReactNode }) {
+export function WorkspaceProvider({ children, voiceAllowed = false }: { children: ReactNode; voiceAllowed?: boolean }) {
   const [selection, setSelection] = useState<Selection | null>(null);
   const [tab, setTabState] = useState<PanelTab>("tutor");
   const [helpRequest, setHelpRequest] = useState<{ mode: HelpMode; nonce: number } | null>(null);
@@ -57,8 +59,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setNoteRequest(Date.now());
         reveal("notes");
       },
+      voiceAllowed,
     }),
-    [selection, tab, helpRequest, noteRequest, reveal],
+    [selection, tab, helpRequest, noteRequest, reveal, voiceAllowed],
   );
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
 }

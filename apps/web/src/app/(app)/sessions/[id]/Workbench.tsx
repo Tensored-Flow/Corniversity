@@ -4,8 +4,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { RenderedHtml } from "@/components/RenderedHtml";
 import { Badge, Button, Notice } from "@/components/ui";
+import { DictationButton } from "@/components/voice/DictationButton";
 import type { ActionResult, DraftResult } from "./actions";
 import { type HelpMode, useWorkspace } from "./Workspace";
+
+/** Appends dictated text to what is already written, with a space between. */
+const append = (text: string) => (prev: string) => (prev === "" || /\s$/.test(prev) ? `${prev}${text}` : `${prev} ${text}`);
 
 interface Props {
   sessionId: string;
@@ -21,7 +25,7 @@ interface Props {
   solutionRevealed: boolean;
   saveDraft: (sessionId: string, exerciseId: string, draft: string, baseRevision: number) => Promise<DraftResult>;
   requestHint: (sessionId: string, exerciseId: string) => Promise<ActionResult>;
-  submit: (sessionId: string, exerciseId: string, content: string) => Promise<ActionResult>;
+  submit: (sessionId: string, exerciseId: string, content: string, dictated?: boolean) => Promise<ActionResult>;
   reveal: (sessionId: string, exerciseId: string) => Promise<ActionResult>;
   startAttempt: (sessionId: string, exerciseId: string, mode: "practice" | "self_test") => Promise<ActionResult>;
   /** Nothing written, no hint, no reveal, no submission: the mode can still be chosen. */
@@ -81,7 +85,9 @@ function writeBuffer(key: string, value: LocalBuffer | null): void {
  */
 export function Workbench(props: Props) {
   const router = useRouter();
-  const { setSelection, selection, requestHelp } = useWorkspace();
+  const { setSelection, selection, requestHelp, voiceAllowed } = useWorkspace();
+  /** Whether any of this text was dictated; the submission is then marked as a spoken explanation. */
+  const [dictated, setDictated] = useState(false);
   const bufferKey = `corniversity:draft:${props.exerciseId}`;
   const [draft, setDraft] = useState(props.initialDraft);
   const [status, setStatus] = useState<SaveStatus>(
@@ -344,6 +350,22 @@ export function Workbench(props: Props) {
         placeholder={"Write the argument here. Markdown and LaTeX work: $\\|f_n\\|_\\infty = \\dots$"}
         className="mt-3 w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper px-3 py-2 font-mono text-sm leading-relaxed text-ink focus-visible:outline-2 focus-visible:outline-focus disabled:opacity-70"
       />
+      <div className="mt-2">
+        <DictationButton
+          allowed={voiceAllowed}
+          label="Explain aloud"
+          disabled={accepted || reviewing}
+          onText={(t) => {
+            setDraft(append(t));
+            setDictated(true);
+          }}
+        />
+        {dictated ? (
+          <span className="ml-2 text-xs text-ink-3">
+            Dictated text is yours to correct; the submission is marked as a spoken explanation.
+          </span>
+        ) : null}
+      </div>
       <p className="mt-1 text-[0.7rem] text-ink-3" aria-live="polite">
         {attemptLines
           ? `Lines ${attemptLines[0]}–${attemptLines[1]} selected for a step check.`
@@ -399,7 +421,7 @@ export function Workbench(props: Props) {
           onClick={() => {
             setError(null);
             startTransition(async () => {
-              const r = await props.submit(props.sessionId, props.exerciseId, draft);
+              const r = await props.submit(props.sessionId, props.exerciseId, draft, dictated);
               if (!r.ok) setError(r.error ?? "Could not submit.");
               else {
                 // Submitting saved exactly this text as a new revision.
@@ -409,6 +431,7 @@ export function Workbench(props: Props) {
                   setStatus({ kind: "saved", revision: r.revision, at: new Date().toISOString() });
                 }
                 writeBuffer(bufferKey, null);
+                setDictated(false);
                 router.refresh();
               }
             });

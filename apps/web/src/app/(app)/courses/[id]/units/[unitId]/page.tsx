@@ -1,5 +1,6 @@
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getEnrolmentForCourse } from "@corniversity/db/services/enrolment";
+import { listUnitVisuals } from "@corniversity/db/services/visuals";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { LocatorLink } from "@/components/LocatorLink";
@@ -29,6 +30,7 @@ export default async function UnitPage({
   const { unit, exercises, locators } = detail;
   const locatorById = new Map(locators.map((l) => [l.id, l]));
   const mode = enrolment.enrolment.mode;
+  const visuals = await listUnitVisuals(db(), session.user.id, unitId);
 
   return (
     <div className="mx-auto w-full max-w-6xl">
@@ -166,6 +168,25 @@ export default async function UnitPage({
               Sources open in a new tab. Locators were verified on the date shown in the source record.
             </p>
           </Card>
+          {visuals.length ? (
+            <Card as="aside">
+              <h2 className="text-lg text-ink">Visual explanations</h2>
+              <ul className="mt-3 flex flex-col gap-3 text-sm">
+                {visuals.map((v) => (
+                  <li key={v.slug}>
+                    <Link href={`/visuals/${v.slug}`} className="text-brass underline underline-offset-4">
+                      {v.title}
+                    </Link>
+                    <p className="text-xs text-ink-3">
+                      {v.status}
+                      {v.hasFilm ? " · with a film" : ""}
+                      {v.gate.open ? "" : ` · opens after you attempt ${v.gate.waitingFor.map((w) => w.title).join(" or ")}`}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ) : null}
           <Card as="aside">
             <h2 className="text-lg text-ink">Exit check</h2>
             <p className="mt-2 text-sm text-ink-2">{unit.exitCheck.description}</p>

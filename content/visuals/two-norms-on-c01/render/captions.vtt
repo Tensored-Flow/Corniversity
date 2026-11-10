@@ -1,0 +1,21 @@
+WEBVTT
+
+1
+00:00:00.030 --> 00:00:07.030
+The family: On [0,1] the functions x to the n are continuous. As n grows they stay near zero except close to x = 1.
+
+2
+00:00:07.030 --> 00:00:14.030
+The sup norm sees the peak: Every curve reaches the value 1 at x = 1, so the sup norm of x to the n is 1 for every n.
+
+3
+00:00:14.030 --> 00:00:22.030
+The integral norm sees the area: The shaded area under x to the 20 is one twenty-first. In general the integral norm is 1 over n plus 1, which tends to 0.
+
+4
+00:00:22.030 --> 00:00:30.030
+No constant can work: A bound of the sup norm by C times the integral norm would need n + 1 to be at most C for every n. No constant does that.
+
+5
+00:00:30.030 --> 00:00:39.030
+Which hypothesis fails: So the two norms are not equivalent on C([0,1]). All norms are equivalent only in finite dimension, and the functions x to the n are linearly independent, so C([0,1]) is infinite-dimensional.

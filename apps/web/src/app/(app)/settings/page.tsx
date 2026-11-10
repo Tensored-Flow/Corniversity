@@ -11,11 +11,19 @@ import {
   providerSettingView,
   resolveProviderState,
 } from "@corniversity/db/services/provider-config";
+import { voiceDictationAllowed } from "@corniversity/db/services/voice";
 import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { deleteMemoryAction, purgeMemoryAction, updateExperienceAction, updateProfileAction } from "./actions";
+import {
+  allowVoiceAction,
+  deleteMemoryAction,
+  purgeMemoryAction,
+  updateExperienceAction,
+  updateProfileAction,
+  withdrawVoiceAction,
+} from "./actions";
 import { LiveTutoring } from "./LiveTutoring";
 import { StudyPreferences } from "./StudyPreferences";
 
@@ -32,7 +40,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
   const database = db();
   const env = getEnv();
   const ownerId = session.user.id;
-  const [profile, state, view, limits, spend, runs, unsettled, memory] = await Promise.all([
+  const [profile, state, view, limits, spend, runs, unsettled, memory, voiceAllowed] = await Promise.all([
     ensureProfile(database, ownerId),
     resolveProviderState(database, ownerId, env),
     providerSettingView(database, ownerId, env),
@@ -41,6 +49,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
     listRecentRuns(database, ownerId),
     listUnsettledRuns(database, ownerId),
     listPersonaMemory(database, ownerId),
+    voiceDictationAllowed(database, ownerId),
   ]);
   const fontScale = profile.accessibility.fontScale ?? 1;
 
@@ -202,6 +211,39 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         </Card>
 
         <LiveTutoring state={publicProviderState(state)} view={view} limits={limits} spend={spend} runs={runs} unsettled={unsettled} />
+
+        <Card as="section" aria-labelledby="voice-heading" id="voice">
+          <h2 id="voice-heading" className="text-lg text-ink">
+            Voice
+          </h2>
+          <p className="mt-1 max-w-prose text-sm text-ink-2">
+            Reading aloud uses a voice on this device only; if the browser has none, nothing is read and no text is sent anywhere.
+          </p>
+          <p className="mt-2 max-w-prose text-sm text-ink-2">
+            Dictation uses your browser&apos;s own speech recognition. In Chrome and Edge the audio of what you say is sent to the browser
+            maker&apos;s speech service (Google or Microsoft) and handled under its terms; other browsers may recognise speech on the
+            device. Corniversity never receives or keeps the audio: the recognised text appears in your box, where you correct it, and only
+            what you then send is saved. Submissions with dictated text are marked as spoken explanations. Typing always works.
+          </p>
+          {voiceAllowed ? (
+            <form action={withdrawVoiceAction} className="mt-3 flex flex-wrap items-center gap-3">
+              <Badge tone="moss">dictation allowed</Badge>
+              <Button type="submit" variant="secondary">
+                Stop allowing dictation
+              </Button>
+            </form>
+          ) : (
+            <form action={allowVoiceAction} className="mt-3 flex flex-col gap-2">
+              <label className="flex items-start gap-2 text-sm text-ink">
+                <input type="checkbox" name="understood" value="1" className="mt-1" />
+                <span>I understand that my browser may send the audio to its maker&apos;s speech service while I dictate.</span>
+              </label>
+              <div>
+                <Button type="submit">Allow dictation</Button>
+              </div>
+            </form>
+          )}
+        </Card>
 
         <Card as="section" aria-labelledby="memory-heading" id="memory">
           <h2 id="memory-heading" className="text-lg text-ink">

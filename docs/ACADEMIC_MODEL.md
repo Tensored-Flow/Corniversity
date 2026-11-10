@@ -122,6 +122,16 @@ from. The validator enforces these; the next task is proposed in stage order. Fo
 full progressions (MAT-230 units 1 to 4, MAT-262 units 1 and 2, COG-260 and COG-250 unit 1,
 CHE-101 unit 5). A stage describes the exercise's place in a route; it is not a grade.
 
+## Voice and visual explanations
+
+Dictation and reading aloud are optional ways in and out of the same text. Dictated words land
+in the learner's own box to be corrected before anything is sent, and a dictated attempt is
+assessed like any other but marked as a spoken explanation. A visual explanation is a storyboard
+whose plots are computed from stated parameters and whose claims are checked numerically; it is
+offered only when checked, says whether a second reader has reviewed it, and, when it shows an
+exercise's answer, stays closed until the learner has attempted that exercise or chosen to see
+its reasoning. Watching is never evidence of understanding.
+
 ## Course preparation
 
 A learner may ask for a course to be prepared further. The request records their goal, depth,

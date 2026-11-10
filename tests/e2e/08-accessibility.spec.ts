@@ -23,6 +23,10 @@ const PAGES = [
   "/programmes/mind-and-computation",
   "/programmes/mind-and-computation/blocks/MBI-09",
   "/studio",
+  "/studies",
+  "/visuals/lif-membrane-potential",
+  "/courses/NEU-220/prepare",
+  "/bridges/metric-spaces",
 ];
 
 test.describe("accessibility (axe)", () => {
