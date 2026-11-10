@@ -621,6 +621,16 @@ listing only the 100 most recent of 133 entries; it now says so and points to se
 After the repairs every failing journey passed at both viewports, and the unit (308), worker (36)
 and integration (124) suites passed.
 
+Release (10 November 2026, from `6850ec9`): `railway up --service worker --ci` to the existing
+project `corniversity`; the worker's log read migrations ok, content seeded (7 course versions
+created, 79 unchanged), prompts tutor-1.2, and the transcribe-pages queue listening, with no
+error. Then `railway up --service web --ci`. Checked live from outside: health ok with migrations
+current and tutor-1.2 (it read tutor-1.1 before the release); `Permissions-Policy` serves
+`microphone=(self)` with camera and geolocation off; /operations, /proposals, a visual, a
+preparation page and a bridge redirect anonymous requests to sign-in; the film, captions, work-page
+and tutor-context endpoints answer 401; the public pages answer 200. Nothing behind sign-in was
+checked live, because the owner account does not exist yet: that is USER_ACTIONS item 4.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development

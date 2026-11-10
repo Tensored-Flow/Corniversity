@@ -218,7 +218,7 @@ studies and an operations view; the campus map's destinations; the subject/readi
 proposal workflow; preparation stages shown as role tasks with their states. Gate: campus,
 extension and coordination journeys; quiet-mode parity.
 
-### Milestone 17 (G) — Hardening and release
+### Milestone 17 (G) — Hardening and release — done
 
 Authorization sweep over the new routes, accessibility, upgrade test on a populated database,
 backup/restore including the new tables, a private source backup (git bundle) and secret scan,

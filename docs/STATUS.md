@@ -1,8 +1,8 @@
 # Status
 
-Last updated: 10 November 2026 (Milestones 0–16 complete; the teaching-experience brief
+Last updated: 10 November 2026 (Milestones 0–17 complete; the teaching-experience brief
 (`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`) is in progress as Milestones 11–17. The site is
-deployed on Railway at the Milestone 10 release plus the audit's fixes; the owner account is still
+deployed on Railway at the teaching-experience release (10 Nov 2026, `6850ec9`); the owner account is still
 to be created there, so the checks behind sign-in and live tutoring wait for the owner's
 checklist).
 
@@ -46,7 +46,7 @@ checklist).
 | Backup and restore | yes | 3 integration tests restore a snapshot with a 1 MB original into a fresh database | `pnpm backup`, `pnpm restore <file> [--yes]` |
 | Health checks (web reports not-ready until the schema carries this build's migrations; asset counts and prompt versions) | yes | security spec (`/api/health`) | `pnpm health` |
 | Production build | pass on 10 Nov 2026 | the 87 journeys pass at both sizes against the production build on a new, empty database | `pnpm build` |
-| Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026; Milestone 10 released on 9 Nov 2026; the audit's fixes released on 10 Nov 2026 to the Railway project `corniversity` (worker and web from `40c2624`, migration 0007 applied) at https://web-production-4c692.up.railway.app | live: health with the asset diagnostic, the worker's log, production headers, robots, the public pages at both sizes, private routes refusing anonymous requests and a forged session cookie, a non-owner sign-up refused; nothing behind sign-in (QA_REPORT.md, "After the release") | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved |
+| Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026; Milestone 10 released on 9 Nov 2026; the audit's fixes released on 10 Nov 2026 to the Railway project `corniversity` (worker and web from `40c2624`, migration 0007 applied); the teaching-experience brief released on 10 Nov 2026 (worker, then web, from `6850ec9`; migrations 0008–0012 applied) at https://web-production-4c692.up.railway.app | live: health with the asset diagnostic, the worker's log, production headers, robots, the public pages at both sizes, private routes refusing anonymous requests and a forged session cookie, a non-owner sign-up refused; nothing behind sign-in (QA_REPORT.md, "After the release") | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved |
 
 ## Environment facts (verified 9 Nov 2026)
 
@@ -78,8 +78,8 @@ Live site: https://web-production-4c692.up.railway.app. To ship a change, commit
 `corniversity` project. `pnpm deploy:railway` creates a new project with new secrets and refuses
 to run in a linked folder; it is for a first deployment only.
 
-Build in progress: Milestone 17 (hardening and release) of the teaching-experience brief;
-Milestones 11–16 are done; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
+The teaching-experience brief is complete (Milestones 11–17) and released on 10 Nov 2026 from
+`6850ec9`; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
 
 Owner actions: the steps in USER_ACTIONS.md. When the owner reports the checklist's results,
 record them in QA_REPORT.md as checks the owner ran on the live site; check from outside that a
