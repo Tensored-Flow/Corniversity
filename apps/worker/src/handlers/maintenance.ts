@@ -2,6 +2,7 @@ import { createBlobStore } from "@corniversity/db/blob";
 import { MaintenancePayload } from "@corniversity/db/jobs";
 import { pairingCode } from "@corniversity/db/schema/learner";
 import { exportRecord } from "@corniversity/db/schema/operations";
+import { markStaleRunsUnsettled } from "@corniversity/db/services/provider-config";
 import { and, eq, isNotNull, isNull, lt, sql } from "drizzle-orm";
 import type { HandlerContext } from "./index";
 
@@ -21,6 +22,11 @@ export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Pro
       const result = await ctx.db.execute(sql`select count(*)::int as due from revision_item where due_at <= now()`);
       const due = (result.rows[0] as { due?: number } | undefined)?.due ?? 0;
       return { revisionItemsDue: due };
+    }
+    case "unsettle-stale-runs": {
+      // A live run left "running" by a process that ended keeps its worst case and is marked
+      // unsettled for the owner to settle; it is never released as free.
+      return { unsettledRuns: await markStaleRunsUnsettled(ctx.db) };
     }
     case "expire-old-exports": {
       // Stored originals go the moment an item is deleted or its storage permission is withdrawn,

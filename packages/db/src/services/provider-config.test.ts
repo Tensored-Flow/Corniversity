@@ -11,11 +11,14 @@ import {
   approvePaidUse,
   finishProviderRun,
   getSpend,
+  markStaleRunsUnsettled,
   ProviderSettingError,
   recordProviderRun,
   resolveProviderState,
+  SettlementError,
   saveBudgetLimits,
   saveProviderSetting,
+  settleUnsettledRun,
   withdrawPaidUseApproval,
 } from "./provider-config";
 
@@ -26,6 +29,7 @@ import {
  * with each attempt priced at its own model.
  */
 const OWNER = `provider-owner-${randomUUID()}`;
+const Q = { text: "A question.", messages: 1 };
 const KEY = "sk-ant-integration-test-0000000000";
 let handle: ReturnType<typeof createDb>;
 
@@ -48,7 +52,7 @@ afterAll(async () => {
 describe("which provider answers", () => {
   it("is the scripted demo when nothing is configured, at no cost", async () => {
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toEqual({ mode: "scripted", reason: "not_configured" });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.", { purpose: "tutor-turn", promptVersion: "test" });
+    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", Q, { purpose: "tutor-turn", promptVersion: "test" });
     expect(plan.kind).toBe("scripted");
     if (plan.kind === "scripted") expect(plan.provider.name).toBe("fixture");
   });
@@ -65,7 +69,7 @@ describe("which provider answers", () => {
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toMatchObject({ mode: "blocked", code: "no_key" });
     await saveProviderSetting(handle.db, OWNER, getEnv(), { provider: "anthropic", apiKey: KEY });
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toMatchObject({ mode: "blocked", code: "not_approved" });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.", { purpose: "tutor-turn", promptVersion: "test" });
+    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", Q, { purpose: "tutor-turn", promptVersion: "test" });
     expect(plan).toMatchObject({ kind: "refused", status: "blocked" });
   });
 
@@ -108,7 +112,14 @@ describe("limits", () => {
 
   it("refuse a live run whose worst case could cross a limit, before anything is sent", async () => {
     await saveBudgetLimits(handle.db, OWNER, { perRunUsd: 0.01, dailyUsd: 0.01, monthlyUsd: 0.01 });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "x".repeat(30_000), { purpose: "tutor-turn", promptVersion: "test" });
+    const plan = await planRun(
+      handle.db,
+      OWNER,
+      getEnv(),
+      "tutor",
+      { text: "x".repeat(30_000), messages: 1 },
+      { purpose: "tutor-turn", promptVersion: "test" },
+    );
     expect(plan).toMatchObject({ kind: "refused", status: "budget_blocked" });
     if (plan.kind === "refused") {
       expect(plan.reason).toMatch(/per-run limit/);
@@ -120,9 +131,11 @@ describe("limits", () => {
 describe("spend, runs in progress and runs started together", () => {
   const SPENDER = `provider-spender-${randomUUID()}`;
   const meta = { purpose: "tutor-turn", promptVersion: "test" };
-  const plan = () => planRun(handle.db, SPENDER, getEnv(), "tutor", "A question.", meta);
-  // The tutor on Claude Opus 5.5 with fallback: 8000*$20/M + 8000*$25/M + (4 + 8000)*$6.25/M + 4*$5/M.
-  const TUTOR_WORST = 0.410045;
+  const plan = () => planRun(handle.db, SPENDER, getEnv(), "tutor", Q, meta);
+  // The tutor on Claude Opus 5.5 with fallback. The prompt bound is 11 bytes + 16 + 64 framing = 91
+  // tokens: 91*$5/M + 8000*$20/M, plus the fallback (91 + 8000)*$6.25/M + 8000*$25/M, rounded up
+  // to the micro-dollar: 0.000455 + 0.16 + 0.05056875 + 0.2 = 0.41102375 -> 0.411024.
+  const TUTOR_WORST = 0.411024;
   const finish = (runId: string, outputTokens: number) =>
     finishProviderRun(handle.db, runId, {
       status: "ok",
@@ -199,7 +212,7 @@ describe("spend, runs in progress and runs started together", () => {
   it("counts runs started together against the limit: two fit, the third is refused", async () => {
     // About $0.98 of today's $1 is left: room for two worst cases, not three.
     const wide = createDb(process.env.DATABASE_URL!, { max: 3 });
-    const plans = await Promise.all([1, 2, 3].map(() => planRun(wide.db, SPENDER, getEnv(), "tutor", "A question.", meta)));
+    const plans = await Promise.all([1, 2, 3].map(() => planRun(wide.db, SPENDER, getEnv(), "tutor", Q, meta)));
     await wide.close();
     const live = plans.filter((p) => p.kind === "live");
     expect(live).toHaveLength(2);
@@ -232,6 +245,129 @@ describe("spend, runs in progress and runs started together", () => {
   it("has no soft mode: a stored row that once switched the hard stop off still refuses", async () => {
     await handle.db.update(budgetSetting).set({ hardStop: false }).where(eq(budgetSetting.userId, SPENDER));
     expect(await plan()).toMatchObject({ kind: "refused", status: "budget_blocked" });
+  });
+});
+
+describe("unsettled runs, settlement, duplicate calls and the UTC windows", () => {
+  const SETTLER = `provider-settler-${randomUUID()}`;
+  const meta = { purpose: "tutor-turn", promptVersion: "test" };
+
+  beforeAll(async () => {
+    await handle.db.insert(user).values({ id: SETTLER, name: "Settle Test", email: `${SETTLER}@example.test` });
+    await saveBudgetLimits(handle.db, SETTLER, { perRunUsd: 1, dailyUsd: 5, monthlyUsd: 50 });
+    await saveProviderSetting(handle.db, SETTLER, getEnv(), {
+      provider: "anthropic",
+      model: "claude-opus-5-5",
+      apiKey: KEY,
+      refusalFallback: false,
+    });
+    await approvePaidUse(handle.db, SETTLER, getEnv());
+  });
+
+  afterAll(async () => {
+    for (const table of [providerRun, auditEvent]) await handle.db.delete(table).where(eq(table.ownerId, SETTLER));
+    await handle.db.delete(providerSetting).where(eq(providerSetting.userId, SETTLER));
+    await handle.db.delete(budgetSetting).where(eq(budgetSetting.userId, SETTLER));
+    await handle.db.delete(user).where(eq(user.id, SETTLER));
+  });
+
+  it("keeps a run whose billing is uncertain at its worst case, never at the lower bound or zero", async () => {
+    const before = (await getSpend(handle.db, SETTLER)).todayUsd;
+    const run = await planRun(handle.db, SETTLER, getEnv(), "tutor", Q, meta);
+    if (run.kind !== "live") throw new Error("expected a live run");
+    // A stream that broke part way: the prompt and a little output are known, the rest is not.
+    await finishProviderRun(handle.db, run.runId, {
+      status: "unsettled",
+      model: "claude-opus-5-5",
+      error: "The connection was lost mid-stream.",
+      attempts: [{ kind: "message", model: "claude-opus-5-5", inputTokens: 91, outputTokens: 1, cacheReadTokens: 0, cacheWriteTokens: 0 }],
+    });
+    const [row] = await handle.db.select().from(providerRun).where(eq(providerRun.id, run.runId));
+    expect(row!.status).toBe("unsettled");
+    expect(Number(row!.costUsd)).toBeGreaterThan(0); // the lower bound is kept
+    expect((await getSpend(handle.db, SETTLER)).todayUsd).toBeCloseTo(before + run.worstCaseUsd, 6);
+  });
+
+  it("settles an unsettled run only with an amount from 0 to its worst case, recorded and audited", async () => {
+    const unsettled = (await handle.db.select().from(providerRun).where(eq(providerRun.ownerId, SETTLER))).find(
+      (r) => r.status === "unsettled",
+    );
+    if (!unsettled) throw new Error("expected an unsettled run");
+    const worst = Number(unsettled.worstCaseUsd);
+    await expect(settleUnsettledRun(handle.db, SETTLER, unsettled.id, { amountUsd: -1, note: "console" })).rejects.toThrow(SettlementError);
+    await expect(
+      settleUnsettledRun(handle.db, SETTLER, unsettled.id, { amountUsd: worst + 0.01, note: "console usage page" }),
+    ).rejects.toThrow(/more than this run's worst case/);
+    await expect(
+      settleUnsettledRun(handle.db, "someone-else", unsettled.id, { amountUsd: 0.01, note: "console usage page" }),
+    ).rejects.toThrow(/not found/);
+    const before = (await getSpend(handle.db, SETTLER)).todayUsd;
+    await settleUnsettledRun(handle.db, SETTLER, unsettled.id, { amountUsd: 0.012345, note: "Console usage page, 10 Nov" });
+    const [settled] = await handle.db.select().from(providerRun).where(eq(providerRun.id, unsettled.id));
+    expect(settled).toMatchObject({ status: "ok", costUsd: "0.012345" });
+    expect(settled!.settlement).toMatchObject({ method: "owner_recorded", amountUsd: "0.012345" });
+    expect((await getSpend(handle.db, SETTLER)).todayUsd).toBeCloseTo(before - worst + 0.012345, 6);
+    await expect(settleUnsettledRun(handle.db, SETTLER, unsettled.id, { amountUsd: 0, note: "again please" })).rejects.toThrow(
+      /Only an unsettled/,
+    );
+    const audits = await handle.db.select().from(auditEvent).where(eq(auditEvent.ownerId, SETTLER));
+    expect(audits.some((a) => a.action === "provider:settle-run")).toBe(true);
+  });
+
+  it("marks a run left running by a process that ended as unsettled, still held at its worst case", async () => {
+    const stale = await planRun(handle.db, SETTLER, getEnv(), "tutor", Q, meta);
+    const fresh = await planRun(handle.db, SETTLER, getEnv(), "tutor", Q, meta);
+    if (stale.kind !== "live" || fresh.kind !== "live") throw new Error("expected live runs");
+    await handle.db
+      .update(providerRun)
+      .set({ startedAt: new Date(Date.now() - 45 * 60 * 1000) })
+      .where(eq(providerRun.id, stale.runId));
+    const before = (await getSpend(handle.db, SETTLER)).todayUsd;
+    expect(await markStaleRunsUnsettled(handle.db)).toBeGreaterThanOrEqual(1);
+    const [s1] = await handle.db.select().from(providerRun).where(eq(providerRun.id, stale.runId));
+    const [s2] = await handle.db.select().from(providerRun).where(eq(providerRun.id, fresh.runId));
+    expect(s1!.status).toBe("unsettled");
+    expect(s2!.status).toBe("running");
+    // Nothing was released: both still count at their worst case.
+    expect((await getSpend(handle.db, SETTLER)).todayUsd).toBeCloseTo(before, 6);
+    await finishProviderRun(handle.db, fresh.runId, { status: "error", model: "claude-opus-5-5", error: "rejected", attempts: [] });
+  });
+
+  it("refuses a second reservation for the same call and records nothing for it", async () => {
+    const key = `test-call-${randomUUID()}`;
+    const first = await planRun(handle.db, SETTLER, getEnv(), "tutor", Q, { ...meta, idempotencyKey: key });
+    const again = await planRun(handle.db, SETTLER, getEnv(), "tutor", Q, { ...meta, idempotencyKey: key });
+    expect(first.kind).toBe("live");
+    expect(again).toMatchObject({ kind: "refused", status: "duplicate" });
+    const rows = await handle.db.select().from(providerRun).where(eq(providerRun.idempotencyKey, key));
+    expect(rows).toHaveLength(1);
+    if (first.kind === "live") await finishProviderRun(handle.db, first.runId, { status: "ok", model: "claude-opus-5-5", attempts: [] });
+  });
+
+  it("counts a run in the UTC day and month it started in", async () => {
+    const at = (iso: string) => new Date(iso);
+    const record = (startedAt: Date, outputTokens: number) =>
+      recordProviderRun(handle.db, {
+        ownerId: SETTLER,
+        role: "tutor",
+        provider: "anthropic",
+        model: "claude-opus-5-5",
+        purpose: "boundary-test",
+        pricingVersion: "test",
+        promptVersion: "test",
+        status: "ok",
+        attempts: [{ kind: "message", model: "claude-opus-5-5", inputTokens: 0, outputTokens, cacheReadTokens: 0, cacheWriteTokens: 0 }],
+        worstCaseUsd: 1,
+        startedAt,
+      });
+    await record(at("2031-01-31T23:59:59.999Z"), 1000); // $0.02, the last moment of January
+    await record(at("2031-02-01T00:00:00.000Z"), 2000); // $0.04, the first moment of February
+    const feb = await getSpend(handle.db, SETTLER, at("2031-02-01T12:00:00Z"));
+    expect(feb.todayUsd).toBeCloseTo(0.04, 9);
+    expect(feb.monthUsd).toBeCloseTo(0.04, 9);
+    const jan = await getSpend(handle.db, SETTLER, at("2031-01-31T23:59:59.999Z"));
+    expect(jan.todayUsd).toBeCloseTo(0.02 + 0.04, 9); // the window has no upper end: later runs count too
+    await handle.db.delete(providerRun).where(eq(providerRun.purpose, "boundary-test"));
   });
 });
 

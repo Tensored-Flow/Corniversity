@@ -65,6 +65,10 @@ export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Pr
     idempotencyKey: "maintenance:revoke-stale-pairing-codes:daily",
     task: "revoke-stale-pairing-codes",
   });
+  await boss.schedule(QUEUES.maintenance, "*/15 * * * *", {
+    idempotencyKey: "maintenance:unsettle-stale-runs",
+    task: "unsettle-stale-runs",
+  });
   await boss.schedule(QUEUES.maintenance, "30 4 * * 1", {
     idempotencyKey: "maintenance:expire-old-exports:weekly",
     task: "expire-old-exports",

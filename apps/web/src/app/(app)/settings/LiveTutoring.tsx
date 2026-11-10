@@ -1,7 +1,7 @@
-import { BUDGET_CEILINGS, modelLabel, type PublicProviderState, SUPPORTED_MODELS } from "@corniversity/ai";
+import { BUDGET_CEILINGS, BUDGET_WINDOW_TIMEZONE, modelLabel, type PublicProviderState, SUPPORTED_MODELS } from "@corniversity/ai";
 import type { BudgetLimitsRow, ProviderSettingView } from "@corniversity/db/services/provider-config";
 import { Badge, Button, Card, Field, Input, Notice, Select } from "@/components/ui";
-import { saveLiveTutoringAction, withdrawApprovalAction } from "./actions";
+import { saveLiveTutoringAction, settleRunAction, withdrawApprovalAction } from "./actions";
 
 interface Run {
   id: string;
@@ -11,6 +11,8 @@ interface Run {
   inputTokens: number;
   outputTokens: number;
   costUsd: string;
+  worstCaseUsd?: string | null;
+  error?: string | null;
   startedAt: Date;
 }
 
@@ -20,6 +22,8 @@ interface Props {
   limits: BudgetLimitsRow;
   spend: { todayUsd: number; monthUsd: number };
   runs: Run[];
+  /** Runs whose cost the provider could not report; each holds its worst case until settled. */
+  unsettled: Run[];
 }
 
 /**
@@ -28,7 +32,7 @@ interface Props {
  * saved together so an approval covers exactly what is on screen. Recent runs show what was
  * actually spent.
  */
-export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
+export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Props) {
   return (
     <Card as="section" aria-labelledby="provider-heading" id="provider">
       <h2 id="provider-heading" className="text-lg text-ink">
@@ -51,6 +55,21 @@ export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
           </Notice>
         )}
       </div>
+
+      <p className="mt-3 max-w-prose text-xs text-ink-3">
+        A live model needs an API key from an organization in the Anthropic Console; signing in to Claude or a Claude subscription does not
+        give this website a key, and the website never uses your Claude login. Some subscriptions include API credits for the Console:
+        whether yours does, its expiry and your balance are shown only in your Console (
+        <a
+          className="underline"
+          href="https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          API credits for subscribers
+        </a>
+        ). Nothing here buys credits or turns on automatic reloads.
+      </p>
 
       <form action={saveLiveTutoringAction} className="mt-4 grid gap-4 sm:grid-cols-2">
         <Field label="Provider" htmlFor="provider-choice">
@@ -89,7 +108,7 @@ export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
           </label>
         </div>
         <fieldset className="grid gap-3 sm:col-span-2 sm:grid-cols-3">
-          <legend className="mb-1 text-sm font-medium text-ink">Spending limits (USD), each a hard stop</legend>
+          <legend className="mb-1 text-sm font-medium text-ink">Spending limits (USD), checked before every paid run</legend>
           <Field label="Per run" htmlFor="perRunUsd">
             <Input
               id="perRunUsd"
@@ -125,10 +144,14 @@ export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
           </Field>
         </fieldset>
         <p className="text-xs text-ink-3 sm:col-span-2">
-          A run is refused before it starts if its worst case could cross a limit: the whole output allowance (thinking counts towards it),
-          the prompt counted conservatively, and, with fallback on, a second run on the fallback model; runs still in progress count at
-          their worst case. Afterwards the run counts at what it actually cost. Spent today ${spend.todayUsd.toFixed(2)} · this month $
-          {spend.monthUsd.toFixed(2)} (UTC). Model use is billed by Anthropic to your API account, separately from hosting.
+          A run is refused before it starts if its worst case could cross a limit. The worst case is the whole output allowance (thinking
+          counts towards it), every byte of the prompt counted as a token, each image at the provider's documented maximum, and, with
+          fallback on, a second run on the fallback model. Counting a token per byte relies on the provider's tokenizer encoding at least
+          one byte per token, which holds for byte-level tokenizers; the tokenizer is not published, so this is a stated assumption, not a
+          proof. Runs in progress, and runs whose cost the provider could not report, count at their worst case until finished or settled;
+          afterwards a run counts at what it cost. A record made afterwards cannot undo a charge. Spent or held today $
+          {spend.todayUsd.toFixed(2)} · this month ${spend.monthUsd.toFixed(2)} ({BUDGET_WINDOW_TIMEZONE} day and month). Model use is
+          billed by Anthropic to your API account, separately from hosting.
         </p>
         <label className="flex items-start gap-2 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-sm text-ink sm:col-span-2">
           <input type="checkbox" name="approvePaidUse" value="1" className="mt-1" />
@@ -147,6 +170,40 @@ export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
             Withdraw approval of paid use
           </Button>
         </form>
+      ) : null}
+
+      {unsettled.length > 0 ? (
+        <div className="mt-5">
+          <h3 className="text-sm font-medium text-ink">Unsettled runs</h3>
+          <p className="mt-1 max-w-prose text-xs text-ink-3">
+            The provider may have billed these runs more than it reported (a connection was lost, a stream broke, or the process ended
+            mid-run). Each counts at its worst case until you record the amount your Anthropic Console shows for it; the record is kept in
+            the audit log.
+          </p>
+          <ul className="mt-2 flex flex-col gap-3">
+            {unsettled.map((r) => (
+              <li key={r.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper p-3 text-xs">
+                <p className="text-ink">
+                  {r.startedAt.toISOString().slice(0, 16).replace("T", " ")} UTC · {r.role} · {modelLabel(r.model)} · held at $
+                  {Number(r.worstCaseUsd ?? 0).toFixed(4)} (at least ${Number(r.costUsd).toFixed(4)} known)
+                </p>
+                {r.error ? <p className="mt-1 text-ink-3">{r.error}</p> : null}
+                <form action={settleRunAction} className="mt-2 flex flex-wrap items-end gap-2">
+                  <input type="hidden" name="runId" value={r.id} />
+                  <Field label="Amount from the console (USD)" htmlFor={`amount-${r.id}`}>
+                    <Input id={`amount-${r.id}`} name="amountUsd" type="number" step="0.000001" min={0} required />
+                  </Field>
+                  <Field label="Where it comes from" htmlFor={`note-${r.id}`}>
+                    <Input id={`note-${r.id}`} name="note" required minLength={5} placeholder="Console usage page" />
+                  </Field>
+                  <Button type="submit" variant="secondary">
+                    Settle this run
+                  </Button>
+                </form>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
 
       <div className="mt-5">

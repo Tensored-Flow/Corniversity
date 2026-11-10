@@ -1,4 +1,4 @@
-import { buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
+import { boundedHistory, buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
 import { citedHistory } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
@@ -91,13 +91,14 @@ export async function POST(request: Request): Promise<Response> {
         : [],
     approvedSummaries: [],
   });
-  const chat = [
+  // Bounded context: the most recent turns within a fixed size; the record keeps every turn.
+  const chat = boundedHistory([
     ...priorMessages.map((m) => ({
       role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant",
       content: m.sender === "learner" ? m.contentMarkdown : citedHistory(m.contentMarkdown, m.citations),
     })),
     { role: "user" as const, content: message },
-  ];
+  ]);
 
   const haystack = message.toLowerCase();
   const localOnlyMentioned = (await localOnlyAssetsForCourse(database, ownerId, unitDetail.course.id)).filter((a) =>

@@ -7,7 +7,7 @@
   "objectives": [
     { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is Neuromatch W2D4 (Tutorials 1–3 and the bonus STDP tutorial), building on the W1D1 'how' tutorial already verified." }
   ],
-  "prerequisiteConceptIds": ["leaky-integrate-and-fire", "ode-basics", "neural-spiking-basics"],
+  "prerequisiteConceptIds": ["leaky-integrate-and-fire", "ode-basics", "neural-spiking-basics", "membrane-potential-basics", "synaptic-transmission-basics"],
   "teachesConceptIds": ["leaky-integrate-and-fire"],
   "preparation": [
     { "description": "W2D4 Biological Neuron Models chapter page: Tutorial 1 The Leaky Integrate-and-Fire Neuron Model, Tutorial 2 Effects of Input Correlation, Tutorial 3 Synaptic transmission (static and dynamic synapses), bonus Tutorial 4 Spike-timing dependent plasticity.", "locatorId": "nma-w2d4", "estimatedMinutes": 180 },

@@ -13,7 +13,7 @@
   "outcomes": [],
   "prerequisiteRuleIds": [],
   "recommendedConceptIds": [],
-  "teachesConceptIds": [],
+  "teachesConceptIds": ["membrane-potential-basics", "action-potential-mechanism", "synaptic-transmission-basics", "neural-systems-organisation"],
   "primarySourceIds": [],
   "supplementalSourceIds": [],
   "unitIds": [],

@@ -22,6 +22,11 @@ export interface AnthropicProviderConfig {
   timeoutMs?: number;
   /** Only for the contract test, which serves the documented wire format locally. */
   baseURL?: string;
+  /**
+   * SDK retries, off by default: a retried request can be billed again, and every billable
+   * attempt must be reserved against the limits before it starts. Retrying is the caller's
+   * decision (the worker's queue retries an assessment as a new, separately reserved run).
+   */
   maxRetries?: number;
 }
 
@@ -44,7 +49,7 @@ export class AnthropicProvider implements ModelProvider {
     this.client = new Anthropic({
       apiKey: config.apiKey,
       timeout: config.timeoutMs ?? 10 * 60 * 1000,
-      maxRetries: config.maxRetries ?? 2,
+      maxRetries: config.maxRetries ?? 0,
       ...(config.baseURL ? { baseURL: config.baseURL } : {}),
     });
   }
@@ -95,8 +100,11 @@ export class AnthropicProvider implements ModelProvider {
       };
     } catch (error) {
       const mapped = mapError(error);
-      if (usageSoFar && mapped.attempts.length === 0) {
-        throw new ProviderError(mapped.kind, mapped.message, mapped.retryable, attemptsOf(usageSoFar, model, model));
+      if (usageSoFar) {
+        // The stream had started: the prompt was billed and so was output up to the break, which
+        // the stream had not yet counted (the final count arrives only at its end). What is
+        // known is a lower bound, so the run stays held at its worst case until it is settled.
+        throw new ProviderError(mapped.kind, mapped.message, mapped.retryable, attemptsOf(usageSoFar, model, model), "uncertain");
       }
       throw mapped;
     }
@@ -222,7 +230,11 @@ function mapStop(reason: string | null): TextResult["stopReason"] {
   }
 }
 
-/** Most specific first: in the TypeScript SDK the connection error is a subclass of `APIError`. */
+/**
+ * Most specific first: in the TypeScript SDK the connection error is a subclass of `APIError`.
+ * An error response from the provider (any HTTP status) means no billable work was done; a lost
+ * connection or a timeout leaves the request's fate unknown, so its billing is uncertain.
+ */
 export function mapError(error: unknown): ProviderError {
   if (error instanceof ProviderError) return error;
   if (error instanceof Anthropic.AuthenticationError) {
@@ -241,7 +253,13 @@ export function mapError(error: unknown): ProviderError {
     return new ProviderError("bad_request", `The provider rejected the request: ${error.message}`);
   }
   if (error instanceof Anthropic.APIConnectionError) {
-    return new ProviderError("unavailable", "Could not reach the provider.", true);
+    return new ProviderError(
+      "unavailable",
+      "The connection to the provider was lost before it answered; the request may still have been processed.",
+      true,
+      [],
+      "uncertain",
+    );
   }
   if (error instanceof Anthropic.APIError) {
     const type = (error as { type?: string }).type;
@@ -257,5 +275,13 @@ export function mapError(error: unknown): ProviderError {
     }
     return new ProviderError("unavailable", `Provider error ${error.status ?? ""}: ${error.message}`, (error.status ?? 500) >= 500);
   }
-  return new ProviderError("unavailable", error instanceof Error ? error.message : String(error), true);
+  return new ProviderError("unavailable", error instanceof Error ? error.message : String(error), true, [], "uncertain");
+}
+
+/**
+ * The JSON Schema text a structured request sends, as the provider receives it: it is billed as
+ * input, so the strict worst case counts it.
+ */
+export function outputSchemaText(schema: unknown): string {
+  return JSON.stringify(betaZodOutputFormat(schema as never));
 }

@@ -117,6 +117,12 @@ export const attempt = pgTable(
     solutionRevealedAt: tz("solution_revealed_at"),
     /** Unsubmitted work, saved as the learner types, so a closed tab never loses an argument. */
     draftMarkdown: text("draft_markdown"),
+    /**
+     * Increases with every saved draft. A save names the revision it was based on, so a stale
+     * device cannot overwrite a newer draft written elsewhere; it gets a conflict instead.
+     */
+    draftRevision: integer("draft_revision").notNull().default(0),
+    draftSavedAt: tz("draft_saved_at"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },

@@ -4,6 +4,7 @@ import {
   type AttemptUsage,
   buildAssessorSystemPrompt,
   numberLines,
+  outputSchemaText,
   PRICING_VERSION,
   ProviderError,
   ROLE_CONTRACTS,
@@ -13,13 +14,21 @@ import { withholdReferenceText } from "@corniversity/core/checks/leakage";
 import { reconcileVerdict } from "@corniversity/core/checks/verdict";
 import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
-import { assessmentRun, attempt, instructorArtifact, submissionVersion, teachingUnit, unitExercise } from "@corniversity/db/schema/index";
+import {
+  assessmentRun,
+  attempt,
+  instructorArtifact,
+  providerRun,
+  submissionVersion,
+  teachingUnit,
+  unitExercise,
+} from "@corniversity/db/schema/index";
 import { planRun } from "@corniversity/db/services/ai-runs";
 import { recordEvidence } from "@corniversity/db/services/evidence";
 import { exerciseSnapshotOf } from "@corniversity/db/services/learning";
 import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
-import { and, eq } from "drizzle-orm";
+import { and, count, eq, like } from "drizzle-orm";
 import type { HandlerContext } from "./index";
 
 /**
@@ -86,10 +95,23 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   // The same gate as the web routes: a submission never spends past the owner's limits, and a
   // blocked provider fails the assessment with its reason instead of answering with fixtures.
   const promptVersion = `${ASSESSOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.assessor.version}`;
-  const plan = await planRun(db, payload.ownerId, ctx.env, "assessor", `${system}\n${instruction}`, {
-    purpose: "assess-submission",
-    promptVersion,
-  });
+  // One provider call per delivery: a second delivery of the same job running at the same time
+  // finds this key taken and stops; a retry after a crash is a new call, reserved on its own.
+  const [triesRow] = await db
+    .select({ tries: count() })
+    .from(providerRun)
+    .where(like(providerRun.idempotencyKey, `assess:${run.id}:try%`));
+  const plan = await planRun(
+    db,
+    payload.ownerId,
+    ctx.env,
+    "assessor",
+    { text: `${system}\n${instruction}\n${outputSchemaText(AssessorFeedbackSchema)}`, messages: 1 },
+    { purpose: "assess-submission", promptVersion, idempotencyKey: `assess:${run.id}:try${triesRow?.tries ?? 0}` },
+  );
+  if (plan.kind === "refused" && plan.status === "duplicate") {
+    return { assessmentRunId: run.id, skipped: "another delivery of this job is already assessing it" };
+  }
   const live = plan.kind === "live";
   const startedAt = new Date();
   let feedbackObject: ReturnType<typeof AssessorFeedbackSchema.parse> | null = null;
@@ -99,7 +121,7 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   let model = plan.model;
 
   if (plan.kind === "refused") {
-    runStatus = plan.status;
+    runStatus = plan.status === "duplicate" ? "blocked" : plan.status;
     errorText = plan.reason;
   } else {
     try {
@@ -119,7 +141,7 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
       model = result.model;
     } catch (error) {
       if (!(error instanceof ProviderError)) throw error;
-      runStatus = error.kind === "refused" ? "refused" : "error";
+      runStatus = error.billing === "uncertain" ? "unsettled" : error.kind === "refused" ? "refused" : "error";
       errorText = error.message;
       attempts = error.attempts;
     }

@@ -1,10 +1,12 @@
 import {
   createProvider,
   type ModelProvider,
+  type PromptShape,
   type PublicProviderState,
   publicProviderState,
   ROLE_CONTRACTS,
   type RoleName,
+  UnpricedModelError,
   worstCaseRunUsd,
 } from "@corniversity/ai";
 import type { DbOrTx } from "../client";
@@ -29,7 +31,8 @@ export type RunPlan =
     }
   | {
       kind: "refused";
-      status: "blocked" | "budget_blocked";
+      /** `duplicate`: the same call was already reserved; nothing new is recorded or billed. */
+      status: "blocked" | "budget_blocked" | "duplicate";
       reason: string;
       model: string;
       worstCaseUsd: number | null;
@@ -40,17 +43,19 @@ export type RunPlan =
  * Everything a route or the worker needs before a model call, decided in one place: the
  * provider state, the role's effort and output allowance, the worst case of the run and the
  * budget decision. A blocked provider or a crossed limit refuses the run with its reason; it
- * never turns into a scripted reply. `inputText` is everything that will be sent (system prompt
- * and messages), for the worst-case estimate. A live run that may start is recorded as running
- * (`runId`) and holds its worst case against the limits until the caller finishes it.
+ * never turns into a scripted reply. `prompt` describes everything that will be sent (system
+ * prompt, messages, any output schema and images), for the strict worst case. A live run that may
+ * start is recorded as running (`runId`) and holds its worst case against the limits until the
+ * caller finishes it. `idempotencyKey` names one provider call, so a duplicated job or request
+ * cannot reserve it twice; `parentRunId` attributes a run to the action that started it.
  */
 export async function planRun(
   db: DbOrTx,
   ownerId: string,
   env: Env,
   role: RoleName,
-  inputText: string,
-  run: { purpose: string; promptVersion: string; fixtureRoot?: string },
+  prompt: PromptShape,
+  run: { purpose: string; promptVersion: string; fixtureRoot?: string; idempotencyKey?: string; parentRunId?: string },
 ): Promise<RunPlan> {
   const state = await resolveProviderState(db, ownerId, env);
   const contract = ROLE_CONTRACTS[role];
@@ -69,7 +74,15 @@ export async function planRun(
   if (state.mode === "blocked") {
     return { kind: "refused", status: "blocked", reason: state.reason, model: state.model, worstCaseUsd: null, state: view };
   }
-  const worstCaseUsd = worstCaseRunUsd(state.model, inputText, maxTokens, state.refusalFallback);
+  let worstCaseUsd: number;
+  try {
+    worstCaseUsd = worstCaseRunUsd(state.model, prompt, maxTokens, state.refusalFallback);
+  } catch (error) {
+    if (error instanceof UnpricedModelError) {
+      return { kind: "refused", status: "blocked", reason: error.message, model: state.model, worstCaseUsd: null, state: view };
+    }
+    throw error;
+  }
   const reservation = await reserveLiveRun(db, {
     ownerId,
     env,
@@ -79,9 +92,18 @@ export async function planRun(
     promptVersion: run.promptVersion,
     worstCaseUsd,
     roleCapUsd: contract.limits.maxRunUsd,
+    idempotencyKey: run.idempotencyKey,
+    parentRunId: run.parentRunId,
   });
   if (!reservation.allowed) {
-    return { kind: "refused", status: "budget_blocked", reason: reservation.reason, model: state.model, worstCaseUsd, state: view };
+    return {
+      kind: "refused",
+      status: reservation.duplicate ? "duplicate" : "budget_blocked",
+      reason: reservation.reason,
+      model: state.model,
+      worstCaseUsd,
+      state: view,
+    };
   }
   return {
     kind: "live",

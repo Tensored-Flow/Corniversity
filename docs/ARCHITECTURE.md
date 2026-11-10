@@ -115,13 +115,23 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
   `blocked` with a stated reason. A blocked run is refused and recorded; nothing scripted
   replaces it. Every stored reply carries the id of the run that produced it, which is how it is
   labelled live or scripted afterwards.
-- Budget: per-run, daily and monthly limits, always hard and capped by fixed ceilings. Before a
-  live run, under a per-owner database lock, its worst case (the whole output allowance, the
-  prompt counted conservatively, and with fallback on a second run whose prompt also carries the
-  first attempt's output) is checked against the role's cap and every limit, counting other runs
-  still in progress at their worst case; the run is then recorded as `running` and finished with
-  its actual usage per attempt, also when the learner leaves mid-reply or the stream fails part
-  way. The pricing table carries its date and source URL.
+- Budget: per-run, daily and monthly limits under fixed ceilings, compared in integer
+  micro-dollars over UTC days and months (a run counts in the window it started in). Before a live
+  run, under a per-owner database lock, its worst case is checked against the role's ceiling and
+  every limit: the whole output allowance; the prompt at one token per UTF-8 byte (every token of a
+  byte-level tokenizer encodes at least one byte; the provider does not publish its tokenizer, so
+  this is a stated assumption, not a proof) plus a framing allowance per message; each image at the
+  documented 4,784-token ceiling; priced at the cache-write rate; and, with fallback on, a second
+  run whose prompt also carries the first attempt's output. A model without a known price fails
+  closed. Other runs count at their worst case while `running` or `unsettled`. SDK retries are off
+  so each billable attempt is reserved; a provider call may carry an idempotency key (a duplicate
+  is refused) and a parent run (one learner action, several calls). A run finishes with its usage
+  per attempt; when the provider may have billed more than it reported (a lost connection, a
+  stream broken part way, a process that ended mid-run, found by a fifteen-minute maintenance pass),
+  it becomes `unsettled` and keeps its worst case until the owner records the amount the provider
+  console shows (audited; never above the worst case). Persona turns replay bounded history (the
+  most recent ~24 KB). Role ceilings are sized for the strict bound; the owner's limits are
+  separate and always apply. The pricing table carries its date and source URL.
 - Assets: `checkAiAssets` reports whether the scripted responses load and which prompt versions
   the build carries (counts and version names, never contents or paths); the health route and
   the worker's start-up log show it.

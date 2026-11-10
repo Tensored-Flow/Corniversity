@@ -57,6 +57,13 @@
       "when": 1794270743305,
       "tag": "0007_exercise-snapshot",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794279901476,
+      "tag": "0008_budget-settlement-and-draft-revisions",
+      "breakpoints": true
     }
   ]
 }

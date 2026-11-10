@@ -39,7 +39,8 @@
   ],
   "prerequisiteRuleIds": [
     "NEU-220-mathematics",
-    "NEU-220-python-and-statistics"
+    "NEU-220-python-and-statistics",
+    "NEU-220-membrane-biology"
   ],
   "recommendedConceptIds": [
     "linear-algebra-vector-spaces",

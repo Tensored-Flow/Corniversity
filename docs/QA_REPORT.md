@@ -592,9 +592,10 @@ Running now: the worker and the web service, both from `40c2624`.
 - MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210
   are proposed with no concepts defined, so no biology prerequisite can be expressed yet; NEU-220,
   the block's teachable course, needs none (its Neuromatch spine asks for no biology).
-- The worst-case estimate counts ASCII prompt text at three characters a token. Symbol-dense ASCII
-  (long digit strings, for example) can use more, so a run can cost a little more than its
-  estimate; the actual cost is recorded and counts towards the daily and monthly limits.
+- (Repaired in Milestone 12.) The worst-case estimate used to count ASCII prompt text at three
+  characters a token, which symbol-dense text can beat; the bound is now a token per UTF-8 byte
+  (see ARCHITECTURE.md, Budget, for the assumption it rests on), and uncertain failures stay
+  unsettled at their worst case instead of being recorded at what was known.
 - The studio's new-data check reads the learner's plan sentence by sentence and recognises the
   usual phrasings; a plan worded otherwise passes as "no plan found". The provenance form still
   refuses data collected from people, whatever the plan says.

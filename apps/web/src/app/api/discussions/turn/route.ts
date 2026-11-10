@@ -69,6 +69,9 @@ export async function POST(request: Request): Promise<Response> {
 
   const ordered = [...personas.filter((p) => !p.isPeer), ...personas.filter((p) => p.isPeer)];
   const spoken: string[] = [];
+  // Every turn after the first is attributed to the first run of this round: one learner message,
+  // several calls, each reserved on its own before it starts.
+  let parentRunId: string | undefined;
   for (const persona of ordered) {
     const role = persona.isPeer ? "peer" : "seminar_chair";
     const system = persona.isPeer
@@ -90,11 +93,13 @@ export async function POST(request: Request): Promise<Response> {
       ],
       scenario: "default",
       speaker: persona.name,
+      parentRunId,
     });
     if (turn.kind === "refused") {
       await appendTurn(database, discussion.id, "system", `${persona.name} did not reply: ${turn.reason}`);
       continue;
     }
+    if (turn.mode === "live") parentRunId ??= turn.runId;
     const annotated = annotateTurn(turn.text, []);
     await appendTurn(database, discussion.id, persona.id, annotated.markdown, annotated.labels, turn.runId);
     spoken.push(`${persona.name}: ${annotated.markdown}`);

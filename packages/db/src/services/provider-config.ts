@@ -5,12 +5,14 @@ import {
   decideBudget,
   decideProviderState,
   isSupportedModel,
+  microsToUsd,
   type PaidUseApproval,
   PRICING_VERSION,
   type ProviderState,
+  parseUsdMicros,
   validateBudgetLimits,
 } from "@corniversity/ai";
-import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm";
 import type { Database, DbOrTx } from "../client";
 import type { Env } from "../env";
 import { auditEvent, budgetSetting, providerRun, providerSetting } from "../schema/index";
@@ -195,15 +197,19 @@ export async function saveBudgetLimits(
   return { ...limits, warnFraction: 0.8 };
 }
 
+/** Statuses that hold a run's worst case against the limits instead of what it is known to have cost. */
+export const HELD_STATUSES = ["running", "unsettled"] as const;
+
 /**
- * Spend for budget decisions, by UTC day and month: what finished runs cost, plus the worst case
- * of every run still in progress (a run that never finishes keeps counting at its worst case).
- * Scripted runs cost nothing.
+ * Spend for budget decisions, by UTC day and month (a run counts in the window it started in):
+ * what finished runs cost, plus the worst case of every run still running or unsettled (a run
+ * whose cost is not known keeps counting at its worst case until it is settled). The sums are
+ * exact decimals from the database, carried as micro-dollars. Scripted runs cost nothing.
  */
 export async function getSpend(db: DbOrTx, ownerId: string, now = new Date()): Promise<{ todayUsd: number; monthUsd: number }> {
   const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const startOfMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-  const spent = sql<string>`coalesce(sum(case when ${providerRun.status} = 'running' then coalesce(${providerRun.worstCaseUsd}, 0) else ${providerRun.costUsd} end), 0)`;
+  const spent = sql<string>`coalesce(sum(case when ${providerRun.status} in ('running', 'unsettled') then greatest(coalesce(${providerRun.worstCaseUsd}, 0), ${providerRun.costUsd}) else ${providerRun.costUsd} end), 0)::text`;
   const [today] = await db
     .select({ total: spent })
     .from(providerRun)
@@ -212,11 +218,14 @@ export async function getSpend(db: DbOrTx, ownerId: string, now = new Date()): P
     .select({ total: spent })
     .from(providerRun)
     .where(and(eq(providerRun.ownerId, ownerId), gte(providerRun.startedAt, startOfMonth)));
-  return { todayUsd: Number(today?.total ?? 0), monthUsd: Number(month?.total ?? 0) };
+  return { todayUsd: microsToUsd(parseUsdMicros(today?.total ?? "0")), monthUsd: microsToUsd(parseUsdMicros(month?.total ?? "0")) };
 }
 
-/** A run's outcome; "running" marks a live run in progress, which holds its worst case. */
-export type RunStatus = "ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running";
+/**
+ * A run's outcome. "running" marks a live run in progress; "unsettled" a run whose provider may
+ * have billed more than is known. Both hold their worst case against the limits.
+ */
+export type RunStatus = "ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running" | "unsettled";
 
 /**
  * Decides a live run against the limits and, when it may start, records it as running with its
@@ -235,11 +244,26 @@ export async function reserveLiveRun(
     promptVersion: string;
     worstCaseUsd: number;
     roleCapUsd: number;
+    /** Identifies one provider call; a second reservation under the same key is refused. */
+    idempotencyKey?: string;
+    parentRunId?: string;
   },
-): Promise<{ allowed: false; reason: string; warnings: string[] } | { allowed: true; warnings: string[]; runId: string }> {
+): Promise<
+  { allowed: false; reason: string; warnings: string[]; duplicate?: boolean } | { allowed: true; warnings: string[]; runId: string }
+> {
   // A transaction on the handle, or a savepoint when the handle already is one.
   return (db as Database).transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`provider-budget:${input.ownerId}`}))`);
+    if (input.idempotencyKey) {
+      const [existing] = await tx
+        .select({ id: providerRun.id })
+        .from(providerRun)
+        .where(eq(providerRun.idempotencyKey, input.idempotencyKey))
+        .limit(1);
+      if (existing) {
+        return { allowed: false as const, duplicate: true, reason: "This call has already been made or is in progress.", warnings: [] };
+      }
+    }
     const decision = decideBudget(
       await getBudgetLimits(tx, input.ownerId, input.env),
       await getSpend(tx, input.ownerId),
@@ -259,6 +283,8 @@ export async function reserveLiveRun(
         promptVersion: input.promptVersion,
         status: "running",
         worstCaseUsd: String(input.worstCaseUsd),
+        idempotencyKey: input.idempotencyKey ?? null,
+        parentRunId: input.parentRunId ?? null,
       })
       .returning({ id: providerRun.id });
     return { allowed: true as const, warnings: decision.warnings, runId: row!.id };
@@ -309,7 +335,9 @@ export async function recordProviderRun(
 
 /**
  * Completes a reserved live run with what happened: its status, the model that answered and every
- * attempt priced at its own model. From then on the run counts at what it cost, not its worst case.
+ * attempt priced at its own model. From then on the run counts at what it cost, not its worst case
+ * - unless it finishes as "unsettled", when the attempts are a lower bound and the worst case
+ * keeps counting until the owner settles it.
  */
 export async function finishProviderRun(
   db: DbOrTx,
@@ -335,6 +363,89 @@ function usageColumns(attempts: readonly AttemptUsage[]) {
     { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 },
   );
   return { attempts: priced, ...total, costUsd: String(costOfAttempts(attempts)) };
+}
+
+/**
+ * Runs still marked running long after any request could have lasted (the provider's own timeout
+ * is ten minutes) belong to a process that ended mid-run. Their cost is unknown, so they become
+ * unsettled and keep holding their worst case; nothing about them is released as free.
+ */
+export async function markStaleRunsUnsettled(db: DbOrTx, now = new Date(), maxAgeMs = 30 * 60 * 1000): Promise<number> {
+  const rows = await db
+    .update(providerRun)
+    .set({
+      status: "unsettled",
+      error: "The process making this run ended before recording what it cost. It is held at its worst case until settled.",
+      finishedAt: now,
+    })
+    .where(and(eq(providerRun.status, "running"), lt(providerRun.startedAt, new Date(now.getTime() - maxAgeMs))))
+    .returning({ id: providerRun.id, ownerId: providerRun.ownerId });
+  for (const r of rows) {
+    await db.insert(auditEvent).values({
+      ownerId: r.ownerId,
+      actor: "system",
+      action: "provider:run-unsettled",
+      entity: "provider_run",
+      entityId: r.id,
+      details: { reason: "stale running run" },
+    });
+  }
+  return rows.length;
+}
+
+export class SettlementError extends Error {}
+
+/**
+ * Settles an unsettled run with the amount the owner read in the provider console for it. The
+ * amount may not be negative and may not exceed the worst case the run was admitted under (a
+ * larger charge would mean the bound was wrong, which is refused and must be reported rather
+ * than accepted silently). The settlement is kept with the run and in the audit log.
+ */
+export async function settleUnsettledRun(
+  db: DbOrTx,
+  ownerId: string,
+  runId: string,
+  input: { amountUsd: number; note: string },
+): Promise<void> {
+  if (!Number.isFinite(input.amountUsd) || input.amountUsd < 0)
+    throw new SettlementError("Enter the amount as a number of dollars, 0 or more.");
+  const note = input.note.trim();
+  if (note.length < 5) throw new SettlementError("Say where the amount comes from (for example, the console's usage page).");
+  const [run] = await db
+    .select()
+    .from(providerRun)
+    .where(and(eq(providerRun.id, runId), eq(providerRun.ownerId, ownerId)))
+    .limit(1);
+  if (!run) throw new SettlementError("Run not found.");
+  if (run.status !== "unsettled") throw new SettlementError("Only an unsettled run can be settled.");
+  const amountMicros = Math.round(input.amountUsd * 1_000_000);
+  if (amountMicros > parseUsdMicros(run.worstCaseUsd)) {
+    throw new SettlementError(
+      "That is more than this run's worst case, which should not be possible. Nothing was changed; please report it, since the bound would need correcting.",
+    );
+  }
+  const amountUsd = microsToUsd(amountMicros).toFixed(6);
+  const settlement = { method: "owner_recorded" as const, amountUsd, note: note.slice(0, 500), at: new Date().toISOString() };
+  await db
+    .update(providerRun)
+    .set({ status: "ok", costUsd: amountUsd, settlement })
+    .where(and(eq(providerRun.id, runId), eq(providerRun.status, "unsettled")));
+  await db.insert(auditEvent).values({
+    ownerId,
+    actor: "learner",
+    action: "provider:settle-run",
+    entity: "provider_run",
+    entityId: runId,
+    details: { ...settlement, worstCaseUsd: run.worstCaseUsd, lowerBoundUsd: run.costUsd },
+  });
+}
+
+export async function listUnsettledRuns(db: DbOrTx, ownerId: string) {
+  return db
+    .select()
+    .from(providerRun)
+    .where(and(eq(providerRun.ownerId, ownerId), eq(providerRun.status, "unsettled")))
+    .orderBy(desc(providerRun.startedAt));
 }
 
 export async function listRecentRuns(db: DbOrTx, ownerId: string, limit = 15) {

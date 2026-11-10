@@ -28,10 +28,16 @@ bootstrap code or an API key into a chat.
    tutoring and its costs*, choose *Anthropic (live model, paid)* and a model, paste the key, set
    the limits, tick *I approve paid use of the selected model within these limits*, and save; the
    notice above the form then reads *Live:* and the model. Each run is refused before it starts if
-   its worst case could cross a limit, so *Per run* must cover the dearest role you use: on Claude
-   Opus 5.5 with fallback on, about $0.70 for the assessor and $0.45 for the tutor (well under half
-   with fallback off). Small limits that let every role run: $1 per run, $2 per day, $5 per
-   month. Model use is billed by Anthropic to that account, separately from Railway.
+   its worst case could cross a limit. The worst case counts every byte of the prompt as a token
+   (deliberately pessimistic), so it is several times what a turn usually costs: on Claude Opus 5.5
+   with fallback on, up to about $1.20 for the assessor on a long submission and $0.80 for a tutor
+   turn (about half with fallback off). *Per run* must cover the dearest role you use. Small limits
+   that let every role run: $1.50 per run, $3 per day, $10 per month. A run whose cost the provider
+   could not report (a lost connection) is held at its worst case under *Settings → Unsettled runs*
+   until you enter the amount your Anthropic Console shows for it. An API key from an Anthropic
+   Console organization is required; a Claude subscription does not provide one, though some
+   include Console credits (see the link in Settings). Model use is billed by Anthropic to that
+   account, separately from Railway.
 
 4. Check the signed-in site and live tutoring yourself (after items 1 and 3; about 20 minutes).
    Why: the build agent cannot sign in as you and must not be given your password. Tell it the

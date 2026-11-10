@@ -17,7 +17,10 @@ export interface RoleContract {
   escalation: string;
   /**
    * The output allowance includes thinking, which current models cannot switch off; `effort` sets
-   * thinking depth explicitly per role; `maxRunUsd` is the role's own ceiling on a run's worst case.
+   * thinking depth explicitly per role; `maxRunUsd` is the role's own ceiling on a run's worst case,
+   * sized for the strict prompt bound (a token per byte): on Claude Opus 5.5 with fallback a run's
+   * worst case is about prompt-bytes x $11.25/M + output x $51.25/M, so each ceiling admits the
+   * role's output allowance with the prompt it normally carries. The owner's limits apply as well.
    */
   limits: { maxOutputTokens: number; maxRunUsd: number; effort: "low" | "medium" | "high" };
 }
@@ -39,7 +42,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Academic summaries and stated preferences only; no social memory.",
     escalation: "Any change is a draft requiring learner confirmation through a validated service.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 1, effort: "medium" },
   },
   convenor: {
     role: "convenor",
@@ -51,7 +54,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "None beyond the pipeline job.",
     escalation: "Drafts enter the review queue; publication is a separate validated step.",
-    limits: { maxOutputTokens: 16_000, maxRunUsd: 1, effort: "high" },
+    limits: { maxOutputTokens: 16_000, maxRunUsd: 2, effort: "high" },
   },
   lecturer: {
     role: "lecturer",
@@ -68,7 +71,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Reads approved academic summaries for this course only.",
     escalation: "Says when the material was not retrieved and offers to locate it.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 1, effort: "medium" },
   },
   tutor: {
     role: "tutor",
@@ -91,7 +94,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Relevant attempts and approved academic summaries for this course.",
     escalation: "Direct question answered directly; unresolved doubt labelled {needs-checking}.",
-    limits: { maxOutputTokens: 8_000, maxRunUsd: 0.6, effort: "medium" },
+    limits: { maxOutputTokens: 8_000, maxRunUsd: 1, effort: "medium" },
   },
   librarian: {
     role: "librarian",
@@ -103,7 +106,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "SourceMetadataGuess",
     memoryPolicy: "None.",
     escalation: "Metadata is a guess until the learner confirms it.",
-    limits: { maxOutputTokens: 2_000, maxRunUsd: 0.1, effort: "low" },
+    limits: { maxOutputTokens: 2_000, maxRunUsd: 0.25, effort: "low" },
   },
   assessor: {
     role: "assessor",
@@ -127,7 +130,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "AssessorFeedback",
     memoryPolicy: "None; each run is independent.",
     escalation: "Confidence below 0.6, or disagreement with deterministic results, becomes needs_review.",
-    limits: { maxOutputTokens: 12_000, maxRunUsd: 1, effort: "high" },
+    limits: { maxOutputTokens: 12_000, maxRunUsd: 1.5, effort: "high" },
   },
   seminar_chair: {
     role: "seminar_chair",
@@ -139,7 +142,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Discussion transcript only.",
     escalation: "Closes the discussion at the limit with a one-line summary.",
-    limits: { maxOutputTokens: 4_000, maxRunUsd: 0.3, effort: "low" },
+    limits: { maxOutputTokens: 4_000, maxRunUsd: 0.5, effort: "low" },
   },
   supervisor: {
     role: "supervisor",
@@ -152,7 +155,7 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Project notes and approved academic summaries.",
     escalation: "Labels conjectures and unchecked claims explicitly.",
-    limits: { maxOutputTokens: 12_000, maxRunUsd: 1, effort: "high" },
+    limits: { maxOutputTokens: 12_000, maxRunUsd: 1.5, effort: "high" },
   },
   peer: {
     role: "peer",
@@ -171,6 +174,6 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     outputSchema: "prose",
     memoryPolicy: "Social memory is separate and deletable; no access to the academic transcript.",
     escalation: "A staged misconception must be resolved by the teacher in the same discussion.",
-    limits: { maxOutputTokens: 3_000, maxRunUsd: 0.2, effort: "low" },
+    limits: { maxOutputTokens: 3_000, maxRunUsd: 0.4, effort: "low" },
   },
 };

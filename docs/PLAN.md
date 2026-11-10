@@ -168,7 +168,7 @@ Brief saved in `brief/`, linked from AGENTS.md (CLAUDE.md imports it); requireme
 baseline per row; study-workspace interaction specification in DESIGN_SYSTEM.md; this plan.
 Gate: no rewrite; state boundaries named below; migrations additive.
 
-### Milestone 12 (B) — Foundations
+### Milestone 12 (B) — Foundations — done
 
 1. Budget: a strict prompt bound (every token covers at least one UTF-8 byte, plus a fixed
    framing allowance per message) with bounded context; integer micro-dollar arithmetic; SDK

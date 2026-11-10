@@ -39,3 +39,4 @@ export function createProvider(choice: ProviderChoice): ModelProvider {
   }
   return new FixtureProvider(choice.fixtureRoot);
 }
+export * from "./history";

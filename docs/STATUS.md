@@ -1,9 +1,10 @@
 # Status
 
-Last updated: 10 November 2026 (Milestones 0–10 complete; after the Milestone 10 release, an
-independent audit of the tests against the owner's rules and the fixes it led to. The site is
-deployed on Railway; the owner account is still to be created there, so the checks behind sign-in
-and live tutoring wait for the owner's checklist).
+Last updated: 10 November 2026 (Milestones 0–12 complete; the teaching-experience brief
+(`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`) is in progress as Milestones 11–17. The site is
+deployed on Railway at the Milestone 10 release plus the audit's fixes; the owner account is still
+to be created there, so the checks behind sign-in and live tutoring wait for the owner's
+checklist).
 
 ## Implemented / tested / blocked
 
@@ -12,7 +13,7 @@ and live tutoring wait for the owner's checklist).
 | Planning documents | yes | n/a | docs/ |
 | Monorepo, type checks, Biome, Vitest, Playwright | yes | typecheck green for 7 packages; `pnpm lint` clean | pnpm 12, TS 5.9, Next 16.4 |
 | Embedded PostgreSQL dev cluster | yes | migrations applied | `pnpm db:local`; pgvector absent locally (expected) |
-| Drizzle schema (74 tables, 8 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
+| Drizzle schema (74 tables, 9 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
 | better-auth email+password, owner bootstrap, closed sign-up, sign-in rate limit, one-owner index | yes | owner test (setup, concurrent inserts, restart); journey 1; security spec | the bootstrap code is optional once the owner exists |
 | Owner password recovery without email | yes | owner test; the command run end to end against a throw-away database | `pnpm owner:reset-password` locally; in the worker's shell on Railway (HANDOFF.md); signs the owner out everywhere |
 | Design tokens, fonts, Markdown + KaTeX (MathML) + mhchem | yes | 4 web unit tests (sanitiser, maths, chemistry); axe pass | light + dark roles; `--ink-3` darkened to pass 4.5:1 on every paper surface; chemistry rendered by the app's own KaTeX plugin |
@@ -24,8 +25,8 @@ and live tutoring wait for the owner's checklist).
 | Learning loop: session, drafts, hint ladder, immutable submissions, worker assessment, structured feedback, appeals and real regrades, reference reveal (learner-visible part only) | yes | journey 2 (desktop + mobile); instructor-leakage test; `verdict.test.ts`, `reference.test.ts` | scripted demo; deterministic checks run first; without a live model every verdict is withheld (`needs_review`); each assessment keeps the exercise as answered; feedback repeating the reference solution is withheld |
 | Tutor conversation with validated `[E#]` citations; library passages as evidence; local-only disclosure | yes | journeys 2 and 6; citation and ingestion tests | passages match any word of the question, best first; replayed history names the sources earlier tags resolved to |
 | Evidence states, My Studies, revision prompts bounded by the weekly cap | yes | 5 + 1 unit tests; journey 5 spec | recall reschedules only; never evidence |
-| AI package: Anthropic provider (beta Messages API, server-side refusal fallback), scripted demo, provider states, supported models, approval of paid use, worst-case budget, per-attempt pricing, asset diagnostic, role contracts and prompts | yes | 59 unit tests, including a contract test of the real SDK against a local server speaking the documented wire format; the worker assessment test runs the live path against such a server | no request has reached Anthropic; live tutoring waits for the owner's key and approval |
-| Live-tutoring settings and labels | yes | provider-config tests; journeys 6 and 10 (a live model that cannot run is refused and the learner's message kept) | every AI label names the model, "model blocked" or "scripted demo"; a live run is reserved at its worst case under a per-owner lock and recorded even if the learner leaves mid-reply |
+| AI package: Anthropic provider (beta Messages API, server-side refusal fallback, SDK retries off), scripted demo, provider states, supported models, approval of paid use, strict worst-case bound (a token per byte, images at the documented ceiling, unknown prices refused), micro-dollar arithmetic, billing certainty of failures, bounded history, per-attempt pricing (table fetched 10 Nov 2026), asset diagnostic, role contracts and prompts | yes | 69 unit tests in `packages/ai`, including a contract test of the real SDK against a local server speaking the documented wire format and role-ceiling usability; the worker assessment test runs the live path against such a server, including a dropped connection (one call, run unsettled) | no request has reached Anthropic; live tutoring waits for the owner's key and approval |
+| Live-tutoring settings and labels; unsettled runs and their settlement | yes | provider-config tests (20: reservations, the lock, recorded spend, unsettled runs held, stale runs, settlement rules, duplicate calls, UTC boundaries); journeys 6 and 10 (a live model that cannot run is refused and the learner's message kept) | every AI label names the model, "model blocked" or "scripted demo"; Settings explains the Console key and subscription credits with the official link |
 | Worker: assessment, ingestion, export and maintenance handlers; non-retryable failures; asset line on start | yes | handler tests; journeys 2, 5 and records | |
 | Scheduling engine and timetable, proposals, catch-up, director, ICS | yes | 12 unit tests; journey 3 | journey 7 (missed sessions) is exercised at service level only; see QA_REPORT |
 | Library: shelf, sources, books to obtain (+ exports), upload, permissions, extraction, reading room, open-resource import, jobs UI | yes | 19 db tests; worker tests; journeys 5 and 6 (desktop + mobile) | |
@@ -73,7 +74,10 @@ Live site: https://web-production-4c692.up.railway.app. To ship a change, commit
 `corniversity` project. `pnpm deploy:railway` creates a new project with new secrets and refuses
 to run in a linked folder; it is for a first deployment only.
 
-Next action: the owner's steps in USER_ACTIONS.md. When the owner reports the checklist's results,
+Build in progress: Milestone 13 (study continuity, paper work, bridges) of the teaching-experience
+brief; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
+
+Owner actions: the steps in USER_ACTIONS.md. When the owner reports the checklist's results,
 record them in QA_REPORT.md as checks the owner ran on the live site; check from outside that a
 sign-up answers "Sign-up is closed" and that `OWNER_BOOTSTRAP_CODE` is gone from both services
 (variable names only); and read the worker's log for the assessment runs.

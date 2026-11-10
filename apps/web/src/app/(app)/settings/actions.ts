@@ -7,8 +7,10 @@ import { ensureProfile } from "@corniversity/db/services/onboarding";
 import {
   approvePaidUse,
   ProviderSettingError,
+  SettlementError,
   saveBudgetLimits,
   saveProviderSetting,
+  settleUnsettledRun,
   withdrawPaidUseApproval,
 } from "@corniversity/db/services/provider-config";
 import { updateProfileSettings } from "@corniversity/db/services/settings";
@@ -109,6 +111,23 @@ export async function saveLiveTutoringAction(form: FormData): Promise<void> {
 export async function withdrawApprovalAction(): Promise<void> {
   const session = await requireSession("/settings");
   await withdrawPaidUseApproval(db(), session.user.id);
+  done("provider");
+}
+
+/**
+ * Settles a run whose cost the provider could not report, with the amount the owner read in the
+ * provider console. Until then it counts at its worst case; the settlement is audited.
+ */
+export async function settleRunAction(form: FormData): Promise<void> {
+  const session = await requireSession("/settings");
+  const runId = text(form, "runId");
+  if (!/^[0-9a-f-]{36}$/.test(runId)) redirect("/settings?error=Unknown%20run.#provider");
+  try {
+    await settleUnsettledRun(db(), session.user.id, runId, { amountUsd: Number(text(form, "amountUsd")), note: text(form, "note") });
+  } catch (error) {
+    if (error instanceof SettlementError) redirect(`/settings?error=${encodeURIComponent(error.message)}#provider`);
+    throw error;
+  }
   done("provider");
 }
 

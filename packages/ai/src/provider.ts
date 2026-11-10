@@ -100,6 +100,16 @@ export type ProviderErrorKind =
   | "fixture_missing"
   | "budget_exceeded";
 
+/**
+ * What is known about the cost of a failed request:
+ * - `none`: the provider answered with an error before doing any billable work;
+ * - `known`: the provider reported the usage it billed (in `attempts`);
+ * - `uncertain`: the request may have been processed and billed for more than is known — the
+ *   connection was lost, the stream broke part way, or the request timed out. `attempts` then
+ *   holds only a lower bound, and the run keeps holding its worst case until it is settled.
+ */
+export type BillingCertainty = "none" | "known" | "uncertain";
+
 export class ProviderError extends Error {
   constructor(
     readonly kind: ProviderErrorKind,
@@ -107,6 +117,7 @@ export class ProviderError extends Error {
     readonly retryable = false,
     /** Usage of attempts that ran before the failure (a refusal is billed), so spend is still recorded. */
     readonly attempts: AttemptUsage[] = [],
+    readonly billing: BillingCertainty = attempts.length > 0 ? "known" : "none",
   ) {
     super(message);
     this.name = "ProviderError";

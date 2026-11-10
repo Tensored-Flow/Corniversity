@@ -29,6 +29,10 @@ export interface TurnInput {
   scenario: string;
   /** Who is speaking, for notes such as "the tutor could not reply". */
   speaker: string;
+  /** Names this provider call, so a repeated request cannot reserve or bill it twice. */
+  idempotencyKey?: string;
+  /** The run of the action that started this one (an earlier speaker in the same discussion). */
+  parentRunId?: string;
 }
 
 type Runnable = Exclude<RunPlan, { kind: "refused" }>;
@@ -41,7 +45,11 @@ interface Outcome {
   model: string;
 }
 
-const inputTextOf = (input: TurnInput) => `${input.system}\n${input.messages.map((m) => m.content).join("\n")}`;
+/** Everything the request sends, for the strict worst case: the system prompt and every message. */
+const promptOf = (input: TurnInput) => ({
+  text: `${input.system}\n${input.messages.map((m) => m.content).join("\n")}`,
+  messages: input.messages.length + 1,
+});
 
 /**
  * Runs the turn on the planned provider, yielding its text and then any notes about how it was
@@ -70,7 +78,15 @@ async function* produce(plan: Runnable, input: TurnInput): AsyncGenerator<string
   } catch (error) {
     const errorText = error instanceof ProviderError ? error.message : "The provider failed.";
     yield `\n\n*(${input.speaker} could not reply: ${errorText} Your work is saved; the sources and your notes remain available.)*`;
-    return { status: "error", errorText, attempts: error instanceof ProviderError ? error.attempts : [], model: plan.model };
+    // When the provider may have billed more than it reported (a broken stream, a lost
+    // connection), the run stays held at its worst case until it is settled, never recorded free.
+    const uncertain = !(error instanceof ProviderError) || error.billing === "uncertain";
+    return {
+      status: plan.kind === "live" && uncertain ? "unsettled" : "error",
+      errorText,
+      attempts: error instanceof ProviderError ? error.attempts : [],
+      model: plan.model,
+    };
   }
 }
 
@@ -102,6 +118,8 @@ async function record(input: TurnInput, plan: Runnable, outcome: Outcome, starte
 }
 
 async function recordRefusal(input: TurnInput, plan: Refused): Promise<void> {
+  // A duplicate of a call already reserved records nothing new: the first reservation stands.
+  if (plan.status === "duplicate") return;
   await recordProviderRun(input.database, {
     ownerId: input.ownerId,
     role: input.role,
@@ -135,9 +153,11 @@ function refusalResponse(plan: Refused): Response {
 export async function streamPersonaTurn(
   input: TurnInput & { prefix?: string; onFinish: (raw: string, runId: string) => Promise<void> },
 ): Promise<Response> {
-  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input), {
+  const plan = await planRun(input.database, input.ownerId, input.env, input.role, promptOf(input), {
     purpose: input.purpose,
     promptVersion: input.promptVersion,
+    idempotencyKey: input.idempotencyKey,
+    parentRunId: input.parentRunId,
   });
   if (plan.kind === "refused") {
     await recordRefusal(input, plan);
@@ -172,9 +192,11 @@ export async function collectPersonaText(
 ): Promise<
   { kind: "refused"; reason: string } | { kind: "done"; text: string; runId: string; status: RunStatus; mode: "scripted" | "live" }
 > {
-  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input), {
+  const plan = await planRun(input.database, input.ownerId, input.env, input.role, promptOf(input), {
     purpose: input.purpose,
     promptVersion: input.promptVersion,
+    idempotencyKey: input.idempotencyKey,
+    parentRunId: input.parentRunId,
   });
   if (plan.kind === "refused") {
     await recordRefusal(input, plan);

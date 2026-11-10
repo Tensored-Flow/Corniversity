@@ -55,17 +55,27 @@ export const providerRun = pgTable(
     costUsd: numeric("cost_usd", { precision: 12, scale: 6 }).notNull().default("0"),
     pricingVersion: text("pricing_version").notNull(),
     promptVersion: text("prompt_version").notNull(),
-    /** "running" while a live run is in progress: it holds its worst case against the limits. */
-    status: text("status").$type<"ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running">().notNull(),
+    /**
+     * "running" while a live run is in progress and "unsettled" when the provider may have billed
+     * more than is known (a broken stream, a lost connection, a process that ended mid-run): both
+     * hold the run's worst case against the limits until it is finished or settled.
+     */
+    status: text("status").$type<"ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running" | "unsettled">().notNull(),
     error: text("error"),
     /** Each model attempt with its usage and model; a fallback model taking over adds one. */
     attempts: jsonb("attempts").$type<AttemptRecord[]>().notNull().default([]),
     /** The worst case the budget gate checked before the run started. */
     worstCaseUsd: numeric("worst_case_usd", { precision: 12, scale: 6 }),
+    /** One provider call: a duplicate request for the same call cannot reserve or bill twice. */
+    idempotencyKey: text("idempotency_key").unique(),
+    /** The run that started this one, when one learner action makes several calls (a discussion). */
+    parentRunId: uuid("parent_run_id"),
+    /** How an unsettled run was resolved: the amount the owner recorded from the provider console. */
+    settlement: jsonb("settlement").$type<{ method: "owner_recorded"; amountUsd: string; note: string; at: string }>(),
     startedAt: createdAt(),
     finishedAt: tz("finished_at"),
   },
-  (t) => [index("provider_run_owner_time_idx").on(t.ownerId, t.startedAt)],
+  (t) => [index("provider_run_owner_time_idx").on(t.ownerId, t.startedAt), index("provider_run_status_idx").on(t.status)],
 );
 
 export const auditEvent = pgTable(

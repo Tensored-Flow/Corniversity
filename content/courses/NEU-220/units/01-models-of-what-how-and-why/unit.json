@@ -10,7 +10,7 @@
     { "id": "u01-o3", "description": "Prove that the exponential distribution maximises entropy among nonnegative distributions of fixed mean, and interpret the result as a normative claim with stated constraints." },
     { "id": "u01-o4", "description": "Classify models as descriptive, mechanistic or normative, pair each with its assumptions and a refuting observation, and keep recorded data distinct from simulated data in every statement." }
   ],
-  "prerequisiteConceptIds": ["ode-basics", "applied-statistics-basics", "python-scientific-computing"],
+  "prerequisiteConceptIds": ["ode-basics", "applied-statistics-basics", "python-scientific-computing", "membrane-potential-basics"],
   "teachesConceptIds": ["neural-spiking-basics", "model-types-what-how-why", "leaky-integrate-and-fire"],
   "preparation": [
     { "description": "Neuromatch prerequisites page: check the Python, linear algebra, statistics and calculus expectations; the W0D1 Python workshop (LIF neuron part I) and W0D5 Statistics refreshers are optional bridges if anything is unfamiliar.", "locatorId": "nma-prereqs", "estimatedMinutes": 15 },

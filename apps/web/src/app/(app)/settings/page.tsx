@@ -7,6 +7,7 @@ import {
   getBudgetLimits,
   getSpend,
   listRecentRuns,
+  listUnsettledRuns,
   providerSettingView,
   resolveProviderState,
 } from "@corniversity/db/services/provider-config";
@@ -31,13 +32,14 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
   const database = db();
   const env = getEnv();
   const ownerId = session.user.id;
-  const [profile, state, view, limits, spend, runs, memory] = await Promise.all([
+  const [profile, state, view, limits, spend, runs, unsettled, memory] = await Promise.all([
     ensureProfile(database, ownerId),
     resolveProviderState(database, ownerId, env),
     providerSettingView(database, ownerId, env),
     getBudgetLimits(database, ownerId, env),
     getSpend(database, ownerId),
     listRecentRuns(database, ownerId),
+    listUnsettledRuns(database, ownerId),
     listPersonaMemory(database, ownerId),
   ]);
   const fontScale = profile.accessibility.fontScale ?? 1;
@@ -199,7 +201,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
           </form>
         </Card>
 
-        <LiveTutoring state={publicProviderState(state)} view={view} limits={limits} spend={spend} runs={runs} />
+        <LiveTutoring state={publicProviderState(state)} view={view} limits={limits} spend={spend} runs={runs} unsettled={unsettled} />
 
         <Card as="section" aria-labelledby="memory-heading" id="memory">
           <h2 id="memory-heading" className="text-lg text-ink">

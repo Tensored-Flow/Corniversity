@@ -1,5 +1,6 @@
 import {
   buildSupervisorPrompt,
+  outputSchemaText,
   ProviderError,
   ROLE_CONTRACTS,
   SUPERVISOR_PROMPT_VERSION,
@@ -424,7 +425,14 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
   });
   const instruction = "Give your provisional feedback on this version.";
   const promptVersion = `${SUPERVISOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.supervisor.version}`;
-  const plan = await planRun(db, ownerId, env, "supervisor", `${system}\n${instruction}`, { purpose: "studio-feedback", promptVersion });
+  const plan = await planRun(
+    db,
+    ownerId,
+    env,
+    "supervisor",
+    { text: `${system}\n${instruction}\n${outputSchemaText(SupervisorFeedbackSchema)}`, messages: 1 },
+    { purpose: "studio-feedback", promptVersion },
+  );
   const base = { projectId, versionId, checks };
   if (plan.kind === "scripted") {
     const [row] = await db
@@ -463,7 +471,7 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
   } catch (error) {
     if (!(error instanceof ProviderError)) throw error;
     await finishProviderRun(db, plan.runId, {
-      status: error.kind === "refused" ? "refused" : "error",
+      status: error.billing === "uncertain" ? "unsettled" : error.kind === "refused" ? "refused" : "error",
       model: plan.model,
       error: error.message,
       attempts: error.attempts,

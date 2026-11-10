@@ -31,7 +31,7 @@ const bundle = loadContent(defaultContentRoot());
 
 let handle: ReturnType<typeof createDb>;
 let ctx: HandlerContext;
-let mode: "answer" | "unauthorised" = "answer";
+let mode: "answer" | "unauthorised" | "drop" = "answer";
 let answer: Record<string, unknown> = {};
 let received: { system: string }[] = [];
 const server = createServer(async (req, res) => {
@@ -39,6 +39,12 @@ const server = createServer(async (req, res) => {
   for await (const chunk of req) raw += chunk;
   const body = JSON.parse(raw || "{}") as { system?: { text: string }[] };
   received.push({ system: (body.system ?? []).map((b) => b.text).join("\n") });
+  if (mode === "drop") {
+    // The request arrived and the connection is lost before any answer: the provider may have
+    // processed (and billed) it, and the caller cannot know.
+    req.socket.destroy();
+    return;
+  }
   if (mode === "unauthorised") {
     res.writeHead(401, { "content-type": "application/json" });
     res.end(JSON.stringify({ type: "error", error: { type: "authentication_error", message: "invalid x-api-key" } }));
@@ -182,6 +188,22 @@ describe("assessment by a live model", () => {
     expect(run).toMatchObject({ status: "failed", error: "The Anthropic API key was rejected." });
     expect(run.feedback).toBeNull();
     expect(recorded).toMatchObject({ status: "error", costUsd: "0.000000" });
+    mode = "answer";
+  });
+
+  it("holds a request whose connection was lost at its worst case, as unsettled, after exactly one call", async () => {
+    mode = "drop";
+    received = [];
+    const { submitted, payload } = await submitAndAssess(LIVE_OWNER, EXERCISE, "An attempt sent over a failing connection.");
+    await assessHandler(ctx, payload);
+    const { run, recorded } = await runOf(submitted.assessmentRunId);
+    // No silent SDK retry: one billable attempt was reserved, so only one may be made.
+    expect(received).toHaveLength(1);
+    expect(run.status).toBe("failed");
+    expect(run.error).toMatch(/may still have been processed/);
+    // Not recorded as free: the run keeps its worst case until the owner settles it.
+    expect(recorded?.status).toBe("unsettled");
+    expect(Number(recorded?.worstCaseUsd)).toBeGreaterThan(0);
     mode = "answer";
   });
 

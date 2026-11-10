@@ -1,5 +1,5 @@
 import { learnerVisibleReference } from "@corniversity/core/domain/reference";
-import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { AssessSubmissionPayload, QUEUES } from "../jobs";
@@ -203,12 +203,36 @@ export async function getAttempt(db: DbOrTx, ownerId: string, attemptId: string)
   return rows[0] ?? null;
 }
 
-/** Saves unsubmitted work so a closed tab never loses an argument. */
-export async function saveDraft(db: DbOrTx, ownerId: string, attemptId: string, draftMarkdown: string): Promise<void> {
-  await db
+export type DraftSave =
+  | { status: "saved"; revision: number; savedAt: Date }
+  | { status: "conflict"; revision: number; savedAt: Date | null; draftMarkdown: string }
+  | { status: "not_found" };
+
+/**
+ * Saves unsubmitted work so a closed tab never loses an argument. A save from the editor names
+ * the revision it started from (`baseRevision`); if the draft has moved on since (another device
+ * saved), nothing is overwritten and the newer draft is returned as a conflict for the learner to
+ * resolve. Without a base revision (submitting, which saves exactly what is submitted) the save
+ * always applies. Every save increases the revision.
+ */
+export async function saveDraft(
+  db: DbOrTx,
+  ownerId: string,
+  attemptId: string,
+  draftMarkdown: string,
+  options: { baseRevision?: number } = {},
+): Promise<DraftSave> {
+  const conditions = [eq(attempt.id, attemptId), eq(attempt.ownerId, ownerId)];
+  if (options.baseRevision !== undefined) conditions.push(eq(attempt.draftRevision, options.baseRevision));
+  const [saved] = await db
     .update(attempt)
-    .set({ draftMarkdown })
-    .where(and(eq(attempt.id, attemptId), eq(attempt.ownerId, ownerId)));
+    .set({ draftMarkdown, draftRevision: sql`${attempt.draftRevision} + 1`, draftSavedAt: new Date() })
+    .where(and(...conditions))
+    .returning({ revision: attempt.draftRevision, savedAt: attempt.draftSavedAt });
+  if (saved) return { status: "saved", revision: saved.revision, savedAt: saved.savedAt ?? new Date() };
+  const current = await getAttempt(db, ownerId, attemptId);
+  if (!current) return { status: "not_found" };
+  return { status: "conflict", revision: current.draftRevision, savedAt: current.draftSavedAt, draftMarkdown: current.draftMarkdown ?? "" };
 }
 
 /** The hint ladder is learner-facing content; revealing a step is recorded, never penalised. */

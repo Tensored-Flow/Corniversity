@@ -28,6 +28,15 @@ satisfying any group satisfies the rule. Evidence that satisfies a concept: `dem
 `practised` state, a passed placement check, or a learner override (recorded with provenance and
 shown as "unverified"). Audit mode ignores prerequisites. Cycle detection runs in the validator.
 
+Three things stay apart (`packages/core/src/prerequisites/bridges.ts`): the definition (concepts
+belong to departments and exist whether or not a course teaching them is prepared; NEU-101 lists
+the biology concepts it will teach while it is still proposed), the learner's evidence (supported
+by submitted work, self-reported and unverified, or not shown; reading, viewing a bridge or seeing
+a solution never counts as support) and whether a short concept bridge is prepared. A rule is met
+only by its own concepts, so mathematical evidence never meets a biology rule: NEU-220's soft rule
+on the membrane potential stands beside its mathematics rule. Bridges nest at most two deep from a
+lesson, and a concept already on the trail is reported as a cycle, never followed.
+
 ## Teaching units
 
 Objective, prerequisite concepts, preparation (source locators), activities (reading, lecture,

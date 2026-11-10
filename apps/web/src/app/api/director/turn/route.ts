@@ -1,4 +1,4 @@
-import { buildDirectorSystemPrompt, DIRECTOR_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
+import { boundedHistory, buildDirectorSystemPrompt, DIRECTOR_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
 import { citedHistory } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
@@ -60,13 +60,14 @@ export async function POST(request: Request): Promise<Response> {
       .filter((s) => s.state.state === "demonstrated" || s.state.state === "practised")
       .map((s) => `${s.concept.title}: ${s.state.state}`),
   });
-  const chat = [
+  // Bounded context: the most recent turns within a fixed size; the record keeps every turn.
+  const chat = boundedHistory([
     ...prior.map((m) => ({
       role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant",
       content: m.sender === "learner" ? m.contentMarkdown : citedHistory(m.contentMarkdown, m.citations),
     })),
     { role: "user" as const, content: parsed.data.message },
-  ];
+  ]);
 
   return streamPersonaTurn({
     database,

@@ -19,5 +19,15 @@
       { "label": "Python for Scientific Work", "courseIds": ["CSA-100"] },
       { "label": "Optional readiness bridge", "bridgeCourseId": "CSA-100" }
     ]
+  },
+  {
+    "id": "NEU-220-membrane-biology",
+    "courseId": "NEU-220",
+    "strength": "soft",
+    "description": "Unit 1 treats the membrane as a capacitor leaking through a resistor towards a resting potential, and unit 7 adds synaptic conductances. The mathematics needs only a first-order linear ODE; interpreting V, E_L, the leak and a synaptic input needs the biology. Mathematical evidence does not meet this rule: a learner fluent in ODEs may still need the meaning of a membrane potential. The concept bridges for the membrane potential and synaptic transmission serve it without enrolling in a biology course.",
+    "alternatives": [
+      { "label": "The biology, shown or reported", "conceptIds": ["membrane-potential-basics"] },
+      { "label": "Neuroscience Foundations (when prepared)", "courseIds": ["NEU-101"] }
+    ]
   }
 ]

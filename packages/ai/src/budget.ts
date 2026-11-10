@@ -1,3 +1,5 @@
+import { microsToUsd, usdToMicros } from "./pricing";
+
 /**
  * Budget decisions are pure functions of configured limits and recorded spend, so they are
  * testable and identical in the web app and the worker. Every limit is a hard stop: a run whose
@@ -29,45 +31,56 @@ export function decideBudget(
   roleCapUsd = Number.POSITIVE_INFINITY,
 ): BudgetDecision {
   const warnings: string[] = [];
-  const dailyAfter = spend.todayUsd + worstCaseRunUsd;
-  const monthlyAfter = spend.monthUsd + worstCaseRunUsd;
+  // Every comparison is in integer micro-dollars, so sums of many small runs never drift.
+  const run = usdToMicros(worstCaseRunUsd);
+  const today = usdToMicros(spend.todayUsd);
+  const month = usdToMicros(spend.monthUsd);
+  const dailyAfter = today + run;
+  const monthlyAfter = month + run;
+  const usd = (micros: number) => microsToUsd(micros).toFixed(2);
 
-  if (worstCaseRunUsd > limits.perRunUsd) {
+  if (run > usdToMicros(limits.perRunUsd)) {
     return {
       allowed: false,
       reason: `This run could cost up to $${worstCaseRunUsd.toFixed(3)}, above your per-run limit of $${limits.perRunUsd.toFixed(2)}.`,
       warnings,
     };
   }
-  if (worstCaseRunUsd > roleCapUsd) {
+  if (Number.isFinite(roleCapUsd) && run > usdToMicros(roleCapUsd)) {
     return {
       allowed: false,
       reason: `This run could cost up to $${worstCaseRunUsd.toFixed(3)}, above this role's ceiling of $${roleCapUsd.toFixed(2)}. Shorten the conversation or start a new one.`,
       warnings,
     };
   }
-  if (dailyAfter > limits.dailyUsd) {
+  if (dailyAfter > usdToMicros(limits.dailyUsd)) {
     return {
       allowed: false,
-      reason: `Today's limit of $${limits.dailyUsd.toFixed(2)} could be exceeded ($${spend.todayUsd.toFixed(2)} spent so far). Paid runs pause until tomorrow (UTC) or until you raise the limit.`,
+      reason: `Today's limit of $${limits.dailyUsd.toFixed(2)} could be exceeded ($${usd(today)} spent or held so far, ${BUDGET_WINDOW_TIMEZONE} day). Paid runs pause until tomorrow (${BUDGET_WINDOW_TIMEZONE}) or until you raise the limit.`,
       warnings,
     };
   }
-  if (monthlyAfter > limits.monthlyUsd) {
+  if (monthlyAfter > usdToMicros(limits.monthlyUsd)) {
     return {
       allowed: false,
-      reason: `This month's limit of $${limits.monthlyUsd.toFixed(2)} could be exceeded ($${spend.monthUsd.toFixed(2)} spent so far).`,
+      reason: `This month's limit of $${limits.monthlyUsd.toFixed(2)} could be exceeded ($${usd(month)} spent or held so far, ${BUDGET_WINDOW_TIMEZONE} month).`,
       warnings,
     };
   }
-  if (dailyAfter >= limits.dailyUsd * limits.warnFraction) {
-    warnings.push(`Approaching today's limit: up to $${dailyAfter.toFixed(2)} of $${limits.dailyUsd.toFixed(2)}.`);
+  if (dailyAfter >= usdToMicros(limits.dailyUsd * limits.warnFraction)) {
+    warnings.push(`Approaching today's limit: up to $${usd(dailyAfter)} of $${limits.dailyUsd.toFixed(2)}.`);
   }
-  if (monthlyAfter >= limits.monthlyUsd * limits.warnFraction) {
-    warnings.push(`Approaching this month's limit: up to $${monthlyAfter.toFixed(2)} of $${limits.monthlyUsd.toFixed(2)}.`);
+  if (monthlyAfter >= usdToMicros(limits.monthlyUsd * limits.warnFraction)) {
+    warnings.push(`Approaching this month's limit: up to $${usd(monthlyAfter)} of $${limits.monthlyUsd.toFixed(2)}.`);
   }
   return { allowed: true, warnings };
 }
+
+/**
+ * Daily and monthly windows are calendar days and months in UTC, stated wherever a limit is
+ * shown; a run counts in the window in which it started.
+ */
+export const BUDGET_WINDOW_TIMEZONE = "UTC";
 
 /** The largest limits the settings accept, so a typing slip cannot authorise open-ended spending. */
 export const BUDGET_CEILINGS = { perRunUsd: 5, dailyUsd: 50, monthlyUsd: 500 } as const;
