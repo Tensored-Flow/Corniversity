@@ -7,6 +7,12 @@ architecture, acceptance tests, appendices), [`VERIFIED_SOURCES.md`](brief/VERIF
 and [`COURSE_CATALOGUE_SEED.json`](brief/COURSE_CATALOGUE_SEED.json). The brief uses the working
 name "Meridian"; the product name is **Corniversity**. Everything else in the brief stands.
 
+The current build follows the owner's teaching-experience brief,
+[`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`](brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md)
+(six core teaching upgrades CORE-01–06, the secondary experience EXT-01–06, the budget and release
+rules). Its requirement matrix is the second half of [`docs/TRACEABILITY.md`](docs/TRACEABILITY.md);
+the study-workspace interaction specification is in [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md).
+
 Read the brief before changing behaviour. Then read [`docs/PLAN.md`](docs/PLAN.md) and
 [`docs/STATUS.md`](docs/STATUS.md) for the current milestone and the exact resume point.
 

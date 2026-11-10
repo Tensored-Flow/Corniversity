@@ -152,3 +152,75 @@ Reconciled from commit `5faa665`; the requirement checklist is the last part of
   owner then runs the short checklist in USER_ACTIONS.md (item 4), because the build agent cannot
   sign in as the owner; the agent checks the closed sign-up and the removed bootstrap code from
   outside and records the owner's results apart from the scripted and local checks.
+
+## Teaching experience (brief `CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`) — Milestones 11–17
+
+Baseline, rerun on 10 Nov 2026 at `984fb5e` before any change: typecheck green (7 packages),
+`pnpm lint` clean, content validator 0 errors / 0 warnings (86 courses, 141 units of which 33
+ready, 99 exercises, 59 sources, 1121 locators), 254 unit + 23 worker tests, 88 integration tests.
+Live: `/api/health` ok, migrations current; `/join` still offers the owner sign-up (no owner yet);
+no provider key; the repository has no remote. Requirement rows: [TRACEABILITY.md](TRACEABILITY.md),
+second table.
+
+### Milestone 11 (A) — Reconcile and design — done
+
+Brief saved in `brief/`, linked from AGENTS.md (CLAUDE.md imports it); requirement matrix with
+baseline per row; study-workspace interaction specification in DESIGN_SYSTEM.md; this plan.
+Gate: no rewrite; state boundaries named below; migrations additive.
+
+### Milestone 12 (B) — Foundations
+
+1. Budget: a strict prompt bound (every token covers at least one UTF-8 byte, plus a fixed
+   framing allowance per message) with bounded context; integer micro-dollar arithmetic; SDK
+   retries off so every billable attempt is reserved; an `unsettled` status that keeps holding its
+   worst case when the provider may have billed an unknown amount (a stream cut mid-way, a lost
+   connection, a crashed process found by maintenance), resolved only by the owner recording the
+   amount the provider console shows (audited); run idempotency keys and parent/child attribution;
+   unknown prices fail closed. Check: unit tests (digit- and symbol-dense text, long Unicode,
+   boundaries) and integration tests (concurrent admissions, crash, cancelled stream, retry).
+2. Prerequisites: concepts and rules independent of course preparation (biology concepts for
+   NEU-220's membrane-potential work), a concept bridge catalogue whose availability is separate
+   from the rule, and an honest evidence classification. Check: core tests; validator.
+3. Data versions: attempt drafts carry a revision for conflict detection. Check: db tests.
+
+### Milestone 13 (C) — Study continuity, paper work, bridges (CORE-01, CORE-02, CORE-03)
+
+Session header with pause/resume and the last durable point; selection-scoped questions with the
+attached context shown; source-linked session notes; video and external-reference progress;
+draft revisions with conflict handling and an on-device buffer; session close. Paper pages
+(photos/PDF) with metadata stripped, ordering and rotation, manual transcription with uncertain
+symbols that must be confirmed, vision transcription only with permission and an approved live
+model; the four help modes with assistance provenance; bridges with breadcrumb return.
+Gate: the continuity, paper and bridge journeys pass at both viewports; conflict and offline
+tests; permission denial blocks image transfer.
+
+### Milestone 14 (D) — Notebook, review, progressions, preparation (CORE-04, CORE-05, CORE-06)
+
+Learning issues (proposed → confirmed/disputed → revisiting → resolved/dismissed) linked to
+evidence; questions kept apart; review with an inspectable rule, adjustable budget, pause,
+snooze, archive and no debt; exercise progression metadata and sequences (MAT-230, geometry,
+human-behaviour modelling, a chemistry or physics investigation); the course-preparation
+pipeline with intake, staged checkpoints, leases, cancellation, finite budget, drafts kept apart
+from published units and publication by the owner. Gate: review and preparation journeys;
+cancel/resume without duplicates; seeding preserves published preparation.
+
+### Milestone 15 (E) — Voice and visual teaching (EXT-01, EXT-02)
+
+Push-to-talk with an editable transcript through the browser's speech service (disclosed as such),
+consent and retention choice, text fallback; visual explanations as checked storyboards rendered
+deterministically, with captions and transcripts, and short original films rendered locally.
+Gate: voice and visual journeys; the rendered files exist and play; fixture versus live stated.
+
+### Milestone 16 (F) — Faculty, campus, extension, coordination (EXT-03 … EXT-06)
+
+Persona teaching styles and purpose-limited memory; at most two peers per discussion; Today, My
+studies and an operations view; the campus map's destinations; the subject/reading-programme
+proposal workflow; preparation stages shown as role tasks with their states. Gate: campus,
+extension and coordination journeys; quiet-mode parity.
+
+### Milestone 17 (G) — Hardening and release
+
+Authorization sweep over the new routes, accessibility, upgrade test on a populated database,
+backup/restore including the new tables, a private source backup (git bundle) and secret scan,
+production build on a new empty database, release to the existing Railway project (worker
+first, then web), live checks, records. Gate: evidence recorded; nothing claimed that was not run.

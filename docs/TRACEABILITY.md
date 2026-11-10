@@ -30,3 +30,29 @@
 | UNI-26 | Accurate handoff, minimal manual steps | STATUS, USER_ACTIONS, HANDOFF | – | done |
 | MBA-01 | The owner's Mind, Brain and AI update, sections 1 to 12 | see MIND_BRAIN_AI.md, one row per requirement | unit, integration, seed and journey tests listed there | done |
 | MBA-02 | The update's sections 13 to 20: programme experience, teaching and regressions, coverage, the research studio, tests, the live product, handoff | see MIND_BRAIN_AI.md, "Sections 13 to 20" | the tests and journeys listed there; QA_REPORT, Milestone 10 | done, except what needs the owner: the account on the live site and a key with approved paid use, then the owner's checklist (USER_ACTIONS.md, item 4) |
+
+## Teaching experience (brief `CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`)
+
+Baseline is the state at `984fb5e` (10 Nov 2026) before this work: existing, partial, missing or
+blocked. Status is updated in the change that alters it.
+
+| ID | Requirement | Baseline | Code | Tests / evidence | Status / next step |
+|---|---|---|---|---|---|
+| CORE-01 | Connected lectures, reading, tutorials, labs and resumable cross-session work | partial: sessions resume one activity; drafts autosave last-write-wins; reader position, pause, selection questions, video/external progress and session close missing | – | – | Milestone 13 |
+| CORE-02 | Paper-first proof and science work; four help modes; assistance provenance | partial: typed attempts, hint ladder, practice reveal; `submission_version.transcription` unused; no pages, no help modes | – | – | Milestone 13 |
+| CORE-03 | Concept-level prerequisite bridges that return to the lesson | partial: concept rules with alternatives and course-level bridges; MBI-08 biology inexpressible; no concept bridges or return path | – | – | Milestones 12–13 |
+| CORE-04 | Evidence-linked mistake notes, questions shelf, bounded review | partial: `misconception_record` active/cleared, questions as notebook kind, definition-only revision with weekly cap | – | – | Milestone 14 |
+| CORE-05 | Problem progressions with provenance, hints, solutions, transfer and counterexamples | partial: 99 exercises with hint ladders and rubrics; no progression stage, difficulty basis or help-mode policy | – | – | Milestone 14 |
+| CORE-06 | Course-preparation service with finite budgets and sustained content | partial: units prepared in `content/` by hand; `prepare-unit` queue reserved, no hosted pipeline | – | – | Milestone 14 |
+| EXT-01 | Optional voice tutorials and oral explanations | missing | – | – | Milestone 15 |
+| EXT-02 | Reviewed visual explanations and original rendered teaching films | missing (plots exist inside laboratories) | – | – | Milestone 15 |
+| EXT-03 | Faculty, bounded classmates, seminars, office hours | existing: personas, peers with mute, bounded discussions, office hours, quiet mode | – | – | Milestone 16: teaching styles, two-peer cap, memory purposes |
+| EXT-04 | Functional 2D campus; Today, My studies, operations views | partial: campus map with list equivalent, campus home, My Studies; no operations view | – | – | Milestone 16 |
+| EXT-05 | Department/programme/reading-course extension workflow | missing (catalogue grows only through `content/`) | – | – | Milestone 16 |
+| EXT-06 | Bounded role-based academic coordination | partial: role contracts with limits; no task states over a pipeline | – | – | Milestone 16 |
+| REL-01 | Budget correctness: strict bound, atomic reservations, fixed precision, unsettled runs, idempotency, parent/child | partial: worst-case reservations under a per-owner lock; ASCII counted at 3 chars/token; SDK retries unreserved; uncertain failures recorded at zero | – | – | Milestone 12 |
+| REL-02 | Security on every new route, sanitisation, isolation | existing for current routes | – | – | Milestone 17 sweep |
+| REL-03 | Upgrade on a populated database; migrations additive; seed twice | partial: seed idempotence test; no populated-upgrade fixture | – | – | Milestone 17 |
+| REL-04 | Backup/restore of the database including new tables; private source backup | partial: database backup/restore tested; no source backup, no remote | – | – | Milestone 17 |
+| REL-05 | Release to the existing Railway project and truthful live verification | existing procedure (worker, then web) | – | – | Milestone 17 |
+| REL-06 | Accessibility and both viewports for new screens | existing axe spec for current screens | – | – | each milestone |
