@@ -1,0 +1,4 @@
+{
+  "note": "Fixture provider response. Shown only when no live model provider is configured. It is deliberately generic and labelled.",
+  "text": "{needs-checking} Scripted demo: no model is configured, so no explanation was written for your exercise. In practice mode the reference reasoning, where the unit has one, is available from the exercise itself (it is recorded as assisted study). With a live model, this mode gives a complete, supported explanation, recorded as assistance rather than as independent work."
+}

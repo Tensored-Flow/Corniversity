@@ -16,6 +16,7 @@ import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
 import {
   assessmentRun,
+  assistanceEvent,
   attempt,
   instructorArtifact,
   providerRun,
@@ -28,7 +29,7 @@ import { recordEvidence } from "@corniversity/db/services/evidence";
 import { exerciseSnapshotOf } from "@corniversity/db/services/learning";
 import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
-import { and, count, eq, like } from "drizzle-orm";
+import { and, count, eq, like, lte } from "drizzle-orm";
 import type { HandlerContext } from "./index";
 
 /**
@@ -219,7 +220,20 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   const attemptState = verdict === "accepted" ? "accepted" : verdict === "revision_requested" ? "revision_requested" : "needs_review";
   await db.update(attempt).set({ state: attemptState }).where(eq(attempt.id, a.id));
 
-  const assisted = Boolean(a.solutionRevealedAt) || a.hintsUsed > 1;
+  // A full explanation from the tutor before this submission makes it assisted study, like a
+  // revealed solution: it can still be accepted, but it is not independent evidence.
+  const [explained] = await db
+    .select({ n: count() })
+    .from(assistanceEvent)
+    .where(
+      and(
+        eq(assistanceEvent.attemptId, a.id),
+        eq(assistanceEvent.mode, "full_explanation"),
+        lte(assistanceEvent.createdAt, sv.submittedAt),
+      ),
+    );
+  const fullExplanations = Number(explained?.n ?? 0);
+  const assisted = Boolean(a.solutionRevealedAt) || a.hintsUsed > 1 || fullExplanations > 0;
   await recordEvidence(db, {
     ownerId: payload.ownerId,
     conceptIds: exercise.conceptIds,
@@ -227,7 +241,9 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     submissionVersionId: sv.id,
     evidenceType: "assessment",
     source: live ? `assessor (${model})` : "assessor (fixture provider)",
-    assistance: assisted ? `hints ${a.hintsUsed}${a.solutionRevealedAt ? ", solution revealed" : ""}` : `hints ${a.hintsUsed}`,
+    assistance: assisted
+      ? `hints ${a.hintsUsed}${a.solutionRevealedAt ? ", solution revealed" : ""}${fullExplanations ? ", full explanation from the tutor" : ""}`
+      : `hints ${a.hintsUsed}`,
     interpretation: `Verdict ${verdict} (confidence ${confidence.toFixed(2)}) on submission v${sv.version}.${live ? "" : " Fixture provider: not a live assessment."}`,
     verdict,
     assisted,

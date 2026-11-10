@@ -2,7 +2,17 @@ import type { ZodType } from "zod";
 
 export type ProviderName = "fixture" | "anthropic";
 
-export type RoleName = "director" | "convenor" | "lecturer" | "tutor" | "librarian" | "assessor" | "seminar_chair" | "supervisor" | "peer";
+export type RoleName =
+  | "director"
+  | "convenor"
+  | "lecturer"
+  | "tutor"
+  | "librarian"
+  | "assessor"
+  | "seminar_chair"
+  | "supervisor"
+  | "peer"
+  | "transcriber";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -44,6 +54,11 @@ export interface BaseRequest {
    * mode select a specific canned response instead of a generic one.
    */
   scenario?: string;
+  /**
+   * Images sent with the last user message (paper pages, already stripped of metadata), only for
+   * roles and requests the learner consented to. The scripted demo never reads images.
+   */
+  images?: { mediaType: "image/jpeg" | "image/png"; base64: string }[];
 }
 
 export interface TextResult {

@@ -70,7 +70,7 @@ export class AnthropicProvider implements ModelProvider {
         model,
         max_tokens: request.maxTokens ?? 8_000,
         system: [{ type: "text", text: request.system, cache_control: { type: "ephemeral" } }],
-        messages: request.messages.map((m) => ({ role: m.role, content: m.content })),
+        messages: toMessages(request),
         output_config: { effort: request.effort ?? "medium" },
         ...this.fallbackParams(model),
       });
@@ -121,7 +121,7 @@ export class AnthropicProvider implements ModelProvider {
         model,
         max_tokens: request.maxTokens ?? 16_000,
         system: [{ type: "text", text: request.system, cache_control: { type: "ephemeral" } }],
-        messages: request.messages.map((m) => ({ role: m.role, content: m.content })),
+        messages: toMessages(request),
         output_config: { format: betaZodOutputFormat(request.schema as never), effort: request.effort ?? "high" },
         ...this.fallbackParams(model),
       })
@@ -164,6 +164,24 @@ export class AnthropicProvider implements ModelProvider {
 }
 
 type BetaUsage = Anthropic.Beta.BetaUsage;
+
+/** The request's messages, with any images placed before the text of the last user message. */
+function toMessages(request: BaseRequest): Anthropic.Beta.BetaMessageParam[] {
+  const images = request.images ?? [];
+  return request.messages.map((m, i) => {
+    if (images.length === 0 || i !== request.messages.length - 1 || m.role !== "user") return { role: m.role, content: m.content };
+    return {
+      role: m.role,
+      content: [
+        ...images.map((img) => ({
+          type: "image" as const,
+          source: { type: "base64" as const, media_type: img.mediaType, data: img.base64 },
+        })),
+        { type: "text" as const, text: m.content },
+      ],
+    };
+  });
+}
 
 /** A stream's usage after a `message_delta`: its counts replace earlier ones where it gives them. */
 function withDelta(usage: BetaUsage, delta: object): BetaUsage {

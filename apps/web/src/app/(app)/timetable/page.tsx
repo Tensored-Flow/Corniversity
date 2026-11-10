@@ -237,7 +237,7 @@ export default async function TimetablePage({
                         <Badge tone={KIND_TONE[s.sessionKind] ?? "neutral"}>{s.sessionKind.replace("_", " ")}</Badge>
                         {s.unitId ? (
                           <Link
-                            href={`/courses/${courseOf.get(s.enrolmentId)?.id}/units/${s.unitId}?session=${s.id}`}
+                            href={`/study/slot/${s.id}`}
                             className="mt-1 block text-ink underline-offset-4 hover:underline"
                           >
                             {s.title}

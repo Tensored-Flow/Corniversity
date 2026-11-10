@@ -1,10 +1,11 @@
 import { boundedHistory, buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
 import { citedHistory } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
-import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
-import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { getCourseDetail } from "@corniversity/db/services/catalogue";
+import { getOrCreateAttempt } from "@corniversity/db/services/learning";
 import { localOnlyAssetsForCourse } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { attachRunToAssistance, recordAssistance } from "@corniversity/db/services/study-session";
 import {
   appendLearnerMessage,
   appendPersonaMessage,
@@ -17,20 +18,19 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { streamPersonaTurn } from "@/lib/model-runs";
 import { requireApiSession } from "@/lib/session";
+import { DEFAULT_HELP_MESSAGE, TutorRequest, tutorAttachments } from "@/lib/tutor-context";
 
-const Body = z.object({
-  sessionId: z.string().uuid(),
-  exerciseId: z.string().min(1).nullable().optional(),
-  message: z.string().trim().min(1).max(6000),
-});
+const Body = TutorRequest.extend({ message: z.string().trim().max(6000).default("") });
 
 export const dynamic = "force-dynamic";
 
 /**
- * One tutor turn. Authorises, stores the learner's message, builds the evidence-bounded prompt,
- * then runs it through the shared gate: the scripted demo, an approved live model within the
- * budget, or a refusal with its reason. A provider failure is reported in the stream and never
- * replaced by a canned answer; the reply is stored with its citations checked.
+ * One tutor turn. Authorises; applies the help contract before any model call (a refused kind of
+ * help sends nothing and costs nothing); records the request as assistance; stores the learner's
+ * message; builds the evidence-bounded prompt with the selection and its scope; then runs it
+ * through the shared gate: the scripted demo, an approved live model within the budget, or a
+ * refusal with its reason. A provider failure is reported in the stream, never replaced by a
+ * canned answer; the reply is stored with its citations checked.
  */
 export async function POST(request: Request): Promise<Response> {
   const authed = await requireApiSession(request);
@@ -39,22 +39,38 @@ export async function POST(request: Request): Promise<Response> {
 
   const parsed = Body.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid_request" }, { status: 400 });
-  const { sessionId, exerciseId, message } = parsed.data;
+  const req = parsed.data;
+  const message = req.message || DEFAULT_HELP_MESSAGE[req.mode];
+  if (!message) return NextResponse.json({ error: "Write a question first." }, { status: 400 });
 
   const database = db();
   const env = getEnv();
-  const session = await getSession(database, ownerId, sessionId);
-  if (!session) return NextResponse.json({ error: "not_found" }, { status: 404 });
-  const unitDetail = await getUnitDetail(database, session.unitId);
-  if (!unitDetail) return NextResponse.json({ error: "not_found" }, { status: 404 });
-  const activity = unitDetail.unit.activities.find((a) => a.id === session.activityId);
+  const ctx = await tutorAttachments(database, ownerId, req);
+  if (!ctx.ok) return NextResponse.json({ error: ctx.error }, { status: ctx.status });
+  if (!ctx.decision.allowed) {
+    return NextResponse.json({ error: ctx.decision.reason, code: "help_refused" }, { status: 422 });
+  }
+  const { session, unitDetail, activity, exercise, latestAttempt, latestVersion, selection } = ctx;
   const courseDetail = await getCourseDetail(database, unitDetail.course.id);
   const tutor = courseDetail?.tutor ?? null;
   const profile = await ensureProfile(database, ownerId);
-  const exercise = exerciseId ? (unitDetail.exercises.find((e) => e.id === exerciseId) ?? null) : null;
-  const history = exercise ? await getAttemptHistory(database, ownerId, exercise.id) : [];
-  const latestAttempt = history.at(-1)?.attempt ?? null;
-  const latestVersion = history.at(-1)?.versions.at(-1) ?? null;
+
+  const attemptForHelp =
+    exercise && req.mode !== "question"
+      ? await getOrCreateAttempt(database, { ownerId, exerciseId: exercise.id, sessionId: session.id })
+      : null;
+  const assistanceId = await recordAssistance(database, {
+    ownerId,
+    sessionId: session.id,
+    attemptId: attemptForHelp?.id ?? latestAttempt?.id ?? null,
+    exerciseId: exercise?.id ?? null,
+    mode: req.mode,
+    anchor: selection
+      ? selection.origin === "attempt"
+        ? { kind: "attempt_lines", lines: selection.lines, text: selection.text }
+        : { kind: "selection", text: selection.text, unitId: unitDetail.unit.id }
+      : null,
+  });
 
   const conversation = await getOrCreateConversation(database, {
     ownerId,
@@ -67,9 +83,15 @@ export async function POST(request: Request): Promise<Response> {
     allowedLocatorIds: [...new Set([...unitDetail.unit.preparation.map((p) => p.locatorId), ...(activity?.sourceLocatorIds ?? [])])],
   });
   const priorMessages = await listMessages(database, conversation.id);
-  await appendLearnerMessage(database, conversation.id, message);
+  const quoted = selection
+    ? `${selection.origin === "attempt" ? `[lines ${selection.lines?.[0]}–${selection.lines?.[1]}] ` : "> "}${selection.text.slice(0, 280)}${selection.text.length > 280 ? "…" : ""}\n\n`
+    : "";
+  await appendLearnerMessage(database, conversation.id, `${req.mode === "question" ? "" : `**${ctx.help.label}.** `}${quoted}${message}`);
 
-  const evidence = await buildUnitEvidence(database, unitDetail.unit.id, { ownerId, courseId: unitDetail.course.id, query: message });
+  // Retrieval starts from the selection when there is one, so a question such as "why is
+  // completeness needed here?" finds passages about the selected text, not only its own words.
+  const query = selection && req.scope === "selection" ? `${selection.text}\n${message}` : message;
+  const evidence = await buildUnitEvidence(database, unitDetail.unit.id, { ownerId, courseId: unitDetail.course.id, query });
   const system = buildTutorSystemPrompt({
     institutionName: env.INSTITUTION_NAME,
     personaName: tutor?.name ?? "the tutor",
@@ -84,12 +106,14 @@ export async function POST(request: Request): Promise<Response> {
     assistanceMode: latestAttempt?.mode ?? "practice",
     learnerStyle: profile.learningStyles[unitDetail.course.primaryDepartmentId],
     evidencePrompt: evidence.prompt,
-    relevantAttempts: latestVersion
-      ? [`Submission v${latestVersion.version} (${latestAttempt?.state}): ${latestVersion.contentMarkdown.slice(0, 1500)}`]
-      : latestAttempt?.draftMarkdown
-        ? [`Current draft: ${latestAttempt.draftMarkdown.slice(0, 1500)}`]
+    relevantAttempts: latestAttempt?.draftMarkdown
+      ? [`Current draft (revision ${latestAttempt.draftRevision}): ${latestAttempt.draftMarkdown.slice(0, 1500)}`]
+      : latestVersion
+        ? [`Submission v${latestVersion.version} (${latestAttempt?.state}): ${latestVersion.contentMarkdown.slice(0, 1500)}`]
         : [],
     approvedSummaries: [],
+    help: ctx.help,
+    selection: selection ? { ...selection, scope: req.scope } : undefined,
   });
   // Bounded context: the most recent turns within a fixed size; the record keeps every turn.
   const chat = boundedHistory([
@@ -111,19 +135,22 @@ export async function POST(request: Request): Promise<Response> {
     ? `*(Note from the university, not from ${tutor?.name ?? "the tutor"}: ${localOnlyMentioned.map((a) => `"${a.confirmedTitle ?? a.candidateMetadata.title ?? a.filename}"`).join(", ")} ${one ? "is" : "are"} registered as local-only. Nothing of ${one ? "its" : "their"} contents has left your device, so the tutor has not seen a page of ${one ? "it" : "them"} and cannot comment on ${one ? "its" : "their"} text.)*\n\n`
     : "";
 
+  const scenario =
+    req.mode !== "question" ? req.mode : priorMessages.some((m) => m.sender === "persona") ? "default" : `${unitDetail.unit.id}-intro`;
   return streamPersonaTurn({
     database,
     ownerId,
     env,
     role: "tutor",
-    purpose: "tutor-turn",
+    purpose: `tutor-${req.mode.replace("_", "-")}`,
     promptVersion: `${TUTOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.tutor.version}`,
     system,
     messages: chat,
-    scenario: priorMessages.some((m) => m.sender === "persona") ? "default" : `${unitDetail.unit.id}-intro`,
+    scenario,
     speaker: tutor?.name ?? "The tutor",
     prefix: localOnlyNote,
     onFinish: async (raw, runId) => {
+      await attachRunToAssistance(database, assistanceId, runId);
       await appendPersonaMessage(database, {
         conversationId: conversation.id,
         personaId: tutor?.id ?? null,

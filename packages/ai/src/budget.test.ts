@@ -210,11 +210,19 @@ describe("role ceilings under the strict bound", () => {
       seminar_chair: 16_000,
       supervisor: 48_000,
       peer: 16_000,
+      transcriber: 4_000,
     };
+    // The transcriber also carries up to twelve page images at the documented per-image ceiling.
+    const ordinaryImages: Record<string, number> = { transcriber: 12 };
     for (const [role, contract] of Object.entries(ROLE_CONTRACTS)) {
       const bytes = ordinaryBytes[role];
       expect(bytes, `an ordinary prompt size is stated for ${role}`).toBeDefined();
-      const worst = worstCaseRunUsd(DEFAULT_MODEL, { text: "x".repeat(bytes!), messages: 4 }, contract.limits.maxOutputTokens, true);
+      const worst = worstCaseRunUsd(
+        DEFAULT_MODEL,
+        { text: "x".repeat(bytes!), messages: 4, images: ordinaryImages[role] ?? 0 },
+        contract.limits.maxOutputTokens,
+        true,
+      );
       expect(worst, `${role}: worst case ${worst} within its ceiling ${contract.limits.maxRunUsd}`).toBeLessThanOrEqual(
         contract.limits.maxRunUsd,
       );

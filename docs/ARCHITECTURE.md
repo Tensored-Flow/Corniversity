@@ -75,6 +75,12 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   `revision_item`, `notebook_entry`, `portfolio_artifact`.
 - **People/community**: `persona`, `peer_membership`, `society`, `discussion`, `discussion_turn`,
   `persona_memory`.
+- **Study continuity and paper work**: `assistance_event` (every help request by kind, with what it
+  pointed at and the run that answered; provenance, never evidence), `work_page` (paper pages: private
+  blob, order, rotation, metadata stripped), `transcription_version` (numbered; confirmed only with no
+  `[[?…]]` mark left), `concept_bridge` (seeded from `content/bridges`), `bridge_visit` (trail, depth,
+  exact return path, self-check answer). Notebook entries carry their session and anchor; submissions
+  carry the confirmed transcription and pages; attempts carry a draft revision.
 - **Research studio**: `research_project` (owner, kind, question, shelf and leads, a demonstration
   flag), `research_document` (proposal, methods and report drafts), `research_version`
   (immutable numbered versions), `research_provenance`, `research_artifact` (a blob or a notebook
@@ -142,7 +148,8 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 
 The worker applies pending migrations on start and, when the deployment sets
 `SEED_CONTENT_ON_START=1`, seeds the institution's content (idempotent; never learner data).
-pg-boss 12 (`schema: pgboss`), queues: `ingest-asset` (singletonKey = sha256), `prepare-unit`
+pg-boss 12 (`schema: pgboss`), queues: `transcribe-pages` (one per consent; no retry, since a retry
+would be a new billable call; consent and pages re-checked when it runs), `ingest-asset` (singletonKey = sha256), `prepare-unit`
 (singletonKey = unit id), `assess-submission` (singletonKey = submission version id),
 `embed-passages`, `export-records`, `maintenance` (cron). Retries with backoff, expiry,
 heartbeats for ingestion, dead-letter queues. `job_record` mirrors state for the UI.

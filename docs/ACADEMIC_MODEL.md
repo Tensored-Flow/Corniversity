@@ -51,6 +51,23 @@ statements (source-backed / derived / conjecture / needs checking); define notat
 representation when stuck; record misconceptions only with evidence; summarise and suggest one
 next step. The campus layer never interrupts proof work.
 
+## Help and paper work
+
+Four kinds of help on an exercise, decided before any model call (`packages/core/src/tutoring/help.ts`):
+a small hint (one direction, no solution), discussing the approach (structure and assumptions,
+without replacing it), checking a step (only the selected lines) and a full explanation (refused in
+self-test mode until the attempt is submitted). Every request, authored hint and reveal is recorded
+as assistance; a full explanation before a submission makes that submission assisted, so an
+acceptance counts as practice, never as a demonstration. The tutor is never given a reference
+solution.
+
+Paper work is first-class: photographs (re-encoded on the device and stripped again on the server)
+or PDFs (refused with active content) are kept apart from their transcription. Uncertain symbols are
+marked `[[?…]]` and must be confirmed before review; an uncertain reading is never a judgement of
+the mathematics. The review reads the confirmed transcription; a correction is a new version, and
+feedback on an earlier version says so. A model may draft the transcription only with consent for
+those pages and an approved live model; the scripted demo never reads images.
+
 ## Assessment
 
 Submission versions are immutable, and each assessment keeps the exercise as the learner

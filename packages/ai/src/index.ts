@@ -10,6 +10,7 @@ export * from "./prompts/director";
 export * from "./prompts/discussion";
 export * from "./prompts/reading";
 export * from "./prompts/supervisor";
+export * from "./prompts/transcriber";
 export * from "./prompts/tutor";
 export * from "./provider";
 export * from "./roles/contracts";

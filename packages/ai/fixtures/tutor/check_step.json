@@ -1,0 +1,4 @@
+{
+  "note": "Fixture provider response. Shown only when no live model provider is configured. It is deliberately generic and labelled.",
+  "text": "{needs-checking} Scripted demo: no model is configured, so the lines you selected have not been checked. Nothing here says whether that step is right or wrong. With a live model, this mode checks only the selected inference against what precedes it and the stated hypotheses."
+}

@@ -81,6 +81,9 @@ export class FixtureProvider implements ModelProvider {
   }
 
   async generateStructured<T>(request: StructuredRequest<T>): Promise<StructuredResult<T>> {
+    if (request.images?.length) {
+      throw new ProviderError("bad_request", "The scripted demo cannot read images; nothing scripted is offered in place of a reading.");
+    }
     const fixture = this.load(request.role, request.scenario);
     if (!fixture || fixture.object === undefined) {
       throw new ProviderError(

@@ -1,0 +1,4 @@
+{
+  "note": "Fixture provider response. Shown only when no live model provider is configured. It is deliberately generic and labelled.",
+  "text": "{needs-checking} Scripted demo: no model is configured, so I have not read your attempt and cannot tailor a hint to it. The hint ladder below the exercise gives the authored hints one at a time; each is recorded as assistance, never as a penalty. When a live model is approved in Settings, a small hint here will point at your next step without giving the solution."
+}

@@ -48,7 +48,9 @@ requests `/library/requests`, upload `/library/upload`, item `/library/items/[id
 `/sessions/[id]` (activity with a `labId`; the lab panel sits above the report) · 13 Timetable
 `/timetable` · 14 Common room `/common-room`, discussion `/common-room/[id]` · 15 Notebook
 `/notebook`, entry `/notebook/[id]` · 16 Records `/records` · 17 Settings `/settings` · 18 Programmes
-`/programmes`, programme `/programmes/[id]`.
+`/programmes`, programme `/programmes/[id]` · 19 Session close `/sessions/[id]/close` · 20 Concept
+bridge `/bridges/[conceptId]` (opened through `/bridges/open`) · timetable slots open through
+`/study/slot/[id]`.
 
 ## Study workspace (teaching-experience brief, §3)
 

@@ -6,7 +6,7 @@ import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { QUEUES, TranscribePagesPayload } from "../jobs";
 import { enqueue } from "../queue";
-import { auditEvent, consentRecord, submissionVersion, transcriptionVersion, workPage } from "../schema/index";
+import { auditEvent, consentRecord, jobRecord, submissionVersion, transcriptionVersion, workPage } from "../schema/index";
 import { getAttempt, LearningError, submitAttempt } from "./learning";
 import { assistanceCounts } from "./study-session";
 
@@ -311,4 +311,17 @@ export async function transcriptionConsentStands(
   const chosen = input.pageIds.map((id) => byId.get(id));
   if (chosen.some((p) => !p)) return { ok: false, reason: "The pages changed after consent was given; ask again for the current pages." };
   return { ok: true, pages: chosen as WorkPageRow[] };
+}
+
+/** The most recent model-transcription job for an attempt, for its status line. */
+export async function latestTranscriptionJob(db: DbOrTx, ownerId: string, attemptId: string) {
+  const [row] = await db
+    .select({ status: jobRecord.status, error: jobRecord.error, createdAt: jobRecord.createdAt })
+    .from(jobRecord)
+    .where(
+      and(eq(jobRecord.ownerId, ownerId), eq(jobRecord.kind, "transcribe-pages"), sql`${jobRecord.payload}->>'attemptId' = ${attemptId}`),
+    )
+    .orderBy(desc(jobRecord.createdAt))
+    .limit(1);
+  return row ?? null;
 }

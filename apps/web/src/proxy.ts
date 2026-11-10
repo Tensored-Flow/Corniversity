@@ -50,6 +50,8 @@ export const config = {
     "/director/:path*",
     "/programmes/:path*",
     "/studio/:path*",
+    "/bridges/:path*",
+    "/study/:path*",
     "/api/auth/:path*",
     "/api/companion/:path*",
   ],

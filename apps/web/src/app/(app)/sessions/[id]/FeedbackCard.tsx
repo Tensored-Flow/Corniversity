@@ -22,6 +22,11 @@ interface Props {
   currentRubricVersion: number;
   reviews: Review[];
   fileReview: (prev: ActionResult, formData: FormData) => Promise<ActionResult>;
+  /**
+   * Paper work: the transcription version this feedback read, the latest version now, and the page
+   * each line of the transcription is on, so the first gap points at a page.
+   */
+  paper?: { transcriptionVersion: number; latestTranscriptionVersion: number; pageOfLine: Record<number, number> };
 }
 
 const VERDICT: Record<string, { label: string; tone: "moss" | "rust" | "slate" }> = {
@@ -38,7 +43,16 @@ function confidenceWords(c: number | null): string {
 }
 
 /** One immutable submission version with its assessment. Instructor reasoning never appears here. */
-export async function FeedbackCard({ version, submittedAt, contentMarkdown, run, currentRubricVersion, reviews, fileReview }: Props) {
+export async function FeedbackCard({
+  version,
+  submittedAt,
+  contentMarkdown,
+  run,
+  currentRubricVersion,
+  reviews,
+  fileReview,
+  paper,
+}: Props) {
   const verdict = run?.verdict ? VERDICT[run.verdict] : null;
   const fb = run?.feedback ?? null;
   const live = run?.graderConfig.provider !== "fixture";
@@ -50,12 +64,20 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
         {run?.status === "queued" || run?.status === "reviewing" ? <Badge tone="brass">being assessed</Badge> : null}
         {run?.status === "failed" ? <Badge tone="rust">assessment failed</Badge> : null}
         {verdict ? <Badge tone={verdict.tone}>{verdict.label}</Badge> : null}
+        {paper ? <Badge>paper work · transcription v{paper.transcriptionVersion}</Badge> : null}
         {run ? (
           <Badge tone={live ? "slate" : "neutral"}>
             {live ? `AI assessor · ${modelLabel(run.graderConfig.model)}` : "Scripted demo assessor: no model read this"}
           </Badge>
         ) : null}
       </header>
+
+      {paper && paper.latestTranscriptionVersion > paper.transcriptionVersion ? (
+        <p className="mt-2 text-xs text-ink-3">
+          This feedback read transcription v{paper.transcriptionVersion}. You have corrected the transcription since (now v
+          {paper.latestTranscriptionVersion}); submit a revision for feedback on the corrected reading.
+        </p>
+      ) : null}
 
       {run?.exerciseSnapshot && run.exerciseSnapshot.rubricVersion !== currentRubricVersion ? (
         <div className="mt-2 text-sm">
@@ -113,7 +135,10 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
           </div>
           {fb.firstGap ? (
             <div className="rounded-[var(--radius-control)] border border-rust/40 bg-rust-soft/40 p-3 text-sm">
-              <p className="text-xs uppercase tracking-wide text-rust">First substantive gap · line {fb.firstGap.line}</p>
+              <p className="text-xs uppercase tracking-wide text-rust">
+                First substantive gap · line {fb.firstGap.line}
+                {paper?.pageOfLine[fb.firstGap.line] ? ` · page ${paper.pageOfLine[fb.firstGap.line]}` : ""}
+              </p>
               <p className="mt-1 font-mono text-xs text-ink-2">“{fb.firstGap.excerpt}”</p>
               <div className="mt-1">
                 <Markdown source={fb.firstGap.issue} />

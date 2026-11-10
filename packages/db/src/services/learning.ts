@@ -361,6 +361,10 @@ export interface AttemptHistory {
     id: string;
     version: number;
     contentMarkdown: string;
+    contentKind: string;
+    /** For paper work: the transcription version submitted, and its pages. */
+    transcriptionVersionId: string | null;
+    pageIds: string[];
     submittedAt: Date;
     run: AssessmentRunRow | null;
     reviews: (typeof feedbackReview.$inferSelect)[];
@@ -423,6 +427,9 @@ export async function getAttemptHistory(db: DbOrTx, ownerId: string, exerciseId:
           id: v.id,
           version: v.version,
           contentMarkdown: v.contentMarkdown,
+          contentKind: v.contentKind,
+          transcriptionVersionId: v.transcriptionVersionId,
+          pageIds: v.pageIds,
           submittedAt: v.submittedAt,
           run,
           reviews: reviews.filter((r) => runIds.has(r.assessmentRunId)),
@@ -539,4 +546,37 @@ export async function fileReview(
     details: {},
   });
   return review;
+}
+
+/**
+ * Starts a deliberate new attempt in the chosen mode, or changes the mode of a fresh attempt that
+ * holds nothing yet (no draft, no hint, no reveal, no submission). An attempt with work in it keeps
+ * its mode, so self-test cannot be switched to practice part way; an accepted attempt stays as it
+ * was and the new attempt is a separate record.
+ */
+export async function startAttempt(
+  db: DbOrTx,
+  input: { ownerId: string; exerciseId: string; sessionId?: string; mode: "practice" | "self_test" },
+): Promise<AttemptRow> {
+  const [latest] = await db
+    .select()
+    .from(attempt)
+    .where(and(eq(attempt.ownerId, input.ownerId), eq(attempt.exerciseId, input.exerciseId)))
+    .orderBy(desc(attempt.createdAt))
+    .limit(1);
+  if (latest && latest.state !== "accepted") {
+    const { submissionVersion } = await import("../schema/index");
+    const [submitted] = await db.select({ n: count() }).from(submissionVersion).where(eq(submissionVersion.attemptId, latest.id));
+    const fresh = !latest.draftMarkdown?.trim() && latest.hintsUsed === 0 && !latest.solutionRevealedAt && Number(submitted?.n ?? 0) === 0;
+    if (!fresh)
+      throw new LearningError("attempt_closed", "This attempt already has work in it; finish or submit it before starting another.");
+    if (latest.mode === input.mode) return latest;
+    const [updated] = await db.update(attempt).set({ mode: input.mode }).where(eq(attempt.id, latest.id)).returning();
+    return updated!;
+  }
+  const [created] = await db
+    .insert(attempt)
+    .values({ ownerId: input.ownerId, exerciseId: input.exerciseId, learningSessionId: input.sessionId ?? null, mode: input.mode })
+    .returning();
+  return created!;
 }

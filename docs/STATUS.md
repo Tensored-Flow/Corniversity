@@ -13,7 +13,7 @@ checklist).
 | Planning documents | yes | n/a | docs/ |
 | Monorepo, type checks, Biome, Vitest, Playwright | yes | typecheck green for 7 packages; `pnpm lint` clean | pnpm 12, TS 5.9, Next 16.4 |
 | Embedded PostgreSQL dev cluster | yes | migrations applied | `pnpm db:local`; pgvector absent locally (expected) |
-| Drizzle schema (74 tables, 9 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
+| Drizzle schema (79 tables, 10 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
 | better-auth email+password, owner bootstrap, closed sign-up, sign-in rate limit, one-owner index | yes | owner test (setup, concurrent inserts, restart); journey 1; security spec | the bootstrap code is optional once the owner exists |
 | Owner password recovery without email | yes | owner test; the command run end to end against a throw-away database | `pnpm owner:reset-password` locally; in the worker's shell on Railway (HANDOFF.md); signs the owner out everywhere |
 | Design tokens, fonts, Markdown + KaTeX (MathML) + mhchem | yes | 4 web unit tests (sanitiser, maths, chemistry); axe pass | light + dark roles; `--ink-3` darkened to pass 4.5:1 on every paper surface; chemistry rendered by the app's own KaTeX plugin |
@@ -22,6 +22,7 @@ checklist).
 | Catalogue (86 courses, honest readiness), departments, course foyer, unit page | yes | journey 2; validator | structural readiness ladder enforced by the validator; a unit's recorded checks are the author's self-review, labelled as such |
 | Content package: loader, validator, versioned seeder, coverage generator | yes | validator green; coverage test | `pnpm content:validate`, `pnpm db:seed`, `pnpm content:coverage` |
 | Twelve launch courses | yes | validator: 0 errors, 0 warnings | 12 teaching_ready; across the catalogue 141 units (33 prepared), 99 original exercises, 59 verified sources, 1121 verified locators |
+| Study workspace (teaching-experience brief CORE-01–03): session header with objective, source and last save; pause and resume; reading position saved on the server; selection questions with the attached context shown; anchored notes and lecture timestamps; external-reading progress; drafts with revisions, conflicts and an on-device buffer; four help modes; paper pages, confirmed transcriptions and paper submissions; consent-gated model transcription; concept bridges with exact return; session close from records; timetable slots open their session | yes | 15 service tests, 11 core tests, 3 worker tests; journey 11 (8 journeys at both viewports) | scripted demo; model transcription and live help unverified without a key |
 | Learning loop: session, drafts, hint ladder, immutable submissions, worker assessment, structured feedback, appeals and real regrades, reference reveal (learner-visible part only) | yes | journey 2 (desktop + mobile); instructor-leakage test; `verdict.test.ts`, `reference.test.ts` | scripted demo; deterministic checks run first; without a live model every verdict is withheld (`needs_review`); each assessment keeps the exercise as answered; feedback repeating the reference solution is withheld |
 | Tutor conversation with validated `[E#]` citations; library passages as evidence; local-only disclosure | yes | journeys 2 and 6; citation and ingestion tests | passages match any word of the question, best first; replayed history names the sources earlier tags resolved to |
 | Evidence states, My Studies, revision prompts bounded by the weekly cap | yes | 5 + 1 unit tests; journey 5 spec | recall reschedules only; never evidence |
@@ -74,8 +75,8 @@ Live site: https://web-production-4c692.up.railway.app. To ship a change, commit
 `corniversity` project. `pnpm deploy:railway` creates a new project with new secrets and refuses
 to run in a linked folder; it is for a first deployment only.
 
-Build in progress: Milestone 13 (study continuity, paper work, bridges) of the teaching-experience
-brief; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
+Build in progress: Milestone 14 (notebook issues, bounded review, problem progressions, course
+preparation) of the teaching-experience brief; Milestones 11–13 are done; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
 
 Owner actions: the steps in USER_ACTIONS.md. When the owner reports the checklist's results,
 record them in QA_REPORT.md as checks the owner ran on the live site; check from outside that a

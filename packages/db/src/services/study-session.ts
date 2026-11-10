@@ -332,3 +332,13 @@ export async function resumableSessions(db: DbOrTx, ownerId: string, limit = 5) 
     .orderBy(desc(learningSession.lastActiveAt))
     .limit(limit);
 }
+
+/** Notes and questions written in this session, newest first. */
+export async function sessionNotes(db: DbOrTx, ownerId: string, sessionId: string) {
+  return db
+    .select()
+    .from(notebookEntry)
+    .where(and(eq(notebookEntry.ownerId, ownerId), eq(notebookEntry.learningSessionId, sessionId)))
+    .orderBy(desc(notebookEntry.createdAt))
+    .limit(30);
+}

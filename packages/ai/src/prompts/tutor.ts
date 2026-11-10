@@ -1,4 +1,4 @@
-export const TUTOR_PROMPT_VERSION = "tutor-1.1";
+export const TUTOR_PROMPT_VERSION = "tutor-1.2";
 
 export interface TutorPromptInput {
   institutionName: string;
@@ -16,6 +16,13 @@ export interface TutorPromptInput {
   evidencePrompt: string;
   relevantAttempts: string[];
   approvedSummaries: string[];
+  /** The kind of help asked for, and what it allows (from the help contract in packages/core). */
+  help?: { label: string; instruction: string };
+  /**
+   * What the learner selected: lesson text, or lines of their attempt. With scope "selection" the
+   * answer stays on it; with "unit" the selection is a starting point.
+   */
+  selection?: { origin: "lesson" | "attempt"; text: string; lines?: [number, number]; scope: "selection" | "unit" };
 }
 
 /**
@@ -50,6 +57,20 @@ POLICY
 8. End with one sentence summarising what was established and one sensible next step. No flattery, no exclamation marks, no emoji.
 9. Write Markdown with LaTeX ($…$ inline, $$…$$ display). Keep turns under 350 words unless a full explanation was requested.
 10. In modelling work, help the learner keep apart the question, what was observed, what was assumed, what each model predicts, the competing explanations, what information was available, what the evidence establishes and what remains unsupported. Running code is not understanding, a high metric is not a valid evaluation, and a parameter's name is not a validated construct.
+
+HELP REQUESTED: ${input.help?.label ?? "a question"}
+${input.help?.instruction ?? "Answer the learner's question."}
+This takes precedence over rules 2 and 3 above where they differ.
+
+SELECTION
+${
+  input.selection
+    ? `The learner selected ${input.selection.origin === "attempt" ? `lines ${input.selection.lines?.[0]}–${input.selection.lines?.[1]} of their attempt` : "this passage of the lesson"} (scope: ${input.selection.scope === "selection" ? "stay on the selection" : "the selection is a starting point; the whole unit is in scope"}):
+---
+${input.selection.text}
+---`
+    : "(nothing selected)"
+}
 
 EXERCISE
 ${input.exercisePrompt ?? "(open discussion of the unit material)"}

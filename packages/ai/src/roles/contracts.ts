@@ -12,7 +12,7 @@ export interface RoleContract {
   allowedTools: readonly string[];
   requiredContext: readonly string[];
   forbidden: readonly string[];
-  outputSchema: "prose" | "AssessorFeedback" | "ProgrammeDraft" | "SourceMetadataGuess" | "SessionSummary";
+  outputSchema: "prose" | "AssessorFeedback" | "ProgrammeDraft" | "SourceMetadataGuess" | "SessionSummary" | "TranscriptionDraft";
   memoryPolicy: string;
   escalation: string;
   /**
@@ -175,5 +175,23 @@ export const ROLE_CONTRACTS: Record<RoleName, RoleContract> = {
     memoryPolicy: "Social memory is separate and deletable; no access to the academic transcript.",
     escalation: "A staged misconception must be resolved by the teacher in the same discussion.",
     limits: { maxOutputTokens: 3_000, maxRunUsd: 0.4, effort: "low" },
+  },
+  transcriber: {
+    role: "transcriber",
+    version: "1.0",
+    purpose:
+      "Read photographs of the learner's paper work into a draft transcription that the learner corrects and confirms before any review.",
+    allowedTools: [],
+    requiredContext: ["the page images the learner consented to send", "the exercise prompt, for context only"],
+    forbidden: [
+      "correct, complete or improve the mathematics",
+      "judge or grade the work",
+      "state confidence percentages",
+      "use the exercise prompt to fill illegible gaps",
+    ],
+    outputSchema: "TranscriptionDraft",
+    memoryPolicy: "None; each request reads only the pages sent with it.",
+    escalation: "Anything uncertain is marked [[?…]] for the learner to confirm.",
+    limits: { maxOutputTokens: 6_000, maxRunUsd: 1.5, effort: "medium" },
   },
 };

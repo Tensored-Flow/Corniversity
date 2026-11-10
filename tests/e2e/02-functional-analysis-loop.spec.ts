@@ -63,7 +63,9 @@ test.describe("functional analysis learning loop", () => {
       // Every automatic check passes, and still no acceptance: nobody has read the argument.
       await expect(page.getByText("Needs review").first()).toBeVisible({ timeout: 90_000 });
       await expect(page.getByText(/verdict is withheld/i).first()).toBeVisible();
-      await expect(page.getByText("Accepted", { exact: true })).toHaveCount(0);
+      // This run's newest submission (the first card) is not accepted; older attempts in a
+      // long-lived database may carry verdicts from before verdicts were withheld.
+      await expect(page.locator("article").first().getByText("Accepted", { exact: true })).toHaveCount(0);
       await screenshot(page, "06-feedback-withheld-checks-passed");
     } else {
       // An earlier run already submitted; the withheld record must still be here.
@@ -97,7 +99,11 @@ test.describe("functional analysis learning loop", () => {
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     await page.getByLabel("Message to the tutor").fill("Before I start: in finite dimensions, are all norms equivalent?");
     await page.getByRole("button", { name: "Send" }).click();
-    await expect(page.getByText(/norm induces a metric|no model is configured|three properties/).first()).toBeVisible({ timeout: 30_000 });
+    // Scoped to the tutor's panel: other panels (paper work) also say when no model is configured.
+    const tutorPanel = page.locator("#panel-tutor");
+    await expect(tutorPanel.getByText(/norm induces a metric|no model is configured|three properties/).first()).toBeVisible({
+      timeout: 30_000,
+    });
     // A citation is labelled source-backed only when the tutor saw the passage's text; until the
     // library holds that text it reads "location cited, text not seen".
     await expect(page.getByText(/source-backed|needs checking|location cited, text not seen/).first()).toBeVisible({ timeout: 30_000 });
