@@ -44,6 +44,23 @@ const isChosen = (value: unknown) => value !== undefined && value !== null;
  * The effective preferences: explicit choices first, then a rhythm chosen in the older single
  * field (it was always an explicit choice), then the defaults, which fill only what is unset.
  */
+/**
+ * What orientation's rhythm step shows. Before orientation is complete, the learner's answers so
+ * far; afterwards, the preferences as they stand, since Settings may have changed them, so that
+ * saving the step again never undoes a later choice.
+ */
+export function rhythmStepDefaults(
+  answers: { rhythm?: StudyRhythm; hardDeadlines?: boolean; examinations?: boolean },
+  current: StudyPreferences | null,
+): { rhythm: StudyRhythm; hardDeadlines: boolean; examinations: boolean } {
+  if (current) return { rhythm: current.rhythm, hardDeadlines: current.hardDeadlines, examinations: current.examinations };
+  return {
+    rhythm: answers.rhythm ?? "rolling",
+    hardDeadlines: answers.hardDeadlines === true,
+    examinations: answers.examinations === true,
+  };
+}
+
 export function resolveStudyPreferences(
   explicit: ExplicitStudyPreferences | null | undefined,
   legacyRhythm?: StudyRhythm | null,

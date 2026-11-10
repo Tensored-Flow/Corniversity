@@ -111,7 +111,7 @@ export async function addProvenanceAction(form: FormData): Promise<void> {
       origin: text(form, "origin"),
       versionOrDate: text(form, "versionOrDate"),
       licence: text(form, "licence"),
-      humanParticipants: text(form, "humanParticipants") === "existing_published" ? "existing_published" : "none",
+      humanParticipants: humanParticipantsOf(text(form, "humanParticipants")),
       seed: text(form, "seed") || null,
       generator: text(form, "generator") || null,
       notes: text(form, "notes"),
@@ -174,4 +174,9 @@ export async function withdrawOralAction(form: FormData): Promise<void> {
   const session = await requireSession("/studio");
   const id = projectIdOf(form);
   await inProject(id, "oral", () => withdrawOralDiscussion(db(), session.user.id, text(form, "requestId")));
+}
+
+/** What the form says about people; anything unrecognised is "none". */
+function humanParticipantsOf(value: string): "none" | "existing_published" | "new_from_people" {
+  return value === "existing_published" || value === "new_from_people" ? value : "none";
 }

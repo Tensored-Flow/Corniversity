@@ -2,14 +2,16 @@ import {
   type AttemptUsage,
   costOfAttempts,
   DEFAULT_MODEL,
+  decideBudget,
   decideProviderState,
   isSupportedModel,
   type PaidUseApproval,
+  PRICING_VERSION,
   type ProviderState,
   validateBudgetLimits,
 } from "@corniversity/ai";
 import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
-import type { DbOrTx } from "../client";
+import type { Database, DbOrTx } from "../client";
 import type { Env } from "../env";
 import { auditEvent, budgetSetting, providerRun, providerSetting } from "../schema/index";
 import { decryptSecret, encryptSecret, keyHint } from "./crypto";
@@ -193,22 +195,75 @@ export async function saveBudgetLimits(
   return { ...limits, warnFraction: 0.8 };
 }
 
-/** Recorded spend for budget decisions, by UTC day and month. Scripted runs cost nothing. */
+/**
+ * Spend for budget decisions, by UTC day and month: what finished runs cost, plus the worst case
+ * of every run still in progress (a run that never finishes keeps counting at its worst case).
+ * Scripted runs cost nothing.
+ */
 export async function getSpend(db: DbOrTx, ownerId: string, now = new Date()): Promise<{ todayUsd: number; monthUsd: number }> {
   const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const startOfMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const spent = sql<string>`coalesce(sum(case when ${providerRun.status} = 'running' then coalesce(${providerRun.worstCaseUsd}, 0) else ${providerRun.costUsd} end), 0)`;
   const [today] = await db
-    .select({ total: sql<string>`coalesce(sum(${providerRun.costUsd}), 0)` })
+    .select({ total: spent })
     .from(providerRun)
     .where(and(eq(providerRun.ownerId, ownerId), gte(providerRun.startedAt, startOfDay)));
   const [month] = await db
-    .select({ total: sql<string>`coalesce(sum(${providerRun.costUsd}), 0)` })
+    .select({ total: spent })
     .from(providerRun)
     .where(and(eq(providerRun.ownerId, ownerId), gte(providerRun.startedAt, startOfMonth)));
   return { todayUsd: Number(today?.total ?? 0), monthUsd: Number(month?.total ?? 0) };
 }
 
-export type RunStatus = "ok" | "error" | "refused" | "budget_blocked" | "blocked";
+/** A run's outcome; "running" marks a live run in progress, which holds its worst case. */
+export type RunStatus = "ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running";
+
+/**
+ * Decides a live run against the limits and, when it may start, records it as running with its
+ * worst case. One owner's runs are decided one at a time under a database lock, and each counts
+ * every run still in progress at its worst case, so runs started together cannot cross a limit
+ * between them.
+ */
+export async function reserveLiveRun(
+  db: DbOrTx,
+  input: {
+    ownerId: string;
+    env: Env;
+    role: string;
+    model: string;
+    purpose: string;
+    promptVersion: string;
+    worstCaseUsd: number;
+    roleCapUsd: number;
+  },
+): Promise<{ allowed: false; reason: string; warnings: string[] } | { allowed: true; warnings: string[]; runId: string }> {
+  // A transaction on the handle, or a savepoint when the handle already is one.
+  return (db as Database).transaction(async (tx) => {
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`provider-budget:${input.ownerId}`}))`);
+    const decision = decideBudget(
+      await getBudgetLimits(tx, input.ownerId, input.env),
+      await getSpend(tx, input.ownerId),
+      input.worstCaseUsd,
+      input.roleCapUsd,
+    );
+    if (!decision.allowed) return decision;
+    const [row] = await tx
+      .insert(providerRun)
+      .values({
+        ownerId: input.ownerId,
+        role: input.role,
+        provider: "anthropic",
+        model: input.model,
+        purpose: input.purpose,
+        pricingVersion: PRICING_VERSION,
+        promptVersion: input.promptVersion,
+        status: "running",
+        worstCaseUsd: String(input.worstCaseUsd),
+      })
+      .returning({ id: providerRun.id });
+    return { allowed: true as const, warnings: decision.warnings, runId: row!.id };
+  });
+}
 
 /**
  * Records one run: its status, every attempt with its own usage and cost (a fallback model that
@@ -231,16 +286,6 @@ export async function recordProviderRun(
     startedAt: Date;
   },
 ): Promise<string> {
-  const attempts = input.attempts.map((a) => ({ ...a, costUsd: costOfAttempts([a]) }));
-  const total = attempts.reduce(
-    (s, a) => ({
-      inputTokens: s.inputTokens + a.inputTokens,
-      outputTokens: s.outputTokens + a.outputTokens,
-      cacheReadTokens: s.cacheReadTokens + a.cacheReadTokens,
-      cacheWriteTokens: s.cacheWriteTokens + a.cacheWriteTokens,
-    }),
-    { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 },
-  );
   const [row] = await db
     .insert(providerRun)
     .values({
@@ -249,19 +294,47 @@ export async function recordProviderRun(
       provider: input.provider,
       model: input.model,
       purpose: input.purpose,
-      ...total,
-      costUsd: String(costOfAttempts(input.attempts)),
+      ...usageColumns(input.attempts),
       pricingVersion: input.pricingVersion,
       promptVersion: input.promptVersion,
       status: input.status,
       error: input.error ?? null,
-      attempts,
       worstCaseUsd: input.worstCaseUsd === undefined || input.worstCaseUsd === null ? null : String(input.worstCaseUsd),
       startedAt: input.startedAt,
       finishedAt: new Date(),
     })
     .returning({ id: providerRun.id });
   return row!.id;
+}
+
+/**
+ * Completes a reserved live run with what happened: its status, the model that answered and every
+ * attempt priced at its own model. From then on the run counts at what it cost, not its worst case.
+ */
+export async function finishProviderRun(
+  db: DbOrTx,
+  runId: string,
+  input: { status: Exclude<RunStatus, "running">; model: string; error?: string | null; attempts: readonly AttemptUsage[] },
+): Promise<void> {
+  await db
+    .update(providerRun)
+    .set({ status: input.status, model: input.model, error: input.error ?? null, ...usageColumns(input.attempts), finishedAt: new Date() })
+    .where(and(eq(providerRun.id, runId), eq(providerRun.status, "running")));
+}
+
+/** A run's usage columns: every attempt priced at its own model, and the totals. */
+function usageColumns(attempts: readonly AttemptUsage[]) {
+  const priced = attempts.map((a) => ({ ...a, costUsd: costOfAttempts([a]) }));
+  const total = priced.reduce(
+    (s, a) => ({
+      inputTokens: s.inputTokens + a.inputTokens,
+      outputTokens: s.outputTokens + a.outputTokens,
+      cacheReadTokens: s.cacheReadTokens + a.cacheReadTokens,
+      cacheWriteTokens: s.cacheWriteTokens + a.cacheWriteTokens,
+    }),
+    { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 },
+  );
+  return { attempts: priced, ...total, costUsd: String(costOfAttempts(attempts)) };
 }
 
 export async function listRecentRuns(db: DbOrTx, ownerId: string, limit = 15) {

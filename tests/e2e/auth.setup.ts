@@ -8,5 +8,12 @@ import { AUTH_STATE, signInOrBootstrap } from "./helpers";
  */
 setup("sign in once for the journeys", async ({ page }) => {
   await signInOrBootstrap(page);
+  // The journeys assume the scripted demo: with a live model they would spend money and mix live
+  // replies into scripted evidence, so they stop here instead.
+  await page.goto("/settings");
+  const scripted = page.locator("#provider").getByRole("status").filter({ hasText: "No model is configured" });
+  if (!(await scripted.isVisible().catch(() => false))) {
+    throw new Error("This stack has a live (or blocked) model configured; the journeys run only in the scripted demo.");
+  }
   await page.context().storageState({ path: AUTH_STATE });
 });

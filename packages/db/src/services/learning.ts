@@ -8,6 +8,7 @@ import {
   assessmentRun,
   attempt,
   auditEvent,
+  type ExerciseSnapshot,
   enrolment,
   evidenceEvent,
   feedbackReview,
@@ -230,6 +231,18 @@ export async function requestHint(
   return { hint, index: a.hintsUsed + 1, total };
 }
 
+/** The exercise as the learner sees it now, to keep with an assessment run. */
+export function exerciseSnapshotOf(exercise: typeof unitExercise.$inferSelect): ExerciseSnapshot {
+  return {
+    title: exercise.title,
+    kind: exercise.kind,
+    promptMarkdown: exercise.promptMarkdown,
+    rubricVersion: exercise.rubricVersion,
+    rubric: exercise.rubric,
+    deterministicChecks: exercise.deterministicChecks,
+  };
+}
+
 /**
  * Submits an immutable version and queues an assessment. The assessment run's idempotency key is
  * the submission version id, so a retried request or a duplicate job cannot grade it twice.
@@ -275,6 +288,7 @@ export async function submitAttempt(
     .values({
       submissionVersionId: sv.id,
       rubricVersion: exercise.rubricVersion,
+      exerciseSnapshot: exerciseSnapshotOf(exercise),
       graderConfig: input.graderConfig,
       status: "queued",
       idempotencyKey: `assess:${sv.id}`,
@@ -448,6 +462,8 @@ export async function fileReview(
       .values({
         submissionVersionId: owned.run.submissionVersionId,
         rubricVersion: owned.run.rubricVersion,
+        // The same exercise the first run assessed: the submission answered that version.
+        exerciseSnapshot: owned.run.exerciseSnapshot,
         graderConfig: owned.run.graderConfig,
         status: "queued",
         idempotencyKey,

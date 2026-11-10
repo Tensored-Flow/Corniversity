@@ -9,13 +9,15 @@ import {
   ROLE_CONTRACTS,
 } from "@corniversity/ai";
 import { runDeterministicChecks } from "@corniversity/core/checks/deterministic";
+import { withholdReferenceText } from "@corniversity/core/checks/leakage";
 import { reconcileVerdict } from "@corniversity/core/checks/verdict";
 import { annotateTurn } from "@corniversity/core/grounding/citations";
 import { AssessSubmissionPayload } from "@corniversity/db/jobs";
 import { assessmentRun, attempt, instructorArtifact, submissionVersion, teachingUnit, unitExercise } from "@corniversity/db/schema/index";
 import { planRun } from "@corniversity/db/services/ai-runs";
 import { recordEvidence } from "@corniversity/db/services/evidence";
-import { type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
+import { exerciseSnapshotOf } from "@corniversity/db/services/learning";
+import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, eq } from "drizzle-orm";
 import type { HandlerContext } from "./index";
@@ -50,7 +52,11 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     .where(and(eq(instructorArtifact.exerciseId, exercise.id), eq(instructorArtifact.kind, "reference_solution")))
     .limit(1);
 
-  const deterministic = runDeterministicChecks(sv.contentMarkdown, exercise.deterministicChecks).map((r) => ({
+  // The exercise as the learner answered it, kept with the run when it was submitted, so a later
+  // repair of the exercise never changes what this submission is assessed against. (A run from
+  // before snapshots were kept uses the exercise as it stands; the reference is always current.)
+  const assessed = run.exerciseSnapshot ?? exerciseSnapshotOf(exercise);
+  const deterministic = runDeterministicChecks(sv.contentMarkdown, assessed.deterministicChecks).map((r) => ({
     checkId: r.checkId,
     passed: r.passed,
     detail: r.detail,
@@ -61,13 +67,13 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   const system = buildAssessorSystemPrompt({
     institutionName: ctx.env.INSTITUTION_NAME,
     courseTitle: unit?.title ?? "course",
-    exerciseTitle: exercise.title,
-    exercisePrompt: exercise.promptMarkdown,
-    exerciseKind: exercise.kind,
-    rubricVersion: exercise.rubricVersion,
-    rubricCriteria: exercise.rubric.criteria,
-    acceptAlternateApproaches: exercise.rubric.acceptAlternateApproaches,
-    referenceIsExhaustive: exercise.rubric.referenceIsExhaustive,
+    exerciseTitle: assessed.title,
+    exercisePrompt: assessed.promptMarkdown,
+    exerciseKind: assessed.kind,
+    rubricVersion: assessed.rubricVersion,
+    rubricCriteria: assessed.rubric.criteria,
+    acceptAlternateApproaches: assessed.rubric.acceptAlternateApproaches,
+    referenceIsExhaustive: assessed.rubric.referenceIsExhaustive,
     referenceReasoning: reference?.markdown ?? null,
     deterministicResults: deterministic,
     evidencePrompt: evidence.prompt,
@@ -79,11 +85,15 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   const instruction = "Assess the numbered submission according to the standard and return the structured judgement.";
   // The same gate as the web routes: a submission never spends past the owner's limits, and a
   // blocked provider fails the assessment with its reason instead of answering with fixtures.
-  const plan = await planRun(db, payload.ownerId, ctx.env, "assessor", `${system}\n${instruction}`);
+  const promptVersion = `${ASSESSOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.assessor.version}`;
+  const plan = await planRun(db, payload.ownerId, ctx.env, "assessor", `${system}\n${instruction}`, {
+    purpose: "assess-submission",
+    promptVersion,
+  });
   const live = plan.kind === "live";
   const startedAt = new Date();
   let feedbackObject: ReturnType<typeof AssessorFeedbackSchema.parse> | null = null;
-  let runStatus: RunStatus = "ok";
+  let runStatus: Exclude<RunStatus, "running"> = "ok";
   let errorText: string | undefined;
   let attempts: AttemptUsage[] = [];
   let model = plan.model;
@@ -115,20 +125,26 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     }
   }
 
-  const providerRunId = await recordProviderRun(db, {
-    ownerId: payload.ownerId,
-    role: "assessor",
-    provider: plan.kind === "scripted" ? "fixture" : "anthropic",
-    model,
-    purpose: "assess-submission",
-    pricingVersion: PRICING_VERSION,
-    promptVersion: `${ASSESSOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.assessor.version}`,
-    status: runStatus,
-    error: errorText ?? null,
-    attempts,
-    worstCaseUsd: plan.kind === "scripted" ? null : plan.worstCaseUsd,
-    startedAt,
-  });
+  let providerRunId: string;
+  if (plan.kind === "live") {
+    await finishProviderRun(db, plan.runId, { status: runStatus, model, error: errorText ?? null, attempts });
+    providerRunId = plan.runId;
+  } else {
+    providerRunId = await recordProviderRun(db, {
+      ownerId: payload.ownerId,
+      role: "assessor",
+      provider: plan.kind === "scripted" ? "fixture" : "anthropic",
+      model,
+      purpose: "assess-submission",
+      pricingVersion: PRICING_VERSION,
+      promptVersion,
+      status: runStatus,
+      error: errorText ?? null,
+      attempts,
+      worstCaseUsd: plan.kind === "scripted" ? null : plan.worstCaseUsd,
+      startedAt,
+    });
+  }
   // The run records what actually assessed it, whatever was configured when it was submitted.
   const graderConfig = { ...run.graderConfig, provider: plan.kind === "scripted" ? "fixture" : "anthropic", model };
 
@@ -141,14 +157,23 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     return { status: "failed", error: errorText };
   }
 
+  // The reference helps the assessor judge and is never shown to the learner: feedback text that
+  // repeats it is withheld, whatever the model was told.
+  const guarded = withholdReferenceText(feedbackObject, reference?.markdown ?? null, [assessed.promptMarkdown, sv.contentMarkdown]);
+  feedbackObject = guarded.feedback;
+
   // Reconciliation (pure and tested in core): rules only lower confidence or route to review;
   // they never upgrade a verdict, and a fixture run never yields one.
-  const { verdict, confidence, notes } = reconcileVerdict({
+  const reconciled = reconcileVerdict({
     verdict: feedbackObject.verdict,
     confidence: feedbackObject.confidence,
     live,
     deterministic,
   });
+  const { verdict, confidence } = reconciled;
+  const notes = guarded.withheld
+    ? [...reconciled.notes, "Part of the assessor's feedback repeated the reference solution and was withheld."]
+    : reconciled.notes;
   const annotatedSummary = annotateTurn(
     feedbackObject.citationTags.length ? `${feedbackObject.summary} [${feedbackObject.citationTags.join(", ")}]` : feedbackObject.summary,
     evidence.refs,

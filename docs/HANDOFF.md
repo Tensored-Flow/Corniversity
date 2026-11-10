@@ -1,7 +1,7 @@
 # Handoff
 
 Written for Leon, the owner. Everything here was checked on 31 October, 1 November and
-9 November 2026, on the build machine (Windows 11) and, for the deployment, on the live site.
+9–10 November 2026, on the build machine (Windows 11) and, for the deployment, on the live site.
 Where something has not been verified, this document says so.
 
 ## Where things stand
@@ -23,6 +23,12 @@ Where something has not been verified, this document says so.
 - **Behind sign-in on the live site: not checked.** Every journey ran on this computer, on the
   development server and on the production build against an empty database; on the live site only
   the public pages, the health check and the logs were checked, because no account exists there.
+  The checks that need your account are a short checklist you run yourself
+  ([USER_ACTIONS.md](USER_ACTIONS.md), item 4).
+- **Tests audited against your rules.** After the release, two reviewers with no prior context
+  compared the tests with your sections 13 to 18; the defects they found, about spending records,
+  citations, sign-up, saved records, the studio and the programme pages, are fixed, each with a test
+  ([QA_REPORT.md](QA_REPORT.md), "After the release").
 - **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, with no git remote; it
   has not been pushed anywhere ([USER_ACTIONS.md](USER_ACTIONS.md), item 6). Milestone 10 started
   from commit `5faa665`. It is commit `1b93eae`, followed by `6a01e17` (the studio's sign-in
@@ -75,13 +81,14 @@ If pages become slow after a long development session, stop `pnpm dev` and start
   conceptual, mathematical, computational, a replication or a critical review. It keeps a focused
   shelf of verified sources, a proposal, methods and a report as numbered versions, the provenance
   of every dataset or simulation, notebook entries, small files, feedback on a saved version, an
-  optional oral discussion, and a report you can download as Markdown. It never collects data from
-  people. In the scripted demo its feedback is a set of structural checks that says no model read
-  the work.
+  optional oral discussion, and a report you can download as Markdown. It never recruits anyone
+  or collects data from people; a project may analyse an existing dataset about people that its
+  licence or terms permit. In the scripted demo its feedback is a set of structural checks that
+  says no model read the work.
 - **Live tutoring settings** (*Settings → Live tutoring and its costs*): the provider, a supported
   model, the key (stored encrypted, shown only by its ends), the refusal-fallback choice, limits
-  per run, per day and per month (always hard), your approval of paid use, and the recent runs
-  with their actual cost.
+  per run, per day and per month (always hard; runs still in progress count at their worst case),
+  your approval of paid use, and the recent runs with their actual cost.
 - **Coverage.** [MIND_BRAIN_AI.md](MIND_BRAIN_AI.md) now has one generated row per block,
   elective, method and shelf source, and the status of every requirement in sections 13 to 20.
 
@@ -97,17 +104,16 @@ electives are proposed and offered for audit only; method 9.6 has no prepared un
 sources are still unresolved leads, listed under Library → Books to obtain. A prepared unit is
 teaching material; it says nothing about what you have understood.
 
-## Test and build results (9 November 2026)
+## Test and build results (10 November 2026)
 
 | Check | Result |
 |---|---|
 | `pnpm typecheck`, `pnpm lint` | clean (7 packages; Biome) |
-| `pnpm test` | 253 pass in 32 files |
-| `pnpm test:integration` | 80 pass in 12 files |
+| `pnpm test` | 254 unit tests pass in 30 files, then 23 worker tests in 6 files |
+| `pnpm test:integration` | 88 pass in 12 files |
 | `pnpm eval:academic` | 19 pass (check rules and the verdict policy, not a model's judgement) |
 | `pnpm content:validate` | 0 errors, 0 warnings |
-| Journeys, development server | the last full run passed 84 of 85 at 1440×900 and 390×844; the one failure, two scrolling tables a keyboard could not reach, was repaired and the accessibility sweep passed at both sizes |
-| Journeys, production build on an empty database | 85 of 85 at both sizes on a new database, after two earlier runs found an orientation defect (repaired) and four faults in the tests themselves |
+| Journeys, production build on an empty database | 87 of 87 at both sizes on a new database (10 November), after the audit's fixes |
 | Deployment | released on 9 Nov 2026 (worker from `1b93eae`, web from `6a01e17`); what was checked on the live site without an account is in [QA_REPORT.md](QA_REPORT.md), Milestone 10 |
 | Live model | none; live tutoring blocked |
 
@@ -129,9 +135,11 @@ These are estimates with their assumptions, not a verified monthly bill.
   (input/output) in `packages/ai/src/pricing.ts`, read on 6 October 2026: Claude Opus 5.5 $4/$20
   (the default), Sonnet 5.5 $2/$10, Haiku 5.5 $0.10/$0.50, Fable 5.1 $10/$50. The default limits
   are $1 per run, $3 a day and $40 a month, never above $5, $50 and $500; a run is refused if its
-  worst case could cross one. A tutor turn usually costs about a cent or two, but its worst case
-  (the whole output allowance) is what the limits are checked against; with refusal fallback on,
-  a declined request can be billed twice.
+  worst case could cross one. A tutor turn usually costs a few cents, but its worst case (on
+  Claude Opus 5.5 with refusal fallback on, about $0.45 for the tutor and $0.70 for the assessor:
+  the whole output allowance, the prompt and a second attempt) is what the limits are checked
+  against, and runs still in progress count at their worst case; with refusal fallback on, a
+  declined request can be billed twice.
 - **Everything else.** No email provider, domain, object storage or other paid service is used.
   The embedded database, the companion and exports run on your own computer at no cost.
 
@@ -140,8 +148,8 @@ These are estimates with their assumptions, not a verified monthly bill.
 There is no password-reset email, because no mail provider is configured. If you forget your
 password: in PowerShell in the project folder run `railway ssh --service worker`, then in that
 shell `node node_modules/tsx/dist/cli.mjs apps/worker/src/admin/reset-owner-password.ts`, and type
-the new password twice (it is not shown). Every signed-in browser is signed out and the reset is
-recorded. Nothing on the website can reset a password. On your own computer the command is
+the new password twice (it is not shown, even while you correct it). Every signed-in browser is
+signed out at once and the reset is recorded. Nothing on the website can reset a password. On your own computer the command is
 `pnpm owner:reset-password`. The command is tested against a throw-away database; it has not been
 run on the live site.
 
@@ -156,10 +164,9 @@ run on the live site.
 ## Remaining actions for you
 
 Listed with exact steps in [USER_ACTIONS.md](USER_ACTIONS.md): create the owner account on the
-live site; then remove the bootstrap code from both services; let the signed-in checks be done;
-optionally enable live tutoring with a key, approval and a small test budget; optionally publish
-the repository. Please also confirm that the tests named in QA_REPORT.md describe the behaviour
-you intend, in particular the studio's rules and the route rules in MIND_BRAIN_AI.md, section 13.
+live site; remove the bootstrap code from both services; optionally enable live tutoring with a
+key, approval and small limits; run the short checklist (item 4) and report what you saw, never a
+password, code or key; optionally publish the repository.
 
 ## The core question
 

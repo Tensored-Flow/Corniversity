@@ -14,6 +14,8 @@ import {
   createProject,
   getArtifactFile,
   getProjectBundle,
+  listProjects,
+  listRecordProjects,
   projectReport,
   projectTag,
   ResearchError,
@@ -162,6 +164,19 @@ describe("provenance", () => {
     expect((await getProjectBundle(handle.db, OWNER, projectId))?.provenance).toHaveLength(1);
   });
 
+  it("accepts an existing dataset about people recorded with its licence", async () => {
+    await addProvenance(handle.db, OWNER, projectId, {
+      kind: "existing_dataset",
+      title: "Flanker task trials",
+      origin: "Open data deposited with Hedge et al. (2018)",
+      versionOrDate: "retrieved 2026-11-09",
+      licence: "CC BY 4.0",
+      humanParticipants: "existing_published",
+    });
+    const bundle = await getProjectBundle(handle.db, OWNER, projectId);
+    expect(bundle?.provenance.find((p) => p.title === "Flanker task trials")?.humanParticipants).toBe("existing_published");
+  });
+
   it("never accepts new data from people", async () => {
     await expect(
       addProvenance(handle.db, OWNER, projectId, {
@@ -170,7 +185,7 @@ describe("provenance", () => {
         origin: "collected myself",
         versionOrDate: "2026",
         licence: "none",
-        humanParticipants: "new" as never,
+        humanParticipants: "new_from_people",
       }),
     ).rejects.toThrow(/new data from people/);
   });
@@ -252,6 +267,22 @@ describe("the oral discussion and the report", () => {
     expect(text).toContain("**Synthetic bandit sessions** (simulation)");
     expect(text).toContain("- A verified test source: https://example.org/paper");
     expect(text).toContain("no model read it (scripted demo)");
+    expect(text).toContain("the live model was blocked, so no model read it");
+    expect(text).not.toContain("written feedback from a live model");
     expect(await projectReport(handle.db, OTHER, projectId)).toBeNull();
+  });
+});
+
+describe("the record", () => {
+  it("lists the learner's own projects and never a labelled demonstration", async () => {
+    const [demo] = await handle.db
+      .insert(researchProject)
+      .values({ ownerId: OWNER, title: "A demonstration project", question: "Is this a demonstration?", kind: "conceptual", demo: true })
+      .returning();
+    expect((await listProjects(handle.db, OWNER)).map((p) => p.id)).toContain(demo!.id);
+    const record = await listRecordProjects(handle.db, OWNER);
+    expect(record.length).toBeGreaterThan(0);
+    expect(record.map((p) => p.id)).not.toContain(demo!.id);
+    await handle.db.delete(researchProject).where(eq(researchProject.id, demo!.id));
   });
 });

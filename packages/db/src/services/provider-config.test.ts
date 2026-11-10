@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../client";
 import { getEnv } from "../env";
@@ -9,6 +9,7 @@ import { planRun } from "./ai-runs";
 import { encryptSecret } from "./crypto";
 import {
   approvePaidUse,
+  finishProviderRun,
   getSpend,
   ProviderSettingError,
   recordProviderRun,
@@ -47,7 +48,7 @@ afterAll(async () => {
 describe("which provider answers", () => {
   it("is the scripted demo when nothing is configured, at no cost", async () => {
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toEqual({ mode: "scripted", reason: "not_configured" });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.");
+    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.", { purpose: "tutor-turn", promptVersion: "test" });
     expect(plan.kind).toBe("scripted");
     if (plan.kind === "scripted") expect(plan.provider.name).toBe("fixture");
   });
@@ -64,7 +65,7 @@ describe("which provider answers", () => {
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toMatchObject({ mode: "blocked", code: "no_key" });
     await saveProviderSetting(handle.db, OWNER, getEnv(), { provider: "anthropic", apiKey: KEY });
     expect(await resolveProviderState(handle.db, OWNER, getEnv())).toMatchObject({ mode: "blocked", code: "not_approved" });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.");
+    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "A question.", { purpose: "tutor-turn", promptVersion: "test" });
     expect(plan).toMatchObject({ kind: "refused", status: "blocked" });
   });
 
@@ -100,21 +101,137 @@ describe("which provider answers", () => {
 });
 
 describe("limits", () => {
-  it("are validated and stored as hard stops", async () => {
+  it("are validated before they are stored", async () => {
     await expect(saveBudgetLimits(handle.db, OWNER, { perRunUsd: 0, dailyUsd: 3, monthlyUsd: 40 })).rejects.toThrow();
     await expect(saveBudgetLimits(handle.db, OWNER, { perRunUsd: 1, dailyUsd: 3, monthlyUsd: 10_000 })).rejects.toThrow();
-    const [row] = await handle.db.select().from(budgetSetting).where(eq(budgetSetting.userId, OWNER));
-    expect(row?.hardStop).toBe(true);
   });
 
   it("refuse a live run whose worst case could cross a limit, before anything is sent", async () => {
     await saveBudgetLimits(handle.db, OWNER, { perRunUsd: 0.01, dailyUsd: 0.01, monthlyUsd: 0.01 });
-    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "x".repeat(30_000));
+    const plan = await planRun(handle.db, OWNER, getEnv(), "tutor", "x".repeat(30_000), { purpose: "tutor-turn", promptVersion: "test" });
     expect(plan).toMatchObject({ kind: "refused", status: "budget_blocked" });
     if (plan.kind === "refused") {
       expect(plan.reason).toMatch(/per-run limit/);
       expect(plan.worstCaseUsd).toBeGreaterThan(0.01);
     }
+  });
+});
+
+describe("spend, runs in progress and runs started together", () => {
+  const SPENDER = `provider-spender-${randomUUID()}`;
+  const meta = { purpose: "tutor-turn", promptVersion: "test" };
+  const plan = () => planRun(handle.db, SPENDER, getEnv(), "tutor", "A question.", meta);
+  // The tutor on Claude Opus 5.5 with fallback: 8000*$20/M + 8000*$25/M + (4 + 8000)*$6.25/M + 4*$5/M.
+  const TUTOR_WORST = 0.410045;
+  const finish = (runId: string, outputTokens: number) =>
+    finishProviderRun(handle.db, runId, {
+      status: "ok",
+      model: "claude-opus-5-5",
+      attempts: [{ kind: "message", model: "claude-opus-5-5", inputTokens: 1000, outputTokens, cacheReadTokens: 0, cacheWriteTokens: 0 }],
+    });
+
+  beforeAll(async () => {
+    await handle.db.insert(user).values({ id: SPENDER, name: "Spend Test", email: `${SPENDER}@example.test` });
+    await saveBudgetLimits(handle.db, SPENDER, { perRunUsd: 1, dailyUsd: 1, monthlyUsd: 40 });
+    await saveProviderSetting(handle.db, SPENDER, getEnv(), {
+      provider: "anthropic",
+      model: "claude-opus-5-5",
+      apiKey: KEY,
+      refusalFallback: true,
+    });
+    await approvePaidUse(handle.db, SPENDER, getEnv());
+  });
+
+  afterAll(async () => {
+    for (const table of [providerRun, auditEvent]) await handle.db.delete(table).where(eq(table.ownerId, SPENDER));
+    await handle.db.delete(providerSetting).where(eq(providerSetting.userId, SPENDER));
+    await handle.db.delete(budgetSetting).where(eq(budgetSetting.userId, SPENDER));
+    await handle.db.delete(user).where(eq(user.id, SPENDER));
+  });
+
+  it("holds a run in progress at its worst case until it finishes, then counts what it cost", async () => {
+    const first = await plan();
+    const second = await plan();
+    if (first.kind !== "live" || second.kind !== "live") throw new Error("expected two live runs");
+    expect(first.worstCaseUsd).toBeCloseTo(TUTOR_WORST, 6);
+    expect((await getSpend(handle.db, SPENDER)).todayUsd).toBeCloseTo(2 * TUTOR_WORST, 6);
+    // A third would make three worst cases in progress: more than today's $1.
+    expect(await plan()).toMatchObject({ kind: "refused", status: "budget_blocked" });
+    // 1000*$4/M + 500*$20/M = $0.014.
+    await finish(first.runId, 500);
+    expect((await getSpend(handle.db, SPENDER)).todayUsd).toBeCloseTo(0.014 + TUTOR_WORST, 6);
+    await finishProviderRun(handle.db, second.runId, { status: "error", model: "claude-opus-5-5", error: "failed", attempts: [] });
+    expect((await getSpend(handle.db, SPENDER)).todayUsd).toBeCloseTo(0.014, 6);
+    const [row] = await handle.db.select().from(providerRun).where(eq(providerRun.id, first.runId));
+    expect(row).toMatchObject({ status: "ok", purpose: "tutor-turn", outputTokens: 500 });
+    expect(row!.finishedAt).not.toBeNull();
+  });
+
+  it("waits while another decision on the same owner's limits holds the lock", async () => {
+    const other = createDb(process.env.DATABASE_URL!, { max: 1 });
+    let release = () => {};
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let transaction: Promise<void> = Promise.resolve();
+    await new Promise<void>((locked) => {
+      transaction = other.db.transaction(async (tx) => {
+        await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`provider-budget:${SPENDER}`}))`);
+        locked();
+        await held;
+      });
+    });
+    let settled = false;
+    const pending = plan().then((p) => {
+      settled = true;
+      return p;
+    });
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(settled).toBe(false);
+    release();
+    await transaction;
+    const decided = await pending;
+    if (decided.kind !== "live") throw new Error("expected a live run once the lock was released");
+    await finish(decided.runId, 0);
+    await other.close();
+  });
+
+  it("counts runs started together against the limit: two fit, the third is refused", async () => {
+    // About $0.98 of today's $1 is left: room for two worst cases, not three.
+    const wide = createDb(process.env.DATABASE_URL!, { max: 3 });
+    const plans = await Promise.all([1, 2, 3].map(() => planRun(wide.db, SPENDER, getEnv(), "tutor", "A question.", meta)));
+    await wide.close();
+    const live = plans.filter((p) => p.kind === "live");
+    expect(live).toHaveLength(2);
+    expect(plans.filter((p) => p.kind === "refused")).toHaveLength(1);
+    for (const p of live) if (p.kind === "live") await finish(p.runId, 0);
+  });
+
+  it("refuses a run once recorded spend leaves too little of today's limit", async () => {
+    await recordProviderRun(handle.db, {
+      ownerId: SPENDER,
+      role: "tutor",
+      provider: "anthropic",
+      model: "claude-opus-5-5",
+      purpose: "tutor-turn",
+      pricingVersion: "test",
+      promptVersion: "test",
+      status: "ok",
+      // 30000*$20/M = $0.60, leaving less than a worst case of today's $1.
+      attempts: [
+        { kind: "message", model: "claude-opus-5-5", inputTokens: 0, outputTokens: 30_000, cacheReadTokens: 0, cacheWriteTokens: 0 },
+      ],
+      worstCaseUsd: 0.7,
+      startedAt: new Date(),
+    });
+    const refused = await plan();
+    expect(refused).toMatchObject({ kind: "refused", status: "budget_blocked" });
+    if (refused.kind === "refused") expect(refused.reason).toMatch(/Today's limit/);
+  });
+
+  it("has no soft mode: a stored row that once switched the hard stop off still refuses", async () => {
+    await handle.db.update(budgetSetting).set({ hardStop: false }).where(eq(budgetSetting.userId, SPENDER));
+    expect(await plan()).toMatchObject({ kind: "refused", status: "budget_blocked" });
   });
 });
 

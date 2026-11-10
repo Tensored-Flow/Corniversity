@@ -1,3 +1,4 @@
+import type { DeterministicCheck, Rubric } from "@corniversity/core";
 import { type SQL, sql } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, evidenceStateEnum, submissionStateEnum, tsvector, tz, updatedAt } from "./_shared";
@@ -163,6 +164,19 @@ export interface StructuredFeedback {
   citations: Citation[];
 }
 
+/**
+ * The exercise as the learner answered it, kept with each assessment run: a later repair of the
+ * exercise (its prompt, rubric or checks) never changes what a submission was assessed against.
+ */
+export interface ExerciseSnapshot {
+  title: string;
+  kind: string;
+  promptMarkdown: string;
+  rubricVersion: number;
+  rubric: Rubric;
+  deterministicChecks: DeterministicCheck[];
+}
+
 export const assessmentRun = pgTable(
   "assessment_run",
   {
@@ -171,6 +185,8 @@ export const assessmentRun = pgTable(
       .notNull()
       .references(() => submissionVersion.id, { onDelete: "cascade" }),
     rubricVersion: integer("rubric_version").notNull(),
+    /** Null only for runs from before snapshots were kept; those were assessed against the exercise as it then stood. */
+    exerciseSnapshot: jsonb("exercise_snapshot").$type<ExerciseSnapshot>(),
     graderConfig: jsonb("grader_config").$type<{ provider: string; model: string; promptVersion: string; roleVersion: string }>().notNull(),
     providerRunId: uuid("provider_run_id"),
     status: text("status").$type<"queued" | "reviewing" | "feedback_ready" | "needs_review" | "failed">().notNull().default("queued"),

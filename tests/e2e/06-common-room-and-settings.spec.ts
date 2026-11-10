@@ -49,7 +49,7 @@ test.describe("common room and settings", () => {
     await expect(page.getByText("round 0 of 2")).toBeVisible();
     await expect(page.getByText("Nobody has spoken yet")).toBeVisible();
     // Three AI participants: the chair and two classmates, all labelled.
-    await expect(page.getByText("AI classmate")).toHaveCount(2);
+    await expect(page.getByText("AI classmate · scripted demo")).toHaveCount(2);
     await screenshot(page, "32-discussion-open");
 
     await page
@@ -59,12 +59,13 @@ test.describe("common room and settings", () => {
       );
     await page.getByRole("button", { name: "Send" }).click();
     await expect(page.getByText("round 1 of 2")).toBeVisible({ timeout: 60_000 });
-    const aiTurns = page.locator("ol > li").filter({ hasText: /Scripted demo turn/ });
+    // Each AI turn is headed with what wrote it, apart from what its text says.
+    const aiTurns = page.locator("ol > li").filter({ has: page.getByText(/ · Scripted demo$/) });
     await expect(aiTurns).toHaveCount(3);
 
     // Nothing happens while the learner is away: a reload adds no turns.
     await page.reload();
-    await expect(page.locator("ol > li").filter({ hasText: /Scripted demo turn/ })).toHaveCount(3);
+    await expect(page.locator("ol > li").filter({ has: page.getByText(/ · Scripted demo$/) })).toHaveCount(3);
 
     await page
       .getByLabel(/Your turn/)
@@ -114,6 +115,7 @@ test.describe("common room and settings", () => {
     const card = page.locator("#provider");
     // The state notice, not the runs table, where every scripted run is also named "Scripted demo".
     await expect(card.getByRole("status").filter({ hasText: "No model is configured" })).toBeVisible();
+    await expect(card.getByRole("status").filter({ hasText: "No model is configured" })).toContainText("Scripted demo");
     await expect(page.getByLabel("Provider", { exact: true })).toHaveValue("fixture");
     await page.getByLabel("Per day", { exact: true }).fill("2.5");
     await card.getByRole("button", { name: "Save live tutoring settings" }).click();

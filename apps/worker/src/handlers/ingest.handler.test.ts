@@ -137,6 +137,16 @@ describe("ingestHandler", () => {
     expect(passages[0]!.physical_index).toBe(2);
     expect(passages[0]!.printed_label).toBe("1");
     expect(await permittedPassagesForCourse(handle.db, OWNER, "PHY-210", "Banach")).toEqual([]);
+    // A learner asks in sentences: the passage sharing the most words comes first, although no
+    // passage contains every word of the question; a question sharing none retrieves nothing.
+    const asked = await permittedPassagesForCourse(
+      handle.db,
+      OWNER,
+      "MAT-230",
+      "Why must every Cauchy sequence converge in a Banach space?",
+    );
+    expect(asked[0]?.physical_index).toBe(2);
+    expect(await permittedPassagesForCourse(handle.db, OWNER, "MAT-230", "What did Lorentz transform?")).toEqual([]);
   });
 
   it("a corrupt PDF fails cleanly: the asset is rejected with a reason and the job is not retried", async () => {

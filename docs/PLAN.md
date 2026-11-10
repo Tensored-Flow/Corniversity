@@ -148,6 +148,7 @@ Reconciled from commit `5faa665`; the requirement checklist is the last part of
 7. Verification on a clean development server, then on a local production build, then on the
    deployed site; release to the existing Railway project (worker first, then web). Check:
    recorded results, screenshots inspected, live health and diagnostic.
-- Blocked on the owner: creating the owner account (then the authenticated live checks and the
-  retirement of the bootstrap code), and a provider key with an approved budget (then the live
-  tutoring test).
+- Waiting for the owner: the owner account and, optionally, a key with approved paid use. The
+  owner then runs the short checklist in USER_ACTIONS.md (item 4), because the build agent cannot
+  sign in as the owner; the agent checks the closed sign-up and the removed bootstrap code from
+  outside and records the owner's results apart from the scripted and local checks.

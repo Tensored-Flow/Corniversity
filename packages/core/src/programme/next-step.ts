@@ -12,6 +12,8 @@ export type NextStep =
   | { kind: "open_unit"; courseId: string; unitId: string; text: string }
   | { kind: "preview_course"; courseId: string; text: string }
   | { kind: "obtain_sources"; text: string }
+  | { kind: "not_prepared"; text: string }
+  | { kind: "open_studio"; text: string }
   | { kind: "reflect"; text: string };
 
 export interface LearnerProgress {
@@ -19,12 +21,32 @@ export interface LearnerProgress {
   workedUnitIds: ReadonlySet<string>;
 }
 
-export function blockNextStep(block: ProgrammeBlock, report: BlockReadinessReport, learner: LearnerProgress): NextStep {
+/**
+ * `leads` counts the named but unverified sources the block and its courses record; a block is
+ * said to be waiting for sources only when there are some.
+ */
+export function blockNextStep(
+  block: ProgrammeBlock,
+  report: BlockReadinessReport,
+  learner: LearnerProgress,
+  context: { leads: number } = { leads: 0 },
+): NextStep {
   if (report.preparedUnitIds.length === 0) {
-    return {
-      kind: "obtain_sources",
-      text: "Nothing in this block can be studied yet. Its missing sources are on the library's list of books to obtain as leads; nothing else is asked of you, and other blocks are not held up.",
-    };
+    if (block.studio) {
+      return {
+        kind: "open_studio",
+        text: "This block's work is a project in the research studio, which needs no prepared unit: start one there when you have a question.",
+      };
+    }
+    return context.leads > 0
+      ? {
+          kind: "obtain_sources",
+          text: "Nothing in this block can be studied yet. Its missing sources are on the library's list of books to obtain as leads; nothing else is asked of you, and other blocks are not held up.",
+        }
+      : {
+          kind: "not_prepared",
+          text: "Nothing in this block can be studied yet: its units are still to be prepared, and nothing for it is missing from the library. Nothing is asked of you, and other blocks are not held up.",
+        };
   }
   for (const m of block.courseMappings) {
     if (!learner.activeCourseIds.has(m.courseId)) continue;
@@ -52,7 +74,7 @@ export function blockNextStep(block: ProgrammeBlock, report: BlockReadinessRepor
 
 export function programmeNextStep(
   participation: { status: string; focusBlockIds: string[] } | null,
-  blocks: readonly { block: ProgrammeBlock; report: BlockReadinessReport }[],
+  blocks: readonly { block: ProgrammeBlock; report: BlockReadinessReport; leads?: number }[],
   learner: LearnerProgress,
 ): NextStep {
   if (participation?.status !== "following") {
@@ -69,11 +91,11 @@ export function programmeNextStep(
   }
   const focus = participation.focusBlockIds.flatMap((id) => blocks.filter((b) => b.block.id === id));
   for (const b of focus) {
-    const step = blockNextStep(b.block, b.report, learner);
-    if (step.kind !== "obtain_sources") return { ...step, text: `${b.block.id}: ${step.text}` };
+    const step = blockNextStep(b.block, b.report, learner, { leads: b.leads ?? 0 });
+    if (step.kind !== "obtain_sources" && step.kind !== "not_prepared") return { ...step, text: `${b.block.id}: ${step.text}` };
   }
   const first = focus[0];
   return first
-    ? blockNextStep(first.block, first.report, learner)
+    ? blockNextStep(first.block, first.report, learner, { leads: first.leads ?? 0 })
     : { kind: "ask_director", text: "Ask the director for a new starting route." };
 }

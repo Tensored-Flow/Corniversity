@@ -1,0 +1,1 @@
+ALTER TABLE "assessment_run" ADD COLUMN "exercise_snapshot" jsonb;

@@ -328,7 +328,8 @@ export async function proposeProgrammeRoute(db: DbOrTx, ownerId: string, program
     courseTitles: new Map([...detail.courses.values()].map((c) => [c.courseId, c.title])),
     learner: {
       activeCourses: active,
-      focusBlockIds: part?.status === "following" ? part.focusBlockIds : [],
+      // A paused programme's focus is still what a new route would replace.
+      focusBlockIds: part ? part.focusBlockIds : [],
       load: {
         mainCourseLimit: preferences.mainCourseLimit,
         exploratoryLimit: preferences.exploratoryLimit,
@@ -338,6 +339,15 @@ export async function proposeProgrammeRoute(db: DbOrTx, ownerId: string, program
     },
     prerequisites,
   });
+  // A new route replaces any earlier draft for this programme, so an old one cannot be confirmed later.
+  const drafts = await db
+    .select({ id: changeProposal.id, diff: changeProposal.diff })
+    .from(changeProposal)
+    .where(and(eq(changeProposal.ownerId, ownerId), eq(changeProposal.kind, "programme"), eq(changeProposal.status, "draft")));
+  const earlier = drafts.filter((d) => (d.diff as { programmeId?: string }).programmeId === detail.programme.id).map((d) => d.id);
+  if (earlier.length > 0) {
+    await db.update(changeProposal).set({ status: "superseded", decidedAt: new Date() }).where(inArray(changeProposal.id, earlier));
+  }
   const [proposal] = await db
     .insert(changeProposal)
     .values({
@@ -359,12 +369,24 @@ export async function proposeProgrammeRoute(db: DbOrTx, ownerId: string, program
   return proposal!;
 }
 
-/** Applies a confirmed programme proposal; called from the shared proposal decision. */
-export async function applyProgrammeProposal(db: DbOrTx, ownerId: string, diff: unknown): Promise<boolean> {
-  const d = diff as { programmeId?: string; action?: string; focusBlockIds?: string[] };
-  if (!d.programmeId || d.action !== "follow") return false;
+/**
+ * Applies a confirmed programme proposal; called from the shared proposal decision. A route made
+ * for a focus that has changed since is not applied ("superseded"): it would silently displace
+ * whatever the learner chose in the meantime.
+ */
+export async function applyProgrammeProposal(db: DbOrTx, ownerId: string, diff: unknown): Promise<"applied" | "superseded" | "invalid"> {
+  const d = diff as { programmeId?: string; action?: string; focusBlockIds?: string[]; focusBefore?: string[] };
+  if (!d.programmeId || d.action !== "follow") return "invalid";
+  const [part] = await db
+    .select({ focusBlockIds: programmeParticipation.focusBlockIds })
+    .from(programmeParticipation)
+    .where(and(eq(programmeParticipation.ownerId, ownerId), eq(programmeParticipation.programmeId, d.programmeId)))
+    .limit(1);
+  const same = (a: readonly string[], b: readonly string[]) =>
+    a.length === b.length && [...a].sort().every((x, i) => x === [...b].sort()[i]);
+  if (d.focusBefore && !same(d.focusBefore, part?.focusBlockIds ?? [])) return "superseded";
   await followProgramme(db, ownerId, d.programmeId, "director_proposal", d.focusBlockIds ?? []);
-  return true;
+  return "applied";
 }
 
 /** Titles and links of registered sources named on a programme's shelves and seminar. */

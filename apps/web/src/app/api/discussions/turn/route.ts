@@ -1,5 +1,5 @@
 import { buildPeerPrompt, buildSeminarChairPrompt, DISCUSSION_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
-import { annotateTurn } from "@corniversity/core/grounding/citations";
+import { annotateTurn, citedHistory } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
 import { teachingUnit } from "@corniversity/db/schema/index";
 import { appendTurn, completeRound, getDiscussion, getPersonas, listTurns } from "@corniversity/db/services/community";
@@ -62,7 +62,7 @@ export async function POST(request: Request): Promise<Response> {
   const transcript = [
     ...prior.map(
       (t) =>
-        `${t.speaker === "learner" ? profile.displayName : (personas.find((p) => p.id === t.speaker)?.name ?? t.speaker)}: ${t.contentMarkdown}`,
+        `${t.speaker === "learner" ? profile.displayName : (personas.find((p) => p.id === t.speaker)?.name ?? t.speaker)}: ${citedHistory(t.contentMarkdown, [])}`,
     ),
     `${profile.displayName}: ${parsed.data.message}`,
   ];

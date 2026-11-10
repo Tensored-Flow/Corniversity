@@ -57,6 +57,9 @@ export class AnthropicProvider implements ModelProvider {
 
   async *streamText(request: BaseRequest): AsyncGenerator<string, TextResult, void> {
     const model = request.model ?? this.config.model;
+    // What the stream has reported so far: a stream that fails after it started has been billed
+    // for its prompt and for the output already produced.
+    let usageSoFar: BetaUsage | null = null;
     try {
       const stream = this.client.beta.messages.stream({
         model,
@@ -69,6 +72,8 @@ export class AnthropicProvider implements ModelProvider {
       let text = "";
       const fallbacks: FallbackSwitch[] = [];
       for await (const event of stream) {
+        if (event.type === "message_start") usageSoFar = event.message.usage;
+        else if (event.type === "message_delta" && usageSoFar) usageSoFar = withDelta(usageSoFar, event.usage);
         if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
           text += event.delta.text;
           yield event.delta.text;
@@ -89,7 +94,11 @@ export class AnthropicProvider implements ModelProvider {
         fallbacks,
       };
     } catch (error) {
-      throw mapError(error);
+      const mapped = mapError(error);
+      if (usageSoFar && mapped.attempts.length === 0) {
+        throw new ProviderError(mapped.kind, mapped.message, mapped.retryable, attemptsOf(usageSoFar, model, model));
+      }
+      throw mapped;
     }
   }
 
@@ -147,6 +156,13 @@ export class AnthropicProvider implements ModelProvider {
 }
 
 type BetaUsage = Anthropic.Beta.BetaUsage;
+
+/** A stream's usage after a `message_delta`: its counts replace earlier ones where it gives them. */
+function withDelta(usage: BetaUsage, delta: object): BetaUsage {
+  const merged: Record<string, unknown> = { ...usage };
+  for (const [key, value] of Object.entries(delta)) if (value !== null && value !== undefined) merged[key] = value;
+  return merged as unknown as BetaUsage;
+}
 
 /**
  * Every attempt the provider made for one request. `usage.iterations` is the per-attempt source

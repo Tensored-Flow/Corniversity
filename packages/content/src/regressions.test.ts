@@ -199,3 +199,15 @@ describe("NEU-220: the tuning laboratory's evaluation questions", () => {
     );
   });
 });
+
+describe("Psych-101 stays undownloaded", () => {
+  it("no version of its record permits an import, names a host to fetch from or points at a file", () => {
+    const record = bundle.sources.find((s) => s.id === "psych-101");
+    expect(record).toBeDefined();
+    for (const version of record!.versions) {
+      expect(version.importAllowed).toBe(false);
+      expect(version.importHosts).toEqual([]);
+      expect(version.locators.every((l) => l.locator.kind === "web")).toBe(true);
+    }
+  });
+});

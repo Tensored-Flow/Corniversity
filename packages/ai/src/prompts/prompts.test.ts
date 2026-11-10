@@ -60,7 +60,8 @@ describe("the modelling standard in feedback", () => {
     expect(supervisor).toMatch(/held-out trials of familiar stimuli, new people, new tasks and later time periods are different questions/);
   });
 
-  it("tells the supervisor the studio collects no new data from people", () => {
+  it("tells the supervisor the studio collects no new data from people but may use permitted existing data about people", () => {
     expect(supervisor).toMatch(/collects no new data from people/);
+    expect(supervisor).toMatch(/existing datasets that their licence or terms permit \(data about people included\)/);
   });
 });

@@ -12,6 +12,11 @@ test.describe("functional analysis learning loop", () => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);
 
+    // What the record says about the concept before this run submits anything.
+    await page.goto("/studies");
+    const conceptRow = page.getByRole("listitem").filter({ hasText: "Equivalence of norms" });
+    const conceptBefore = (await conceptRow.count()) > 0 ? ((await conceptRow.first().textContent()) ?? "") : "";
+
     await page.goto("/courses/MAT-230");
     await expect(page.getByRole("heading", { level: 1, name: "Functional Analysis I" })).toBeVisible();
     await expect(page.getByText("Teaching ready").first()).toBeVisible();
@@ -42,6 +47,7 @@ test.describe("functional analysis learning loop", () => {
       await expect(page.getByText("Needs review").first()).toBeVisible({ timeout: 90_000 });
       await expect(page.getByText(/verdict is withheld/i).first()).toBeVisible();
       await expect(page.getByText(/not true in general/i).first()).toBeVisible();
+      await expect(page.getByText("Scripted demo assessor: no model read this").first()).toBeVisible();
       await screenshot(page, "05-feedback-withheld-check-failed");
 
       // Revise with a correct argument.
@@ -70,10 +76,15 @@ test.describe("functional analysis learning loop", () => {
 
     await page.goto("/studies");
     // Submitted work is recorded as practice. Only a verdict makes a concept "demonstrated", and
-    // without a model the verdict is withheld; a database from before that rule can still hold an
-    // older "demonstrated".
-    const concept = page.getByRole("listitem").filter({ hasText: "Equivalence of norms" }).first();
-    await expect(concept).toContainText(/practised|demonstrated/);
+    // without a model the verdict is withheld, so this run can never make it demonstrated; only a
+    // database from before that rule can already hold an older "demonstrated".
+    const concept = conceptRow.first();
+    if (/demonstrated/.test(conceptBefore)) {
+      await expect(concept).toContainText("demonstrated");
+    } else {
+      await expect(concept).toContainText("practised");
+      await expect(concept).not.toContainText("demonstrated");
+    }
     await screenshot(page, "07-my-studies-evidence");
   });
 
@@ -90,6 +101,11 @@ test.describe("functional analysis learning loop", () => {
     // A citation is labelled source-backed only when the tutor saw the passage's text; until the
     // library holds that text it reads "location cited, text not seen".
     await expect(page.getByText(/source-backed|needs checking|location cited, text not seen/).first()).toBeVisible({ timeout: 30_000 });
+    // The stored reply names what wrote it, and its citations resolved to sources of the unit:
+    // each is shown with that source's label, and none was removed as unverifiable.
+    await expect(page.locator("p", { hasText: / · Scripted demo$/ }).last()).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator('[id^="cite-E"]').last()).toHaveText(/^E\d+: \S.+/);
+    await expect(page.getByText(/unverifiable citation removed/)).toHaveCount(0);
     await screenshot(page, "08-tutor-turn");
   });
 });

@@ -221,6 +221,7 @@ export default async function SessionPage({
                       submittedAt={v.submittedAt}
                       contentMarkdown={v.contentMarkdown}
                       run={v.run}
+                      currentRubricVersion={selected.rubricVersion}
                       reviews={v.reviews}
                       fileReview={fileReviewAction}
                     />

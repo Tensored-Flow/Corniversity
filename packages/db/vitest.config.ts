@@ -6,7 +6,8 @@ export default defineConfig({
     name: "db",
     include: ["src/**/*.test.ts"],
     globalSetup: ["./test/global-setup.ts"],
-    fileParallelism: false,
+    // The files share one database, so the root scripts run them one at a time
+    // (--no-file-parallelism); Vitest ignores fileParallelism in a project's own config.
     testTimeout: 60_000,
     hookTimeout: 180_000,
     env: {

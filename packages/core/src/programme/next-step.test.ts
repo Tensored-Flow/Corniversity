@@ -57,9 +57,16 @@ describe("readiness is the curriculum's, never the learner's", () => {
 });
 
 describe("the next step for a block", () => {
-  it("asks nothing of the learner when nothing is prepared, and does not hold other blocks up", () => {
-    expect(blockNextStep(unprepared, blockReadiness(unprepared, courses), none)).toMatchObject({ kind: "obtain_sources" });
-    expect(blockNextStep(empty, blockReadiness(empty, courses), none).kind).toBe("obtain_sources");
+  it("asks nothing of the learner when nothing is prepared, and speaks of missing sources only when there are leads", () => {
+    expect(blockNextStep(unprepared, blockReadiness(unprepared, courses), none)).toMatchObject({ kind: "not_prepared" });
+    expect(blockNextStep(unprepared, blockReadiness(unprepared, courses), none).text).toMatch(/nothing for it is missing from the library/);
+    expect(blockNextStep(unprepared, blockReadiness(unprepared, courses), none, { leads: 2 })).toMatchObject({ kind: "obtain_sources" });
+    expect(blockNextStep(empty, blockReadiness(empty, courses), none).kind).toBe("not_prepared");
+  });
+
+  it("sends a research-studio block to the studio, which needs no prepared unit", () => {
+    const studio = { ...block("MBI-12", [{ courseId: "COG-210", unitIds: [], contribution: "w" }]), studio: true };
+    expect(blockNextStep(studio, blockReadiness(studio, courses), none, { leads: 1 }).kind).toBe("open_studio");
   });
 
   it("previews the course before anything else when the learner does not take it", () => {
@@ -93,6 +100,12 @@ describe("the next step for a programme", () => {
 
   it("is to ask for a route when no focus is set", () => {
     expect(programmeNextStep({ status: "following", focusBlockIds: [] }, blocks, none).kind).toBe("ask_director");
+  });
+
+  it("when no focus block can be studied, says why for the first one: leads, or units still to be prepared", () => {
+    const only = (leads: number) => [{ block: unprepared, report: blockReadiness(unprepared, courses), leads }];
+    expect(programmeNextStep({ status: "following", focusBlockIds: ["MBI-02"] }, only(1), none).kind).toBe("obtain_sources");
+    expect(programmeNextStep({ status: "following", focusBlockIds: ["MBI-02"] }, only(0), none).kind).toBe("not_prepared");
   });
 
   it("comes from the first focus block that has something to study", () => {

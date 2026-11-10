@@ -7,6 +7,7 @@ import {
   explicitKeys,
   PreferenceError,
   resolveStudyPreferences,
+  rhythmStepDefaults,
 } from "./preferences";
 import { workloadBreakdown } from "./workload";
 
@@ -28,6 +29,24 @@ describe("study preference defaults", () => {
     expect(resolveStudyPreferences({ hardDeadlines: true }).hardDeadlines).toBe(true);
     expect(explicitKeys({ hardDeadlines: true }, "term").sort()).toEqual(["hardDeadlines", "rhythm"]);
     expect(explicitKeys({}, null)).toEqual([]);
+  });
+});
+
+describe("orientation's rhythm step", () => {
+  it("shows the answers during orientation, and the preferences as they stand afterwards", () => {
+    expect(rhythmStepDefaults({}, null)).toEqual({ rhythm: "rolling", hardDeadlines: false, examinations: false });
+    expect(rhythmStepDefaults({ rhythm: "term", hardDeadlines: false }, null)).toEqual({
+      rhythm: "term",
+      hardDeadlines: false,
+      examinations: false,
+    });
+    // Settings switched on deadlines after orientation: the step shows that, not the old answer.
+    const now = { ...resolveStudyPreferences({ rhythm: "term", hardDeadlines: true }, null) };
+    expect(rhythmStepDefaults({ rhythm: "rolling", hardDeadlines: false }, now)).toEqual({
+      rhythm: "term",
+      hardDeadlines: true,
+      examinations: false,
+    });
   });
 });
 

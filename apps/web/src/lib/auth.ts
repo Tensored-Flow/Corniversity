@@ -39,7 +39,9 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 30,
     updateAge: 60 * 60 * 24,
-    cookieCache: { enabled: true, maxAge: 5 * 60 },
+    // Every request checks the session in the database, so signing out, and the recovery command
+    // that revokes every session, take effect at once rather than when a cached cookie expires.
+    cookieCache: { enabled: false },
   },
   rateLimit: {
     enabled: true,
@@ -58,9 +60,12 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (data) => {
-          // The first (and only) account created through bootstrap is the owner.
-          const complete = await isBootstrapComplete(db);
-          return { data: { ...data, role: complete ? "learner" : "owner" } };
+          // The first and only account, created through bootstrap, is the owner. Once it exists no
+          // account is created at all, so sign-up stays closed even if a request got past the gate.
+          if (await isBootstrapComplete(db)) {
+            throw new APIError("FORBIDDEN", { message: "Sign-up is closed. This institution has one owner account." });
+          }
+          return { data: { ...data, role: "owner" } };
         },
         after: async (created) => {
           await completeBootstrap(db, created.id);

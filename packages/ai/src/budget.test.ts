@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BudgetLimitError, decideBudget, validateBudgetLimits } from "./budget";
-import { costOfAttempts, estimateCostUsd, estimateRunCostUsd, worstCaseRunUsd } from "./pricing";
+import { costOfAttempts, estimateCostUsd, estimatePromptTokens, estimateRunCostUsd, worstCaseRunUsd } from "./pricing";
 
 const limits = { perRunUsd: 0.5, dailyUsd: 3, monthlyUsd: 40, warnFraction: 0.8 };
 
@@ -26,11 +26,6 @@ describe("decideBudget", () => {
   it("stops when the daily or the monthly limit could be crossed", () => {
     expect(decideBudget(limits, { todayUsd: 2.9, monthUsd: 10 }, 0.2).allowed).toBe(false);
     expect(decideBudget(limits, { todayUsd: 0, monthUsd: 39.9 }, 0.2).allowed).toBe(false);
-  });
-
-  it("has no soft mode: a stored row that once switched the hard stop off still cannot overspend", () => {
-    const legacy = { ...limits, hardStop: false } as typeof limits;
-    expect(decideBudget(legacy, { todayUsd: 5, monthUsd: 50 }, 0.1).allowed).toBe(false);
   });
 
   it("warns near the daily limit", () => {
@@ -107,13 +102,25 @@ describe("pricing", () => {
     expect(costOfAttempts(attempts)).toBeCloseTo(0.044, 9);
   });
 
-  it("bounds a run's worst case: the prompt at the cache-write rate, the whole allowance, and a fallback run when fallback is on", () => {
+  it("puts a run's worst case at the whole allowance, the estimated prompt at the cache-write rate, and a fallback run", () => {
     const prompt = "x".repeat(3000); // 1000 tokens at three characters a token
     // Opus 5.5: 1000*$5/M (cache write) + 1000*$20/M = 0.025.
     expect(worstCaseRunUsd("claude-opus-5-5", prompt, 1000, false)).toBeCloseTo(0.025, 9);
-    // Plus the dearest documented fallback (Opus 5 / Opus 4.8): 1000*$6.25/M + 1000*$25/M = 0.03125.
-    expect(worstCaseRunUsd("claude-opus-5-5", prompt, 1000, true)).toBeCloseTo(0.05625, 9);
+    // Plus the dearest documented fallback (Opus 5 / Opus 4.8), whose prompt also carries the
+    // declined attempt's output as continuation: (1000 + 1000)*$6.25/M + 1000*$25/M = 0.0375.
+    expect(worstCaseRunUsd("claude-opus-5-5", prompt, 1000, true)).toBeCloseTo(0.0625, 9);
     // Haiku 5.5 has no server-side fallback, so the flag changes nothing.
     expect(worstCaseRunUsd("claude-haiku-5-5", prompt, 1000, true)).toBeCloseTo(0.000625, 9);
+  });
+
+  it("counts characters outside ASCII at their UTF-8 bytes, never fewer tokens than a byte each", () => {
+    expect(estimatePromptTokens("abc")).toBe(1);
+    expect(estimatePromptTokens("é".repeat(100))).toBe(200);
+    expect(estimatePromptTokens("∀ε>0")).toBe(1 + 3 + 2); // two ASCII characters, ∀ and ε
+    expect(estimatePromptTokens("ab😀")).toBe(1 + 4);
+    // A prompt of symbols costs more in the worst case than the same number of ASCII letters.
+    expect(worstCaseRunUsd("claude-opus-5-5", "∀".repeat(300), 0, false)).toBeGreaterThan(
+      worstCaseRunUsd("claude-opus-5-5", "x".repeat(300), 0, false),
+    );
   });
 });

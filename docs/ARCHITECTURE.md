@@ -81,13 +81,14 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   entry), `research_feedback` (scripted, live or blocked, with its checks and the provider run),
   `research_oral_request`.
 - **Operations**: `job_record`, `provider_run` (per-attempt usage when a server-side fallback
-  ran, the worst-case estimate, and refused runs recorded as `blocked` or `budget_blocked`),
+  ran, the worst-case estimate, `running` while a live run holds its worst case, and refused runs
+  recorded as `blocked` or `budget_blocked`),
   `audit_event`, `export_record`, `app_setting`. `provider_setting` holds the provider, the model,
   the refusal-fallback choice and the owner's approval of paid use. A partial unique index allows
   one `user` with the role `owner`.
 
 Invariants enforced in services and tests: grades reference exact submission/rubric/run
-versions; citations resolve to immutable `source_version` + `locator`; enrolments reference a
+versions and keep the exercise as answered; citations resolve to immutable `source_version` + `locator`; enrolments reference a
 `course_version`; cross-listing never duplicates attempts; instructor artifacts never serialize to
 learners; permissions are per action; owner scoping on every query; idempotency keys on
 enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are distinct rows.
@@ -98,7 +99,11 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
   chair, supervisor, peer. Each has a versioned contract: purpose, allowed tools (server
   functions), required context, forbidden actions, output schema, memory policy, limits.
 - Grounding: evidence blocks are tagged `[E1]…[En]`; the model cites tags; the server maps tags to
-  locator ids and drops unknown tags, flagging the sentence as uncited.
+  locator ids and drops unknown tags, flagging the sentence as uncited. Each turn numbers its
+  evidence afresh, so replayed history replaces earlier tags with the labels of the sources they
+  resolved to. Tutor passages come from the learner's permitted library by full-text search that
+  any word of the question can match, best matches first. A reading-room selection is attributed
+  to its page only when it is found on that page.
 - Labels: `{source-backed}`, `{derived}`, `{conjecture}`, `{needs-checking}` markers → stored labels.
 - Providers: `anthropic` (official SDK 1.3, beta Messages API: `messages.stream` for prose,
   `messages.create` with a Zod output format and the application's own validation for structured
@@ -110,10 +115,13 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
   `blocked` with a stated reason. A blocked run is refused and recorded; nothing scripted
   replaces it. Every stored reply carries the id of the run that produced it, which is how it is
   labelled live or scripted afterwards.
-- Budget: per-run, daily and monthly limits, always hard and capped by fixed ceilings; before a
-  run its worst case (prompt, the whole output allowance, and a fallback attempt when enabled) is
-  checked against the role's cap and every limit; actual usage is recorded per attempt in
-  `provider_run`; the pricing table carries its date and source URL.
+- Budget: per-run, daily and monthly limits, always hard and capped by fixed ceilings. Before a
+  live run, under a per-owner database lock, its worst case (the whole output allowance, the
+  prompt counted conservatively, and with fallback on a second run whose prompt also carries the
+  first attempt's output) is checked against the role's cap and every limit, counting other runs
+  still in progress at their worst case; the run is then recorded as `running` and finished with
+  its actual usage per attempt, also when the learner leaves mid-reply or the stream fails part
+  way. The pricing table carries its date and source URL.
 - Assets: `checkAiAssets` reports whether the scripted responses load and which prompt versions
   the build carries (counts and version names, never contents or paths); the health route and
   the worker's start-up log show it.
@@ -169,5 +177,6 @@ device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); upl
     demo is chosen explicitly and labelled wherever it speaks.
 13. Account recovery is an administrative command, not an email flow, because no mail provider
     is configured; nothing on the website can reset a password.
-14. The research studio works only from published or open material, simulations and the learner's
-    own reasoning; it has no path for collecting data from people.
+14. The research studio works from simulations, published or open material, existing datasets used
+    as their licence or terms permit (data about people included) and the learner's own reasoning;
+    it has no path for recruiting anyone or collecting new data from people.

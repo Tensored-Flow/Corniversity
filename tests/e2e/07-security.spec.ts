@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { ownerEnv } from "./helpers";
 
 /**
  * Journey 10's local half: nothing private answers an unauthenticated browser. Pages redirect to
@@ -53,17 +54,38 @@ test.describe("unauthenticated access", () => {
       await expect(page, path).toHaveURL(/\/sign-in/);
     }
   });
-  test("private JSON routes answer 401 or 404 without content", async ({ request }) => {
+  test("private JSON routes answer 401 without content; an unknown calendar token is not found", async ({ request }) => {
     for (const [path, body] of PRIVATE_POSTS) {
       const response = await request.post(path, { data: body });
-      expect([401, 404], `${path} → ${response.status()}`).toContain(response.status());
+      expect(response.status(), path).toBe(401);
     }
     for (const path of PRIVATE_GETS) {
       const response = await request.get(path);
-      expect([401, 404], `${path} → ${response.status()}`).toContain(response.status());
+      expect(response.status(), path).toBe(path.startsWith("/api/calendar/") ? 404 : 401);
       const text = await response.text();
       expect(text).not.toContain("%PDF");
     }
+  });
+  test("a forged session cookie is refused by the server itself, not only by the redirect", async ({ page, baseURL }) => {
+    const host = new URL(baseURL ?? "http://localhost:3000").hostname;
+    await page.context().addCookies(
+      ["corniversity.session_token", "__Secure-corniversity.session_token"].map((name) => ({
+        name,
+        value: "forged-session-token.forged-signature",
+        domain: host,
+        path: "/",
+        secure: name.startsWith("__Secure-"),
+        httpOnly: true,
+        sameSite: "Lax" as const,
+      })),
+    );
+    // The proxy only checks that a cookie is present; the page checks the session itself.
+    await page.goto("/campus");
+    await expect(page).toHaveURL(/\/sign-in/);
+    const response = await page.request.post("/api/tutor/turn", {
+      data: { sessionId: "00000000-0000-4000-8000-000000000000", message: "x" },
+    });
+    expect(response.status()).toBe(401);
   });
   test("the health route answers publicly with liveness and asset counts only", async ({ request }) => {
     const response = await request.get("/api/health");
@@ -78,10 +100,15 @@ test.describe("unauthenticated access", () => {
     expect(assets).toMatchObject({ ok: true, scripted: "7 of 7" });
     for (const [role, version] of Object.entries(assets.prompts)) expect(version).toMatch(new RegExp(`^${role}-\\d+\\.\\d+$`));
   });
-  test("sign-up is closed once the owner exists", async ({ request }) => {
-    const response = await request.post("/api/auth/sign-up/email", {
-      data: { email: `intruder-${Date.now()}@example.com`, password: "a-long-enough-password-123", name: "Intruder" },
-    });
-    expect([400, 403, 422]).toContain(response.status());
+  test("once the owner exists, sign-up is closed even with the owner email and the bootstrap code", async ({ request }) => {
+    const owner = ownerEnv();
+    for (const email of [owner.email, `second-account-${Date.now()}@example.com`]) {
+      const response = await request.post("/api/auth/sign-up/email", {
+        headers: { "x-bootstrap-code": owner.code },
+        data: { email, password: "a-long-enough-password-123", name: "Second account" },
+      });
+      expect(response.status(), email).toBe(403);
+      expect(((await response.json()) as { message?: string }).message).toBe("Sign-up is closed. This institution has one owner account.");
+    }
   });
 });

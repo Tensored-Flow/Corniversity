@@ -73,7 +73,12 @@ export async function deleteEntryAction(form: FormData): Promise<void> {
   const id = text(form, "id");
   if (!UUID.test(id)) redirect("/notebook");
   if (form.get("confirm") !== "1") fail(`/notebook/${id}`, "Tick the confirmation box to delete this entry.");
-  await deleteEntry(db(), session.user.id, id);
+  try {
+    await deleteEntry(db(), session.user.id, id);
+  } catch (error) {
+    if (error instanceof NotebookError) fail(`/notebook/${id}`, error.message);
+    throw error;
+  }
   revalidatePath("/notebook");
   redirect("/notebook?deleted=1");
 }

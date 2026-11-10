@@ -1136,6 +1136,7 @@
       "id": "MBI-12",
       "sequence": 12,
       "title": "Independent Research Studio",
+      "studio": true,
       "centralQuestion": "Can the learner investigate a question and defend what the evidence supports?",
       "entryLevel": "At least one modelling block (usually MBI-04 or MBI-11) and one subject block.",
       "requiredCoverage": [
@@ -1161,7 +1162,7 @@
         {
           "courseId": "COG-290",
           "unitIds": [],
-          "contribution": "Canonical course; the project workflow is designed, not yet built."
+          "contribution": "Canonical course; its project work runs in the research studio, from a question to a report."
         }
       ],
       "sourceShelf": [
@@ -1193,7 +1194,6 @@
       "evidenceOfUnderstanding": "A report whose claims match its evidence, with limitations and, where they occur, well-explained negative results.",
       "tutorGuidance": "Help shrink the question without pretending a toy exercise answers the whole research problem; reward a clear limitation.",
       "gaps": [
-        "The research-project workflow (proposal, provenance, artefacts, report) is specified but not built.",
         "No source yet on reporting negative results or on notebook practice."
       ]
     }

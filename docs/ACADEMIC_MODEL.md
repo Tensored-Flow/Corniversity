@@ -44,12 +44,16 @@ next step. The campus layer never interrupts proof work.
 
 ## Assessment
 
-Submission versions are immutable. States: draft → submitted → reviewing → feedback_ready |
+Submission versions are immutable, and each assessment keeps the exercise as the learner
+answered it (prompt, rubric version and checks), so a later repair of the exercise never changes
+what a submission was assessed against; a regrade assesses against the same version. States: draft → submitted → reviewing → feedback_ready |
 revision_requested | needs_review → revised → accepted. Feedback: statement fidelity, hypotheses,
 quantifiers, logical steps, cited results, boundary cases, first substantive gap (line-localised),
 alternate proofs accepted. Deterministic checks run first where they apply (e.g. the norms of
 `x^n` on `[0,1]`: sup norm 1, L¹ norm 1/(n+1)); a model assessor adds structured feedback with
 confidence; low confidence ⇒ `needs_review`. Appeals and regrades are first-class records.
+Feedback that repeats the hidden reference solution (a run of ten consecutive words the learner has
+not seen in the prompt or in their own submission) is withheld before it is stored.
 
 Feedback on modelling work keeps seven things apart: implementation, statistical or
 computational method, evaluation design, interpretation, scientific claims, reproducibility and
@@ -108,7 +112,8 @@ number: observed; prediction target; history in training; history at inference; 
 later time periods; unavailable in real use; simplest baseline; claims not tested. A laboratory
 that makes predictions keeps its results hidden until the learner has saved a prediction in the
 notebook; the prediction is a note, never evidence of understanding. *Predict again* hides the
-results until a new prediction is saved; earlier predictions stay in the notebook.
+results until a new prediction is saved; earlier predictions stay in the notebook as dated records
+that cannot be edited or deleted, and no older note can be tagged as a prediction.
 
 Held-out trials of stimuli the fit has seen and stimuli absent from training answer different
 questions. Either can be useful; they are not interchangeable. A laboratory that offers both
@@ -123,16 +128,19 @@ investigation, computational modelling, replication or re-analysis, and critical
 focused shelf of verified source records (anything else is a lead for the library's list),
 proposal, methods and report documents saved as numbered versions that later drafts never
 change, provenance for every dataset and simulation (a simulation records its seed and
-generator; data about people can only be an existing published dataset), notebook entries tagged
+generator; data about people can only come from an existing dataset whose licence or terms permit
+the analysis), notebook entries tagged
 with the project, and small private artefacts. Feedback attaches to a saved version: structural
 checks that say which parts are present, never whether the reasoning is right, plus written
 feedback only from an approved live model, labelled provisional. The report keeps apart the
 question, observations, assumptions, model predictions, competing explanations, the available
 information, what the evidence establishes, what remains unsupported, reproducibility and
 uncertainty, and is assembled with the project's own records. An optional oral discussion is held
-as bounded office hours. The studio never collects data from people, recruits, contacts anyone,
-publishes or imports private data, and a demonstration project is labelled as not the learner's
-work.
+as bounded office hours. The studio never recruits anyone, collects new data from people,
+contacts anyone, publishes or imports private data. A proposal or method that plans to collect
+from people is flagged and the sentence quoted; re-analysing an existing dataset about people, or
+describing how its authors collected it, is not. A demonstration project is labelled as not the
+learner's work.
 
 ## Honesty rules
 

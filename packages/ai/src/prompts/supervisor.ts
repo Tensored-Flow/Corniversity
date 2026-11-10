@@ -1,4 +1,4 @@
-export const SUPERVISOR_PROMPT_VERSION = "supervisor-1.0";
+export const SUPERVISOR_PROMPT_VERSION = "supervisor-1.1";
 
 /** The modelling standard every review of modelling work keeps apart (curriculum section 14). */
 export const MODELLING_DIMENSIONS = [
@@ -39,7 +39,7 @@ export interface SupervisorPromptInput {
 export function buildSupervisorPrompt(input: SupervisorPromptInput): string {
   return `You are the AI research supervisor in the research studio of ${input.institutionName}, a private personal university for one learner. You are an AI; your feedback is provisional and the learner may disagree with it.
 
-You read one saved version of a project document and say what would make the work sounder. You did not run the learner's code, see their data or check their calculations unless they appear in the text; say so where it matters. You do not recruit, contact or survey anyone, and the studio collects no new data from people: suggest published datasets, simulations or the published record instead.
+You read one saved version of a project document and say what would make the work sounder. You did not run the learner's code, see their data or check their calculations unless they appear in the text; say so where it matters. You do not recruit, contact or survey anyone, and the studio collects no new data from people: suggest existing datasets that their licence or terms permit (data about people included), simulations or the published record instead.
 
 PROJECT: ${input.projectTitle} (${input.kindLabel})
 QUESTION: ${input.question}

@@ -99,18 +99,41 @@ export function estimateRunCostUsd(model: string, inputText: string, expectedOut
 }
 
 /**
- * The most a run can cost, for the budget gate: the prompt counted at three characters a token
- * and at the cache-write rate (the dearer of the two input rates), the whole output allowance
- * used (thinking counts towards it), and, when refusal fallback is on, a second full run on the
- * dearest documented fallback model, because a declined attempt is billed as well as the
- * attempt that replaces it. Actual cost is recorded from usage afterwards.
+ * A run's worst case, for the budget gate. The output allowance is exact: the provider stops at
+ * the allowance, and thinking counts towards it. The prompt is a conservative estimate (see
+ * `estimatePromptTokens`) priced at the cache-write rate, the dearer of the two input rates. With
+ * refusal fallback on, a second full run on the dearest documented fallback model is added, whose
+ * prompt also carries the text the declined attempt had already produced, because the provider
+ * passes that text on as continuation and bills both attempts. Prompt text denser than the
+ * estimate can cost more; the actual cost is recorded afterwards and counts towards the limits.
  */
 export function worstCaseRunUsd(model: string, inputText: string, maxOutputTokens: number, refusalFallback: boolean): number {
-  const promptTokens = Math.ceil(inputText.length / 3);
-  const run = (m: string) =>
-    estimateCostUsd(m, { inputTokens: 0, outputTokens: maxOutputTokens, cacheReadTokens: 0, cacheWriteTokens: promptTokens });
-  const primary = run(model);
+  const promptTokens = estimatePromptTokens(inputText);
+  const run = (m: string, continuationTokens: number) =>
+    estimateCostUsd(m, {
+      inputTokens: 0,
+      outputTokens: maxOutputTokens,
+      cacheReadTokens: 0,
+      cacheWriteTokens: promptTokens + continuationTokens,
+    });
+  const primary = run(model, 0);
   const targets = refusalFallback && supportedModel(model)?.serverFallback ? (supportedModel(model)?.fallbackTargets ?? []) : [];
-  const fallback = targets.length ? Math.max(...targets.map(run)) : 0;
+  const fallback = targets.length ? Math.max(...targets.map((t) => run(t, maxOutputTokens))) : 0;
   return round6(primary + fallback);
+}
+
+/**
+ * Prompt tokens for the budget gate: ASCII text at three characters a token (English averages
+ * nearer four) and every other character at its UTF-8 bytes, since a token never covers less than
+ * a byte. Symbol-dense ASCII, such as long digit strings, can still use more tokens than this.
+ */
+export function estimatePromptTokens(text: string): number {
+  let ascii = 0;
+  let otherBytes = 0;
+  for (const ch of text) {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code < 0x80) ascii += 1;
+    else otherBytes += code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
+  }
+  return Math.ceil(ascii / 3) + otherBytes;
 }

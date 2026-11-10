@@ -180,6 +180,22 @@ describe("streamed turns", () => {
     expect((await drain(provider().streamText(request))).result.stopReason).toBe("max_tokens");
   });
 
+  it("keep the usage of a stream that fails after it started, so its cost is still recorded", async () => {
+    scenario = {
+      kind: "stream",
+      events: [
+        start("claude-opus-5-5"),
+        ...text(0, ["Half a reply"]),
+        { type: "error", error: { type: "overloaded_error", message: "Overloaded" } },
+      ],
+    };
+    const error = await drain(provider().streamText(request)).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(ProviderError);
+    expect((error as ProviderError).attempts).toEqual([
+      { kind: "message", model: "claude-opus-5-5", inputTokens: 1200, outputTokens: 1, cacheReadTokens: 0, cacheWriteTokens: 0 },
+    ]);
+  });
+
   it("ask for no fallback where the model has none, or where the owner turned it off", async () => {
     scenario = { kind: "stream", events: [start("claude-haiku-5-5"), ...text(0, ["ok"]), ...end("end_turn")] };
     await drain(provider("claude-haiku-5-5").streamText(request));

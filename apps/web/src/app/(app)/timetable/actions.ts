@@ -51,13 +51,18 @@ export async function decideProposalAction(formData: FormData): Promise<void> {
   const session = await requireSession("/timetable");
   const decision = String(formData.get("decision") ?? "");
   if (decision !== "confirmed" && decision !== "rejected") return;
-  await decideProposal(db(), session.user.id, String(formData.get("proposalId") ?? ""), decision);
+  const outcome = await decideProposal(db(), session.user.id, String(formData.get("proposalId") ?? ""), decision);
   revalidatePath("/timetable");
   revalidatePath("/campus");
   revalidatePath("/director");
   revalidatePath("/studies");
-  const back = String(formData.get("returnTo") ?? "");
-  redirect(back === "/director" ? "/director" : "/timetable");
+  const back = String(formData.get("returnTo") ?? "") === "/director" ? "/director" : "/timetable";
+  if (outcome === "superseded") {
+    redirect(
+      `${back}?error=${encodeURIComponent("That route was proposed for an earlier focus, so nothing changed: your focus stays as you set it since. Ask the director again for a route from where you are now.")}`,
+    );
+  }
+  redirect(back);
 }
 
 export async function createCalendarLinkAction(formData: FormData): Promise<void> {

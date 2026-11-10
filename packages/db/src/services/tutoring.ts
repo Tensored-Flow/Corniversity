@@ -9,9 +9,10 @@ export type ConversationRow = typeof conversation.$inferSelect;
 export type MessageRow = typeof message.$inferSelect;
 
 /**
- * Evidence for a tutor turn is the unit's verified locators. Where the passage text has been
- * ingested it is included; otherwise the block carries the location only and says so, so the
- * model cannot pretend to have read a page it has not.
+ * Evidence for a tutor turn: the unit's verified locators as location-only blocks, which say the
+ * model has not been given their text, plus the passages best matching the question from the
+ * learner's own library items that are processed, assigned to the course and permitted for
+ * external AI processing. Local-only items are named, never read.
  */
 export async function buildUnitEvidence(
   db: DbOrTx,

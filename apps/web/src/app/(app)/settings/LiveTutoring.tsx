@@ -125,8 +125,9 @@ export function LiveTutoring({ state, view, limits, spend, runs }: Props) {
           </Field>
         </fieldset>
         <p className="text-xs text-ink-3 sm:col-span-2">
-          A run is refused before it starts if its worst case could cross a limit: the prompt, the whole output allowance (thinking counts
-          towards it) and, with fallback on, a second run on the fallback model. Spent today ${spend.todayUsd.toFixed(2)} · this month $
+          A run is refused before it starts if its worst case could cross a limit: the whole output allowance (thinking counts towards it),
+          the prompt counted conservatively, and, with fallback on, a second run on the fallback model; runs still in progress count at
+          their worst case. Afterwards the run counts at what it actually cost. Spent today ${spend.todayUsd.toFixed(2)} · this month $
           {spend.monthUsd.toFixed(2)} (UTC). Model use is billed by Anthropic to your API account, separately from hosting.
         </p>
         <label className="flex items-start gap-2 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-sm text-ink sm:col-span-2">

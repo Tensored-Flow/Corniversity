@@ -114,6 +114,30 @@ describe("Mind, Brain and AI against the seeded catalogue", () => {
     expect(loop[0]!.blockIds).toEqual(["MBI-04", "MBI-06", "MBI-11"]);
   });
 
+  it("never lets an older route displace a newer focus", async () => {
+    const [before] = await handle.db.select().from(programmeParticipation).where(eq(programmeParticipation.ownerId, OWNER));
+    const older = await proposeProgrammeRoute(handle.db, OWNER, "MIND-BRAIN-AI");
+    const newer = await proposeProgrammeRoute(handle.db, OWNER, "MIND-BRAIN-AI");
+    const status = async (id: string) =>
+      (await handle.db.select({ status: changeProposal.status }).from(changeProposal).where(eq(changeProposal.id, id)))[0]?.status;
+    // A new route supersedes the earlier draft, which can no longer be confirmed.
+    expect(await status(older.id)).toBe("superseded");
+    expect(await decideProposal(handle.db, OWNER, older.id, "confirmed")).toBe("not_open");
+    // The focus changes another way after the newer route was proposed: confirming it changes nothing.
+    await handle.db
+      .update(programmeParticipation)
+      .set({ focusBlockIds: ["MBI-02"] })
+      .where(eq(programmeParticipation.ownerId, OWNER));
+    expect(await decideProposal(handle.db, OWNER, newer.id, "confirmed")).toBe("superseded");
+    expect(await status(newer.id)).toBe("superseded");
+    const [after] = await handle.db.select().from(programmeParticipation).where(eq(programmeParticipation.ownerId, OWNER));
+    expect(after?.focusBlockIds).toEqual(["MBI-02"]);
+    await handle.db
+      .update(programmeParticipation)
+      .set({ focusBlockIds: before?.focusBlockIds ?? [] })
+      .where(eq(programmeParticipation.ownerId, OWNER));
+  });
+
   it("a confirmed director proposal sets a focus and enrols the learner in nothing new", async () => {
     const proposal = await proposeProgrammeRoute(handle.db, OWNER, "MIND-BRAIN-AI");
     expect(proposal.kind).toBe("programme");
@@ -148,6 +172,10 @@ describe("Mind, Brain and AI against the seeded catalogue", () => {
     const cog = await assessPrerequisites(handle.db, OWNER, "COG-201");
     expect(cog.find((r) => r.ruleId === "COG-201-probability")?.satisfied).toBe(true);
     expect(cog.find((r) => r.ruleId === "COG-201-programming")?.satisfied).toBe(false);
+    // Probability theory does not stand in for fitting models: COG-260 still asks for that.
+    const fitting = (await assessPrerequisites(handle.db, OWNER, "COG-260")).find((r) => r.ruleId === "COG-260-likelihood");
+    expect(fitting).toMatchObject({ satisfied: false, basis: "none" });
+    expect(fitting?.alternativeCourseIds).toContain("NEU-220");
     // The director's route shows the same split, and recommends nothing past an unmet rule silently.
     const proposal = await proposeProgrammeRoute(handle.db, OWNER, "MIND-BRAIN-AI");
     const route = (proposal.diff as { route: RouteProposal }).route;

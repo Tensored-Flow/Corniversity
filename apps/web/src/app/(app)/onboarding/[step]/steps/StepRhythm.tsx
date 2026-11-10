@@ -1,3 +1,4 @@
+import { resolveStudyPreferences, rhythmStepDefaults } from "@corniversity/core";
 import { nextMonday } from "@corniversity/db/services/programme";
 import { Input } from "@/components/ui";
 import { saveRhythmAction } from "../actions";
@@ -23,6 +24,10 @@ const RHYTHMS = [
 
 export function StepRhythm({ profile }: StepProps) {
   const answers = profile.onboardingAnswers;
+  const shown = rhythmStepDefaults(
+    answers,
+    profile.onboardingCompletedAt ? resolveStudyPreferences(profile.studyPreferences, profile.studyRhythm) : null,
+  );
   const defaultStart = answers.termStart ?? nextMonday(profile.timezone).toISODate() ?? "";
   return (
     <form action={saveRhythmAction} className="flex max-w-3xl flex-col gap-8">
@@ -37,7 +42,7 @@ export function StepRhythm({ profile }: StepProps) {
                 type="radio"
                 name="rhythm"
                 value={r.value}
-                defaultChecked={(answers.rhythm ?? "rolling") === r.value}
+                defaultChecked={shown.rhythm === r.value}
                 className="mt-1 accent-[var(--brass)]"
               />
               <span>
@@ -53,21 +58,11 @@ export function StepRhythm({ profile }: StepProps) {
         hint="Both are off by default. Missing a study appointment is never the same as missing a deadline; deadlines exist only if you set them."
       >
         <label className="flex items-start gap-3 text-sm text-ink">
-          <input
-            type="checkbox"
-            name="hardDeadlines"
-            defaultChecked={answers.hardDeadlines === true}
-            className="mt-1 accent-[var(--brass)]"
-          />
+          <input type="checkbox" name="hardDeadlines" defaultChecked={shown.hardDeadlines} className="mt-1 accent-[var(--brass)]" />
           <span>Hard deadlines: I want binding due dates for assessed work, which I set myself.</span>
         </label>
         <label className="flex items-start gap-3 text-sm text-ink">
-          <input
-            type="checkbox"
-            name="examinations"
-            defaultChecked={answers.examinations === true}
-            className="mt-1 accent-[var(--brass)]"
-          />
+          <input type="checkbox" name="examinations" defaultChecked={shown.examinations} className="mt-1 accent-[var(--brass)]" />
           <span>Examinations as part of assessment.</span>
         </label>
       </Fieldset>

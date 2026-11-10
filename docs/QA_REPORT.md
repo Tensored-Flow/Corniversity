@@ -77,7 +77,11 @@ the authors' statement. See docs/SOURCE_REGISTRY.md.
 
 ## Live-model checks
 
-None performed (no provider configured). Fixture runs are not live checks: the worker withholds
+None performed (no provider configured). The live path has been exercised only against local
+servers that speak the documented wire format (the provider contract test and the worker
+assessment test), which check what the application sends and records, never how a model answers.
+The first live check is the owner's checklist ([USER_ACTIONS.md](USER_ACTIONS.md), item 4).
+Fixture runs are not live checks: the worker withholds
 every fixture verdict (`needs_review`, confidence at most 0.5) and the feedback card says that no
 model has read the submission, so no fixture run can produce an acceptance or a "demonstrated"
 evidence state. The fixture texts describe what the automatic checks found and what a live
@@ -443,6 +447,110 @@ prepare), the tutor panel with a blocked live model ("model blocked" label, the 
 learner's message kept), settings and the tuning laboratory; at 390 px, the block page (the
 defect above) and the studio project's forms.
 
+## After the release: test audit, fixes and the owner's checks (9–10 November 2026)
+
+**The live site, checked from outside without an account (9 Nov 2026, 23:31 UTC).** The health
+route reports the database ok, the migrations current, `aiAssets` "7 of 7" and six prompt versions.
+`/join` still offers *Create the owner account*: the owner account does not exist, so nothing behind
+sign-in can be checked. Railway variables, read by name only (no value was printed):
+`OWNER_BOOTSTRAP_CODE` is still set on web and worker, as expected before setup; there is no
+`ANTHROPIC_API_KEY` (a key is entered in Settings and stored encrypted with `BETTER_AUTH_SECRET`);
+`BETTER_AUTH_SECRET` is the same on both services (compared inside one process), so the worker can
+read a key saved through the web; `AI_PROVIDER` is `fixture` on both, and the owner's saved choice
+overrides it; `BLOB_STORE` is `pg` on both, so the worker reads imported files from the database.
+
+**The live provider against the current Claude API reference (read 9 Nov 2026; a static review, no
+request sent).** The model ids and the price table match for all seven priced models (including
+Claude Opus 5.5 cache reads at $0.20 and Claude Fable 5.1 at $0.25). `fallbacks: "default"` goes
+with `server-side-fallback-2026-07-01`, the documented pairing, and is never sent for Claude Haiku
+5.5, which has no server-side fallback. The fallback targets used for the worst case are the
+documented ones; `output_config.effort` is valid for every supported model; SDK 1.3.0 sends its
+default API version, which is still accepted; the assessor's structured-output schema as sent has
+one nullable union and no optional fields, the supervisor's none. What only a real call shows (the
+key's access to the chosen model, real answers, refusals) is left to the owner's checklist.
+
+**Independent audit of the tests.** Two reviewers with no prior context read the owner's sections 13
+to 18, the tests and the code they exercise, and reported where an assertion did not encode a rule
+or the code broke one (about 28 findings). Every finding was checked against the code before
+anything changed: most were confirmed, the COG-260 finding was narrowed (its likelihood rule is
+mathematics, but its own guidance asks for model fitting) and MBI-08's biology was left as a
+recorded gap (below). The fixes, each with a test that fails on the code before it where one could:
+
+- *Spending.* A reply the learner abandoned mid-stream was never recorded, so spend could be
+  undercounted: the turn now runs to its end and is recorded (stream test). A stream that failed
+  after it started recorded no usage: what it reported is kept (contract test). Runs started
+  together were each checked against recorded spend only: a live run is now reserved at its worst
+  case under a per-owner database lock and holds it until finished (reservation, recorded-spend and
+  lock-wait tests; the lock-wait test fails without the lock). The worst case counts characters
+  outside ASCII at their UTF-8 bytes and the fallback's continuation input, and the settings say
+  that the prompt is an estimate.
+- *Citations and retrieval.* Tutor retrieval required every word of a question to occur in one
+  passage, so most natural questions retrieved nothing (four of six probe questions against a
+  directly relevant passage): any word now matches, best matches first (ingestion test). Replayed
+  history kept tags that a later turn renumbers: earlier tags are replaced by the sources they
+  resolved to. A reading-room selection was labelled with its page without checking it was there.
+- *Sign-up, isolation and recovery.* The closed-sign-up test never sent the bootstrap code: it now
+  signs up after setup with the stack's real code, as the owner email and as another, and expects
+  "Sign-up is closed". The account-creation hook assigned "learner" after setup instead of refusing:
+  it refuses. A forged session cookie is tested against the server's own check; private routes must
+  answer exactly 401. The journeys refuse to run against anything but a local stack, or with a live
+  model configured. The recovery prompt let the line editor's redraw echo the password: the editor
+  now writes only to a sink (prompt test). Sessions were cached in a cookie for five minutes, so
+  "signed out everywhere" took up to five minutes: the cache is off.
+- *Records.* Repairing an exercise overwrote the prompt and rubric an earlier attempt had been
+  assessed against: each assessment keeps the exercise as answered (migration 0007, one nullable
+  column), the worker assesses against it, and a regrade keeps it (worker assessment test). Only the
+  prompt kept the assessor from quoting the reference solution: repeated runs of ten words are
+  withheld (leakage tests). A saved prediction could be edited or deleted after the results, and an
+  older note retagged as one: both are refused (prediction test).
+- *The research studio.* Re-analysis of existing data about people was flagged as planning new
+  collection, and the form said "published" where the owner's rule says "appropriately permitted":
+  the check reads the learner's own plan sentence by sentence, the wording follows the rule, data
+  collected from people can be stated and is refused rather than filed as none, and data about
+  people needs a licence or terms that permit the analysis. An untouched template passed six of six
+  checks: a section counts only with text. The report and the badges mislabelled failed and blocked
+  supervisor runs.
+- *Programme pages.* A block's next step spoke of missing sources where there were none, and MBI-12
+  still said the studio was not built: the next step uses the block's leads, MBI-12 carries a studio
+  flag and the stale gap is gone. COG-260's rule let measure-theoretic probability alone stand in for
+  model fitting, against its own guidance: NEU-220 is now the bridge (seed test). An older director
+  proposal could displace a newer focus: a new proposal supersedes older drafts and confirming
+  checks the focus first (seed test). Orientation's rhythm step showed the original answers after
+  Settings changed them: it shows the preferences as they stand (planning test). The tuning
+  laboratory showed an empty held-out set as a comparison. Psych-101 is pinned as not importable.
+- *The test harness.* Vitest ignores `fileParallelism` in a project's own configuration, so the
+  database and worker test files, which share one database, ran in parallel; the root scripts now
+  run them one at a time. A test counting every user failed intermittently because of it.
+
+**Checks after the fixes (10 Nov 2026; scripted demo or a local imitation of the API).**
+
+| Check | Result |
+|---|---|
+| `pnpm lint` | 0 errors, 1 info (the Biome configuration notice) |
+| `pnpm typecheck` | 7 of 7 packages |
+| `pnpm test` | 254 unit tests in 30 files (core 159, ai 59, content 18, companion 12, web 6), then 23 worker tests in 6 files |
+| `pnpm test:integration` | 88 tests in 12 files |
+| `pnpm eval:academic` | 19 |
+| `pnpm content:validate` | 0 errors, 0 warnings; coverage tables regenerated |
+| Journeys, production build, new database `corniversity_clean_20261110a` (retrieval and studio wording fixed, nothing else) | 85 passed |
+| Journeys, production build, new database `corniversity_clean_20261110b` (every fix; migration 0007 applied from empty) | 87 passed in 2.5 minutes at both sizes, none skipped (two more than before: the forged-cookie test) |
+
+Failures on the way, all repaired: the first concurrency test passed without the lock, because its
+connection pool serialised the calls (replaced by the deterministic lock-wait test); a new
+prediction test changed the state two existing tests expected (moved after them, with its own
+laboratory tag); the user-counting test above; the cleanup order of the new worker test; type and
+formatting errors caught by `pnpm typecheck` and `pnpm lint` before any run.
+
+Visual check: on `47-studio-feedback-desktop.png` the feedback on an untouched proposal names its
+empty sections, the people check reads "No plan to collect new data from people was found", and the
+provenance text carries the licence wording.
+
+**Not checked, and why.** Anything behind sign-in on the live site, live tutoring, and recovery on
+the live site: the owner account does not exist, no key is stored, and this machine's approval
+controls refuse a shell inside a Railway container. Those checks are the owner's checklist
+([USER_ACTIONS.md](USER_ACTIONS.md), item 4); their results are recorded here when the owner
+reports them, apart from the scripted and local checks above.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -464,6 +572,17 @@ defect above) and the studio project's forms.
 - COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
   COG-100 has none. Blocks MBI-02, MBI-10 and MBI-12 are proposed, the eight electives are
   proposed, and method 9.6 (measurement, reliability and validity) has no prepared unit.
+- MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210
+  are proposed with no concepts defined, so no biology prerequisite can be expressed yet; NEU-220,
+  the block's teachable course, needs none (its Neuromatch spine asks for no biology).
+- The worst-case estimate counts ASCII prompt text at three characters a token. Symbol-dense ASCII
+  (long digit strings, for example) can use more, so a run can cost a little more than its
+  estimate; the actual cost is recorded and counts towards the daily and monthly limits.
+- The studio's new-data check reads the learner's plan sentence by sentence and recognises the
+  usual phrasings; a plan worded otherwise passes as "no plan found". The provenance form still
+  refuses data collected from people, whatever the plan says.
+- Spec 03's new-account branch runs once per run, at the first viewport, on a database that does
+  not yet hold the account.
 - One saved prediction opens a laboratory for its whole unit, so the choice-model activity asks
   for both cases' predictions before saving rather than enforcing one per case; *Predict again*
   resets the laboratory for the whole unit.

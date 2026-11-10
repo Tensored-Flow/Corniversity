@@ -55,7 +55,8 @@ export const providerRun = pgTable(
     costUsd: numeric("cost_usd", { precision: 12, scale: 6 }).notNull().default("0"),
     pricingVersion: text("pricing_version").notNull(),
     promptVersion: text("prompt_version").notNull(),
-    status: text("status").$type<"ok" | "error" | "refused" | "budget_blocked" | "blocked">().notNull(),
+    /** "running" while a live run is in progress: it holds its worst case against the limits. */
+    status: text("status").$type<"ok" | "error" | "refused" | "budget_blocked" | "blocked" | "running">().notNull(),
     error: text("error"),
     /** Each model attempt with its usage and model; a fallback model taking over adds one. */
     attempts: jsonb("attempts").$type<AttemptRecord[]>().notNull().default([]),

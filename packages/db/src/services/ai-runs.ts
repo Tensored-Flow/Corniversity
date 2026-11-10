@@ -1,6 +1,5 @@
 import {
   createProvider,
-  decideBudget,
   type ModelProvider,
   type PublicProviderState,
   publicProviderState,
@@ -10,7 +9,7 @@ import {
 } from "@corniversity/ai";
 import type { DbOrTx } from "../client";
 import type { Env } from "../env";
-import { getBudgetLimits, getSpend, resolveProviderState } from "./provider-config";
+import { reserveLiveRun, resolveProviderState } from "./provider-config";
 
 type Effort = "low" | "medium" | "high";
 
@@ -24,6 +23,8 @@ export type RunPlan =
       maxTokens: number;
       worstCaseUsd: number;
       warnings: string[];
+      /** The run recorded as running; finish it with `finishProviderRun`. */
+      runId: string;
       state: PublicProviderState;
     }
   | {
@@ -40,7 +41,8 @@ export type RunPlan =
  * provider state, the role's effort and output allowance, the worst case of the run and the
  * budget decision. A blocked provider or a crossed limit refuses the run with its reason; it
  * never turns into a scripted reply. `inputText` is everything that will be sent (system prompt
- * and messages), for the worst-case estimate.
+ * and messages), for the worst-case estimate. A live run that may start is recorded as running
+ * (`runId`) and holds its worst case against the limits until the caller finishes it.
  */
 export async function planRun(
   db: DbOrTx,
@@ -48,7 +50,7 @@ export async function planRun(
   env: Env,
   role: RoleName,
   inputText: string,
-  options: { fixtureRoot?: string } = {},
+  run: { purpose: string; promptVersion: string; fixtureRoot?: string },
 ): Promise<RunPlan> {
   const state = await resolveProviderState(db, ownerId, env);
   const contract = ROLE_CONTRACTS[role];
@@ -57,7 +59,7 @@ export async function planRun(
   if (state.mode === "scripted") {
     return {
       kind: "scripted",
-      provider: createProvider({ provider: "fixture", fixtureRoot: options.fixtureRoot }),
+      provider: createProvider({ provider: "fixture", fixtureRoot: run.fixtureRoot }),
       model: "fixture",
       effort,
       maxTokens,
@@ -68,14 +70,18 @@ export async function planRun(
     return { kind: "refused", status: "blocked", reason: state.reason, model: state.model, worstCaseUsd: null, state: view };
   }
   const worstCaseUsd = worstCaseRunUsd(state.model, inputText, maxTokens, state.refusalFallback);
-  const decision = decideBudget(
-    await getBudgetLimits(db, ownerId, env),
-    await getSpend(db, ownerId),
+  const reservation = await reserveLiveRun(db, {
+    ownerId,
+    env,
+    role,
+    model: state.model,
+    purpose: run.purpose,
+    promptVersion: run.promptVersion,
     worstCaseUsd,
-    contract.limits.maxRunUsd,
-  );
-  if (!decision.allowed) {
-    return { kind: "refused", status: "budget_blocked", reason: decision.reason, model: state.model, worstCaseUsd, state: view };
+    roleCapUsd: contract.limits.maxRunUsd,
+  });
+  if (!reservation.allowed) {
+    return { kind: "refused", status: "budget_blocked", reason: reservation.reason, model: state.model, worstCaseUsd, state: view };
   }
   return {
     kind: "live",
@@ -84,7 +90,8 @@ export async function planRun(
     effort,
     maxTokens,
     worstCaseUsd,
-    warnings: decision.warnings,
+    warnings: reservation.warnings,
+    runId: reservation.runId,
     state: view,
   };
 }

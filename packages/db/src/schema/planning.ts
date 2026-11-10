@@ -166,7 +166,8 @@ export const changeProposal = pgTable(
     title: text("title").notNull(),
     rationale: text("rationale").notNull(),
     diff: jsonb("diff").notNull(),
-    status: text("status").$type<"draft" | "confirmed" | "rejected">().notNull().default("draft"),
+    /** "superseded": replaced by a newer proposal, or made for a focus that has changed since. */
+    status: text("status").$type<"draft" | "confirmed" | "rejected" | "superseded">().notNull().default("draft"),
     createdAt: createdAt(),
     decidedAt: tz("decided_at"),
   },

@@ -38,7 +38,7 @@ const DOCUMENT_LABEL: Record<DocumentKind, { title: string; hint: string }> = {
 };
 
 const PROVENANCE_LABEL: Record<(typeof PROVENANCE_KINDS)[number], string> = {
-  existing_dataset: "Existing published dataset",
+  existing_dataset: "Existing dataset",
   simulation: "Simulation",
   derived: "Derived from another record",
   literature: "Published literature",
@@ -201,8 +201,8 @@ export default async function ProjectPage({
             Data and simulations
           </h2>
           <p className="mt-1 text-sm text-ink-2">
-            Where every dataset or simulation came from, recorded before it is used. Data about people can only be an existing published
-            dataset; the studio collects nothing new from anyone.
+            Where every dataset or simulation came from, recorded before it is used. Data about people can only come from an existing
+            dataset whose licence or terms permit the analysis; the studio collects nothing new from anyone.
           </p>
           {provenance.length ? (
             <ul className="mt-3 flex flex-col gap-2 text-sm">
@@ -211,7 +211,7 @@ export default async function ProjectPage({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-ink">{p.title}</span>
                     <Badge>{PROVENANCE_LABEL[p.kind]}</Badge>
-                    {p.humanParticipants === "existing_published" ? <Badge tone="slate">published data about people</Badge> : null}
+                    {p.humanParticipants === "existing_published" ? <Badge tone="slate">existing data about people</Badge> : null}
                   </div>
                   <p className="mt-1 text-xs text-ink-2">
                     {p.origin}
@@ -257,7 +257,8 @@ export default async function ProjectPage({
             <Field label="Data about people" htmlFor="pv-people">
               <Select id="pv-people" name="humanParticipants" defaultValue="none">
                 <option value="none">None</option>
-                <option value="existing_published">An existing published dataset about people</option>
+                <option value="existing_published">An existing dataset about people, used as its licence or terms permit</option>
+                <option value="new_from_people">Data I collected from people myself (the studio does not take it)</option>
               </Select>
             </Field>
             <Field label="Random seed (simulations)" htmlFor="pv-seed">
@@ -369,6 +370,8 @@ export default async function ProjectPage({
                     <Badge>Scripted demo: no model read this</Badge>
                   ) : f.mode === "blocked" ? (
                     <Badge tone="rust">live model blocked</Badge>
+                  ) : f.status !== "ok" ? (
+                    <Badge tone="rust">live model run failed</Badge>
                   ) : (
                     <Badge tone="slate">AI supervisor, provisional</Badge>
                   )}

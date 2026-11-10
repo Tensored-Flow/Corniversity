@@ -18,7 +18,7 @@ export const NOTEBOOK_KINDS: readonly NotebookKind[] = [
 
 export class NotebookError extends Error {
   constructor(
-    readonly code: "invalid" | "not_found",
+    readonly code: "invalid" | "not_found" | "prediction",
     message: string,
   ) {
     super(message);
@@ -60,6 +60,9 @@ export async function createEntry(
   return row!;
 }
 
+/** The tag a laboratory gives a saved prediction, a dated record of what was expected before the results. */
+const PREDICTION_TAG = "prediction";
+
 export async function updateEntry(
   db: DbOrTx,
   ownerId: string,
@@ -76,6 +79,17 @@ export async function updateEntry(
 ): Promise<NotebookEntryRow | null> {
   const existing = await getEntry(db, ownerId, id);
   if (!existing) return null;
+  // A prediction is never rewritten after the results, and an older note is never made to look
+  // like one: either would read as a prediction made before the results were seen.
+  if (existing.tags.includes(PREDICTION_TAG)) {
+    throw new NotebookError(
+      "prediction",
+      "A saved prediction is a dated record and cannot be changed; write a new note, or predict again.",
+    );
+  }
+  if (patch.tags?.includes(PREDICTION_TAG)) {
+    throw new NotebookError("prediction", "Only a laboratory saves predictions; an existing note cannot be tagged as one.");
+  }
   const fields = clean({
     title: patch.title ?? existing.title,
     bodyMarkdown: patch.bodyMarkdown ?? existing.bodyMarkdown,
@@ -96,6 +110,9 @@ export async function updateEntry(
 }
 
 export async function deleteEntry(db: DbOrTx, ownerId: string, id: string): Promise<void> {
+  if ((await getEntry(db, ownerId, id))?.tags.includes(PREDICTION_TAG)) {
+    throw new NotebookError("prediction", "A saved prediction is a dated record and cannot be deleted.");
+  }
   await db.delete(notebookEntry).where(and(eq(notebookEntry.id, id), eq(notebookEntry.ownerId, ownerId)));
 }
 

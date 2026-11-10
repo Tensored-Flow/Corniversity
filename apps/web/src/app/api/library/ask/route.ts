@@ -1,5 +1,5 @@
 import { buildReadingPrompt, READING_PROMPT_VERSION, ROLE_CONTRACTS } from "@corniversity/ai";
-import { formatEvidenceBlocks } from "@corniversity/core/grounding/citations";
+import { formatEvidenceBlocks, foundOnPage } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getAsset, getPage, isAllowed, passagesForPage } from "@corniversity/db/services/library";
@@ -69,13 +69,17 @@ export async function POST(request: Request): Promise<Response> {
     ? `p. ${page.printedLabel} (PDF page ${page.physicalIndex + 1})`
     : `PDF page ${page.physicalIndex + 1}`;
   const probe = selectedText.slice(0, 80);
+  // The selection is attributed to the page only when it is on the page; anything else is the
+  // learner's own text, and no citation may present it as this source.
   const evidence = formatEvidenceBlocks([
-    {
-      label: `${title}, ${pageDescription}: selected passage`,
-      text: selectedText,
-      assetId: asset.id,
-      passageId: pagePassages.find((p) => p.text.includes(probe))?.id,
-    },
+    foundOnPage(selectedText, page.text)
+      ? {
+          label: `${title}, ${pageDescription}: selected passage`,
+          text: selectedText,
+          assetId: asset.id,
+          passageId: pagePassages.find((p) => p.text.includes(probe))?.id,
+        }
+      : { label: `Text you supplied (not found on ${pageDescription})`, text: selectedText },
     { label: `${title}, ${pageDescription}: rest of the page`, text: page.text.slice(0, 6000), assetId: asset.id },
   ]);
 

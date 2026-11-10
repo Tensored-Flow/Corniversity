@@ -41,7 +41,7 @@
     "id": "COG-260-likelihood",
     "courseId": "COG-260",
     "strength": "soft",
-    "description": "The course fits models by maximum likelihood and compares them by information criteria and held-out log-likelihood. You need likelihood and its maximisation; NEU-220 unit 2 teaches estimation, and measure-theoretic probability is more than enough for the mathematics.",
+    "description": "The course fits models by maximum likelihood and compares them by information criteria and held-out log-likelihood, so it asks for likelihood and basic model fitting. Measure-theoretic probability covers the mathematics, not the practice of fitting a model: demonstrated maximum-likelihood estimation meets the rule, or NEU-220, whose unit 2 teaches model fitting, serves as the bridge.",
     "alternatives": [
       {
         "label": "Demonstrated maximum-likelihood estimation",
@@ -50,10 +50,8 @@
         ]
       },
       {
-        "label": "Demonstrated measure-theoretic probability",
-        "conceptIds": [
-          "probability-measure-theoretic"
-        ]
+        "label": "Model fitting in NEU-220 (unit 2) as a bridge",
+        "bridgeCourseId": "NEU-220"
       }
     ]
   },

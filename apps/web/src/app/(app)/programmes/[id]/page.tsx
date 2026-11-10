@@ -1,6 +1,7 @@
 import { BLOCK_READINESS_LABEL, type BlockReadiness, programmeNextStep } from "@corniversity/core";
 import { listDepartments } from "@corniversity/db/services/catalogue";
 import {
+  courseSourceLeads,
   learnerProgrammeMap,
   learnerProgress,
   listParticipation,
@@ -66,7 +67,15 @@ export default async function ProgrammePage({
   const deptTitle = new Map(departments.map((d) => [d.id, d.title]));
   const unitTitle = (courseId: string, unitId: string) => courses.get(courseId)?.units.find((u) => u.id === unitId);
   const shared = detail.workItems.filter((w) => w.blockIds.length > 1);
-  const next = programmeNextStep(mine ?? null, detail.blocks, progress);
+  const courseLeads = await courseSourceLeads(db(), [...new Set(p.blocks.flatMap((b) => b.courseMappings.map((m) => m.courseId)))]);
+  const leadsOf = (block: (typeof p.blocks)[number]) =>
+    block.sourceShelf.filter((s) => !s.sourceId).length +
+    courseLeads.filter((l) => block.courseMappings.some((m) => m.courseId === l.courseId)).length;
+  const next = programmeNextStep(
+    mine ?? null,
+    detail.blocks.map((b) => ({ ...b, leads: leadsOf(b.block) })),
+    progress,
+  );
   const bridges = detail.blocks.flatMap(({ block }) => block.bridges.map((b) => ({ ...b, blockId: block.id })));
 
   return (
@@ -181,7 +190,7 @@ export default async function ProgrammePage({
                   <LinkButton href="/library/requests" variant="secondary">
                     Books to obtain
                   </LinkButton>
-                ) : next.kind === "reflect" ? (
+                ) : next.kind === "reflect" || next.kind === "open_studio" ? (
                   <LinkButton href="/studio" variant="secondary">
                     Research studio
                   </LinkButton>

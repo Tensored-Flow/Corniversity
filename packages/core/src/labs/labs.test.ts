@@ -278,3 +278,12 @@ describe("data leakage audit", () => {
     expect(best).toBeGreaterThanOrEqual(median);
   });
 });
+
+describe("the held-out trials split", () => {
+  it("holds out every fourth repetition, so fewer than four trials per orientation leave nothing to test on", () => {
+    const trials = (perOrientation: number) =>
+      [0, 45, 90].flatMap((thetaDegrees) => Array.from({ length: perOrientation }, () => ({ thetaDegrees, count: 1 })));
+    expect(splitTrials(trials(3)).test).toHaveLength(0);
+    expect(splitTrials(trials(4)).test).toHaveLength(3);
+  });
+});

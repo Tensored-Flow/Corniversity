@@ -28,10 +28,12 @@ const PROGRAMME = "/programmes/mind-and-computation";
 // A 1×1 transparent PNG.
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==", "base64");
 
-async function enrolmentCount(page: Page): Promise<number> {
+/** The courses the learner takes, each with its mode, as the studies page lists them. */
+async function enrolments(page: Page): Promise<string[]> {
   await page.goto("/studies");
   await expect(page.getByRole("heading", { level: 1, name: "Your courses" })).toBeVisible();
-  return page.getByText(MODE_BADGE).count();
+  const items = page.getByRole("listitem").filter({ has: page.getByText(MODE_BADGE) });
+  return (await items.allTextContents()).map((t) => t.replace(/\s+/g, " ").trim()).sort();
 }
 
 async function setImmersion(page: Page, immersion: "quiet" | "collegiate", social: boolean) {
@@ -55,7 +57,7 @@ test.describe("the programme experience and the research studio", () => {
   test("an existing learner explores programmes from orientation without repeating it", async ({ page }) => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
-    const before = await enrolmentCount(page);
+    const before = await enrolments(page);
 
     await page.goto("/onboarding/2");
     await expect(page).toHaveURL(/\/onboarding\/2/);
@@ -71,7 +73,7 @@ test.describe("the programme experience and the research studio", () => {
     await expect(page.getByText("Orientation is complete")).toBeVisible();
     await expect(page.getByRole("button", { name: /build the timetable/i })).toHaveCount(0);
 
-    expect(await enrolmentCount(page)).toBe(before);
+    expect(await enrolments(page)).toEqual(before);
   });
 
   test("the overview says where to begin; a block page separates readiness from progress and lists what is missing", async ({ page }) => {
@@ -122,7 +124,7 @@ test.describe("the programme experience and the research studio", () => {
   test("the director's route shows the focus change and each course's action before anything is confirmed", async ({ page }) => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
-    const before = await enrolmentCount(page);
+    const before = await enrolments(page);
     await page.goto(PROGRAMME);
     await page.getByRole("button", { name: "Ask the director for a route" }).click();
     await expect(page).toHaveURL(/\/director\?proposed=programme/, { timeout: 30_000 });
@@ -131,7 +133,7 @@ test.describe("the programme experience and the research studio", () => {
     await expect(proposal.getByText(/^Focus: |Your focus stays as it is\./).first()).toBeVisible();
     await expect(proposal.getByRole("link", { name: /^COG-2\d0 / }).first()).toBeVisible();
     await screenshot(page, "46-director-route");
-    expect(await enrolmentCount(page)).toBe(before);
+    expect(await enrolments(page)).toEqual(before);
     // Declining leaves everything as it was.
     await page.goto("/director");
     const pending = page.locator("li", { hasText: /Follow Mind, Brain and AI/ }).last();
@@ -199,6 +201,8 @@ test.describe("the programme experience and the research studio", () => {
     const feedback = page.locator("#feedback li").first();
     await expect(feedback.getByText("Scripted demo: no model read this")).toBeVisible({ timeout: 30_000 });
     await expect(feedback.getByText("met", { exact: true }).first()).toBeVisible();
+    // Version 1 is the untouched template: its empty sections are named, not passed.
+    await expect(feedback.getByText(/^Write something under: Question, /)).toBeVisible();
     await screenshot(page, "47-studio-feedback");
 
     // A revision is a new version; the first is kept.

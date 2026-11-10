@@ -197,14 +197,21 @@ export function TuningFitLab() {
             <th className="py-1 pr-3 text-left font-medium text-ink">
               Log-likelihood per trial, {heldOutLabel} ({split.test.length} trials)
             </th>
-            <td className="py-1 font-mono text-ink">
-              tuning {result.heldOutLogLikPerTrial.tuning.toFixed(3)} · baseline {result.heldOutLogLikPerTrial.baseline.toFixed(3)} ·{" "}
-              {result.heldOutAdvantagePerTrial > 0 ? (
-                <Badge tone="moss">tuning model ahead by {result.heldOutAdvantagePerTrial.toFixed(3)}</Badge>
-              ) : (
-                <Badge tone="rust">baseline ahead by {(-result.heldOutAdvantagePerTrial).toFixed(3)}</Badge>
-              )}
-            </td>
+            {split.test.length === 0 ? (
+              <td className="py-1 text-ink-2">
+                No trials are held out: with fewer than four trials per orientation every trial is used for fitting, so there is nothing to
+                compare on. Use at least four.
+              </td>
+            ) : (
+              <td className="py-1 font-mono text-ink">
+                tuning {result.heldOutLogLikPerTrial.tuning.toFixed(3)} · baseline {result.heldOutLogLikPerTrial.baseline.toFixed(3)} ·{" "}
+                {result.heldOutAdvantagePerTrial > 0 ? (
+                  <Badge tone="moss">tuning model ahead by {result.heldOutAdvantagePerTrial.toFixed(3)}</Badge>
+                ) : (
+                  <Badge tone="rust">baseline ahead by {(-result.heldOutAdvantagePerTrial).toFixed(3)}</Badge>
+                )}
+              </td>
+            )}
           </tr>
         </tbody>
       </table>

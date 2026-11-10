@@ -5,7 +5,7 @@ import { createDb } from "../client";
 import { user } from "../schema/auth";
 import { auditEvent, notebookEntry } from "../schema/index";
 import { labRevealState, requestPredictAgain } from "./lab-predictions";
-import { createEntry, listEntries } from "./notebook";
+import { createEntry, deleteEntry, listEntries, NotebookError, updateEntry } from "./notebook";
 
 /**
  * A laboratory's prediction gate against PostgreSQL: results open on a saved prediction and stay
@@ -68,5 +68,34 @@ describe("the prediction gate", () => {
 
   it("does not open another laboratory of the same unit", async () => {
     expect((await labRevealState(handle.db, OWNER, UNIT, "planning-transfer")).revealed).toBe(false);
+  });
+});
+
+describe("a saved prediction", () => {
+  it("is a dated record: it cannot be edited or deleted, and no older note can be made into one", async () => {
+    // Its own laboratory tag, so the gate tests below still start before any prediction.
+    const saved = await createEntry(handle.db, OWNER, {
+      title: "Prediction before running",
+      bodyMarkdown: "The forgetting term will not change recovery.",
+      kind: "note",
+      tags: ["lab", "prediction", "lock-test-lab"],
+      unitId: UNIT,
+    });
+    await expect(updateEntry(handle.db, OWNER, saved.id, { bodyMarkdown: "It changed recovery, as I expected." })).rejects.toThrow(
+      NotebookError,
+    );
+    await expect(deleteEntry(handle.db, OWNER, saved.id)).rejects.toThrow(NotebookError);
+    const older = await createEntry(handle.db, OWNER, {
+      title: "A note",
+      bodyMarkdown: "Something.",
+      kind: "note",
+      tags: ["lab"],
+      unitId: UNIT,
+    });
+    await expect(updateEntry(handle.db, OWNER, older.id, { tags: ["lab", "prediction", LAB] })).rejects.toThrow(NotebookError);
+    expect((await listEntries(handle.db, OWNER, { unitId: UNIT, tag: "prediction", limit: 50 })).map((e) => e.id)).toContain(saved.id);
+    // An ordinary note is still the learner's to edit and delete.
+    await updateEntry(handle.db, OWNER, older.id, { bodyMarkdown: "Something else." });
+    await deleteEntry(handle.db, OWNER, older.id);
   });
 });

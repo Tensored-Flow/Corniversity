@@ -1,7 +1,7 @@
 import { PROJECT_KIND_INFO } from "@corniversity/core";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { endOfTermReview, listExports, portfolio, transcript } from "@corniversity/db/services/records";
-import { listProjects } from "@corniversity/db/services/research";
+import { listRecordProjects } from "@corniversity/db/services/research";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { RenderedHtml } from "@/components/RenderedHtml";
@@ -41,10 +41,10 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
     endOfTermReview(database, ownerId),
     listExports(database, ownerId),
     ensureProfile(database, ownerId),
-    listProjects(database, ownerId),
+    listRecordProjects(database, ownerId),
   ]);
-  // Only the learner's own projects; a labelled demonstration is never part of the record.
-  const ownProjects = projects.filter((p) => !p.demo);
+  // Only the learner's own projects: listRecordProjects leaves out any labelled demonstration.
+  const ownProjects = projects;
   const zone = profile.timezone;
   const when = (d: Date | null) => (d ? DateTime.fromJSDate(d).setZone(zone).toFormat("d LLL yyyy") : "—");
   const pending = exports.some((e) => e.status === "queued");

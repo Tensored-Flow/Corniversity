@@ -1,10 +1,33 @@
 import { describe, expect, it } from "vitest";
-import { annotateTurn, formatEvidenceBlocks } from "./citations";
+import { annotateTurn, citedHistory, formatEvidenceBlocks, foundOnPage } from "./citations";
 
 const allowed = [
   { tag: "E1", label: "Melrose notes, §1.1, p. 7", locatorId: "loc-1" },
   { tag: "E2", label: "Melrose notes, §1.2, p. 9", locatorId: "loc-2" },
 ];
+
+describe("history replayed to a later turn", () => {
+  it("names the sources earlier tags resolved to, so no tag can be reused for another source", () => {
+    const stored = "Norms on a finite-dimensional space are equivalent [E1, E7]. Completeness follows [E9].";
+    const citations = [
+      { tag: "E1", label: "Melrose notes, §1.1, p. 7" },
+      { tag: "E7", label: "Your library: Kreyszig, p. 75 (PDF page 88)" },
+    ];
+    expect(citedHistory(stored, citations)).toBe(
+      "Norms on a finite-dimensional space are equivalent (cited then: Melrose notes, §1.1, p. 7; Your library: Kreyszig, p. 75 (PDF page 88)). Completeness follows.",
+    );
+    expect(citedHistory(stored, citations)).not.toMatch(/\[E\d/);
+  });
+});
+
+describe("a selection checked against its page", () => {
+  it("is found despite line breaks, spacing, case and soft hyphens, and not when it is elsewhere", () => {
+    const page = "Definition 1.1\nA Banach space is a com\u00adplete normed\n  space.";
+    expect(foundOnPage("a banach space is a complete normed space", page)).toBe(true);
+    expect(foundOnPage("A Hilbert space is an inner product space", page)).toBe(false);
+    expect(foundOnPage("   ", page)).toBe(false);
+  });
+});
 
 describe("annotateTurn", () => {
   it("keeps known citations, maps them to locators and orders them", () => {

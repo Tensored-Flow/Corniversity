@@ -11,8 +11,9 @@ import {
 import type { DbOrTx } from "@corniversity/db/client";
 import type { Env } from "@corniversity/db/env";
 import { planRun, type RunPlan } from "@corniversity/db/services/ai-runs";
-import { type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
+import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { NextResponse } from "next/server";
+import { personaStream } from "./persona-stream";
 
 /** One persona turn to run: who speaks, for what, with which prompt and messages. */
 export interface TurnInput {
@@ -34,7 +35,7 @@ type Runnable = Exclude<RunPlan, { kind: "refused" }>;
 type Refused = Extract<RunPlan, { kind: "refused" }>;
 
 interface Outcome {
-  status: RunStatus;
+  status: Exclude<RunStatus, "running">;
   errorText?: string;
   attempts: AttemptUsage[];
   model: string;
@@ -73,11 +74,21 @@ async function* produce(plan: Runnable, input: TurnInput): AsyncGenerator<string
   }
 }
 
+/** Finishes a live run's reservation with what it cost, or records a scripted run. */
 async function record(input: TurnInput, plan: Runnable, outcome: Outcome, startedAt: Date): Promise<string> {
+  if (plan.kind === "live") {
+    await finishProviderRun(input.database, plan.runId, {
+      status: outcome.status,
+      model: outcome.model,
+      error: outcome.errorText ?? null,
+      attempts: outcome.attempts,
+    });
+    return plan.runId;
+  }
   return recordProviderRun(input.database, {
     ownerId: input.ownerId,
     role: input.role,
-    provider: plan.kind === "live" ? "anthropic" : "fixture",
+    provider: "fixture",
     model: outcome.model,
     purpose: input.purpose,
     pricingVersion: PRICING_VERSION,
@@ -85,7 +96,7 @@ async function record(input: TurnInput, plan: Runnable, outcome: Outcome, starte
     status: outcome.status,
     error: outcome.errorText ?? null,
     attempts: outcome.attempts,
-    worstCaseUsd: plan.kind === "live" ? plan.worstCaseUsd : null,
+    worstCaseUsd: null,
     startedAt,
   });
 }
@@ -124,27 +135,23 @@ function refusalResponse(plan: Refused): Response {
 export async function streamPersonaTurn(
   input: TurnInput & { prefix?: string; onFinish: (raw: string, runId: string) => Promise<void> },
 ): Promise<Response> {
-  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input));
+  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input), {
+    purpose: input.purpose,
+    promptVersion: input.promptVersion,
+  });
   if (plan.kind === "refused") {
     await recordRefusal(input, plan);
     return refusalResponse(plan);
   }
   const startedAt = new Date();
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream<Uint8Array>({
-    async start(controller) {
-      let raw = input.prefix ?? "";
-      if (input.prefix) controller.enqueue(encoder.encode(input.prefix));
-      const generator = produce(plan, input);
-      let next = await generator.next();
-      while (!next.done) {
-        raw += next.value;
-        controller.enqueue(encoder.encode(next.value));
-        next = await generator.next();
-      }
-      const runId = await record(input, plan, next.value, startedAt);
+  // The turn runs to its end even if the learner leaves mid-reply: it has been billed, so it is
+  // recorded, and the reply is stored for when they come back.
+  const stream = personaStream({
+    prefix: input.prefix,
+    produce: () => produce(plan, input),
+    finish: async (raw, outcome) => {
+      const runId = await record(input, plan, outcome, startedAt);
       if (raw.trim().length > 0) await input.onFinish(raw, runId);
-      controller.close();
     },
   });
   return new Response(stream, {
@@ -165,7 +172,10 @@ export async function collectPersonaText(
 ): Promise<
   { kind: "refused"; reason: string } | { kind: "done"; text: string; runId: string; status: RunStatus; mode: "scripted" | "live" }
 > {
-  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input));
+  const plan = await planRun(input.database, input.ownerId, input.env, input.role, inputTextOf(input), {
+    purpose: input.purpose,
+    promptVersion: input.promptVersion,
+  });
   if (plan.kind === "refused") {
     await recordRefusal(input, plan);
     return { kind: "refused", reason: plan.reason };

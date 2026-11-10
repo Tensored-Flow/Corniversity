@@ -18,6 +18,8 @@ interface Props {
   submittedAt: Date;
   contentMarkdown: string;
   run: AssessmentRunRow | null;
+  /** The exercise's rubric version now, to say when this submission was assessed against an earlier one. */
+  currentRubricVersion: number;
   reviews: Review[];
   fileReview: (prev: ActionResult, formData: FormData) => Promise<ActionResult>;
 }
@@ -36,7 +38,7 @@ function confidenceWords(c: number | null): string {
 }
 
 /** One immutable submission version with its assessment. Instructor reasoning never appears here. */
-export async function FeedbackCard({ version, submittedAt, contentMarkdown, run, reviews, fileReview }: Props) {
+export async function FeedbackCard({ version, submittedAt, contentMarkdown, run, currentRubricVersion, reviews, fileReview }: Props) {
   const verdict = run?.verdict ? VERDICT[run.verdict] : null;
   const fb = run?.feedback ?? null;
   const live = run?.graderConfig.provider !== "fixture";
@@ -54,6 +56,21 @@ export async function FeedbackCard({ version, submittedAt, contentMarkdown, run,
           </Badge>
         ) : null}
       </header>
+
+      {run?.exerciseSnapshot && run.exerciseSnapshot.rubricVersion !== currentRubricVersion ? (
+        <div className="mt-2 text-sm">
+          <p className="text-xs text-ink-3">
+            Assessed against version {run.exerciseSnapshot.rubricVersion} of this exercise; it has since been revised (now version{" "}
+            {currentRubricVersion}).
+          </p>
+          <details className="mt-1">
+            <summary className="cursor-pointer text-ink-2">Show the exercise as you answered it</summary>
+            <div className="mt-2 rounded-[var(--radius-control)] border border-stone bg-paper p-3">
+              <Markdown source={run.exerciseSnapshot.promptMarkdown} />
+            </div>
+          </details>
+        </div>
+      ) : null}
 
       <details className="mt-3 text-sm">
         <summary className="cursor-pointer text-ink-2">Show this version of the attempt</summary>

@@ -1,6 +1,5 @@
 import {
   buildSupervisorPrompt,
-  PRICING_VERSION,
   ProviderError,
   ROLE_CONTRACTS,
   SUPERVISOR_PROMPT_VERSION,
@@ -37,7 +36,7 @@ import {
 } from "../schema/index";
 import { planRun } from "./ai-runs";
 import { openDiscussion } from "./community";
-import { recordProviderRun } from "./provider-config";
+import { finishProviderRun } from "./provider-config";
 
 /**
  * The research studio: the learner's own projects, from a question to a report. Everything is
@@ -109,6 +108,15 @@ export async function createProject(
 
 export async function listProjects(db: DbOrTx, ownerId: string): Promise<ResearchProjectRow[]> {
   return db.select().from(researchProject).where(eq(researchProject.ownerId, ownerId)).orderBy(desc(researchProject.updatedAt));
+}
+
+/** The projects that belong in the learner's record: their own, never a labelled demonstration. */
+export async function listRecordProjects(db: DbOrTx, ownerId: string): Promise<ResearchProjectRow[]> {
+  return db
+    .select()
+    .from(researchProject)
+    .where(and(eq(researchProject.ownerId, ownerId), eq(researchProject.demo, false)))
+    .orderBy(desc(researchProject.updatedAt));
 }
 
 export interface ProjectBundle {
@@ -287,7 +295,8 @@ export async function addProvenance(
     origin: input.origin.trim(),
     versionOrDate: input.versionOrDate.trim(),
     licence: input.licence.trim(),
-    humanParticipants: input.humanParticipants,
+    // Data the learner collected from people was refused above, so only these two remain.
+    humanParticipants: input.humanParticipants === "existing_published" ? "existing_published" : "none",
     seed: input.seed?.trim() || null,
     generator: input.generator?.trim() || null,
     notes: (input.notes ?? "").trim().slice(0, 2000),
@@ -414,7 +423,8 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
     checks,
   });
   const instruction = "Give your provisional feedback on this version.";
-  const plan = await planRun(db, ownerId, env, "supervisor", `${system}\n${instruction}`);
+  const promptVersion = `${SUPERVISOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.supervisor.version}`;
+  const plan = await planRun(db, ownerId, env, "supervisor", `${system}\n${instruction}`, { purpose: "studio-feedback", promptVersion });
   const base = { projectId, versionId, checks };
   if (plan.kind === "scripted") {
     const [row] = await db
@@ -431,7 +441,6 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
       .returning();
     return row!;
   }
-  const startedAt = new Date();
   try {
     const result = await plan.provider.generateStructured({
       role: "supervisor",
@@ -443,19 +452,8 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
       maxTokens: plan.maxTokens,
       effort: plan.effort,
     });
-    const providerRunId = await recordProviderRun(db, {
-      ownerId,
-      role: "supervisor",
-      provider: "anthropic",
-      model: result.model,
-      purpose: "studio-feedback",
-      pricingVersion: PRICING_VERSION,
-      promptVersion: `${SUPERVISOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.supervisor.version}`,
-      status: "ok",
-      attempts: result.attempts,
-      worstCaseUsd: plan.worstCaseUsd,
-      startedAt,
-    });
+    await finishProviderRun(db, plan.runId, { status: "ok", model: result.model, attempts: result.attempts });
+    const providerRunId = plan.runId;
     const [row] = await db
       .insert(researchFeedback)
       .values({ ...base, mode: "live", status: "ok", feedback: result.object, providerRunId })
@@ -464,20 +462,13 @@ export async function requestFeedback(db: DbOrTx, ownerId: string, projectId: st
     return row!;
   } catch (error) {
     if (!(error instanceof ProviderError)) throw error;
-    const providerRunId = await recordProviderRun(db, {
-      ownerId,
-      role: "supervisor",
-      provider: "anthropic",
-      model: plan.model,
-      purpose: "studio-feedback",
-      pricingVersion: PRICING_VERSION,
-      promptVersion: `${SUPERVISOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.supervisor.version}`,
+    await finishProviderRun(db, plan.runId, {
       status: error.kind === "refused" ? "refused" : "error",
+      model: plan.model,
       error: error.message,
       attempts: error.attempts,
-      worstCaseUsd: plan.worstCaseUsd,
-      startedAt,
     });
+    const providerRunId = plan.runId;
     const [row] = await db
       .insert(researchFeedback)
       .values({ ...base, mode: "live", status: "failed", error: error.message, providerRunId })
@@ -551,7 +542,7 @@ export async function projectReport(db: DbOrTx, ownerId: string, projectId: stri
     feedback: bundle.feedback.map((f) => ({
       version: f.version,
       document: f.documentKind,
-      mode: f.mode === "live" ? "live" : "scripted",
+      outcome: f.mode === "scripted" ? "scripted" : f.mode === "blocked" ? "blocked" : f.status === "ok" ? "live" : "failed",
       met: f.checks.filter((c) => c.status === "met").length,
       total: f.checks.length,
     })),

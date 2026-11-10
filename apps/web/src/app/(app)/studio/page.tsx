@@ -31,9 +31,10 @@ export default async function StudioPage({ searchParams }: { searchParams: Promi
         </p>
       </header>
       <Notice tone="neutral" title="What the studio does not do">
-        It does not collect new data from people, recruit anyone, contact researchers, publish anything or import private data. Projects
-        work from published or open materials, simulations and your own reasoning. Feedback comes from automatic structural checks, and from
-        a live model only when one is configured and approved in Settings.
+        It does not recruit anyone, collect new data from people, contact researchers, publish anything or import private data. Projects
+        work from simulations, published or open materials, existing datasets used as their licence or terms permit (data about people
+        included) and your own reasoning. Feedback comes from automatic structural checks, and from a live model only when one is configured
+        and approved in Settings.
       </Notice>
       {error ? (
         <div className="mt-4">

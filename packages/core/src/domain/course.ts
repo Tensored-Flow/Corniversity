@@ -338,6 +338,8 @@ export const ProgrammeBlock = z.object({
     .min(1),
   evidenceOfUnderstanding: z.string().min(1),
   tutorGuidance: z.string().min(1).optional(),
+  /** The block's work is a project in the research studio, which needs no prepared unit. */
+  studio: z.boolean().optional(),
   gaps: z.array(z.string().min(1)).default([]),
 });
 export type ProgrammeBlock = z.infer<typeof ProgrammeBlock>;

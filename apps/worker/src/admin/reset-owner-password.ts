@@ -6,30 +6,11 @@
 // The new password is read twice without echo, or, with --password-stdin, as two lines on
 // standard input (for scripted use; never pass a password as an argument, where shells keep it).
 // It replaces the owner's password, signs the owner out everywhere and records the event.
-import { createInterface } from "node:readline";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { checkNewPassword, RecoveryError, resetOwnerPassword } from "@corniversity/db/services/recovery";
 import { hashPassword } from "better-auth/crypto";
-
-async function askHidden(prompt: string): Promise<string> {
-  return new Promise((resolve) => {
-    const rl = createInterface({ input: process.stdin, output: process.stdout, terminal: true });
-    const stdout = process.stdout as NodeJS.WriteStream;
-    const original = stdout.write.bind(stdout);
-    rl.question(prompt, (answer) => {
-      stdout.write = original;
-      original("\n");
-      rl.close();
-      resolve(answer);
-    });
-    // Mute echo after the prompt has been printed.
-    stdout.write = ((chunk: string | Uint8Array, ...rest: unknown[]) => {
-      if (typeof chunk === "string" && chunk !== prompt && !chunk.startsWith(prompt)) return true;
-      return (original as (...args: unknown[]) => boolean)(chunk, ...rest);
-    }) as typeof stdout.write;
-  });
-}
+import { askHidden, InputCancelled } from "./hidden-input";
 
 async function readFromStdin(): Promise<[string, string]> {
   let raw = "";
@@ -60,6 +41,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error(error);
+  console.error(error instanceof InputCancelled ? "Cancelled; the password is unchanged." : error);
   process.exitCode = 1;
 });

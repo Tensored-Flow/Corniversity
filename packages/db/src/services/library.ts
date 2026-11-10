@@ -467,6 +467,16 @@ export async function searchAsset(db: DbOrTx, assetId: string, query: string, li
  * and permitted for external AI processing. A semantically similar chunk from another course
  * or an unpermitted book never reaches a model.
  */
+/**
+ * A learner's question as a full-text query that any of its words satisfies; ranking puts the
+ * passages that share the most words first. Websearch syntax alone would require every word of
+ * the question to appear in one passage, which a sentence such as "Why must every Cauchy sequence
+ * converge?" almost never does, so the tutor would see no passage at all.
+ */
+function anyOfTheWords(question: string): string {
+  return (question.match(/[\p{L}\p{N}]+/gu) ?? []).join(" or ");
+}
+
 export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, courseId: string, query: string, limit = 6) {
   const assets = await db
     .select()
@@ -482,14 +492,15 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
   const allowed: AssetRow[] = [];
   for (const a of assets) if (await isAllowed(db, ownerId, a.id, "external_ai")) allowed.push(a);
   if (allowed.length === 0 || !query.trim()) return [];
+  const words = anyOfTheWords(query);
   const rows = await db.execute(sql`
     select p.id, p.asset_id, p.text, p.heading, e.physical_index, e.printed_label,
-           ts_rank(p.tsv, websearch_to_tsquery('english', ${query})) as rank
+           ts_rank(p.tsv, websearch_to_tsquery('english', ${words})) as rank
     from passage p join extracted_page e on e.id = p.page_id
     where p.asset_id in (${sql.join(
       allowed.map((a) => sql`${a.id}::uuid`),
       sql`, `,
-    )}) and p.tsv @@ websearch_to_tsquery('english', ${query})
+    )}) and p.tsv @@ websearch_to_tsquery('english', ${words})
     order by rank desc limit ${limit}`);
   return (
     rows.rows as {

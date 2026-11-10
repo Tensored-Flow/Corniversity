@@ -109,6 +109,41 @@ export function annotateTurn(text: string, allowed: EvidenceRef[]): AnnotatedTur
   };
 }
 
+/**
+ * A stored reply as history for a later turn. Each turn numbers its evidence afresh, so a tag such
+ * as [E5] in an earlier reply can name a different source in the current turn; each tag group is
+ * replaced by the labels of the sources it resolved to when the reply was stored, and a tag that
+ * resolved to nothing is dropped.
+ */
+export function citedHistory(markdown: string, citations: readonly { tag: string; label: string }[]): string {
+  const byTag = new Map(citations.map((c) => [c.tag.toUpperCase(), c.label]));
+  return markdown
+    .replace(TAG_GROUP, (_match, group: string) => {
+      const labels = group
+        .split(/\s*,\s*/)
+        .map((t) => byTag.get(t.trim().toUpperCase()))
+        .filter((label): label is string => Boolean(label));
+      return labels.length > 0 ? `(cited then: ${labels.join("; ")})` : "";
+    })
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/ +([.,;:])/g, "$1");
+}
+
+/**
+ * Whether text the learner selected appears on the page, ignoring case, spacing, line breaks and
+ * soft hyphens, which differ between a PDF's text layer and its extracted text.
+ */
+export function foundOnPage(selected: string, pageText: string): boolean {
+  const normalise = (s: string) =>
+    s
+      .replace(/\u00ad/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  const needle = normalise(selected);
+  return needle.length > 0 && normalise(pageText).includes(needle);
+}
+
 function tagNumber(tag: string): number {
   return Number(tag.replace(/^E/i, "")) || 0;
 }

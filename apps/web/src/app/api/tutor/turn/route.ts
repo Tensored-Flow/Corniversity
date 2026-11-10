@@ -1,4 +1,5 @@
 import { buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
+import { citedHistory } from "@corniversity/core/grounding/citations";
 import { getEnv } from "@corniversity/db/env";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
@@ -93,7 +94,7 @@ export async function POST(request: Request): Promise<Response> {
   const chat = [
     ...priorMessages.map((m) => ({
       role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant",
-      content: m.contentMarkdown,
+      content: m.sender === "learner" ? m.contentMarkdown : citedHistory(m.contentMarkdown, m.citations),
     })),
     { role: "user" as const, content: message },
   ];

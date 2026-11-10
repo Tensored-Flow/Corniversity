@@ -39,8 +39,8 @@ that account exists.
 | Command | Purpose |
 |---|---|
 | `pnpm typecheck`, `pnpm lint`, `pnpm build` | Static checks and production build |
-| `pnpm test` | Unit tests (pure logic: scheduling, prerequisites, grounding, checks) |
-| `pnpm test:integration` | Service tests against a real embedded PostgreSQL |
+| `pnpm test` | Unit tests (pure logic: scheduling, prerequisites, grounding, checks), then the worker's handler tests, one file at a time against a throw-away PostgreSQL |
+| `pnpm test:integration` | Service tests against a real embedded PostgreSQL, one file at a time because the files share one database |
 | `pnpm test:e2e` | Playwright learner journeys (stack must be running) |
 | `pnpm eval:academic` | Academic evaluation set |
 | `pnpm content:validate` | Validates `content/` and reports readiness counts |

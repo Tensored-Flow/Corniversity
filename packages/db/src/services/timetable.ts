@@ -457,16 +457,25 @@ export async function proposeRollingExtension(db: DbOrTx, ownerId: string, weeks
   return proposal!;
 }
 
-export async function decideProposal(db: DbOrTx, ownerId: string, proposalId: string, decision: "confirmed" | "rejected"): Promise<void> {
+/** Decides a draft proposal; a programme route made for an earlier focus is superseded instead of applied. */
+export async function decideProposal(
+  db: DbOrTx,
+  ownerId: string,
+  proposalId: string,
+  decision: "confirmed" | "rejected",
+): Promise<"confirmed" | "rejected" | "superseded" | "not_open"> {
   const [p] = await db
     .select()
     .from(changeProposal)
     .where(and(eq(changeProposal.id, proposalId), eq(changeProposal.ownerId, ownerId)))
     .limit(1);
-  if (p?.status !== "draft") return;
+  if (p?.status !== "draft") return "not_open";
   const diff = p.diff as { planVersionId?: string; extendTerm?: { termId: string; teachingWeeks: number; endDate: string } };
   if (p.kind === "programme") {
-    if (decision === "confirmed") await applyProgrammeProposal(db, ownerId, p.diff);
+    if (decision === "confirmed" && (await applyProgrammeProposal(db, ownerId, p.diff)) === "superseded") {
+      await db.update(changeProposal).set({ status: "superseded", decidedAt: new Date() }).where(eq(changeProposal.id, proposalId));
+      return "superseded";
+    }
   } else if (decision === "confirmed" && diff.planVersionId) {
     if (diff.extendTerm) {
       // A rolling horizon moves only when the learner accepts the plan that fills it.
@@ -480,6 +489,7 @@ export async function decideProposal(db: DbOrTx, ownerId: string, proposalId: st
     await db.delete(planVersion).where(and(eq(planVersion.id, diff.planVersionId), eq(planVersion.status, "proposed")));
   }
   await db.update(changeProposal).set({ status: decision, decidedAt: new Date() }).where(eq(changeProposal.id, proposalId));
+  return decision;
 }
 
 export async function listOpenProposals(db: DbOrTx, ownerId: string) {

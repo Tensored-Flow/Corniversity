@@ -50,6 +50,13 @@
       "when": 1794189717236,
       "tag": "0006_research-studio",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794270743305,
+      "tag": "0007_exercise-snapshot",
+      "breakpoints": true
     }
   ]
 }

@@ -21,22 +21,46 @@ bootstrap code or an API key into a chat.
    `web` and from the service `worker`. Each service restarts on its own; nothing else changes.
    Alternatively, tell the build agent that the account exists and approve it doing this.
 
-3. Let the build agent check the signed-in site (after item 1, optional).
-   Why: the checks behind sign-in (a study session, the notebook, a laboratory, the library, the
-   studio) have so far run only on the build machine, because the live site has no account yet.
-   Step: either walk through them yourself (sign in, open a session from the Timetable, write a
-   notebook entry, run a laboratory, open the Library, start a studio project), or give the agent
-   a signed-in browser session it may use. It must not be given your password.
-
-4. Enable live tutoring (optional; everything else works without it).
+3. Enable live tutoring (optional; everything else works without it).
    Why: no model is configured, so tutors, the assessor and the director answer with a labelled
    scripted demo that does not read your work.
    Step: create an API key in the Anthropic console. In Corniversity open *Settings → Live
-   tutoring and its costs*, choose *Anthropic (live model, paid)* and a model, paste the key, keep
-   or lower the limits per run, per day and per month, tick *I approve paid use of the selected
-   model within these limits*, and save. Model use is billed by Anthropic to that account,
-   separately from Railway. Then tell the build agent the test budget you authorise (for example
-   $2), and it will run one small live check and record the result.
+   tutoring and its costs*, choose *Anthropic (live model, paid)* and a model, paste the key, set
+   the limits, tick *I approve paid use of the selected model within these limits*, and save; the
+   notice above the form then reads *Live:* and the model. Each run is refused before it starts if
+   its worst case could cross a limit, so *Per run* must cover the dearest role you use: on Claude
+   Opus 5.5 with fallback on, about $0.70 for the assessor and $0.45 for the tutor (well under half
+   with fallback off). Small limits that let every role run: $1 per run, $2 per day, $5 per
+   month. Model use is billed by Anthropic to that account, separately from Railway.
+
+4. Check the signed-in site and live tutoring yourself (after items 1 and 3; about 20 minutes).
+   Why: the build agent cannot sign in as you and must not be given your password. Tell it the
+   outcome of each step afterwards (never a password, code or key), and it records them as checks
+   you ran on the live site.
+   a. Sign-in: choose *Sign out* (top right), then open `/campus`; it must send you to sign-in.
+      Sign in. Close the browser completely and reopen the site: you are still signed in.
+   b. Closed sign-up: `/join` must say *Sign-up is closed*. Then do item 2 and tell the agent; it
+      confirms from outside that sign-up is refused and that the code is gone from both services.
+   c. One live tutoring turn on open material: in *Library → Sources*, under *9.66J Computational
+      Cognitive Science (Fall 2004)*, choose *Import* beside `sept_9_2004.pdf` (its licence permits
+      the import and sets the item's AI permission). When the Library shows it processed, open a
+      session of COG-201 unit 1 (or any prepared unit of a course you take whose source offers
+      *Import*) and ask the tutor: *How does inductive reasoning differ from deductive reasoning?*
+      The reply must be headed with the model's name, not *Scripted demo*; a citation under it
+      must read *Your library: …, PDF page N*, and that page in the reader must say what the reply
+      attributes to it; no *unverifiable citation removed* badge. *Settings → Recent model runs*
+      must show the tutor run as *ok* with tokens and a cost (*Tokens in* counts only uncached
+      input; the cached prompt is included in the cost).
+   d. Limits: set *Per run* to 0.05, save, and send the tutor one more message. It must be refused
+      ("This run could cost up to …, above your per-run limit of $0.05") and Recent model runs must
+      show *budget blocked* with 0 / 0 tokens and $0.0000. Set *Per run* back; a value not above
+      the approved one needs no new approval.
+   e. One learning journey, as real work (it stays in your record): in the same session write an
+      exercise attempt and choose *Submit attempt*; *Submission v1* gets feedback badged
+      *AI assessor ·* and the model. Revise and choose *Submit revision*; *Submission v2* gets its
+      own feedback. *Records* lists the attempt with both versions. Sign out and sign in again: the
+      versions, the feedback and the tutor conversation are still there, each still labelled with
+      what wrote it.
 
 5. If you forget your password.
    Why: no email provider is configured, so there is no reset link; recovery is deliberately

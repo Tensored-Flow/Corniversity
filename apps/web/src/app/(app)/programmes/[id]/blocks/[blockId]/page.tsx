@@ -33,7 +33,6 @@ export default async function BlockPage({ params }: { params: Promise<{ id: stri
   const [progress, participation] = await Promise.all([learnerProgress(db(), session.user.id), listParticipation(db(), session.user.id)]);
   const mine = participation.find((x) => x.programmeId === p.id);
   const learner = blockLearnerView(block, p.blocks, detail.courses, progress);
-  const next = blockNextStep(block, report, progress);
   const sources = await sourceTitles(
     db(),
     block.sourceShelf.map((s) => s.sourceId).filter((x): x is string => Boolean(x)),
@@ -52,6 +51,7 @@ export default async function BlockPage({ params }: { params: Promise<{ id: stri
   );
   const missingCount =
     leads.length + courseLeads.length + report.unpreparedUnitIds.length + report.coursesToRefine.length + report.missingUnitIds.length;
+  const next = blockNextStep(block, report, progress, { leads: leads.length + courseLeads.length });
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -351,7 +351,7 @@ function NextStepCard({ next, headingId, className }: { next: NextStep; headingI
           <LinkButton href="/library/requests" variant="secondary">
             Books to obtain
           </LinkButton>
-        ) : (
+        ) : next.kind === "not_prepared" ? null : (
           <LinkButton href="/studio" variant="secondary">
             Research studio
           </LinkButton>

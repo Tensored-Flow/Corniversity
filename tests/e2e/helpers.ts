@@ -8,7 +8,9 @@ export const AUTH_STATE = "tests/e2e/.auth/owner.json";
 /**
  * The owner credentials used by the journeys. They come from the local environment file (never
  * committed) plus a test password kept only in the test process. The journeys create the owner
- * account on a fresh database; on an existing database they sign in instead.
+ * account on a fresh database; on an existing database they sign in instead. They enrol, submit
+ * work, pair a device, change settings and switch the provider back to the scripted demo, so they
+ * would rewrite a real learner's record: they run only against a local stack, never a deployment.
  */
 export function ownerEnv(): { email: string; code: string; password: string } {
   const envPath = resolve(process.cwd(), ".env");
@@ -20,9 +22,8 @@ export function ownerEnv(): { email: string; code: string; password: string } {
     }
   }
   const baseUrl = process.env.E2E_BASE_URL ?? "http://localhost:3000";
-  const local = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(baseUrl);
-  if (!local && !process.env.E2E_OWNER_PASSWORD) {
-    throw new Error(`Refusing to use the default test password against ${baseUrl}; set E2E_OWNER_PASSWORD to your own.`);
+  if (!/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(baseUrl)) {
+    throw new Error(`The journeys run only against a local stack, never against ${baseUrl}.`);
   }
   return {
     email: process.env.E2E_OWNER_EMAIL ?? values.OWNER_EMAIL ?? "owner@example.com",

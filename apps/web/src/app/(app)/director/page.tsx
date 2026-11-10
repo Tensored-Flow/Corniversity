@@ -16,7 +16,7 @@ import { RouteSummary } from "./RouteSummary";
 
 export const metadata = { title: "Director of Studies" };
 
-export default async function DirectorPage({ searchParams }: { searchParams: Promise<{ proposed?: string }> }) {
+export default async function DirectorPage({ searchParams }: { searchParams: Promise<{ proposed?: string; error?: string }> }) {
   const session = await requireSession("/director");
   const flash = await searchParams;
   const profile = await ensureProfile(db(), session.user.id);
@@ -79,6 +79,11 @@ export default async function DirectorPage({ searchParams }: { searchParams: Pro
           </Card>
           <Card as="aside">
             <h2 className="text-lg text-ink">Proposals</h2>
+            {flash.error ? (
+              <div className="mt-2">
+                <Notice tone="rust">{flash.error}</Notice>
+              </div>
+            ) : null}
             {flash.proposed === "programme" ? (
               <p className="mt-1 text-xs text-moss">The director drafted a route for the programme; confirm or reject it below.</p>
             ) : null}
