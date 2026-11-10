@@ -287,6 +287,11 @@ export const conceptState = pgTable(
   (t) => [primaryKey({ columns: [t.ownerId, t.conceptId] })],
 );
 
+/**
+ * A learning issue: a specific statement about a piece of work, with its evidence, proposed by a
+ * check or a live assessor (or written by the learner), then confirmed, disputed, revisited or
+ * resolved by later work. Never a label about the learner; never given to the assessor.
+ */
 export const misconceptionRecord = pgTable(
   "misconception_record",
   {
@@ -294,16 +299,26 @@ export const misconceptionRecord = pgTable(
     ownerId: text("owner_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    conceptId: text("concept_id")
-      .notNull()
-      .references(() => concept.id),
+    conceptId: text("concept_id").references(() => concept.id),
     claim: text("claim").notNull(),
     evidenceIds: jsonb("evidence_ids").$type<string[]>().notNull().default([]),
-    status: text("status").$type<"active" | "cleared">().notNull().default("active"),
+    status: text("status").$type<"proposed" | "confirmed" | "revisiting" | "resolved" | "dismissed">().notNull().default("proposed"),
+    origin: text("origin").$type<"check" | "assessor" | "learner">().notNull().default("learner"),
+    exerciseId: text("exercise_id"),
+    submissionVersionId: uuid("submission_version_id"),
+    assessmentRunId: uuid("assessment_run_id"),
+    /** The automatic check that raised it, so the same check passing later can resolve it. */
+    checkId: text("check_id"),
+    /** How the proposal should be read (who proposed it and on what basis). */
+    interpretation: text("interpretation"),
+    learnerNote: text("learner_note"),
+    followUp: text("follow_up"),
+    resolvedBy: jsonb("resolved_by").$type<{ note: string; submissionVersionId: string | null; at: string } | null>(),
     createdAt: createdAt(),
+    updatedAt: updatedAt(),
     clearedAt: tz("cleared_at"),
   },
-  (t) => [index("misconception_owner_idx").on(t.ownerId, t.status)],
+  (t) => [index("misconception_owner_idx").on(t.ownerId, t.status), index("misconception_exercise_idx").on(t.ownerId, t.exerciseId)],
 );
 
 export const revisionItem = pgTable(
@@ -316,11 +331,18 @@ export const revisionItem = pgTable(
     conceptId: text("concept_id")
       .notNull()
       .references(() => concept.id),
-    kind: text("kind").$type<"definition" | "theorem" | "problem" | "explain">().notNull(),
+    kind: text("kind")
+      .$type<"definition" | "theorem" | "problem" | "explain" | "counterexample" | "derivation" | "unfamiliar" | "issue">()
+      .notNull(),
     prompt: text("prompt").notNull(),
     dueAt: tz("due_at").notNull(),
     intervalDays: integer("interval_days").notNull().default(2),
     lastReviewedAt: tz("last_reviewed_at"),
+    /** Active, paused or archived by the learner; a snoozed item is active again after its date. */
+    status: text("status").$type<"active" | "paused" | "archived">().notNull().default("active"),
+    snoozedUntil: tz("snoozed_until"),
+    issueId: uuid("issue_id"),
+    exerciseId: text("exercise_id"),
     createdAt: createdAt(),
   },
   (t) => [index("revision_owner_due_idx").on(t.ownerId, t.dueAt)],

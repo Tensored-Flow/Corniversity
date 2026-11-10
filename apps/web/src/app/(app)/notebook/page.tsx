@@ -6,6 +6,7 @@ import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select, Textarea
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 import { createEntryAction, toggleResolvedAction } from "./actions";
+import { IssuesSection } from "./IssuesSection";
 import { excerpt, KIND_LABEL, KIND_OPTIONS, KindBadge } from "./shared";
 
 export const metadata = { title: "Notebook" };
@@ -145,6 +146,7 @@ export default async function NotebookPage({
         </aside>
 
         <div className="flex flex-col gap-6">
+          <IssuesSection ownerId={ownerId} />
           {questions.length ? (
             <Card as="section" aria-labelledby="questions-heading">
               <h2 id="questions-heading" className="text-lg text-ink">

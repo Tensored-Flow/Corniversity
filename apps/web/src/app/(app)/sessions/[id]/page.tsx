@@ -1,10 +1,12 @@
 import { modelLabel, publicProviderState } from "@corniversity/ai";
 import { pageOfLine } from "@corniversity/core/paper/transcription";
+import { proposeNextTask, STAGE_LABELS } from "@corniversity/core/progression/progression";
 import { getEnv } from "@corniversity/db/env";
 import { unitPrerequisiteView } from "@corniversity/db/services/bridges";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { labRevealState } from "@corniversity/db/services/lab-predictions";
 import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { openIssueCounts } from "@corniversity/db/services/learning-issues";
 import { listEntries } from "@corniversity/db/services/notebook";
 import { latestTranscriptionJob, listTranscriptions, listWorkPages } from "@corniversity/db/services/paper-work";
 import { resolveProviderState } from "@corniversity/db/services/provider-config";
@@ -120,6 +122,27 @@ export default async function SessionPage({
   );
 
   const isWorkbench = exercises.length > 0;
+  // The progression: one suggested next task from visible evidence, with its reason; any other
+  // exercise stays open, and nothing is reset.
+  const issueCounts = await openIssueCounts(
+    db(),
+    ownerId,
+    exercises.map((e) => e.id),
+  );
+  const progressionItems = await Promise.all(
+    exercises.map(async (e) => {
+      const h = e.id === selected?.id ? history : await getAttemptHistory(db(), ownerId, e.id);
+      return {
+        exerciseId: e.id,
+        title: e.title,
+        stage: e.progression?.stage ?? null,
+        state: h.at(-1)?.attempt.state ?? null,
+        submitted: h.some((x) => x.versions.length > 0),
+        openIssues: issueCounts.get(e.id) ?? 0,
+      };
+    }),
+  );
+  const suggestion = exercises.length > 1 ? proposeNextTask(progressionItems) : null;
   const revealedHints = selected && latestAttempt ? selected.hintLadder.slice(0, latestAttempt.hintsUsed) : [];
   const lessonHtml = await renderMarkdown(unitDetail.unit.lessonMarkdown);
   const continuity = await sessionContinuity(db(), ownerId, session, activity.exerciseIds);
@@ -267,9 +290,21 @@ export default async function SessionPage({
                         ].join(" ")}
                       >
                         {e.sequence}. {e.title}
+                        {e.progression ? (
+                          <span className="ml-1 text-[0.7rem] text-ink-3">· {STAGE_LABELS[e.progression.stage]}</span>
+                        ) : null}
                       </Link>
                     ))}
                   </nav>
+                ) : null}
+                {suggestion && suggestion.exerciseId !== selected.id ? (
+                  <p className="text-sm text-ink-2">
+                    <span className="text-ink-3">Suggested next:</span> {suggestion.reason}{" "}
+                    <Link href={`/sessions/${id}?exercise=${suggestion.exerciseId}`} className="text-brass underline underline-offset-4">
+                      Open it
+                    </Link>{" "}
+                    <span className="text-xs text-ink-3">(a suggestion; every exercise stays open)</span>
+                  </p>
                 ) : null}
                 <details className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4">
                   <summary className="cursor-pointer text-sm text-ink">
@@ -284,11 +319,36 @@ export default async function SessionPage({
                     <Badge>{selected.kind.replace(/_/g, " ")}</Badge>
                     <span className="text-xs text-ink-3">about {selected.estimatedMinutes} min</span>
                     <span className="text-xs text-ink-3">· rubric v{selected.rubricVersion}</span>
+                    {selected.progression ? (
+                      <span className="text-xs text-ink-3">
+                        · {STAGE_LABELS[selected.progression.stage]} · {selected.progression.difficulty.level}
+                      </span>
+                    ) : null}
                   </div>
                   <h2 className="mt-2 text-xl text-ink">{selected.title}</h2>
                   <div className="mt-3">
                     <Markdown source={selected.promptMarkdown} />
                   </div>
+                  {selected.progression ? (
+                    <details className="mt-3 text-xs text-ink-3">
+                      <summary className="cursor-pointer">About this exercise</summary>
+                      <p className="mt-1">
+                        Difficulty “{selected.progression.difficulty.level}”: {selected.progression.difficulty.basis} This is the author's
+                        judgement with its reason, not a measured difficulty.
+                      </p>
+                      {selected.progression.transferNote ? (
+                        <p className="mt-1">What is new here: {selected.progression.transferNote}</p>
+                      ) : null}
+                      {selected.progression.knownAmbiguities.length ? (
+                        <p className="mt-1">Known ambiguities in the statement: {selected.progression.knownAmbiguities.join(" ")}</p>
+                      ) : null}
+                      {selected.progression.helpModes ? (
+                        <p className="mt-1">
+                          Help this exercise permits: {selected.progression.helpModes.map((m) => m.replace(/_/g, " ")).join(", ")}.
+                        </p>
+                      ) : null}
+                    </details>
+                  ) : null}
                 </Card>
                 <Workbench
                   key={`${selected.id}-${latestAttempt?.id ?? "new"}`}

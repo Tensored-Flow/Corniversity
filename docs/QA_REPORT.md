@@ -568,6 +568,22 @@ browser's link prefetches return 200 and the router cancels some of them, which 
 lists as aborted requests; a click on a prefetched link navigates on the client as it should.
 Running now: the worker and the web service, both from `40c2624`.
 
+## Teaching-experience brief: Milestones 11 to 14 (10 November 2026)
+
+Local evidence only; nothing here has been released. Budget (Milestone 12): a strict prompt bound,
+integer micro-dollar accounting, unsettled runs held at their worst case until the owner settles
+them, idempotency keys and no SDK retries (provider-config tests, 20). Study continuity, paper work
+and bridges (Milestone 13): journey 11 at both viewports, with a two-device draft conflict, an
+offline save, a symbol that must be confirmed before submission and a withdrawn permission that
+sends nothing. Issues, review, progressions and preparation (Milestone 14): journey 12 at both
+viewports. Two test defects were found and repaired on the way: a submission wait that could read
+the previous card's state, and a review test that unticked a box before React reset the form after
+the first save. One product defect was repaired: after a submission the draft revision was stale,
+so the next save reported a conflict. Issues are now proposed only by checks that look for an
+error, after omissions produced noisy issues. Suites at the close of Milestone 14: 301 unit and 29
+worker unit tests, 119 integration tests, typecheck and lint clean, the content validator with no
+error or warning.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -589,7 +605,7 @@ Running now: the worker and the web service, both from `40c2624`.
 - COG-250 and COG-260 each have one prepared unit; their other seven units are outlines, and
   COG-100 has none. Blocks MBI-02, MBI-10 and MBI-12 are proposed, the eight electives are
   proposed, and method 9.6 (measurement, reliability and validity) has no prepared unit.
-- MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210
+- (Repaired in Milestone 13.) MBI-08 says its biology comes from MBI-02, but MBI-02's courses (NEU-101, NEU-201) and NEU-210
   are proposed with no concepts defined, so no biology prerequisite can be expressed yet; NEU-220,
   the block's teachable course, needs none (its Neuromatch spine asks for no biology).
 - (Repaired in Milestone 12.) The worst-case estimate used to count ASCII prompt text at three

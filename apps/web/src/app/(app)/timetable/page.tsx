@@ -236,10 +236,7 @@ export default async function TimetablePage({
                         </p>
                         <Badge tone={KIND_TONE[s.sessionKind] ?? "neutral"}>{s.sessionKind.replace("_", " ")}</Badge>
                         {s.unitId ? (
-                          <Link
-                            href={`/study/slot/${s.id}`}
-                            className="mt-1 block text-ink underline-offset-4 hover:underline"
-                          >
+                          <Link href={`/study/slot/${s.id}`} className="mt-1 block text-ink underline-offset-4 hover:underline">
                             {s.title}
                           </Link>
                         ) : (

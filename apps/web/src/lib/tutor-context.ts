@@ -54,6 +54,7 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
     submitted,
     attemptText,
     lines: req.selection?.origin === "attempt" ? (req.selection.lines ?? null) : null,
+    permitted: exercise?.progression?.helpModes,
   });
   const selection = req.selection ?? null;
   const attached: string[] = [];

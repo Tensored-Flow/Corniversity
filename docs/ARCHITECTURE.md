@@ -81,6 +81,13 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   `[[?…]]` mark left), `concept_bridge` (seeded from `content/bridges`), `bridge_visit` (trail, depth,
   exact return path, self-check answer). Notebook entries carry their session and anchor; submissions
   carry the confirmed transcription and pages; attempts carry a draft revision.
+- **Issues, review and preparation**: `misconception_record` holds learning issues (status, origin,
+  the check and submission that raised or resolved them); `revision_item` carries status, snooze
+  date and the issue or exercise it revisits; review choices live on
+  `learner_profile.review_preferences`; `unit_exercise.progression` holds the progression.
+  `preparation_request` (intake, budget, status), `preparation_stage` (one row per stage and unit,
+  with role, lease, artifact and error), `unit_draft` (numbered drafts with their checks) and
+  `unit_publication` (one active publication per unit; the seeder skips content for those units).
 - **Research studio**: `research_project` (owner, kind, question, shelf and leads, a demonstration
   flag), `research_document` (proposal, methods and report drafts), `research_version`
   (immutable numbered versions), `research_provenance`, `research_artifact` (a blob or a notebook
@@ -150,7 +157,7 @@ The worker applies pending migrations on start and, when the deployment sets
 `SEED_CONTENT_ON_START=1`, seeds the institution's content (idempotent; never learner data).
 pg-boss 12 (`schema: pgboss`), queues: `transcribe-pages` (one per consent; no retry, since a retry
 would be a new billable call; consent and pages re-checked when it runs), `ingest-asset` (singletonKey = sha256), `prepare-unit`
-(singletonKey = unit id), `assess-submission` (singletonKey = submission version id),
+(one job per confirmed or resumed preparation request; stages hold leases so a duplicate run skips finished work), `assess-submission` (singletonKey = submission version id),
 `embed-passages`, `export-records`, `maintenance` (cron). Retries with backoff, expiry,
 heartbeats for ingestion, dead-letter queues. `job_record` mirrors state for the UI.
 

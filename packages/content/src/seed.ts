@@ -17,6 +17,7 @@ import {
   sourceVersion,
   teachingUnit,
   unitExercise,
+  unitPublication,
 } from "@corniversity/db/schema/index";
 import { and, eq } from "drizzle-orm";
 import type { ContentBundle, LoadedCourse } from "./schema";
@@ -76,6 +77,13 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
   };
 
   await db.transaction(async (tx) => {
+    // Units the owner published from a preparation draft keep their published content: the seeder
+    // re-attaches them to a new course version but never restores their outline.
+    const published = new Set(
+      (await tx.select({ unitId: unitPublication.unitId }).from(unitPublication).where(eq(unitPublication.active, true))).map(
+        (r) => r.unitId,
+      ),
+    );
     for (const [i, d] of bundle.departments.entries()) {
       await tx
         .insert(department)
@@ -369,23 +377,25 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
           })
           .onConflictDoUpdate({
             target: teachingUnit.id,
-            set: {
-              courseVersionId: created.id,
-              sequence: unit.spec.sequence,
-              title: unit.spec.title,
-              summary: unit.spec.summary,
-              objectives: unit.spec.objectives,
-              prerequisiteConceptIds: unit.spec.prerequisiteConceptIds,
-              teachesConceptIds: unit.spec.teachesConceptIds,
-              preparation: unit.spec.preparation,
-              activities: unit.spec.activities,
-              exitCheck: unit.spec.exitCheck,
-              misconceptions: unit.spec.commonMisconceptions,
-              estimatedMinutes: unit.spec.estimatedMinutes,
-              status: unit.spec.status,
-              checks: unit.spec.checks,
-              lessonMarkdown: unit.lessonMarkdown,
-            },
+            set: published.has(unitId)
+              ? { courseVersionId: created.id, sequence: unit.spec.sequence }
+              : {
+                  courseVersionId: created.id,
+                  sequence: unit.spec.sequence,
+                  title: unit.spec.title,
+                  summary: unit.spec.summary,
+                  objectives: unit.spec.objectives,
+                  prerequisiteConceptIds: unit.spec.prerequisiteConceptIds,
+                  teachesConceptIds: unit.spec.teachesConceptIds,
+                  preparation: unit.spec.preparation,
+                  activities: unit.spec.activities,
+                  exitCheck: unit.spec.exitCheck,
+                  misconceptions: unit.spec.commonMisconceptions,
+                  estimatedMinutes: unit.spec.estimatedMinutes,
+                  status: unit.spec.status,
+                  checks: unit.spec.checks,
+                  lessonMarkdown: unit.lessonMarkdown,
+                },
           });
         report.units++;
         for (const e of unit.exercises) {
@@ -403,6 +413,7 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
               deterministicChecks: e.deterministicChecks,
               rubric: e.rubric,
               rubricVersion: e.rubric.version,
+              progression: e.progression ?? null,
               origin: e.origin,
               attribution: e.attribution ?? null,
               externalLocatorId: e.externalLocatorId ?? null,
@@ -421,6 +432,7 @@ export async function seedContent(db: Database, bundle: ContentBundle): Promise<
                 deterministicChecks: e.deterministicChecks,
                 rubric: e.rubric,
                 rubricVersion: e.rubric.version,
+                progression: e.progression ?? null,
                 origin: e.origin,
                 attribution: e.attribution ?? null,
                 externalLocatorId: e.externalLocatorId ?? null,

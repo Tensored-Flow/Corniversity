@@ -27,6 +27,7 @@ import {
 import { planRun } from "@corniversity/db/services/ai-runs";
 import { recordEvidence } from "@corniversity/db/services/evidence";
 import { exerciseSnapshotOf } from "@corniversity/db/services/learning";
+import { proposeIssueFromCheck, proposeIssueFromGap, resolveIssuesFromSubmission } from "@corniversity/db/services/learning-issues";
 import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, count, eq, like, lte } from "drizzle-orm";
@@ -72,6 +73,34 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     detail: r.detail,
   }));
   await db.update(assessmentRun).set({ deterministicResults: deterministic }).where(eq(assessmentRun.id, run.id));
+
+  // Automatic checks are evidence whatever the model does: a failed check proposes an issue about
+  // this submission (the learner confirms or disputes it), and the same check passing on a later
+  // submission resolves an open one.
+  const conceptId = exercise.conceptIds[0] ?? null;
+  // Only checks that detect an error propose an issue; a missing expression is an omission, which
+  // the feedback reports, not a mistake to revisit.
+  const ERROR_KINDS = new Set(["forbidden_claim", "requires_hypothesis", "finite_examples_not_proof", "numeric_value"]);
+  const kindOf = new Map(assessed.deterministicChecks.map((c) => [c.id, c.kind]));
+  for (const r of deterministic.filter((d) => !d.passed && ERROR_KINDS.has(kindOf.get(d.checkId) ?? ""))) {
+    await proposeIssueFromCheck(db, {
+      ownerId: payload.ownerId,
+      conceptId,
+      exerciseId: exercise.id,
+      submissionVersionId: sv.id,
+      assessmentRunId: run.id,
+      checkId: r.checkId,
+      statement: `Submission v${sv.version} of "${assessed.title}": ${r.detail}`,
+      version: sv.version,
+    });
+  }
+  await resolveIssuesFromSubmission(db, {
+    ownerId: payload.ownerId,
+    exerciseId: exercise.id,
+    submissionVersionId: sv.id,
+    version: sv.version,
+    passedCheckIds: deterministic.filter((d) => d.passed).map((d) => d.checkId),
+  });
 
   const evidence = await buildUnitEvidence(db, exercise.unitId);
   const system = buildAssessorSystemPrompt({
@@ -250,6 +279,21 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     reviewStatus: "provisional",
   });
 
+  // A live assessor's first gap may become a proposed issue, phrased about that line of the
+  // work. The scripted demo read nothing, so it proposes nothing.
+  if (live && feedbackObject.firstGap && verdict !== "accepted") {
+    await proposeIssueFromGap(db, {
+      ownerId: payload.ownerId,
+      conceptId,
+      exerciseId: exercise.id,
+      submissionVersionId: sv.id,
+      assessmentRunId: run.id,
+      version: sv.version,
+      line: feedbackObject.firstGap.line,
+      issue: guarded.feedback.firstGap?.issue ?? feedbackObject.firstGap.issue,
+      model,
+    });
+  }
   return { status, verdict, confidence, live, deterministic: deterministic.length };
 }
 

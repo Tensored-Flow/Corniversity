@@ -96,6 +96,45 @@ to evidence events with dates. Self-reported confidence is separate. Time spent,
 completed, assistance received and understanding demonstrated are separate facts. No mastery
 percentages.
 
+## Learning issues and review
+
+A learning issue is a specific point in a piece of work: a claim, a missing hypothesis, a value
+outside its tolerance. It is proposed by an automatic check that looks for an error (a forbidden
+claim, a missing hypothesis, finitely many examples offered as proof, a wrong value), by a live
+assessor's first gap, or written by the learner, and it links to the submission and the check that
+raised it. The learner confirms it (correcting its wording), disputes it, marks it for revisiting,
+resolves it, or deletes it. When the same check passes on a later submission the issue is resolved
+with that submission named. Omissions (a step not shown) do not become issues; they stay feedback.
+Issues are never sent to the assessor and never phrased as traits of the learner.
+
+Review follows one stated rule: an item comes back after two days; recalled doubles the gap (up to
+sixty days), shaky keeps it, forgot brings it back tomorrow. The learner sets a weekly number (a
+default comes from their weekly hours), may pause review, keep weekdays free, snooze or archive
+an item. At most five items are offered at a time. Items past their date are reported as
+information, never as a debt, and ordinary study never waits for review.
+
+## Problem progressions
+
+An exercise may carry a progression: its stage (worked example, independent, unfamiliar,
+counterexample, synthesis), a difficulty with the basis for it, its provenance, the help modes it
+permits, and for an unfamiliar problem a transfer note naming the familiar exercise it departs
+from. The validator enforces these; the next task is proposed in stage order. Four routes carry
+full progressions (MAT-230 units 1 to 4, MAT-262 units 1 and 2, COG-260 and COG-250 unit 1,
+CHE-101 unit 5). A stage describes the exercise's place in a route; it is not a grade.
+
+## Course preparation
+
+A learner may ask for a course to be prepared further. The request records their goal, depth,
+weekly hours, balance, assessment preference, materials and the number of units to prepare, with
+a budget of at most $20 (and never more than the monthly limit). It is a proposal until confirmed
+and never enrols anyone. The stages are: inspect the sources, assemble the primary shelf, map
+concepts and prerequisites, set syllabus and workload, list resources to obtain (all deterministic,
+by the librarian or the registrar), draft each unit (the AI convenor, a live model only), check
+each draft (structure, verified sources, notation, rubric weights, leaked answers), and
+publication, which is the owner's. Without a live model drafting is blocked with its reason;
+nothing is invented in its place. A published draft fills an outlined unit only, never a prepared
+one, and later seeding leaves it in place.
+
 ## Programmes
 
 A programme is a route through several courses, organised in blocks. A block states its central

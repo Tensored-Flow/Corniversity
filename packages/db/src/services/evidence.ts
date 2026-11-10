@@ -112,8 +112,12 @@ export async function recordMisconception(
 export async function clearMisconceptionsFor(db: DbOrTx, ownerId: string, conceptId: string): Promise<void> {
   await db
     .update(misconceptionRecord)
-    .set({ status: "cleared", clearedAt: new Date() })
+    .set({ status: "resolved", clearedAt: new Date() })
     .where(
-      and(eq(misconceptionRecord.ownerId, ownerId), eq(misconceptionRecord.conceptId, conceptId), eq(misconceptionRecord.status, "active")),
+      and(
+        eq(misconceptionRecord.ownerId, ownerId),
+        eq(misconceptionRecord.conceptId, conceptId),
+        inArray(misconceptionRecord.status, ["proposed", "confirmed", "revisiting"]),
+      ),
     );
 }

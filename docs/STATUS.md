@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 10 November 2026 (Milestones 0–12 complete; the teaching-experience brief
+Last updated: 10 November 2026 (Milestones 0–14 complete; the teaching-experience brief
 (`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`) is in progress as Milestones 11–17. The site is
 deployed on Railway at the Milestone 10 release plus the audit's fixes; the owner account is still
 to be created there, so the checks behind sign-in and live tutoring wait for the owner's
@@ -13,7 +13,7 @@ checklist).
 | Planning documents | yes | n/a | docs/ |
 | Monorepo, type checks, Biome, Vitest, Playwright | yes | typecheck green for 7 packages; `pnpm lint` clean | pnpm 12, TS 5.9, Next 16.4 |
 | Embedded PostgreSQL dev cluster | yes | migrations applied | `pnpm db:local`; pgvector absent locally (expected) |
-| Drizzle schema (79 tables, 10 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
+| Drizzle schema (83 tables, 11 migrations) | yes | db and worker tests on throw-away clusters; a fresh database migrated and seeded by the worker (9 Nov 2026) | pgvector table only when the extension exists; migrations are additive |
 | better-auth email+password, owner bootstrap, closed sign-up, sign-in rate limit, one-owner index | yes | owner test (setup, concurrent inserts, restart); journey 1; security spec | the bootstrap code is optional once the owner exists |
 | Owner password recovery without email | yes | owner test; the command run end to end against a throw-away database | `pnpm owner:reset-password` locally; in the worker's shell on Railway (HANDOFF.md); signs the owner out everywhere |
 | Design tokens, fonts, Markdown + KaTeX (MathML) + mhchem | yes | 4 web unit tests (sanitiser, maths, chemistry); axe pass | light + dark roles; `--ink-3` darkened to pass 4.5:1 on every paper surface; chemistry rendered by the app's own KaTeX plugin |
@@ -21,11 +21,12 @@ checklist).
 | Onboarding steps 1–12, welcome, meet the college | yes | journeys 1 and 3 (desktop + mobile) | after orientation the plan steps change nothing; the interests step only follows newly chosen programmes |
 | Catalogue (86 courses, honest readiness), departments, course foyer, unit page | yes | journey 2; validator | structural readiness ladder enforced by the validator; a unit's recorded checks are the author's self-review, labelled as such |
 | Content package: loader, validator, versioned seeder, coverage generator | yes | validator green; coverage test | `pnpm content:validate`, `pnpm db:seed`, `pnpm content:coverage` |
-| Twelve launch courses | yes | validator: 0 errors, 0 warnings | 12 teaching_ready; across the catalogue 141 units (33 prepared), 99 original exercises, 59 verified sources, 1121 verified locators |
+| Twelve launch courses | yes | validator: 0 errors, 0 warnings | 12 teaching_ready; across the catalogue 141 units (33 prepared), 103 original exercises, 59 verified sources, 1121 verified locators |
 | Study workspace (teaching-experience brief CORE-01–03): session header with objective, source and last save; pause and resume; reading position saved on the server; selection questions with the attached context shown; anchored notes and lecture timestamps; external-reading progress; drafts with revisions, conflicts and an on-device buffer; four help modes; paper pages, confirmed transcriptions and paper submissions; consent-gated model transcription; concept bridges with exact return; session close from records; timetable slots open their session | yes | 15 service tests, 11 core tests, 3 worker tests; journey 11 (8 journeys at both viewports) | scripted demo; model transcription and live help unverified without a key |
 | Learning loop: session, drafts, hint ladder, immutable submissions, worker assessment, structured feedback, appeals and real regrades, reference reveal (learner-visible part only) | yes | journey 2 (desktop + mobile); instructor-leakage test; `verdict.test.ts`, `reference.test.ts` | scripted demo; deterministic checks run first; without a live model every verdict is withheld (`needs_review`); each assessment keeps the exercise as answered; feedback repeating the reference solution is withheld |
 | Tutor conversation with validated `[E#]` citations; library passages as evidence; local-only disclosure | yes | journeys 2 and 6; citation and ingestion tests | passages match any word of the question, best first; replayed history names the sources earlier tags resolved to |
 | Evidence states, My Studies, revision prompts bounded by the weekly cap | yes | 5 + 1 unit tests; journey 5 spec | recall reschedules only; never evidence |
+| Learning issues, bounded review, problem progressions, course preparation (brief CORE-04 to CORE-06) | yes | learning-issues (4), review (6), pipeline (4), preparation (4) and prepare-handler (2) tests; journey 12 at both viewports | issues describe work, not the learner; review owes nothing; progressions tagged on four routes; preparation drafting is blocked in the scripted demo and unverified live |
 | AI package: Anthropic provider (beta Messages API, server-side refusal fallback, SDK retries off), scripted demo, provider states, supported models, approval of paid use, strict worst-case bound (a token per byte, images at the documented ceiling, unknown prices refused), micro-dollar arithmetic, billing certainty of failures, bounded history, per-attempt pricing (table fetched 10 Nov 2026), asset diagnostic, role contracts and prompts | yes | 69 unit tests in `packages/ai`, including a contract test of the real SDK against a local server speaking the documented wire format and role-ceiling usability; the worker assessment test runs the live path against such a server, including a dropped connection (one call, run unsettled) | no request has reached Anthropic; live tutoring waits for the owner's key and approval |
 | Live-tutoring settings and labels; unsettled runs and their settlement | yes | provider-config tests (20: reservations, the lock, recorded spend, unsettled runs held, stale runs, settlement rules, duplicate calls, UTC boundaries); journeys 6 and 10 (a live model that cannot run is refused and the learner's message kept) | every AI label names the model, "model blocked" or "scripted demo"; Settings explains the Console key and subscription credits with the official link |
 | Worker: assessment, ingestion, export and maintenance handlers; non-retryable failures; asset line on start | yes | handler tests; journeys 2, 5 and records | |
@@ -75,8 +76,8 @@ Live site: https://web-production-4c692.up.railway.app. To ship a change, commit
 `corniversity` project. `pnpm deploy:railway` creates a new project with new secrets and refuses
 to run in a linked folder; it is for a first deployment only.
 
-Build in progress: Milestone 14 (notebook issues, bounded review, problem progressions, course
-preparation) of the teaching-experience brief; Milestones 11–13 are done; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
+Build in progress: Milestone 15 (voice and visual teaching) of the teaching-experience brief;
+Milestones 11–14 are done; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
 
 Owner actions: the steps in USER_ACTIONS.md. When the owner reports the checklist's results,
 record them in QA_REPORT.md as checks the owner ran on the live site; check from outside that a

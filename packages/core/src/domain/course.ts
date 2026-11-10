@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ExerciseProgression } from "../progression/progression";
 import { CourseReadiness, LearningMode, UnitStatus } from "./enums";
 
 export const DepartmentId = z.enum(["mathematics", "physics", "chemistry", "computer-science-ai", "neuroscience", "cognitive-science"]);
@@ -209,6 +210,8 @@ export const ExerciseSpec = z.object({
   attribution: z.string().optional(),
   externalLocatorId: z.string().optional(),
   estimatedMinutes: z.number().int().positive(),
+  /** Stage in the unit's progression, difficulty with its basis, permitted help, known ambiguities. */
+  progression: ExerciseProgression.optional(),
   /** Sample texts with the expected outcome of each automatic check; the validator runs them. */
   checkExamples: z
     .array(

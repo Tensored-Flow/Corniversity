@@ -30,6 +30,14 @@ export const PrepareUnitPayload = z.object({
 });
 export type PrepareUnitPayload = z.infer<typeof PrepareUnitPayload>;
 
+/** One run of a course-preparation request; the request's stages are its checkpoints. */
+export const PrepareCoursePayload = z.object({
+  idempotencyKey: z.string().min(1),
+  ownerId: z.string().min(1),
+  requestId: z.string().uuid(),
+});
+export type PrepareCoursePayload = z.infer<typeof PrepareCoursePayload>;
+
 export const AssessSubmissionPayload = z.object({
   idempotencyKey: z.string().min(1),
   ownerId: z.string().min(1),

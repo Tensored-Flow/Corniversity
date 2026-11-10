@@ -17,6 +17,7 @@ import type {
   UnitCheck,
   Workload,
 } from "@corniversity/core";
+import type { ExerciseProgression } from "@corniversity/core/progression/progression";
 import { boolean, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { z } from "zod";
 import { courseReadinessEnum, createdAt, tz, unitStatusEnum, updatedAt } from "./_shared";
@@ -181,6 +182,8 @@ export const unitExercise = pgTable(
     deterministicChecks: jsonb("deterministic_checks").$type<DeterministicCheck[]>().notNull().default([]),
     rubric: jsonb("rubric").$type<Rubric>().notNull(),
     rubricVersion: integer("rubric_version").notNull(),
+    /** Stage in the unit's progression, a difficulty label with its stated basis, permitted help, known ambiguities. */
+    progression: jsonb("progression").$type<ExerciseProgression>(),
     origin: text("origin").notNull(),
     attribution: text("attribution"),
     externalLocatorId: text("external_locator_id"),

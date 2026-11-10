@@ -52,6 +52,7 @@ export const config = {
     "/studio/:path*",
     "/bridges/:path*",
     "/study/:path*",
+    "/preparations/:path*",
     "/api/auth/:path*",
     "/api/companion/:path*",
   ],

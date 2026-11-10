@@ -7,6 +7,7 @@ import { exportHandler } from "./export";
 import { ingestHandler } from "./ingest";
 import { markJob } from "./job-record";
 import { maintenanceHandler } from "./maintenance";
+import { prepareHandler } from "./prepare";
 import { transcribeHandler } from "./transcribe";
 
 export interface HandlerContext {
@@ -57,6 +58,7 @@ export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Pr
   await boss.work(QUEUES.ingestAsset, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(ingestHandler));
   await boss.work(QUEUES.exportRecords, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(exportHandler));
   await boss.work(QUEUES.transcribePages, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(transcribeHandler));
+  await boss.work(QUEUES.prepareUnit, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(prepareHandler));
 
   // Nightly revision-due pass; cheap, idempotent by key per day.
   await boss.schedule(QUEUES.maintenance, "15 3 * * *", {

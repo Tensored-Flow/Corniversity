@@ -25,6 +25,8 @@ export interface HelpContext {
   attemptText: string;
   /** The 1-based lines of the attempt selected for a step check. */
   lines?: [number, number] | null;
+  /** The help this exercise permits (its progression metadata); omitted means all four. */
+  permitted?: readonly Exclude<TutorHelpMode, "question">[];
 }
 
 export type HelpDecision = { allowed: true } | { allowed: false; reason: string };
@@ -33,6 +35,9 @@ export function decideHelp(ctx: HelpContext): HelpDecision {
   if (ctx.mode === "question") return { allowed: true };
   if (!ctx.hasExercise)
     return { allowed: false, reason: "This kind of help is for an exercise; ask a question about the material instead." };
+  if (ctx.permitted && !ctx.permitted.includes(ctx.mode)) {
+    return { allowed: false, reason: `This exercise does not offer “${HELP_LABELS[ctx.mode]}”; its author limited the help it permits.` };
+  }
   switch (ctx.mode) {
     case "small_hint":
       return { allowed: true };

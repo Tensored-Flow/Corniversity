@@ -190,6 +190,18 @@ export default async function CourseFoyerPage({ params }: { params: Promise<{ id
         </div>
 
         <aside className="flex flex-col gap-6">
+          {preparedUnits < detail.units.length ? (
+            <Card as="aside">
+              <h2 className="text-lg text-ink">Preparing more of this course</h2>
+              <p className="mt-1 text-sm text-ink-2">
+                {detail.units.length - preparedUnits} of {detail.units.length} units are outlined, not prepared. You can ask for the next
+                ones to be prepared within a budget you set; it enrols you in nothing.
+              </p>
+              <Link href={`/courses/${course.id}/prepare`} className="mt-2 inline-block text-sm text-brass underline underline-offset-4">
+                Ask for preparation
+              </Link>
+            </Card>
+          ) : null}
           <Card as="aside">
             <h2 className="text-lg text-ink">Your place in this course</h2>
             <div className="mt-3">

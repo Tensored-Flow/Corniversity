@@ -6,6 +6,7 @@ export * from "./models";
 export * from "./notes";
 export * from "./pricing";
 export * from "./prompts/assessor";
+export * from "./prompts/convenor";
 export * from "./prompts/director";
 export * from "./prompts/discussion";
 export * from "./prompts/reading";

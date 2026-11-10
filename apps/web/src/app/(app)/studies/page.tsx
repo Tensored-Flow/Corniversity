@@ -1,14 +1,14 @@
 import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { getConceptStates } from "@corniversity/db/services/evidence";
 import { listOpenSessions } from "@corniversity/db/services/learning";
-import { dueRevisionItems, revisionLoad } from "@corniversity/db/services/revision";
+import { listIssues } from "@corniversity/db/services/learning-issues";
 import Link from "next/link";
 import { ReadinessBadge } from "@/components/Readiness";
 import { Badge, Card, EmptyState, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
-import { reviewRevisionAction } from "./actions";
 import { ProgrammeMap } from "./ProgrammeMap";
+import { ReviewSection } from "./ReviewSection";
 
 export const metadata = { title: "My Studies" };
 
@@ -22,12 +22,11 @@ const STATE_TONE: Record<string, "neutral" | "brass" | "moss" | "rust" | "slate"
 
 export default async function StudiesPage() {
   const session = await requireSession("/studies");
-  const [enrolments, open, states, due, load] = await Promise.all([
+  const [enrolments, open, states, issues] = await Promise.all([
     listEnrolments(db(), session.user.id),
     listOpenSessions(db(), session.user.id),
     getConceptStates(db(), session.user.id),
-    dueRevisionItems(db(), session.user.id),
-    revisionLoad(db(), session.user.id),
+    listIssues(db(), session.user.id, { current: true }),
   ]);
   const active = enrolments.filter((e) => e.enrolment.status !== "withdrawn");
 
@@ -92,41 +91,31 @@ export default async function StudiesPage() {
         </section>
       ) : null}
 
-      <section className="mt-10" aria-labelledby="revision">
-        <h2 id="revision" className="text-xl text-ink">
-          Revision due
+      <section className="mt-10" aria-labelledby="issues">
+        <h2 id="issues" className="text-xl text-ink">
+          Issues to revisit
         </h2>
         <p className="mt-1 text-sm text-ink-2">
-          Definition prompts created when you complete a reading, capped at {load.cap} a week from your hours ceiling ({load.dueThisWeek}{" "}
-          due this week, {load.total} in all). Recalling a definition reschedules it; it is not evidence of understanding.
+          Specific points in your work, proposed by an automatic check or written by you. They describe a piece of work, not you.{" "}
+          <Link href="/notebook#issues-heading" className="text-brass underline underline-offset-4">
+            Open them in the notebook
+          </Link>
+          .
         </p>
-        {due.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-3">Nothing due now.</p>
+        {issues.length === 0 ? (
+          <p className="mt-3 text-sm text-ink-3">None open.</p>
         ) : (
-          <ul className="mt-3 flex flex-col gap-2">
-            {due.map((item) => (
-              <li key={item.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3">
-                <p className="text-xs uppercase tracking-wide text-ink-3">{item.conceptTitle}</p>
-                <p className="mt-1 text-sm text-ink">{item.prompt}</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {(["recalled", "shaky", "forgot"] as const).map((outcome) => (
-                    <form key={outcome} action={reviewRevisionAction}>
-                      <input type="hidden" name="id" value={item.id} />
-                      <input type="hidden" name="outcome" value={outcome} />
-                      <button
-                        type="submit"
-                        className="rounded-[var(--radius-control)] border border-stone-2 bg-paper px-3 py-1 text-xs text-ink hover:bg-paper-3"
-                      >
-                        {outcome === "recalled" ? "Recalled it" : outcome === "shaky" ? "Shaky" : "Forgot"}
-                      </button>
-                    </form>
-                  ))}
-                </div>
+          <ul className="mt-3 flex flex-col gap-2 text-sm">
+            {issues.slice(0, 5).map(({ issue }) => (
+              <li key={issue.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-2">
+                <span className="text-xs uppercase tracking-wide text-ink-3">{issue.status}</span> {issue.claim}
               </li>
             ))}
           </ul>
         )}
       </section>
+
+      <ReviewSection ownerId={session.user.id} />
 
       <section className="mt-10" aria-labelledby="evidence">
         <h2 id="evidence" className="text-xl text-ink">

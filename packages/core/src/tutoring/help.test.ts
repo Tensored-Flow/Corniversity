@@ -25,6 +25,11 @@ describe("the help contract", () => {
     expect(decideHelp({ ...base, mode: "discuss_approach", attemptText: "" })).toMatchObject({ allowed: false });
   });
 
+  it("honours the help an exercise permits", () => {
+    expect(decideHelp({ ...base, mode: "full_explanation", permitted: ["small_hint", "check_step"] })).toMatchObject({ allowed: false });
+    expect(decideHelp({ ...base, mode: "small_hint", permitted: ["small_hint", "check_step"] })).toEqual({ allowed: true });
+  });
+
   it("allows a question anywhere, and exercise help only on an exercise", () => {
     expect(decideHelp({ ...base, mode: "question", hasExercise: false })).toEqual({ allowed: true });
     expect(decideHelp({ ...base, mode: "small_hint", hasExercise: false })).toMatchObject({ allowed: false });

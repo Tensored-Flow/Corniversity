@@ -183,7 +183,7 @@ Gate: no rewrite; state boundaries named below; migrations additive.
    from the rule, and an honest evidence classification. Check: core tests; validator.
 3. Data versions: attempt drafts carry a revision for conflict detection. Check: db tests.
 
-### Milestone 13 (C) — Study continuity, paper work, bridges (CORE-01, CORE-02, CORE-03)
+### Milestone 13 (C) — Study continuity, paper work, bridges (CORE-01, CORE-02, CORE-03) — done
 
 Session header with pause/resume and the last durable point; selection-scoped questions with the
 attached context shown; source-linked session notes; video and external-reference progress;
@@ -194,7 +194,7 @@ model; the four help modes with assistance provenance; bridges with breadcrumb r
 Gate: the continuity, paper and bridge journeys pass at both viewports; conflict and offline
 tests; permission denial blocks image transfer.
 
-### Milestone 14 (D) — Notebook, review, progressions, preparation (CORE-04, CORE-05, CORE-06)
+### Milestone 14 (D) — Notebook, review, progressions, preparation (CORE-04, CORE-05, CORE-06) — done
 
 Learning issues (proposed → confirmed/disputed → revisiting → resolved/dismissed) linked to
 evidence; questions kept apart; review with an inspectable rule, adjustable budget, pause,

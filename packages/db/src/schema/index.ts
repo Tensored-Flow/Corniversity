@@ -7,5 +7,6 @@ export * from "./learning";
 export * from "./library";
 export * from "./operations";
 export * from "./planning";
+export * from "./preparation";
 export * from "./research";
 export * from "./study";

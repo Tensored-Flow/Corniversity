@@ -200,6 +200,10 @@ export function validateContent(bundle: ContentBundle): ValidationReport {
       for (const exercise of unit.exercises) {
         exercises++;
         for (const c of exercise.conceptIds) if (!conceptIds.has(c)) err(uwhere, `exercise ${exercise.id} unknown concept ${c}`);
+        // A transfer task must say what is new; a change of surface is not transfer.
+        if (exercise.progression?.stage === "unfamiliar" && !exercise.progression.transferNote) {
+          err(uwhere, `exercise ${exercise.id} is an unfamiliar application without a transferNote saying what is new`);
+        }
         if (exercise.externalLocatorId && !locatorIds.has(exercise.externalLocatorId))
           err(uwhere, `exercise ${exercise.id} external locator missing`);
         if (exercise.origin === "adapted_with_attribution" && !exercise.attribution)

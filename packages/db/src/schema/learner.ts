@@ -51,6 +51,11 @@ export const learnerProfile = pgTable("learner_profile", {
   studyRhythm: text("study_rhythm").$type<"term" | "rolling" | "reading_course">(),
   /** Only the study preferences the learner has explicitly chosen; defaults are applied in code. */
   studyPreferences: jsonb("study_preferences").$type<ExplicitStudyPreferences>().notNull().default({}),
+  /** Review choices the learner made (weekly number, pause, days kept free); unset means the default. */
+  reviewPreferences: jsonb("review_preferences")
+    .$type<{ budgetPerWeek?: number; paused?: boolean; restWeekdays?: number[] }>()
+    .notNull()
+    .default({}),
   goalsText: text("goals_text"),
   socialLayerEnabled: boolean("social_layer_enabled").notNull().default(true),
   notifications: jsonb("notifications").$type<{ inApp: boolean; email: boolean }>().notNull().default({ inApp: true, email: false }),
