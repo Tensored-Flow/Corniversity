@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "exam_one_running_idx" ON "exam" USING btree ("owner_id","course_id") WHERE "exam"."status" = 'in_progress';

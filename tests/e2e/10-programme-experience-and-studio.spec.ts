@@ -1,17 +1,17 @@
 import { expect, type Page, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Sections 13 to 18 of the Mind, Brain and AI update, end to end.
  *
- * 1. An existing learner explores programmes from orientation without repeating it: nothing is
- *    enrolled, unfollowed or resumed, and the plan steps no longer change anything.
+ * (Orientation no longer has a programme step: it is one step since the lean format.)
+ *
  * 2. The programme overview says where to begin and shows the route by stage; a block page keeps
  *    curriculum readiness apart from the learner's progress and lists what is missing, and the
  *    missing sources are precise library requests that block nothing else.
  * 3. The director's route shows the change to the focus and each course's action before anything
  *    is confirmed, and proposing it enrols nothing.
- * 4. A course page previews the workload, independent work included, before any enrolment.
+ * 4. (The course page no longer previews a workload: the lean format has no load gate.)
  * 5. The research studio, from a question to a report: shelf, versions, provenance, an artefact,
  *    feedback that says no model read it, a revision, the report and an oral discussion request.
  * 6. Quiet mode keeps the programme pages and the studio.
@@ -54,28 +54,6 @@ async function chooseProvider(page: Page, provider: "fixture" | "anthropic") {
 }
 
 test.describe("the programme experience and the research studio", () => {
-  test("an existing learner explores programmes from orientation without repeating it", async ({ page }) => {
-    test.setTimeout(120_000);
-    await signInOrBootstrap(page);
-    const before = await enrolments(page);
-
-    await page.goto("/onboarding/2");
-    await expect(page).toHaveURL(/\/onboarding\/2/);
-    await page.getByRole("checkbox", { name: /Mind, Brain and AI/ }).check();
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page.getByText(/Nothing else changed: no programme was unfollowed or resumed and nothing was enrolled/)).toBeVisible({
-      timeout: 30_000,
-    });
-    await screenshot(page, "44-orientation-revisited");
-
-    // The steps that built the first plan no longer change anything.
-    await page.goto("/onboarding/9");
-    await expect(page.getByText("Orientation is complete")).toBeVisible();
-    await expect(page.getByRole("button", { name: /build the timetable/i })).toHaveCount(0);
-
-    expect(await enrolments(page)).toEqual(before);
-  });
-
   test("the overview says where to begin; a block page separates readiness from progress and lists what is missing", async ({ page }) => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
@@ -140,16 +118,6 @@ test.describe("the programme experience and the research studio", () => {
     const proposalId = await pending.locator('input[name="proposalId"]').first().getAttribute("value");
     await pending.getByRole("button", { name: "Reject" }).click();
     await expect(page.locator(`input[name="proposalId"][value="${proposalId}"]`)).toHaveCount(0, { timeout: 30_000 });
-  });
-
-  test("a course page previews the workload, independent work included, before enrolment", async ({ page }) => {
-    await signInOrBootstrap(page);
-    await page.goto("/courses/COG-201");
-    const preview = page.locator("#workload");
-    await expect(preview.getByText("Workload preview")).toBeVisible();
-    await expect(preview.getByText(/counts independent work as well as timetabled study/)).toBeVisible();
-    await expect(preview.getByText(/% is problems, laboratories and written work done on your own/)).toBeVisible();
-    await expect(page.getByRole("button", { name: /take this course|withdraw/i }).first()).toBeVisible();
   });
 
   test("the research studio carries a question to a report, with honest feedback and recorded provenance", async ({ page }) => {
@@ -245,7 +213,9 @@ test.describe("the programme experience and the research studio", () => {
     await expect(page.getByText(title).first()).toBeVisible();
   });
 
-  test("quiet mode keeps the programme pages and the studio", async ({ page }) => {
+  // Hidden in the lean format (Milestone 19): Settings no longer offers the immersion and social-layer settings; the routes and
+  // records are kept, so this journey is kept but skipped.
+  test.skip("quiet mode keeps the programme pages and the studio", async ({ page }) => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
     await setImmersion(page, "quiet", false);
@@ -270,15 +240,12 @@ test.describe("the programme experience and the research studio", () => {
     const blockedReason = /no API key is stored|paid use has not been approved/;
     await chooseProvider(page, "anthropic");
     try {
-      const notice = page.locator("#provider").getByRole("alert").filter({ hasText: "Live model blocked" });
+      const notice = page.locator("#provider").getByRole("alert").filter({ hasText: "Teacher blocked" });
       await expect(notice).toBeVisible();
       await expect(notice).toContainText(blockedReason);
 
       await page.goto("/courses/MAT-230/units/MAT-230-u01");
-      await page
-        .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
-        .getByRole("button", { name: /start|resume|continue/i })
-        .click();
+      await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
       await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
       const message = `Provider check ${run}: is the sup norm complete on C([0,1])?`;
       await page.getByLabel("Message to the tutor").fill(message);
@@ -298,12 +265,11 @@ test.describe("the programme experience and the research studio", () => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);
     await takeCourse(page, "COG-250");
-    await page.getByRole("link", { name: /Planning strategies and transfer/ }).click();
     await page
-      .locator("li", { hasText: /Laboratory: planning strategies after a change/ })
-      .first()
-      .getByRole("button", { name: /start|resume|continue/i })
+      .locator("li", { hasText: /Planning strategies and transfer/ })
+      .getByRole("link", { name: "Notes" })
       .click();
+    await (await activityButton(page, /Laboratory: planning strategies after a change/)).click();
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     const gate = page.getByRole("heading", { name: "Your prediction first" });
     const results = page.getByRole("columnheader", { name: "First move" });

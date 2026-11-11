@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 import { makePdf } from "./pdf";
 
 /**
@@ -156,9 +156,8 @@ test.describe("library, companion and reading room", () => {
 
     // A tutor conversation that names the book carries the university's note.
     await takeCourse(page, "MAT-230");
-    await page.getByRole("link", { name: "Normed and Banach spaces" }).click();
-    const lectureCard = page.locator("li", { hasText: "Lecture 1" }).first();
-    const start = lectureCard.getByRole("button", { name: /start|resume|continue/i }).first();
+    await page.locator("li", { hasText: "Normed and Banach spaces" }).getByRole("link", { name: "Notes" }).click();
+    const start = await activityButton(page, "Lecture 1");
     if (await start.isVisible().catch(() => false)) await start.click();
     else
       await page

@@ -1,167 +1,106 @@
-import { listPersonas } from "@corniversity/db/services/catalogue";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
+import { runningExams } from "@corniversity/db/services/exams";
 import { listOpenSessions } from "@corniversity/db/services/learning";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
-import { getTimetable, listOpenProposals } from "@corniversity/db/services/timetable";
+import { courseProgress, unitLabels } from "@corniversity/db/services/sheets";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AiLabel } from "@/components/AiLabel";
-import { Badge, Card, EmptyState, LinkButton } from "@/components/ui";
+import { Card, EmptyState, LinkButton } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
 
-export const metadata = { title: "Campus" };
+export const metadata = { title: "Your courses" };
 
-export default async function CampusPage() {
+/** Home: the courses being taken, with progress, plus whatever is in progress. */
+export default async function CoursesHomePage() {
   const session = await requireSession("/campus");
-  const profile = await ensureProfile(db(), session.user.id);
+  const ownerId = session.user.id;
+  const profile = await ensureProfile(db(), ownerId);
   if (!profile.onboardingCompletedAt) redirect(`/onboarding/${profile.onboardingStep}`);
-  const [tt, enrolments, open, proposals, personas] = await Promise.all([
-    getTimetable(db(), session.user.id),
-    listEnrolments(db(), session.user.id),
-    listOpenSessions(db(), session.user.id),
-    listOpenProposals(db(), session.user.id),
-    listPersonas(db()),
+  const [enrolments, open, exams] = await Promise.all([
+    listEnrolments(db(), ownerId),
+    listOpenSessions(db(), ownerId),
+    runningExams(db(), ownerId),
   ]);
+  const taking = enrolments.filter((e) => e.enrolment.status !== "withdrawn");
+  const progress = await Promise.all(taking.map((e) => courseProgress(db(), ownerId, e.course.id)));
+  const last = open[0] ?? null;
+  const labels = await unitLabels(db(), last ? [last.unitId] : []);
+  const lastUnit = last ? labels.get(last.unitId) : undefined;
+  const lastCourse = lastUnit ? taking.find((e) => e.course.id === lastUnit.courseId)?.course : undefined;
   const zone = profile.timezone;
-  const now = DateTime.now().setZone(zone);
-  const courseOf = new Map(enrolments.map((e) => [e.enrolment.id, e.course]));
-  const upcoming = tt?.plan ? tt.sessions.filter((s) => s.status === "planned" && DateTime.fromJSDate(s.endsAt) > DateTime.now()) : [];
-  const next = upcoming[0] ?? null;
-  const missed = tt?.plan ? tt.sessions.filter((s) => s.status === "planned" && DateTime.fromJSDate(s.endsAt) < DateTime.now()).length : 0;
-  const director = personas.find((p) => p.role === "director");
-  const continueSession = open[0] ?? null;
-  const weekLabel = next ? DateTime.fromJSDate(next.startsAt).setZone(zone) : null;
+  const titleOf = new Map(taking.map((e) => [e.course.id, e.course.title]));
 
   return (
     <div className="mx-auto w-full max-w-5xl">
-      <header className="mb-8">
-        <p className="text-sm uppercase tracking-[0.18em] text-brass">Campus</p>
-        <h1 className="mt-1 text-3xl text-ink">
-          {now.hour < 12 ? "Good morning" : now.hour < 18 ? "Good afternoon" : "Good evening"}, {profile.displayName}.
-        </h1>
-        <p className="mt-1 text-sm text-ink-2">
-          {now.toFormat("cccc d LLLL yyyy")} ·{" "}
-          <Link href="/campus/map" className="text-brass underline underline-offset-4">
-            map of the college
-          </Link>
-        </p>
+      <header className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <h1 className="text-3xl text-ink">Your courses</h1>
+        <LinkButton href="/catalogue" variant="secondary">
+          Find courses
+        </LinkButton>
       </header>
-      <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <div className="flex flex-col gap-6">
-          <Card>
-            <h2 className="text-lg text-ink">Next session</h2>
-            {next ? (
-              <div className="mt-3">
-                <div className="flex flex-wrap items-center gap-2 text-sm">
-                  <span className="text-ink-3">
-                    {weekLabel!.hasSame(now, "day") ? "Today" : weekLabel!.toFormat("cccc d LLL")} at {weekLabel!.toFormat("HH:mm")}
-                  </span>
-                  <Badge tone="brass">{next.sessionKind.replace("_", " ")}</Badge>
-                  <span className="font-mono text-xs text-ink-3">{courseOf.get(next.enrolmentId)?.id}</span>
-                </div>
-                <h3 className="mt-2 text-xl text-ink">{next.title}</h3>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  {next.unitId ? (
-                    <LinkButton href={`/courses/${courseOf.get(next.enrolmentId)?.id}/units/${next.unitId}?session=${next.id}`}>
-                      Open the material
-                    </LinkButton>
-                  ) : null}
-                  <LinkButton href="/timetable" variant="secondary">
-                    Timetable
-                  </LinkButton>
-                </div>
-                {missed > 0 ? (
-                  <p className="mt-3 text-xs text-ink-3">
-                    {missed} earlier session{missed === 1 ? "" : "s"} passed without being marked; the timetable offers a catch-up plan.
-                  </p>
-                ) : null}
-              </div>
-            ) : tt?.plan ? (
-              <EmptyState
-                title="Nothing further is scheduled"
-                body="The term's sessions are all in the past or completed. Open the timetable to plan more, or browse the catalogue."
-                action={
-                  <LinkButton href="/timetable" variant="secondary">
-                    Timetable
-                  </LinkButton>
-                }
-              />
-            ) : (
-              <EmptyState
-                title="No timetable yet"
-                body="Confirm a first term in orientation and the next lecture, tutorial or reading appears here with its exact material."
-                action={
-                  <LinkButton href="/onboarding/1" variant="secondary">
-                    Orientation
-                  </LinkButton>
-                }
-              />
-            )}
-          </Card>
-          <Card>
-            <h2 className="text-lg text-ink">Continue where you left off</h2>
-            {continueSession ? (
-              <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-sm">
+
+      {exams.length > 0 || (last && lastUnit) ? (
+        <div className="mb-6 flex flex-col gap-2">
+          {exams.map((x) => (
+            <Card key={x.id}>
+              <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
                 <span className="text-ink">
-                  {continueSession.sessionKind.replace("_", " ")} in unit {continueSession.unitId} · last active{" "}
-                  {DateTime.fromJSDate(continueSession.lastActiveAt).setZone(zone).toRelative()}
+                  Exam in progress: {titleOf.get(x.courseId) ?? x.courseId} · ends{" "}
+                  {DateTime.fromJSDate(x.deadlineAt).setZone(zone).toFormat("HH:mm")}
                 </span>
-                <LinkButton href={`/sessions/${continueSession.id}`} variant="secondary">
+                <LinkButton href={`/exams/${x.id}`}>Continue exam</LinkButton>
+              </div>
+            </Card>
+          ))}
+          {last && lastUnit ? (
+            <Card>
+              <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+                <span className="text-ink">
+                  Continue: {lastCourse ? `${lastCourse.title} · ` : ""}Unit {lastUnit.sequence}, {lastUnit.title}
+                </span>
+                <LinkButton href={`/sessions/${last.id}`} variant="secondary">
                   Resume
                 </LinkButton>
               </div>
-            ) : (
-              <p className="mt-2 text-sm text-ink-2">No open session. Your reader and workbench resume exactly where you left them.</p>
-            )}
-          </Card>
-        </div>
-        <div className="flex flex-col gap-6">
-          <Card as="aside">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-lg text-ink">{director?.name ?? "Director of Studies"}</h2>
-              <AiLabel kind="Director" />
-            </div>
-            <p className="mt-2 text-sm text-ink-2">
-              {proposals.length > 0
-                ? `${proposals.length} proposed change${proposals.length === 1 ? "" : "s"} awaiting your decision on the timetable page.`
-                : upcoming.length > 0
-                  ? "Your first week is light on purpose: one reading, one tutorial, one attempt. If the schedule is wrong, say so; the timetable moves, not you."
-                  : "Your programme is confirmed. Come and talk when you want to change its shape."}
-            </p>
-            <Link href="/director" className="mt-3 inline-block text-sm text-brass underline underline-offset-4">
-              Open a conversation
-            </Link>
-          </Card>
-          <Card as="aside">
-            <h2 className="text-lg text-ink">Your courses</h2>
-            <ul className="mt-2 flex flex-col gap-1 text-sm">
-              {enrolments
-                .filter((e) => e.enrolment.status === "active")
-                .map((e) => (
-                  <li key={e.enrolment.id} className="flex items-center justify-between gap-2">
-                    <Link href={`/courses/${e.course.id}`} className="text-ink hover:underline underline-offset-4">
-                      {e.course.title}
-                    </Link>
-                    <Badge>{e.enrolment.mode.replace("_", " ")}</Badge>
-                  </li>
-                ))}
-            </ul>
-          </Card>
-          {profile.immersion !== "quiet" ? (
-            <Card as="aside">
-              <h2 className="text-lg text-ink">Around the college</h2>
-              <p className="mt-2 text-sm text-ink-2">
-                Society seminars and common-room conversations appear here after a real session or two. Nothing happens while you are away.
-              </p>
-              <Link href="/common-room" className="mt-3 inline-block text-sm text-brass underline underline-offset-4">
-                Common room
-              </Link>
             </Card>
           ) : null}
         </div>
-      </div>
+      ) : null}
+
+      {taking.length === 0 ? (
+        <EmptyState
+          title="No courses yet"
+          body="Pick any number from the catalogue."
+          action={<LinkButton href="/catalogue">Open the catalogue</LinkButton>}
+        />
+      ) : (
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {taking.map(({ course, enrolment }, i) => {
+            const units = progress[i] ?? [];
+            const problems = units.reduce((s, u) => s + u.problems, 0);
+            const done = units.reduce((s, u) => s + u.done, 0);
+            return (
+              <li key={enrolment.id}>
+                <Link
+                  href={`/courses/${course.id}`}
+                  className="block h-full rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4 hover:border-brass"
+                >
+                  <span className="font-mono text-xs text-ink-3">{course.id}</span>
+                  <span className="mt-1 block text-lg text-ink">{course.title}</span>
+                  <span className="mt-2 block text-xs text-ink-2">
+                    {units.length} unit{units.length === 1 ? "" : "s"} ready · {done}/{problems} problems done
+                  </span>
+                  <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-paper-3" aria-hidden="true">
+                    <span className="block h-full bg-brass" style={{ width: `${problems ? Math.round((done / problems) * 100) : 0}%` }} />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }

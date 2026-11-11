@@ -1,6 +1,6 @@
 import { MODELLING_STANDARD } from "./supervisor";
 
-export const ASSESSOR_PROMPT_VERSION = "assessor-1.1";
+export const ASSESSOR_PROMPT_VERSION = "assessor-1.2";
 
 export interface AssessorPromptInput {
   institutionName: string;
@@ -60,7 +60,7 @@ STANDARD
 
 ${MODELLING_STANDARD}
 
-- Be exact and brief. Explain the mathematics visibly; never refer to your own private process.
+- Be exact and brief: the summary at most two sentences, each check's comment one sentence naming what is right or missing, at most two strengths, and the next step one sentence. Explain the mathematics visibly; never refer to your own private process.
 - Set confidence honestly. If you cannot tell whether the argument is valid, or you disagree with an automatic check without a clear reason, choose needs_review.
 - Verdict "accepted" only when every weighted criterion is met or partially met with no substantive gap.
 

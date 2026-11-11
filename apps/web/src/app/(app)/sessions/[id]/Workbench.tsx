@@ -100,6 +100,9 @@ export function Workbench(props: Props) {
   const base = useRef(props.initialRevision);
   const lastSent = useRef(props.initialDraft);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Bumped by each submission: an autosave that started before it reports nothing, since the
+  // submission itself saved the text (a stale autosave would otherwise come back as a conflict).
+  const submissions = useRef(0);
   const area = useRef<HTMLTextAreaElement>(null);
   // Text typed before the page finished loading is in the box but not yet in state; keep it
   // (it then saves like any other edit). Runs once, on mount; later changes go through onChange.
@@ -134,8 +137,10 @@ export function Workbench(props: Props) {
         return;
       }
       setStatus({ kind: "saving" });
+      const generation = submissions.current;
       try {
         const r = await props.saveDraft(props.sessionId, props.exerciseId, text, baseRevision);
+        if (generation !== submissions.current) return;
         if (!r.ok) {
           setStatus({ kind: "error", message: r.error });
         } else if (r.status === "saved") {
@@ -226,8 +231,8 @@ export function Workbench(props: Props) {
         <div className="mt-3 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-sm">
           <p className="text-ink-2">
             {accepted
-              ? "This attempt was accepted and stays as it is. A new attempt is a separate record:"
-              : "Choose how to work on this attempt (you can change it until you write, take a hint or reveal anything):"}
+              ? "Accepted. A new attempt is a separate record:"
+              : "How do you want to work? (You can switch until you write or ask for help.)"}
           </p>
           <fieldset className="mt-2 flex flex-wrap gap-2">
             <legend className="sr-only">Attempt mode</legend>
@@ -247,9 +252,7 @@ export function Workbench(props: Props) {
                 }
               >
                 {accepted ? "Start a new attempt: " : ""}
-                {mode === "practice"
-                  ? "Practice (hints, explanations and the reference allowed)"
-                  : "Self-test (explanations withheld until you submit)"}
+                {mode === "practice" ? "Practice (help allowed)" : "Self-test (no help until you submit)"}
               </Button>
             ))}
           </fieldset>
@@ -431,10 +434,15 @@ export function Workbench(props: Props) {
           disabled={pending || accepted || reviewing || status.kind === "conflict"}
           onClick={() => {
             setError(null);
+            if (timer.current) clearTimeout(timer.current);
+            submissions.current += 1;
             startTransition(async () => {
               const r = await props.submit(props.sessionId, props.exerciseId, draft, dictated);
-              if (!r.ok) setError(r.error ?? "Could not submit.");
-              else {
+              if (!r.ok) {
+                setError(r.error ?? "Could not submit.");
+                // Nothing was submitted, so save the text as the cancelled autosave would have.
+                if (draft !== lastSent.current) void save(draft, base.current);
+              } else {
                 // Submitting saved exactly this text as a new revision.
                 if (r.revision !== undefined) {
                   base.current = r.revision;
@@ -488,10 +496,7 @@ export function Workbench(props: Props) {
           </Button>
         ) : null}
       </div>
-      <p className="mt-2 text-xs text-ink-3">
-        Hints, explanations and reveals are recorded as assistance, not as failure, and never as evidence of understanding. Submitting
-        creates an immutable version; feedback is provisional and can be appealed.
-      </p>
+      <p className="mt-2 text-xs text-ink-3">Help you use is recorded, never counted against you. Feedback can be appealed.</p>
 
       {revealHtml ? (
         <div className="mt-4 rounded-[var(--radius-panel)] border border-brass/40 bg-brass-soft/30 p-4">

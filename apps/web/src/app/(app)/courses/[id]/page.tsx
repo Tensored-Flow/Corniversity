@@ -1,321 +1,242 @@
-import { WORK_CATEGORY_LABEL, type WorkCategory, workloadBreakdown } from "@corniversity/core";
+import { EXAM_DEFAULTS, EXAM_LIMITS } from "@corniversity/core/exams/exam";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getEnrolmentForCourse } from "@corniversity/db/services/enrolment";
+import { examOverview } from "@corniversity/db/services/exams";
+import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { courseProgress } from "@corniversity/db/services/sheets";
+import { DateTime } from "luxon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
-import { ReadinessBadge, readinessHelp, UnitStatusBadge } from "@/components/Readiness";
-import { Badge, Card, Notice } from "@/components/ui";
+import { ReadinessBadge } from "@/components/Readiness";
+import { Badge, Button, Card, Field, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
+import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
-import { enrolAction, withdrawAction } from "./actions";
-import { EnrolControls } from "./EnrolControls";
+import { startExamAction } from "../../exams/actions";
+import { leaveCourseAction, takeCourseAction } from "./actions";
+import { startUnitWorkAction } from "./units/[unitId]/actions";
 
-export default async function CourseFoyerPage({ params }: { params: Promise<{ id: string }> }) {
+const unitLink = "text-brass underline-offset-4 hover:underline";
+
+/** A course: its units as rows (notes, problem sheet, tutorial), then its exam. */
+export default async function CoursePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
   const { id } = await params;
+  const { error } = await searchParams;
   const session = await requireSession(`/courses/${id}`);
+  const ownerId = session.user.id;
   const detail = await getCourseDetail(db(), id);
   if (!detail) notFound();
-  const enrolment = await getEnrolmentForCourse(db(), session.user.id, id);
   const { course, version } = detail;
-  // A course can be taken in full as soon as it has a prepared unit; its readiness badge still says
-  // how much of the course is prepared, and unprepared units cannot be started.
-  const teachingReady = version.readiness === "teaching_ready";
-  const preparedUnits = detail.units.filter((u) => u.status === "ready").length;
-  const prepared = teachingReady || preparedUnits > 0;
+  const enrolment = await getEnrolmentForCourse(db(), ownerId, id);
+  const [progress, exams] = enrolment
+    ? await Promise.all([courseProgress(db(), ownerId, id), examOverview(db(), ownerId, id)])
+    : [[], null];
+  const zone = (await ensureProfile(db(), ownerId)).timezone;
+  const done = new Map(progress.map((p) => [p.unitId, p]));
+  const ready = detail.units.filter((u) => u.status === "ready").length;
+  const outlined = detail.units.length - ready;
 
   return (
-    <div className="mx-auto w-full max-w-6xl">
-      <header className="mb-8">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-xs text-ink-3">{course.id}</span>
-          <ReadinessBadge readiness={version.readiness} />
-          <span className="text-xs text-ink-3">
-            {detail.units.filter((u) => u.status === "ready").length} of {detail.units.length} units prepared
-          </span>
+    <div className="mx-auto w-full max-w-4xl">
+      <header className="mb-6">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-ink-3">
+          <span className="font-mono">{course.id}</span>
           <Badge>{course.level}</Badge>
-          {course.launch ? <Badge tone="brass">Launch course</Badge> : null}
-          <span className="text-xs text-ink-3">version {version.version}</span>
+          <ReadinessBadge readiness={version.readiness} />
+          <span>
+            {ready} of {detail.units.length} units ready
+          </span>
         </div>
-        <h1 className="mt-2 text-3xl text-ink">{course.title}</h1>
-        <p className="mt-3 max-w-prose text-ink-2">{version.purpose}</p>
-        <p className="mt-2 max-w-prose text-xs text-ink-3">{readinessHelp(version.readiness)}</p>
+        <div className="mt-1 flex flex-wrap items-start justify-between gap-3">
+          <h1 className="text-3xl text-ink">{course.title}</h1>
+          {enrolment ? (
+            <form action={leaveCourseAction}>
+              <input type="hidden" name="courseId" value={course.id} />
+              <input type="hidden" name="enrolmentId" value={enrolment.enrolment.id} />
+              <Button type="submit" variant="quiet">
+                Leave course
+              </Button>
+            </form>
+          ) : ready > 0 ? (
+            <form action={takeCourseAction}>
+              <input type="hidden" name="courseId" value={course.id} />
+              <Button type="submit">Take this course</Button>
+            </form>
+          ) : null}
+        </div>
+        <p className="mt-2 max-w-prose text-ink-2">{version.purpose}</p>
       </header>
 
-      <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
-        <div className="flex flex-col gap-8">
-          <section aria-labelledby="about">
-            <h2 id="about" className="text-xl text-ink">
-              About this course
-            </h2>
-            <div className="mt-3">
-              <Markdown source={version.description} />
-            </div>
-            {version.catalogueNotes.centralQuestion || version.catalogueNotes.prerequisiteGuidance ? (
-              <dl className="mt-4 grid gap-3 rounded-[var(--radius-panel)] border border-stone bg-paper p-4 text-sm">
-                {version.catalogueNotes.centralQuestion ? (
-                  <div>
-                    <dt className="font-medium text-ink">Central question</dt>
-                    <dd className="text-ink-2">{version.catalogueNotes.centralQuestion}</dd>
-                  </div>
-                ) : null}
-                {version.catalogueNotes.prerequisiteGuidance ? (
-                  <div>
-                    <dt className="font-medium text-ink">Before it</dt>
-                    <dd className="text-ink-2">{version.catalogueNotes.prerequisiteGuidance}</dd>
-                  </div>
-                ) : null}
-                {version.catalogueNotes.plannedActivities?.length ? (
-                  <div>
-                    <dt className="font-medium text-ink">Planned assessed activities</dt>
-                    <dd className="text-ink-2">
-                      <ul className="list-disc pl-5">
-                        {version.catalogueNotes.plannedActivities.map((a) => (
-                          <li key={a}>{a}</li>
-                        ))}
-                      </ul>
-                    </dd>
-                  </div>
-                ) : null}
-                {version.catalogueNotes.preparationPath ? (
-                  <div>
-                    <dt className="font-medium text-ink">How it would be prepared</dt>
-                    <dd className="text-ink-2">{version.catalogueNotes.preparationPath}</dd>
-                  </div>
-                ) : null}
-                {version.catalogueNotes.sourceCandidates?.length ? (
-                  <div>
-                    <dt className="font-medium text-ink">Leads, not yet verified sources</dt>
-                    <dd className="text-ink-2">
-                      <ul className="list-disc pl-5">
-                        {version.catalogueNotes.sourceCandidates.map((c) => (
-                          <li key={c.name}>
-                            {c.name}: {c.note}
-                          </li>
-                        ))}
-                      </ul>
-                    </dd>
-                  </div>
-                ) : null}
-              </dl>
-            ) : null}
-            {version.externalSyllabusNote ? (
-              <Notice tone="slate" title="Adapted study path">
-                {version.externalSyllabusNote}
-              </Notice>
-            ) : null}
-            {enrolment && enrolment.version.version !== version.version ? (
-              <div className="mt-3">
-                <Notice tone="brass" title={`Course updated to version ${version.version}`}>
-                  You enrolled under version {enrolment.version.version}. The syllabus has since been updated; everything you submitted and
-                  every piece of feedback is kept exactly as it was, and you now see the current units.
-                </Notice>
-              </div>
-            ) : null}
-          </section>
-
-          {version.outcomes.length > 0 ? (
-            <section aria-labelledby="outcomes">
-              <h2 id="outcomes" className="text-xl text-ink">
-                What you should be able to do afterwards
-              </h2>
-              <ul className="mt-3 flex flex-col gap-3">
-                {version.outcomes.map((o) => (
-                  <li key={o.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4 text-sm">
-                    <p className="text-ink">{o.description}</p>
-                    <p className="mt-1 text-xs text-ink-3">Evidence expected: {o.evidenceExpected}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-
-          <section aria-labelledby="units">
-            <h2 id="units" className="text-xl text-ink">
-              Syllabus
-            </h2>
-            {detail.units.length === 0 ? (
-              <p className="mt-3 text-sm text-ink-2">No units have been outlined. This course is a proposal.</p>
-            ) : (
-              <ol className="mt-3 flex flex-col gap-2">
-                {detail.units.map((u) => (
-                  <li
-                    key={u.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-4 py-3"
-                  >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="w-6 font-mono text-xs text-ink-3">{String(u.sequence).padStart(2, "0")}</span>
-                      {u.status === "ready" && enrolment ? (
-                        <Link href={`/courses/${course.id}/units/${u.id}`} className="text-ink underline-offset-4 hover:underline">
-                          {u.title}
-                        </Link>
-                      ) : (
-                        <span className="text-ink">{u.title}</span>
-                      )}
-                      <UnitStatusBadge status={u.status} />
-                    </div>
-                    <span className="text-xs text-ink-3">
-                      {u.exerciseCount} exercise{u.exerciseCount === 1 ? "" : "s"} · ~{Math.round(u.estimatedMinutes / 60)} h
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </section>
-
-          {version.assessmentSpecs.length > 0 ? (
-            <section aria-labelledby="assessment">
-              <h2 id="assessment" className="text-xl text-ink">
-                Assessment
-              </h2>
-              <ul className="mt-3 flex flex-col gap-3">
-                {version.assessmentSpecs.map((a) => (
-                  <li key={a.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4 text-sm">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-ink">{a.title}</span>
-                      <Badge>{a.kind.replace(/_/g, " ")}</Badge>
-                      {a.weight !== undefined ? <span className="text-xs text-ink-3">{Math.round(a.weight * 100)}%</span> : null}
-                    </div>
-                    <p className="mt-1 text-ink-2">{a.description}</p>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-2 text-xs text-ink-3">
-                All feedback is provisional and produced by an AI assessor; appeals are available on every piece of work. Records here are
-                informal.
-              </p>
-            </section>
-          ) : null}
+      {error ? (
+        <div className="mb-4">
+          <Notice tone="rust">{errorNotice(error)}</Notice>
         </div>
+      ) : null}
 
-        <aside className="flex flex-col gap-6">
-          {preparedUnits < detail.units.length ? (
-            <Card as="aside">
-              <h2 className="text-lg text-ink">Preparing more of this course</h2>
-              <p className="mt-1 text-sm text-ink-2">
-                {detail.units.length - preparedUnits} of {detail.units.length} units are outlined, not prepared. You can ask for the next
-                ones to be prepared within a budget you set; it enrols you in nothing.
-              </p>
-              <Link href={`/courses/${course.id}/prepare`} className="mt-2 inline-block text-sm text-brass underline underline-offset-4">
-                Ask for preparation
-              </Link>
-            </Card>
-          ) : null}
-          <Card as="aside">
-            <h2 className="text-lg text-ink">Your place in this course</h2>
-            <div className="mt-3">
-              <EnrolControls
-                courseId={course.id}
-                modesOffered={version.modesOffered}
-                prepared={prepared}
-                enrolment={
-                  enrolment ? { id: enrolment.enrolment.id, mode: enrolment.enrolment.mode, status: enrolment.enrolment.status } : null
-                }
-                enrolAction={enrolAction}
-                withdrawAction={withdrawAction}
-              />
-            </div>
-            <p className="mt-3 text-xs text-ink-3">
-              {teachingReady
-                ? `Workload about ${version.workload.typical} hours over the course (${version.workload.minimum}–${version.workload.maximum}).`
-                : prepared
-                  ? `${preparedUnits} of ${detail.units.length} units are prepared; about ${version.workload.typical} hours is the estimate for the outlined syllabus, and only the prepared units can be studied now.`
-                  : "Workload will be estimated when the syllabus is prepared; the figure in the catalogue is a placeholder."}
-            </p>
-            {(() => {
-              const b = workloadBreakdown(detail.units, version.workload.typical);
-              if (!b.preparedUnits) return null;
-              const parts = (Object.keys(b.minutes) as WorkCategory[]).filter((c) => b.minutes[c] > 0);
+      <section aria-labelledby="units">
+        <h2 id="units" className="sr-only">
+          Units
+        </h2>
+        {detail.units.length === 0 ? (
+          <p className="text-sm text-ink-2">No units yet: this course is a proposal.</p>
+        ) : (
+          <ol className="flex flex-col divide-y divide-stone rounded-[var(--radius-panel)] border border-stone bg-paper-2">
+            {detail.units.map((u) => {
+              const p = done.get(u.id);
+              const open = u.status === "ready" && enrolment;
               return (
-                <div className="mt-3 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-xs text-ink-2" id="workload">
-                  <p className="font-medium text-ink">Workload preview</p>
-                  <p className="mt-1">
-                    About {b.weeklyHours} hours a week over ten weeks, from the course estimate, which counts independent work as well as
-                    timetabled study.
-                  </p>
-                  <p className="mt-1">
-                    The {b.preparedUnits} prepared unit{b.preparedUnits === 1 ? "" : "s"} plan {b.preparedHours} hours:{" "}
-                    {parts.map((c) => `${WORK_CATEGORY_LABEL[c]} ${Math.round((b.minutes[c] / 60) * 10) / 10} h`).join(", ")}.{" "}
-                    {Math.round(b.independentShare * 100)}% is problems, laboratories and written work done on your own.
-                  </p>
-                </div>
+                <li key={u.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3">
+                  <span className="w-6 font-mono text-xs text-ink-3">{u.sequence}</span>
+                  <span className={`min-w-0 flex-1 ${u.status === "ready" ? "text-ink" : "text-ink-3"}`}>{u.title}</span>
+                  {open ? (
+                    <span className="flex flex-wrap items-center gap-3 text-sm">
+                      <Link href={`/courses/${course.id}/units/${u.id}`} className={unitLink}>
+                        Notes
+                      </Link>
+                      <Link href={`/courses/${course.id}/units/${u.id}/sheet`} className={unitLink}>
+                        Problem sheet ({u.exerciseCount})
+                      </Link>
+                      <form action={startUnitWorkAction}>
+                        <input type="hidden" name="unitId" value={u.id} />
+                        <input type="hidden" name="courseId" value={course.id} />
+                        <button type="submit" className={unitLink}>
+                          Tutorial
+                        </button>
+                      </form>
+                      <span className="w-12 text-right text-xs text-ink-3" title="Problems done">
+                        {p ? `${p.done}/${p.problems}` : ""}
+                      </span>
+                    </span>
+                  ) : u.status === "ready" ? (
+                    <span className="text-xs text-ink-3">Take the course to open</span>
+                  ) : (
+                    <span className="text-xs text-ink-3">Not prepared yet</span>
+                  )}
+                </li>
               );
-            })()}
-          </Card>
+            })}
+          </ol>
+        )}
+        {outlined > 0 ? (
+          <p className="mt-2 text-sm text-ink-2">
+            {outlined} unit{outlined === 1 ? "" : "s"} not prepared yet.{" "}
+            <Link href={`/courses/${course.id}/prepare`} className="text-brass underline underline-offset-4">
+              Prepare them
+            </Link>
+          </p>
+        ) : null}
+      </section>
 
-          <Card as="aside">
-            <h2 className="text-lg text-ink">Sources</h2>
-            {detail.primarySources.length === 0 ? (
-              <p className="mt-2 text-sm text-ink-2">No sources verified yet.</p>
+      {exams ? (
+        <section aria-labelledby="exam" className="mt-8">
+          <Card>
+            <h2 id="exam" className="text-lg text-ink">
+              Exam
+            </h2>
+            {exams.running ? (
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-sm">
+                <span className="text-ink">
+                  In progress · ends {DateTime.fromJSDate(exams.running.deadlineAt).setZone(zone).toFormat("HH:mm")}
+                </span>
+                <LinkButton href={`/exams/${exams.running.id}`}>Continue exam</LinkButton>
+              </div>
+            ) : exams.available === 0 ? (
+              <p className="mt-2 text-sm text-ink-2">No unseen problems left. Prepare more units to sit another exam.</p>
             ) : (
-              <ul className="mt-3 flex flex-col gap-3 text-sm">
-                {detail.primarySources.map(({ source: s, version: v }) => (
-                  <li key={s.id}>
-                    <a href={s.canonicalUrl} target="_blank" rel="noreferrer" className="text-brass underline underline-offset-4">
-                      {s.title}
-                    </a>
-                    <p className="text-xs text-ink-3">
-                      {s.institution ?? s.authors.join(", ")} · {v?.label} · {v?.licence} · verified {v?.verifiedAt}
-                    </p>
-                  </li>
-                ))}
-                {detail.supplementalSources.map(({ source: s, version: v }) => (
-                  <li key={s.id}>
-                    <a href={s.canonicalUrl} target="_blank" rel="noreferrer" className="text-ink underline underline-offset-4">
-                      {s.title}
-                    </a>
-                    <p className="text-xs text-ink-3">supplement · {v?.licence}</p>
+              <form action={startExamAction} className="mt-2 flex flex-wrap items-end gap-3">
+                <input type="hidden" name="courseId" value={course.id} />
+                <p className="w-full text-sm text-ink-2">
+                  Timed and closed-book: problems you haven't tried, no tutor or hints. {exams.available} available.
+                </p>
+                <Field label="Questions" htmlFor="exam-questions">
+                  <Input
+                    id="exam-questions"
+                    name="questions"
+                    type="number"
+                    min={EXAM_LIMITS.minQuestions}
+                    max={exams.maxQuestions}
+                    defaultValue={Math.min(EXAM_DEFAULTS.questions, exams.maxQuestions)}
+                  />
+                </Field>
+                <Field label="Minutes" htmlFor="exam-minutes">
+                  <Input
+                    id="exam-minutes"
+                    name="minutes"
+                    type="number"
+                    min={EXAM_LIMITS.minMinutes}
+                    max={EXAM_LIMITS.maxMinutes}
+                    defaultValue={EXAM_DEFAULTS.minutes}
+                  />
+                </Field>
+                <Button type="submit">Start exam</Button>
+              </form>
+            )}
+            {exams.past.length > 0 ? (
+              <ul className="mt-3 flex flex-col gap-1 text-sm">
+                {exams.past.map((x) => (
+                  <li key={x.id}>
+                    <Link href={`/exams/${x.id}`} className={unitLink}>
+                      {DateTime.fromJSDate(x.startedAt).setZone(zone).toFormat("d LLL yyyy, HH:mm")} · {x.exerciseIds.length} question
+                      {x.exerciseIds.length === 1 ? "" : "s"}
+                    </Link>
                   </li>
                 ))}
               </ul>
-            )}
-            {version.blockers.length > 0 ? (
-              <div className="mt-3">
-                <Notice tone="rust" title="Still needed">
-                  <ul className="list-disc pl-4">
-                    {version.blockers.map((b) => (
-                      <li key={b.reason}>
-                        {b.reason} — {b.resolutionAction}
-                      </li>
-                    ))}
-                  </ul>
-                </Notice>
-              </div>
             ) : null}
           </Card>
+        </section>
+      ) : null}
 
-          {detail.tutor ? (
-            <Card as="aside">
-              <h2 className="text-lg text-ink">Teaching</h2>
-              <div className="mt-2 flex items-center gap-2">
-                <span className="font-medium text-ink">{detail.tutor.name}</span>
-                <AiLabel kind={detail.tutor.title} />
-              </div>
-              <p className="mt-1 text-sm text-ink-2">{detail.tutor.introduction}</p>
-              <p className="mt-2 text-xs text-ink-3">{detail.tutor.style.officeHours}</p>
-            </Card>
+      <details className="mt-8 rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4">
+        <summary className="cursor-pointer text-sm text-ink">About this course</summary>
+        <div className="mt-3 flex flex-col gap-4 text-sm">
+          <Markdown source={version.description} />
+          {version.outcomes.length > 0 ? (
+            <div>
+              <h3 className="font-medium text-ink">Outcomes</h3>
+              <ul className="mt-1 list-disc pl-5 text-ink-2">
+                {version.outcomes.map((o) => (
+                  <li key={o.id}>{o.description}</li>
+                ))}
+              </ul>
+            </div>
           ) : null}
-
           {detail.prerequisites.length > 0 ? (
-            <Card as="aside">
-              <h2 className="text-lg text-ink">Prerequisites</h2>
-              <ul className="mt-3 flex flex-col gap-3 text-sm">
+            <div>
+              <h3 className="font-medium text-ink">Prerequisites</h3>
+              <ul className="mt-1 list-disc pl-5 text-ink-2">
                 {detail.prerequisites.map((r) => (
                   <li key={r.id}>
-                    <div className="flex items-center gap-2">
-                      <Badge tone={r.strength === "hard" ? "rust" : "neutral"}>{r.strength}</Badge>
-                    </div>
-                    <p className="mt-1 text-ink-2">{r.description}</p>
-                    <p className="mt-1 text-xs text-ink-3">Satisfied by any of: {r.alternatives.map((a) => a.label).join("; ")}.</p>
+                    {r.description} <span className="text-ink-3">({r.strength})</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-xs text-ink-3">Audit mode ignores prerequisites. Soft prerequisites are advice, not gates.</p>
-            </Card>
+            </div>
           ) : null}
-        </aside>
-      </div>
+          {detail.primarySources.length > 0 ? (
+            <div>
+              <h3 className="font-medium text-ink">Sources</h3>
+              <ul className="mt-1 flex flex-col gap-1">
+                {[...detail.primarySources, ...detail.supplementalSources].map(({ source: s, version: v }) => (
+                  <li key={s.id}>
+                    <a href={s.canonicalUrl} target="_blank" rel="noreferrer" className={unitLink}>
+                      {s.title}
+                    </a>{" "}
+                    <span className="text-xs text-ink-3">{v?.licence}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      </details>
     </div>
   );
 }

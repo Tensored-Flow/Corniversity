@@ -62,34 +62,18 @@ export async function screenshot(page: Page, name: string): Promise<void> {
   await page.screenshot({ path: `docs/qa/screenshots/${name}-${suffix}.png`, fullPage: true });
 }
 
-/**
- * Takes a course in full from its page. A lighter enrolment (audit or reading seminar, which
- * orientation's plan can choose) is withdrawn first, as a learner changing mode would. When the
- * course goes beyond the learner's chosen load the enrolment form asks for the heavier load to be
- * confirmed first; the journey reads it and confirms, as a learner would.
- */
+/** Takes a course from its page (one button, no modes or load caps); a course already taken is left as it is. */
 export async function takeCourse(page: Page, courseId: string): Promise<void> {
   await page.goto(`/courses/${courseId}`);
-  const take = page.getByRole("button", { name: /take this course/i });
-  // Only an enrolment shows a Withdraw button; the word "Enrolled" is also the label of a mode
-  // option, so it cannot tell whether the enrolment happened. The page's own workload preview is
-  // always shown, so only the confirmation box tells that the enrolment is waiting.
-  const withdraw = page.getByRole("button", { name: "Withdraw", exact: true });
-  const lighterMode = page.getByText(/^(Auditing|Reading seminar)$/).first();
-  if ((await withdraw.isVisible().catch(() => false)) && (await lighterMode.isVisible().catch(() => false))) {
-    await withdraw.click();
-    await expect(take).toBeVisible({ timeout: 30_000 });
-  }
-  if (await take.isVisible().catch(() => false)) {
-    await page.getByLabel(/^Enrolled/).check();
-    await take.click();
-    const confirmLoad = page.getByLabel(/I have read this preview/);
-    await expect(confirmLoad.or(withdraw).first()).toBeVisible({ timeout: 30_000 });
-    if (await confirmLoad.isVisible().catch(() => false)) {
-      await page.getByLabel(/^Enrolled/).check();
-      await confirmLoad.check();
-      await page.getByRole("button", { name: /take this course/i }).click();
-    }
-  }
-  await expect(withdraw).toBeVisible({ timeout: 30_000 });
+  const take = page.getByRole("button", { name: "Take this course" });
+  if (await take.isVisible().catch(() => false)) await take.click();
+  await expect(page.getByRole("button", { name: "Leave course" })).toBeVisible({ timeout: 30_000 });
+}
+
+/** The Start button of a unit activity, under the notes page's "All activities" (opened if closed). */
+export async function activityButton(page: Page, title: string | RegExp) {
+  const all = page.locator("details", { hasText: "All activities" });
+  await expect(all).toBeVisible({ timeout: 30_000 });
+  if (!(await all.evaluate((d) => (d as HTMLDetailsElement).open))) await all.locator("summary").click();
+  return all.locator("li", { hasText: title }).getByRole("button", { name: "Start" }).first();
 }

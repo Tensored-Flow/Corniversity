@@ -40,10 +40,10 @@ const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 /** Null when this installation may offer plan usage (local, served on a loopback address); else why not. */
 export function planUnavailableReason(env: Env): string | null {
   if (env.DEPLOYMENT_MODE !== "local") {
-    return "This is the hosted site. OpenAI documents ChatGPT plan usage for open-source and locally hosted apps; a remotely hosted app needs OpenAI's approval through its interest form first.";
+    return "This is the hosted site; OpenAI allows plan usage in locally hosted apps unless it approves a hosted one.";
   }
   if (!LOOPBACK_HOSTS.has(new URL(env.BETTER_AUTH_URL).hostname)) {
-    return "This installation is served on an address other than this computer's own, so it is not a locally hosted app.";
+    return "This installation isn't served on this computer's own address, so it isn't locally hosted.";
   }
   return null;
 }

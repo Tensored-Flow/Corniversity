@@ -57,7 +57,9 @@ export async function saveStepOneAction(_prev: StepState, formData: FormData): P
     return { fieldErrors };
   }
   await saveStepOne(db(), session.user.id, parsed.data);
-  redirect("/onboarding/2");
+  // Orientation is this one step; courses are picked from the catalogue, any number of them.
+  await completeOnboarding(db(), session.user.id);
+  redirect("/catalogue");
 }
 
 function all(formData: FormData, key: string): string[] {

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 12 (teaching-experience brief, CORE-04 and CORE-06), with the scripted demo:
@@ -30,11 +30,7 @@ test.describe("issues, review and course preparation", () => {
     test.setTimeout(240_000);
     await takeCourse(page, "MAT-230");
     await page.goto("/courses/MAT-230/units/MAT-230-u01");
-    await page
-      .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
-      .getByRole("button", { name: /^(Start|Resume|Continue)/ })
-      .first()
-      .click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//);
     const attempt = page.getByLabel("Attempt (Markdown with LaTeX)");
     const fresh = page.getByRole("button", { name: /^Start a new attempt: Practice/ });
@@ -105,7 +101,7 @@ test.describe("issues, review and course preparation", () => {
   }) => {
     test.setTimeout(180_000);
     await page.goto("/courses/NEU-220");
-    await page.getByRole("link", { name: "Ask for preparation" }).click();
+    await page.getByRole("link", { name: "Prepare them" }).click();
     await page.getByLabel("What you want from this course").fill("Study computational neuroscience seriously, with weekly problems.");
     await page.getByRole("button", { name: "See the proposal" }).click();
     await expect(page).toHaveURL(/\/preparations\//);

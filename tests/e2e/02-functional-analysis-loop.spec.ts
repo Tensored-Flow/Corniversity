@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 2: enrol in Functional Analysis I, open unit 1, start the tutorial, write an original
@@ -19,17 +19,17 @@ test.describe("functional analysis learning loop", () => {
 
     await page.goto("/courses/MAT-230");
     await expect(page.getByRole("heading", { level: 1, name: "Functional Analysis I" })).toBeVisible();
-    await expect(page.getByText("Teaching ready").first()).toBeVisible();
+    // The unit shows as prepared before the course is taken (and opens once it is).
+    await expect(page.locator("li", { hasText: "Normed and Banach spaces" })).toContainText(/Take the course to open|Notes/);
     await takeCourse(page, "MAT-230");
     await screenshot(page, "03-course-foyer");
 
-    await page.getByRole("link", { name: "Normed and Banach spaces" }).click();
+    await page.locator("li", { hasText: "Normed and Banach spaces" }).getByRole("link", { name: "Notes" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Normed and Banach spaces" })).toBeVisible();
     await expect(page.getByText("Definition (norm)")).toBeVisible();
     await screenshot(page, "04-unit-page");
 
-    const tutorialCard = page.locator("li", { hasText: "Tutorial: two norms on C([0,1])" });
-    await tutorialCard.getByRole("button", { name: "Start" }).click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     await expect(page.getByRole("heading", { level: 2, name: "Two norms on C([0,1])" })).toBeVisible();
 
@@ -94,8 +94,7 @@ test.describe("functional analysis learning loop", () => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
     await page.goto("/courses/MAT-230/units/MAT-230-u01");
-    const tutorialCard = page.locator("li", { hasText: "Tutorial: two norms on C([0,1])" });
-    await tutorialCard.getByRole("button", { name: "Start" }).click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     await page.getByLabel("Message to the tutor").fill("Before I start: in finite dimensions, are all norms equivalent?");
     await page.getByRole("button", { name: "Send" }).click();

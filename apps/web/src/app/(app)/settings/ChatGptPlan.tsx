@@ -37,16 +37,16 @@ const FLASH: Record<string, { tone: "moss" | "neutral"; title?: string; text: st
   connected: {
     tone: "moss",
     title: "You're using your ChatGPT plan",
-    text: "Eligible usage in this app uses your ChatGPT plan. Manage usage in your ChatGPT settings. Choose a model and approve its use below before anything is sent.",
+    text: "Eligible usage in this app uses your ChatGPT plan. Manage usage in your ChatGPT settings. Pick a model and approve below; nothing is sent before that.",
   },
   saved: { tone: "moss", text: "Saved." },
   "signed-out": {
     tone: "neutral",
-    text: "Signed out of ChatGPT here. OpenAI confirmed the session was revoked, and the tokens were removed from this computer.",
+    text: "Signed out. OpenAI confirmed the session was revoked; the tokens are gone from this computer.",
   },
   "signed-out-unconfirmed": {
     tone: "neutral",
-    text: "Signed out of ChatGPT here and the tokens were removed from this computer, but OpenAI did not confirm the revocation. You can disconnect Corniversity in your ChatGPT settings.",
+    text: "Signed out and the tokens are gone from this computer, but OpenAI didn't confirm the revocation. Disconnect Corniversity in your ChatGPT settings to be sure.",
   },
   resumed: { tone: "moss", text: "Plan requests resumed." },
 };
@@ -68,12 +68,11 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
   return (
     <Card as="section" aria-labelledby="chatgpt-plan-heading" id="chatgpt-plan">
       <h2 id="chatgpt-plan-heading" className="text-lg text-ink">
-        Use your ChatGPT plan
+        ChatGPT plan
       </h2>
       <p className="mt-1 max-w-prose text-sm text-ink-2">
-        Complete eligible AI requests in this app with usage included in your ChatGPT plan or credits balance, instead of an API key. This
-        is a sign-in with OpenAI, separate from your Corniversity account: you sign in on OpenAI's own page, and OpenAI states that plan
-        usage does not give this app access to your ChatGPT conversations or other account context.
+        Use your ChatGPT plan instead of an API key. You sign in on OpenAI&apos;s page; Corniversity never sees your password or your
+        ChatGPT conversations.
       </p>
       {notice ? (
         <div className="mt-2">
@@ -90,13 +89,12 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
 
       {unavailableReason ? (
         <div className="mt-3" data-testid="plan-unavailable">
-          <Notice tone="neutral" title="Available in a local installation only">
-            {unavailableReason} To teach through your plan, run Corniversity on your own computer (the owner's local installation in
-            USER_ACTIONS.md) and connect there. For this hosted site, OpenAI's{" "}
+          <Notice tone="neutral" title="Local installation only">
+            {unavailableReason} Run <code>pnpm local:owner</code> on your computer to use it there. For this site, OpenAI&apos;s{" "}
             <a className="underline" href={CHATGPT_PLAN_INTEREST_FORM_URL} rel="noreferrer noopener" target="_blank">
               interest form
             </a>{" "}
-            is the route; until OpenAI approves it, this site uses the scripted demo or an API key.
+            is the route.
           </Notice>
         </div>
       ) : (
@@ -113,21 +111,16 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
             ) : connection.state === "reconnect" ? (
               <>
                 <Badge tone="rust">sign in again</Badge>
-                <span>The ChatGPT sign-in can no longer be used, so nothing is sent. Continue with ChatGPT to sign in again.</span>
+                <span>The sign-in expired or was revoked. Continue with ChatGPT to sign in again.</span>
               </>
             ) : (
               <>
                 <Badge>not connected</Badge>
-                <span>Nothing is sent to ChatGPT until you sign in and approve its use.</span>
+                <span>Nothing is sent until you sign in and approve.</span>
               </>
             )}
           </div>
-          {!chosen ? (
-            <p className="text-xs text-ink-3">
-              To teach with it, also choose “Your ChatGPT plan” as the provider under Live tutoring above. Choosing it never falls back to
-              an API key or to scripted replies.
-            </p>
-          ) : null}
+          {!chosen ? <p className="text-xs text-ink-3">Also choose “Your ChatGPT plan” as the teacher above.</p> : null}
 
           <div className="flex flex-wrap gap-2">
             {connection.state !== "connected" ? (
@@ -153,8 +146,7 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
 
           {settings.pausedReason ? (
             <Notice tone="rust" title="Plan requests are paused">
-              Paused because {settings.pausedReason}. {manageUsage} in ChatGPT, then resume here when you are ready; Corniversity does not
-              guess when a limit resets.
+              Paused because {settings.pausedReason}. {manageUsage}, then resume.
               <form action={resumePlanUseAction} className="mt-2">
                 <Button type="submit" variant="secondary">
                   Resume plan requests
@@ -171,11 +163,7 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
                   <input type="hidden" name="planModel" value={settings.model ?? ""} />
                 </div>
               ) : (
-                <Field
-                  label="Model"
-                  htmlFor="planModel"
-                  hint="From your ChatGPT account's list. A completed request is what confirms access."
-                >
+                <Field label="Model" htmlFor="planModel" hint="From your ChatGPT account's list.">
                   <Select id="planModel" name="planModel" defaultValue={settings.model ?? ""}>
                     <option value="">Choose a model</option>
                     {models.map((m) => (
@@ -209,16 +197,14 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
                 />
               </Field>
               <p className="text-xs text-ink-3 sm:col-span-3" data-testid="plan-usage">
-                Requests through your plan: {counts.today} of {settings.dailyRequests} today, {counts.month} of {settings.monthlyRequests}{" "}
-                this month. Every tutor turn, assessment, transcription or drafting step is one request, refused before it starts once a
-                limit is reached. These limits are yours; your plan has its own, which OpenAI applies across every app using it.{" "}
-                {manageUsage}
+                Used {counts.today}/{settings.dailyRequests} today and {counts.month}/{settings.monthlyRequests} this month (UTC). Your
+                plan&apos;s own limits also apply. {manageUsage}
               </p>
               <label className="flex items-start gap-2 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-sm text-ink sm:col-span-3">
                 <input type="checkbox" name="approvePlanUse" value="1" className="mt-1" />
                 <span>
-                  I approve teaching through my ChatGPT plan with this model within these request limits. Requests draw on my plan's usage,
-                  and on its credits balance if it has one. Changing the model or raising a limit needs approval again.
+                  I approve teaching through my ChatGPT plan with this model within these limits (it can draw on the plan&apos;s credits). A
+                  new model or higher limit needs approval again.
                 </span>
               </label>
               <div className="flex flex-wrap items-center gap-3 sm:col-span-3">
@@ -229,7 +215,7 @@ export function ChatGptPlan({ unavailableReason, chosen, connection, models, set
                     {settings.approval.dailyRequests} a day and {settings.approval.monthlyRequests} a month.
                   </span>
                 ) : (
-                  <span className="text-xs text-ink-3">Not approved: nothing is sent through your plan.</span>
+                  <span className="text-xs text-ink-3">Not approved yet.</span>
                 )}
               </div>
             </form>

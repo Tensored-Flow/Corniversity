@@ -212,6 +212,16 @@ export const ERROR_NOTICES = {
   "study-heavier-load-needs-preview": "A heavier course load needs the workload preview first; open it, read it, then confirm.",
   "study-main-courses-range": "Main courses must be between 1 and the maximum shown in Settings.",
   "study-exploratory-courses-range": "Exploratory courses must be between 0 and the maximum shown in Settings.",
+  // exams
+  "exam-take-course-first": "Take the course before sitting its exam.",
+  "exam-already-running": "An exam on this course is already running. Finish it first.",
+  "exam-no-problems-left": "You have attempted every prepared problem in this course, so none is left for an exam.",
+  "exam-not-found": "Exam not found.",
+  "exam-time-up": "Time is up. What you saved before the deadline is what counts.",
+  "exam-question-not-in-exam": "That question is not part of this exam.",
+  "exam-already-submitted": "This exam has been submitted; answers can no longer change.",
+  "exam-questions-range": "Choose between 1 and 10 questions.",
+  "exam-minutes-range": "Choose between 5 and 300 minutes.",
   // chatgpt-plan
   "plan-sign-in-not-started": "This sign-in was not started here, or it has already been used. Start again from Settings.",
   "plan-sign-in-expired": "The sign-in took longer than ten minutes. Start again from Settings.",
@@ -231,9 +241,8 @@ export const ERROR_NOTICES = {
   "plan-choose-provider-first": "Choose your ChatGPT plan as the way to teach before approving its use.",
   "plan-connect-first": "Continue with ChatGPT before approving plan use.",
   "plan-choose-model-first": "Choose a model from your ChatGPT account before approving plan use.",
-  "plan-hosted-unavailable":
-    "This is the hosted site. OpenAI documents ChatGPT plan usage for open-source and locally hosted apps; a remotely hosted app needs OpenAI's approval through its interest form first.",
-  "plan-not-loopback": "This installation is served on an address other than this computer's own, so it is not a locally hosted app.",
+  "plan-hosted-unavailable": "This is the hosted site; OpenAI allows plan usage in locally hosted apps unless it approves a hosted one.",
+  "plan-not-loopback": "This installation isn't served on this computer's own address, so it isn't locally hosted.",
   "plan-limit-whole-number": "Every request limit must be a whole number of at least 1.",
   "plan-limit-daily-above-monthly": "The daily request limit cannot exceed the monthly one.",
   "plan-limit-daily-ceiling": "The daily limit can be at most 200 requests.",

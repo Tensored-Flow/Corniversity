@@ -235,3 +235,14 @@ only after the learner's recorded permission; camera and geolocation stay off.
     stack never touches the owner's records; it keeps uploads in the database so one backup holds
     records and uploads. Error notices after a redirect carry allowlisted codes
     (`apps/web/src/lib/notices.ts`), never text from the address.
+
+16. The lean study format: a course is its units (notes, problem sheet, tutorial) and its exams.
+    An exam answer is an attempt linked to the exam (`attempt.exam_id`), so it is marked by the
+    ordinary assessment queue but never appears in a practice session; its score is computed from
+    the assessor's checks of the rubric's weighted criteria (`packages/core/src/exams/exam.ts`).
+    Units belong to a course's current version, so progress and exams look units up there rather
+    than through the version an enrolment points to. Closed book is enforced where attempts are
+    created: while an exam runs (until its deadline and grace), no practice attempt can be opened
+    on its problems, so hints, solutions and practice feedback have nothing to attach to, and the
+    tutor refuses them. The paper's countdown follows the server's clock, and only the server
+    decides that time is up. Hidden features keep their routes and data.

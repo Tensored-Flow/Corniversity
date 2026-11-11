@@ -40,7 +40,7 @@ test.describe("operations and proposals", () => {
     test.setTimeout(180_000);
     const lead = `Lecture notes on spectral theory ${Date.now()}`;
     await page.goto("/catalogue");
-    await page.getByRole("link", { name: "Propose a subject or reading programme" }).click();
+    await page.getByRole("link", { name: "Propose one" }).click();
     await page.getByLabel("Kind").selectOption("reading_course");
     await page.getByLabel("Department").selectOption("mathematics");
     await page.getByLabel("Title", { exact: true }).fill("Functional notes on compact operators");

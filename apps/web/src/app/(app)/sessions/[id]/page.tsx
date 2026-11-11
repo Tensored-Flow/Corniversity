@@ -5,7 +5,7 @@ import { getEnv } from "@corniversity/db/env";
 import { unitPrerequisiteView } from "@corniversity/db/services/bridges";
 import { getCourseDetail, getUnitDetail } from "@corniversity/db/services/catalogue";
 import { labRevealState } from "@corniversity/db/services/lab-predictions";
-import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { getAttemptHistory, getSession, IN_RUNNING_EXAM, runningExamFor } from "@corniversity/db/services/learning";
 import { openIssueCounts } from "@corniversity/db/services/learning-issues";
 import { listEntries } from "@corniversity/db/services/notebook";
 import { latestTranscriptionJob, listTranscriptions, listWorkPages } from "@corniversity/db/services/paper-work";
@@ -80,6 +80,7 @@ export default async function SessionPage({
   const selected = exercises.find((e) => e.id === exerciseParam) ?? exercises[0] ?? null;
   const history = selected ? await getAttemptHistory(db(), ownerId, selected.id) : [];
   const latestAttempt = history.at(-1)?.attempt ?? null;
+  const heldBy = selected ? await runningExamFor(db(), ownerId, selected.id) : null;
   const submitted = history.some((h) => h.versions.length > 0);
   const reviewing = history.some((h) => h.versions.some((v) => v.run && (v.run.status === "queued" || v.run.status === "reviewing")));
   const locatorById = new Map(unitDetail.locators.map((l) => [l.id, l]));
@@ -354,65 +355,76 @@ export default async function SessionPage({
                     </details>
                   ) : null}
                 </Card>
-                <Workbench
-                  key={`${selected.id}-${latestAttempt?.id ?? "new"}`}
-                  sessionId={id}
-                  exerciseId={selected.id}
-                  attemptState={latestAttempt?.state ?? "draft"}
-                  attemptMode={latestAttempt?.mode ?? "practice"}
-                  submitted={submitted}
-                  initialDraft={latestAttempt?.draftMarkdown ?? ""}
-                  initialRevision={latestAttempt?.draftRevision ?? 0}
-                  initialSavedAt={latestAttempt?.draftSavedAt?.toISOString() ?? null}
-                  hints={revealedHints}
-                  hintsTotal={selected.hintLadder.length}
-                  solutionRevealed={Boolean(latestAttempt?.solutionRevealedAt)}
-                  saveDraft={saveDraftAction}
-                  requestHint={requestHintAction}
-                  submit={submitAttemptAction}
-                  reveal={revealReferenceAction}
-                  startAttempt={startAttemptAction}
-                  fresh={
-                    !latestAttempt ||
-                    (latestAttempt.state === "draft" &&
-                      !latestAttempt.draftMarkdown?.trim() &&
-                      latestAttempt.hintsUsed === 0 &&
-                      !latestAttempt.solutionRevealedAt &&
-                      !(history.at(-1)?.versions.length ?? 0))
-                  }
-                />
-                <details
-                  className="rounded-[var(--radius-panel)] border border-stone bg-paper-2"
-                  open={pages.length > 0 || transcriptions.length > 0}
-                >
-                  <summary className="cursor-pointer px-5 py-3 text-sm text-ink">
-                    Working on paper? Attach photographs or a PDF of your pages
-                  </summary>
-                  <PaperWork
-                    sessionId={id}
-                    exerciseId={selected.id}
-                    pages={pages.map((p) => ({
-                      id: p.id,
-                      position: p.position,
-                      mime: p.mime,
-                      rotation: p.rotation,
-                      metadataStripped: p.metadataStripped,
-                    }))}
-                    transcriptions={transcriptions.map((t) => ({
-                      version: t.version,
-                      text: t.text,
-                      source: t.source,
-                      confirmed: Boolean(t.confirmedAt),
-                    }))}
-                    provider={{
-                      mode: providerState.mode,
-                      label: providerState.mode === "live" || providerState.mode === "plan" ? providerLabel(providerState) : "",
-                      reason: providerState.mode === "blocked" ? providerState.reason : undefined,
-                    }}
-                    transcriptionJob={transcriptionJob ? { status: transcriptionJob.status, error: transcriptionJob.error } : null}
-                    closed={latestAttempt?.state === "accepted" || latestAttempt?.state === "reviewing"}
-                  />
-                </details>
+                {heldBy ? (
+                  <Card>
+                    <p className="text-sm text-ink">{IN_RUNNING_EXAM}</p>
+                    <Link href={`/exams/${heldBy.id}`} className="mt-2 inline-block text-sm text-brass underline underline-offset-4">
+                      Go to the exam
+                    </Link>
+                  </Card>
+                ) : (
+                  <>
+                    <Workbench
+                      key={`${selected.id}-${latestAttempt?.id ?? "new"}`}
+                      sessionId={id}
+                      exerciseId={selected.id}
+                      attemptState={latestAttempt?.state ?? "draft"}
+                      attemptMode={latestAttempt?.mode ?? "practice"}
+                      submitted={submitted}
+                      initialDraft={latestAttempt?.draftMarkdown ?? ""}
+                      initialRevision={latestAttempt?.draftRevision ?? 0}
+                      initialSavedAt={latestAttempt?.draftSavedAt?.toISOString() ?? null}
+                      hints={revealedHints}
+                      hintsTotal={selected.hintLadder.length}
+                      solutionRevealed={Boolean(latestAttempt?.solutionRevealedAt)}
+                      saveDraft={saveDraftAction}
+                      requestHint={requestHintAction}
+                      submit={submitAttemptAction}
+                      reveal={revealReferenceAction}
+                      startAttempt={startAttemptAction}
+                      fresh={
+                        !latestAttempt ||
+                        (latestAttempt.state === "draft" &&
+                          !latestAttempt.draftMarkdown?.trim() &&
+                          latestAttempt.hintsUsed === 0 &&
+                          !latestAttempt.solutionRevealedAt &&
+                          !(history.at(-1)?.versions.length ?? 0))
+                      }
+                    />
+                    <details
+                      className="rounded-[var(--radius-panel)] border border-stone bg-paper-2"
+                      open={pages.length > 0 || transcriptions.length > 0}
+                    >
+                      <summary className="cursor-pointer px-5 py-3 text-sm text-ink">
+                        Working on paper? Attach photographs or a PDF of your pages
+                      </summary>
+                      <PaperWork
+                        sessionId={id}
+                        exerciseId={selected.id}
+                        pages={pages.map((p) => ({
+                          id: p.id,
+                          position: p.position,
+                          mime: p.mime,
+                          rotation: p.rotation,
+                          metadataStripped: p.metadataStripped,
+                        }))}
+                        transcriptions={transcriptions.map((t) => ({
+                          version: t.version,
+                          text: t.text,
+                          source: t.source,
+                          confirmed: Boolean(t.confirmedAt),
+                        }))}
+                        provider={{
+                          mode: providerState.mode,
+                          label: providerState.mode === "live" || providerState.mode === "plan" ? providerLabel(providerState) : "",
+                          reason: providerState.mode === "blocked" ? providerState.reason : undefined,
+                        }}
+                        transcriptionJob={transcriptionJob ? { status: transcriptionJob.status, error: transcriptionJob.error } : null}
+                        closed={latestAttempt?.state === "accepted" || latestAttempt?.state === "reviewing"}
+                      />
+                    </details>
+                  </>
+                )}
                 {/* The current attempt's feedback first, newest version first; earlier attempts below. */}
                 {[...history].reverse().map((h) =>
                   h.versions

@@ -54,11 +54,9 @@ export default async function NotebookPage({
   return (
     <div className="mx-auto w-full max-w-6xl">
       <header className="mb-6">
-        <p className="text-sm uppercase tracking-[0.18em] text-brass">Notebook</p>
-        <h1 className="mt-1 text-3xl text-ink">Your notebook</h1>
+        <h1 className="text-3xl text-ink">Notebook</h1>
         <p className="mt-2 max-w-prose text-sm text-ink-2">
-          {counts.total} entries · {counts.openQuestions} open question{counts.openQuestions === 1 ? "" : "s"}. Markdown and LaTeX; every
-          entry can carry tags, a course and exact source links. Nothing here is generated for you.
+          {counts.total} entries · {counts.openQuestions} open question{counts.openQuestions === 1 ? "" : "s"}. Markdown and LaTeX.
         </p>
         {!params.q && entries.length === LIST_LIMIT ? (
           <p className="mt-1 max-w-prose text-xs text-ink-3" data-testid="notebook-limit">

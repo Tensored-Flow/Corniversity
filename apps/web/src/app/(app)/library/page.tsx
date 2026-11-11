@@ -41,12 +41,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="mx-auto w-full max-w-6xl">
-      <LibraryHeader
-        title="Library"
-        lede="Your shelf: what you hold here, in what state, and what may be done with it. Reference never implies permission to process; each item carries its own decisions."
-        active="/library"
-        sync={state}
-      />
+      <LibraryHeader title="Library" lede="Your files and sources. Each item has its own permissions." active="/library" sync={state} />
       <FlashNotices error={error} />
       {deleted ? (
         <div className="mb-4">

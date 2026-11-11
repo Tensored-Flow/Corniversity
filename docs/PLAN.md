@@ -235,3 +235,14 @@ sit inside the owner's limits; one owner acceptance journey (USER_ACTIONS 4). Ga
 integration and journey suites; journey 16 against a test double; independent review; nothing
 claimed live that was not run.
 
+### Milestone 19 — The lean study format — done
+
+The owner's request of 11 November 2026: many courses at once, no traditional university format,
+concise text. A course is its units as rows, each with lecture notes, a problem sheet and a
+tutorial, plus a timed, closed-book exam drawn from problems not yet attempted and marked by the
+assessor. Navigation is Courses, Catalogue, Library and Notebook; orientation is one step; courses
+are taken from the catalogue with no cap. The timetable, director, common room, programmes,
+research studio, laboratories and review are hidden, their records kept. Site text and the tutor's
+and assessor's replies are shorter. Gate: unit, integration and journey suites; exam rules and
+service tests; nothing claimed live that was not run.
+

@@ -1,76 +1,55 @@
 import { listCatalogue, listDepartments } from "@corniversity/db/services/catalogue";
+import { listEnrolments } from "@corniversity/db/services/enrolment";
 import Link from "next/link";
-import { ReadinessBadge } from "@/components/Readiness";
-import { Badge, Notice } from "@/components/ui";
+import { Badge, Button, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
+import { takeCourseAction } from "../courses/[id]/actions";
 
 export const metadata = { title: "Catalogue" };
 
-const READINESS_ORDER = ["teaching_ready", "syllabus_ready", "source_verified", "resource_blocked", "proposed"];
+const select = "rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5";
 
+/** Every course, the ones with something to study first; take any number straight from the list. */
 export default async function CataloguePage({
   searchParams,
 }: {
-  searchParams: Promise<{ department?: string; readiness?: string; launch?: string; level?: string }>;
+  searchParams: Promise<{ department?: string; level?: string; all?: string }>;
 }) {
-  await requireSession("/catalogue");
+  const session = await requireSession("/catalogue");
   const params = await searchParams;
   const departments = await listDepartments(db());
   const unknownDepartment = params.department && !departments.some((d) => d.id === params.department) ? params.department : null;
-  const entries = await listCatalogue(db(), { departmentId: unknownDepartment ? undefined : params.department });
-  const filtered = entries.filter((e) => {
-    if (params.readiness && e.version.readiness !== params.readiness) return false;
-    if (params.launch === "1" && !e.course.launch) return false;
-    if (params.level && e.course.level !== params.level) return false;
-    return true;
-  });
-  const sorted = [...filtered].sort(
-    (a, b) =>
-      READINESS_ORDER.indexOf(a.version.readiness) - READINESS_ORDER.indexOf(b.version.readiness) || a.course.id.localeCompare(b.course.id),
-  );
-  // Courses that are not fully prepared but already have a unit that can be studied.
-  const firstUnitOnly = entries.filter((e) => e.version.readiness !== "teaching_ready" && e.readyUnitCount > 0).length;
-  const counts = entries.reduce<Record<string, number>>((acc, e) => {
-    acc[e.version.readiness] = (acc[e.version.readiness] ?? 0) + 1;
-    return acc;
-  }, {});
+  const [entries, enrolments] = await Promise.all([
+    listCatalogue(db(), { departmentId: unknownDepartment ? undefined : params.department }),
+    listEnrolments(db(), session.user.id),
+  ]);
+  const taking = new Set(enrolments.filter((e) => e.enrolment.status !== "withdrawn").map((e) => e.course.id));
+  const studyable = entries.filter((e) => e.readyUnitCount > 0).length;
+  const shown = entries
+    .filter((e) => (params.level ? e.course.level === params.level : true))
+    .filter((e) => (params.all === "1" ? true : e.readyUnitCount > 0))
+    .sort((a, b) => b.readyUnitCount - a.readyUnitCount || a.course.id.localeCompare(b.course.id));
 
   return (
-    <div className="mx-auto w-full max-w-6xl">
-      <header className="mb-6">
-        <p className="text-sm uppercase tracking-[0.18em] text-brass">Catalogue</p>
-        <h1 className="mt-1 text-3xl text-ink">Courses</h1>
-        <p className="mt-2 max-w-prose text-sm text-ink-2">
-          Every course shows the readiness it has actually earned. {counts.teaching_ready ?? 0} of {entries.length} are fully prepared
-          {firstUnitOnly ? `, and ${firstUnitOnly} more ${firstUnitOnly === 1 ? "has" : "have"} a first prepared unit` : ""}; the rest are
-          source-verified, syllabus-ready or still proposals. You can register interest in any of them, and audit anything that is prepared.
-          Routes through several courses are in the{" "}
-          <Link href="/programmes" className="text-brass underline underline-offset-4">
-            programme catalogue
-          </Link>
-          . Something missing?{" "}
-          <Link href="/proposals" className="text-brass underline underline-offset-4">
-            Propose a subject or reading programme
-          </Link>
-          .
+    <div className="mx-auto w-full max-w-5xl">
+      <header className="mb-5">
+        <h1 className="text-3xl text-ink">Catalogue</h1>
+        <p className="mt-1 text-sm text-ink-2">
+          {studyable} of {entries.length} courses have units ready. Take as many as you like.
         </p>
       </header>
       {unknownDepartment ? (
         <div className="mb-4">
-          <Notice tone="rust">There is no department called “{unknownDepartment}”; every department is shown instead.</Notice>
+          <Notice tone="rust">No department “{unknownDepartment}”; showing all.</Notice>
         </div>
       ) : null}
 
-      <form className="mb-6 flex flex-wrap items-end gap-3 text-sm" method="get">
+      <form className="mb-5 flex flex-wrap items-end gap-3 text-sm" method="get">
         <label className="flex flex-col gap-1">
           <span className="text-xs text-ink-3">Department</span>
-          <select
-            name="department"
-            defaultValue={params.department ?? ""}
-            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
-          >
-            <option value="">All departments</option>
+          <select name="department" defaultValue={params.department ?? ""} className={select}>
+            <option value="">All</option>
             {departments.map((d) => (
               <option key={d.id} value={d.id}>
                 {d.title}
@@ -79,27 +58,8 @@ export default async function CataloguePage({
           </select>
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-xs text-ink-3">Readiness</span>
-          <select
-            name="readiness"
-            defaultValue={params.readiness ?? ""}
-            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
-          >
-            <option value="">Any</option>
-            <option value="teaching_ready">Teaching ready</option>
-            <option value="syllabus_ready">Syllabus ready</option>
-            <option value="source_verified">Source verified</option>
-            <option value="proposed">Proposed</option>
-            <option value="resource_blocked">Resource needed</option>
-          </select>
-        </label>
-        <label className="flex flex-col gap-1">
           <span className="text-xs text-ink-3">Level</span>
-          <select
-            name="level"
-            defaultValue={params.level ?? ""}
-            className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-1.5"
-          >
+          <select name="level" defaultValue={params.level ?? ""} className={select}>
             <option value="">Any</option>
             <option value="bridge">Bridge</option>
             <option value="foundation">Foundation</option>
@@ -109,40 +69,48 @@ export default async function CataloguePage({
           </select>
         </label>
         <label className="flex items-center gap-2 pb-1.5">
-          <input type="checkbox" name="launch" value="1" defaultChecked={params.launch === "1"} className="accent-[var(--brass)]" />
-          Launch courses only
+          <input type="checkbox" name="all" value="1" defaultChecked={params.all === "1"} className="accent-[var(--brass)]" />
+          Include courses with nothing ready
         </label>
         <button type="submit" className="rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-3 py-1.5 hover:bg-paper-3">
           Filter
         </button>
       </form>
 
-      <ul className="grid gap-3 md:grid-cols-2">
-        {sorted.map((e) => (
-          <li key={e.course.id}>
-            <Link
-              href={`/courses/${e.course.id}`}
-              className="block rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-4 hover:border-stone-2"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs text-ink-3">{e.course.id}</span>
-                <ReadinessBadge readiness={e.version.readiness} />
-                {e.course.launch ? <Badge tone="brass">Launch</Badge> : null}
-                <Badge>{e.course.level}</Badge>
-              </div>
-              <h2 className="mt-2 text-lg text-ink">{e.course.title}</h2>
-              <p className="mt-1 line-clamp-2 text-sm text-ink-2">{e.version.purpose}</p>
-              <p className="mt-2 text-xs text-ink-3">
-                {e.unitCount > 0 ? `${e.readyUnitCount} of ${e.unitCount} units prepared` : "No units outlined yet"} ·{" "}
-                {e.version.readiness === "proposed"
-                  ? "workload not yet estimated"
-                  : `about ${e.version.workload.typical} hours (${e.version.workload.minimum}–${e.version.workload.maximum})`}
-              </p>
-            </Link>
+      <ul className="flex flex-col divide-y divide-stone rounded-[var(--radius-panel)] border border-stone bg-paper-2">
+        {shown.map((e) => (
+          <li key={e.course.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3">
+            <div className="min-w-0 flex-1">
+              <Link href={`/courses/${e.course.id}`} className="text-ink underline-offset-4 hover:underline">
+                {e.course.title}
+              </Link>
+              <span className="ml-2 font-mono text-xs text-ink-3">{e.course.id}</span>
+              <p className="line-clamp-1 text-sm text-ink-2">{e.version.purpose}</p>
+            </div>
+            <span className="text-xs text-ink-3">
+              {e.unitCount > 0 ? `${e.readyUnitCount}/${e.unitCount} units ready` : "no units yet"}
+            </span>
+            {taking.has(e.course.id) ? (
+              <Badge tone="moss">taking</Badge>
+            ) : e.readyUnitCount > 0 ? (
+              <form action={takeCourseAction}>
+                <input type="hidden" name="courseId" value={e.course.id} />
+                <input type="hidden" name="from" value="catalogue" />
+                <Button type="submit" variant="secondary">
+                  Take
+                </Button>
+              </form>
+            ) : null}
           </li>
         ))}
       </ul>
-      {sorted.length === 0 ? <p className="text-sm text-ink-2">No courses match these filters.</p> : null}
+      {shown.length === 0 ? <p className="mt-3 text-sm text-ink-2">No courses match.</p> : null}
+      <p className="mt-4 text-sm text-ink-3">
+        Missing a subject?{" "}
+        <Link href="/proposals" className="text-brass underline underline-offset-4">
+          Propose one
+        </Link>
+      </p>
     </div>
   );
 }

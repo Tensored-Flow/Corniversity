@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { type FakeOpenAI, startFakeOpenAI } from "../../packages/ai/src/chatgpt-plan.fake";
-import { signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 16: teaching through the owner's ChatGPT plan in a local installation, end to end in
@@ -33,7 +33,7 @@ test("the owner connects their ChatGPT plan, approves limits, is taught through 
   await signInOrBootstrap(page);
   await page.goto("/settings#chatgpt-plan");
   const card = page.locator("#chatgpt-plan");
-  await expect(card.getByRole("heading", { name: "Use your ChatGPT plan" })).toBeVisible();
+  await expect(card.getByRole("heading", { name: "ChatGPT plan", exact: true })).toBeVisible();
   // Start signed out and unpaused, whatever an earlier run (at the other screen size) left.
   const signOut = card.getByRole("button", { name: "Sign out of ChatGPT here" });
   if (await signOut.isVisible().catch(() => false)) await signOut.click();
@@ -66,11 +66,7 @@ test("the owner connects their ChatGPT plan, approves limits, is taught through 
   // A tutor reply through the plan, labelled as such.
   await takeCourse(page, "MAT-230");
   await page.goto("/courses/MAT-230/units/MAT-230-u01");
-  await page
-    .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
-    .getByRole("button", { name: /^(Start|Resume|Continue)/ })
-    .first()
-    .click();
+  await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
   await expect(page).toHaveURL(/\/sessions\//);
   await expect(page.getByText(/AI Tutor .* · gpt-fake-1 via your ChatGPT plan/).first()).toBeVisible();
   const panel = page.locator("#panel-tutor");

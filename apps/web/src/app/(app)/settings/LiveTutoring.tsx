@@ -36,35 +36,33 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
   return (
     <Card as="section" aria-labelledby="provider-heading" id="provider">
       <h2 id="provider-heading" className="text-lg text-ink">
-        Live tutoring and its costs
+        Teacher
       </h2>
       <div className="mt-2">
         {state.mode === "scripted" ? (
           <Notice tone="neutral" title="Scripted demo">
-            No model is configured. Tutors, the assessor, the director, the reading room and classmates answer with scripted text that does
-            not read your work, and every such reply is labelled. Reading, notes, laboratories and prepared material work fully.
+            No model is configured. Replies are labelled scripted text that doesn&apos;t read your work, and exams stay unmarked. Notes and
+            problems work fully.
           </Notice>
         ) : state.mode === "plan" ? (
           <Notice tone="moss" title={`Your ChatGPT plan: ${state.model}`}>
-            Requests go through your own ChatGPT plan, up to {state.dailyRequests} a day and {state.monthlyRequests} a month as you approved
-            below. Nothing is billed to an API key, and a failed request is never answered by another provider or by scripted text.
+            Up to {state.dailyRequests} requests a day and {state.monthlyRequests} a month. A failed request is never answered by another
+            provider or by scripted text.
           </Notice>
         ) : state.mode === "live" ? (
           <Notice tone="moss" title={`Live: ${modelLabel(state.model)}`}>
-            Paid use was approved on {view.approval ? new Date(view.approval.approvedAt).toLocaleDateString("en-GB") : "an earlier date"}{" "}
-            within the limits below. Every run is checked against its worst case before it starts, and its actual cost is recorded.
+            Paid use approved on {view.approval ? new Date(view.approval.approvedAt).toLocaleDateString("en-GB") : "an earlier date"} within
+            the limits below.
           </Notice>
         ) : (
-          <Notice tone="rust" title="Live model blocked">
-            {state.reason} Until then nothing is sent to a provider, and no scripted reply is shown in its place.
+          <Notice tone="rust" title="Teacher blocked">
+            {state.reason} Nothing is sent until then.
           </Notice>
         )}
       </div>
 
       <p className="mt-3 max-w-prose text-xs text-ink-3">
-        A live model needs an API key from an organization in the Anthropic Console; signing in to Claude or a Claude subscription does not
-        give this website a key, and the website never uses your Claude login. Some subscriptions include API credits for the Console:
-        whether yours does, its expiry and your balance are shown only in your Console (
+        An API key comes from the Anthropic Console; a Claude subscription doesn&apos;t provide one (
         <a
           className="underline"
           href="https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers"
@@ -73,15 +71,15 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
         >
           API credits for subscribers
         </a>
-        ). Nothing here buys credits or turns on automatic reloads.
+        ). Nothing here buys credits.
       </p>
 
       <form action={saveLiveTutoringAction} className="mt-4 grid gap-4 sm:grid-cols-2">
         <Field label="Provider" htmlFor="provider-choice">
           <Select id="provider-choice" name="provider" defaultValue={view.provider}>
-            <option value="fixture">Scripted demo (no model; nothing is sent anywhere)</option>
-            <option value="anthropic">Anthropic (live model, paid)</option>
-            <option value="chatgpt_plan">Your ChatGPT plan (local installation only; set up below)</option>
+            <option value="fixture">Scripted demo (nothing sent)</option>
+            <option value="anthropic">Anthropic API key (paid)</option>
+            <option value="chatgpt_plan">Your ChatGPT plan (local installation)</option>
           </Select>
         </Field>
         <Field label="Model" htmlFor="model" hint={SUPPORTED_MODELS.find((m) => m.id === view.model)?.note}>
@@ -150,21 +148,12 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
           </Field>
         </fieldset>
         <p className="text-xs text-ink-3 sm:col-span-2">
-          A run is refused before it starts if its worst case could cross a limit. The worst case is the whole output allowance (thinking
-          counts towards it), every byte of the prompt counted as a token, each image at the provider's documented maximum, and, with
-          fallback on, a second run on the fallback model. Counting a token per byte relies on the provider's tokenizer encoding at least
-          one byte per token, which holds for byte-level tokenizers; the tokenizer is not published, so this is a stated assumption, not a
-          proof. Runs in progress, and runs whose cost the provider could not report, count at their worst case until finished or settled;
-          afterwards a run counts at what it cost. A record made afterwards cannot undo a charge. Spent or held today $
-          {spend.todayUsd.toFixed(2)} · this month ${spend.monthUsd.toFixed(2)} ({BUDGET_WINDOW_TIMEZONE} day and month). Model use is
-          billed by Anthropic to your API account, separately from hosting.
+          A request is refused before it starts if its worst case could pass a limit. Spent today ${spend.todayUsd.toFixed(2)} · this month
+          ${spend.monthUsd.toFixed(2)} ({BUDGET_WINDOW_TIMEZONE}).
         </p>
         <label className="flex items-start gap-2 rounded-[var(--radius-control)] border border-stone bg-paper p-3 text-sm text-ink sm:col-span-2">
           <input type="checkbox" name="approvePaidUse" value="1" className="mt-1" />
-          <span>
-            I approve paid use of the selected model within these limits. Without this, a live model stays blocked; changing the model,
-            turning fallback on or raising a limit needs approval again.
-          </span>
+          <span>I approve paid use of this model within these limits. A new model, fallback or higher limit needs approval again.</span>
         </label>
         <div className="sm:col-span-2">
           <Button type="submit">Save live tutoring settings</Button>
@@ -182,9 +171,7 @@ export function LiveTutoring({ state, view, limits, spend, runs, unsettled }: Pr
         <div className="mt-5">
           <h3 className="text-sm font-medium text-ink">Unsettled runs</h3>
           <p className="mt-1 max-w-prose text-xs text-ink-3">
-            The provider may have billed these runs more than it reported (a connection was lost, a stream broke, or the process ended
-            mid-run). Each counts at its worst case until you record the amount your Anthropic Console shows for it; the record is kept in
-            the audit log.
+            These may have cost more than reported. Each counts at its worst case until you enter the amount from your Anthropic Console.
           </p>
           <ul className="mt-2 flex flex-col gap-3">
             {unsettled.map((r) => (

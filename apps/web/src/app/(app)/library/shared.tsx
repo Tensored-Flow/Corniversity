@@ -47,7 +47,6 @@ export function LibraryHeader({ title, lede, active, sync }: { title: string; le
     <header className="mb-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-[0.18em] text-brass">Library</p>
           <h1 className="mt-1 text-3xl text-ink">{title}</h1>
         </div>
         <SyncBadge state={sync} />

@@ -736,6 +736,64 @@ Evidence is kept apart by kind.
   - Headers: Content-Security-Policy, `Permissions-Policy` with `microphone=(self)`, and HSTS.
   - Nothing behind sign-in was checked live, because the owner account does not exist yet.
 
+## Milestone 19: the lean study format (11 November 2026)
+
+The owner asked for less text, many courses at once, and only lecture notes, problem sheets,
+tutorials and exams. All runs on 11 November 2026, Windows 11, local embedded PostgreSQL 17,
+scripted demo (no model provider).
+
+| Check | Command | Result |
+|---|---|---|
+| Type check, lint | `pnpm typecheck`, `pnpm lint` | pass in all 7 packages; Biome clean |
+| Unit tests | `pnpm test` | 336 + 39 (worker) pass |
+| Integration tests | `pnpm test:integration` | 152 pass in 22 files, against throw-away PostgreSQL clusters |
+| Journeys, production build on an empty database | `pnpm --filter @corniversity/web build`, then the journeys at both sizes against it | 109 pass at both sizes, 0 fail, in 5.4 minutes; 10 skipped (the hidden-feature journeys below, and journey 16). Journeys 1 and 16 then passed at both sizes on the plan rehearsal stack (a new database, plan endpoints pointed at the labelled test double). |
+
+- **Exams.** `exam.test.ts` (5) covers limits, random choice in course order, the deadline's grace,
+  the weighted score and the overall result. `exams.test.ts` (9) covers:
+  - only unattempted problems are drawn;
+  - one running exam per course: two racing starts let exactly one through (a partial unique
+    index, migration 0015);
+  - closed book: while the exam runs, its problems cannot be opened for practice, so hints,
+    solutions and practice feedback have nothing to attach to; afterwards practice is a separate
+    attempt that never sees the exam answer;
+  - saves count until the deadline's grace; a save racing the submission either lands and is
+    submitted or is refused;
+  - single submission through the assessment queue; the paper's zero submits only when the
+    server's clock agrees;
+  - the score follows the assessor's checks (an unchecked criterion counts as not met);
+  - worked solutions only where released, and "after accepted" ones only for an accepted answer.
+- **Journey 3** takes several courses, opens notes, a problem sheet and a tutorial from a unit
+  row, checks that navigation is Courses, Catalogue, Library and Notebook, sits a one-question
+  exam (a problem in it sends the sheet to the exam), and sees it left unmarked in the scripted
+  demo rather than given an invented grade.
+- **Hidden features.** Journeys for features this milestone hides from Settings are kept but
+  skipped, with the reason in the file: the common room discussion and quiet mode (journey 6),
+  study defaults (journey 9) and quiet mode with programmes (journey 10). Two journeys tested
+  behaviour that no longer exists and were removed: orientation's programme step and the course
+  page's workload preview.
+- **Independent review.** A fresh reviewer read the code and found three medium and five low
+  issues, all fixed:
+  - two exam starts could race past the running-exam check (now a database index);
+  - the paper's countdown and automatic submission followed the device clock (now the server's);
+  - a problem in a running exam could be opened for practice, with its hints and solution;
+  - an assessor omitting a criterion raised the score;
+  - the last keystrokes were lost at automatic submission, and a save could race the submission;
+  - any error on the exam page showed "not found";
+  - exam times showed in the server's time zone, and "Continue" lost the course name after a
+    content update;
+  - the five-minute warning was colour only (now announced).
+- **Defects found by the journeys, fixed.**
+  - The notes page lost the wrapper that kept wide formulas inside it, so on a phone two units'
+    pages were up to 560 px wide. A test runner's click missed for the same reason.
+  - The course page no longer said a course was only a proposal; its readiness badge is back.
+  - In the workspace, submitting right after typing could leave an autosave from before the
+    submission to come back as a conflict and disable *Submit revision* (before this milestone).
+  - On the hosted site, the two route handlers that redirect (opening a prerequisite bridge and a
+    timetable slot) sent the browser to `https://0.0.0.0:3000/…`, the server's own address
+    (before this milestone; seen from outside with a forged cookie). They now redirect to the
+    configured public address.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development

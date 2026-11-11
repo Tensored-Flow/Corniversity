@@ -96,8 +96,7 @@ export const BLOCKED_REASON: Record<BlockedCode, string> = {
   unsupported_model: "The chosen model is not one Corniversity supports. Choose a model in Settings.",
   not_approved: "A live model is configured but paid use has not been approved. Approve it, with your limits, in Settings.",
   approval_outdated: "The model, the fallback setting or a spending limit changed after paid use was approved. Approve again in Settings.",
-  plan_unavailable_here:
-    "Teaching through your ChatGPT plan works only in a local installation on your own computer. OpenAI documents plan usage for open-source and locally hosted apps; a hosted site needs OpenAI's approval first.",
+  plan_unavailable_here: "Your ChatGPT plan works only in the local installation on your own computer.",
   plan_not_connected: "Your ChatGPT plan is chosen but not connected. Continue with ChatGPT in Settings.",
   plan_reconnect: "The ChatGPT sign-in can no longer be used. Continue with ChatGPT in Settings to sign in again.",
   plan_no_model: "Choose a model from your ChatGPT account in Settings.",

@@ -1,11 +1,12 @@
 import { expect, type Page, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * The Mind, Brain and AI update, end to end.
  *
- * 1. The programme is discoverable from the catalogue, inspectable before anything is chosen, and
- *    followed without enrolling in anything; it then appears on My Studies with its methods.
+ * 1. The programme (hidden from navigation in the lean format, its pages kept) is inspectable
+ *    before anything is chosen and followed without enrolling in anything; it then appears on My
+ *    Studies with its methods.
  * 2. The director drafts a route, the learner confirms it, and it sets a focus, not enrolments.
  * 3. COG-260 unit 1: the choice-model laboratory keeps results hidden until a prediction is saved,
  *    then runs model recovery and a held-out comparison that shows its information contract.
@@ -25,9 +26,8 @@ const MODE_BADGE = /^(enrolled|audit|reading seminar)$/;
 
 async function openLab(page: Page, courseId: string, unitTitle: RegExp, labTitle: RegExp) {
   await takeCourse(page, courseId);
-  await page.getByRole("link", { name: unitTitle }).click();
-  const card = page.locator("li", { hasText: labTitle }).first();
-  await card.getByRole("button", { name: /start|resume|continue/i }).click();
+  await page.locator("li", { hasText: unitTitle }).getByRole("link", { name: "Notes" }).click();
+  await (await activityButton(page, labTitle)).click();
   await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
 }
 
@@ -48,12 +48,10 @@ async function passPredictionGate(page: Page, result: ReturnType<Page["getByRole
 }
 
 test.describe("Mind, Brain and AI and the study defaults", () => {
-  test("the programme is found from the catalogue, inspected, and followed without enrolling in anything", async ({ page }) => {
+  test("the programme is inspected and followed without enrolling in anything", async ({ page }) => {
     test.setTimeout(120_000);
     await signInOrBootstrap(page);
-    await page.goto("/catalogue");
-    await expect(page.getByText(/12 of (8[6-9]|9\d|\d{3}) are fully prepared, and 2 more have a first prepared unit/)).toBeVisible();
-    await page.getByRole("main").getByRole("link", { name: "programme catalogue" }).click();
+    await page.goto("/programmes");
     await expect(page.getByRole("heading", { level: 1, name: "Routes through the university" })).toBeVisible();
     await page.getByRole("link", { name: "Mind, Brain and AI" }).first().click();
 
@@ -151,7 +149,9 @@ test.describe("Mind, Brain and AI and the study defaults", () => {
     await screenshot(page, "42-lab-planning-transfer");
   });
 
-  test("study defaults: deadlines are separate from appointments, a milestone is never binding, a switched-off kind cannot be chosen", async ({
+  // Hidden in the lean format (Milestone 19): Settings no longer offers study preferences, and the timetable is hidden; the routes and
+  // records are kept, so this journey is kept but skipped.
+  test.skip("study defaults: deadlines are separate from appointments, a milestone is never binding, a switched-off kind cannot be chosen", async ({
     page,
   }) => {
     test.setTimeout(120_000);

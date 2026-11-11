@@ -1,63 +1,40 @@
 "use server";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { EnrolmentError, enrol, setEnrolmentStatus } from "@corniversity/db/services/enrolment";
-import { previewCourseLoad, recordLoadPreviewSeen } from "@corniversity/db/services/study";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 
-export interface EnrolState {
-  error?: string;
-  ok?: boolean;
-  /** Shown when the course would go beyond the chosen load; enrolling then needs the preview acknowledged. */
-  preview?: { currentHours: number; addedHours: number; totalHours: number; ceiling: number | null; reason: string };
-}
+const COURSE_ID = /^[A-Z]{3}-\d{3}$/;
 
-const EnrolInput = z.object({
-  courseId: z.string().regex(/^[A-Z]{3}-\d{3}$/),
-  mode: z.enum(["enrolled", "audit", "reading_seminar"]),
-});
-
-export async function enrolAction(_prev: EnrolState, formData: FormData): Promise<EnrolState> {
+/** Takes a course in full where it is offered so (otherwise in the mode it offers); there is no cap on how many. */
+export async function takeCourseAction(form: FormData): Promise<void> {
   const session = await requireSession();
-  const parsed = EnrolInput.safeParse({ courseId: formData.get("courseId"), mode: formData.get("mode") });
-  if (!parsed.success) return { error: "Choose a course mode." };
-  const detail = await getCourseDetail(db(), parsed.data.courseId);
-  if (!detail) return { error: "Course not found." };
-  const preview = await previewCourseLoad(db(), session.user.id, detail.version.workload.typical, parsed.data.mode);
-  if (!preview.allowed) {
-    if (formData.get("loadPreviewSeen") !== "on") {
-      return {
-        preview: {
-          currentHours: preview.current.weeklyHours,
-          addedHours: preview.addedWeeklyHours,
-          totalHours: preview.totalWeeklyHours,
-          ceiling: preview.weeklyHoursCeiling,
-          reason: preview.reason ?? "This goes beyond the course load you chose.",
-        },
-      };
-    }
-    await recordLoadPreviewSeen(db(), session.user.id);
-  }
+  const courseId = String(form.get("courseId") ?? "");
+  if (!COURSE_ID.test(courseId)) redirect("/catalogue");
+  const detail = await getCourseDetail(db(), courseId);
+  if (!detail) redirect("/catalogue");
+  const offered = detail.version.modesOffered as ("enrolled" | "audit" | "reading_seminar")[];
+  const mode = offered.includes("enrolled") ? "enrolled" : (offered[0] ?? "enrolled");
   try {
-    await enrol(db(), { ownerId: session.user.id, courseId: parsed.data.courseId, mode: parsed.data.mode });
+    await enrol(db(), { ownerId: session.user.id, courseId, mode });
   } catch (error) {
-    if (error instanceof EnrolmentError) return { error: error.message };
+    if (error instanceof EnrolmentError) redirect(errorHref(`/courses/${courseId}`, errorCode(error.message)));
     throw error;
   }
-  revalidatePath(`/courses/${parsed.data.courseId}`);
-  revalidatePath("/studies");
-  return { ok: true };
+  revalidatePath("/campus");
+  revalidatePath("/catalogue");
+  redirect(form.get("from") === "catalogue" ? "/catalogue" : `/courses/${courseId}`);
 }
 
-export async function withdrawAction(_prev: EnrolState, formData: FormData): Promise<EnrolState> {
+export async function leaveCourseAction(form: FormData): Promise<void> {
   const session = await requireSession();
-  const enrolmentId = String(formData.get("enrolmentId") ?? "");
-  const courseId = String(formData.get("courseId") ?? "");
-  if (!enrolmentId) return { error: "Nothing to withdraw from." };
+  const courseId = String(form.get("courseId") ?? "");
+  const enrolmentId = String(form.get("enrolmentId") ?? "");
+  if (!COURSE_ID.test(courseId) || !/^[0-9a-f-]{36}$/.test(enrolmentId)) redirect("/campus");
   await setEnrolmentStatus(db(), session.user.id, enrolmentId, "withdrawn");
-  revalidatePath(`/courses/${courseId}`);
-  revalidatePath("/studies");
-  return { ok: true };
+  revalidatePath("/campus");
+  redirect(`/courses/${courseId}`);
 }

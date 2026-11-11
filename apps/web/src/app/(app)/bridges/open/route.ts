@@ -1,8 +1,8 @@
 import { getVisit, openBridge } from "@corniversity/db/services/bridges";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
 import { getSession } from "@corniversity/db/services/learning";
-import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { redirectTo } from "@/lib/redirect";
 import { requireApiSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +14,11 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request: Request): Promise<Response> {
   const authed = await requireApiSession(request);
-  if ("response" in authed) return NextResponse.redirect(new URL("/sign-in", request.url));
+  if ("response" in authed) return redirectTo("/sign-in");
   const ownerId = authed.session.user.id;
   const url = new URL(request.url);
   const conceptId = url.searchParams.get("concept") ?? "";
-  if (!/^[a-z0-9][a-z0-9-]{0,80}$/.test(conceptId)) return NextResponse.redirect(new URL("/campus", request.url));
+  if (!/^[a-z0-9][a-z0-9-]{0,80}$/.test(conceptId)) return redirectTo("/campus");
   const parentId = url.searchParams.get("parent");
   const parent = parentId ? await getVisit(db(), ownerId, parentId) : null;
 
@@ -31,7 +31,7 @@ export async function GET(request: Request): Promise<Response> {
     sessionId = parent.learningSessionId;
   } else {
     const session = await getSession(db(), ownerId, url.searchParams.get("from") ?? "");
-    if (!session) return NextResponse.redirect(new URL("/campus", request.url));
+    if (!session) return redirectTo("/campus");
     const unit = await getUnitDetail(db(), session.unitId);
     const activity = unit?.unit.activities.find((a) => a.id === session.activityId);
     const exercise = url.searchParams.get("exercise");
@@ -46,7 +46,7 @@ export async function GET(request: Request): Promise<Response> {
   const opened = await openBridge(db(), { ownerId, conceptId, trail, sessionId, parentVisitId: parent?.id ?? null, returnTo });
   if (!opened.ok) {
     const back = encodeURIComponent(returnTo.path);
-    return NextResponse.redirect(new URL(`/bridges/${conceptId}?refused=${opened.reason}&back=${back}`, request.url));
+    return redirectTo(`/bridges/${conceptId}?refused=${opened.reason}&back=${back}`);
   }
-  return NextResponse.redirect(new URL(`/bridges/${conceptId}?visit=${opened.visitId}`, request.url));
+  return redirectTo(`/bridges/${conceptId}?visit=${opened.visitId}`);
 }

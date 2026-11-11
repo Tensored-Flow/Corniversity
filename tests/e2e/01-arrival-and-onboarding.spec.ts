@@ -4,7 +4,7 @@ import { screenshot, signInOrBootstrap } from "./helpers";
 // This spec exercises arrival and sign-in itself, so it starts from an anonymous browser.
 test.use({ storageState: { cookies: [], origins: [] } });
 
-test.describe("arrival, authentication and resumable onboarding", () => {
+test.describe("arrival, authentication and orientation", () => {
   test("private routes refuse unauthenticated requests", async ({ request, page }) => {
     const api = await request.get("/api/jobs");
     expect([401, 404]).toContain(api.status());
@@ -19,34 +19,22 @@ test.describe("arrival, authentication and resumable onboarding", () => {
     await screenshot(page, "01-arrival");
   });
 
-  test("owner can bootstrap or sign in, save step one, and resume after reload", async ({ page }) => {
+  test("orientation is one step, then the catalogue; once done, every orientation address goes home", async ({ page }) => {
     await signInOrBootstrap(page);
     await page.goto("/onboarding/1");
-    await expect(page.getByRole("heading", { level: 1, name: "About you" })).toBeVisible();
-    await screenshot(page, "02-onboarding-step-1");
-
-    await page.getByLabel("What should we call you?").fill("Leon");
-    await page.getByLabel("Timezone").fill("Europe/London");
-    await page.getByText("Collegiate", { exact: true }).click();
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page).toHaveURL(/\/onboarding\/2/);
-
-    // Reload resumes at the saved step.
-    await page.reload();
-    await expect(page).toHaveURL(/\/onboarding\/2/);
-
-    // While orientation is unfinished, the campus sends the learner back to the saved step and
-    // skipping ahead is refused; once orientation has been completed, every step stays editable
-    // from Settings and the campus is the home.
-    await page.goto("/campus");
-    if (/\/onboarding\/2/.test(page.url())) {
-      await page.goto("/onboarding/9");
-      await expect(page).toHaveURL(/\/onboarding\/2/);
-    } else {
-      await expect(page).toHaveURL(/\/campus/);
-      await page.goto("/onboarding/5");
-      await expect(page).toHaveURL(/\/onboarding\/5/);
+    if (/\/onboarding\/1/.test(page.url())) {
+      await expect(page.getByRole("heading", { level: 1, name: "Welcome" })).toBeVisible();
+      await screenshot(page, "02-onboarding-step-1");
+      await page.getByLabel("Your name").fill("Leon");
+      await page.getByLabel("Time zone").fill("Europe/London");
+      await page.getByRole("button", { name: "Pick courses" }).click();
+      await expect(page).toHaveURL(/\/catalogue/);
     }
+    for (const step of ["/onboarding/1", "/onboarding/5", "/onboarding/12"]) {
+      await page.goto(step);
+      await expect(page).toHaveURL(/\/campus/);
+    }
+    await expect(page.getByRole("heading", { level: 1, name: "Your courses" })).toBeVisible();
   });
 
   test("sign-up is closed once the owner exists", async ({ page }) => {

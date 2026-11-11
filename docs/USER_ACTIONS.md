@@ -28,12 +28,12 @@ that the variable is gone. It checks variable names only, never values.
 
 ## 3. Choose who teaches
 
-Everything works without a model: reading, notes, laboratories and prepared activities.
+Everything works without a model except marking: notes, problem sheets and exams open, and exam answers wait unmarked.
 
 ### 3a. Hosted site: an Anthropic API key (optional; paid)
 
 1. Create a key in the Anthropic Console.
-2. Open *Settings → Live tutoring and its costs*. Choose *Anthropic (live model, paid)* and a model.
+2. Open *Settings → Teacher*. Choose *Anthropic API key (paid)* and a model.
 3. Paste the key and set your limits. Small limits that let every role run: $1.50 a run, $3 a day,
    $10 a month.
 4. Tick *I approve paid use…* and save. The notice should now read *Live:* and the model's name.
@@ -57,8 +57,8 @@ Corniversity pauses and does not retry.
    http://127.0.0.1:3300. Use that exact address, not `localhost`.
 3. First time only: create your account at `/join`. Use the owner email and bootstrap code from
    your `.env` file, not Railway's.
-4. Open *Settings → Live tutoring and its costs*. Choose *Your ChatGPT plan* and save.
-5. In the *Use your ChatGPT plan* card, choose *Continue with ChatGPT*.
+4. Open *Settings → Teacher*. Choose *Your ChatGPT plan* and save.
+5. In the *ChatGPT plan* card, choose *Continue with ChatGPT*.
 6. On OpenAI's page, sign in and allow plan usage. The app registers as "Corniversity"; you may
    rename it. Back in Settings you should see *connected* and your ChatGPT email.
 7. Choose a model from your account's list.
@@ -92,19 +92,19 @@ records them as checks you ran.
    - Open `/join`: it must say *Sign-up is closed*.
    - Complete item 2, and tell the agent so that it can confirm from outside.
 2. **The teacher connection.**
-   - *Settings → Live tutoring* must read *Live:* and the model (3a), or *Your ChatGPT plan:* and the
-     model (3b).
+   - *Settings → Teacher* must read *Live:* and the model (3a), or *Your ChatGPT plan:* and the model
+     (3b).
    - The tutor's badge in a session must say the same, never *scripted demo*.
 3. **A source-backed question.**
    - In *Library → Sources*, under *9.66J Computational Cognitive Science (Fall 2004)*, choose
      *Import* beside `sept_9_2004.pdf`. Wait until the Library shows it processed.
-   - In a session of COG-201 unit 1, ask: *How does inductive reasoning differ from deductive
-     reasoning?*
+   - Take COG-201 from the catalogue, choose *Tutorial* on unit 1, and ask: *How does inductive
+     reasoning differ from deductive reasoning?*
    - The reply must be headed with the model, and must carry a citation reading *Your library: …,
      PDF page N*.
    - Open that page: it must say what the reply attributes to it.
 4. **A handwritten attempt with an ambiguous symbol.**
-   - In MAT-230 unit 1, open *Tutorial: two norms on C([0,1])*.
+   - Take MAT-230, open unit 1's *Problem sheet*, and choose *Start* on *Two norms on C([0,1])*.
    - Under the attempt, open *Working on paper?* and attach a phone photo of handwritten work.
    - Write the transcription, marking one symbol you are unsure of as `[[?ε or e]]`. With a
      teacher connected you may instead tick the consent box and choose *Ask for a draft
@@ -115,13 +115,17 @@ records them as checks you ran.
 5. **Feedback and revision.**
    - Revise the attempt and choose *Submit revision*.
    - *Submission v2* must receive its own feedback, while v1 keeps its feedback unchanged.
-6. **Resume on a second device.**
+6. **An exam (optional).**
+   - On a course page, under *Exam*, set the questions and minutes and choose *Start exam*. Answer,
+     then *Submit exam*. Each answer gets a score once the teacher has marked it, and a worked
+     solution where the problem's author releases one.
+7. **Resume on a second device.**
    - On the first device, choose *Pause* in the session.
-   - On a phone (hosted) or a second browser (local), sign in. *Campus → Resume* must open the same
-     session and exercise, with your draft.
-7. **Both attempts and their sources are kept.**
-   - *Records* must list the attempt with v1 and v2.
-   - Each version must open with its pages, its confirmed transcription and its feedback.
+   - On a phone (hosted) or a second browser (local), sign in. *Your courses → Continue → Resume*
+     must open the same session and problem, with your draft.
+8. **Both attempts and their sources are kept.**
+   - Unit 1's *Problem sheet* must show the problem as *submitted*; opening it shows v1 and v2, each
+     with its pages, its confirmed transcription and its feedback.
    - The tutor conversation's citation must still open the source page.
    - Sign out and back in: everything is unchanged.
 

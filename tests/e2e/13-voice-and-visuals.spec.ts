@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 13 (teaching-experience brief, EXT-01 and EXT-02):
@@ -38,6 +38,7 @@ test.describe("voice and visual teaching", () => {
     test.setTimeout(120_000);
     await takeCourse(page, "NEU-220");
     await page.goto("/courses/NEU-220/units/NEU-220-u01");
+    await page.locator("summary", { hasText: "Visual explanations" }).click();
     await page.getByRole("link", { name: "The leaky integrate-and-fire neuron, from circuit to spikes", exact: true }).click();
     await expect(page).toHaveURL(/\/visuals\/lif-membrane-potential/);
     await expect(page.getByRole("heading", { level: 2, name: /^1\/4/ })).toBeVisible();
@@ -85,11 +86,7 @@ test.describe("voice and visual teaching", () => {
 
     await takeCourse(page, "MAT-230");
     await page.goto("/courses/MAT-230/units/MAT-230-u01");
-    await page
-      .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
-      .getByRole("button", { name: /^(Start|Resume|Continue)/ })
-      .first()
-      .click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//);
     const session = page.url();
     await expect(page.getByLabel("Message to the tutor")).toBeVisible();
@@ -159,11 +156,7 @@ test.describe("voice and visual teaching", () => {
     }
     await takeCourse(page, "MAT-230");
     await page.goto("/courses/MAT-230/units/MAT-230-u01");
-    await page
-      .locator("li", { hasText: "Tutorial: two norms on C([0,1])" })
-      .getByRole("button", { name: /^(Start|Resume|Continue)/ })
-      .first()
-      .click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//);
     const session = page.url();
     const panel = page.locator("#panel-tutor");

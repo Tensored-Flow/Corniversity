@@ -27,7 +27,9 @@ async function setImmersion(page: import("@playwright/test").Page, immersion: "q
 }
 
 test.describe("common room and settings", () => {
-  test("journey 8: a bounded society discussion with two AI classmates closes at its limit and never speaks unprompted", async ({
+  // The lean format (Milestone 19) hides the common room and no longer offers the immersion
+  // setting that opens it; its route and records are kept, so this journey is kept but skipped.
+  test.skip("journey 8: a bounded society discussion with two AI classmates closes at its limit and never speaks unprompted", async ({
     page,
   }) => {
     test.setTimeout(180_000);
@@ -90,7 +92,9 @@ test.describe("common room and settings", () => {
     await expect(page.getByLabel(/Your turn/)).toHaveCount(0);
   });
 
-  test("quiet mode removes the social layer but not the academic surfaces", async ({ page }) => {
+  // Hidden in the lean format (Milestone 19): Settings no longer offers the immersion and social-layer settings; the routes and
+  // records are kept, so this journey is kept but skipped.
+  test.skip("quiet mode removes the social layer but not the academic surfaces", async ({ page }) => {
     await signInOrBootstrap(page);
     await setImmersion(page, "quiet", false);
     await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Common Room" })).toHaveCount(0);

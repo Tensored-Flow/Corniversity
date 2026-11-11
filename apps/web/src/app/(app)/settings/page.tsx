@@ -13,7 +13,6 @@ import {
   resolveProviderState,
 } from "@corniversity/db/services/provider-config";
 import { voiceDictationAllowed } from "@corniversity/db/services/voice";
-import Link from "next/link";
 import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
 import { errorNotice } from "@/lib/notices";
@@ -28,7 +27,6 @@ import {
 } from "./actions";
 import { ChatGptPlan } from "./ChatGptPlan";
 import { LiveTutoring } from "./LiveTutoring";
-import { StudyPreferences } from "./StudyPreferences";
 
 export const metadata = { title: "Settings" };
 
@@ -71,27 +69,7 @@ export default async function SettingsPage({
   return (
     <div className="mx-auto w-full max-w-4xl">
       <header className="mb-6">
-        <p className="text-sm uppercase tracking-[0.18em] text-brass">Settings</p>
-        <h1 className="mt-1 text-3xl text-ink">Your settings</h1>
-        <p className="mt-2 max-w-prose text-sm text-ink-2">
-          Everything orientation asked can be changed here. Course modes and the timetable are edited in{" "}
-          <Link href="/studies" className="text-brass underline underline-offset-4">
-            My Studies
-          </Link>{" "}
-          and{" "}
-          <Link href="/timetable" className="text-brass underline underline-offset-4">
-            Timetable
-          </Link>
-          ; library permissions on each item's page; desktop sync under{" "}
-          <Link href="/library/sync" className="text-brass underline underline-offset-4">
-            Library
-          </Link>
-          ; exports under{" "}
-          <Link href="/records" className="text-brass underline underline-offset-4">
-            Records
-          </Link>
-          .
-        </p>
+        <h1 className="text-3xl text-ink">Settings</h1>
       </header>
       {flash.saved ? (
         <div className="mb-4">
@@ -107,7 +85,7 @@ export default async function SettingsPage({
       <div className="flex flex-col gap-6">
         <Card as="section" aria-labelledby="profile" id="profile">
           <h2 id="profile-heading" className="text-lg text-ink">
-            Who you are and what you are here for
+            Profile
           </h2>
           <form action={updateProfileAction} className="mt-3 grid gap-4 sm:grid-cols-2">
             <Field label="Name" htmlFor="displayName">
@@ -122,68 +100,24 @@ export default async function SettingsPage({
                 ))}
               </Select>
             </Field>
-            <Field label="Weekly hours ceiling" htmlFor="weeklyHoursCeiling" hint="Caps the timetable and the revision load.">
-              <Input
-                id="weeklyHoursCeiling"
-                name="weeklyHoursCeiling"
-                type="number"
-                min={1}
-                max={60}
-                defaultValue={profile.weeklyHoursCeiling ?? ""}
-              />
-            </Field>
+            <input type="hidden" name="weeklyHoursCeiling" value={profile.weeklyHoursCeiling ?? ""} />
             <div className="sm:col-span-2">
-              <Field label="Goals, in your words" htmlFor="goalsText">
-                <Textarea id="goalsText" name="goalsText" rows={3} defaultValue={profile.goalsText ?? ""} />
+              <Field label="Goals (the tutor sees these)" htmlFor="goalsText">
+                <Textarea id="goalsText" name="goalsText" rows={2} defaultValue={profile.goalsText ?? ""} />
               </Field>
             </div>
-            <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
+            <div className="sm:col-span-2">
               <Button type="submit">Save</Button>
-              <Link href="/onboarding/1" className="text-sm text-brass underline underline-offset-4">
-                Review every orientation answer
-              </Link>
             </div>
           </form>
         </Card>
 
-        <StudyPreferences ownerId={ownerId} />
-
         <Card as="section" aria-labelledby="experience-heading" id="experience">
           <h2 id="experience-heading" className="text-lg text-ink">
-            Experience
+            Appearance
           </h2>
           <form action={updateExperienceAction} className="mt-3 grid gap-4 sm:grid-cols-2">
-            <fieldset className="sm:col-span-2">
-              <legend className="text-sm font-medium text-ink">Immersion</legend>
-              <div className="mt-2 grid gap-2 sm:grid-cols-3">
-                {[
-                  { value: "quiet", title: "Quiet study", body: "Full academic function; no classmates, no societies, no campus flavour." },
-                  {
-                    value: "collegiate",
-                    title: "Collegiate",
-                    body: "Faculty, societies and the common room; classmates only when invited.",
-                  },
-                  { value: "full", title: "Full", body: "Everything on, including classmates in tutorials when you invite them." },
-                ].map((o) => (
-                  <label
-                    key={o.value}
-                    className="flex items-start gap-3 rounded-[var(--radius-control)] border border-stone bg-paper-2 p-3 text-sm has-[:checked]:border-brass"
-                  >
-                    <input
-                      type="radio"
-                      name="immersion"
-                      value={o.value}
-                      defaultChecked={profile.immersion === o.value}
-                      className="mt-1 accent-[var(--brass)]"
-                    />
-                    <span>
-                      <span className="block font-medium text-ink">{o.title}</span>
-                      <span className="block text-xs text-ink-3">{o.body}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
+            <input type="hidden" name="immersion" value={profile.immersion} />
             <Field label="Theme" htmlFor="theme">
               <Select id="theme" name="theme" defaultValue={profile.theme}>
                 <option value="light">Light (paper)</option>
@@ -207,17 +141,9 @@ export default async function SettingsPage({
                 <input type="checkbox" name="highContrast" value="1" defaultChecked={Boolean(profile.accessibility.highContrast)} /> Higher
                 contrast
               </label>
-              <label className="flex items-center gap-2 text-sm text-ink">
-                <input type="checkbox" name="socialLayerEnabled" value="1" defaultChecked={profile.socialLayerEnabled} /> Social layer (AI
-                classmates may be invited)
-              </label>
-              <label className="flex items-center gap-2 text-sm text-ink">
-                <input type="checkbox" name="notifyInApp" value="1" defaultChecked={profile.notifications.inApp} /> In-app notices
-              </label>
-              <label className="flex items-center gap-2 text-sm text-ink">
-                <input type="checkbox" name="notifyEmail" value="1" defaultChecked={profile.notifications.email} /> Email (needs an SMTP
-                provider; none configured)
-              </label>
+              {profile.socialLayerEnabled ? <input type="hidden" name="socialLayerEnabled" value="1" /> : null}
+              {profile.notifications.inApp ? <input type="hidden" name="notifyInApp" value="1" /> : null}
+              {profile.notifications.email ? <input type="hidden" name="notifyEmail" value="1" /> : null}
             </div>
             <div className="sm:col-span-2">
               <Button type="submit">Save</Button>
@@ -247,13 +173,8 @@ export default async function SettingsPage({
             Voice
           </h2>
           <p className="mt-1 max-w-prose text-sm text-ink-2">
-            Reading aloud uses a voice on this device only; if the browser has none, nothing is read and no text is sent anywhere.
-          </p>
-          <p className="mt-2 max-w-prose text-sm text-ink-2">
-            Dictation uses your browser&apos;s own speech recognition. In Chrome and Edge the audio of what you say is sent to the browser
-            maker&apos;s speech service (Google or Microsoft) and handled under its terms; other browsers may recognise speech on the
-            device. Corniversity never receives or keeps the audio: the recognised text appears in your box, where you correct it, and only
-            what you then send is saved. Submissions with dictated text are marked as spoken explanations. Typing always works.
+            Read aloud uses voices on this device only. Dictation uses your browser&apos;s speech recognition: Chrome and Edge send the
+            audio to Google or Microsoft. Corniversity never keeps audio; you edit the text before sending it.
           </p>
           {voiceAllowed ? (
             <form action={withdrawVoiceAction} className="mt-3 flex flex-wrap items-center gap-3">
@@ -277,12 +198,9 @@ export default async function SettingsPage({
 
         <Card as="section" aria-labelledby="memory-heading" id="memory">
           <h2 id="memory-heading" className="text-lg text-ink">
-            What the personas remember
+            What tutors remember
           </h2>
-          <p className="mt-1 text-sm text-ink-2">
-            Academic summaries, stated preferences and social memory are kept apart and are yours to delete. The academic record itself
-            lives in Records and is not affected here.
-          </p>
+          <p className="mt-1 text-sm text-ink-2">Deleting memory leaves your submitted work and records untouched.</p>
           {memory.length === 0 ? (
             <p className="mt-3 text-sm text-ink-3">Nothing stored yet.</p>
           ) : (
@@ -329,18 +247,8 @@ export default async function SettingsPage({
             What leaves this installation
           </h2>
           <ul className="mt-2 list-disc pl-5 text-sm text-ink-2">
-            <li>
-              With the scripted demo: nothing. With a live provider: the prompts of the runs you start (tutor, assessor, reading room,
-              director, discussions), each recorded under Jobs and in the budget ledger.
-            </li>
-            <li>
-              Library items: only passages from items you have explicitly permitted for external AI processing; local-only items never leave
-              your device.
-            </li>
-            <li>
-              Calendar subscription links carry a token you can revoke on the Timetable page; the companion's device token is revoked under
-              Library → Desktop sync.
-            </li>
+            <li>Scripted demo: nothing. A connected teacher: the prompts of the requests you make.</li>
+            <li>Library files: only passages from items you allowed for AI; local-only items never leave your device.</li>
           </ul>
         </Card>
       </div>

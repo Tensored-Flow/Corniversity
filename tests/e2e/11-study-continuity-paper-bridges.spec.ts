@@ -1,5 +1,5 @@
 import { type Browser, expect, type Page, test } from "@playwright/test";
-import { AUTH_STATE, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { AUTH_STATE, activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 11 (teaching-experience brief, CORE-01 to CORE-03), with the scripted demo:
@@ -19,8 +19,7 @@ const UNIT = "/courses/MAT-230/units/MAT-230-u01";
 
 async function openActivity(page: Page, title: string): Promise<string> {
   await page.goto(UNIT);
-  const card = page.locator("li", { hasText: title });
-  const button = card.getByRole("button", { name: /^(Start|Resume|Continue)/ }).first();
+  const button = await activityButton(page, title);
   await button.click();
   await expect(page).toHaveURL(/\/sessions\/[0-9a-f-]{36}/, { timeout: 30_000 });
   return page.url().split("?")[0]!;

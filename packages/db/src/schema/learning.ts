@@ -2,7 +2,7 @@ import type { DeterministicCheck, Rubric } from "@corniversity/core";
 import { type SQL, sql } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, evidenceStateEnum, submissionStateEnum, tsvector, tz, updatedAt } from "./_shared";
-import { concept, course, teachingUnit, unitExercise } from "./academic";
+import { concept, course, courseVersion, teachingUnit, unitExercise } from "./academic";
 import { user } from "./auth";
 import { enrolment, scheduledSession } from "./planning";
 import type { StudyAnchor } from "./study";
@@ -105,6 +105,41 @@ export const message = pgTable(
   (t) => [uniqueIndex("message_conversation_sequence_unique").on(t.conversationId, t.sequence)],
 );
 
+/**
+ * A timed, closed-book exam over a course: problems the learner had not attempted, answered as
+ * attempts linked to it, marked by the assessor. Practice sessions never see exam attempts.
+ */
+export const exam = pgTable(
+  "exam",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    ownerId: text("owner_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    courseId: text("course_id")
+      .notNull()
+      .references(() => course.id),
+    courseVersionId: uuid("course_version_id")
+      .notNull()
+      .references(() => courseVersion.id),
+    /** The questions, in the order they are shown. */
+    exerciseIds: jsonb("exercise_ids").$type<string[]>().notNull(),
+    durationMinutes: integer("duration_minutes").notNull(),
+    status: text("status").$type<"in_progress" | "submitted">().notNull().default("in_progress"),
+    startedAt: tz("started_at").notNull().defaultNow(),
+    deadlineAt: tz("deadline_at").notNull(),
+    submittedAt: tz("submitted_at"),
+    /** Whether the learner submitted, or the deadline passed and what was saved was submitted. */
+    submittedBy: text("submitted_by").$type<"learner" | "deadline">(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("exam_owner_course_idx").on(t.ownerId, t.courseId),
+    /** One running exam per course and learner, enforced by the database. */
+    uniqueIndex("exam_one_running_idx").on(t.ownerId, t.courseId).where(sql`${t.status} = 'in_progress'`),
+  ],
+);
+
 export const attempt = pgTable(
   "attempt",
   {
@@ -119,6 +154,8 @@ export const attempt = pgTable(
       onDelete: "set null",
     }),
     mode: text("mode").$type<"practice" | "self_test">().notNull().default("practice"),
+    /** Set for an exam question's answer; practice sessions ignore such attempts. */
+    examId: uuid("exam_id").references(() => exam.id, { onDelete: "set null" }),
     state: submissionStateEnum("state").notNull().default("draft"),
     hintsUsed: integer("hints_used").notNull().default(0),
     solutionRevealedAt: tz("solution_revealed_at"),

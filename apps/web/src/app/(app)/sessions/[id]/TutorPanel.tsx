@@ -161,8 +161,7 @@ export function TutorPanel({ sessionId, exerciseId, personaName, initialMessages
       <div ref={scroller} className="flex max-h-[min(28rem,45vh)] flex-col gap-3 overflow-y-auto pr-1" aria-live="polite">
         {initialMessages.length === 0 && pending === null ? (
           <p className="text-sm text-ink-2">
-            Ask about the material or about your attempt. {personaName} works from what you have tried and gives hints before answers; ask
-            directly if you want a full explanation.
+            Ask about the material or your attempt. Hints come before answers unless you ask for a full explanation.
           </p>
         ) : null}
         {initialMessages.map((m) => (

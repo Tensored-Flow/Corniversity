@@ -32,6 +32,15 @@ export class EnrolmentError extends Error {
 export async function enrol(db: DbOrTx, input: EnrolInput): Promise<{ enrolment: EnrolmentRow; created: boolean }> {
   const key = input.idempotencyKey ?? `enrol:${input.ownerId}:${input.courseId}`;
   const existingByKey = await db.select().from(enrolment).where(eq(enrolment.idempotencyKey, key)).limit(1);
+  if (existingByKey[0]?.status === "withdrawn") {
+    // Taking a course again after leaving it brings the same enrolment back, with its work.
+    const [revived] = await db
+      .update(enrolment)
+      .set({ status: "active", mode: input.mode, completedAt: null })
+      .where(eq(enrolment.id, existingByKey[0].id))
+      .returning();
+    return { enrolment: revived!, created: false };
+  }
   if (existingByKey[0]) return { enrolment: existingByKey[0], created: false };
 
   const [c] = await db.select().from(course).where(eq(course.id, input.courseId)).limit(1);

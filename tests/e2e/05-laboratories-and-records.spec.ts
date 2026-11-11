@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journeys 3 and 4 (laboratory side) and the records surfaces.
@@ -25,9 +25,8 @@ async function enrol(page: import("@playwright/test").Page, courseId: string) {
 
 async function startLab(page: import("@playwright/test").Page, courseId: string, unitLinkName: RegExp, labTitle: RegExp) {
   await enrol(page, courseId);
-  await page.getByRole("link", { name: unitLinkName }).click();
-  const card = page.locator("li", { hasText: labTitle }).first();
-  await card.getByRole("button", { name: /start|resume|continue/i }).click();
+  await page.locator("li", { hasText: unitLinkName }).getByRole("link", { name: "Notes" }).click();
+  await (await activityButton(page, labTitle)).click();
   await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
 }
 
@@ -113,7 +112,7 @@ test.describe("laboratories, notebook and records", () => {
   test("notebook: interpretations are entries; an open question stays on the shelf until resolved", async ({ page }) => {
     await signInOrBootstrap(page);
     await page.goto("/notebook");
-    await expect(page.getByRole("heading", { level: 1, name: "Your notebook" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Notebook" })).toBeVisible();
     await expect(page.getByRole("link", { name: /Laboratory: Virtual laboratory: reversible first-order reaction/ }).first()).toBeVisible();
     await page.getByLabel("Title").fill(`Why does completeness matter for operators? ${run}`);
     await page.getByLabel("Kind").selectOption("question");
@@ -171,8 +170,7 @@ test.describe("laboratories, notebook and records", () => {
     await page.goto("/courses/MAT-230/units/MAT-230-u01");
     const unitHtml = await page.content();
     for (const phrase of forbidden) expect(unitHtml, `unit page leaks "${phrase}"`).not.toContain(phrase);
-    const tutorialCard = page.locator("li", { hasText: "Tutorial: two norms on C([0,1])" });
-    await tutorialCard.getByRole("button", { name: /start|resume|continue/i }).click();
+    await (await activityButton(page, "Tutorial: two norms on C([0,1])")).click();
     await expect(page).toHaveURL(/\/sessions\//, { timeout: 30_000 });
     const sessionHtml = await page.content();
     for (const phrase of forbidden) expect(sessionHtml, `session page leaks "${phrase}"`).not.toContain(phrase);

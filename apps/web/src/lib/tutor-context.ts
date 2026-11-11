@@ -2,7 +2,7 @@ import "server-only";
 import { decideHelp, HELP_INSTRUCTIONS, HELP_LABELS, type TutorHelpMode } from "@corniversity/core/tutoring/help";
 import type { DbOrTx } from "@corniversity/db/client";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
-import { getAttemptHistory, getSession } from "@corniversity/db/services/learning";
+import { getAttemptHistory, getSession, IN_RUNNING_EXAM, runningExamFor } from "@corniversity/db/services/learning";
 import { z } from "zod";
 
 export const TutorRequest = z.object({
@@ -47,15 +47,18 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
   const latestVersion = history.at(-1)?.versions.at(-1) ?? null;
   const attemptText = latestAttempt?.draftMarkdown ?? latestVersion?.contentMarkdown ?? "";
   const submitted = Boolean(latestVersion);
-  const decision = decideHelp({
-    mode: req.mode,
-    hasExercise: Boolean(exercise),
-    attemptMode: latestAttempt?.mode ?? "practice",
-    submitted,
-    attemptText,
-    lines: req.selection?.origin === "attempt" ? (req.selection.lines ?? null) : null,
-    permitted: exercise?.progression?.helpModes,
-  });
+  const held = exercise ? await runningExamFor(database, ownerId, exercise.id) : null;
+  const decision = held
+    ? ({ allowed: false, reason: IN_RUNNING_EXAM } as const)
+    : decideHelp({
+        mode: req.mode,
+        hasExercise: Boolean(exercise),
+        attemptMode: latestAttempt?.mode ?? "practice",
+        submitted,
+        attemptText,
+        lines: req.selection?.origin === "attempt" ? (req.selection.lines ?? null) : null,
+        permitted: exercise?.progression?.helpModes,
+      });
   const selection = req.selection ?? null;
   const attached: string[] = [];
   attached.push(`The kind of help: ${HELP_LABELS[req.mode]}.`);

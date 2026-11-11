@@ -1,5 +1,6 @@
 import { learnerVisibleReference } from "@corniversity/core/domain/reference";
-import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
+import { EXAM_GRACE_MS } from "@corniversity/core/exams/exam";
+import { and, asc, count, desc, eq, gt, inArray, isNull, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { AssessSubmissionPayload, QUEUES } from "../jobs";
@@ -11,6 +12,7 @@ import {
   type ExerciseSnapshot,
   enrolment,
   evidenceEvent,
+  exam,
   feedbackReview,
   instructorArtifact,
   learningSession,
@@ -33,7 +35,8 @@ export class LearningError extends Error {
       | "attempt_not_found"
       | "not_practice_mode"
       | "no_reference"
-      | "attempt_closed",
+      | "attempt_closed"
+      | "in_running_exam",
     message: string,
   ) {
     super(message);
@@ -168,7 +171,32 @@ export async function listOpenSessions(db: DbOrTx, ownerId: string) {
     .orderBy(desc(learningSession.lastActiveAt));
 }
 
-/** Creates a practice or self-test attempt. One open (non-accepted) attempt per exercise is reused. */
+export const IN_RUNNING_EXAM = "This problem is in your running exam. Practice, help and its solution open after you submit.";
+
+/**
+ * The running exam that holds this problem, if any. An exam stops holding its problems once its
+ * deadline and grace have passed, even before anything has closed it.
+ */
+export async function runningExamFor(db: DbOrTx, ownerId: string, exerciseId: string, now: Date = new Date()) {
+  const [held] = await db
+    .select({ id: exam.id })
+    .from(exam)
+    .where(
+      and(
+        eq(exam.ownerId, ownerId),
+        eq(exam.status, "in_progress"),
+        gt(exam.deadlineAt, new Date(now.getTime() - EXAM_GRACE_MS)),
+        sql`${exam.exerciseIds} @> ${JSON.stringify([exerciseId])}::jsonb`,
+      ),
+    )
+    .limit(1);
+  return held ?? null;
+}
+
+/**
+ * Creates a practice or self-test attempt. One open (non-accepted) attempt per exercise is reused.
+ * Refused while the problem is in a running exam, so the exam stays closed book.
+ */
 export async function getOrCreateAttempt(
   db: DbOrTx,
   input: { ownerId: string; exerciseId: string; sessionId?: string; mode?: "practice" | "self_test" },
@@ -176,10 +204,11 @@ export async function getOrCreateAttempt(
   const open = await db
     .select()
     .from(attempt)
-    .where(and(eq(attempt.ownerId, input.ownerId), eq(attempt.exerciseId, input.exerciseId)))
+    .where(and(eq(attempt.ownerId, input.ownerId), eq(attempt.exerciseId, input.exerciseId), isNull(attempt.examId)))
     .orderBy(desc(attempt.createdAt))
     .limit(1);
   if (open[0] && open[0].state !== "accepted") return open[0];
+  if (await runningExamFor(db, input.ownerId, input.exerciseId)) throw new LearningError("in_running_exam", IN_RUNNING_EXAM);
   const [created] = await db
     .insert(attempt)
     .values({
@@ -377,7 +406,7 @@ export async function getAttemptHistory(db: DbOrTx, ownerId: string, exerciseId:
   const attempts = await db
     .select()
     .from(attempt)
-    .where(and(eq(attempt.ownerId, ownerId), eq(attempt.exerciseId, exerciseId)))
+    .where(and(eq(attempt.ownerId, ownerId), eq(attempt.exerciseId, exerciseId), isNull(attempt.examId)))
     .orderBy(asc(attempt.createdAt));
   if (attempts.length === 0) return [];
   const { submissionVersion } = await import("../schema/index");
@@ -563,7 +592,7 @@ export async function startAttempt(
   const [latest] = await db
     .select()
     .from(attempt)
-    .where(and(eq(attempt.ownerId, input.ownerId), eq(attempt.exerciseId, input.exerciseId)))
+    .where(and(eq(attempt.ownerId, input.ownerId), eq(attempt.exerciseId, input.exerciseId), isNull(attempt.examId)))
     .orderBy(desc(attempt.createdAt))
     .limit(1);
   if (latest && latest.state !== "accepted") {
@@ -576,6 +605,7 @@ export async function startAttempt(
     const [updated] = await db.update(attempt).set({ mode: input.mode }).where(eq(attempt.id, latest.id)).returning();
     return updated!;
   }
+  if (await runningExamFor(db, input.ownerId, input.exerciseId)) throw new LearningError("in_running_exam", IN_RUNNING_EXAM);
   const [created] = await db
     .insert(attempt)
     .values({ ownerId: input.ownerId, exerciseId: input.exerciseId, learningSessionId: input.sessionId ?? null, mode: input.mode })
