@@ -68,7 +68,7 @@ See [USER_ACTIONS.md](USER_ACTIONS.md): creating the owner account on the hosted
 retiring the bootstrap code; choosing who teaches (an Anthropic key on the hosted site, or the
 owner's ChatGPT plan in the local installation); the owner acceptance journey (item 4), because
 the build agent cannot sign in as the owner or as their ChatGPT account; backups off this computer
-and the hosted backup schedule (item 5); optional GitHub publish.
+and the hosted backup schedule (item 5). The source is on GitHub (item 7).
 
 ## Resume checkpoint
 

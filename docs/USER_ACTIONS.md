@@ -156,12 +156,11 @@ project.
 
 Type the new password twice; it is not shown. Every signed-in browser is signed out.
 
-## 7. Publish the private GitHub repository (optional)
+## 7. GitHub repository (done)
 
-In PowerShell, in the project folder, run
-`gh repo create Corniversity --private --source=. --remote=origin --push`. You are signed in to
-GitHub as Tensored-Flow on this machine. The agent's own attempt was blocked by your approval
-controls.
+The source is at https://github.com/Tensored-Flow/Corniversity, branch `main`, as the remote
+`origin`. The repository is public: secrets stay in `.env` (ignored) and in Railway's variables,
+never in a commit. Push new commits with `git push`.
 
 ## 8. Optional decisions
 

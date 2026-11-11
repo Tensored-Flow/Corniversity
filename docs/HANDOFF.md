@@ -30,8 +30,8 @@ Where something has not been verified, this document says so.
   compared the tests with your sections 13 to 18; the defects they found, about spending records,
   citations, sign-up, saved records, the studio and the programme pages, are fixed, each with a test
   ([QA_REPORT.md](QA_REPORT.md), "After the release").
-- **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, with no git remote; it
-  has not been pushed anywhere ([USER_ACTIONS.md](USER_ACTIONS.md), item 6). Milestone 10 started
+- **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, pushed to the public
+  repository https://github.com/Tensored-Flow/Corniversity (`origin`; [USER_ACTIONS.md](USER_ACTIONS.md), item 7). Milestone 10 started
   from commit `5faa665`. It is commit `1b93eae`, followed by `6a01e17` (the studio's sign-in
   return, found on the live site) and a commit that records the release; the audit's fixes are
   `40c2624`, followed by a commit that records their release.
