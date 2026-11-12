@@ -1,10 +1,10 @@
 # Status
 
-Last updated: 12 November 2026. Milestone 20 completes the five selected courses and strengthens source-grounded preparation and tutorial context. Academic review and non-browser validation are complete. All build and browser gates pass. Deployment and existing-owner enrolment are the remaining release steps; they must not be inferred from the local checks below.
+Last updated: 12 November 2026. Milestone 20 completes the five selected courses and strengthens source-grounded preparation and tutorial context. Academic review, build and browser gates pass. The reviewed release is deployed to the existing Railway project, and the existing owner is enrolled in all five courses. The live tutor remains in scripted-demo mode; no provider connection was enabled or exercised.
 
 ## Current teaching
 
-| Course | Complete units | Original exercises | Course version |
+| Course | Complete units | Original exercises | Source edition |
 |---|---:|---:|---:|
 | CHE-101 Principles of Chemical Science | 10 | 37 | 3 |
 | PHY-210 Special Relativity and Minkowski Geometry | 10 | 33 | 2 |
@@ -22,7 +22,7 @@ Preparation requires actual permissioned source passages before any draft model 
 
 The tutor receives the current learner-facing lesson and a bounded, substantially complete current attempt, with disclosed omissions. Full explanations have room for complete reasoning. Alternate correct arguments remain admissible; self-test and reference-release boundaries remain enforced. Whole-document Markdown rendering preserves lists, reference links, footnotes, code and mathematical accessibility.
 
-No Corniversity runtime model, ChatGPT-plan subscription or paid model API was used to author, review or test these courses. Runtime live-tutor quality has not been measured in this task. Scripted-demo tests are explicitly labelled.
+No Corniversity runtime model, ChatGPT-plan subscription or paid model API was used to author, review or test these courses. The hosted teacher configuration was verified as `fixture` after deployment. Real tutoring and marking require an owner-configured live teacher; their runtime quality has not been measured in this task. Scripted-demo tests are explicitly labelled.
 
 ## Validation and environment
 
@@ -30,11 +30,15 @@ No Corniversity runtime model, ChatGPT-plan subscription or paid model API was u
 - Seven-package typecheck, lint and production build pass. Content validation reports zero errors or warnings; strict KaTeX renders 8,116 expressions without error.
 - All 53 distinct targeted desktop/mobile browser cases pass after repairs. The final reruns passed 18 of 19 cases, then all 3 setup/mobile accessibility cases after the remaining diagram fix. Long lesson formulas are horizontally contained with keyboard access; the tutor Send hit target remains usable. Axe reports no violations on the tested pages.
 - Linux checkout: `/home/leon/work/Corniversity`, branch `codex/university-teaching-quality`; Node 24.18.1, pnpm 12.16.1. GitHub origin: `https://github.com/Tensored-Flow/Corniversity.git` (public).
-- QA uses a separate local-only fixture database on port 5547 and web port 3330. Its account and records are disposable test data, not the hosted owner. Never run Playwright journeys against production.
+- QA used a separate local-only fixture database on port 5547 and web port 3330; temporary QA services and the port-forward were stopped after release. Its account and records are disposable test data, not the hosted owner. Never run Playwright journeys against production.
 - The existing Railway project `corniversity` has web, worker and Postgres services. CLI authentication is refreshed and the checkout is linked to that existing project. No new project or owner was created. The existing hosted owner was verified read-only in Railway on 12 November; its current sign-in session is not available in the browser.
 
-## Resume checkpoint
+## Release and remaining owner setup
 
-Commit reviewed source, deploy worker then web to the existing project and verify service health and content/prompt versions. Enrol the existing owner in the five selected courses through the normal enrolment service/UI, preserving prior work. If owner sign-in is needed, request only that handoff after the release is concrete. Do not reset the owner password or create a replacement owner. Keep `.env`, source-download caches and credentials out of git.
+Code release `36ae0c3baf61bc139b9b6bf76f12d6f3b53fabc7` is live. Worker deployment `bd7dfc36-f7ec-4e2d-aaf5-de7ac4f7e2f8` and web deployment `11c199fd-ebe4-45c1-aa44-135b4ee49477` both report SUCCESS. Public health reports a healthy database, current migrations, all seven scripted assets and tutor/assessor prompts 1.4/1.3.
+
+All five current database content hashes match the deployed source before enrolment. The normal enrolment service created five active enrolled records in one transaction for the existing owner; the prior enrolment list was empty. Source edition numbers above are distinct from database revision sequence numbers: CHE-101=3, PHY-210=2, MAT-230=3, MAT-261=2, CSA-210=2. Existing account, preferences and learning records were not reset.
+
+Open the hosted campus and sign in with the existing account. The remaining owner choice is whether to configure a live teacher in Settings; the courses are already available without it. Provider configuration and live-model evaluation are not claimed complete. The source branch is `codex/university-teaching-quality`, with draft PR #1; main has not been merged. Keep `.env`, source-download caches and credentials out of git.
 
 Historical release evidence remains in QA_REPORT.md and prior milestones in PLAN.md. The old Windows owner installation is separate from this Linux QA checkout. `pnpm deploy:railway` is a first-deployment script and must not be used for this existing project.

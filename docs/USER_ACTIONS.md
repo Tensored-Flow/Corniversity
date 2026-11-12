@@ -14,7 +14,7 @@ The hosted app and the earlier local owner installation have separate databases.
 
 ## 1. Sign in to the existing hosted owner account
 
-The owner account exists: verified read-only on 12 November 2026. Open https://web-production-4c692.up.railway.app/sign-in and use your existing credentials. Do not create a replacement account or reset the password as part of this release. If an agent needs the signed-in browser to enrol the five selected courses, sign in there and return to the chat; never paste credentials into the chat.
+The existing owner is already enrolled in CHE-101, PHY-210, MAT-230, MAT-261 and CSA-210: five active enrolments verified on 12 November 2026. Open https://web-production-4c692.up.railway.app/campus and sign in with your existing credentials. No replacement account or password reset is needed. Never paste credentials into the chat.
 
 ## 2. Retire the bootstrap code (after item 1)
 
@@ -24,7 +24,7 @@ that the variable is gone. It checks variable names only, never values.
 
 ## 3. Choose who teaches
 
-Everything works without a model except marking: notes, problem sheets and exams open, and exam answers wait unmarked.
+The hosted teacher was verified as scripted demo on 12 November 2026. Notes, problem sheets and exams open without a live model; exam answers wait unmarked and tutorial replies remain scripted examples. Real tutoring and assessment require a live teacher connection. No connection or paid usage was enabled by the course release.
 
 ### 3a. Hosted site: an Anthropic API key (optional; paid)
 

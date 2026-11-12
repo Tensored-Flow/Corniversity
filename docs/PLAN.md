@@ -248,10 +248,10 @@ service tests; nothing claimed live that was not run.
 
 
 
-## Milestone 20 — Complete reviewed first courses and evidence-grounded teaching — in_progress
+## Milestone 20 — Complete reviewed first courses and evidence-grounded teaching — done
 
 User-selected scope: complete all five courses now, not opening units only. CHE-101/PHY-210/MAT-230/MAT-261/CSA-210 now contain 54 full units and 195 original exercises, independently checked reference reasoning, source/factual review, post-repair review, complete proof portfolios and a runnable CPU AI capstone. Authoring/review occurred directly in Codex without the app's provider/subscription.
 
-Implemented: permissioned source passage admission and final recheck; objective/worked-example/progression/repetition draft gates; honest structural-check labels; complete bounded tutor context; alternate-proof assessment; current-source history filtering; safe whole-document Markdown rendering; published-unit seed protection. Validation: 601 regression cases, seven-package typecheck, content validator, strict KaTeX and production build pass. All 53 targeted browser cases now pass after mobile containment/accessibility repairs. Deployment and existing-owner enrolment remain at the STATUS.md checkpoint.
+Implemented: permissioned source passage admission and final recheck; objective/worked-example/progression/repetition draft gates; honest structural-check labels; complete bounded tutor context; alternate-proof assessment; current-source history filtering; safe whole-document Markdown rendering; published-unit seed protection. Validation: 601 regression cases, seven-package typecheck, content validator, strict KaTeX and production build pass. All 53 targeted browser cases now pass after mobile containment/accessibility repairs. Reviewed release 36ae0c3 is deployed to the existing Railway worker and web services, both SUCCESS. Source-to-database content hashes match and the existing owner has five active enrolments. The teacher remains in scripted-demo mode; live-provider setup and empirical teaching evaluation remain outside the completed release checks. See STATUS.md and QA_REPORT.md.
 
 Gate: all 54 complete, exact independent review scope documented, no unresolved substantive academic findings, app checks pass, existing project released and owner enrolled where authenticated access permits. Never equate automated structure checks or agent consensus with human certification or measured educational outcomes.
