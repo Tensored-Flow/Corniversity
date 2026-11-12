@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u03-ex3",
+  "sequence": 3,
+  "title": "Constraints, a local flow, and the global question",
+  "kind": "proof",
+  "promptMarkdown": "Let $M=\\{(x,y,z):x^2+y^2=1\\}\\subset\\mathbb R^3$. (a) Produce $M$ by a regular-value argument, compute $T_pM$, and give local coordinates near $(1,0,0)$ using the implicit theorem. (b) Prove that $X=(-y,x,1)$ restricts to a smooth tangent vector field and solve its flow explicitly for all times. (c) Explain why the inclusion $M\\to\\mathbb R^3$ is an embedding although $M$ is not compact, and contrast this with the insufficient criterion “injective derivative everywhere”.",
+  "conceptIds": [
+    "inverse-function-theorem-manifolds"
+  ],
+  "hintLadder": [
+    "Differentiate the defining scalar constraint.",
+    "Solve the first two ODE components as planar rotation and integrate the third.",
+    "An embedding has both a differential condition and a topology condition."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Regularity, tangent kernel and explicit local chart.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Tangency and globally valid flow.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct embedding justification and limitation of rank alone.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 65,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

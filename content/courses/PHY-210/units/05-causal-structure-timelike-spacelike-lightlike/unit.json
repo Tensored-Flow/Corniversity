@@ -5,28 +5,163 @@
   "title": "Causal structure: timelike, spacelike and lightlike",
   "summary": "Light speed as the limit on causality; the three relations between events and their frame independence; invariance of time order for timelike pairs; the light cone and the regions of spacetime; why superluminal signals would reverse cause and effect.",
   "objectives": [
-    { "id": "u05-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 6, Tong Sections 7.2.2 and 7.3.1, and MIT 8.20 Week 2 (Lectures 5.4–5.5)." }
+    {
+      "id": "u05-o1",
+      "description": "Classify event separations and identify co-location or simultaneity frames where possible."
+    },
+    {
+      "id": "u05-o2",
+      "description": "Prove future causal order is preserved by future-oriented Lorentz transformations."
+    },
+    {
+      "id": "u05-o3",
+      "description": "Prove causal displacements remain causal under composition and analyse the null equality case."
+    },
+    {
+      "id": "u05-o4",
+      "description": "Analyse a two-frame signalling paradox while stating the additional physical assumptions."
+    }
   ],
-  "prerequisiteConceptIds": ["minkowski-spacetime", "lorentz-transformation"],
-  "teachesConceptIds": ["spacetime-causal-structure"],
+  "prerequisiteConceptIds": [
+    "minkowski-spacetime",
+    "lorentz-transformation"
+  ],
+  "teachesConceptIds": [
+    "spacetime-causal-structure"
+  ],
   "preparation": [
-    { "description": "Read Spacetime Physics Chapter 6 Regions of Spacetime (pp. 171–188): 6.1 Light Speed: Limit on Causality, 6.2 Relation Between Events, 6.3 Light Cone.", "locatorId": "stp-ch6", "estimatedMinutes": 50 },
-    { "description": "Re-read Section 1.4 (pp. 11–13) on timelike and spacelike intervals.", "locatorId": "stp-ch1-s4", "estimatedMinutes": 10 },
-    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.2 (7.2.2 Causality) and Section 7.3 (7.3.1 The Invariant Interval: timelike, spacelike, lightlike), reference-only.", "locatorId": "tong-dr-ch7-s2", "estimatedMinutes": 20 },
-    { "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.4 Regions in Spacetime Diagrams and Lecture 5.5 Causality.", "locatorId": "sr21-week2", "estimatedMinutes": 20 }
+    {
+      "description": "Read Spacetime Physics Chapter 6 Regions of Spacetime (pp. 171–188): 6.1 Light Speed: Limit on Causality, 6.2 Relation Between Events, 6.3 Light Cone.",
+      "locatorId": "stp-ch6",
+      "estimatedMinutes": 50
+    },
+    {
+      "description": "Re-read Section 1.4 (pp. 11–13) on timelike and spacelike intervals.",
+      "locatorId": "stp-ch1-s4",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Second account: Tong, Dynamics and Relativity, Section 7.2 (7.2.2 Causality) and Section 7.3 (7.3.1 The Invariant Interval: timelike, spacelike, lightlike), reference-only.",
+      "locatorId": "tong-dr-ch7-s2",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.4 Regions in Spacetime Diagrams and Lecture 5.5 Causality.",
+      "locatorId": "sr21-week2",
+      "estimatedMinutes": 20
+    }
   ],
   "activities": [
-    { "id": "u05-a1", "type": "reading", "title": "Reading: causal structure", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["stp-ch6", "stp-ch1-s4", "tong-dr-ch7-s2", "tong-dr-ch7-s3", "sr21-week2"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "stp-ch6",
+        "stp-ch1-s4",
+        "tong-dr-ch7-s2",
+        "sr21-week2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u05-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 140,
+      "sourceLocatorIds": [
+        "stp-ch6",
+        "stp-ch1-s4",
+        "tong-dr-ch7-s2",
+        "sr21-week2"
+      ],
+      "exerciseIds": [
+        "PHY-210-u05-ex1",
+        "PHY-210-u05-ex2",
+        "PHY-210-u05-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u05-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "stp-ch6",
+        "stp-ch1-s4",
+        "tong-dr-ch7-s2",
+        "sr21-week2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 210,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u05-ex1",
+    "PHY-210-u05-ex2",
+    "PHY-210-u05-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u05-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Spacelike-separated events cannot occur.",
+      "correction": "They occur routinely; the restriction is on causal signals between them.",
+      "correctionLocatorIds": [
+        "stp-ch6"
+      ]
+    },
+    {
+      "claim": "Correlated events must directly signal to each other.",
+      "correction": "A common cause can correlate spacelike detections without a communication channel between them.",
+      "correctionLocatorIds": [
+        "stp-ch6"
+      ]
+    },
+    {
+      "claim": "Reversed coordinate order alone proves a causal loop.",
+      "correction": "A loop additionally requires specific controllable transmission and reply rules.",
+      "correctionLocatorIds": [
+        "stp-ch6"
+      ]
+    }
+  ],
+  "estimatedMinutes": 360,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter 6 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Section 1.4 located in the extracted text of 01_chapter1.pdf; Tong Sections 7.2 and 7.3 headings verified in dynrel7.pdf; MIT 8.20 Week 2 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: actual chapter6 §§6.1–6.3 text read, printed171–181; sign dictionary and null degeneracy checked. Source-age correction verified against official NobelPhysics2015 release. Original antitelephone event table independently derived from two Lorentz equations."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 360 active minutes including source reading, worked reasoning, 3 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u05-ex1.reference-solution.md",
+    "PHY-210-u05-ex2.reference-solution.md",
+    "PHY-210-u05-ex3.reference-solution.md"
+  ]
 }

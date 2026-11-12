@@ -3,27 +3,149 @@
   "courseId": "CSA-210",
   "sequence": 5,
   "title": "Optimisation in practice: conditioning, momentum, mini-batches and adaptive methods",
-  "summary": "Poor conditioning and the momentum method; non-convex landscapes and overparameterisation; the cost and variance of mini-batch gradients; adaptive methods (RMSprop, Adam); choosing and reporting optimiser hyperparameters.",
+  "summary": "Quadratic conditioning, momentum recurrences, stochastic-gradient sampling, adaptive updates and controlled optimisation comparisons.",
   "objectives": [
-    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W1D4 Tutorial 1 (Optimization techniques) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u05-o1",
+      "description": "Analyse conditioning and stability on positive-definite quadratics."
+    },
+    {
+      "id": "u05-o2",
+      "description": "Derive momentum recurrences with a consistent state convention."
+    },
+    {
+      "id": "u05-o3",
+      "description": "Compute mini-batch expectation and variance under stated sampling rules."
+    },
+    {
+      "id": "u05-o4",
+      "description": "Audit adaptive updates and compare optimisation methods without contaminating evaluation."
+    }
   ],
-  "prerequisiteConceptIds": ["gradient-descent", "multilayer-perceptron"],
-  "teachesConceptIds": ["optimisation-methods-dl"],
+  "prerequisiteConceptIds": [
+    "gradient-descent",
+    "multilayer-perceptron"
+  ],
+  "teachesConceptIds": [
+    "optimisation-methods-dl"
+  ],
   "preparation": [
-    { "description": "Read W1D4 Tutorial 1: the MLP case study, high-dimensional search, poor conditioning and momentum, non-convexity, mini-batches, adaptive methods.", "locatorId": "nmadl-w1d4-t1", "estimatedMinutes": 70 }
+    {
+      "locatorId": "nmadl-w1d4-t1",
+      "description": "Read sections4,6,7 on conditioning, momentum, mini-batches and adaptive methods; record the update and epsilon conventions.",
+      "estimatedMinutes": 70
+    }
   ],
   "activities": [
-    { "id": "u05-a1", "type": "reading", "title": "W1D4: Optimization", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w1d4", "nmadl-w1d4-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nmadl-w1d4-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u05-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 170,
+      "sourceLocatorIds": [
+        "nmadl-w1d4-t1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u05-ex1",
+        "CSA-210-u05-ex2",
+        "CSA-210-u05-ex3",
+        "CSA-210-u05-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u05-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w1d4-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u05-ex1",
+    "CSA-210-u05-ex2",
+    "CSA-210-u05-ex3",
+    "CSA-210-u05-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u05-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A stable run from one initial point proves a step size is safe.",
+      "correction": "An unstable eigenmode may be absent from that initial point.",
+      "correctionLocatorIds": [
+        "nmadl-w1d4-t1"
+      ]
+    },
+    {
+      "claim": "The moving mean of squared gradients is always their variance.",
+      "correction": "It is a second moment; variance also subtracts the squared mean.",
+      "correctionLocatorIds": [
+        "nmadl-w1d4-t1"
+      ]
+    },
+    {
+      "claim": "Adaptive optimisation removes the need for validation-based tuning.",
+      "correction": "It still has hyperparameters, costs and failure modes; test data must remain separate.",
+      "correctionLocatorIds": [
+        "nmadl-w1d4-t1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 380,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Optimization techniques'; section list through 'Section 7: Adaptive methods' recorded from the page's contents list)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W1D4 Tutorial1 sections4,6,7, including its momentum and RMSprop equations. Original exact-quadratic, sampling and Adam calculations; explicit conventions distinguish moving second moments from variance and ε placements."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 380 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u05-ex1.reference-solution.md",
+    "CSA-210-u05-ex2.reference-solution.md",
+    "CSA-210-u05-ex3.reference-solution.md",
+    "CSA-210-u05-ex4.reference-solution.md"
+  ]
 }

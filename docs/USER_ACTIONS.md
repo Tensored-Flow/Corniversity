@@ -4,21 +4,17 @@ Written for a non-specialist. Each item says why it is needed and the exact mini
 paste a password, the bootstrap code, an API key or any token into a chat. Your Corniversity
 sign-in and any sign-in with a model provider are separate: one never stands in for the other.
 
-There are two installations:
+The hosted app and the earlier local owner installation have separate databases. The Linux build/QA stack is a third, disposable test environment:
 
 - **The hosted site:** https://web-production-4c692.up.railway.app, reachable from any device.
   It teaches with an Anthropic API key, or with the labelled scripted demo.
-- **Your local installation:** on this computer only, at http://127.0.0.1:3300. It has its own
+- **Your earlier local owner installation:** on its original computer, at http://127.0.0.1:3300. It has its own
   database, separate from the hosted site and from the test stack. It is the only place you can
   teach through your ChatGPT plan.
 
-## 1. Create your owner account on the hosted site (once)
+## 1. Sign in to the existing hosted owner account
 
-1. In the Railway dashboard, open project `corniversity`, then service `web`, then *Variables*.
-   Reveal `OWNER_BOOTSTRAP_CODE`. The owner email is `OWNER_EMAIL`, beside it.
-2. Open https://web-production-4c692.up.railway.app/join.
-3. Enter your name, the owner email, a password of at least twelve characters, and the code.
-4. Choose *Create account and begin*. Orientation starts, and sign-up closes for good.
+The owner account exists: verified read-only on 12 November 2026. Open https://web-production-4c692.up.railway.app/sign-in and use your existing credentials. Do not create a replacement account or reset the password as part of this release. If an agent needs the signed-in browser to enrol the five selected courses, sign in there and return to the chat; never paste credentials into the chat.
 
 ## 2. Retire the bootstrap code (after item 1)
 

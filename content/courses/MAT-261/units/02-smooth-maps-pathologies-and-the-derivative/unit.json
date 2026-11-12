@@ -5,41 +5,209 @@
   "title": "Smooth maps, the standard pathologies and the derivative",
   "summary": "Smooth maps and diffeomorphisms tested in charts (one atlas suffices); the line with two origins and the long line as witnesses that the Hausdorff and second countability axioms are independent of the atlas; distinct smooth structures on R that are diffeomorphic; Milnor's exotic spheres as a remark; the differential of a map between normed spaces and its uniqueness; rank, immersions and submersions.",
   "objectives": [
-    { "id": "u02-o1", "description": "Define smooth maps and diffeomorphisms between manifolds and prove that smoothness can be tested with one atlas on each side." },
-    { "id": "u02-o2", "description": "Construct the line with two origins, show it has a smooth atlas and is second countable but not Hausdorff, and derive the failure of unique limits." },
-    { "id": "u02-o3", "description": "Show that the charts x and x^3 on R give different smooth structures that are nonetheless diffeomorphic, and explain the distinction between structures and diffeomorphism classes." },
-    { "id": "u02-o4", "description": "State the definition of the differential, prove its uniqueness, and define rank, immersion and submersion with chart-independence justified." }
+    {
+      "id": "u02-o1",
+      "description": "Define smooth maps and diffeomorphisms between manifolds and prove that smoothness can be tested with one atlas on each side."
+    },
+    {
+      "id": "u02-o2",
+      "description": "Construct the line with two origins, show it has a smooth atlas and is second countable but not Hausdorff, and derive the failure of unique limits."
+    },
+    {
+      "id": "u02-o3",
+      "description": "Show that the charts x and x^3 on R give different smooth structures that are nonetheless diffeomorphic, and explain the distinction between structures and diffeomorphism classes."
+    },
+    {
+      "id": "u02-o4",
+      "description": "State the definition of the differential, prove its uniqueness, and define rank, immersion and submersion with chart-independence justified."
+    }
   ],
-  "prerequisiteConceptIds": ["smooth-manifold", "manifold-topology-bridge", "multivariable-calculus"],
-  "teachesConceptIds": ["smooth-maps-diffeomorphisms", "smooth-manifold"],
+  "prerequisiteConceptIds": [
+    "smooth-manifold",
+    "manifold-topology-bridge",
+    "multivariable-calculus"
+  ],
+  "teachesConceptIds": [
+    "smooth-maps-diffeomorphisms",
+    "smooth-manifold"
+  ],
   "preparation": [
-    { "description": "Read lecture 2 of the 18.965 notes, page 1: §2 smooth maps and diffeomorphisms, §3 the line with two origins and the long line, Remark 1.", "locatorId": "gm04-l2-smooth-maps", "estimatedMinutes": 20 },
-    { "description": "Read lecture 2 page 2: the long line is not second countable; 'Different charts' (R with x and x^3); Milnor's seven-sphere remark.", "locatorId": "gm04-l2-different-charts", "estimatedMinutes": 15 },
-    { "description": "Read lecture 3: Definition 4.1 (the differential), the uniqueness argument, C^1 and higher derivatives, Definition 4.2 (immersion, submersion) and the linear models.", "locatorId": "gm04-l3-def4-1", "estimatedMinutes": 25 },
-    { "description": "Read Hitchin §2.4 (maps between manifolds) for a second presentation of smooth maps and diffeomorphisms.", "locatorId": "hit14-s2-4", "estimatedMinutes": 15 }
+    {
+      "description": "Read lecture 2 of the 18.965 notes, page 1: §2 smooth maps and diffeomorphisms, §3 the line with two origins and the long line, Remark 1.",
+      "locatorId": "gm04-l2-smooth-maps",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read lecture 2 page 2: the long line is not second countable; 'Different charts' (R with x and x^3); Milnor's seven-sphere remark.",
+      "locatorId": "gm04-l2-different-charts",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Read lecture 3: Definition 4.1 (the differential), the uniqueness argument, C^1 and higher derivatives, Definition 4.2 (immersion, submersion) and the linear models.",
+      "locatorId": "gm04-l3-def4-1",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read Hitchin §2.4 (maps between manifolds) for a second presentation of smooth maps and diffeomorphisms.",
+      "locatorId": "hit14-s2-4",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u02-a1", "type": "reading", "title": "Lectures 2–3: maps, pathologies, the derivative", "instructions": "Read the lesson with lectures 2–3 of the notes and Hitchin §2.4. Before reading the lesson's proof that one atlas suffices, write the composition you expect to use. Draw the line with two origins and the figure-eight curve in the notebook.", "estimatedMinutes": 70, "sourceLocatorIds": ["gm04-l2-smooth-maps", "gm04-l2-different-charts", "gm04-l3-def4-1", "gm04-l3-def4-2", "hit14-s2-4", "hit14-s3-3"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u02-a2", "type": "proof_workshop", "title": "Tutorial: two origins and two structures", "instructions": "Attempt exercise 1 first, keeping the atlas verification separate from the Hausdorff failure. Then exercise 2; write every chart expression explicitly before deciding whether a map is smooth. Submit each attempt when complete; revise after feedback.", "estimatedMinutes": 80, "sourceLocatorIds": ["gm04-l2-smooth-maps", "gm04-l2-different-charts"], "exerciseIds": ["MAT-261-u02-ex1", "MAT-261-u02-ex2"], "sessionKind": "tutorial" },
-    { "id": "u02-a3", "type": "explain_back", "title": "Explain: why the two axioms are in the definition", "instructions": "Exercise 3, written without the notes, then compared with lecture 2 §3 and the lesson.", "estimatedMinutes": 15, "sourceLocatorIds": ["gm04-l2-smooth-maps"], "exerciseIds": ["MAT-261-u02-ex3"], "sessionKind": "oral" },
-    { "id": "u02-a4", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: smooth map between manifolds; diffeomorphism; the definition of the differential with the o-notation; rank; immersion; submersion; the two pathologies and which axiom each violates.", "estimatedMinutes": 10, "sourceLocatorIds": ["gm04-l3-def4-1", "gm04-l3-def4-2"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Lectures 2–3: maps, pathologies, the derivative",
+      "instructions": "Read the lesson with lectures 2–3 of the notes and Hitchin §2.4. Before reading the lesson's proof that one atlas suffices, write the composition you expect to use. Draw the line with two origins and the figure-eight curve in the notebook.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "gm04-l2-smooth-maps",
+        "gm04-l2-different-charts",
+        "gm04-l3-def4-1",
+        "gm04-l3-def4-2",
+        "hit14-s2-4",
+        "hit14-s3-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u02-a2",
+      "type": "proof_workshop",
+      "title": "Tutorial: two origins and two structures",
+      "instructions": "Attempt exercise 1 first, keeping the atlas verification separate from the Hausdorff failure. Then exercise 2; write every chart expression explicitly before deciding whether a map is smooth. Submit each attempt when complete; revise after feedback.",
+      "estimatedMinutes": 80,
+      "sourceLocatorIds": [
+        "gm04-l2-smooth-maps",
+        "gm04-l2-different-charts"
+      ],
+      "exerciseIds": [
+        "MAT-261-u02-ex1",
+        "MAT-261-u02-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u02-a3",
+      "type": "explain_back",
+      "title": "Explain: why the two axioms are in the definition",
+      "instructions": "Exercise 3, written without the notes, then compared with lecture 2 §3 and the lesson.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "gm04-l2-smooth-maps"
+      ],
+      "exerciseIds": [
+        "MAT-261-u02-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u02-a4",
+      "type": "retrieval_practice",
+      "title": "Retrieval: definitions of the unit",
+      "instructions": "From memory: smooth map between manifolds; diffeomorphism; the definition of the differential with the o-notation; rank; immersion; submersion; the two pathologies and which axiom each violates.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "gm04-l3-def4-1",
+        "gm04-l3-def4-2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    },
+    {
+      "id": "u02-synthesis",
+      "type": "proof_workshop",
+      "title": "Synthesis: connect the unit methods",
+      "instructions": "Attempt the multi-part synthesis independently, then explain the hypotheses in each step. Use the whole sheet to identify remaining gaps; one accepted task is not a certificate of all course outcomes.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "gm04-l2-smooth-maps",
+        "gm04-l2-different-charts",
+        "gm04-l3-def4-1",
+        "hit14-s2-4"
+      ],
+      "exerciseIds": [
+        "MAT-261-u02-ex4"
+      ],
+      "sessionKind": "tutorial"
+    }
   ],
-  "exerciseIds": ["MAT-261-u02-ex1", "MAT-261-u02-ex2", "MAT-261-u02-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: the two-chart atlas verified with the identity transition map on R minus the origin, non-Hausdorffness proved via neighbourhoods of the two origins, the doubly convergent sequence exhibited and a compact non-closed set identified.", "exerciseId": "MAT-261-u02-ex1" },
+  "exerciseIds": [
+    "MAT-261-u02-ex1",
+    "MAT-261-u02-ex2",
+    "MAT-261-u02-ex3",
+    "MAT-261-u02-ex4"
+  ],
+  "exitCheck": {
+    "description": "Complete this synthesis and review the whole sheet against the unit objectives. Record assistance and unresolved gaps; a single assessment samples only its stated capabilities.",
+    "exerciseId": "MAT-261-u02-ex4"
+  },
   "commonMisconceptions": [
-    { "claim": "If the identity map between two smooth structures on the same space is smooth, the structures are the same.", "correction": "Smoothness of the identity in one direction only shows one structure refines the other in a weak sense; the structures coincide only if the identity is a diffeomorphism. For (R, x) and (R, x^3) the identity is smooth one way, not the other, and the structures differ, yet the manifolds are diffeomorphic via a different map.", "correctionLocatorIds": ["gm04-l2-different-charts"] },
-    { "claim": "An injective immersion is an embedding, so its image is a submanifold.", "correction": "The figure-eight curve is an injective immersion that is not a homeomorphism onto its image. Embeddings require the topological condition as well; see unit 3.", "correctionLocatorIds": ["gm04-l3-def4-2"] },
-    { "claim": "In a space with a smooth atlas, convergent sequences have unique limits.", "correction": "Uniqueness of limits is a consequence of the Hausdorff axiom, not of the atlas: on the line with two origins the sequence 1/n converges to both origins.", "correctionLocatorIds": ["gm04-l2-smooth-maps"] },
-    { "claim": "The rank of a smooth map depends on the coordinates chosen.", "correction": "Changing charts composes the chart expression with diffeomorphisms, whose differentials are invertible; the rank is unchanged by the chain rule.", "correctionLocatorIds": ["gm04-l3-def4-1", "gm04-l3-def4-2"] }
+    {
+      "claim": "If the identity map between two smooth structures on the same space is smooth, the structures are the same.",
+      "correction": "Smoothness of the identity in one direction only shows one structure refines the other in a weak sense; the structures coincide only if the identity is a diffeomorphism. For (R, x) and (R, x^3) the identity is smooth one way, not the other, and the structures differ, yet the manifolds are diffeomorphic via a different map.",
+      "correctionLocatorIds": [
+        "gm04-l2-different-charts"
+      ]
+    },
+    {
+      "claim": "An injective immersion is an embedding, so its image is a submanifold.",
+      "correction": "The explicitly parametrized curve beta(t)=(sin(2t),sin(t)) on the open interval (−pi,pi) is an injective immersion but not a homeomorphism onto its image: endpoint-escaping parameter sequences approach beta(0). The usual closed-circle figure-eight parametrization is not injective. An embedding additionally requires the image topology to agree.",
+      "correctionLocatorIds": [
+        "gm04-l3-def4-2"
+      ]
+    },
+    {
+      "claim": "In a space with a smooth atlas, convergent sequences have unique limits.",
+      "correction": "Uniqueness of limits is a consequence of the Hausdorff axiom, not of the atlas: on the line with two origins the sequence 1/n converges to both origins.",
+      "correctionLocatorIds": [
+        "gm04-l2-smooth-maps"
+      ]
+    },
+    {
+      "claim": "The rank of a smooth map depends on the coordinates chosen.",
+      "correction": "Changing charts composes the chart expression with diffeomorphisms, whose differentials are invertible; the rank is unchanged by the chain rule.",
+      "correctionLocatorIds": [
+        "gm04-l3-def4-1",
+        "gm04-l3-def4-2"
+      ]
+    }
   ],
-  "estimatedMinutes": 250,
+  "estimatedMinutes": 320,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture 2 PDF (2 pages, no printed labels): §2 smooth maps, §3 pathologies and Remark 1 on PDF page 1, long line conclusion and 'Different charts' on page 2; lecture 3 PDF (2 pages): Definition 4.1 on page 1, Definition 4.2 on page 2; all verified against extracted text on 2026-10-30. Hitchin §2.4 on printed p. 13 (PDF index 12) and §3.3 on p. 20 (index 19) verified likewise." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: openness of the quotient map for the line with two origins (saturation of W is W together with its swapped copy away from the origins); identity transition map on R minus 0; failure of Hausdorff via the punctured intervals; the sequence 1/n converging to both origins and the compact non-closed set; for R with x and x^3: identity smooth one way (x ↦ x^3) but inverse y ↦ y^{1/3} not differentiable at 0, and F(x) = x^{1/3} a diffeomorphism whose chart expression is the identity; uniqueness of the differential via x' = x + tv." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson names the two pathologies and the two structures on R but does not carry out the Hausdorff failure, the limit argument or the diffeomorphism F; those are only in instructor/ files." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 80 + 15 + 10 minutes of activities plus 75 minutes of preparation ≈ 4.2 hours; with unit 1 this is the first teaching week at about 9 hours." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture 2 PDF (2 pages, no printed labels): §2 smooth maps, §3 pathologies and Remark 1 on PDF page 1, long line conclusion and 'Different charts' on page 2; lecture 3 PDF (2 pages): Definition 4.1 on page 1, Definition 4.2 on page 2; all verified against extracted text on 2026-10-30. Hitchin §2.4 on printed p. 13 (PDF index 12) and §3.3 on p. 20 (index 19) verified likewise."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Build agent re-derived: openness of the quotient map for the line with two origins (saturation of W is W together with its swapped copy away from the origins); identity transition map on R minus 0; failure of Hausdorff via the punctured intervals; the sequence 1/n converging to both origins and the compact non-closed set; for R with x and x^3: identity smooth one way (x ↦ x^3) but inverse y ↦ y^{1/3} not differentiable at 0, and F(x) = x^{1/3} a diffeomorphism whose chart expression is the identity; uniqueness of the differential via x' = x + tv."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson names the two pathologies and the two structures on R but does not carry out the Hausdorff failure, the limit argument or the diffeomorphism F; those are only in instructor/ files."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Workload is a provisional planning estimate, updated for the full problem sheet and synthesis; no empirical completion-time validation has occurred."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-261-u02-ex1.reference-solution.md", "MAT-261-u02-ex2.reference-solution.md", "MAT-261-u02-ex3.grading-notes.md"]
+  "instructorFiles": [
+    "MAT-261-u02-ex1.reference-solution.md",
+    "MAT-261-u02-ex2.reference-solution.md",
+    "MAT-261-u02-ex3.grading-notes.md",
+    "MAT-261-u02-ex4.reference-solution.md",
+    "MAT-261-u02-ex3.reference-solution.md"
+  ]
 }

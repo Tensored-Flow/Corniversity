@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u07-ex1",
+  "sequence": 1,
+  "title": "An integral that ignores a dense set",
+  "kind": "proof",
+  "promptMarkdown": "Enumerate $\\mathbb Q\\cap[0,1]=\\{q_1,q_2,\\ldots\\}$ and let $f_n=1_{\\{q_1,\\ldots,q_n\\}}$. Find the pointwise limit, prove measurability of the limit, and compute all integrals. Explain why the limit is not Riemann integrable although every $f_n$ is.",
+  "conceptIds": [
+    "measurable-function",
+    "lebesgue-integral"
+  ],
+  "hintLadder": [
+    "Write the limit as an indicator of a countable set.",
+    "Compare upper and lower Darboux sums using density of both rationals and irrationals."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Identifies and proves measurability of the pointwise limit.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Computes Lebesgue integrals and invokes monotone convergence legally.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves the Riemann distinction using sums or the discontinuity criterion.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

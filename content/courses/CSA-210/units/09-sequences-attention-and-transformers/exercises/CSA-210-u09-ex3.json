@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u09-ex3",
+  "sequence": 3,
+  "title": "Prove when order disappears",
+  "kind": "proof",
+  "promptMarkdown": "Prove permutation equivariance of unmasked self-attention with shared linear projections and no positional signal. Show that mean pooling makes the output invariant to token permutation. Use this to explain why a classifier of the sequencesAB andBA with opposite labels cannot solve the task under this exact architecture. Then name two architectural changes that invalidate the proof and explain which equality changes.",
+  "conceptIds": [
+    "attention-transformers"
+  ],
+  "hintLadder": [
+    "Write both left and right permutation actions onQKᵀ.",
+    "Check what mean pooling does to a permuted row order.",
+    "Identify the assumption violated rather than claiming the algebra itself is wrong."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Proves the equivariance identity",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Derives pooled invariance and impossibility",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Explains specific ways positional/mask structure changes the premises",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Turns an attention symmetry into a representational impossibility result for an order-sensitive task."
+  }
+}

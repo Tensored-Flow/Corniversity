@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u09-ex3",
+  "sequence": 3,
+  "title": "Recover a classical series by Parseval",
+  "kind": "proof",
+  "promptMarkdown": "For $f(x)=x$ on $(-\\pi,\\pi)$, compute its real sine coefficients and use Parseval to obtain $\\sum_{n\\ge1}n^{-2}$. Specify the norm and normalisation and explain why no assertion of uniform Fourier convergence is needed.",
+  "conceptIds": [
+    "hilbert-space",
+    "orthonormal-basis"
+  ],
+  "hintLadder": [
+    "Use parity, then integrate the sine coefficient by parts.",
+    "Track the squared norm of the unnormalised sine functions in Parseval."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Computes coefficients with their signs and normalisation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Applies the correct Parseval identity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Derives the sum and states the convergence mode.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u08-ex3",
+  "sequence": 3,
+  "title": "Disprove unconditional shift invariance",
+  "kind": "calculation",
+  "promptMarkdown": "LetM pool a length-four vector by taking maxima over adjacent nonoverlapping pairs. Forx=(0,1,0,0) and the one-position circular right shiftTx=(0,0,1,0), calculateM(x), M(Tx), and decide whetherM is invariant. Give a concrete counterexample to linearity ofmax pooling. Then prove circular stride-one cross-correlation commutes with circular shifts, stating the modular-index convention.",
+  "conceptIds": [
+    "convolution-operator"
+  ],
+  "hintLadder": [
+    "Keep “same output” separate from “shifted output”.",
+    "Use two impulses in the same pooling window to test additivity.",
+    "Write the indices of both composed operators explicitly."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Constructs valid invariance/linearity counterexamples",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Proves the circular equivariance statement",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "States boundary and stride limits",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Uses a changed boundary/shift setting to separate a true operator theorem from an overgeneralised pooling claim."
+  }
+}

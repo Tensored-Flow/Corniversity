@@ -1,0 +1,91 @@
+{
+  "id": "CHE-101-u07-ex3",
+  "sequence": 3,
+  "title": "Electricity from a concentration difference",
+  "kind": "calculation",
+  "promptMarkdown": "Two ideal Cu²⁺/Cu half cells at 298.15 K have activities 0.200 and 0.00200. Treat liquid-junction contributions as negligible. Which side is reduced? Derive the spontaneous overall transfer and calculate its open-circuit voltage. Predict the effect of dividing both activities by ten and then of making the ratio one. Explain why this is not a source of unlimited energy.",
+  "conceptIds": [
+    "redox-electrochemistry"
+  ],
+  "hintLadder": [
+    "Write Ered for each half cell separately.",
+    "Subtract and cancel the standard potential.",
+    "Track which solution gains Cu²⁺ during operation."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives polarity and net chemical transfer",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes voltage and its ratio dependence",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Connects finite chemical-potential difference with work and model limits",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "The standard electrode pair is identical, so the learner must identify concentration rather than E° as the driving force."
+  }
+}

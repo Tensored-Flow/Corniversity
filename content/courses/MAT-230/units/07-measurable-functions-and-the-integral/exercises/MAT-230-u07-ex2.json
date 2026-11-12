@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u07-ex2",
+  "sequence": 2,
+  "title": "Exchange an infinite sum and integral",
+  "kind": "proof",
+  "promptMarkdown": "For $x\\in[0,1)$, set $s_N(x)=\\sum_{k=1}^N x^{2k}$. Compute $\\int_0^1\\sum_{k\\ge1}x^{2k}\\,dx$ as an extended integral. Then replace $x^{2k}$ by $2^{-k}x^{2k}$ and show the resulting integral is finite. You need not evaluate the latter series in closed form.",
+  "conceptIds": [
+    "measurable-function",
+    "lebesgue-integral"
+  ],
+  "hintLadder": [
+    "Use increasing partial sums, not a formal termwise integration rule.",
+    "Compare the first numerical series to the harmonic series and the second to a geometric series."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Justifies both interchanges by positivity and monotonicity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves divergence of the first series.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Bounds the second and distinguishes extended from finite integrals.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

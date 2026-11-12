@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u11-ex3",
+  "sequence": 3,
+  "title": "Periods under a winding map",
+  "kind": "proof",
+  "promptMarkdown": "For the angular form $\\omega$ in the lesson, compute its pullback by $\\gamma_k(t)=(\\cos kt,\\sin kt)$, $0\\le t\\le2\\pi$, for every integer $k$. Prove $\\omega$ is not exact, and determine the induced map on $H^1_{\\mathrm{dR}}(S^1)$ of the map $e^{it}\\mapsto e^{ikt}$ once the circle period class is used as a basis. Include $k=0$ and negative $k$.",
+  "conceptIds": [
+    "differential-forms-de-rham"
+  ],
+  "hintLadder": [
+    "Differentiate both components of the winding curve.",
+    "Integrate an exact form using the fundamental theorem on the parameter interval.",
+    "A periodic one-form with zero mean has a periodic primitive."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "All winding signs and zero case.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Nonexactness argument.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct induced cohomology map with basis justification.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

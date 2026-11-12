@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u11-ex4",
+  "sequence": 4,
+  "title": "Classify all closed one-forms on the punctured plane",
+  "kind": "proof",
+  "promptMarkdown": "Let $\\alpha$ be a smooth closed one-form on $\\mathbb R^2\\setminus\\{0\\}$. Pull it back to $(0,\\infty)\\times\\mathbb R$ as $A(r,\\theta)dr+B(r,\\theta)d\\theta$. Prove the period $c(r)=\\int_0^{2\\pi}B(r,\\theta)d\\theta$ is constant. Construct a primitive on the covering, determine its change under $\\theta\\mapsto\\theta+2\\pi$, and conclude $\\alpha-(c/2\\pi)\\omega$ is exact. State all de Rham groups of the punctured plane, justifying the higher-degree assertion by a deformation retraction and the homotopy operator.",
+  "conceptIds": [
+    "differential-forms-de-rham"
+  ],
+  "hintLadder": [
+    "Use closedness before differentiating the period.",
+    "Integrate first radially along angle zero, then angularly at the current radius.",
+    "Subtract the angular drift to make the potential periodic."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Closedness and constant-period calculation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Explicit primitive and descent.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Complete cohomology computation with homotopy justification.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 80,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

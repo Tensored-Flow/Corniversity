@@ -1,0 +1,109 @@
+{
+  "id": "CSA-210-u03-ex4",
+  "sequence": 4,
+  "title": "Audit one complete backward pass",
+  "kind": "code",
+  "promptMarkdown": "For x=(1,−2), W₁=[[1,0],[0,1]], b₁=(1,1), w₂=(3,−1), b₂=0 and target y=1, let f=w₂·ReLU(W₁x+b₁)+b₂ and L=½(f−y)². Compute every parameter gradient and one simultaneous gradient step of size0.01. Recompute the new loss. Write a standard-library finite-difference check for at least one active and one inactive incoming weight using ε=10⁻⁶. Explain the ReLU-kink limitation and why the loss change is evidence about this step only.",
+  "conceptIds": [
+    "multilayer-perceptron"
+  ],
+  "hintLadder": [
+    "Cache the original activations and output error.",
+    "Apply the ReLU mask before forming the outer product with x.",
+    "All updates use old gradients; finite differences change one parameter at a time."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Computes all gradients with correct shapes",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Performs a simultaneous update and recomputes loss",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Supplies a reproducible finite-difference check",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Explains nonsmoothness, numerical and inference limits",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 55,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

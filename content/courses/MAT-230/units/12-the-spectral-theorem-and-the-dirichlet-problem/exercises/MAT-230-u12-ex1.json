@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u12-ex1",
+  "sequence": 1,
+  "title": "A spectral approximation with an error bar",
+  "kind": "proof",
+  "promptMarkdown": "For $f\\in L^2(0,1)$ let $u=Gf$ and $u_N=\\sum_{n=1}^N f_n(n\\pi)^{-2}e_n$. Prove $\\|u-u_N\\|_2\\le((N+1)\\pi)^{-2}\\|f\\|_2$ and show the constant is sharp. For f=1 compute f_n, identify the exact classical solution, and explain why these two constructions agree.",
+  "conceptIds": [
+    "spectral-theorem-compact",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Use Parseval for the tail and the largest inverse eigenvalue remaining.",
+    "Test the bound on a single omitted eigenfunction."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Proves the sharp tail estimate.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Computes all source coefficients and the classical solution.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Justifies agreement of the integral and spectral constructions.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

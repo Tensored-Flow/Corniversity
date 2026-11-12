@@ -5,28 +5,171 @@
   "title": "Four-vectors and the Lorentz group",
   "summary": "The Minkowski inner product and the Lorentz group Λᵀ η Λ = η; its dimension and components; four-vectors by transformation law; four-velocity and four-acceleration with their invariants; raising and lowering indices.",
   "objectives": [
-    { "id": "u06-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Tong, Dynamics and Relativity, Sections 7.3.2 and 7.4, Spacetime Physics Section 7.2, and MIT 8.20 Week 3 (Lectures 8.1–8.3)." }
+    {
+      "id": "u06-o1",
+      "description": "Characterise the Lorentz group and its inverse, dimension and four components."
+    },
+    {
+      "id": "u06-o2",
+      "description": "Use index lowering and the four-vector transformation law without conflating affine positions and displacements."
+    },
+    {
+      "id": "u06-o3",
+      "description": "Compute four-velocity and four-acceleration and prove their invariant relations."
+    },
+    {
+      "id": "u06-o4",
+      "description": "Show by a commutator why noncollinear boosts need ordered matrix composition."
+    }
   ],
-  "prerequisiteConceptIds": ["lorentz-transformation", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["four-vectors", "lorentzian-metric"],
+  "prerequisiteConceptIds": [
+    "lorentz-transformation",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "four-vectors",
+    "lorentzian-metric"
+  ],
   "preparation": [
-    { "description": "Read Tong, Dynamics and Relativity, Section 7.3 The Geometry of Spacetime, especially 7.3.2 The Lorentz Group (reference-only; signature (+,−,−,−)).", "locatorId": "tong-dr-ch7-s3", "estimatedMinutes": 30 },
-    { "description": "Read Tong, Section 7.4 Relativistic Kinematics: 7.4.1 Proper Time and 7.4.7 Indices Up, Indices Down (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 30 },
-    { "description": "Read Spacetime Physics Chapter 7, Section 7.2 Momenergy Arrow (pp. 191–195), for the book's four-vector picture.", "locatorId": "stp-ch7", "estimatedMinutes": 15 },
-    { "description": "Optional: MIT 8.20 Week 3 videos, Lectures 8.1–8.3.", "locatorId": "sr21-week3", "estimatedMinutes": 30 }
+    {
+      "description": "Read Tong, Dynamics and Relativity, Section 7.3 The Geometry of Spacetime, especially 7.3.2 The Lorentz Group (reference-only; signature (+,−,−,−)).",
+      "locatorId": "tong-dr-ch7-s3",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Read Tong, Section 7.4 Relativistic Kinematics: 7.4.1 Proper Time and 7.4.7 Indices Up, Indices Down (reference-only).",
+      "locatorId": "tong-dr-ch7-s4",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Read Spacetime Physics Chapter 7, Section 7.2 Momenergy Arrow (pp. 191–195), for the book's four-vector picture.",
+      "locatorId": "stp-ch7",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 3 videos, Lectures 8.1–8.3.",
+      "locatorId": "sr21-week3",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u06-a1", "type": "reading", "title": "Reading: four-vectors", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["tong-dr-ch7-s3", "tong-dr-ch7-s4", "stp-ch7", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 110,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s3",
+        "tong-dr-ch7-s4",
+        "stp-ch7",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u06-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s3",
+        "tong-dr-ch7-s4",
+        "stp-ch7",
+        "sr21-week3"
+      ],
+      "exerciseIds": [
+        "PHY-210-u06-ex1",
+        "PHY-210-u06-ex2",
+        "PHY-210-u06-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u06-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s3",
+        "tong-dr-ch7-s4",
+        "stp-ch7",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 230,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u06-ex1",
+    "PHY-210-u06-ex2",
+    "PHY-210-u06-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u06-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Any four numbers make a four-vector.",
+      "correction": "A four-vector is defined by its Lorentz transformation law.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s3"
+      ]
+    },
+    {
+      "claim": "The Lorentz group has only six transformations.",
+      "correction": "It has dimension six: six local continuous parameters, as well as distinct components.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s3"
+      ]
+    },
+    {
+      "claim": "Spacelike four-acceleration means superluminal motion.",
+      "correction": "The timelike tangent controls speed; acceleration is a different vector orthogonal to it.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s3"
+      ]
+    },
+    {
+      "claim": "A photon has a rest frame obtained by setting v=c.",
+      "correction": "That boost is not finite and photon proper time cannot parameterise a four-velocity.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s3"
+      ]
+    }
+  ],
+  "estimatedMinutes": 355,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Tong Sections 7.3.2, 7.4.1 and 7.4.7 headings verified in dynrel7.pdf on 2026-10-30; Spacetime Physics Chapter 7 PDF listed on the download page with section titles and pages from the contents PDF; MIT 8.20 Week 3 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: Tong chapter7 actual PDF §§7.3.2,7.4 read as reference only; chapter7 Taylor–Wheeler §7.2 actual text read. Matrix, Lie-algebra and circular-motion calculations derived originally; sign conventions converted to(-+++)."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 355 active minutes including source reading, worked reasoning, 3 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u06-ex1.reference-solution.md",
+    "PHY-210-u06-ex2.reference-solution.md",
+    "PHY-210-u06-ex3.reference-solution.md"
+  ]
 }

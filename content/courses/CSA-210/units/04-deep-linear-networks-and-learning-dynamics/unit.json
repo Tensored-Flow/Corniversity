@@ -3,27 +3,149 @@
   "courseId": "CSA-210",
   "sequence": 4,
   "title": "Deep linear networks: learning dynamics through the SVD",
-  "summary": "Deep linear networks compute a product of matrices yet learn in stages; gradient flow analysed through the singular value decomposition of the input–output correlation; representational similarity analysis; illusory correlations during training; learning rates and other hyperparameters as a preview.",
+  "summary": "Factorised linear maps, rank/SVD assumptions, solvable balanced-mode dynamics, Euler experiments and careful representation similarity.",
   "objectives": [
-    { "id": "u04-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W1D2 Tutorial 3 (Deep linear neural networks) with Tutorial 2 (Learning Hyperparameters) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u04-o1",
+      "description": "Derive factorised linear-network gradients and rank constraints."
+    },
+    {
+      "id": "u04-o2",
+      "description": "Use SVD with explicit whitening/alignment assumptions rather than asserting automatic decoupling."
+    },
+    {
+      "id": "u04-o3",
+      "description": "Solve and numerically test a balanced-mode gradient-flow model."
+    },
+    {
+      "id": "u04-o4",
+      "description": "Distinguish dot-product and cosine similarity and test representation claims under coordinate changes."
+    }
   ],
-  "prerequisiteConceptIds": ["gradient-descent", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["deep-linear-network-dynamics"],
+  "prerequisiteConceptIds": [
+    "gradient-descent",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "deep-linear-network-dynamics"
+  ],
   "preparation": [
-    { "description": "Read W1D2 Tutorial 3: deep linear neural nets, the SVD section, representational similarity analysis and illusory correlations; skim Tutorial 2 on learning hyperparameters.", "locatorId": "nmadl-w1d2-t3", "estimatedMinutes": 60 }
+    {
+      "locatorId": "nmadl-w1d2-t3",
+      "description": "Read deep linear networks, SVD, representation similarity and transient correlations; use the lesson to qualify alignment and cosine conventions.",
+      "estimatedMinutes": 65
+    }
   ],
   "activities": [
-    { "id": "u04-a1", "type": "reading", "title": "W1D2 Tutorial 3: Deep linear neural networks", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w1d2", "nmadl-w1d2-t3", "nmadl-w1d2-t2"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u04-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nmadl-w1d2-t3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u04-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 170,
+      "sourceLocatorIds": [
+        "nmadl-w1d2-t3"
+      ],
+      "exerciseIds": [
+        "CSA-210-u04-ex1",
+        "CSA-210-u04-ex2",
+        "CSA-210-u04-ex3",
+        "CSA-210-u04-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u04-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w1d2-t3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u04-ex1",
+    "CSA-210-u04-ex2",
+    "CSA-210-u04-ex3",
+    "CSA-210-u04-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u04-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A linear network has a convex objective in all its layer parameters.",
+      "correction": "Its product is linear in inputs, but factorisation makes the parameter objective generally nonconvex.",
+      "correctionLocatorIds": [
+        "nmadl-w1d2-t3"
+      ]
+    },
+    {
+      "claim": "A Gram matrix is always a cosine-similarity matrix.",
+      "correction": "Cosine requires row-norm normalisation; raw dot products depend on magnitude.",
+      "correctionLocatorIds": [
+        "nmadl-w1d2-t3"
+      ]
+    },
+    {
+      "claim": "SVD proves that every network learns independent modes.",
+      "correction": "The solvable mode analysis requires specific input covariance, alignment and loss assumptions.",
+      "correctionLocatorIds": [
+        "nmadl-w1d2-t3"
+      ]
+    }
+  ],
+  "estimatedMinutes": 375,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Tutorial 3 page opened 2026-10-30 (HTTP 200; title 'Tutorial 3: Deep linear neural networks'; section list recorded); Tutorial 2 page loaded with its title, body truncated in the fetch." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W1D2 Tutorial3 sections1–4 including SVD and representation-similarity text. Corrected dot-product/cosine conflation and qualified mode-decoupling/learning-order claims. Original explicit gradient-flow derivation and numerical investigation."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 375 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u04-ex1.reference-solution.md",
+    "CSA-210-u04-ex2.reference-solution.md",
+    "CSA-210-u04-ex3.reference-solution.md",
+    "CSA-210-u04-ex4.reference-solution.md"
+  ]
 }

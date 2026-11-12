@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u08-ex1",
+  "sequence": 1,
+  "title": "Where a power belongs",
+  "kind": "proof",
+  "promptMarkdown": "For $a>0$, determine exactly when $f(x)=x^{-a}$ belongs to $L^p(0,1)$ for $1\\le p<\\infty$, and whether it belongs to $L^\\infty$. For $g(x)=x^{-a}$ on $(1,\\infty)$, repeat the analysis. Use this to disprove a universal $L^2(\\mathbb R)\\subset L^1(\\mathbb R)$ inclusion.",
+  "conceptIds": [
+    "lebesgue-integral",
+    "lp-space"
+  ],
+  "hintLadder": [
+    "Integrate the power with cutoffs at both endpoints.",
+    "For the counterexample choose $a$ between $1/2$ and $1$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Finds both strict threshold conditions and endpoints.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Handles essential supremum correctly.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Constructs the L²-not-L¹ counterexample.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

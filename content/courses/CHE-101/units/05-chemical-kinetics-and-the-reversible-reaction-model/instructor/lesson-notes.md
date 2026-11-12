@@ -8,4 +8,4 @@
 
 **Tutor behaviour.** Ask whether each rate law came from data or from a mechanism; ask for the definition of "rate" before accepting any factor; insist on assumptions (temperature, volume, phase, ideality) for every model claim; separate the simulator's outputs from statements about real chemistry.
 
-**Staged peer misconception, if peers are enabled.** A classmate says a catalyst "pushes the equilibrium towards products"; resolve with the both-constants-scale argument and the reaction coordinate diagram in the same discussion.
+**Staged peer misconception, if peers are enabled.** A classmate says a catalyst "pushes the equilibrium towards products"; resolve first with unchanged reaction free energy at fixed conditions, and use common scaling of both constants only as the particular two-state model.

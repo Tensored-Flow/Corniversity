@@ -22,6 +22,14 @@ When $V$ is normed and $W$ is *closed*, the quotient carries the norm $\|[v]\|_{
 
 This is how one passes from "almost a norm" to a norm: quotient out exactly what the seminorm cannot see. The same move produces $L^p$ later in the course, where functions equal almost everywhere are identified.
 
+## Completeness of a closed-subspace quotient
+
+**Theorem.** If $V$ is Banach and $W\subset V$ is a closed linear subspace, then $V/W$ with its quotient norm is Banach. The quotient map $Q:V\to V/W$ is linear and satisfies $\|Qv\|\le\|v\|$.
+
+**Proof.** Use the absolutely summable series characterization from unit 2 (MIT Lecture 2, Theorem 19): a normed space is complete if and only if every series whose term norms have finite sum converges in that space. Let $\sum_j\|q_j\|<\infty$ in $V/W$. For $q_j\ne0$, the definition of the infimum supplies a representative $v_j$ with $Qv_j=q_j$ and $\|v_j\|\le2\|q_j\|$; for a zero coset choose $v_j=0$. We do not assume the infimum is attained. The series $\sum_jv_j$ is absolutely summable in the Banach space $V$, so has a sum $v$. Continuity of $Q$ gives $\sum_{j\le N}q_j=Q(\sum_{j\le N}v_j)\to Qv$. The series criterion now proves quotient completeness. Closedness of $W$ was needed first to make the quotient distance a norm, rather than a seminorm. $\square$
+
+For comparison, quotienting $\ell^\infty$ by the nonclosed subspace $c_{00}$ leaves a nonzero coset represented by $(1/n)$ with quotient distance zero. The theorem must not be applied before checking that the normed-space hypothesis is meaningful.
+
 ## The Baire category theorem
 
 We now reach the engine behind three of the course's big theorems.

@@ -129,16 +129,33 @@
       "exerciseIds": [],
       "labId": "norm-comparison",
       "sessionKind": "lab"
+    },
+    {
+      "id": "u01-synthesis",
+      "type": "proof_workshop",
+      "title": "Synthesis: connect the unit methods",
+      "instructions": "Attempt the multi-part synthesis independently, then explain the hypotheses in each step. Use the whole sheet to identify remaining gaps; one accepted task is not a certificate of all course outcomes.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "fa21-l1-def7",
+        "fa21-l1-prop11",
+        "fa21-l1-thm16"
+      ],
+      "exerciseIds": [
+        "MAT-230-u01-ex4"
+      ],
+      "sessionKind": "tutorial"
     }
   ],
   "exerciseIds": [
     "MAT-230-u01-ex1",
     "MAT-230-u01-ex2",
-    "MAT-230-u01-ex3"
+    "MAT-230-u01-ex3",
+    "MAT-230-u01-ex4"
   ],
   "exitCheck": {
-    "description": "Exercise 1 accepted: both norms of x^n computed and non-equivalence concluded with the finite-dimensional hypothesis named.",
-    "exerciseId": "MAT-230-u01-ex1"
+    "description": "Complete this synthesis and review the whole sheet against the unit objectives. Record assistance and unresolved gaps; a single assessment samples only its stated capabilities.",
+    "exerciseId": "MAT-230-u01-ex4"
   },
   "commonMisconceptions": [
     {
@@ -151,7 +168,7 @@
     },
     {
       "claim": "Convergence in the integral norm implies pointwise convergence.",
-      "correction": "It does not: the functions can converge to 0 in ‖·‖₁ while taking the value 1 somewhere for every n (narrow spikes). The sup norm, by contrast, controls every point.",
+      "correction": "Integral-norm convergence need not imply pointwise convergence of the full sequence. On [0,1], let f_(2n)(x)=max(1−n|x−1/2|,0) and f_(2n+1)=0 for n≥2. Their L1 norms tend to zero, but their values at x=1/2 alternate between one and zero. A moving point at each n would only disprove uniform convergence; the fixed point here proves failure of pointwise convergence.",
       "correctionLocatorIds": [
         "fa21-l1-prop11"
       ]
@@ -164,7 +181,7 @@
       ]
     }
   ],
-  "estimatedMinutes": 245,
+  "estimatedMinutes": 315,
   "status": "ready",
   "checks": [
     {
@@ -185,7 +202,12 @@
     {
       "name": "workload-sanity",
       "result": "pass",
-      "evidence": "60 + 75 + 15 + 10 minutes of activities plus 60 minutes preparation ≈ 3.7 hours, within the 10–12 hours per week budget alongside unit 2."
+      "evidence": "Workload is a provisional planning estimate, updated for the full problem sheet and synthesis; no empirical completion-time validation has occurred."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
     }
   ],
   "lessonFile": "lesson.md",
@@ -194,6 +216,8 @@
     "MAT-230-u01-ex1.grading-notes.md",
     "MAT-230-u01-ex2.reference-solution.md",
     "MAT-230-u01-ex3.grading-notes.md",
-    "lesson-notes.md"
+    "lesson-notes.md",
+    "MAT-230-u01-ex4.reference-solution.md",
+    "MAT-230-u01-ex3.reference-solution.md"
   ]
 }

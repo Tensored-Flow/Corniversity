@@ -1,3 +1,5 @@
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { defineConfig } from "vitest/config";
 
 // Integration tests run against a throw-away embedded PostgreSQL started by test/global-setup.ts.
@@ -16,7 +18,7 @@ export default defineConfig({
       BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-1234",
       OWNER_EMAIL: "owner@example.test",
       OWNER_BOOTSTRAP_CODE: "test-bootstrap-code",
-      CORNIVERSITY_DATA_ROOT: "C:/Users/leona/AppData/Local/Temp/corniversity-test-data",
+      CORNIVERSITY_DATA_ROOT: join(tmpdir(), "corniversity-test-data"),
       NODE_ENV: "test",
     },
   },

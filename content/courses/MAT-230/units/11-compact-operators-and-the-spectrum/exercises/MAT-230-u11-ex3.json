@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u11-ex3",
+  "sequence": 3,
+  "title": "Strong convergence is not norm convergence",
+  "kind": "proof",
+  "promptMarkdown": "Let $P_N$ be projection onto the first N coordinates of $\\ell^2$. Show $P_Nx\\to x$ for every x but $\\|P_N-I\\|=1$. Prove the identity is not compact. Explain why finite-rank approximation in operator norm, not merely pointwise convergence, is the correct compactness criterion.",
+  "conceptIds": [
+    "compact-operator",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Compare the order of the quantifiers in the two convergence statements.",
+    "Test a basis vector just beyond the projected coordinates."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Proves pointwise norm convergence and exact operator-norm error.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Demonstrates noncompactness by a bounded sequence.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Explains the uniform quantifier needed for finite nets.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

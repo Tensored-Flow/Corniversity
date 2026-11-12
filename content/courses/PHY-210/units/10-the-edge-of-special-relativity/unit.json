@@ -5,27 +5,159 @@
   "title": "The edge of special relativity: tides, free fall and the road to curvature",
   "summary": "Free fall as the free-float frame; the local character of inertial frames and tidal accelerations; the parable of the two travellers; gravitation as curvature announced as a preview of PHY-240; gravitational time dilation and light bending as equivalence-principle consequences; what special relativity has established and under what hypotheses.",
   "objectives": [
-    { "id": "u10-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 9 and Section 2.3, and MIT 8.20 Week 4 (Lectures 12.1–12.6)." }
+    {
+      "id": "u10-o1",
+      "description": "Estimate tidal relative motion and use precision to assess a local inertial approximation."
+    },
+    {
+      "id": "u10-o2",
+      "description": "Distinguish proper acceleration, coordinate acceleration and spacetime curvature."
+    },
+    {
+      "id": "u10-o3",
+      "description": "Derive a flat-spacetime accelerated-clock comparison and label the assumptions of gravitational interpretation."
+    },
+    {
+      "id": "u10-o4",
+      "description": "Connect interval geometry, Lorentz symmetry and conservation in a cumulative synthesis with a precise boundary of validity."
+    }
   ],
-  "prerequisiteConceptIds": ["minkowski-spacetime", "spacetime-causal-structure", "newtonian-mechanics"],
-  "teachesConceptIds": ["equivalence-principle"],
+  "prerequisiteConceptIds": [
+    "minkowski-spacetime",
+    "spacetime-causal-structure",
+    "newtonian-mechanics"
+  ],
+  "teachesConceptIds": [
+    "equivalence-principle"
+  ],
   "preparation": [
-    { "description": "Read Spacetime Physics Chapter 9 Gravity: Curved Spacetime in Action (pp. 275–298), treating 9.7–9.9 as orientation only.", "locatorId": "stp-ch9", "estimatedMinutes": 60 },
-    { "description": "Re-read Chapter 2, Section 2.3 Local Character of Free-Float Frame (pp. 30–34).", "locatorId": "stp-ch2", "estimatedMinutes": 15 },
-    { "description": "Optional: MIT 8.20 Week 4 videos, Lectures 12.1–12.6 (equivalence principle, gravitational time dilation, light bending, redshift tests, general relativity, experimental evidence).", "locatorId": "sr21-week4", "estimatedMinutes": 50 }
+    {
+      "description": "Read Spacetime Physics Chapter 9 Gravity: Curved Spacetime in Action (pp. 275–298), treating 9.7–9.9 as orientation only.",
+      "locatorId": "stp-ch9",
+      "estimatedMinutes": 60
+    },
+    {
+      "description": "Re-read Chapter 2, Section 2.3 Local Character of Free-Float Frame (pp. 30–34).",
+      "locatorId": "stp-ch2",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 4 videos, Lectures 12.1–12.6 (equivalence principle, gravitational time dilation, light bending, redshift tests, general relativity, experimental evidence).",
+      "locatorId": "sr21-week4",
+      "estimatedMinutes": 50
+    }
   ],
   "activities": [
-    { "id": "u10-a1", "type": "reading", "title": "Reading: the edge of special relativity", "instructions": "Read the listed material for this unit, keeping a written list of every statement that goes beyond flat spacetime; the prepared lesson will label each as a preview of PHY-240. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 110, "sourceLocatorIds": ["stp-ch9", "stp-ch2", "sr21-week4"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u10-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 110,
+      "sourceLocatorIds": [
+        "stp-ch9",
+        "stp-ch2",
+        "sr21-week4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u10-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 225,
+      "sourceLocatorIds": [
+        "stp-ch9",
+        "stp-ch2",
+        "sr21-week4"
+      ],
+      "exerciseIds": [
+        "PHY-210-u10-ex1",
+        "PHY-210-u10-ex2",
+        "PHY-210-u10-ex3",
+        "PHY-210-u10-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u10-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "stp-ch9",
+        "stp-ch2",
+        "sr21-week4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u10-ex1",
+    "PHY-210-u10-ex2",
+    "PHY-210-u10-ex3",
+    "PHY-210-u10-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u10-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "One zero accelerometer reading proves the region is flat.",
+      "correction": "One free-fall worldline can have zero proper acceleration while neighbouring paths exhibit tides.",
+      "correctionLocatorIds": [
+        "stp-ch9"
+      ]
+    },
+    {
+      "claim": "Position-dependent metric coefficients prove curvature.",
+      "correction": "Accelerated coordinates in flat spacetime have position-dependent coefficients; curvature is coordinate-independent.",
+      "correctionLocatorIds": [
+        "stp-ch9"
+      ]
+    },
+    {
+      "claim": "A local equivalence-principle argument gives the full stellar bending angle.",
+      "correction": "A global angle requires the gravitational metric along the ray.",
+      "correctionLocatorIds": [
+        "stp-ch9"
+      ]
+    }
+  ],
+  "estimatedMinutes": 480,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapters 2 and 9 PDFs listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; MIT 8.20 Week 4 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: actual Taylor–Wheeler chapter2 §2.3 pp30–34 and chapter9 §§9.4–9.6 pp280–287 read; p281 rendered and visually checked. Official MIT8.20 week4 and lecture12.3 transcript consulted. Original tidal, coordinate-metric and exercise derivations checked during authoring; independent review pending."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 480 active minutes including source reading, worked reasoning, 4 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u10-ex1.reference-solution.md",
+    "PHY-210-u10-ex2.reference-solution.md",
+    "PHY-210-u10-ex3.reference-solution.md",
+    "PHY-210-u10-ex4.reference-solution.md"
+  ]
 }

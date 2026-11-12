@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u06-ex3",
+  "sequence": 3,
+  "title": "An acid solution with pH near seven",
+  "kind": "derivation",
+  "promptMarkdown": "An ideal fully dissociated monoprotic acid is present at $C=1.00\\times10^{-8}\\,\\mathrm M$ at $25^\\circ\\mathrm C$. Derive $h=(C+\\sqrt{C^2+4K_w})/2$ from charge balance and water equilibrium. Compute its pH. Explain precisely why the naive result pH $=8$ is impossible for this model, and find the limits as $C/\\sqrt{K_w}$ tends to zero and to infinity.",
+  "conceptIds": [
+    "acid-base-equilibria"
+  ],
+  "hintLadder": [
+    "Treat the fully dissociated acid anion as a fixed negative charge.",
+    "The missing positive charge must balance both that anion and hydroxide.",
+    "Expand the square root using the dominant scale in each limit."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives the positive root from charge and water balances.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes a physically consistent pH and diagnoses the failed shortcut.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Derives both limiting regimes with their conditions.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

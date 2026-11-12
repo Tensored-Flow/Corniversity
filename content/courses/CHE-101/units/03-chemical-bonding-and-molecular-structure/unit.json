@@ -5,45 +5,250 @@
   "title": "Chemical bonding and molecular structure",
   "summary": "Ionic and covalent bonding and electronegativity; the Lewis procedure, formal charge, resonance and the exceptions to the octet rule; VSEPR shapes, bond angles and molecular polarity; molecular-orbital bond orders and magnetism for diatomics; valence bond theory and hybridisation as the local picture.",
   "objectives": [
-    { "id": "u03-o1", "description": "Classify bonds as ionic, polar covalent or covalent from electronegativity differences and write electron configurations of the ions in an ionic compound." },
-    { "id": "u03-o2", "description": "Draw Lewis structures by the counting procedure, assign formal charges that sum to the total charge, choose between candidate structures and write resonance forms with the hybrid's bond order." },
-    { "id": "u03-o3", "description": "Predict electron-pair geometry, molecular shape and approximate bond angles with VSEPR (AXE notation) and decide whether a molecule is polar." },
-    { "id": "u03-o4", "description": "Fill a molecular-orbital diagram for first- and second-period diatomics, compute bond orders and predict magnetism, and say what Lewis theory fails to predict." },
-    { "id": "u03-o5", "description": "Assign hybridisation from electron-pair geometry and count σ and π bonds in a molecule." }
+    {
+      "id": "u03-o1",
+      "description": "Classify bonds as ionic, polar covalent or covalent from electronegativity differences and write electron configurations of the ions in an ionic compound."
+    },
+    {
+      "id": "u03-o2",
+      "description": "Draw Lewis structures by the counting procedure, assign formal charges that sum to the total charge, choose between candidate structures and write resonance forms with the hybrid's bond order."
+    },
+    {
+      "id": "u03-o3",
+      "description": "Predict electron-pair geometry, molecular shape and approximate bond angles with VSEPR (AXE notation) and decide whether a molecule is polar."
+    },
+    {
+      "id": "u03-o4",
+      "description": "Fill a molecular-orbital diagram for first- and second-period diatomics, compute bond orders and predict magnetism, and say what Lewis theory fails to predict."
+    },
+    {
+      "id": "u03-o5",
+      "description": "Assign hybridisation from electron-pair geometry and count σ and π bonds in a molecule."
+    }
   ],
-  "prerequisiteConceptIds": ["electron-configuration", "periodic-trends"],
-  "teachesConceptIds": ["ionic-bonding-lattice", "covalent-bonding-lewis", "vsepr-molecular-geometry", "molecular-orbital-theory", "valence-bond-hybridisation"],
+  "prerequisiteConceptIds": [
+    "electron-configuration",
+    "periodic-trends"
+  ],
+  "teachesConceptIds": [
+    "ionic-bonding-lattice",
+    "covalent-bonding-lewis",
+    "vsepr-molecular-geometry",
+    "molecular-orbital-theory",
+    "valence-bond-hybridisation"
+  ],
   "preparation": [
-    { "description": "OpenStax 7.1 Ionic Bonding and 7.2 Covalent Bonding: ion formation, electronegativity and bond polarity (Examples 7.1–7.3).", "locatorId": "ox-7-2", "estimatedMinutes": 20 },
-    { "description": "OpenStax 7.3 Lewis Symbols and Structures and 7.4 Formal Charges and Resonance, then lecture 10 notes pages 1–5 for the counting procedure, FC = V − L − ½B and ozone.", "locatorId": "ox-7-3", "estimatedMinutes": 35 },
-    { "description": "Lecture 10 notes page 3: the formal charge formula and the rule that formal charges sum to the total charge.", "locatorId": "chem14-n10-p3", "estimatedMinutes": 10 },
-    { "description": "OpenStax 7.6 Molecular Structure and Polarity, with lecture 12 notes pages 1–4 and 7 for the AXE tables and lone-pair repulsion ordering.", "locatorId": "ox-7-6", "estimatedMinutes": 30 },
-    { "description": "Lecture 12 notes page 3: the repulsion ordering lone pair/lone pair > lone pair/bond pair > bond pair/bond pair.", "locatorId": "chem14-n12-p3", "estimatedMinutes": 10 },
-    { "description": "OpenStax 8.4 Molecular Orbital Theory (bond order, second-period diatomics; Examples 8.5–8.7) and 8.2 Hybrid Atomic Orbitals (Examples 8.2–8.3).", "locatorId": "ox-8-4", "estimatedMinutes": 35 }
+    {
+      "description": "OpenStax 7.1 Ionic Bonding and 7.2 Covalent Bonding: ion formation, electronegativity and bond polarity (Examples 7.1–7.3).",
+      "locatorId": "ox-7-2",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "OpenStax 7.3 Lewis Symbols and Structures and 7.4 Formal Charges and Resonance, then lecture 10 notes pages 1–5 for the counting procedure, FC = V − L − ½B and ozone.",
+      "locatorId": "ox-7-3",
+      "estimatedMinutes": 35
+    },
+    {
+      "description": "Lecture 10 notes page 3: the formal charge formula and the rule that formal charges sum to the total charge.",
+      "locatorId": "chem14-n10-p3",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "OpenStax 7.6 Molecular Structure and Polarity, with lecture 12 notes pages 1–4 and 7 for the AXE tables and lone-pair repulsion ordering.",
+      "locatorId": "ox-7-6",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Lecture 12 notes page 3: the repulsion ordering lone pair/lone pair > lone pair/bond pair > bond pair/bond pair.",
+      "locatorId": "chem14-n12-p3",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "OpenStax 8.4 Molecular Orbital Theory (bond order, second-period diatomics; Examples 8.5–8.7) and 8.2 Hybrid Atomic Orbitals (Examples 8.2–8.3).",
+      "locatorId": "ox-8-4",
+      "estimatedMinutes": 35
+    }
   ],
   "activities": [
-    { "id": "u03-a1", "type": "reading", "title": "Lectures 9–14 and OpenStax chapters 7–8: bonding and shape", "instructions": "Read the lesson with the lecture pages and notes open. Draw every Lewis structure in the lesson yourself before reading the given one, and for each VSEPR example write the AXE class before looking at the shape. Keep a running table in the notebook: formula, valence electrons, AXE class, shape, polar or not.", "estimatedMinutes": 80, "sourceLocatorIds": ["chem14-lec09", "chem14-lec10", "chem14-lec11", "chem14-lec12", "chem14-lec13", "chem14-lec14", "chem14-n10-p1", "chem14-n10-p2", "chem14-n10-p3", "chem14-n10-p4", "chem14-n10-p5", "chem14-n12-p1", "chem14-n12-p2", "chem14-n12-p3", "chem14-n12-p4", "chem14-n12-p7", "ox-7-1", "ox-7-2", "ox-7-3", "ox-7-4", "ox-7-5", "ox-7-6", "ox-8-1", "ox-8-2", "ox-8-4"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u03-a2", "type": "lecture", "title": "Optional: the recorded lectures on Lewis structures, VSEPR and MO theory", "instructions": "The OCW pages for lectures 10, 12, 13 and 14 embed the videos (about 50 minutes each). Optional; not individually verified by Corniversity, so start from the lecture pages.", "estimatedMinutes": 100, "sourceLocatorIds": ["chem14-lec10", "chem14-lec12", "chem14-lec13", "chem14-lec14"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u03-a3", "type": "problem", "title": "Tutorial: Lewis structures, resonance and shapes", "instructions": "Attempt exercises 1 and 2 before asking for hints. For every structure, write the valence-electron count first and the formal charges last, and check that the formal charges sum to the total charge before you move on.", "estimatedMinutes": 90, "sourceLocatorIds": ["chem14-n10-p3", "chem14-n10-p4", "chem14-n12-p3", "chem14-n12-p4", "ox-7-4", "ox-7-6"], "exerciseIds": ["CHE-101-u03-ex1", "CHE-101-u03-ex2"], "sessionKind": "tutorial" },
-    { "id": "u03-a4", "type": "problem", "title": "Problem class: bond orders from molecular orbitals", "instructions": "Exercise 3. Fill the MO diagram explicitly (list the orbitals in order with their occupancies) rather than quoting a bond order.", "estimatedMinutes": 35, "sourceLocatorIds": ["ox-8-4", "chem14-lec13"], "exerciseIds": ["CHE-101-u03-ex3"], "sessionKind": "problem_class" },
-    { "id": "u03-a5", "type": "retrieval_practice", "title": "Retrieval: the unit's rules", "instructions": "From memory: the Lewis counting steps; FC = V − L − ½B and the sum rule; the AXE classes for steric numbers 2–6 with and without lone pairs; the repulsion ordering; bond order = (bonding − antibonding)/2; which hybridisation goes with which electron-pair geometry.", "estimatedMinutes": 15, "sourceLocatorIds": ["chem14-n10-p3", "chem14-n12-p2", "ox-8-4", "ox-8-2"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u03-a1",
+      "type": "reading",
+      "title": "Lectures 9–14 and OpenStax chapters 7–8: bonding and shape",
+      "instructions": "Read the lesson with the lecture pages and notes open. Draw every Lewis structure in the lesson yourself before reading the given one, and for each VSEPR example write the AXE class before looking at the shape. Keep a running table in the notebook: formula, valence electrons, AXE class, shape, polar or not.",
+      "estimatedMinutes": 80,
+      "sourceLocatorIds": [
+        "chem14-lec09",
+        "chem14-lec10",
+        "chem14-lec11",
+        "chem14-lec12",
+        "chem14-lec13",
+        "chem14-lec14",
+        "chem14-n10-p1",
+        "chem14-n10-p2",
+        "chem14-n10-p3",
+        "chem14-n10-p4",
+        "chem14-n10-p5",
+        "chem14-n12-p1",
+        "chem14-n12-p2",
+        "chem14-n12-p3",
+        "chem14-n12-p4",
+        "chem14-n12-p7",
+        "ox-7-1",
+        "ox-7-2",
+        "ox-7-3",
+        "ox-7-4",
+        "ox-7-5",
+        "ox-7-6",
+        "ox-8-1",
+        "ox-8-2",
+        "ox-8-4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u03-a2",
+      "type": "lecture",
+      "title": "Optional: the recorded lectures on Lewis structures, VSEPR and MO theory",
+      "instructions": "The OCW pages for lectures 10, 12, 13 and 14 embed the videos (about 50 minutes each). Optional; not individually verified by Corniversity, so start from the lecture pages.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "chem14-lec10",
+        "chem14-lec12",
+        "chem14-lec13",
+        "chem14-lec14"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u03-a3",
+      "type": "problem",
+      "title": "Tutorial: Lewis structures, resonance and shapes",
+      "instructions": "Attempt exercises 1 and 2 before asking for hints. For every structure, write the valence-electron count first and the formal charges last, and check that the formal charges sum to the total charge before you move on.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "chem14-n10-p3",
+        "chem14-n10-p4",
+        "chem14-n12-p3",
+        "chem14-n12-p4",
+        "ox-7-4",
+        "ox-7-6"
+      ],
+      "exerciseIds": [
+        "CHE-101-u03-ex1",
+        "CHE-101-u03-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u03-a4",
+      "type": "problem",
+      "title": "Problem class: bond orders from molecular orbitals",
+      "instructions": "Exercise 3. Fill the MO diagram explicitly (list the orbitals in order with their occupancies) rather than quoting a bond order.",
+      "estimatedMinutes": 35,
+      "sourceLocatorIds": [
+        "ox-8-4",
+        "chem14-lec13"
+      ],
+      "exerciseIds": [
+        "CHE-101-u03-ex3"
+      ],
+      "sessionKind": "problem_class"
+    },
+    {
+      "id": "u03-a5",
+      "type": "retrieval_practice",
+      "title": "Retrieval: the unit's rules",
+      "instructions": "From memory: the Lewis counting steps; FC = V − L − ½B and the sum rule; the AXE classes for steric numbers 2–6 with and without lone pairs; the repulsion ordering; bond order = (bonding − antibonding)/2; which hybridisation goes with which electron-pair geometry.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "chem14-n10-p3",
+        "chem14-n12-p2",
+        "ox-8-4",
+        "ox-8-2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": ["CHE-101-u03-ex1", "CHE-101-u03-ex2", "CHE-101-u03-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: both resonance structures of nitrite with formal charges summing to −1, the double-double structure rejected for the right reason, and the bent shape with a compressed angle argued from VSEPR; and exercise 3 accepted with the three bond orders and the paramagnetism of O2 explained.", "exerciseId": "CHE-101-u03-ex1" },
+  "exerciseIds": [
+    "CHE-101-u03-ex1",
+    "CHE-101-u03-ex2",
+    "CHE-101-u03-ex3"
+  ],
+  "exitCheck": {
+    "description": "Exercise 1 accepted: both resonance structures of nitrite with formal charges summing to −1, the double-double structure rejected for the right reason, and the bent shape with a compressed angle argued from VSEPR; and exercise 3 accepted with the three bond orders and the paramagnetism of O2 explained.",
+    "exerciseId": "CHE-101-u03-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "A Lewis structure with the right electron count is correct.", "correction": "The count is necessary, not sufficient: the octets (or permitted exceptions), the formal charges and their sum to the total charge all have to be checked, and among valid structures the one with smallest formal charges and negative charge on the more electronegative atom is preferred.", "correctionLocatorIds": ["chem14-n10-p3", "chem14-n10-p4", "ox-7-4"] },
-    { "claim": "Molecular shape is the same as electron-pair geometry.", "correction": "Lone pairs occupy positions in the electron-pair geometry but are not part of the molecular shape: H2O has tetrahedral electron-pair geometry and a bent shape, with an angle below 109.5° because lone pairs repel more.", "correctionLocatorIds": ["chem14-n12-p3", "ox-7-6"] },
-    { "claim": "Polar bonds make a polar molecule.", "correction": "Bond dipoles add as vectors; in symmetric shapes (linear AX2, trigonal planar AX3, tetrahedral AX4, square planar AX4E2, octahedral AX6) they cancel and the molecule is nonpolar.", "correctionLocatorIds": ["ox-7-6"] },
-    { "claim": "Lewis theory and MO theory are rival descriptions of which one is right.", "correction": "Both are models with different scopes: Lewis structures count electron pairs and predict connectivity and shape; MO theory predicts bond order, magnetism and the existence of species like He2 (bond order 0). O2's paramagnetism is where Lewis fails and MO succeeds.", "correctionLocatorIds": ["ox-8-4", "chem14-lec13"] }
+    {
+      "claim": "A Lewis structure with the right electron count is correct.",
+      "correction": "The count is necessary, not sufficient: the octets (or permitted exceptions), the formal charges and their sum to the total charge all have to be checked, and among valid structures the one with smallest formal charges and negative charge on the more electronegative atom is preferred.",
+      "correctionLocatorIds": [
+        "chem14-n10-p3",
+        "chem14-n10-p4",
+        "ox-7-4"
+      ]
+    },
+    {
+      "claim": "Molecular shape is the same as electron-pair geometry.",
+      "correction": "Lone pairs occupy positions in the electron-pair geometry but are not part of the molecular shape: H2O has tetrahedral electron-pair geometry and a bent shape, with an angle below 109.5° because lone pairs repel more.",
+      "correctionLocatorIds": [
+        "chem14-n12-p3",
+        "ox-7-6"
+      ]
+    },
+    {
+      "claim": "Polar bonds make a polar molecule.",
+      "correction": "Bond dipoles add as vectors; in symmetric shapes (linear AX2, trigonal planar AX3, tetrahedral AX4, square planar AX4E2, octahedral AX6) they cancel and the molecule is nonpolar.",
+      "correctionLocatorIds": [
+        "ox-7-6"
+      ]
+    },
+    {
+      "claim": "Lewis theory and MO theory are rival descriptions of which one is right.",
+      "correction": "Both are models with different scopes: Lewis structures count electron pairs and predict connectivity and shape; MO theory predicts bond order, magnetism and the existence of species like He2 (bond order 0). O2's paramagnetism is where Lewis fails and MO succeeds.",
+      "correctionLocatorIds": [
+        "ox-8-4",
+        "chem14-lec13"
+      ]
+    }
   ],
   "estimatedMinutes": 450,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture pages 9–14 opened 2026-10-30 (topics and readings recorded); lecture 10 and 12 notes PDFs text-extracted with page indices verified (FC = V − L − ½B on lecture 10 page 3, ozone resonance on page 4; VSEPR AXE table on lecture 12 page 2, repulsion ordering on page 3, lone-pair examples on page 7); OpenStax 7.1–7.6, 8.1, 8.2, 8.4 opened with learning objectives and Example titles." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived: nitrite has 18 valence electrons; O=N–O⁻ formal charges N 0, O(double) 0, O(single) −1, sum −1; the N=O=N-type double-double structure puts 10 electrons on N; bond order 1.5; AX2E bent with angle below 120°. SF4 AX4E see-saw polar; XeF4 AX4E2 square planar nonpolar; NH3 AX3E trigonal pyramidal polar; SO3 AX3 trigonal planar nonpolar. MO: O2 (σ2s)²(σ*2s)²(σ2p)²(π2p)⁴(π*2p)² bond order 2, two unpaired; O2⁺ bond order 2.5, one unpaired; O2⁻ bond order 1.5, one unpaired; lengths O2⁺ < O2 < O2⁻." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "Lesson examples are carbonate, H2O, CH4, PCl5, SF6, XeF2, BF3, CCl4, N2 and F2; the exercises use nitrite, SF4/XeF4/NH3/SO3 and the O2 series. The lesson states that O2 is paramagnetic as the motivating fact but does not compute the ions. Reference values only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "140 minutes of preparation, 80 of reading, 90 + 35 + 15 of problems and revision ≈ 6 hours, plus an optional 100 minutes of recorded lectures; one teaching week." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Lecture pages 9–14 opened 2026-10-30 (topics and readings recorded); lecture 10 and 12 notes PDFs text-extracted with page indices verified (FC = V − L − ½B on lecture 10 page 3, ozone resonance on page 4; VSEPR AXE table on lecture 12 page 2, repulsion ordering on page 3, lone-pair examples on page 7); OpenStax 7.1–7.6, 8.1, 8.2, 8.4 opened with learning objectives and Example titles."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Content agent re-derived: nitrite has 18 valence electrons; O=N–O⁻ formal charges N 0, O(double) 0, O(single) −1, sum −1; the N=O=N-type double-double structure puts 10 electrons on N; bond order 1.5; AX2E bent with angle below 120°. SF4 AX4E see-saw polar; XeF4 AX4E2 square planar nonpolar; NH3 AX3E trigonal pyramidal polar; SO3 AX3 trigonal planar nonpolar. MO: O2 (σ2s)²(σ*2s)²(σ2p)²(π2p)⁴(π*2p)² bond order 2, two unpaired; O2⁺ bond order 2.5, one unpaired; O2⁻ bond order 1.5, one unpaired; lengths O2⁺ < O2 < O2⁻."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "Lesson examples are carbonate, H2O, CH4, PCl5, SF6, XeF2, BF3, CCl4, N2 and F2; the exercises use nitrite, SF4/XeF4/NH3/SO3 and the O2 series. The lesson states that O2 is paramagnetic as the motivating fact but does not compute the ions. Reference values only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "140 minutes of preparation, 80 of reading, 90 + 35 + 15 of problems and revision ≈ 6 hours, plus an optional 100 minutes of recorded lectures; one teaching week."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Final independent review 2026-11-12; see .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md for scope and limits."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["CHE-101-u03-ex1.reference-solution.md", "CHE-101-u03-ex2.reference-solution.md", "CHE-101-u03-ex3.reference-solution.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "CHE-101-u03-ex1.reference-solution.md",
+    "CHE-101-u03-ex2.reference-solution.md",
+    "CHE-101-u03-ex3.reference-solution.md",
+    "lesson-notes.md"
+  ]
 }

@@ -98,6 +98,10 @@ export const ERROR_NOTICES = {
   "stopped-preparation-resumed": "Only a stopped preparation can be resumed.",
   "draft-not-found": "Draft not found.",
   "draft-passed-every-automatic-check": "Only a draft that passed every automatic check can be published.",
+  "draft-needs-current-evidence-checks":
+    "This draft predates the current evidence and teaching checks. Prepare and review a new draft before publishing.",
+  "draft-failed-current-evidence-checks":
+    "The draft does not pass the current evidence and teaching checks. Review its failed checks before publishing.",
   "unit-no-longer-exists": "The unit no longer exists.",
   "draft-not-found-already-decided": "Draft not found or already decided.",
   // programmes

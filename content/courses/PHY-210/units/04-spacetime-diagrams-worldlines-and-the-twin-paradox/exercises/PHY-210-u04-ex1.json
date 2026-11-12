@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u04-ex1",
+  "sequence": 1,
+  "title": "Calibrate the tilted axes",
+  "kind": "calculation",
+  "promptMarkdown": "For a boost with $v=4c/5$, find the unprimed coordinates $(ct,x)$ of the unit points on the $ct\\prime$ and $x\\prime$ axes. Verify their norms and mutual inner product. Transform the event $(ct,x)=(7,5)\\,\\mathrm m$ to $S\\prime$ and verify its interval in both frames. Explain how to locate it graphically without Euclidean perpendicular projection.",
+  "conceptIds": [
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Set $x\\prime=0$ for one axis and $t\\prime=0$ for the other.",
+    "The Lorentzian unit conditions use a difference of squares.",
+    "Apply the Lorentz equations directly as an algebraic check of the sketch."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Axis calibration and Lorentz orthogonality are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Event transformation and interval are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The graphical coordinate rule is distinguished from Euclidean projection.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

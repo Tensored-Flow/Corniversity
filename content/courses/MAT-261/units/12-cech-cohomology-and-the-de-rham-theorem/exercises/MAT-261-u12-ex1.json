@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u12-ex1",
+  "sequence": 1,
+  "title": "The circle class from two local angles",
+  "kind": "proof",
+  "promptMarkdown": "Let $U=S^1\\setminus\\{(-1,0)\\}$ and $V=S^1\\setminus\\{(1,0)\\}$. Use angle branches $\\theta_U\\in(-\\pi,\\pi)$ and $\\theta_V\\in(0,2\\pi)$. Compute their difference on both components of $U\\cap V$, write the Čech complex with locally constant coefficients, and compute its cohomology. Relate the nonzero overlap class to the period of the angular one-form. Explain why one constant for the whole overlap is insufficient.",
+  "conceptIds": [
+    "cech-de-rham-theorem"
+  ],
+  "hintLadder": [
+    "Specify which angle branch is used on the lower semicircle.",
+    "There is one constant per connected component.",
+    "Quotient pairs of constants by equal shifts."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct branch jump and complex.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Cohomology and local-constant distinction.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Period comparison and cover qualification.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

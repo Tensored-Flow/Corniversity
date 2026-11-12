@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u05-ex1",
+  "sequence": 1,
+  "title": "Distance becomes a functional",
+  "kind": "proof",
+  "promptMarkdown": "Let $M$ be a closed linear subspace of a normed space $X$ and $x\\notin M$. Put $d=\\inf_{m\\in M}\\|x-m\\|$. Show $d>0$ and construct $\\varphi\\in X^*$ such that $\\varphi|_M=0$, $\\|\\varphi\\|=1$, and $\\varphi(x)=d$. Explain why closedness matters.",
+  "conceptIds": [
+    "hahn-banach",
+    "dual-space"
+  ],
+  "hintLadder": [
+    "First work only on $M+\\mathbb Fx$.",
+    "Define a functional that kills $M$ and sends $x$ to the distance; test its norm on $x-m_k$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Uses closedness to obtain positive distance.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Constructs and bounds a linear functional on the enlarged subspace.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves the norm is exactly one and applies Hahn–Banach.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

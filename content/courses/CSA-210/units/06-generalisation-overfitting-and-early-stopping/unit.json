@@ -3,27 +3,144 @@
   "courseId": "CSA-210",
   "sequence": 6,
   "title": "Generalisation, overfitting and early stopping",
-  "summary": "Big networks as adaptive basis functions; memorisation versus generalisation; train, validation and test curves; fitting randomised labels; regularisation as shrinkage; early stopping chosen on the validation set.",
+  "summary": "Population versus empirical risk, bias–variance, independent/group/time splits, checkpoint selection and a complete evidence audit.",
   "objectives": [
-    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D1 Tutorial 1 (Regularization techniques part 1) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u06-o1",
+      "description": "Define empirical and population risk and the assumptions supporting a held-out estimate."
+    },
+    {
+      "id": "u06-o2",
+      "description": "Derive bias–variance decomposition with the correct randomness and independence."
+    },
+    {
+      "id": "u06-o3",
+      "description": "Implement explicit early-stopping selection and state restoration."
+    },
+    {
+      "id": "u06-o4",
+      "description": "Audit leakage, paired/clustered uncertainty, baselines and deployment claims."
+    }
   ],
-  "prerequisiteConceptIds": ["supervised-learning-generalisation", "multilayer-perceptron"],
-  "teachesConceptIds": ["overfitting-and-early-stopping"],
+  "prerequisiteConceptIds": [
+    "supervised-learning-generalisation",
+    "multilayer-perceptron"
+  ],
+  "teachesConceptIds": [
+    "overfitting-and-early-stopping"
+  ],
   "preparation": [
-    { "description": "Read W2D1 Tutorial 1: regularisation as shrinkage, overfitting and its visualisation, the validation dataset, memorisation, early stopping, and the bonus on training with randomised labels.", "locatorId": "nmadl-w2d1-t1", "estimatedMinutes": 60 }
+    {
+      "locatorId": "nmadl-w2d1-t1",
+      "description": "Read overfitting, validation, memorisation and early stopping; distinguish procedure selection from final evaluation.",
+      "estimatedMinutes": 60
+    }
   ],
   "activities": [
-    { "id": "u06-a1", "type": "reading", "title": "W2D1 Tutorial 1: Regularization techniques part 1", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d1", "nmadl-w2d1-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u06-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 180,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u06-ex1",
+        "CSA-210-u06-ex2",
+        "CSA-210-u06-ex3",
+        "CSA-210-u06-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u06-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u06-ex1",
+    "CSA-210-u06-ex2",
+    "CSA-210-u06-ex3",
+    "CSA-210-u06-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u06-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Any train/validation/test array split guarantees independence.",
+      "correction": "Groups, near-duplicates, future information and preprocessing can cross the boundaries.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t1"
+      ]
+    },
+    {
+      "claim": "Training loss must rise when overfitting starts.",
+      "correction": "Training loss can keep falling while validation performance worsens.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t1"
+      ]
+    },
+    {
+      "claim": "Many seeds on one dataset measure all uncertainty.",
+      "correction": "They describe algorithmic variability conditional on that dataset, not all sampling or distribution-shift uncertainty.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 380,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Regularization techniques part 1'; sections including 'Section 2.2: Overfitting on Test Dataset', 'Validation Dataset', 'Section 4: Early Stopping' and the randomised-labels bonus recorded)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W2D1 Tutorial1 sections1–4 including validation and early stopping. Original bias–variance proof, checkpoint simulation, paired-uncertainty calculation and complete synthetic pipeline audit; avoids universal parameter-count/generalisation claims."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 380 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u06-ex1.reference-solution.md",
+    "CSA-210-u06-ex2.reference-solution.md",
+    "CSA-210-u06-ex3.reference-solution.md",
+    "CSA-210-u06-ex4.reference-solution.md"
+  ]
 }

@@ -7,7 +7,15 @@
   "objectives": [
     {
       "id": "u11-o1",
-      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 19–20 of the 18.102 notes."
+      "description": "Characterise compact diagonal operators and explain approximation by finite rank in Hilbert space."
+    },
+    {
+      "id": "u11-o2",
+      "description": "Use the Neumann series to bound the resolvent and prove invertibility is an open condition."
+    },
+    {
+      "id": "u11-o3",
+      "description": "Distinguish spectrum from eigenvalues by constructing an approximate eigenvector sequence."
     }
   ],
   "prerequisiteConceptIds": [
@@ -29,36 +37,95 @@
     {
       "id": "u11-a1",
       "type": "reading",
-      "title": "Lectures 19–20: Compact operators and the spectrum",
-      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
-      "estimatedMinutes": 90,
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
       "sourceLocatorIds": [
         "fa21-lec19",
         "fa21-lec20"
       ],
       "exerciseIds": [],
       "sessionKind": "lecture"
+    },
+    {
+      "id": "u11-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 135,
+      "sourceLocatorIds": [
+        "fa21-lec19",
+        "fa21-lec20"
+      ],
+      "exerciseIds": [
+        "MAT-230-u11-ex1",
+        "MAT-230-u11-ex2",
+        "MAT-230-u11-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u11-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "fa21-lec19",
+        "fa21-lec20"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
     }
   ],
-  "exerciseIds": [],
+  "exerciseIds": [
+    "MAT-230-u11-ex1",
+    "MAT-230-u11-ex2",
+    "MAT-230-u11-ex3"
+  ],
   "exitCheck": {
-    "description": "To be defined when the unit is prepared."
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-230-u11-ex3"
   },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "commonMisconceptions": [
+    {
+      "claim": "The spectrum consists only of eigenvalues.",
+      "correction": "An operator can fail surjectivity or a bounded-inverse estimate without a nonzero kernel. The compact diagonal 1/n has zero in its spectrum but not as an eigenvalue.",
+      "correctionLocatorIds": [
+        "fa21-lec19"
+      ]
+    },
+    {
+      "claim": "A pointwise limit of finite-rank operators must be compact.",
+      "correction": "The convergence must be in operator norm; finite-coordinate projections converge pointwise to the noncompact identity.",
+      "correctionLocatorIds": [
+        "fa21-lec19"
+      ]
+    }
+  ],
+  "estimatedMinutes": 320,
+  "status": "ready",
   "checks": [
     {
       "name": "source-locators",
       "result": "pass",
-      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
     },
     {
       "name": "mathematical-review",
-      "result": "needs_review",
-      "evidence": "Not yet prepared; no lesson or exercises to review."
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
     }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-230-u11-ex1.reference-solution.md",
+    "MAT-230-u11-ex2.reference-solution.md",
+    "MAT-230-u11-ex3.reference-solution.md"
+  ]
 }

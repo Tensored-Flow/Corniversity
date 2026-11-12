@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u03-ex3",
+  "sequence": 3,
+  "title": "Represent XOR and disprove affine separation",
+  "kind": "calculation",
+  "promptMarkdown": "On inputs(0,0),(1,0),(0,1),(1,1), labels are0,1,1,0. Construct a two-hidden-unit ReLU network whose scalar output equals these labels exactly. Prove that no affine score with prediction1 for score>0 and0 for score≤0 can classify all four correctly. Count parameters in a fully connected2→2→1 architecture including biases, even if your construction fixes some to zero.",
+  "conceptIds": [
+    "multilayer-perceptron"
+  ],
+  "hintLadder": [
+    "Try a function of s=x1+x2 with a peak at s=1.",
+    "Add the two strict positive inequalities.",
+    "Count all free architecture parameters separately from chosen construction values."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Constructs and verifies the nonlinear network",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Proves affine impossibility with boundary conventions",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Separates parameter count from chosen values and learning claims",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Combines a constructive nonlinear solution with an impossibility proof for a simpler model."
+  }
+}

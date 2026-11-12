@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u08-ex1",
+  "sequence": 1,
+  "title": "Three operators, three different outcomes",
+  "kind": "proof",
+  "promptMarkdown": "On $\\ell^2(\\mathbb N)$ determine the kernel, range, cokernel dimension and Fredholm index where defined for the right shift $S$, the left shift $S^*$, and $D(x_n)=(x_n/n)$. Prove the range assertions, including nonclosedness for $D$, and show that $D$ is compact.",
+  "conceptIds": [
+    "fredholm-and-smale-sard"
+  ],
+  "hintLadder": [
+    "Compute coordinatewise and retain the first-coordinate condition.",
+    "Test the range of $D$ against $(1/n)$.",
+    "Approximate $D$ in operator norm, not just pointwise."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Kernels and exact ranges.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Closedness/cokernel/index with hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Compactness and non-Fredholm distinction.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

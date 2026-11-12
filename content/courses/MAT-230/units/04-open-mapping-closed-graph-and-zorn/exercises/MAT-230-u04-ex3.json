@@ -4,7 +4,10 @@
   "title": "Zorn's lemma and Hamel bases",
   "kind": "explanation",
   "promptMarkdown": "1. Using Zorn's lemma, show that every vector space $V\\neq\\{0\\}$ has a Hamel basis. Be explicit about the partially ordered set, why chains have upper bounds, and why a maximal element spans.\n2. In under 120 words, combine this with the result of unit 3 (no countable Hamel basis in an infinite-dimensional Banach space) to explain why Hamel bases are the wrong notion of basis for Banach spaces, and what notion will replace them for Hilbert spaces later in the course.",
-  "conceptIds": ["open-mapping", "banach-space"],
+  "conceptIds": [
+    "open-mapping",
+    "banach-space"
+  ],
   "hintLadder": [
     "Take $E$ to be the set of linearly independent subsets of $V$, ordered by inclusion. Why is $E$ nonempty?",
     "For a chain of independent sets, consider the union. A finite dependence among its elements involves finitely many sets of the chain; which one contains them all?",
@@ -14,10 +17,82 @@
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "poset", "criterion": "Independent subsets ordered by inclusion; nonempty.", "weight": 0.2, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Partial." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "chains", "criterion": "Union of a chain is independent (finite dependence lives in one member) and is an upper bound.", "weight": 0.3, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Partial." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "maximal-spans", "criterion": "A maximal independent set spans; otherwise it can be enlarged.", "weight": 0.25, "levels": [{ "label": "met", "description": "Correct." }, { "label": "partially met", "description": "Partial." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "synthesis", "criterion": "Hamel bases of infinite-dimensional Banach spaces are uncountable and non-constructive; orthonormal (Schauder-type) bases with infinite sums replace them.", "weight": 0.25, "levels": [{ "label": "met", "description": "Both points." }, { "label": "partially met", "description": "One point." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "poset",
+        "criterion": "Independent subsets ordered by inclusion; nonempty.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Partial."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "chains",
+        "criterion": "Union of a chain is independent (finite dependence lives in one member) and is an upper bound.",
+        "weight": 0.3,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Partial."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "maximal-spans",
+        "criterion": "A maximal independent set spans; otherwise it can be enlarged.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Partial."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "synthesis",
+        "criterion": "Hamel bases of infinite-dimensional Banach spaces are uncountable and non-constructive; orthonormal (Schauder-type) bases with infinite sums replace them.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both points."
+          },
+          {
+            "label": "partially met",
+            "description": "One point."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false

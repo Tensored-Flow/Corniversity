@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u03-ex1",
+  "sequence": 1,
+  "title": "A clock offset masquerading as a speed anomaly",
+  "kind": "calculation",
+  "promptMarkdown": "Stationary detectors A and B are separated by $900\\,\\mathrm m$ in one inertial frame. Use $c=300\\,\\mathrm m/\\mu\\mathrm s$ for this exercise. A emits a pulse at $2.0\\,\\mu\\mathrm s$ on its clock; B reflects it immediately; A receives it at $8.0\\,\\mu\\mathrm s$. B displays $5.4\\,\\mu\\mathrm s$ at reflection. A particle later passes A at $10.0\\,\\mu\\mathrm s$ and B at displayed time $15.4\\,\\mu\\mathrm s$. Determine B's offset, the corrected particle speed, and the false speed inferred without the correction. Explain what was assumed in synchronising the clocks.",
+  "conceptIds": [
+    "minkowski-spacetime"
+  ],
+  "hintLadder": [
+    "Use the midpoint of A's emission and reception readings.",
+    "An ahead clock must have its offset subtracted from later readings.",
+    "Compute both transit durations before dividing distance by time."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Radar synchronisation and offset sign are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Corrected and uncorrected speeds are distinguished.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The synchronisation and propagation assumptions are explicit.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -408,6 +408,10 @@ export async function seedContent(db: Database, bundle: ContentBundle, options: 
                 },
           });
         report.units++;
+        // A published preparation is one coherent academic version: preserving its lesson but
+        // replacing its exercises or deleting its instructor solutions corrupts that version.
+        // Only reattach it above; the owner's published teaching remains authoritative.
+        if (published.has(unitId)) continue;
         for (const e of unit.exercises) {
           await tx
             .insert(unitExercise)

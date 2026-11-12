@@ -5,27 +5,146 @@
   "title": "Sard's theorem and stratified spaces",
   "summary": "Sets of measure zero in manifolds; the measure-zero criterion; Sard's theorem that the critical values of a smooth map form a set of measure zero, with proof; consequences (regular values are dense); stratifications of spaces by manifolds.",
   "objectives": [
-    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 10–12 of the 18.965 notes (Theorems 12.1 and 12.3; Definition 13.1) with Hitchin §10.5 for the special case of Sard's theorem." }
+    {
+      "id": "u06-o1",
+      "description": "State and explain the proof of smooth Sard, including its measure-theoretic and countability hypotheses."
+    },
+    {
+      "id": "u06-o2",
+      "description": "Compute rank strata and distinguish a smooth stratum from its singular closure."
+    },
+    {
+      "id": "u06-o3",
+      "description": "Use dimension and Sard to select a perturbation, and combine this with the compact embedding construction."
+    }
   ],
-  "prerequisiteConceptIds": ["inverse-function-theorem-manifolds", "tangent-bundle-vector-fields", "real-analysis-sequences"],
-  "teachesConceptIds": ["sard-theorem"],
+  "prerequisiteConceptIds": [
+    "inverse-function-theorem-manifolds",
+    "tangent-bundle-vector-fields",
+    "real-analysis-sequences"
+  ],
+  "teachesConceptIds": [
+    "sard-theorem"
+  ],
   "preparation": [
-    { "description": "Read lectures 10–11: §12 Sard's theorem, Theorem 12.1 (measure-zero criterion) and Theorem 12.3 (Sard) with proof.", "locatorId": "gm04-l10-sard", "estimatedMinutes": 60 },
-    { "description": "Read lecture 12: Definition 13.1 and the examples of stratified spaces.", "locatorId": "gm04-lec12", "estimatedMinutes": 30 },
-    { "description": "Read Hitchin appendix §10.5 (Sard's theorem, special case) for the short proof in the equidimensional case.", "locatorId": "hit14-s10-5", "estimatedMinutes": 15 }
+    {
+      "description": "Read lectures 10–11: §12 Sard's theorem, Theorem 12.1 (measure-zero criterion) and Theorem 12.3 (Sard) with proof.",
+      "locatorId": "gm04-l10-sard",
+      "estimatedMinutes": 60
+    },
+    {
+      "description": "Read lecture 12: Definition 13.1 and the examples of stratified spaces.",
+      "locatorId": "gm04-lec12",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Read Hitchin appendix §10.5 (Sard's theorem, special case) for the short proof in the equidimensional case.",
+      "locatorId": "hit14-s10-5",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u06-a1", "type": "reading", "title": "Lectures 10–12: Sard's theorem and stratified spaces", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec10-11", "gm04-lec12", "gm04-l10-sard", "hit14-s10-5"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "gm04-l10-sard",
+        "gm04-lec12",
+        "hit14-s10-5",
+        "gm04-lec10-11"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u06-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 230,
+      "sourceLocatorIds": [
+        "gm04-l10-sard",
+        "gm04-lec12",
+        "hit14-s10-5",
+        "gm04-lec10-11"
+      ],
+      "exerciseIds": [
+        "MAT-261-u06-ex1",
+        "MAT-261-u06-ex2",
+        "MAT-261-u06-ex3",
+        "MAT-261-u06-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u06-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "gm04-l10-sard",
+        "gm04-lec12",
+        "hit14-s10-5",
+        "gm04-lec10-11"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "MAT-261-u06-ex1",
+    "MAT-261-u06-ex2",
+    "MAT-261-u06-ex3",
+    "MAT-261-u06-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-261-u06-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Sard says almost every point in the domain is regular.",
+      "correction": "It says critical values form a null subset of the target. A constant map can have every domain point critical.",
+      "correctionLocatorIds": [
+        "gm04-l10-sard"
+      ]
+    },
+    {
+      "claim": "The closed set of matrices of rank at most r is a smooth rank-r manifold.",
+      "correction": "The fixed-rank stratum is smooth. Its closure includes lower-rank strata and is generally singular.",
+      "correctionLocatorIds": [
+        "gm04-l10-sard"
+      ]
+    }
+  ],
+  "estimatedMinutes": 460,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lectures 10–11 and 12 PDFs downloaded and text-extracted 2026-10-30: §12 with Theorems 12.1 and 12.3 begins on PDF page 1 of lecture10_11.pdf; §13 Definition 13.1 on page 1 of lecture12.pdf. Hitchin §10.5 on printed p. 93 (PDF index 92)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-261-u06-ex1.reference-solution.md",
+    "MAT-261-u06-ex2.reference-solution.md",
+    "MAT-261-u06-ex3.reference-solution.md",
+    "MAT-261-u06-ex4.reference-solution.md"
+  ]
 }

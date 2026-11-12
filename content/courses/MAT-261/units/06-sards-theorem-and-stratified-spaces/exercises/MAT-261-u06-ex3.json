@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u06-ex3",
+  "sequence": 3,
+  "title": "Avoiding singular matrices along a disk",
+  "kind": "proof",
+  "promptMarkdown": "Let $h:D^2\\to M_{4\\times2}(\\mathbb R)$ be smooth and full rank on the boundary. Prove there is an arbitrarily small constant matrix $A$ such that $h+A$ is full rank on the entire disk, and the boundary homotopy $h+tA$ is full rank for $0\\le t\\le1$. Name the Sard dimension estimate and compactness step. Explain what changes for $3\\times2$ matrices.",
+  "conceptIds": [
+    "sard-theorem"
+  ],
+  "hintLadder": [
+    "Compute the codimension of each deficient-rank stratum.",
+    "Build the incidence manifold with $A$ as a parameter.",
+    "Control the whole boundary homotopy with one positive-distance estimate."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct strata and dimension inequality.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Sard parameter argument for interior and boundary.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Compact boundary protection and sharp limitation of this method.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

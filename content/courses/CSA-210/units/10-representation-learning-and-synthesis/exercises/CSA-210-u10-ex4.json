@@ -1,0 +1,149 @@
+{
+  "id": "CSA-210-u10-ex4",
+  "sequence": 4,
+  "title": "Cumulative project: train, break and explain a small network",
+  "kind": "code",
+  "promptMarkdown": "Implement the synthetic study specified in the lesson using standard-library Python 3 or a comparably transparent local implementation. Submit runnable code, a machine-readable result file and an annotated report. Record predictions before execution. No external training service or pretrained weights are required.\n\nUse independent data seeds 101/202/303/404 and counts 160/80/160/160. Seed 404 generates the held-out shift check; it is not a tuning set. Fit preprocessing and rank-one raw-covariance PCA on training inputs only. Train tanh MLPs with widths 8 and 16, penalties λ = 0 and 0.01, and initialisation seeds 11, 23 and 47. Use full-batch mean BCE plus a weight-only (λ/2) squared-norm penalty, step 0.15 and 250 epochs. Save each seed's best validation checkpoint; select the configuration by mean best validation loss across all three seeds. Retain every selected seed and inspect final test data only after selection. Include majority, linear-logistic and PCA-linear baselines with a declared matching checkpoint-selection protocol.\n\n(a) Derive gradients and parameter counts. Verify at least five parameter coordinates by central differences away from numerical extremes.\n(b) Audit partition IDs, preprocessing and copied checkpoint states.\n(c) Report every candidate/seed validation result and the selected models' train/test/shift loss and accuracy. Include baselines and at least five actual failure examples where available; state explicitly if fewer exist.\n(d) Explain the learned PCA direction, reconstruction versus label utility, seed variation and the limits of synthetic evidence.\n(e) Discuss whether convolutional locality/sharing or attention-based token mixing is justified for these three unordered numeric features. Use a precise operator or symmetry result from units 8–9.\n(f) Propose a follow-up ablation or representation, with a prediction and fresh confirmation plan.\n\nInclude a reproducibility manifest. Distinguish source-supported theory from measured results. A well-explained poor model is acceptable; do not change the test set or suppress failed seeds to improve the score.",
+  "conceptIds": [
+    "representation-learning-unsupervised"
+  ],
+  "hintLadder": [
+    "First implement the data generator, IDs and train-only transformations, and test those before any optimisation.",
+    "Check one loss/gradient computation numerically before running the candidate search.",
+    "Save immutable/deep-copied best states; select a configuration using validation averages across the fixed seed set.",
+    "Only then create/evaluate the final and shifted samples; report measured failures rather than selecting them away.",
+    "Use the mathematical representation and operator results to explain why a comparison did or did not work."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives and verifies mathematical implementation and parameter counts",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Preserves data, preprocessing, checkpoint and selection boundaries",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Provides complete reproducible code and recorded evidence",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Reports baselines, all seeds, uncertainty limits and actual failures",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-5",
+        "criterion": "Explains representation quality and distribution-shift behaviour",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-6",
+        "criterion": "Integrates architecture assumptions and proposes a falsifiable follow-up",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 240,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

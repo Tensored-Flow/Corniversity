@@ -52,8 +52,8 @@ export const PREPARATION_STAGES = [
     key: "checks",
     role: "reviewer",
     kind: "deterministic",
-    title: "Factual, notation and support checks",
-    description: "Structure, citations to verified locators, notation, rubric and leakage checks on each draft.",
+    title: "Evidence and teaching-structure checks",
+    description: "Supplied passages, objective coverage, worked examples, problem progression and formatting; not academic verification.",
   },
   {
     key: "publication",
@@ -104,8 +104,20 @@ export function stageWithinBudget(
 export const UnitDraftSchema = z.object({
   lessonMarkdown: z.string().min(1),
   objectives: z.array(z.string().min(1)).min(1).max(6),
-  /** Verified locator ids the lesson relies on (given to the model with their text or labels). */
+  /** Further-reading locations. A registered location is not evidence that its text was read. */
   sourceLocatorIds: z.array(z.string()).max(20),
+  /** Optional only so saved legacy drafts remain readable. Current checks require these fields. */
+  sourcePassageIds: z.array(z.string()).max(12).optional(),
+  workedExamples: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        reasoningMarkdown: z.string().min(1),
+        objectiveIndexes: z.array(z.number().int().min(0).max(5)).min(1).max(6),
+      }),
+    )
+    .max(4)
+    .optional(),
   exercises: z
     .array(
       z.object({
@@ -119,6 +131,7 @@ export const UnitDraftSchema = z.object({
           .max(8),
         referenceSolution: z.string().min(1),
         stage: z.enum(["worked_example", "independent", "unfamiliar", "counterexample", "synthesis"]),
+        objectiveIndexes: z.array(z.number().int().min(0).max(5)).min(1).max(6).optional(),
       }),
     )
     .min(1)
@@ -131,33 +144,111 @@ export interface DraftCheck {
   name: string;
   result: "pass" | "fail";
   detail: string;
+  /** Server-recorded provenance, never accepted from model output. */
+  evidence?: { locatorIds: string[]; passageIds: string[]; expectedObjectives: string[] };
+}
+
+export function renderDraftLesson(draft: UnitDraft): string {
+  const examples = (draft.workedExamples ?? []).map((e) => `## Worked example: ${e.title}\n\n${e.reasoningMarkdown}`);
+  return [draft.lessonMarkdown, ...examples].join("\n\n");
+}
+
+export interface DraftCheckContext {
+  verifiedLocatorIds: ReadonlySet<string>;
+  suppliedPassageIds?: ReadonlySet<string>;
+  expectedObjectives?: readonly string[];
 }
 
 /**
  * Deterministic checks on a draft before the owner sees it: these say whether the draft is
- * well-formed and supported by verified locators, never whether its mathematics is right, which
+ * well-formed and references supplied text, never whether a passage supports every claim or its mathematics is right, which
  * the owner judges (a model's own review is a further check, not a guarantee).
  */
-export function checkUnitDraft(draft: UnitDraft, context: { verifiedLocatorIds: ReadonlySet<string> }): DraftCheck[] {
+export function checkUnitDraft(draft: UnitDraft, context: DraftCheckContext): DraftCheck[] {
   const checks: DraftCheck[] = [];
-  const words = draft.lessonMarkdown.split(/\s+/).filter(Boolean).length;
+  const visibleLesson = renderDraftLesson(draft);
+  const words = visibleLesson.split(/\s+/).filter(Boolean).length;
   checks.push({
     name: "lesson-length",
-    result: words >= 400 ? "pass" : "fail",
-    detail: `${words} words (at least 400 for a substantive lesson).`,
+    result: words >= 600 ? "pass" : "fail",
+    detail: `${words} words including worked examples (at least 600; length alone does not establish quality).`,
   });
   const unknown = draft.sourceLocatorIds.filter((id) => !context.verifiedLocatorIds.has(id));
   checks.push({
     name: "verified-sources",
-    result: draft.sourceLocatorIds.length > 0 && unknown.length === 0 ? "pass" : "fail",
-    detail:
-      draft.sourceLocatorIds.length === 0
-        ? "The lesson names no verified locator."
-        : unknown.length
-          ? `Unknown or unverified locators: ${unknown.join(", ")}.`
-          : `${draft.sourceLocatorIds.length} verified locators.`,
+    result: unknown.length === 0 ? "pass" : "fail",
+    detail: unknown.length
+      ? `Locations not supplied to this run: ${unknown.join(", ")}.`
+      : "Further-reading locations are restricted to this run; they are not passage evidence.",
   });
-  const dollars = (draft.lessonMarkdown.replace(/\\\$/g, "").match(/\$/g) ?? []).length;
+  const supplied = context.suppliedPassageIds ?? new Set<string>();
+  const passageIds = draft.sourcePassageIds ?? [];
+  const unsupported = passageIds.filter((id) => !supplied.has(id));
+  checks.push({
+    name: "supplied-source-passages",
+    result: passageIds.length > 0 && unsupported.length === 0 ? "pass" : "fail",
+    detail:
+      passageIds.length === 0
+        ? "No supplied passage is cited."
+        : unsupported.length
+          ? `Passages not supplied to this run: ${unsupported.join(", ")}.`
+          : `${passageIds.length} supplied passages cited; claim-by-claim support still needs academic review.`,
+    evidence: {
+      locatorIds: [...context.verifiedLocatorIds],
+      passageIds: [...supplied],
+      expectedObjectives: [...(context.expectedObjectives ?? draft.objectives)],
+    },
+  });
+  // Repeated sentences can clear a word-count gate while teaching nothing. This is a bounded
+  // heuristic, not a semantic quality score: repeated substantive 12-word runs expose filler.
+  const tokens = visibleLesson.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+  const seen = new Set<string>();
+  let repeated = 0;
+  for (let i = 0; i + 12 <= tokens.length; i++) {
+    const run = tokens.slice(i, i + 12).join(" ");
+    if (seen.has(run)) repeated++;
+    else seen.add(run);
+  }
+  const repeatedShare = repeated / Math.max(1, tokens.length - 11);
+  checks.push({
+    name: "non-repetitive-teaching",
+    result: repeatedShare <= 0.2 ? "pass" : "fail",
+    detail: `${Math.round(repeatedShare * 100)}% repeated 12-word runs (maximum 20%).`,
+  });
+  const examples = draft.workedExamples ?? [];
+  const validIndexes = (indexes: readonly number[] | undefined) =>
+    Boolean(indexes?.length) && indexes!.every((i) => Number.isInteger(i) && i >= 0 && i < draft.objectives.length);
+  checks.push({
+    name: "worked-reasoning",
+    result:
+      examples.length > 0 &&
+      examples.every((e) => e.reasoningMarkdown.split(/\s+/).filter(Boolean).length >= 80 && validIndexes(e.objectiveIndexes))
+        ? "pass"
+        : "fail",
+    detail:
+      "At least one separately recorded worked example must explain its reasoning (80+ words) and identify the objective it teaches; correctness is reviewed separately.",
+  });
+  const expected = context.expectedObjectives ?? draft.objectives;
+  const preserved = expected.length === draft.objectives.length && expected.every((o, i) => o.trim() === draft.objectives[i]?.trim());
+  const assessed = new Set(draft.exercises.filter((e) => e.stage !== "worked_example").flatMap((e) => e.objectiveIndexes ?? []));
+  const coverage = draft.exercises.every((e) => validIndexes(e.objectiveIndexes)) && draft.objectives.every((_, i) => assessed.has(i));
+  checks.push({
+    name: "objective-coverage",
+    result: preserved && coverage ? "pass" : "fail",
+    detail: "Every planned objective must remain and map to an independent exercise; mappings need semantic review.",
+  });
+  const stages = new Set(draft.exercises.map((e) => e.stage));
+  checks.push({
+    name: "problem-progression",
+    result:
+      draft.exercises.length >= 3 &&
+      stages.has("independent") &&
+      ["unfamiliar", "counterexample", "synthesis"].some((s) => stages.has(s as UnitDraft["exercises"][number]["stage"]))
+        ? "pass"
+        : "fail",
+    detail: "At least three problems, including independent work and unfamiliar transfer, a counterexample or synthesis.",
+  });
+  const dollars = (visibleLesson.replace(/\\\$/g, "").match(/\$/g) ?? []).length;
   checks.push({
     name: "notation-balanced",
     result: dollars % 2 === 0 ? "pass" : "fail",
@@ -170,7 +261,7 @@ export function checkUnitDraft(draft: UnitDraft, context: { verifiedLocatorIds: 
       result: Math.abs(weight - 1) < 0.01 ? "pass" : "fail",
       detail: `Rubric weights sum to ${weight.toFixed(2)} (must be 1).`,
     });
-    const leak = leakRun(e.referenceSolution, [e.promptMarkdown, ...e.hintLadder, draft.lessonMarkdown]);
+    const leak = leakRun(e.referenceSolution, [e.promptMarkdown, ...e.hintLadder, visibleLesson]);
     checks.push({
       name: `exercise-${i + 1}-no-leak`,
       result: leak ? "fail" : "pass",

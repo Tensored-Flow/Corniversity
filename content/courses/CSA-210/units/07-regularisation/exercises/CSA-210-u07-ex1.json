@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u07-ex1",
+  "sequence": 1,
+  "title": "Ridge versus sparsity under a stated convention",
+  "kind": "calculation",
+  "promptMarkdown": "For z=(3,0.4,−2), minimise J₂(w)=½||w−z||²+(λ/2)||w||² and J₁(w)=½||w−z||²+λ||w||₁ with λ=1. Derive the solutions including the subgradient condition at zero. Calculate each fitted vector and its unpenalised half-squared residual loss. Explain what changes if the L2 penalty is writtenλ||w||² without½.",
+  "conceptIds": [
+    "regularisation-dl"
+  ],
+  "hintLadder": [
+    "Solve the orthogonal coordinates separately.",
+    "Use a subgradient interval at the L1 corner.",
+    "Keep the penalty coefficient convention explicit."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives both minimisers including zero condition",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes vectors and residuals",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Explains coefficient convention and predictive limits",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

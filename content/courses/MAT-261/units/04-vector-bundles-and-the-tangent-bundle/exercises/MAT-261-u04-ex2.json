@@ -1,0 +1,92 @@
+{
+  "id": "MAT-261-u04-ex2",
+  "sequence": 2,
+  "title": "A nontrivial line bundle with a trivial square sum",
+  "kind": "proof",
+  "promptMarkdown": "For the Möbius line bundle described in the lesson, prove that it has no nowhere-zero continuous section. Construct a smooth global frame of its Whitney sum with itself. Explain why the pullback under the double covering $S^1\\to S^1$, $e^{it}\\mapsto e^{2it}$, is trivial.",
+  "conceptIds": [
+    "vector-bundles",
+    "tangent-bundle-vector-fields"
+  ],
+  "hintLadder": [
+    "Lift a section to the real line.",
+    "Seek a $2\\times2$ rotation matrix that changes sign after $2\\pi$.",
+    "Follow the gluing map twice around the target."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Nontriviality via sign and continuity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Smooth descending frame with linear independence.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct pullback trivialization.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

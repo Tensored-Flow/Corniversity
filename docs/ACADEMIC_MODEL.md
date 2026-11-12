@@ -17,9 +17,28 @@ Course: `proposed` → `source_verified` → `syllabus_ready` → `teaching_read
 is a side state with a visible alternative or request. Unit: `draft` → `checking` → `ready`
 (`blocked` side state). A course is `teaching_ready` only when its first two units are `ready`
 and every unit in the syllabus has a verified locator; the validator enforces this structure.
-The substantive checks a unit records (`mathematical-review`, `source-review`) are the content
-author's own review and are shown as such; they are not independent verification, and the
-assessment of the learner's work never depends on them.
+An author's mathematical/source checks remain author review. Separate independent review is
+claimed only where its reader, scope, corrections and final disposition are recorded; a ready
+flag or a passing schema does not establish it. Assessment of the learner's work does not depend
+on a course-quality flag.
+
+The catalogue contains 141 units, 72 ready, with 250 exercises and 1,166 verified locators. The
+selected five courses are complete across all 54 units: CHE-101 (10 units, 37 original exercises),
+PHY-210 (10, 33), MAT-230 (12, 44), MAT-261 (12, 43), CSA-210 (10, 38). Their 195 exercises have
+private reference reasoning, progressive hints/rubrics and cumulative synthesis or proof work.
+These courses are authored directly in the Codex task; Corniversity's connected ChatGPT plan or
+a paid runtime model API is not used to generate them.
+
+The review evidence separates actual-source inspection, independent solution derivation and
+post-repair rereading. The maths review covers all 87 current solutions and all 24 lessons; the
+physics review covers 33 solutions and all 10 lessons; the lead checks all 75 chemistry/CS
+solutions, and a separate source reviewer reads all 20 science lessons plus the specifically
+listed assessment samples and repairs. Fourteen CS Python blocks and the standalone capstone
+are executed. Exact source passages, reviewed files and boundaries are in the course manifests
+and [academic review ledgers](../.codex/quality-loop/university-teaching-quality/). No pass claims
+every optional source page, video or rubric has been exhaustively audited. Imported advanced
+theorems and proof sketches are named; workload, learning gains and human expert certification
+remain unvalidated.
 
 ## Prerequisites
 
@@ -49,7 +68,13 @@ tutorial, problem class, seminar, lab, revision, oral explanation, project.
 Understand the attempt first; hint ladder before answers; direct explanation on request; label
 statements (source-backed / derived / conjecture / needs checking); define notation; offer another
 representation when stuck; record misconceptions only with evidence; summarise and suggest one
-next step. The campus layer never interrupts proof work.
+next step. The tutor sees current learner-facing notes and the latest saved attempt (or the
+latest submission when the draft is empty). Bounds are 12,000 note characters and 20,000 attempt
+characters; opening assumptions and the selected passage or conclusion survive truncation, and
+omissions are explicit. Small hints remain short; a requested full explanation supplies the
+necessary hypotheses and reasoning within the provider budget. Notes and answer keys can be
+wrong: the tutor should explain a concrete discrepancy rather than defend them automatically.
+The campus layer never interrupts proof work.
 
 ## Help and paper work
 
@@ -77,7 +102,11 @@ revision_requested | needs_review → revised → accepted. Feedback: statement 
 quantifiers, logical steps, cited results, boundary cases, first substantive gap (line-localised),
 alternate proofs accepted. Deterministic checks run first where they apply (e.g. the norms of
 `x^n` on `[0,1]`: sup norm 1, L¹ norm 1/(n+1)); a model assessor adds structured feedback with
-confidence; low confidence ⇒ `needs_review`. Appeals and regrades are first-class records.
+confidence; low confidence ⇒ `needs_review`. The assessor checks the reference against the
+problem and permitted source evidence, accepts correct alternative arguments and routes an
+unresolved reference discrepancy to review. Location pointers alone are not read evidence.
+Library feedback citations retain asset and passage identities. Appeals and regrades are
+first-class records.
 Feedback that repeats the hidden reference solution (a run of ten consecutive words the learner has
 not seen in the prompt or in their own submission) is withheld before it is stored.
 
@@ -118,9 +147,11 @@ information, never as a debt, and ordinary study never waits for review.
 An exercise may carry a progression: its stage (worked example, independent, unfamiliar,
 counterexample, synthesis), a difficulty with the basis for it, its provenance, the help modes it
 permits, and for an unfamiliar problem a transfer note naming the familiar exercise it departs
-from. The validator enforces these; the next task is proposed in stage order. Four routes carry
-full progressions (MAT-230 units 1 to 4, MAT-262 units 1 and 2, COG-260 and COG-250 unit 1,
-CHE-101 unit 5). A stage describes the exercise's place in a route; it is not a grade.
+from. The validator enforces these; the next task is proposed in stage order. Of the selected
+courses' 195 exercises, 165 have explicit progression records; 30 inherited opening-unit
+exercises retain their ordered sheets, hints and rubrics without that optional tag. The existing
+MAT-262, COG-260 and COG-250 routes also retain their metadata. A stage describes the exercise's
+place in a route; it is not a grade.
 
 ## Voice and visual explanations
 
@@ -151,10 +182,27 @@ a budget of at most $20 (and never more than the monthly limit). It is a proposa
 and never enrols anyone. The stages are: inspect the sources, assemble the primary shelf, map
 concepts and prerequisites, set syllabus and workload, list resources to obtain (all deterministic,
 by the librarian or the registrar), draft each unit (the AI convenor, a live model only), check
-each draft (structure, verified sources, notation, rubric weights, leaked answers), and
-publication, which is the owner's. Without a live model drafting is blocked with its reason;
-nothing is invented in its place. A published draft fills an outlined unit only, never a prepared
-one, and later seeding leaves it in place.
+each draft, and publication, which is the owner's. Source-dependent drafting requires actual
+processed passages from the owner's course-linked library and the unit's assigned source
+editions, with permission for external AI. No passages means no provider reservation. Source
+titles, URLs and section labels alone are insufficient. Without an approved runnable model,
+drafting is blocked with its reason.
+
+“Evidence and teaching-structure checks” require supplied passage IDs, preserved planned
+objectives with assessment mappings, at least three problems including independent and transfer/
+counterexample/synthesis work, separately recorded worked reasoning, substantive nonrepetitive
+notes, balanced notation, valid rubric weights and no copied solution in learner-facing text.
+These are mechanical screens; they cannot establish source support for every claim or academic
+correctness. Server-recorded evidence and objectives are checked again at publication. Old drafts
+without this provenance need new preparation and review. A published draft fills an outlined
+unit; later seeding preserves its notes, exercises and private solutions together.
+
+Immediately before dispatch, preparation, assessment and the tutor recheck cached passage
+availability, ownership, course association and current permission. A changed source or failed
+check blocks without sending text or charging a provider attempt. Tutor replay omits replies
+whose recorded library citations are unavailable, while preserving the saved conversation.
+Uncited historical paraphrases cannot be attributed from citation data alone; this is not a
+guarantee that every source-derived sentence can be removed retrospectively.
 
 ## Programmes
 

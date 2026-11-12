@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u09-ex2",
+  "sequence": 2,
+  "title": "Derive, then calculate, an enzyme curve",
+  "kind": "calculation",
+  "promptMarkdown": "For E+S ⇌ ES → E+P let k₁=4.0×10⁶ M⁻¹s⁻¹, k₋₁=60 s⁻¹, k₂=20 s⁻¹ and E_T=0.20 μM. Derive the initial-rate relation from the ES balance and enzyme conservation. Find K_M, K_D, Vmax and v at free substrate 5, 20 and 100 μM. Explain the approximations and whether K_M=K_D is justified.",
+  "conceptIds": [
+    "arrhenius-temperature-dependence"
+  ],
+  "hintLadder": [
+    "Write the ES production and both loss terms.",
+    "Replace free E by ET−ES before rearranging.",
+    "Convert all concentrations into a common unit."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives the rate law from balances",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes all constants and rates with units",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Distinguishes quasi-steady from equilibrium and KM from KD",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

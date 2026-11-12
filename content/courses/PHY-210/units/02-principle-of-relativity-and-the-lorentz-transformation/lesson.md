@@ -1,10 +1,10 @@
 ## From a principle to a transformation
 
-Unit 1 asserted that the interval is invariant and used it. This unit derives the invariance from one physical principle and two thought experiments, then turns it into the Lorentz transformation, from which every "relativistic effect" follows as a corollary. Conventions as before: SI, $c$ explicit, signature $(-,+,+,+)$; a frame $S'$ moves at velocity $v$ along the $+x$ axis of frame $S$, and $\gamma = (1 - v^2/c^2)^{-1/2}$. Taylor and Wheeler write the same transformation with $c = 1$ and the opposite sign for the interval (Special Topic, Eq. L-10); Tong writes it with $\eta = \mathrm{diag}(+1,-1,-1,-1)$ (Section 7.1).
+Unit 1 asserted that the interval is invariant and used it. This unit derives the invariance from the relativity principle, invariant vacuum light speed and explicit symmetry assumptions, then turns it into the Lorentz transformation, from which every "relativistic effect" follows as a corollary. Conventions as before: SI, $c$ explicit, signature $(-,+,+,+)$; a frame $S'$ moves at velocity $v$ along the $+x$ axis of frame $S$, and $\gamma = (1 - v^2/c^2)^{-1/2}$. Taylor and Wheeler write the same transformation with $c = 1$ and the opposite sign for the interval (Special Topic, Eq. L-10); Tong writes it with $\eta = \mathrm{diag}(+1,-1,-1,-1)$ (Section 7.1).
 
 ## The principle of relativity
 
-**Definition (principle of relativity).** The laws of physics are the same in every free-float (inertial) frame; no experiment performed inside a closed laboratory can detect its uniform motion (Taylor and Wheeler, Section 3.1). Among the laws is the one fixing the speed of light in vacuum, so $c$ has the same value in every inertial frame (Section 3.3).
+**Definition (principle of relativity).** The laws of physics are the same in every free-float (inertial) frame; no experiment performed inside a closed laboratory can detect its uniform motion (Taylor and Wheeler, Section 3.1). We additionally use the empirical input that vacuum light has the same speed in these inertial coordinates; the relativity principle alone would also be compatible with Galilean mechanics. With this light-speed input, $c$ has the same value in every inertial frame (Section 3.3).
 
 The book's Sections 3.2–3.3 sort quantities into those that differ between frames (velocities of objects, time separations, space separations) and those that do not (the speed of light, the order of the periodic table, Newton's first law, which is really the definition of an inertial frame).
 
@@ -20,22 +20,24 @@ The book's Sections 3.2–3.3 sort quantities into those that differ between fra
 $$-c^2\Delta t^2 + \Delta x^2 = -4h^2 = -c^2\Delta t'^2 + \Delta x'^2 .$$
 The book's numbers: $h = 3\ \mathrm m$, $\Delta x = 8\ \mathrm m$, legs of $5\ \mathrm m$: rocket $(6,0)$, laboratory $(10,8)$, interval $-36\ \mathrm{m^2}$ in both (Table 3-1). Section 3.8 repeats it in a "super-rocket" frame, $(20.88, -20)$, with the same result. $\square$
 
-The argument covers pairs of events joinable by such a flash, i.e. with one frame in which they are co-located; linearity (below) extends it to all pairs. Note where each hypothesis entered: invariance of $c$ fixed the time from the path length, transverse invariance fixed $h$.
+The argument covers pairs of events joinable by such a flash, i.e. with one frame in which they are co-located; linearity (below) extends it to all pairs: the difference between the two squared-interval formulas is a quadratic polynomial in the displacement. It vanishes on the open set of timelike displacements, so all its coefficients vanish. Spatial isotropy and unchanged transverse coordinates extend the same argument to three spatial dimensions. Note where each hypothesis entered: invariance of $c$ fixed the time from the path length, transverse invariance fixed $h$.
 
 ## The Lorentz transformation
 
 We seek the map $(t,x)\mapsto(t',x')$ between the coordinates of one event in $S$ and $S'$ (transverse coordinates are unchanged: $y' = y$, $z' = z$, Eq. L-1).
 
-**Result (linearity; Section L.4).** The transformation is linear. A clock ticking at equal intervals in one frame must tick at equal intervals in the other, whichever tick is chosen as the reference event; a non-linear relation such as $t = Kt'^2$ would make the spacing depend on that choice. So $ct = B\,x' + D\,ct'$, $x = G\,x' + H\,ct'$ with coefficients depending only on $v$ (Eq. L-5).
+**Result (linearity; Section L.4).** Spatial and temporal homogeneity, preservation of inertial straight-line motions, and continuity give an affine coordinate change; coincident origins remove its translation. These are assumptions of our inertial coordinate construction, not consequences of a single clock observation. The transformation is therefore linear. A clock ticking at equal intervals in one frame must tick at equal intervals in the other, whichever tick is chosen as the reference event; a non-linear relation such as $t = Kt'^2$ would make the spacing depend on that choice. So $ct = B\,x' + D\,ct'$, $x = G\,x' + H\,ct'$ with coefficients depending only on $v$ (Eq. L-5).
+
+We choose aligned spatial orientations, future-directed clocks, and the transformation continuously connected to identity at zero relative velocity. These choices exclude additional spatial or time reversals that also preserve the interval.
 
 **Derivation (Sections L.3 and L.5).** *Step 1: the clock at the rocket origin.* Events at $x' = 0$ have $x = vt$ in $S$. Invariance of the interval for the pair (origin event, this event) gives $-c^2t'^2 = -c^2t^2 + v^2t^2$, so $t = \gamma t'$ and $x = \gamma v t'$: hence $D = \gamma$ and $H = \gamma v/c$ (Eqs. L-3, L-4). *Step 2: a general event.* Demand $-c^2t^2 + x^2 = -c^2t'^2 + x'^2$ for all $(t',x')$:
 $$-(Bx' + \gamma ct')^2 + (Gx' + \gamma\tfrac vc ct')^2 = -c^2t'^2 + x'^2 .$$
-The coefficient of $x'\,ct'$ on the left is $2\gamma(-B + G\,v/c)$; it must vanish, so $B = Gv/c$. The coefficient of $x'^2$ is $G^2 - B^2 = G^2(1 - v^2/c^2) = 1$, so $G = \gamma$ and $B = \gamma v/c$ (Eqs. L-7 to L-9; the $t'^2$ coefficient then checks automatically). Therefore
+The coefficient of $x'\,ct'$ on the left is $2\gamma(-B + G\,v/c)$; it must vanish, so $B = Gv/c$. The coefficient of $x'^2$ is $G^2 - B^2 = G^2(1 - v^2/c^2) = 1$, so $G = \gamma$ (the positive branch fixed by the orientation and continuity choices) and $B = \gamma v/c$ (Eqs. L-7 to L-9; the $t'^2$ coefficient then checks automatically). Therefore
 $$t = \gamma\Big(t' + \frac{v x'}{c^2}\Big),\qquad x = \gamma(x' + vt'),\qquad y = y',\quad z = z',$$
 and, solving (or replacing $v$ by $-v$, which is what the principle of relativity demands; Section L.6),
 $$t' = \gamma\Big(t - \frac{vx}{c^2}\Big),\qquad x' = \gamma(x - vt).\qquad\square$$
 
-Units: $vx/c^2$ is $\mathrm{m\,s^{-1}\cdot m/(m^2\,s^{-2})} = \mathrm s$, as it must be. Limiting case: for $v\ll c$, $\gamma\to 1$ and $vx/c^2\to 0$, giving the Galilean transformation $t' = t$, $x' = x - vt$; the same happens formally as $c\to\infty$.
+Units: $vx/c^2$ is $\mathrm{m\,s^{-1}\cdot m/(m^2\,s^{-2})} = \mathrm s$, as it must be. Nonrelativistic limit: at fixed coordinate separations and velocities as $c\to\infty$, $\gamma\to1$ and $vx/c^2\to0$, yielding $t'=t$ and $x'=x-vt$. For a finite-$c$ approximation, both $|v|/c\ll1$ and a negligible simultaneity term $|v\Delta x|/c^2$ on the time scale of interest are needed; small $v/c$ alone does not make offsets negligible at arbitrarily large distances.
 
 Invariance of the interval was used twice, as the book stresses: for the clock at the origin, and for every event against the reference event.
 
@@ -57,10 +59,10 @@ Since $\gamma^2 - \gamma^2v^2/c^2 = 1$, there is a unique real $\phi$ with $\gam
 $$\begin{pmatrix} ct' \\ x'\end{pmatrix} = \begin{pmatrix}\cosh\phi & -\sinh\phi\\ -\sinh\phi & \cosh\phi\end{pmatrix}\begin{pmatrix} ct\\ x\end{pmatrix},$$
 a rotation by a hyperbolic angle that preserves $-c^2t^2 + x^2$ exactly as a Euclidean rotation preserves $x^2 + y^2$ (Tong's "rotational analogy", Section 7.3.1). Two boosts along the same axis compose by adding rapidities, $\Lambda(\phi_1)\Lambda(\phi_2) = \Lambda(\phi_1 + \phi_2)$, because the matrix is $\exp(\phi K)$ for a fixed generator $K$. Translating back,
 $$\frac{w}{c} = \tanh(\phi_1 + \phi_2) = \frac{\tanh\phi_1 + \tanh\phi_2}{1 + \tanh\phi_1\tanh\phi_2},\qquad w = \frac{u + v}{1 + uv/c^2},$$
-the velocity-addition law (Section L.7). Rapidities add; velocities do not, and $w < c$ whenever $u,v < c$. Limiting case: $uv \ll c^2$ gives $w\approx u + v$.
+the velocity-addition law (Section L.7). Rapidities add; velocities do not, and $|w| < c$ whenever $|u|,|v| < c$. For $|u|,|v|\ll c$, the denominator differs from one by $uv/c^2$ and $w\approx u+v$; the weaker algebraic condition $|uv|\ll c^2$ also controls this denominator.
 
 **Warning.** Lorentz contraction and the relativity of simultaneity are results of *measurements* with a lattice of synchronised clocks, not of what an eye or camera sees; light-travel delays from different parts of an object produce further distortions that the book deliberately excludes (printed page 64). **Warning.** The transformation is between inertial frames in standard configuration; a boost along $x$ composed with one along $y$ is not a pure boost (it includes a rotation). Unit 6 treats the full Lorentz group.
 
 ## What to carry forward
 
-One principle plus two invariances (of $c$ and of transverse lengths) force the invariance of the interval; linearity plus that invariance force the Lorentz transformation; time dilation, simultaneity shifts, length contraction and velocity addition are corollaries, and the transformation is a hyperbolic rotation whose angles add. Unit 3 builds the lattice of clocks that makes "measure" precise; unit 4 draws all of this on spacetime diagrams.
+One principle plus two invariances (of $c$ and of transverse lengths) force the invariance of the interval; linearity, interval invariance and the specified orientation choices determine the standard Lorentz boost; time dilation, simultaneity shifts, length contraction and velocity addition are corollaries, and the transformation is a hyperbolic rotation whose angles add. Unit 3 builds the lattice of clocks that makes "measure" precise; unit 4 draws all of this on spacetime diagrams.

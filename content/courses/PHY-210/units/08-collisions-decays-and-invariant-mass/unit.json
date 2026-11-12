@@ -5,27 +5,165 @@
   "title": "Collisions, decays and invariant mass",
   "summary": "Total four-momentum and the invariant mass of a system; photons; thresholds for creating mass; two-body decays and the Compton effect by invariants; fission, fusion and annihilation in SI numbers.",
   "objectives": [
-    { "id": "u08-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 8, Tong Section 7.5, and MIT 8.20 Weeks 3–4 (Lectures 9.3, 10.3–10.7)." }
+    {
+      "id": "u08-o1",
+      "description": "Derive fixed-target thresholds from the total invariant and distinguish total from kinetic energy."
+    },
+    {
+      "id": "u08-o2",
+      "description": "Derive two-body decay energies and photon-pair invariant mass."
+    },
+    {
+      "id": "u08-o3",
+      "description": "Solve Compton recoil with mass-shell and momentum checks."
+    },
+    {
+      "id": "u08-o4",
+      "description": "Translate a consistent mass deficit into released energy and distinguish kinematics from dynamics."
+    }
   ],
-  "prerequisiteConceptIds": ["relativistic-energy-momentum", "four-vectors"],
-  "teachesConceptIds": ["relativistic-energy-momentum"],
+  "prerequisiteConceptIds": [
+    "relativistic-energy-momentum",
+    "four-vectors"
+  ],
+  "teachesConceptIds": [
+    "relativistic-energy-momentum"
+  ],
   "preparation": [
-    { "description": "Read Spacetime Physics Chapter 8 Collide. Create. Annihilate. (pp. 221–274), including the Dialog on the concept of mass (p. 246).", "locatorId": "stp-ch8", "estimatedMinutes": 80 },
-    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.5 Particle Physics (reference-only).", "locatorId": "tong-dr-ch7-s5", "estimatedMinutes": 25 },
-    { "description": "Optional: MIT 8.20 Week 3 Lecture 9.3 Collisions and Week 4 Lectures 10.3, 10.5, 10.6, 10.7.", "locatorId": "sr21-week4", "estimatedMinutes": 40 }
+    {
+      "description": "Read Spacetime Physics Chapter 8 Collide. Create. Annihilate. (pp. 221–274), including the Dialog on the concept of mass (p. 246).",
+      "locatorId": "stp-ch8",
+      "estimatedMinutes": 80
+    },
+    {
+      "description": "Second account: Tong, Dynamics and Relativity, Section 7.5 Particle Physics (reference-only).",
+      "locatorId": "tong-dr-ch7-s5",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 3 Lecture 9.3 Collisions and Week 4 Lectures 10.3, 10.5, 10.6, 10.7.",
+      "locatorId": "sr21-week4",
+      "estimatedMinutes": 40
+    }
   ],
   "activities": [
-    { "id": "u08-a1", "type": "reading", "title": "Reading: collisions and decays", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 130, "sourceLocatorIds": ["stp-ch8", "tong-dr-ch7-s5", "sr21-week3", "sr21-week4"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "stp-ch8",
+        "tong-dr-ch7-s5",
+        "sr21-week4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u08-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 145,
+      "sourceLocatorIds": [
+        "stp-ch8",
+        "tong-dr-ch7-s5",
+        "sr21-week4"
+      ],
+      "exerciseIds": [
+        "PHY-210-u08-ex1",
+        "PHY-210-u08-ex2",
+        "PHY-210-u08-ex3",
+        "PHY-210-u08-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u08-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "stp-ch8",
+        "tong-dr-ch7-s5",
+        "sr21-week4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 280,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u08-ex1",
+    "PHY-210-u08-ex2",
+    "PHY-210-u08-ex3",
+    "PHY-210-u08-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u08-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Only the newly created rest energy is needed in a fixed-target collision.",
+      "correction": "The initial momentum forces recoil, so the threshold can be higher.",
+      "correctionLocatorIds": [
+        "stp-ch8"
+      ]
+    },
+    {
+      "claim": "A single photon can create a massive pair in otherwise empty space.",
+      "correction": "Its null invariant cannot equal the timelike invariant of an isolated massive pair.",
+      "correctionLocatorIds": [
+        "stp-ch8"
+      ]
+    },
+    {
+      "claim": "A kinematically allowed decay must be common.",
+      "correction": "Rates and branching fractions require dynamics and quantum numbers.",
+      "correctionLocatorIds": [
+        "stp-ch8"
+      ]
+    },
+    {
+      "claim": "Fission and fusion can be cycled to release energy in both directions.",
+      "correction": "Reversing all initial and final states reverses the sign of the energy budget.",
+      "correctionLocatorIds": [
+        "stp-ch8"
+      ]
+    }
+  ],
+  "estimatedMinutes": 430,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter 8 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.5 headings verified in dynrel7.pdf; MIT 8.20 Week 3 and Week 4 pages opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: actual Taylor–Wheeler chapter8 §§8.3–8.7 text read, including target recoil, Compton example and mass-deficit accounting; Tong actual PDF§7.5 read reference-only. Original threshold/decay/recoil solutions re-derived. Tong Higgs branching statement corrected against official CERN overview; no source exercise copied."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 430 active minutes including source reading, worked reasoning, 4 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u08-ex1.reference-solution.md",
+    "PHY-210-u08-ex2.reference-solution.md",
+    "PHY-210-u08-ex3.reference-solution.md",
+    "PHY-210-u08-ex4.reference-solution.md"
+  ]
 }

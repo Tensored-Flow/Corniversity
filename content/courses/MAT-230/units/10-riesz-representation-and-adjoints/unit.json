@@ -7,7 +7,15 @@
   "objectives": [
     {
       "id": "u10-o1",
-      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 17–18 of the 18.102 notes."
+      "description": "Prove existence and orthogonality of projection onto a closed Hilbert subspace."
+    },
+    {
+      "id": "u10-o2",
+      "description": "Represent bounded linear functionals by inner products with the correct complex convention."
+    },
+    {
+      "id": "u10-o3",
+      "description": "Compute adjoints and relate kernel, range and their closures."
     }
   ],
   "prerequisiteConceptIds": [
@@ -29,36 +37,95 @@
     {
       "id": "u10-a1",
       "type": "reading",
-      "title": "Lectures 17–18: Riesz representation and adjoints",
-      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
-      "estimatedMinutes": 90,
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
       "sourceLocatorIds": [
         "fa21-lec17",
         "fa21-lec18"
       ],
       "exerciseIds": [],
       "sessionKind": "lecture"
+    },
+    {
+      "id": "u10-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 135,
+      "sourceLocatorIds": [
+        "fa21-lec17",
+        "fa21-lec18"
+      ],
+      "exerciseIds": [
+        "MAT-230-u10-ex1",
+        "MAT-230-u10-ex2",
+        "MAT-230-u10-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u10-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "fa21-lec17",
+        "fa21-lec18"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
     }
   ],
-  "exerciseIds": [],
+  "exerciseIds": [
+    "MAT-230-u10-ex1",
+    "MAT-230-u10-ex2",
+    "MAT-230-u10-ex3"
+  ],
   "exitCheck": {
-    "description": "To be defined when the unit is prepared."
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-230-u10-ex3"
   },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "commonMisconceptions": [
+    {
+      "claim": "The adjoint is the inverse of an isometry.",
+      "correction": "Only A* A=I follows; the other product requires surjectivity. The unilateral shift is a counterexample.",
+      "correctionLocatorIds": [
+        "fa21-lec17"
+      ]
+    },
+    {
+      "claim": "Orthogonality to ker A* guarantees membership in ran A.",
+      "correction": "It guarantees membership in the closure of the range. Solvability requires an additional closed-range property.",
+      "correctionLocatorIds": [
+        "fa21-lec17"
+      ]
+    }
+  ],
+  "estimatedMinutes": 320,
+  "status": "ready",
   "checks": [
     {
       "name": "source-locators",
       "result": "pass",
-      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
     },
     {
       "name": "mathematical-review",
-      "result": "needs_review",
-      "evidence": "Not yet prepared; no lesson or exercises to review."
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
     }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-230-u10-ex1.reference-solution.md",
+    "MAT-230-u10-ex2.reference-solution.md",
+    "MAT-230-u10-ex3.reference-solution.md"
+  ]
 }

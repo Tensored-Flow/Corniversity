@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u05-ex2",
+  "sequence": 2,
+  "title": "Momentum roots instead of slogans",
+  "kind": "calculation",
+  "promptMarkdown": "Use v_{t+1}=βv_t+λz_t and z_{t+1}=z_t−ηv_{t+1}, with β=.81, η=.01 andλ=10. Derive the second-order recurrence, calculate its characteristic roots or their modulus, and decide asymptotic stability. Repeat forη=.40. With z₀=1, v₀=0, compute z₁, z₂ for the first setting. Explain why a complex root does not by itself mean divergence.",
+  "conceptIds": [
+    "optimisation-methods-dl"
+  ],
+  "hintLadder": [
+    "Use v_t=(z_{t−1}−z_t)/η.",
+    "The product of characteristic roots is β.",
+    "Track the declared velocity convention in the first two updates."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives recurrence and evaluates stability",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes updates using consistent convention",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Separates oscillation from divergence",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

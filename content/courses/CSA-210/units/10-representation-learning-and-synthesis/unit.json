@@ -3,27 +3,158 @@
   "courseId": "CSA-210",
   "sequence": 10,
   "title": "Representation learning without labels; synthesis project",
-  "summary": "Generative models as density estimation and sampling; self-supervised objectives and what they learn; how representations are evaluated honestly; the course synthesis: a reproducible train-break-explain project with baseline, protocol, seeds and failure cases.",
+  "summary": "PCA and autoencoder limits, ELBO and contrastive objectives, controlled representation evaluation and an executable cumulative synthetic learning project.",
   "objectives": [
-    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D3 Tutorial 1 (Introduction to generative models) and W3D3 Tutorial 1 (Un/Self-supervised learning methods) of the Neuromatch Deep Learning ebook, with the course's final project (assessment a3)." }
+    {
+      "id": "u10-o1",
+      "description": "Derive PCA reconstruction and explain why unsupervised fit need not preserve a downstream label."
+    },
+    {
+      "id": "u10-o2",
+      "description": "Derive contrastive and latent-variable objectives with correct normalisation and assumptions."
+    },
+    {
+      "id": "u10-o3",
+      "description": "Design controlled representation comparisons without unacknowledged test-input access."
+    },
+    {
+      "id": "u10-o4",
+      "description": "Implement and audit a reproducible small learning study integrating gradients, optimisation, regularisation, evaluation and architectural assumptions."
+    }
   ],
-  "prerequisiteConceptIds": ["convolution-operator", "regularisation-dl", "evaluation-discipline"],
-  "teachesConceptIds": ["representation-learning-unsupervised"],
+  "prerequisiteConceptIds": [
+    "convolution-operator",
+    "regularisation-dl",
+    "evaluation-discipline"
+  ],
+  "teachesConceptIds": [
+    "representation-learning-unsupervised"
+  ],
   "preparation": [
-    { "description": "Read W2D3 Tutorial 1 (introduction to generative models) and W3D3 Tutorial 1 (unsupervised and self-supervised learning methods).", "locatorId": "nmadl-w3d3-t1", "estimatedMinutes": 80 }
+    {
+      "locatorId": "nmadl-w2d3-t1",
+      "description": "Read latent-variable models and autoencoder/VAE sections; separate reconstruction from a generative distribution.",
+      "estimatedMinutes": 45
+    },
+    {
+      "locatorId": "nmadl-w3d3-t1",
+      "description": "Read representation similarity, self-supervised transformations/contrastive loss, biased-data controls and the downstream-task discussion.",
+      "estimatedMinutes": 60
+    }
   ],
   "activities": [
-    { "id": "u10-a1", "type": "reading", "title": "W2D3 Tutorial 1 and W3D3 Tutorial 1", "instructions": "Read the tutorials for this unit. The prepared lesson, project brief and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["nmadl-w2d3", "nmadl-w2d3-t1", "nmadl-w3d3", "nmadl-w3d3-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u10-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 150,
+      "sourceLocatorIds": [
+        "nmadl-w2d3-t1",
+        "nmadl-w3d3-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u10-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 345,
+      "sourceLocatorIds": [
+        "nmadl-w2d3-t1",
+        "nmadl-w3d3-t1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u10-ex1",
+        "CSA-210-u10-ex2",
+        "CSA-210-u10-ex3",
+        "CSA-210-u10-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u10-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w2d3-t1",
+        "nmadl-w3d3-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 300,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u10-ex1",
+    "CSA-210-u10-ex2",
+    "CSA-210-u10-ex3",
+    "CSA-210-u10-ex4"
+  ],
+  "exitCheck": {
+    "description": "Complete the cumulative train/break/explain project with executable model and gradient checks, train-only preprocessing and independent partitions, validation-selected checkpoints across all declared seeds, baselines and actual failures, representation/shift analysis and an architecture-based follow-up. Address all six weighted criteria; earlier mathematical and evidence-audit gaps remain part of the portfolio.",
+    "exerciseId": "CSA-210-u10-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Low reconstruction error proves the best downstream representation.",
+      "correction": "High-variance nuisance information can dominate reconstruction while low-variance label information is discarded.",
+      "correctionLocatorIds": [
+        "nmadl-w2d3-t1"
+      ]
+    },
+    {
+      "claim": "Self-supervised fitting cannot leak because labels are absent.",
+      "correction": "Test-input access changes the protocol and may adapt the representation to evaluation examples.",
+      "correctionLocatorIds": [
+        "nmadl-w2d3-t1"
+      ]
+    },
+    {
+      "claim": "A contrastive loss denominator should omit the positive partner.",
+      "correction": "For the specified normalised candidate objective it includes the positive and all permitted negatives, excluding the anchor itself.",
+      "correctionLocatorIds": [
+        "nmadl-w2d3-t1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 620,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Both chapter pages and both tutorial pages opened 2026-10-30 (HTTP 200; titles 'Tutorial 1: Introduction to generative models' and 'Tutorial 1: Un/Self-supervised learning methods'); the two tutorial bodies were truncated in the fetch, so only page-level locators exist." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W2D3 Tutorial1 sections2,3.1,4.1–4.2 and W3D3 Tutorial1 sections2.1,4.1,5.1,6.1,7.1 and downstream-invariance discussion. Original PCA/ELBO/contrastive derivations and complete synthetic CPU project; no pretrained or external training jobs."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 620 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u10-ex1.reference-solution.md",
+    "CSA-210-u10-ex2.reference-solution.md",
+    "CSA-210-u10-ex3.reference-solution.md",
+    "CSA-210-u10-ex4.reference-solution.md"
+  ]
 }

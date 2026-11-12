@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u08-ex2",
+  "sequence": 2,
+  "title": "A spin crossover in a specified energy model",
+  "kind": "calculation",
+  "promptMarkdown": "An octahedral d⁶ ion has Δₒ=150 kJ mol⁻¹ and pairing cost P=180 kJ mol⁻¹ per pair. Draw high- and low-spin occupancies, count unpaired electrons and pairs, and calculate their CFSE and total CFSE+pairing energy. Repeat the energy comparison for Δₒ=220 with the same P. Derive the crossover condition and give spin-only moments. Explain what the simple model omits.",
+  "conceptIds": [
+    "transition-metal-coordination"
+  ],
+  "hintLadder": [
+    "First count pairs explicitly instead of using the unpaired count as the pairing term.",
+    "Derive the symbolic energy difference before inserting numbers.",
+    "A barycentre energy is not the energy of separated metal and ligands."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Correctly fills orbitals and counts pairs/spins",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes energies and symbolic crossover",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Interprets moments and model limitations",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

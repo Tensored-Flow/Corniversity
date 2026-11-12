@@ -2,6 +2,7 @@
 // migrations. The URL is fixed in vitest.config.ts (test.env), so tests can create their own
 // connections without sharing state through globals.
 import { mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import EmbeddedPostgres from "embedded-postgres";
 import { createDb } from "../src/client";
@@ -10,7 +11,7 @@ import { runMigrations } from "../src/migrate";
 export const TEST_PORT = 5438;
 export const TEST_DATABASE_URL = `postgres://corniversity:corniversity@127.0.0.1:${TEST_PORT}/corniversity_test`;
 
-const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", "corniversity-test-pg");
+const dir = resolve(tmpdir(), "corniversity-test-pg");
 
 export default async function setup(): Promise<() => Promise<void>> {
   rmSync(dir, { recursive: true, force: true });

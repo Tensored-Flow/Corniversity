@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u08-ex2",
+  "sequence": 2,
+  "title": "Index is stable while nullity jumps",
+  "kind": "proof",
+  "promptMarkdown": "For a Banach space $H$ consider $T_t:H\\oplus\\mathbb R^2\\to H\\oplus\\mathbb R$, $T_t(x,a,b)=(x,ta)$. Compute kernel, cokernel and index for $t=0$ and $t\\ne0$. Then explain using the Schur-complement reduction why every sufficiently small bounded perturbation of $T_0$ is Fredholm of the same index, even when it mixes the summands.",
+  "conceptIds": [
+    "fredholm-and-smale-sard"
+  ],
+  "hintLadder": [
+    "At zero the second output vanishes identically.",
+    "The index subtracts two finite numbers; calculate both.",
+    "Eliminate the mixed blocks using the invertible large block."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Both cases correctly computed.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Valid block reduction for arbitrary small perturbations.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Closed-range and constant-index explanation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

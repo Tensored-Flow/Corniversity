@@ -66,7 +66,12 @@ export default async function UnitNotesPage({
 
       {ready ? (
         // A wide formula scrolls inside the notes instead of widening the page on a phone.
-        <article aria-label="Lecture notes" className="min-w-0 overflow-x-auto">
+        <article
+          aria-label="Lecture notes"
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: the notes scroll sideways and must be reachable by keyboard (axe: scrollable-region-focusable)
+          tabIndex={0}
+          className="min-w-0 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <Markdown source={unit.lessonMarkdown} />
         </article>
       ) : (

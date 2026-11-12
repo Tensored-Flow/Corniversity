@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u09-ex1",
+  "sequence": 1,
+  "title": "Compute attention and then impose causality",
+  "kind": "calculation",
+  "promptMarkdown": "Let Q=[[ln3],[0]], K=[[1],[0]], V=[[2,0],[0,4]], d_k=1. Compute scores, row-softmax weights and outputs for full attention. Repeat with causal maskj≤i using zero-based positions. Explain why replacing the forbidden score with 0 instead of excluding it is incorrect, and identify which variables may vary while preserving linearity inV.",
+  "conceptIds": [
+    "attention-transformers"
+  ],
+  "hintLadder": [
+    "Computeexp (ln3)=3.",
+    "Mask the candidate set before normalising.",
+    "State which quantities are held fixed in a linearity claim."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Computes scores/weights/outputs",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Applies and interprets causal exclusion",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Distinguishes conditional linearity from full self-attention",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

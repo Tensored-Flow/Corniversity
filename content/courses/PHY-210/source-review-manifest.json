@@ -1,0 +1,60 @@
+{
+  "reviewedAt": "2026-11-12",
+  "scope": "Chapter files consulted during completion; precise sections and limitations in REVIEW.md",
+  "primaryFiles": [
+    {
+      "chapter": 2,
+      "url": "https://www.eftaylor.com/spacetimephysics/02_chapter2.pdf",
+      "pages": 28,
+      "sha256": "94b3a8836ebbd09b82e72b6d2ff59ff0145f4ffc8b7d33314f194a229fe03534"
+    },
+    {
+      "chapter": 4,
+      "url": "https://www.eftaylor.com/spacetimephysics/04_chapter4.pdf",
+      "pages": 16,
+      "sha256": "2de58064ec4f013964b75c8b51e8f561d474291548afe103258261721579f94a"
+    },
+    {
+      "chapter": 5,
+      "url": "https://www.eftaylor.com/spacetimephysics/05_chapter5.pdf",
+      "pages": 34,
+      "sha256": "01bd8720d3dbeb21ca3720144104f09955691d66df6a07ffb196ebd284402ea1"
+    },
+    {
+      "chapter": 6,
+      "url": "https://www.eftaylor.com/spacetimephysics/06_chapter6.pdf",
+      "pages": 18,
+      "sha256": "28dab68b7faabcdc1831804387764affd37218f6ac2e90bf073df6b51d14c6ef"
+    },
+    {
+      "chapter": 7,
+      "url": "https://www.eftaylor.com/spacetimephysics/07_chapter7.pdf",
+      "pages": 32,
+      "sha256": "f43884433644e37e5e50e324adc3f1adb489f838f2ec07f7d9de8f0115645e0b"
+    },
+    {
+      "chapter": 8,
+      "url": "https://www.eftaylor.com/spacetimephysics/08_chapter8.pdf",
+      "pages": 54,
+      "sha256": "7f3872c31f26355f98ddd3538ae84ab6bd6e7d95e39a54e9a7d72502e5fd5c09"
+    },
+    {
+      "chapter": 9,
+      "url": "https://www.eftaylor.com/spacetimephysics/09_chapter9.pdf",
+      "pages": 24,
+      "sha256": "139ff89cb54e9bbafaaf634b41acace69a3cee2c48dc90ce503bf856253aba75"
+    }
+  ],
+  "referenceOnly": [
+    {
+      "url": "https://davidtong.org/pdfs/teaching/dynamics-and-relativity/dynrel7.pdf",
+      "sections": [
+        "7.3.2",
+        "7.4",
+        "7.5"
+      ],
+      "importedIntoLibrary": false
+    }
+  ],
+  "independentReview": "pending; author self-review only"
+}

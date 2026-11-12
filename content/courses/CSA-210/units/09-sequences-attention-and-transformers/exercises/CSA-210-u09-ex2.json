@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u09-ex2",
+  "sequence": 2,
+  "title": "Count heads and quadratic storage",
+  "kind": "calculation",
+  "promptMarkdown": "A standard multihead attention layer has model width 64,8 heads each of key/value width 8, with Q, K, V and output projections all using biases. Count projection parameters, excluding normalisation and feed-forward layers. At batch 2, length 2048, compute the size in elements/bytes/MiB of one float32 per-head score tensor. Repeat memory for length 4096. Explain why the number is neither the full model memory nor a universal minimum for every attention implementation.",
+  "conceptIds": [
+    "attention-transformers"
+  ],
+  "hintLadder": [
+    "All heads together project to width 64 in this convention.",
+    "The tensor axes arebatch, head, query, key.",
+    "Separate mathematical operation count from stored intermediate memory."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Counts projection weights and biases",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Calculates storage with explicit binary units",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "States implementation and accounting limits",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,54 +1,199 @@
 {
   "id": "CHE-101",
-  "version": 2,
+  "version": 3,
   "title": "Principles of Chemical Science",
-  "departmentIds": ["chemistry"],
+  "departmentIds": [
+    "chemistry"
+  ],
   "level": "foundation",
   "position": "Launch; diagnostic entry",
   "launch": true,
-  "purpose": "An honest entry into university chemistry: a diagnostic first unit on stoichiometry, moles, balancing and the parts of an atom, then atomic structure and periodicity, bonding and molecular shape, thermodynamics and equilibrium, and kinetics with a virtual model of a reversible reaction, following MIT 5.111SC (Fall 2014) with OpenStax Chemistry 2e as the reading text and original Corniversity exercises.",
-  "description": "Chemistry asks how the properties of matter follow from atoms, how atoms bond, which reactions can happen and how fast they do. This course builds that chain from the start: a diagnostic unit on the chemist's bookkeeping (moles, formulas, balanced equations, stoichiometry, solutions), then the quantum description of atoms and the periodic trends it explains, bonding and molecular shape, thermodynamics and equilibrium, kinetics with a virtual model of a reversible reaction, and outlined units on acid–base equilibria, redox and electrochemistry, transition metals, catalysis and a closing synthesis.\n\n**How this adaptation works.** The spine is MIT OpenCourseWare 5.111SC Principles of Chemical Science, Fall 2014 (Prof. Catherine Drennan; CC BY-NC-SA 4.0): 35 lectures in five units with videos, fill-in lecture notes and problems with solutions. Corniversity re-paces the 35 lectures as 10 units for a term of ten teaching weeks plus a reading week and a synthesis week, cites the lecture-notes PDFs by page, and replaces the source's commercial textbook with the matching sections of OpenStax Chemistry 2e, read in the browser: the OpenStax licence as seen on 2026-10-30 is CC BY-NC-SA 4.0 with a stated restriction on generative-AI use, so the book is linked, never imported or shown to the AI roles. Every exercise is original. Everything here is virtual study of models and data; nothing is an instruction for a laboratory.\n\n**Diagnostic entry.** Unit 1 tests readiness honestly: stoichiometry, moles, balancing and the parts of an atom. Advanced mathematics does not establish chemistry readiness; accepted attempts on the unit 1 exercises do, and a learner without them uses unit 1 as the bridge.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises with hint ladders and rubrics, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "purpose": "A complete ten-unit entry into university chemistry, connecting chemical bookkeeping and atomic structure to bonding, thermodynamics, equilibrium, kinetics, acid–base systems, electrochemistry, coordination chemistry and catalysis, with original problem sheets and a cumulative model-based capstone.",
+  "description": "Chemistry asks how the properties of matter follow from atoms, how atoms bond, which reactions are favoured and how fast they proceed. This course develops that chain through ten fully authored units: diagnostic chemical bookkeeping; atomic structure and periodicity; bonding and shape; thermodynamics and equilibrium; kinetics; acid–base systems; electrochemistry; coordination chemistry; catalysis; and a cumulative synthesis.\n\nThe primary study spine is MIT OpenCourseWare 5.111SC (Fall 2014, Catherine Drennan; CC BY-NC-SA 4.0). Exact lecture-note pages support the claims, while Corniversity supplies original explanations, exercises, progressive hints and instructor reasoning. OpenStax remains optional linked human reading only, under its recorded use restrictions; it was not read or imported for the 2026-11-12 completion. Source figures and problem sets are not copied.\n\nEvery unit has a lesson and assessed work. The final capstone connects atom/electron balance, molecular geometry, chemical equilibrium, pH, electrode potential, charge and energy, transition-metal models and experimental evidence. Calculations are virtual studies of stated models, not at-home laboratory instructions. Academic review status is recorded separately from structural availability; a prepared unit is not proof that a learner has mastered it.\n\nEntry begins with the chemistry diagnostic. Mathematical experience alone does not establish chemistry readiness. Use attempts, feedback and revision to identify the bridge work you actually need.",
   "outcomes": [
-    { "id": "o1", "description": "Use the mole, balanced equations, limiting reactants and molarity to convert between mass, amount, number of particles and concentration, with units, phases and assumptions stated.", "evidenceExpected": "Diagnostic-unit exercises with unit-checked numeric answers, a mass-balance check and an explicit assumptions statement." },
-    { "id": "o2", "description": "Explain the quantum description of atoms (photons, hydrogen energy levels, orbitals, configurations of multi-electron atoms) and use it to predict and explain periodic trends.", "evidenceExpected": "Photon and energy-level calculations, electron configurations of atoms and ions, and trend explanations that name the measurement (photoelectron spectroscopy) behind the data." },
-    { "id": "o3", "description": "Draw Lewis structures with formal charges and resonance, predict molecular shape and polarity with VSEPR, and use molecular-orbital bond orders for diatomics.", "evidenceExpected": "Structures whose formal charges sum to the molecular charge, shape predictions with the AXE class named, and MO bond orders with magnetism explained." },
-    { "id": "o4", "description": "Compute ΔH°, ΔS°, ΔG° and K for reactions with standard states and temperature stated; predict the direction of change from Q versus K and the response to a stress.", "evidenceExpected": "Thermochemical calculations by two routes with the discrepancy explained, an ICE-table equilibrium calculation and Le Châtelier predictions argued through Q and K." },
-    { "id": "o5", "description": "Determine rate laws from data, use integrated rate laws and half-lives, test a mechanism against a rate law, and relate forward and reverse rate constants to K in a reversible model.", "evidenceExpected": "Kinetics exercises plus the virtual reversible-reaction model report with conservation law, solution, equilibrium and perturbation analysis." },
-    { "id": "o6", "description": "Separate a model's assumptions from the observations that test it, and say what measurement would distinguish two candidate explanations.", "evidenceExpected": "Written explanations and the laboratory interpretation that state assumptions (temperature, pressure, phase, standard state, ideality) and name a distinguishing observation." }
+    {
+      "id": "o1",
+      "description": "Use the mole, balanced equations, limiting reactants and molarity to convert between mass, amount, number of particles and concentration, with units, phases and assumptions stated.",
+      "evidenceExpected": "Diagnostic-unit exercises with unit-checked numeric answers, a mass-balance check and an explicit assumptions statement."
+    },
+    {
+      "id": "o2",
+      "description": "Explain the quantum description of atoms (photons, hydrogen energy levels, orbitals, configurations of multi-electron atoms) and use it to predict and explain periodic trends.",
+      "evidenceExpected": "Photon and energy-level calculations, electron configurations of atoms and ions, and trend explanations that name the measurement (photoelectron spectroscopy) behind the data."
+    },
+    {
+      "id": "o3",
+      "description": "Draw Lewis structures with formal charges and resonance, predict molecular shape and polarity with VSEPR, and use molecular-orbital bond orders for diatomics.",
+      "evidenceExpected": "Structures whose formal charges sum to the molecular charge, shape predictions with the AXE class named, and MO bond orders with magnetism explained."
+    },
+    {
+      "id": "o4",
+      "description": "Compute ΔH°, ΔS°, ΔG° and K for reactions with standard states and temperature stated; predict the direction of change from Q versus K and the response to a stress.",
+      "evidenceExpected": "Thermochemical calculations by two routes with the discrepancy explained, an ICE-table equilibrium calculation and Le Châtelier predictions argued through Q and K."
+    },
+    {
+      "id": "o5",
+      "description": "Determine rate laws from data, use integrated rate laws and half-lives, test a mechanism against a rate law, and relate forward and reverse rate constants to K in a reversible model.",
+      "evidenceExpected": "Kinetics exercises plus the virtual reversible-reaction model report with conservation law, solution, equilibrium and perturbation analysis."
+    },
+    {
+      "id": "o6",
+      "description": "Separate a model's assumptions from the observations that test it, and say what measurement would distinguish two candidate explanations.",
+      "evidenceExpected": "Written explanations and the laboratory interpretation that state assumptions (temperature, pressure, phase, standard state, ideality) and name a distinguishing observation."
+    },
+    {
+      "id": "o7",
+      "description": "Solve acid–base, buffer, titration and coupled-speciation problems with mass/charge balances and checked approximations.",
+      "evidenceExpected": "Unit6 problem sheet and unit10 speciation/capstone calculations with explicit equilibrium and reservoir assumptions."
+    },
+    {
+      "id": "o8",
+      "description": "Balance redox reactions and connect cell potential, reaction free energy, activities, charge and useful product amount.",
+      "evidenceExpected": "Unit7 sheet and cumulative capstone with Nernst, Faraday and energy accounting and independently testable efficiency claims."
+    },
+    {
+      "id": "o9",
+      "description": "Use coordination, electron-count and crystal-field models to interpret geometry, magnetic and spectral evidence while stating their limits.",
+      "evidenceExpected": "Unit8 structural-inference sheet and capstone model comparison supported by multiple observations."
+    },
+    {
+      "id": "o10",
+      "description": "Derive a simple enzyme rate law and distinguish catalytic rate effects, equilibrium, identifiability and experimental evidence.",
+      "evidenceExpected": "Unit9 derivations/transfer and unit10 controlled-experiment synthesis with alternative mechanisms and falsifiable predictions."
+    }
   ],
-  "prerequisiteRuleIds": ["CHE-101-chemistry-entry"],
-  "recommendedConceptIds": ["school-chemistry-foundations"],
+  "prerequisiteRuleIds": [
+    "CHE-101-chemistry-entry"
+  ],
+  "recommendedConceptIds": [
+    "school-chemistry-foundations"
+  ],
   "teachesConceptIds": [
-    "mole-and-molar-mass", "chemical-formulas-nomenclature", "balancing-chemical-equations", "reaction-stoichiometry", "limiting-reactant-yield", "solution-molarity",
-    "atomic-structure-nuclear-atom", "quantisation-and-photons", "hydrogen-atom-energy-levels", "electron-configuration", "periodic-trends",
-    "ionic-bonding-lattice", "covalent-bonding-lewis", "vsepr-molecular-geometry", "molecular-orbital-theory", "valence-bond-hybridisation",
-    "enthalpy-thermochemistry", "entropy-free-energy", "chemical-equilibrium-constant", "le-chatelier",
-    "reaction-rate-laws", "integrated-rate-laws", "reaction-mechanisms", "arrhenius-temperature-dependence", "kinetic-view-of-equilibrium",
-    "acid-base-equilibria", "redox-electrochemistry", "transition-metal-coordination"
+    "mole-and-molar-mass",
+    "chemical-formulas-nomenclature",
+    "balancing-chemical-equations",
+    "reaction-stoichiometry",
+    "limiting-reactant-yield",
+    "solution-molarity",
+    "atomic-structure-nuclear-atom",
+    "quantisation-and-photons",
+    "hydrogen-atom-energy-levels",
+    "electron-configuration",
+    "periodic-trends",
+    "ionic-bonding-lattice",
+    "covalent-bonding-lewis",
+    "vsepr-molecular-geometry",
+    "molecular-orbital-theory",
+    "valence-bond-hybridisation",
+    "enthalpy-thermochemistry",
+    "entropy-free-energy",
+    "chemical-equilibrium-constant",
+    "le-chatelier",
+    "reaction-rate-laws",
+    "integrated-rate-laws",
+    "reaction-mechanisms",
+    "arrhenius-temperature-dependence",
+    "kinetic-view-of-equilibrium",
+    "acid-base-equilibria",
+    "redox-electrochemistry",
+    "transition-metal-coordination"
   ],
-  "primarySourceIds": ["mit-chem-2014"],
-  "supplementalSourceIds": ["openstax-chemistry"],
-  "unitIds": ["CHE-101-u01", "CHE-101-u02", "CHE-101-u03", "CHE-101-u04", "CHE-101-u05", "CHE-101-u06", "CHE-101-u07", "CHE-101-u08", "CHE-101-u09", "CHE-101-u10"],
+  "primarySourceIds": [
+    "mit-chem-2014"
+  ],
+  "supplementalSourceIds": [
+    "openstax-chemistry"
+  ],
+  "unitIds": [
+    "CHE-101-u01",
+    "CHE-101-u02",
+    "CHE-101-u03",
+    "CHE-101-u04",
+    "CHE-101-u05",
+    "CHE-101-u06",
+    "CHE-101-u07",
+    "CHE-101-u08",
+    "CHE-101-u09",
+    "CHE-101-u10"
+  ],
   "assessmentSpecs": [
-    { "id": "a1", "title": "Diagnostic entry check", "kind": "problem_set", "description": "The three unit 1 exercises, submitted as immutable attempts. They establish readiness evidence for the course's entry rule; a failed first attempt routes to the matching reading and a second attempt, not to a grade.", "weight": 0.1, "rubricSummary": ["mass and charge balance", "mole bookkeeping with units", "assumptions stated"] },
-    { "id": "a2", "title": "Problem sets", "kind": "problem_set", "description": "Each prepared unit's exercises, assessed with first-gap localisation. Chemistry answers must respect stoichiometry, charge and unit constraints and state temperature, pressure, phase and standard-state assumptions. Revision is expected; the portfolio of attempts is the record.", "weight": 0.45, "rubricSummary": ["balanced equations and conserved quantities", "units, significant figures and sign conventions", "model assumptions named", "interpretation separated from calculation"] },
-    { "id": "a3", "title": "Virtual kinetics model report", "kind": "lab_report", "description": "The reversible first-order model A ⇌ B at constant volume (unit 5): derive the conservation law and the solution, compute the equilibrium composition and relaxation time, analyse what changes when a rate constant doubles, and say which observation distinguishes equilibrium from no reaction. A virtual activity on a stated model, never an at-home experiment.", "weight": 0.2, "rubricSummary": ["ODEs and conservation correct", "approach to equilibrium derived", "parameter-change analysis", "distinguishing observation and assumptions"] },
-    { "id": "a4", "title": "Synthesis: equilibrium from both sides", "kind": "written_explanation", "description": "After unit 10: a written account connecting the thermodynamic view of equilibrium (ΔG° = −RT ln K) with the kinetic view (K = k_f/k_r for elementary steps), with one worked system chosen by the learner and the assumptions of each view stated. Open book, untimed by default.", "weight": 0.25, "rubricSummary": ["correct use of both relations", "assumptions and standard states", "clarity of exposition"] }
+    {
+      "id": "a1",
+      "title": "Diagnostic entry check",
+      "kind": "problem_set",
+      "description": "The three unit 1 exercises, submitted as immutable attempts. They establish readiness evidence for the course's entry rule; a failed first attempt routes to the matching reading and a second attempt, not to a grade.",
+      "weight": 0.1,
+      "rubricSummary": [
+        "mass and charge balance",
+        "mole bookkeeping with units",
+        "assumptions stated"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Problem sets",
+      "kind": "problem_set",
+      "description": "Each prepared unit's exercises, assessed with first-gap localisation. Chemistry answers must respect stoichiometry, charge and unit constraints and state temperature, pressure, phase and standard-state assumptions. Revision is expected; the portfolio of attempts is the record.",
+      "weight": 0.45,
+      "rubricSummary": [
+        "balanced equations and conserved quantities",
+        "units, significant figures and sign conventions",
+        "model assumptions named",
+        "interpretation separated from calculation"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Virtual kinetics model report",
+      "kind": "lab_report",
+      "description": "The reversible first-order model A ⇌ B at constant volume (unit 5): derive the conservation law and the solution, compute the equilibrium composition and relaxation time, analyse what changes when a rate constant doubles, and say which observation distinguishes equilibrium from no reaction. A virtual activity on a stated model, never an at-home experiment.",
+      "weight": 0.2,
+      "rubricSummary": [
+        "ODEs and conservation correct",
+        "approach to equilibrium derived",
+        "parameter-change analysis",
+        "distinguishing observation and assumptions"
+      ]
+    },
+    {
+      "id": "a4",
+      "title": "Synthesis: equilibrium from both sides",
+      "kind": "written_explanation",
+      "description": "Unit10 cumulative problem sheet and carbon-conversion capstone: reconcile equilibrium and rates; preserve mass/charge and standard states; integrate bonding, acid speciation, electrochemistry, coordination models and a controlled evidence plan. Open book; estimates support planning rather than a forced time limit.",
+      "weight": 0.25,
+      "rubricSummary": [
+        "atom/electron balance and bonding",
+        "thermodynamic and electrochemical reasoning",
+        "acid speciation and boundary assumptions",
+        "charge, amount and energy with units",
+        "coordination evidence and model limits",
+        "kinetic/equilibrium claims tested by measurements"
+      ]
+    }
   ],
-  "workloadHours": { "minimum": 80, "typical": 110, "maximum": 140 },
+  "workloadHours": {
+    "minimum": 80,
+    "typical": 110,
+    "maximum": 140
+  },
   "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "Hand-authored by the content agent from the verified MIT 5.111SC Fall 2014 pages and lecture-notes PDFs (opened and text-extracted on 2026-10-30; page indices recorded as locators) and the OpenStax Chemistry 2e section pages (opened 2026-10-30; linked, not imported). Exercises are original; every reference solution was re-derived numerically before publication. Workload estimated from MIT's stated 150 hours for 35 lectures, re-paced to 10 units at roughly 8–12 hours per teaching week.",
-    "verifiedAt": "2026-10-30",
+    "authoringMethod": "Inherited units1–5 retained with targeted scientific caveat repairs; units6–10 authored directly in Codex from actually read MIT lecture notes and original derivations/problems. No Corniversity model-provider calls, subscription credits, external training or paid generation were used. Exact new source URL/page/hash evidence and author corrections are in the course review ledger. Author self-check is distinct from independent academic review.",
+    "verifiedAt": "2026-11-12",
     "reviewerNotes": [
-      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
-      "OpenStax Chemistry 2e was found to be CC BY-NC-SA 4.0 with a generative-AI restriction on the day of verification, not CC BY 4.0 as the brief expected; the source record follows the page and the book is reference-only.",
-      "Lecture videos exist on OCW but were not watched; units cite the lecture pages and notes PDFs.",
-      "The source's problem sets are linked for optional self-check only and are never copied."
+      "All ten units have complete lesson/problem/reference content; structural readiness is not academic certification or learner mastery.",
+      "2026-11-12 additions use actual MIT lecture-note pages; source videos were not watched.",
+      "OpenStax is optional linked human reading and was not used as AI input for these additions.",
+      "Independent academic review is tracked in unit checks and the project quality-loop evidence; do not infer it merely from authored availability.",
+      "All numerical investigations are virtual; no practical laboratory instructions or experiment execution.",
+      "Final independent academic review completed 2026-11-12: SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md, with source-specific scope and limitations. Every current exercise has independently checked reference reasoning. Not human certification or measured learning effectiveness."
     ]
   },
-  "modesOffered": ["enrolled", "audit"],
+  "modesOffered": [
+    "enrolled",
+    "audit"
+  ],
   "convenorPersonaId": "mireille-okafor",
   "tutorPersonaId": "mireille-okafor",
   "externalSyllabusNote": "Adapted study path using MIT OpenCourseWare 5.111SC Principles of Chemical Science (Fall 2014) materials under CC BY-NC-SA 4.0, with OpenStax Chemistry 2e section pages as linked reading. The original course ran 35 lectures in five units over one MIT term with nine problem sets, four exams and clicker participation, and assumed one year of high-school chemistry with no formal prerequisites. Corniversity re-paces it as 10 units, replaces the commercial textbook with OpenStax sections, and sets its own exercises, a virtual kinetics model and a written synthesis. This is not an MIT course and confers no credit anywhere."

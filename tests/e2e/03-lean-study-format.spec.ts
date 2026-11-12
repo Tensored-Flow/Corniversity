@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { screenshot, signInOrBootstrap, takeCourse } from "./helpers";
+import { completeOrientation, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 
 /**
  * Journey 3: the lean study format. Courses are taken from the catalogue (any number, no load
@@ -27,6 +27,7 @@ test.describe("the lean study format", () => {
   test("take several courses at once; notes, problem sheet and tutorial from a unit row", async ({ page }) => {
     test.setTimeout(240_000);
     await signInOrBootstrap(page);
+    await completeOrientation(page);
     await page.goto("/catalogue");
     await expect(page.getByRole("heading", { level: 1, name: "Catalogue" })).toBeVisible();
     await expect(page.getByText(/courses have units ready\. Take as many as you like\./)).toBeVisible();

@@ -1,4 +1,5 @@
 import "server-only";
+import type { ElementContent, Root } from "hast";
 import { defaultSchema } from "hast-util-sanitize";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
@@ -107,26 +108,37 @@ const processor = unified()
   .use(remarkRehype, { allowDangerousHtml: false })
   .use(rehypeKatexLocal)
   .use(rehypeSanitize, schema)
+  .use(namedEnvironments)
   .use(rehypeStringify);
 
 /**
  * Named environments: a paragraph that starts with `**Definition.**`, `**Theorem (name).**`,
  * `**Example.**`, `**Warning.**` etc. is wrapped in a styled block. Implemented as a light
- * pre-pass on the Markdown so that the result is still plain HTML the sanitiser understands.
+ * transform after sanitising. The document is parsed once, preserving reference definitions,
+ * footnotes, lists and fenced code. Titles are text nodes, never raw HTML.
  */
 const ENV_PATTERN =
   /^\*\*(Definition|Theorem|Lemma|Proposition|Corollary|Example|Non-example|Remark|Warning|Exercise|Proof)(?: \(([^)]+)\))?\.\*\*\s*/;
 
 export async function renderMarkdown(markdown: string): Promise<string> {
-  const blocks = markdown.replace(/\r\n/g, "\n").split(/\n{2,}/);
-  const html: string[] = [];
-  for (const block of blocks) {
-    const match = ENV_PATTERN.exec(block);
-    if (match) {
+  return String(await processor.process(markdown.replace(/\r\n/g, "\n")));
+}
+
+function namedEnvironments() {
+  return (tree: Root, file: { value: unknown }) => {
+    const source = String(file.value);
+    tree.children = tree.children.map((node) => {
+      if (node.type !== "element" || node.tagName !== "p") return node;
+      const start = node.position?.start.offset;
+      const end = node.position?.end.offset;
+      if (typeof start !== "number" || typeof end !== "number") return node;
+      const match = ENV_PATTERN.exec(source.slice(start, end));
+      const first = node.children[0];
+      if (!match || first?.type !== "element" || first.tagName !== "strong") return node;
       const kind = match[1]!.toLowerCase().replace(/\s+/g, "-");
       const title = match[2] ? `${match[1]} (${match[2]})` : match[1]!;
-      const body = block.slice(match[0].length);
-      const inner = String(await processor.process(body));
+      const body: ElementContent[] = node.children.slice(1);
+      if (body[0]?.type === "text") body[0] = { ...body[0], value: body[0].value.replace(/^\s+/, "") };
       const cls = ["definition"].includes(kind)
         ? "env-definition"
         : ["example", "non-example"].includes(kind)
@@ -134,14 +146,15 @@ export async function renderMarkdown(markdown: string): Promise<string> {
           : kind === "warning"
             ? "env-warning"
             : "env-theorem";
-      html.push(`<div class="env-block ${cls}"><div class="env-title">${escapeHtml(title)}</div>${inner}</div>`);
-    } else {
-      html.push(String(await processor.process(block)));
-    }
-  }
-  return html.join("\n");
-}
-
-function escapeHtml(text: string): string {
-  return text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+      return {
+        type: "element",
+        tagName: "div",
+        properties: { className: ["env-block", cls] },
+        children: [
+          { type: "element", tagName: "div", properties: { className: ["env-title"] }, children: [{ type: "text", value: title }] },
+          { ...node, children: body },
+        ],
+      };
+    });
+  };
 }

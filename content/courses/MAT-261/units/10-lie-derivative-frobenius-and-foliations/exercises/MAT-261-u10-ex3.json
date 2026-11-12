@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u10-ex3",
+  "sequence": 3,
+  "title": "A compact leaf with nontrivial holonomy",
+  "kind": "proof",
+  "promptMarkdown": "For the suspension $(t+1,y)\\sim(t,2y)$ with horizontal foliation, compute the holonomy germ of the leaf $y=0$. Prove that no saturated neighbourhood of that leaf can be diffeomorphic as a foliation to the product of a circle with an interval of circle leaves. Explain which hypothesis of local Reeb stability is absent and why the global sphere-leaf theorem is also unavailable.",
+  "conceptIds": [
+    "lie-derivative-frobenius"
+  ],
+  "hintLadder": [
+    "Follow the quotient identification in the specified direction.",
+    "Compare powers of the return map.",
+    "A conjugate of the identity is still the identity."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct return germ and infinite holonomy.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Valid product-neighbourhood obstruction.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Precise stability hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

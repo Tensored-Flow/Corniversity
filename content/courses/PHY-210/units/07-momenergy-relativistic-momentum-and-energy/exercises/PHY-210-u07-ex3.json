@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u07-ex3",
+  "sequence": 3,
+  "title": "An inelastic collision in two frames",
+  "kind": "derivation",
+  "promptMarkdown": "Two particles, each of invariant mass $m$, approach head-on at speeds $4c/5$ in S and merge without emitting radiation. Find the product mass in S. Now transform the entire initial and final system to S\\prime moving at $3c/5$ along $+x$. Give the incoming velocities, total energy and momentum there, and verify the final mass. Explain where the initial kinetic energy resides after the collision and how the answer changes if radiation is excluded from the chosen system.",
+  "conceptIds": [
+    "relativistic-energy-momentum"
+  ],
+  "hintLadder": [
+    "First solve in the centre-of-momentum frame, where the product is at rest.",
+    "Transform the total vector as a check on the sum of transformed individual vectors.",
+    "Compute the final invariant before interpreting the energy budget."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Centre-of-momentum collision and product mass are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Both individual and total transformed quantities agree.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Internal energy, radiation and the system boundary are explained.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 55,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u03-ex3",
+  "sequence": 3,
+  "title": "How local is a free-float laboratory?",
+  "kind": "calculation",
+  "promptMarkdown": "Two initially comoving test particles in a falling laboratory have separation $L=2\\,\\mathrm m$. Their measured relative acceleration is approximately $\\ddot L=\\kappa L$, with $\\kappa=3.0\\times10^{-6}\\,\\mathrm s^{-2}$ over the short experiment. The apparatus detects a change in separation of $10\\,\\mu\\mathrm m$. Estimate the longest observation time for which a constant-separation inertial model stays within that tolerance. Check the short-time approximation, explain how halving $L$ changes the bound, and explain why one particle alone would not supply this tidal test.",
+  "conceptIds": [
+    "minkowski-spacetime"
+  ],
+  "hintLadder": [
+    "Integrate the relative acceleration twice over a short interval.",
+    "Check $\\kappa t^2$ rather than simply calling the time short.",
+    "Keep the absolute detection threshold fixed when changing $L$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Tolerance is converted to a justified time bound.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Approximation and scaling are checked.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Operational limits and alternative forces are distinguished.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "A measurement tolerance must be converted into the space-time region in which the inertial model is adequate."
+  }
+}

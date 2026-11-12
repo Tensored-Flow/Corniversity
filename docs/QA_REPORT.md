@@ -842,3 +842,22 @@ scripted demo (no model provider).
 - One saved prediction opens a laboratory for its whole unit, so the choice-model activity asks
   for both cases' predictions before saving rather than enforcing one per case; *Predict again*
   resets the laboratory for the whole unit.
+
+
+## 12 November 2026 — full-course and teaching-quality release
+
+Scope: all 54 selected course units, 195 original exercises; source/factual review, independent solution reasoning and final post-repair review. See `.codex/quality-loop/university-teaching-quality/{LEAD_ACADEMIC_REVIEW,MATHS_REVIEW,PHYSICS_REVIEW,SCIENCE_REVIEW,CODE_REVIEW,EVIDENCE-tests}.md` for exact evidence and limits. All 14 original Python snippets execute; complete CPU capstone output reproduced exactly. No app model provider/subscription used.
+
+601 distinct non-browser regression cases pass (363 unit/content/etc, 53 worker, 166 database, 19 academic). Initial generated coverage and MBI-07 enum expectations were repaired and independently rerun. Seven-package final typecheck, lint and production build pass. Content validator: 0 errors/0 warnings; strict mathematical renderer: 8,116 expressions, 0 errors. Checks run against separate local test clusters, not production.
+
+The production-build browser pass initially exposed two mobile issues: keyboard focus for horizontally scrollable lecture notes and an expanded tutor-context disclosure overlapping Send. It also exposed an old plain-tsx worker still running pre-repair modules; final worker restart and targeted reruns are required. Manual browser check confirms kinetics dt=2/requested t=5 labels the actual RK4 sample t=6; requested t=25 labels the final available t=20, while the separate exact solution remains evaluated at the requested time. Read-only Railway UI confirms the existing owner account; no replacement owner or password change.
+
+Release status and final browser dispositions are recorded below once verified. These checks do not constitute a live-model pedagogical evaluation, learner study, human expert review or accreditation.
+
+### Final pre-release gate disposition
+
+All 53 distinct targeted browser cases pass across desktop and mobile after focused repair/reruns. Initial run:49 pass/4 failures. First rerun:18/19 pass, resolving both source-blocking tests after worker restart and the mobile selection/Send flow after formula containment; axe then exposed the older visual-player scroll region. Final rebuilt mobile accessibility run:3/3 pass, axe reports no violations on the listed pages. Unit notes, session lesson and visual diagrams now have keyboard-accessible contained overflow with visible focus. Independent code review covers the lesson changes; lead checked the identical labelled-section pattern for diagrams. Final lint, seven-package typecheck and production build pass after all UI changes.
+
+The last science typography pass changes whitespace only in40Markdown files: all non-whitespace content is identical and code/delimited maths are byte-for-byte unchanged. Final content tests24/24 and academic evaluations19/19 pass after review metadata; generated coverage is refreshed. Credential-signature/path scan of staged changes found no credentials or auth-state files. Source bodies and runtime credentials remain outside git.
+
+Read-only hosted audit: one existing owner, no enrolments, current selected course versions CHE2/CSA1/MAT2302/MAT2611/PHY1. Reviewed upgrades are CHE3/CSA3/MAT2303/MAT2614/PHY2. Existing Railway service console is available; no new SSH key, public database exposure, replacement owner or password change is required.

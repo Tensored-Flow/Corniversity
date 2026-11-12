@@ -3,27 +3,203 @@
   "courseId": "CHE-101",
   "sequence": 8,
   "title": "Transition metals and crystal field theory",
-  "summary": "d-block metals and their multiple oxidation states; coordination complexes and ligands; d-orbital splitting in octahedral and tetrahedral fields; high-spin and low-spin configurations, colour and magnetism; chelation as a model for treating acute lead poisoning, as lecture 27 frames it.",
+  "summary": "Ligands, donor counts, geometries, d electrons, crystal-field splitting, spin, spectra and evidence-based structural inference.",
   "objectives": [
-    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 27–29 of 5.111SC (Unit IV)." }
+    {
+      "id": "u08-o1",
+      "description": "Distinguish complex charge, oxidation state, coordination number and formal d count."
+    },
+    {
+      "id": "u08-o2",
+      "description": "Derive crystal-field level energies and compare spin configurations with pairing costs."
+    },
+    {
+      "id": "u08-o3",
+      "description": "Relate splitting to spectroscopy and magnetism with explicit model limits."
+    },
+    {
+      "id": "u08-o4",
+      "description": "Use multiple observations to test a proposed geometry and distinguish stability from exchange kinetics."
+    }
   ],
-  "prerequisiteConceptIds": ["electron-configuration", "molecular-orbital-theory"],
-  "teachesConceptIds": ["transition-metal-coordination"],
+  "prerequisiteConceptIds": [
+    "electron-configuration",
+    "molecular-orbital-theory"
+  ],
+  "teachesConceptIds": [
+    "transition-metal-coordination"
+  ],
   "preparation": [
-    { "description": "OCW Unit IV page: lecture 27 (introduction to transition metals), lectures 28–29 (crystal field theory parts I and II), each with notes, problems and solutions.", "locatorId": "chem14-unit4", "estimatedMinutes": 60 }
+    {
+      "description": "Ligands; use donor-atom definition for coordination number",
+      "locatorId": "chem14-n27-p2",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Chelation and geometric isomers",
+      "locatorId": "chem14-n27-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Formal d count",
+      "locatorId": "chem14-n27-p5",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Octahedral splitting",
+      "locatorId": "chem14-n28-p3",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Pairing and spin",
+      "locatorId": "chem14-n28-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Magnetism and spectroscopy with stated limits",
+      "locatorId": "chem14-n28-p5",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Tetrahedral splitting",
+      "locatorId": "chem14-n29-p3",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Square-planar comparison",
+      "locatorId": "chem14-n29-p4",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u08-a1", "type": "reading", "title": "Lectures 27–29: transition metals and crystal field theory", "instructions": "Read the lecture pages for this unit. The matching OpenStax chapter (19, Transition Metals and Coordination Chemistry) has not yet been opened and verified, so no OpenStax locator is listed; it will be added when the unit is prepared. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["chem14-unit4"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 115,
+      "sourceLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4",
+        "chem14-n27-p5",
+        "chem14-n28-p3",
+        "chem14-n28-p4",
+        "chem14-n28-p5",
+        "chem14-n29-p3",
+        "chem14-n29-p4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u08-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 155,
+      "sourceLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4",
+        "chem14-n27-p5",
+        "chem14-n28-p3",
+        "chem14-n28-p4",
+        "chem14-n28-p5",
+        "chem14-n29-p3",
+        "chem14-n29-p4"
+      ],
+      "exerciseIds": [
+        "CHE-101-u08-ex1",
+        "CHE-101-u08-ex2",
+        "CHE-101-u08-ex3",
+        "CHE-101-u08-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u08-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4",
+        "chem14-n27-p5",
+        "chem14-n28-p3",
+        "chem14-n28-p4",
+        "chem14-n28-p5",
+        "chem14-n29-p3",
+        "chem14-n29-p4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CHE-101-u08-ex1",
+    "CHE-101-u08-ex2",
+    "CHE-101-u08-ex3",
+    "CHE-101-u08-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CHE-101-u08-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Coordination number is always the number of ligand molecules.",
+      "correction": "It counts attached donor atoms; one chelating ligand may contribute several.",
+      "correctionLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4"
+      ]
+    },
+    {
+      "claim": "All d⁰ and d¹⁰ complexes are colourless.",
+      "correction": "They lack ordinary d–d transitions but can absorb through charge transfer or ligand transitions.",
+      "correctionLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4"
+      ]
+    },
+    {
+      "claim": "Diamagnetism alone proves square-planar geometry.",
+      "correction": "It constrains electronic states; a geometric inference also needs composition, a model and complementary evidence.",
+      "correctionLocatorIds": [
+        "chem14-n27-p2",
+        "chem14-n27-p4"
+      ]
+    }
+  ],
+  "estimatedMinutes": 400,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit IV page opened 2026-10-30 (lectures 27–29 listed with page URLs and the unit's stated goals). Lecture pages 27–29, their notes PDFs and OpenStax chapter 19 are not yet opened; the unit page is the only verified locator." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read original MIT 5.111 2014 lecture notes 27 pp.2–6, 28 pp.1–6 and 29 pp.1–5. Corrected teaching simplifications: donor-atom CN, colour mechanisms beyond d–d, tetrahedral high spin as tendency, and magnetic inference as model-dependent. Source figures not copied."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimates 400 active minutes including assigned reading, lecture work, original problems and delayed retrieval; estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CHE-101-u08-ex1.reference-solution.md",
+    "CHE-101-u08-ex2.reference-solution.md",
+    "CHE-101-u08-ex3.reference-solution.md",
+    "CHE-101-u08-ex4.reference-solution.md"
+  ]
 }
