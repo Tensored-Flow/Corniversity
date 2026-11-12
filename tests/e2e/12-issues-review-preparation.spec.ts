@@ -8,7 +8,7 @@ import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./hel
  *   and it is no longer current;
  * - review states its rule and offers a bounded set; pausing it is the learner's choice;
  * - a course-preparation proposal enrols nothing; confirmed, it runs its deterministic stages, and
- *   drafting is blocked honestly without a model; cancelling and resuming keep finished stages.
+ *   drafting is blocked honestly without permitted source passages; cancelling and resuming keep finished stages.
  * Safe to re-run on a database that already holds earlier runs.
  */
 /** Submits and waits for that submission's own card (its version) to finish being assessed. */
@@ -109,7 +109,7 @@ test.describe("issues, review and course preparation", () => {
       page.getByText(/This is a proposal\. Nothing has run, nothing has been spent, and confirming enrols you in nothing\./),
     ).toBeVisible();
     await page.getByRole("button", { name: /^Confirm and prepare within/ }).click();
-    await expect(page.getByText(/No model is configured \(scripted demo\), so no unit is drafted/).first()).toBeVisible({
+    await expect(page.getByText(/No permitted source passages are available for this unit/).first()).toBeVisible({
       timeout: 90_000,
     });
     await expect(page.locator("li", { hasText: "Inspect the sources" }).getByText("done")).toBeVisible();
@@ -117,7 +117,7 @@ test.describe("issues, review and course preparation", () => {
     await expect(page.getByTestId("prep-budget")).toHaveText(/spent or held \$0\.0000/);
     await screenshot(page, "12-preparation-blocked");
     await page.getByRole("button", { name: "Resume (finished stages are kept)" }).click();
-    await expect(page.getByText(/No model is configured \(scripted demo\), so no unit is drafted/).first()).toBeVisible({
+    await expect(page.getByText(/No permitted source passages are available for this unit/).first()).toBeVisible({
       timeout: 90_000,
     });
     await page.getByRole("button", { name: "Cancel" }).click();

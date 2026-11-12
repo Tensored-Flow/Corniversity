@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u05-ex3",
+  "sequence": 3,
+  "title": "Prove the compact embedding construction",
+  "kind": "proof",
+  "promptMarkdown": "Starting with a compact smooth manifold and a finite chart cover, reconstruct the map $F$ in the lesson and prove it is a smooth embedding. Your account must justify zero extension, injectivity, immersion, and the inverse topology separately. State why the argument neither proves the bound $2n$ nor immediately applies to a noncompact manifold. Illustrate the conclusion by an explicit embedding of $S^1$.",
+  "conceptIds": [
+    "partitions-of-unity",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Keep the weights themselves as coordinates.",
+    "In the differential calculation, use the scalar components first.",
+    "Use compactness only after you have injectivity and immersion."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Smooth construction and zero-extension justification.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct injectivity and differential proofs.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Topological embedding and limitations with a concrete example.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 65,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

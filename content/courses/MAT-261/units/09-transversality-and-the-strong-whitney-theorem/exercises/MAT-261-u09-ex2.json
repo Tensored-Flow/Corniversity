@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u09-ex2",
+  "sequence": 2,
+  "title": "Transverse self-intersections are finite for a compact immersion",
+  "kind": "proof",
+  "promptMarkdown": "Let $i:M^n\\to\\mathbb R^{2n}$ be an immersion of a compact manifold, and suppose its difference map off the diagonal is transverse to zero. Prove that the set of ordered double pairs is finite. Your proof must rule out accumulation toward the diagonal. If $M$ is oriented and $n$ is even, explain why exchanging the two preimages does not change a double-point sign.",
+  "conceptIds": [
+    "transversality",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "A discrete subset of a noncompact space need not be finite.",
+    "Use local injectivity and compactness to exclude a whole neighbourhood of the diagonal.",
+    "Count the swaps needed to exchange two blocks of n basis vectors."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Regular-zero dimension argument.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Valid diagonal exclusion and compactness.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct sign parity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

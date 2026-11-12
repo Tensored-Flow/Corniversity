@@ -24,7 +24,7 @@ function slug(text: string): string {
  * selection stays until replaced or cleared, so clicking into a panel does not lose it.
  */
 export function LessonReader({ sessionId, html, initialAnchor }: { sessionId: string; html: string; initialAnchor?: string | null }) {
-  const container = useRef<HTMLDivElement>(null);
+  const container = useRef<HTMLElement>(null);
   const { selection, setSelection, requestHelp, requestNote } = useWorkspace();
   const [resumedAt, setResumedAt] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<"idle" | "saved" | "failed">("idle");
@@ -106,9 +106,15 @@ export function LessonReader({ sessionId, html, initialAnchor }: { sessionId: st
           Resumed at “{resumedAt}”, where you were last reading.
         </p>
       ) : null}
-      <div ref={container}>
+      <section
+        ref={container}
+        aria-label="Lecture notes"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: the notes scroll sideways and must be reachable by keyboard (axe: scrollable-region-focusable)
+        tabIndex={0}
+        className="min-w-0 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+      >
         <RenderedHtml html={html} />
-      </div>
+      </section>
       <p className="mt-3 text-[0.7rem] text-ink-3" aria-live="polite">
         {saveState === "failed"
           ? "Your reading position could not be saved; it will be tried again as you read."

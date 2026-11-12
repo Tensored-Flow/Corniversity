@@ -1,0 +1,109 @@
+{
+  "id": "CHE-101-u09-ex4",
+  "sequence": 4,
+  "title": "A catalyst claim under cross-examination",
+  "kind": "calculation",
+  "promptMarkdown": "A closed ideal A ⇌ B system has C=0.100 M, [B]₀=0, k_f=0.0300 min⁻¹ and k_r=0.0100 min⁻¹. A proposed catalyst multiplies both by five. (a) Derive [B](t), calculate equilibrium composition and time to 90% of equilibrium B with and without catalyst. (b) Compare [B] at 20 min. (c) Explain why “more B after 20 min” does not prove a changed equilibrium. (d) Design a bidirectional time-course experiment able to detect changed equilibrium, faster relaxation or catalyst deactivation; include a control, late-time checks and at least one failure of the simple model.",
+  "conceptIds": [
+    "arrhenius-temperature-dependence"
+  ],
+  "hintLadder": [
+    "Use A=C−B to obtain a linear differential equation.",
+    "Ninety percent of the endpoint leaves ten percent of the initial deviation.",
+    "Starting from both sides tests an equilibrium interpretation more strongly than a single trajectory."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives the relaxation equation and times",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes and explains finite-time yield versus equilibrium",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Designs controls and bidirectional measurements",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Identifies deactivation/model violations without overclaiming",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 55,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

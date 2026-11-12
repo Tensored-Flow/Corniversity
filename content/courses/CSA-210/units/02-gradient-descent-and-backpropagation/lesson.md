@@ -4,11 +4,11 @@ Everything in this course is trained by one idea: measure how the loss changes w
 
 **Definition (gradient).** For a differentiable $L:\mathbb R^d\to\mathbb R$, $\nabla L(w)$ is the vector of partial derivatives, and the first-order expansion is $L(w+\delta)=L(w)+\nabla L(w)^\top\delta+o(\|\delta\|)$.
 
-**Proposition (steepest ascent).** Among unit vectors $u$, the directional derivative $\nabla L(w)^\top u$ is largest when $u=\nabla L(w)/\|\nabla L(w)\|$.
+**Proposition (steepest ascent).** If $\nabla L(w)\ne0$, among unit vectors $u$ the directional derivative $\nabla L(w)^\top u$ is largest when $u=\nabla L(w)/\|\nabla L(w)\|$.
 
 **Proof.** By Cauchy–Schwarz, $\nabla L(w)^\top u\le\|\nabla L(w)\|\,\|u\|=\|\nabla L(w)\|$, with equality exactly when $u$ is a positive multiple of $\nabla L(w)$. $\square$
 
-So $-\nabla L(w)$ is the direction of steepest descent to first order (Section 1.1 of the tutorial; its Analytical Exercise 1.1 asks you to compute a gradient vector).
+If the gradient is zero, every unit direction has zero first-order directional derivative and the normalised expression is undefined. Otherwise $-\nabla L(w)$ is the direction of steepest descent to first order (Section 1.1 of the tutorial; its Analytical Exercise 1.1 asks you to compute a gradient vector).
 
 **Definition (gradient descent).** Choose a learning rate $\eta>0$ and iterate $w_{t+1}=w_t-\eta\,\nabla L(w_t)$ (Section 1.2).
 
@@ -40,7 +40,7 @@ In particular, for $\eta\le1/\beta$, $L(w_{t+1})\le L(w_t)-\tfrac\eta2\|\nabla L
 
 **Proof.** Put $v=w_{t+1}$, $w=w_t$ in the quadratic upper bound: $v-w=-\eta\nabla L(w)$, so $\nabla L(w)^\top(v-w)=-\eta\|\nabla L(w)\|^2$ and $\tfrac\beta2\|v-w\|^2=\tfrac{\beta\eta^2}{2}\|\nabla L(w)\|^2$. $\square$
 
-Summing the inequality over $t<T$ gives $\sum_{t<T}\|\nabla L(w_t)\|^2\le\tfrac2\eta\big(L(w_0)-\inf L\big)$, hence $\min_{t<T}\|\nabla L(w_t)\|^2\le\frac{2(L(w_0)-\inf L)}{\eta T}$. Gradient descent with a small enough step finds points of arbitrarily small gradient on any smooth function, convex or not. It does not promise a minimum, let alone the global one. For the quadratic above $\beta=\lambda_d$, and the lemma's safe step $\eta\le1/\lambda_d$ is the exact threshold $2/\lambda_d$ divided by two: the lemma is conservative but it needs no eigenvalues.
+If $L$ is bounded below and a fixed step satisfies $0<\eta\le1/\beta$, summing the inequality over $t<T$ gives $\sum_{t<T}\|\nabla L(w_t)\|^2\le\tfrac2\eta\big(L(w_0)-\inf L\big)$, hence $\min_{t<T}\|\nabla L(w_t)\|^2\le\frac{2(L(w_0)-\inf L)}{\eta T}$. Under these assumptions the bound guarantees arbitrarily small gradient norms along the sequence; it does not by itself prove that the iterates converge to a point or reach a minimum. The displayed descent lemma gives strict descent at a nonzero gradient for every $0<\eta<2/\beta$. Restricting to $\eta\le1/\beta$ merely gives the convenient half-coefficient bound. For the quadratic, $\beta=\lambda_d$, so the full lemma recovers the same strict step interval as the spectral analysis.
 
 ## Computational graphs and the chain rule in reverse
 
@@ -60,7 +60,7 @@ In vector form, for a layer $h=\sigma(Wx+b)$ with $\bar h$ known: $\bar z=\bar h
 
 PyTorch builds the graph while your forward code runs: tensors created with `requires_grad=True` are leaves, every operation appends a node carrying its backward function, and `loss.backward()` performs the reverse sweep (Section 2.2, Backward Propagation). Gradients are *accumulated* into each leaf's `.grad`, so a training loop (Section 3.1) reads: forward, loss, `zero_grad`, `backward`, `step`.
 
-**Warning.** Accumulation is a feature (it lets you sum gradients over several micro-batches), but forgetting `zero_grad` silently adds the previous step's gradient to the current one and changes the algorithm you are running. A second warning: at a kink such as ReLU at $0$ the derivative does not exist; autograd returns a chosen subgradient (PyTorch uses $0$ there). This is harmless in practice and worth knowing when a result looks odd exactly at a boundary.
+**Warning.** Accumulation is a feature (it lets you sum gradients over several micro-batches), but forgetting `zero_grad` silently adds the previous step's gradient to the current one and changes the algorithm you are running. A second warning: at a kink such as ReLU at $0$ the derivative does not exist; autograd returns a chosen subgradient (PyTorch uses $0$ there). This convention matters for exact-boundary behaviour and for interpreting finite-difference checks; it is not an ordinary derivative at the kink.
 
 ## Lab
 
@@ -68,4 +68,4 @@ The lab `gradient-descent-surface` puts a two-dimensional quadratic with eigenva
 
 ## What to carry forward
 
-The negative gradient is the steepest-descent direction; on a quadratic, gradient descent converges exactly when $0<\eta<2/\lambda_{\max}$, with best rate $(\kappa-1)/(\kappa+1)$; on any $\beta$-smooth function the step $\eta\le1/\beta$ guarantees descent and leads to stationary points. Backpropagation is the chain rule evaluated in reverse topological order; it costs about one forward pass and delivers every parameter's derivative; autograd records the graph as you compute and accumulates gradients. Next unit: multilayer perceptrons, what they can represent, and how depth and width trade off.
+The negative gradient is the steepest-descent direction; on a quadratic, gradient descent converges exactly when $0<\eta<2/\lambda_{\max}$, with best rate $(\kappa-1)/(\kappa+1)$; for a $\beta$-smooth function, $0<\eta<2/\beta$ guarantees strict descent at nonzero gradients. With a lower bound and fixed $0<\eta\le1/\beta$, the telescoping estimate gives small-gradient points, without by itself proving convergence of iterates. Backpropagation is the chain rule evaluated in reverse topological order; it costs about one forward pass and delivers every parameter's derivative; autograd records the graph as you compute and accumulates gradients. Next unit: multilayer perceptrons, what they can represent, and how depth and width trade off.

@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u04-ex1",
+  "sequence": 1,
+  "title": "The tangent cocycle in a concrete overlap",
+  "kind": "proof",
+  "promptMarkdown": "On the positive quadrant use coordinates $(x,y)$ and $(u,v)=(\\log x,y/x)$. Compute the component transformation of a tangent vector $a\\partial_x+b\\partial_y$, its inverse, and $df$ for $f(x,y)=y/x$. Verify that the derivation of $f$ agrees in both coordinate systems.",
+  "conceptIds": [
+    "vector-bundles",
+    "tangent-bundle-vector-fields"
+  ],
+  "hintLadder": [
+    "Differentiate both new coordinates.",
+    "Invert the coordinate map before differentiating its inverse.",
+    "In the new chart $f$ is one of the coordinate functions."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Forward and inverse component maps.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct differential.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Agreement and explicit base-point dependence.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,3 +1,5 @@
+import { checkUnitDraft, renderDraftLesson, type UnitDraft } from "@corniversity/core/preparation/pipeline";
+import { preparationDraft } from "@corniversity/core/preparation/pipeline.fixture";
 import { and, eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createFixture, type Fixture } from "../../test/fixtures";
@@ -164,9 +166,9 @@ describe("preparing a course with the scripted demo", () => {
     const view = await preparationView(handle.db, fx.ownerId, request.id);
     const authoring = view!.stages.find((s) => s.stageKey === "unit_authoring");
     expect(authoring).toMatchObject({ status: "blocked" });
-    expect(authoring?.error).toMatch(/No model is configured/);
+    expect(authoring?.error).toMatch(/No permitted source passages/);
     expect(view!.drafts).toHaveLength(0);
-    expect(view!.request.statusNote).toMatch(/No model is configured/);
+    expect(view!.request.statusNote).toMatch(/No permitted source passages/);
     expect(view!.summary).toBe("2 units mapped; 1 prepared; your next sessions are ready.");
     const sourceArtifact = view!.stages.find((s) => s.stageKey === "source_inspection")?.artifact as {
       sources: { importAllowed: boolean }[];
@@ -215,134 +217,101 @@ describe("preparing a course with the scripted demo", () => {
 });
 
 describe("publication", () => {
-  it("publishes only a checked draft, by the owner, into an outlined unit, and never over a unit prepared by hand", async () => {
+  const madeDraft = () => preparationDraft("supplied-passage", `src-${fx.courseId.toLowerCase()}-ch1`);
+  const checksFor = (draft: UnitDraft) =>
+    checkUnitDraft(draft, {
+      verifiedLocatorIds: new Set(draft.sourceLocatorIds),
+      suppliedPassageIds: new Set(["supplied-passage"]),
+      expectedObjectives: draft.objectives,
+    });
+  const insert = async (version: number, draft = madeDraft(), unitId = outlinedUnit()) => {
     const [request] = await listPreparations(handle.db, fx.ownerId);
-    const draft = {
-      lessonMarkdown: "A lesson.",
-      objectives: ["Understand the outlined topic."],
-      sourceLocatorIds: [`src-${fx.courseId.toLowerCase()}-ch1`],
-      exercises: [
-        {
-          title: "First exercise",
-          kind: "proof" as const,
-          promptMarkdown: "Prove the statement.",
-          hintLadder: ["Start from the definition."],
-          criteria: [{ criterion: "Correct.", weight: 1 }],
-          referenceSolution: "The reference argument, instructor-only.",
-          stage: "independent" as const,
-        },
-      ],
-      misconceptions: [],
-    };
-    const [failed] = await handle.db
-      .insert(unitDraft)
-      .values({
-        requestId: request!.id,
-        ownerId: fx.ownerId,
-        unitId: outlinedUnit(),
-        version: 1,
-        draft,
-        checks: [{ name: "lesson-length", result: "fail", detail: "short" }],
-        status: "failed_checks",
-      })
-      .returning();
-    await expect(publishDraft(handle.db, fx.ownerId, failed!.id)).rejects.toThrow(/passed every automatic check/);
-    const [checked] = await handle.db
-      .insert(unitDraft)
-      .values({
-        requestId: request!.id,
-        ownerId: fx.ownerId,
-        unitId: outlinedUnit(),
-        version: 2,
-        draft,
-        checks: [{ name: "lesson-length", result: "pass", detail: "ok" }],
-        status: "checked",
-      })
-      .returning();
-    await expect(publishDraft(handle.db, "someone-else", checked!.id)).rejects.toThrow(/not found/);
-    await publishDraft(handle.db, fx.ownerId, checked!.id);
+    return (
+      await handle.db
+        .insert(unitDraft)
+        .values({ requestId: request!.id, ownerId: fx.ownerId, unitId, version, draft, checks: checksFor(draft), status: "checked" })
+        .returning()
+    )[0]!;
+  };
+
+  it("does not let a previously checked legacy draft bypass the stronger publication gate", async () => {
+    const draft = await insert(1);
+    await handle.db
+      .update(unitDraft)
+      .set({ checks: [{ name: "lesson-length", result: "pass", detail: "old check" }] })
+      .where(eq(unitDraft.id, draft.id));
+    await expect(publishDraft(handle.db, fx.ownerId, draft.id)).rejects.toThrow(/predates the current evidence/);
+    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, draft.id)))[0]?.status).toBe("checked");
+    expect(await handle.db.select().from(unitPublication).where(eq(unitPublication.unitId, outlinedUnit()))).toHaveLength(0);
+  });
+
+  it("publishes only for the owner after current checks, stores worked examples, and keeps reference solutions instructor-only", async () => {
+    const data = madeDraft();
+    const draft = await insert(2, data);
+    await expect(publishDraft(handle.db, "someone-else", draft.id)).rejects.toThrow(/not found/);
+    await publishDraft(handle.db, fx.ownerId, draft.id);
     const [unit] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit()));
-    expect(unit).toMatchObject({ status: "ready", lessonMarkdown: "A lesson." });
+    expect(unit).toMatchObject({ status: "ready", lessonMarkdown: renderDraftLesson(data) });
     expect(unit!.checks.at(-1)).toMatchObject({ name: "owner-review", result: "pass" });
     const exercises = await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()));
-    expect(exercises.map((e) => e.id)).toEqual([`${outlinedUnit()}-p2-ex1`]);
+    expect(exercises.map((e) => e.id)).toEqual([1, 2, 3].map((i) => `${outlinedUnit()}-p2-ex${i}`));
     const [reference] = await handle.db
       .select()
       .from(instructorArtifact)
       .where(eq(instructorArtifact.exerciseId, `${outlinedUnit()}-p2-ex1`));
-    expect(reference).toMatchObject({ kind: "reference_solution", releasePolicy: "on_request_practice" });
+    expect(reference).toMatchObject({
+      kind: "reference_solution",
+      releasePolicy: "on_request_practice",
+      markdown: data.exercises[0]!.referenceSolution,
+    });
+    expect(unit!.lessonMarkdown).not.toContain(data.exercises[0]!.referenceSolution);
     const [publication] = await handle.db.select().from(unitPublication).where(eq(unitPublication.unitId, outlinedUnit()));
     expect(publication).toMatchObject({ active: true, previous: { status: "draft", lessonMarkdown: "Outline only." } });
-    await expect(rejectDraft(handle.db, fx.ownerId, checked!.id, "too late")).rejects.toThrow(/already decided/);
-
-    // A unit prepared by hand (ready, never published from a draft) is not replaced.
-    const [hand] = await handle.db
-      .insert(unitDraft)
-      .values({ requestId: request!.id, ownerId: fx.ownerId, unitId: fx.unitId, version: 1, draft, checks: [], status: "checked" })
-      .returning();
-    await expect(publishDraft(handle.db, fx.ownerId, hand!.id)).rejects.toThrow(/already prepared/);
-    // The refusal rolled back the claim: the draft is still only checked.
-    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, hand!.id)))[0]?.status).toBe("checked");
-    await handle.db.delete(unitDraft).where(eq(unitDraft.id, hand!.id));
+    await expect(rejectDraft(handle.db, fx.ownerId, draft.id, "too late")).rejects.toThrow(/already decided/);
+    const hand = await insert(1, data, fx.unitId);
+    await expect(publishDraft(handle.db, fx.ownerId, hand.id)).rejects.toThrow(/already prepared/);
+    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, hand.id)))[0]?.status).toBe("checked");
+    await handle.db.delete(unitDraft).where(eq(unitDraft.id, hand.id));
   });
 
-  it("publishes a draft once under a double submit, serialises two drafts for one unit, and leaves nothing behind when it fails part-way", async () => {
-    const [request] = await listPreparations(handle.db, fx.ownerId);
-    const exercise = {
-      title: "Later exercise",
-      kind: "proof" as const,
-      promptMarkdown: "Prove it.",
-      hintLadder: ["Start."],
-      criteria: [{ criterion: "Correct.", weight: 1 }],
-      referenceSolution: "Instructor-only.",
-      stage: "independent" as const,
-    };
-    const draftOf = (lessonMarkdown: string, exercises: unknown[]) => ({
-      lessonMarkdown,
-      objectives: ["Objective."],
-      sourceLocatorIds: [],
-      exercises: exercises as (typeof exercise)[],
-      misconceptions: [],
-    });
-    const insert = async (version: number, d: ReturnType<typeof draftOf>) =>
-      (
-        await handle.db
-          .insert(unitDraft)
-          .values({ requestId: request!.id, ownerId: fx.ownerId, unitId: outlinedUnit(), version, draft: d, checks: [], status: "checked" })
-          .returning()
-      )[0]!;
-    const activeCount = async () =>
-      (await handle.db.select().from(unitPublication).where(eq(unitPublication.unitId, outlinedUnit()))).filter((p) => p.active).length;
+  it("rechecks a modified draft rather than trusting its stored pass flags", async () => {
+    const draft = await insert(3);
+    const modified = madeDraft();
+    modified.lessonMarkdown = "This repeated sentence demonstrates why a word count is insufficient. ".repeat(100);
+    await handle.db.update(unitDraft).set({ draft: modified }).where(eq(unitDraft.id, draft.id));
+    await expect(publishDraft(handle.db, fx.ownerId, draft.id)).rejects.toThrow(/current evidence and teaching checks/);
+    expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, draft.id)))[0]?.status).toBe("checked");
+  });
 
-    // The same draft, submitted twice at once: exactly one publication.
-    const twice = await insert(3, draftOf("Lesson three.", [exercise]));
+  it("publishes once under double submit and serialises two drafts for one unit without losing records", async () => {
+    const draft = await insert(4);
     const results = await Promise.allSettled([
-      publishDraft(handle.db, fx.ownerId, twice.id),
-      publishDraft(handle.db, fx.ownerId, twice.id),
+      publishDraft(handle.db, fx.ownerId, draft.id),
+      publishDraft(handle.db, fx.ownerId, draft.id),
     ]);
     expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
-    const p3 = (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) =>
-      e.id.includes("-p3-"),
+    const generated = (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) =>
+      e.id.includes("-p4-"),
     );
-    expect(p3).toHaveLength(1);
-    expect(await activeCount()).toBe(1);
-
-    // Two drafts for the same unit at once: both publish, one after the other; one stays active.
-    const [four, five] = [await insert(4, draftOf("Lesson four.", [exercise])), await insert(5, draftOf("Lesson five.", [exercise]))];
-    await Promise.all([publishDraft(handle.db, fx.ownerId, four.id), publishDraft(handle.db, fx.ownerId, five.id)]);
-    expect(await activeCount()).toBe(1);
-
-    // A failure part-way (a second exercise with no reference solution) rolls everything back.
-    const [unitBefore] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit()));
-    const broken = await insert(6, draftOf("Lesson six.", [exercise, { ...exercise, referenceSolution: null }]));
+    expect(generated).toHaveLength(3);
+    const [five, six] = [await insert(5), await insert(6)];
+    await Promise.all([publishDraft(handle.db, fx.ownerId, five.id), publishDraft(handle.db, fx.ownerId, six.id)]);
+    const publications = await handle.db.select().from(unitPublication).where(eq(unitPublication.unitId, outlinedUnit()));
+    expect(publications.filter((p) => p.active)).toHaveLength(1);
+    expect(publications).toHaveLength(4);
+    const previous = (await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit())))[0]!;
+    const broken = await insert(7);
+    await handle.db
+      .update(unitDraft)
+      .set({ draft: { ...madeDraft(), exercises: [{ ...madeDraft().exercises[0]!, referenceSolution: null }] } as unknown as UnitDraft })
+      .where(eq(unitDraft.id, broken.id));
     await expect(publishDraft(handle.db, fx.ownerId, broken.id)).rejects.toThrow();
-    const [unitAfter] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit()));
-    expect(unitAfter?.lessonMarkdown).toBe(unitBefore?.lessonMarkdown);
-    const p6 = (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) =>
-      e.id.includes("-p6-"),
+    expect((await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, outlinedUnit())))[0]!.lessonMarkdown).toBe(
+      previous.lessonMarkdown,
     );
-    expect(p6).toHaveLength(0);
+    expect(
+      (await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, outlinedUnit()))).filter((e) => e.id.includes("-p7-")),
+    ).toHaveLength(0);
     expect((await handle.db.select().from(unitDraft).where(eq(unitDraft.id, broken.id)))[0]?.status).toBe("checked");
-    expect(await activeCount()).toBe(1);
   });
 });

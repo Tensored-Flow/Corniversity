@@ -51,8 +51,10 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 `requestPredictAgain`, `followNewProgrammes`, `resolveProviderState`, `approvePaidUse`,
 `withdrawPaidUseApproval`, `planRun`, `recordProviderRun`, `resetOwnerPassword`, and the research
 studio's `createProject`, `setShelf`, `saveDraft`, `saveVersion`, `addProvenance`, `addArtifact`,
-`requestFeedback`, `requestOralDiscussion`, `holdOralDiscussion` and `projectReport`. UI and model tools both call these; models never write. (`prepareUnit`
-is reserved for the content pipeline; units are currently prepared in `content/` and validated.)
+`requestFeedback`, `requestOralDiscussion`, `holdOralDiscussion` and `projectReport`. Course preparation
+uses `createPreparationRequest`, `confirmPreparation`, `resumePreparation`, `cancelPreparation`
+and `publishDraft`. UI and model tools call services; models never write academic state directly.
+Authored units in `content/` and owner-published runtime drafts are distinct paths.
 
 ## Data model (areas → tables)
 
@@ -111,7 +113,8 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   one `user` with the role `owner`.
 
 Invariants enforced in services and tests: grades reference exact submission/rubric/run
-versions and keep the exercise as answered; citations resolve to immutable `source_version` + `locator`; enrolments reference a
+versions and keep the exercise as answered; citations retain registry `source_version`/`locator` or
+owner-library asset/passage identities; enrolments reference a
 `course_version`; cross-listing never duplicates attempts; instructor artifacts never serialize to
 learners; permissions are per action; owner scoping on every query; idempotency keys on
 enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are distinct rows.
@@ -121,12 +124,31 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 - Roles: director, convenor (content pipeline), lecturer, tutor, librarian, assessor, seminar
   chair, supervisor, peer. Each has a versioned contract: purpose, allowed tools (server
   functions), required context, forbidden actions, output schema, memory policy, limits.
-- Grounding: evidence blocks are tagged `[E1]…[En]`; the model cites tags; the server maps tags to
-  locator ids and drops unknown tags, flagging the sentence as uncited. Each turn numbers its
-  evidence afresh, so replayed history replaces earlier tags with the labels of the sources they
-  resolved to. Tutor passages come from the learner's permitted library by full-text search that
-  any word of the question can match, best matches first. A reading-room selection is attributed
-  to its page only when it is found on that page.
+- Grounding: evidence blocks are tagged `[E1]…[En]`; the server resolves cited tags to registry
+  locations or exact library asset/passage IDs and removes unknown tags. Location-only blocks are
+  reading pointers, not evidence that the source text was read. Course retrieval admits only the
+  owner's processed, nondeleted, non-local library items with current external-AI permission;
+  preparation also restricts them to the source editions assigned to the unit. Full-text search
+  uses up to 96 distinct query words, ranked matches first. Tutor/assessor excerpts are bounded
+  and labelled when shortened. A reading-room selection is attributed to its page only when
+  found on that page.
+- Preparation: no source-dependent draft is admitted without actual permitted passages. Up to
+  eight excerpts of 2,400 characters enter the convenor prompt; bibliography alone cannot
+  reserve a run. Server-recorded supplied passage/locator IDs and planned objectives accompany
+  each draft. Publication reruns current structural checks against that provenance; legacy
+  drafts without it require preparation and review again. Worked examples become learner-facing
+  notes; solutions remain instructor artifacts. These checks do not establish academic truth.
+- Dispatch permissions: `sourcePassagesStillPermitted` rechecks the exact cached passages, current
+  owner/course association, availability and latest permission in one database snapshot after
+  admission, immediately before preparation, assessment or tutor dispatch. A changed source or
+  failed check blocks without a provider attempt and releases the reservation when the database
+  is available. The check and remote transmission are not literally atomic.
+- Tutor context: current learner notes are bounded to 12,000 characters and saved work to 20,000,
+  falling back to the latest submission when the draft is empty. Longer text retains the opening
+  plus the selected passage or conclusion, with matching omission disclosure in preview and
+  prompt. `tutorHistory` filters the bounded replay window by recorded library citation IDs and
+  leaves the saved conversation untouched; retained history IDs join the final dispatch guard.
+  Uncited historical paraphrases cannot be attributed reliably from citation records alone.
 - Labels: `{source-backed}`, `{derived}`, `{conjecture}`, `{needs-checking}` markers → stored labels.
 - Providers: `anthropic` (official SDK 1.3, beta Messages API: `messages.stream` for prose,
   `messages.create` with a Zod output format and the application's own validation for structured
@@ -178,6 +200,8 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 
 The worker applies pending migrations on start and, when the deployment sets
 `SEED_CONTENT_ON_START=1`, seeds the institution's content (idempotent; never learner data).
+An owner-published unit retains its lesson, exercises and instructor artifacts together during
+reseeding; reattaching it to a current course version does not replace that teaching.
 pg-boss 12 (`schema: pgboss`), queues: `transcribe-pages` (one per consent; no retry, since a retry
 would be a new billable call; consent and pages re-checked when it runs), `ingest-asset` (singletonKey = sha256), `prepare-unit`
 (one job per confirmed or resumed preparation request; stages hold leases so a duplicate run skips finished work), `assess-submission` (singletonKey = submission version id),
@@ -193,7 +217,9 @@ then be removed from the deployment. Without email delivery, the owner's passwor
 an administrative command run in the worker's shell, never through the website; it revokes every
 session (`apps/worker/src/admin/reset-owner-password.ts`). Every route handler
 calls `requireSession`; files served only through authorized handlers; companion uses hashed
-device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); uploads validated
+device tokens; Markdown is parsed as one document, then sanitised (`rehype-sanitize` with a
+KaTeX allow-list), preserving code fences, lists, reference links and footnotes. Named teaching
+environments are wrapped after sanitisation using fixed classes and text-node titles. Uploads are validated
 (type, size, page count, decompression limits); secrets redacted from logs. `Permissions-Policy`
 allows the microphone to this origin only (`microphone=(self)`), for dictation, which is offered
 only after the learner's recorded permission; camera and geolocation stay off.

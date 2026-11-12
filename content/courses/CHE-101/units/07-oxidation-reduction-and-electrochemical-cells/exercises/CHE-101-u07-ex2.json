@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u07-ex2",
+  "sequence": 2,
+  "title": "Potential is not multiplied",
+  "kind": "calculation",
+  "promptMarkdown": "At 298.15 K use E°(Cu²⁺/Cu) = +0.340 V and E°(Zn²⁺/Zn) = −0.763 V. For Zn(s)+Cu²⁺→Zn²⁺+Cu(s), take a(Zn²⁺)=0.0400 and a(Cu²⁺)=0.00200. Calculate n, Q, E, ΔrG, and log₁₀K. Explain what changes if all stoichiometric coefficients are doubled. Use R=8.31446 J mol⁻¹ K⁻¹, F=96485 C mol⁻¹.",
+  "conceptIds": [
+    "redox-electrochemistry"
+  ],
+  "hintLadder": [
+    "Pure solid activities equal one.",
+    "Keep the two tabulated quantities as reduction potentials in E°cathode−E°anode.",
+    "Check the doubled reaction algebraically before using numbers."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Uses correct reaction quotient and electron number",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Calculates voltage/free energy/equilibrium with units and signs",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Demonstrates invariance of voltage under reaction scaling",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,6 +1,7 @@
 // A throw-away embedded PostgreSQL for the worker's handler tests, on its own port so the db
 // package's tests can run at the same time. Migrations are applied once per run.
 import { mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { createDb } from "@corniversity/db/client";
 import { runMigrations } from "@corniversity/db/migrate";
@@ -9,7 +10,7 @@ import EmbeddedPostgres from "embedded-postgres";
 export const TEST_PORT = 5439;
 export const TEST_DATABASE_URL = `postgres://corniversity:corniversity@127.0.0.1:${TEST_PORT}/corniversity_worker_test`;
 
-const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", "corniversity-test-pg-worker");
+const dir = resolve(tmpdir(), "corniversity-test-pg-worker");
 
 export default async function setup(): Promise<() => Promise<void>> {
   rmSync(dir, { recursive: true, force: true });

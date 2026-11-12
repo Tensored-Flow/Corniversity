@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u11-ex2",
+  "sequence": 2,
+  "title": "Use the radial primitive, including the endpoint",
+  "kind": "proof",
+  "promptMarkdown": "On $\\mathbb R^3$, let $\\alpha=(2xy+z)\\,dx+x^2\\,dy+x\\,dz$. Verify that it is closed. Apply the radial homotopy formula for one-forms to construct a primitive, and verify by direct differentiation. Explain what the same homotopy identity says for closed zero-forms.",
+  "conceptIds": [
+    "differential-forms-de-rham"
+  ],
+  "hintLadder": [
+    "Compare each pair of cross partials.",
+    "Evaluate the one-form at tx on the radial vector x.",
+    "Remember that pullback of a positive-degree form by a constant map is zero, but pullback of a function need not be."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Closure check.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct radial integral and verification.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Degree-zero exception.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

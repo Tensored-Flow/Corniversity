@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u06-ex1",
+  "sequence": 1,
+  "title": "Critical points are not critical values",
+  "kind": "proof",
+  "promptMarkdown": "For $f(x,y)=x^2y$, compute the critical set and the critical values. Describe every nonzero level as a smooth curve with an explicit parametrization of each component. Describe the zero level and explain where the regular-value theorem applies and where it makes no claim.",
+  "conceptIds": [
+    "sard-theorem"
+  ],
+  "hintLadder": [
+    "Set both first derivatives to zero.",
+    "On a nonzero level solve for $y$ in terms of $x$.",
+    "A singular value can still contain regular points."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Critical set and values.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct nonzero components and regularity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Precise zero-level and theorem-scope discussion.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

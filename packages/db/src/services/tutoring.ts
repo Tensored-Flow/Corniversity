@@ -38,7 +38,7 @@ export async function buildUnitEvidence(
       kind: "location" as const,
       text: l.note
         ? `Location only (passage text not retrieved). Note: ${l.note}`
-        : "Location only (passage text not retrieved). Cite this tag for statements that come from this source location; do not quote text you have not been given.",
+        : "Location only (passage text not retrieved). This tag is a further-reading pointer, not evidence that a claim is supported. Do not quote or describe text you have not been given.",
     }));
 
   // The learner's own library: only processed items assigned to this course and permitted for
@@ -49,7 +49,13 @@ export async function buildUnitEvidence(
     for (const p of passages) {
       const title = p.asset.confirmedTitle ?? p.asset.filename;
       const page = p.printed_label ? `p. ${p.printed_label} (PDF page ${p.physical_index + 1})` : `PDF page ${p.physical_index + 1}`;
-      blocks.push({ label: `Your library: ${title}, ${page}`, assetId: p.asset_id, passageId: p.id, text: p.text, kind: "passage" });
+      blocks.push({
+        label: `Your library: ${title}, ${page}`,
+        assetId: p.asset_id,
+        passageId: p.id,
+        text: p.text.length > 2400 ? `${p.text.slice(0, 2400)}\n[Remaining passage omitted; this is an excerpt.]` : p.text,
+        kind: "passage",
+      });
     }
     const localOnly = await localOnlyAssetsForCourse(db, library.ownerId, library.courseId);
     if (localOnly.length) {

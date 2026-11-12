@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u03-ex1",
+  "sequence": 1,
+  "title": "A regular matrix level set",
+  "kind": "proof",
+  "promptMarkdown": "For $q(A)=A^TA$ with target the symmetric $n\\times n$ matrices, prove that $I$ is regular. Determine $T_AO(n)$ and the dimension of $O(n)$. Explain why the same regular-value argument fails if the codomain is declared to be all matrices.",
+  "conceptIds": [
+    "inverse-function-theorem-manifolds"
+  ],
+  "hintLadder": [
+    "Expand $(A+tB)^T(A+tB)$ and keep its linear term.",
+    "Prescribe a symmetric output $S$ and try $B=AS/2$.",
+    "Write a kernel vector as $AK$; distinguish $n=1$ in the codomain discussion."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct derivative and explicit right inverse.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Kernel and dimension with all hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct explanation of the target, including the scalar case.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

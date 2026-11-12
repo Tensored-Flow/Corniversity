@@ -1,0 +1,91 @@
+{
+  "id": "CHE-101-u09-ex3",
+  "sequence": 3,
+  "title": "Can the curve identify the mechanism?",
+  "kind": "calculation",
+  "promptMarkdown": "An ideal initial-rate experiment identifies K_M=30 μM and k₂=12 s⁻¹ using a separately measured E_T. Construct two different positive pairs (k₁,k₋₁) consistent with these results. An inhibitor at [I]=40 μM has K_I=20 μM and follows the stipulated competitive model. Calculate its apparent K_M and the ratio v_inhibited/v_control at [S]=30 and 300 μM. Explain which conclusions require extra assumptions and propose an independent measurement.",
+  "conceptIds": [
+    "arrhenius-temperature-dependence"
+  ],
+  "hintLadder": [
+    "Solve the equation for k−1 after choosing k1.",
+    "Cancel the common Vmax S in the rate ratio.",
+    "Identical macroscopic combinations need not imply identical microscopic parameters."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Constructs distinct valid kinetic parameter sets",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Calculates inhibition predictions and limiting trend",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "States identifiability and assumption limits with useful additional evidence",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Transfers a forward rate-law calculation into an inverse identifiability problem."
+  }
+}

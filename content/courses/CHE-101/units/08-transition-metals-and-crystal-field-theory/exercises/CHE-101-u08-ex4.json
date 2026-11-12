@@ -1,0 +1,109 @@
+{
+  "id": "CHE-101-u08-ex4",
+  "sequence": 4,
+  "title": "Choose a structure, then limit the claim",
+  "kind": "calculation",
+  "promptMarkdown": "A neutral complex ML₂X₂ contains group-10 M, neutral monodentate L, and monodentate X⁻. It is diamagnetic and gives two distinct geometric isomers. (a) Determine oxidation state, d count and CN. (b) Compare square-planar and tetrahedral elementary crystal-field predictions, including d⁸ unpaired counts, and argue which best fits both observations. (c) Derive the tetrahedral barycentre levels from degeneracies and gap Δₜ. (d) State two limits of the inference and a further structural measurement. Explain why the existence of a large formation constant would not alone establish rapid ligand exchange.",
+  "conceptIds": [
+    "transition-metal-coordination"
+  ],
+  "hintLadder": [
+    "Use neutrality before orbital filling.",
+    "Ask whether tetrahedral vertices permit an adjacent/opposite distinction.",
+    "Two evidence types support a model more strongly than one, but retain the assumptions."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Combines charge, electron count and geometry",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Explains both magnetic and isomer evidence",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Derives tetrahedral splitting from the barycentre",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Separates inference limits, structural test and kinetic stability",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

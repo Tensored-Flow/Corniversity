@@ -1,6 +1,6 @@
 {
   "id": "CSA-210",
-  "version": 2,
+  "version": 3,
   "title": "Deep Learning Foundations",
   "departmentIds": [
     "computer-science-ai"
@@ -8,8 +8,8 @@
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
-  "purpose": "The mathematics of deep learning (gradient descent, backpropagation as the chain rule on computational graphs, regularisation and generalisation, convolution as a linear operator, attention) together with the evidence discipline that makes a reported result mean something (train/validation/test separation, leakage, baselines, seeds), studied with the Neuromatch Academy Deep Learning tutorials as the spine and original Corniversity exercises.",
-  "description": "Deep learning is function fitting at scale: compose simple differentiable maps, measure error on data, follow the gradient. Almost everything interesting about it lives in the details that slogan hides: why gradient descent converges or diverges, what backpropagation actually computes and what it costs, why a network that can memorise random labels still generalises, which operations convolution and attention really are, and, above all, when a number produced by a training run is evidence of anything. This course teaches those details properly, with derivations, and treats evaluation as a correctness problem rather than a reporting convention.\n\n**How this adaptation works.** The spine is the Neuromatch Academy Deep Learning ebook (content CC BY 4.0; code BSD-3-Clause), a three-week intensive whose days W1D1–W3D3 are re-paced here as ten units for an evening-study term of ten teaching weeks plus a reading week and a synthesis week. Each unit names the exact tutorial pages and sections it draws on; Corniversity writes its own lessons, which supply the mathematics the tutorials gesture at, and sets its own exercises with hint ladders and rubrics. Labs are Corniversity's own implementations, not the Neuromatch notebooks. Neuromatch's pod discussions, project time and Colab workflow are not reproduced.\n\n**Currency check (2026-10-30).** The ebook is a rolling publication without version stamps. On 2026-10-30 every cited chapter and tutorial page was opened and returned the title recorded in the source record; the syllabus seen runs through diffusion models, LLMs, transformers and reinforcement learning. Fast-moving material (large language models, diffusion) is cited where the tutorials stand today and is not presented as the state of the art; the mathematical core of this course (optimisation, backpropagation, generalisation, convolution, attention) is stable. Re-verify the locators before each term.\n\n**What is prepared now.** The unit list shows the exact status of each unit: prepared units have a full lesson, original exercises, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "purpose": "A complete ten-unit mathematical and computational foundation in deep learning, with original derivations, substantial problem sheets, reproducible small numerical investigations and an evidence-led cumulative project.",
+  "description": "This course connects the mathematics of neural networks with the evidence needed to interpret their results. Ten fully authored units cover tensors and evaluation discipline; gradients and backpropagation; MLPs; deep linear learning dynamics; optimisation; generalisation and early stopping; regularisation; convolution; attention and sequences; and representation learning with a cumulative project.\n\nNeuromatch Academy Deep Learning provides the reading spine (content CC BY 4.0; code BSD-3-Clause). Corniversity supplies original explanations and exercises, deriving conditions rather than treating every tutorial simplification as a general theorem. Exact tutorial text was read for the new units on 2026-11-12; embedded videos were not watched. These rolling pages are source snapshots, not a claim to teach the latest frontier systems.\n\nEach unit has a lesson, progressive hints, weighted rubrics and complete instructor reasoning. Computational reference solutions contain executable standard-library Python and observed author-run output. The final CPU-only project trains a small tanh network from scratch, fits preprocessing and PCA only on training inputs, selects checkpoints/configuration on validation across all declared seeds, and reports untouched test/shift results, baselines and actual failures. No external training service, pretrained download or billed generation is needed.\n\nPrepared content is distinct from independent academic review and from learner mastery. Source and solution reviews are tracked separately; the course makes no accreditation, state-of-the-art or real-world performance claim from its synthetic experiments.",
   "outcomes": [
     {
       "id": "o1",
@@ -28,13 +28,18 @@
     },
     {
       "id": "o4",
-      "description": "Describe convolution and attention as linear operators with their structural assumptions (translation equivariance, parameter sharing, content-based weighting), compute output shapes and parameter counts, and justify architecture choices.",
-      "evidenceExpected": "Shape and parameter calculations, a written derivation of convolution's linearity and equivariance, and an attention computation on a small example."
+      "description": "Derive convolution as a linear operator under specified boundary rules and attention as content-dependent weighting (linear in values only with weights fixed); compute shapes/costs, prove relevant symmetry statements and justify architecture assumptions.",
+      "evidenceExpected": "Operator/adjoint proofs and gradient checks, counterexamples to blanket pooling invariance, masked-attention calculations and a permutation-symmetry argument."
     },
     {
       "id": "o5",
       "description": "Produce a reproducible computational notebook that trains a model, reports a baseline, states the split and seed policy, examines failure cases and explains the model's behaviour.",
       "evidenceExpected": "The final project notebook and its written explanation, assessed against the department's reporting conventions."
+    },
+    {
+      "id": "o6",
+      "description": "Analyse reconstruction and contrastive representation objectives and evaluate what a representation preserves for a downstream task.",
+      "evidenceExpected": "PCA label-information counterexample, ELBO/contrastive derivations and a train-only representation ablation with limits stated."
     }
   ],
   "prerequisiteRuleIds": [
@@ -113,13 +118,15 @@
       "id": "a3",
       "title": "Final project: train, break and explain",
       "kind": "project",
-      "description": "A reproducible notebook on a small dataset (synthetic data must be labelled synthetic): baseline, model, validation protocol, seeds, failure-case analysis and a written explanation of why the model behaves as it does, with an out-of-sample or counterexample check. Optional oral explanation to the tutor.",
+      "description": "The complete unit10 train/break/explain study: implement and gradient-check a small CPU model; preserve independent partitions and training-only transforms; select checkpoints/configuration on validation across all declared seeds; evaluate fixed baselines, final and shifted data; report actual failures and representation/architecture assumptions. Runnable script or notebook plus an annotated report.",
       "weight": 0.4,
       "rubricSummary": [
-        "reproducible from a clean environment",
-        "baseline and protocol correct",
-        "failure cases examined",
-        "explanation of behaviour supported by evidence"
+        "mathematical implementation and parameter/gradient checks",
+        "independent data and selection boundaries",
+        "complete reproducibility and all-seed reporting",
+        "baselines, uncertainty limits and actual failures",
+        "representation and shift analysis",
+        "architecture assumptions and falsifiable follow-up"
       ]
     }
   ],
@@ -131,13 +138,15 @@
   "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "Hand-authored by the content author agent from the Neuromatch Academy Deep Learning ebook: the introduction, schedule, prerequisites page, ten chapter pages and fourteen tutorial pages were opened on 2026-10-30 and section anchors recorded as locators. Lessons and exercises are original; the mathematics was re-derived for each reference solution. Workload estimated from the Neuromatch schedule (about 4.5 hours of tutorials plus 3 hours of project time per day over 14 teaching days) re-paced to roughly 8–12 hours per teaching week.",
-    "verifiedAt": "2026-10-30",
+    "authoringMethod": "Inherited units1–2 retained; units3–10 directly authored in Codex after reading actual Neuromatch tutorial text, with original proofs, counterexamples and exercises. Complete reference programs were executed locally on CPU using only the Python standard library. No Corniversity provider generation, subscription credits, external training jobs or pretrained weights were used.",
+    "verifiedAt": "2026-11-12",
     "reviewerNotes": [
-      "Currency check performed 2026-10-30: all cited pages returned the recorded titles; the ebook has no version stamps, so locators must be re-verified before each term.",
-      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
-      "Embedded lecture videos were not watched and are not cited; the units cite tutorial text and exercises.",
-      "Labs (data-leakage-audit, gradient-descent-surface) are Corniversity implementations referenced by id; they must exist in the application before the unit is taught."
+      "All ten units contain full lessons and assessed work; academic review is tracked separately from availability.",
+      "New source snapshot URLs/hashes and topic map are recorded in source-review-manifest.json and REVIEW.md; embedded videos were not watched.",
+      "Corrected source simplifications include dot product versus cosine, conditional SVD decoupling, second moment versus variance, pooling invariance, adaptive weight decay and full attention nonlinearity.",
+      "Complete executable reference code/results are in the instructor material; the final project also has standalone files in labs/.",
+      "Fixed synthetic output verifies a particular numerical run, not learner-tested effectiveness or external performance.",
+      "Final independent academic review completed 2026-11-12: SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md, with source-specific scope and limitations. Every current exercise has independently checked reference reasoning. Not human certification or measured learning effectiveness."
     ]
   },
   "modesOffered": [

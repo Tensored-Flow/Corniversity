@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u05-ex2",
+  "sequence": 2,
+  "title": "Universal bundle map in coordinates",
+  "kind": "proof",
+  "promptMarkdown": "For the finite-cover map $J$ in the lesson, prove that $x\\mapsto J_x(E_x)$ is smooth into $\\mathrm{Gr}_k(\\mathbb R^{mk})$. Give a local formula for the inverse of $E\\to f^*\\gamma_k$. Explain exactly where a finite cover is used and why a partition need not provide a single global frame of $E$.",
+  "conceptIds": [
+    "partitions-of-unity",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Use a local frame to turn the fibre map into a matrix.",
+    "An invertible minor supplies a Grassmannian graph chart.",
+    "Use that same minor to recover the original fibre vector."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Smooth graph-chart expression.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Explicit smooth inverse.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct finite-type and triviality limitations.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

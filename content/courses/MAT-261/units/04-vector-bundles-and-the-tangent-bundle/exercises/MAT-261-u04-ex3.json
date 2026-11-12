@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u04-ex3",
+  "sequence": 3,
+  "title": "The sphere tangent bundle is stably trivial",
+  "kind": "proof",
+  "promptMarkdown": "Construct explicitly a smooth vector-bundle isomorphism $TS^n\\oplus\\underline{\\mathbb R}\\cong\\underline{\\mathbb R}^{n+1}$ over $S^n$. Prove its inverse is smooth and fibrewise linear. Relate the construction to the tangent space of a regular level set, and explain why it does not prove that $TS^n$ itself is trivial. Give a global frame of $TS^1$ directly.",
+  "conceptIds": [
+    "vector-bundles",
+    "tangent-bundle-vector-fields"
+  ],
+  "hintLadder": [
+    "Split an ambient vector into tangential and radial parts.",
+    "Find the radial coefficient by a dot product with $p$.",
+    "In dimension one, rotate $p$ through a right angle."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct explicit bundle map and inverse.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Smoothness and fibrewise linearity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Stable versus ordinary triviality and circle frame.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 60,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

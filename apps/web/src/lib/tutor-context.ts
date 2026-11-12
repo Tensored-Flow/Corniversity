@@ -1,4 +1,5 @@
 import "server-only";
+import { boundedTeachingText, TUTOR_ATTEMPT_CHARACTERS, TUTOR_LESSON_CHARACTERS } from "@corniversity/core/tutoring/context";
 import { decideHelp, HELP_INSTRUCTIONS, HELP_LABELS, type TutorHelpMode } from "@corniversity/core/tutoring/help";
 import type { DbOrTx } from "@corniversity/db/client";
 import { getUnitDetail } from "@corniversity/db/services/catalogue";
@@ -45,7 +46,7 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
   const history = exercise ? await getAttemptHistory(database, ownerId, exercise.id) : [];
   const latestAttempt = history.at(-1)?.attempt ?? null;
   const latestVersion = history.at(-1)?.versions.at(-1) ?? null;
-  const attemptText = latestAttempt?.draftMarkdown ?? latestVersion?.contentMarkdown ?? "";
+  const attemptText = latestAttempt?.draftMarkdown || latestVersion?.contentMarkdown || "";
   const submitted = Boolean(latestVersion);
   const held = exercise ? await runningExamFor(database, ownerId, exercise.id) : null;
   const decision = held
@@ -60,6 +61,16 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
         permitted: exercise?.progression?.helpModes,
       });
   const selection = req.selection ?? null;
+  const attemptContext = boundedTeachingText(
+    attemptText,
+    TUTOR_ATTEMPT_CHARACTERS,
+    selection?.origin === "attempt" ? selection.text : undefined,
+  );
+  const lessonContext = boundedTeachingText(
+    unitDetail.unit.lessonMarkdown,
+    TUTOR_LESSON_CHARACTERS,
+    selection?.origin === "lesson" ? selection.text : undefined,
+  );
   const attached: string[] = [];
   attached.push(`The kind of help: ${HELP_LABELS[req.mode]}.`);
   if (selection) {
@@ -73,13 +84,14 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
     );
   }
   attached.push(`The unit: ${unitDetail.unit.title} (${unitDetail.course.id}), its objective and source locations.`);
+  attached.push(`The current learner-facing lecture notes. ${lessonContext.note}`);
   if (exercise) {
     attached.push(`The exercise "${exercise.title}" and its authored hint ladder (hints given so far: ${latestAttempt?.hintsUsed ?? 0}).`);
     if (attemptText) {
       attached.push(
         latestAttempt?.draftMarkdown
-          ? `Your latest saved draft (revision ${latestAttempt.draftRevision}), up to 1,500 characters.`
-          : `Your latest submission (v${latestVersion?.version}), up to 1,500 characters.`,
+          ? `Your latest saved draft (revision ${latestAttempt.draftRevision}). ${attemptContext.note}`
+          : `Your latest submission (v${latestVersion?.version}). ${attemptContext.note}`,
       );
     }
   }
@@ -99,6 +111,8 @@ export async function tutorAttachments(database: DbOrTx, ownerId: string, req: T
     latestAttempt,
     latestVersion,
     attemptText,
+    attemptContext,
+    lessonContext,
     decision,
     selection,
     help: { label: HELP_LABELS[req.mode], instruction: HELP_INSTRUCTIONS[req.mode] },

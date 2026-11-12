@@ -77,3 +77,13 @@ export async function activityButton(page: Page, title: string | RegExp) {
   if (!(await all.evaluate((d) => (d as HTMLDetailsElement).open))) await all.locator("summary").click();
   return all.locator("li", { hasText: title }).getByRole("button", { name: "Start" }).first();
 }
+
+/** Complete orientation when a journey runs by itself against a fresh QA database. */
+export async function completeOrientation(page: Page): Promise<void> {
+  await page.goto("/onboarding/1");
+  if (!/\/onboarding\/1/.test(page.url())) return;
+  await page.getByLabel("Your name").fill("Leon");
+  await page.getByLabel("Time zone").fill("Europe/London");
+  await page.getByRole("button", { name: "Pick courses" }).click();
+  await expect(page).toHaveURL(/\/catalogue/);
+}

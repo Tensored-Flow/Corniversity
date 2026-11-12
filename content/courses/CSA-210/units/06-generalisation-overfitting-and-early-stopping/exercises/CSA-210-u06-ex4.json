@@ -1,0 +1,110 @@
+{
+  "id": "CSA-210-u06-ex4",
+  "sequence": 4,
+  "title": "Evidence audit: a synthetic wearable pipeline",
+  "kind": "model_interpretation",
+  "promptMarkdown": "Audit this explicitly synthetic study. One hundred volunteers each contribute20 windows, with a binary target for a future event. Investigators randomly split windows70/15/15%, normalise all2000 windows together, add a feature computed from a clinician note written after the event, try40 architectures and five thresholds on the named test split, choose the best test accuracy of94%, report only the best of ten training seeds, and compare with a50% random baseline although90% of cases are negative. They deploy on a later clinic and call94% “proven accuracy for new patients”. Write a corrected protocol and specify what evidence remains usable. Include entity/time leakage, preprocessing, outcome leakage, selection, baseline, uncertainty, checkpoint policy and deployment population. Provide a concise prediction that a clean follow-up could falsify.",
+  "conceptIds": [
+    "overfitting-and-early-stopping"
+  ],
+  "hintLadder": [
+    "For each feature ask: could it exist at the actual prediction time?",
+    "For every selection decision ask which data influenced it.",
+    "A useful corrected protocol names the independent unit, baseline and target population.",
+    "Distinguish reusable engineering work from invalidated performance evidence."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Identifies entity/time/preprocessing/outcome leakage mechanisms",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Corrects model/threshold/seed/checkpoint selection",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Uses an informative baseline and appropriate uncertainty unit",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Limits deployment claims and specifies a falsifiable follow-up",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 75,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

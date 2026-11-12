@@ -1,0 +1,109 @@
+{
+  "id": "CSA-210-u08-ex4",
+  "sequence": 4,
+  "title": "Implement, gradient-check and audit a local detector",
+  "kind": "code",
+  "promptMarkdown": "Write a complete standard-library valid1D cross-correlation forx=(1,3,2,0), w=(1,−1), upstreamg=(2,−1,3). Derive analyticdx, dw, verify each coordinate with central finite differencesε=10⁻⁶ onL=g·y, and report maximum errors. Add a test of linearity inx and a deliberate nonzero-bias counterexample. Finally propose a fair experiment comparing this shared-kernel architecture with a dense model on new independent signals: define split units, an appropriate baseline, validation choices, shift/boundary tests and what would count against the convolutional assumption.",
+  "conceptIds": [
+    "convolution-operator"
+  ],
+  "hintLadder": [
+    "Checkg·y as a scalar so finite differences have an unambiguous target.",
+    "Accumulate through every overlapping receptive field.",
+    "Test architectural assumptions with signals that differ in exactly the information the model may discard."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Implements the exact operator and analytic gradients",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Checks every coordinate numerically and tests linearity/bias",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Defines a fair data/selection protocol",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Connects failure cases to locality and sharing assumptions",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

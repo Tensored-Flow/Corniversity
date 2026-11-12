@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u09-ex2",
+  "sequence": 2,
+  "title": "An orthonormal family can miss half the space",
+  "kind": "proof",
+  "promptMarkdown": "In $\\ell^2(\\mathbb N)$ retain only $e_2,e_4,e_6,\\ldots$. Describe their closed span and orthogonal complement. Compute the limit of the associated projections of an arbitrary $x$. Give a nonzero vector for which all the retained coefficients vanish and explain why Parseval fails for this family.",
+  "conceptIds": [
+    "hilbert-space",
+    "orthonormal-basis"
+  ],
+  "hintLadder": [
+    "Test orthogonality against each retained coordinate vector.",
+    "Use truncation and the square-summable tail to identify the closed span."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Identifies both complementary subspaces.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves norm convergence of the projections.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Gives a counterexample and identifies the missing completeness condition.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

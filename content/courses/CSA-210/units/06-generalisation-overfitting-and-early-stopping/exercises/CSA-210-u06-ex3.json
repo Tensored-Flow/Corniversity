@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u06-ex3",
+  "sequence": 3,
+  "title": "Compare classifiers using paired evidence",
+  "kind": "calculation",
+  "promptMarkdown": "On400 independent test cases, modelA is correct on340, B on348. Their paired table is: both correct328; A-only correct12; B-only correct20; both wrong40. Calculate each accuracy, their difference and the estimated standard error of the mean paired difference D=B_correct−A_correct using the empirical plug-in variance with denominator400. Compare with a calculation that incorrectly assumes independent model accuracies. Explain how200 duplicate pairs of the same underlying cases would change the interpretation, without inventing an exact effective sample size for unspecified dependence.",
+  "conceptIds": [
+    "overfitting-and-early-stopping"
+  ],
+  "hintLadder": [
+    "Code the paired difference as−1,0,+1.",
+    "Compute its second moment before subtracting squared mean.",
+    "A group count is not automatically an effective sample size without a dependence model."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Calculates paired accuracies and uncertainty",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Identifies the covariance issue",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Limits interpretation under dependence and sampling assumptions",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Changes the evaluation from a single accuracy to paired model comparison and clustered observations."
+  }
+}

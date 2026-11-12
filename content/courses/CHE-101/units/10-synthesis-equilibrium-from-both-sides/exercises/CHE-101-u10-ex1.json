@@ -1,0 +1,91 @@
+{
+  "id": "CHE-101-u10-ex1",
+  "sequence": 1,
+  "title": "Recover rates from thermodynamics and relaxation",
+  "kind": "calculation",
+  "promptMarkdown": "At 300 K a closed ideal A ⇌ B system has ΔrG°=−RT ln4, total concentration 0.250 M, and an experimentally measured relaxation half-time ln2/0.0500 min. Assume elementary first-order forward/reverse steps. Find K, equilibrium concentrations, k_f and k_r. Starting with B₀=0.0500 M, derive B(t) and calculate B at20.0 min. Then explain the required standard-state factor for the elementary reaction A ⇌ 2B instead.",
+  "conceptIds": [
+    "kinetic-view-of-equilibrium",
+    "chemical-equilibrium-constant"
+  ],
+  "hintLadder": [
+    "The half-time describes the deviation from equilibrium, not necessarily half of B itself.",
+    "Solve a sum and a ratio for the two rates.",
+    "Write the dimensionless activity quotient before comparing it with a rate-constant ratio."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Reconciles K and equilibrium amounts",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Recovers rates and time dependence correctly",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Checks direction and treats standard-state units correctly",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

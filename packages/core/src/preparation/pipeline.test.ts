@@ -1,28 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { checkUnitDraft, PREPARATION_STAGES, preparationSummary, stageWithinBudget, type UnitDraft } from "./pipeline";
+import { preparationDraft } from "./pipeline.fixture";
 
-const lesson = `${"A substantive lesson sentence about completeness and Cauchy sequences. ".repeat(60)} $x^n$ on $[0,1]$.`;
-const draft = (over: Partial<UnitDraft> = {}): UnitDraft => ({
-  lessonMarkdown: lesson,
-  objectives: ["State the definition of a Banach space."],
-  sourceLocatorIds: ["fa21-l1-def14"],
-  exercises: [
-    {
-      title: "Completeness of C(X)",
-      kind: "proof",
-      promptMarkdown: "Prove that C_inf(X) with the sup norm is complete.",
-      hintLadder: ["Start from a Cauchy sequence."],
-      criteria: [
-        { criterion: "Candidate limit defined pointwise.", weight: 0.5 },
-        { criterion: "Uniform convergence shown.", weight: 0.5 },
-      ],
-      referenceSolution: "Take a Cauchy sequence u_n in the sup norm and fix x so that u_n(x) is Cauchy in C and converges.",
-      stage: "independent",
-    },
-  ],
-  misconceptions: [],
-  ...over,
-});
+const draft = (over: Partial<UnitDraft> = {}): UnitDraft => ({ ...preparationDraft("passage-1", "fa21-l1-def14"), ...over });
+const context = { verifiedLocatorIds: new Set(["fa21-l1-def14"]), suppliedPassageIds: new Set(["passage-1"]) };
 
 describe("the preparation pipeline", () => {
   it("names a role and an artifact for every stage, and leaves publication to the owner", () => {
@@ -60,19 +41,51 @@ describe("the preparation pipeline", () => {
   });
 
   it("checks a draft's structure, sources, notation, rubric and leakage, not its correctness", () => {
-    const ok = checkUnitDraft(draft(), { verifiedLocatorIds: new Set(["fa21-l1-def14"]) });
+    const ok = checkUnitDraft(draft(), context);
     expect(ok.every((c) => c.result === "pass")).toBe(true);
-    const unsourced = checkUnitDraft(draft({ sourceLocatorIds: ["made-up-locator"] }), { verifiedLocatorIds: new Set(["fa21-l1-def14"]) });
+    const unsourced = checkUnitDraft(draft({ sourceLocatorIds: ["made-up-locator"] }), context);
     expect(unsourced.find((c) => c.name === "verified-sources")?.result).toBe("fail");
     const leaky = draft();
-    leaky.exercises[0]!.hintLadder.push("Take a Cauchy sequence u_n in the sup norm and fix x so that u_n(x) is Cauchy.");
+    leaky.exercises[0]!.hintLadder.push(leaky.exercises[0]!.referenceSolution);
+    expect(checkUnitDraft(leaky, context).find((c) => c.name === "exercise-1-no-leak")?.result).toBe("fail");
     expect(
-      checkUnitDraft(leaky, { verifiedLocatorIds: new Set(["fa21-l1-def14"]) }).find((c) => c.name === "exercise-1-no-leak")?.result,
-    ).toBe("fail");
-    expect(
-      checkUnitDraft(draft({ lessonMarkdown: "Too short $x" }), { verifiedLocatorIds: new Set(["fa21-l1-def14"]) })
+      checkUnitDraft(draft({ lessonMarkdown: "Too short $x", workedExamples: [] }), context)
         .filter((c) => c.result === "fail")
         .map((c) => c.name),
-    ).toEqual(["lesson-length", "notation-balanced"]);
+    ).toEqual(expect.arrayContaining(["lesson-length", "notation-balanced"]));
+  });
+  it("rejects the previous repeated-sentence fixture and missing worked reasoning", () => {
+    const filler = draft({
+      lessonMarkdown: "A substantive lesson sentence about completeness and Cauchy sequences. ".repeat(80),
+      workedExamples: [],
+    });
+    const failures = checkUnitDraft(filler, context)
+      .filter((c) => c.result === "fail")
+      .map((c) => c.name);
+    expect(failures).toContain("non-repetitive-teaching");
+    expect(failures).toContain("worked-reasoning");
+  });
+
+  it("refuses citation of an existing passage that was not actually supplied", () => {
+    expect(
+      checkUnitDraft(draft({ sourcePassageIds: ["other-passage"] }), context).find((c) => c.name === "supplied-source-passages")?.result,
+    ).toBe("fail");
+    expect(checkUnitDraft(draft({ sourcePassageIds: [] }), context).find((c) => c.name === "supplied-source-passages")?.result).toBe(
+      "fail",
+    );
+  });
+
+  it("requires every planned objective to remain and have assessment, including transfer", () => {
+    const omitted = draft();
+    omitted.objectives.push("Distinguish interpolation from extrapolation.");
+    expect(checkUnitDraft(omitted, context).find((c) => c.name === "objective-coverage")?.result).toBe("fail");
+    const allRoutine = draft();
+    for (const e of allRoutine.exercises) e.stage = "independent";
+    expect(checkUnitDraft(allRoutine, context).find((c) => c.name === "problem-progression")?.result).toBe("fail");
+    expect(
+      checkUnitDraft(draft(), { ...context, expectedObjectives: ["A different planned capability."] }).find(
+        (c) => c.name === "objective-coverage",
+      )?.result,
+    ).toBe("fail");
   });
 });

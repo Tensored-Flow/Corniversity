@@ -35,6 +35,8 @@ export interface TurnInput {
   idempotencyKey?: string;
   /** The run of the action that started this one (an earlier speaker in the same discussion). */
   parentRunId?: string;
+  /** Recheck cached source availability after admission, immediately before dispatch. */
+  sourcesStillPermitted?: () => Promise<boolean>;
 }
 
 type Runnable = Exclude<RunPlan, { kind: "refused" }>;
@@ -59,6 +61,18 @@ const promptOf = (input: TurnInput) => ({
  * the usage of attempts that ran before a failure is kept so their cost is recorded.
  */
 async function* produce(plan: Runnable, input: TurnInput): AsyncGenerator<string, Outcome, void> {
+  // This precedes the provider try/catch: failure here sent nothing and releases any reservation.
+  try {
+    if (input.sourcesStillPermitted && !(await input.sourcesStillPermitted())) {
+      const errorText = "Source availability or permission changed before the reply. No text was sent; your work is saved.";
+      yield `\n\n*(${errorText})*`;
+      return { status: "blocked", errorText, attempts: [], model: plan.model };
+    }
+  } catch {
+    const errorText = "Source permissions could not be checked. No text was sent; your work is saved.";
+    yield `\n\n*(${errorText})*`;
+    return { status: "blocked", errorText, attempts: [], model: plan.model };
+  }
   try {
     const generator = plan.provider.streamText({
       role: input.role,

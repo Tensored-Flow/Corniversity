@@ -1,45 +1,144 @@
 {
   "id": "PHY-210",
-  "version": 1,
+  "version": 2,
   "title": "Special Relativity and Minkowski Geometry",
-  "departmentIds": ["physics"],
+  "departmentIds": [
+    "physics"
+  ],
   "level": "intermediate",
   "position": "Launch",
   "launch": true,
   "purpose": "Special relativity built from the invariant interval: events and proper time, the Lorentz transformation derived from the principle of relativity, causal structure, four-vectors and the Lorentz group, relativistic momentum and energy, collisions and decays, accelerated worldlines, and an honest look at where flat spacetime stops — taught from Taylor and Wheeler's Spacetime Physics (2nd edition, released by the authors under CC BY 4.0), with David Tong's Cambridge notes and MIT 8.20 lecture videos alongside, and original Corniversity exercises.",
-  "description": "Special relativity is the geometry of a flat four-dimensional space with an indefinite metric. For a learner trained in analysis and geometry that sentence is almost the whole subject, and this course takes it seriously: the invariant interval comes first, the Lorentz transformation is derived from it rather than postulated, time dilation and length contraction are corollaries, and four-vectors make the Lorentz group the group of isometries of Minkowski space. Physics is never far away: the same chapters explain clocks on fast muons, the energy released in a decay, and why no signal outruns light.\n\n**How this adaptation works.** The spine is Edwin F. Taylor and John Archibald Wheeler, *Spacetime Physics*, second edition (W. H. Freeman, 1992), which the authors have released as free PDFs under a Creative Commons Attribution 4.0 licence on eftaylor.com. Corniversity follows the book's order (interval, free-float frames, the principle of relativity and the Lorentz transformation, worldlines and the twin paradox, regions of spacetime, momenergy, collisions, the edge of gravity) in ten units, cites the book's own section numbers and printed pages, and adds two supplements: Chapter 7 of David Tong's *Dynamics and Relativity* notes (reference-only, for the Lorentz group and index notation a mathematician will want) and the MIT OpenCourseWare 8.20 lecture videos (January IAP 2021, CC BY-NC-SA 4.0) for a second explanation of each topic. Exercises are original.\n\n**Conventions, stated once here and again in every unit.** SI units; $c = 299\\,792\\,458\\ \\mathrm{m\\,s^{-1}}$ exactly; time is also measured in metres ($ct$) when that is cleaner. Corniversity uses metric signature $(-,+,+,+)$: $\\Delta s^2 = -c^2\\Delta t^2 + \\Delta x^2 + \\Delta y^2 + \\Delta z^2$, so timelike separations have $\\Delta s^2 < 0$ and proper time is $\\tau^2 = -\\Delta s^2/c^2$. Taylor and Wheeler write $(\\text{interval})^2 = (\\text{time separation})^2 - (\\text{space separation})^2$ for timelike pairs and reverse the order for spacelike pairs; Tong writes $\\eta = \\mathrm{diag}(+1,-1,-1,-1)$. Both are the opposite overall sign to ours, and each unit says so where it matters. Special relativity here means flat Minkowski spacetime throughout; curvature belongs to PHY-240 and is only previewed, labelled as a preview, in the final unit.\n\n**What is prepared now.** The unit list shows the status of each unit. Prepared units have a full lesson, original exercises with hint ladders and rubrics, instructor reference reasoning and checks; outlined units have verified reading locators and a scope statement but no assessed work yet. Outlined units are prepared through the content pipeline before you reach them, never generated silently when you click Start.",
+  "description": "Special relativity is the geometry of a flat four-dimensional space with an indefinite metric. For a learner trained in analysis and geometry that sentence is almost the whole subject, and this course takes it seriously: the invariant interval comes first, the Lorentz transformation is derived from it rather than postulated, time dilation and length contraction are corollaries, and four-vectors make the Lorentz group the group of linear isometries of Minkowski space fixing the origin. Physics is never far away: the same chapters explain clocks on fast muons, the energy released in a decay, and why no signal outruns light.\n\n**How this adaptation works.** The spine is Edwin F. Taylor and John Archibald Wheeler, *Spacetime Physics*, second edition (W. H. Freeman, 1992), which the authors have released as free PDFs under a Creative Commons Attribution 4.0 licence on eftaylor.com. Corniversity follows the book's order (interval, free-float frames, the principle of relativity and the Lorentz transformation, worldlines and the twin paradox, regions of spacetime, momenergy, collisions, the edge of gravity) in ten units, cites the book's own section numbers and printed pages, and adds two supplements: Chapter 7 of David Tong's *Dynamics and Relativity* notes (reference-only, for the Lorentz group and index notation a mathematician will want) and the MIT OpenCourseWare 8.20 lecture videos (January IAP 2021, CC BY-NC-SA 4.0) for a second explanation of each topic. Exercises are original.\n\n**Conventions, stated once here and again in every unit.** SI units; $c = 299\\,792\\,458\\ \\mathrm{m\\,s^{-1}}$ exactly; time is also measured in metres ($ct$) when that is cleaner. Corniversity uses metric signature $(-,+,+,+)$: $\\Delta s^2 = -c^2\\Delta t^2 + \\Delta x^2 + \\Delta y^2 + \\Delta z^2$, so timelike separations have $\\Delta s^2 < 0$ and the proper time along the straight inertial path joining such events satisfies $\\tau^2 = -\\Delta s^2/c^2$. Along a general timelike path, proper time is the integral $\\int\\sqrt{1-v(t)^2/c^2}\\,dt$ and depends on that path. Taylor and Wheeler write $(\\text{interval})^2 = (\\text{time separation})^2 - (\\text{space separation})^2$ for timelike pairs and reverse the order for spacelike pairs; Tong writes $\\eta = \\mathrm{diag}(+1,-1,-1,-1)$. Both are the opposite overall sign to ours, and each unit says so where it matters. Special relativity here means flat Minkowski spacetime throughout; curvature belongs to PHY-240 and is only previewed, labelled as a preview, in the final unit.\n\n**Prepared teaching.** All ten units contain lecture notes, worked reasoning, original problem sheets with progressive hints, rubrics and private reference explanations. The midpoint synthesis analyses a hypothetical causal loop in two frames; the final synthesis connects Minkowski geometry, dynamics and the limits of the flat-spacetime model. Each unit records its review status. Structural checks and agent review are not evidence of accredited instruction or measured learning gains.",
   "outcomes": [
-    { "id": "o1", "description": "Compute and interpret spacetime intervals and proper times for pairs of events in given frames, classify separations as timelike, spacelike or lightlike, and translate between the sign conventions of different sources.", "evidenceExpected": "Calculation exercises with units carried, classification stated, and the frame in which two events are co-located or simultaneous identified or shown not to exist." },
-    { "id": "o2", "description": "Derive the Lorentz transformation from the principle of relativity and the invariance of the interval, and obtain time dilation, length contraction, the relativity of simultaneity and velocity addition as corollaries.", "evidenceExpected": "A written derivation of the boost, a rapidity (hyperbolic rotation) formulation, and a resolved 'paradox' analysed in two frames." },
-    { "id": "o3", "description": "Use four-vectors and the Minkowski inner product to solve kinematic and dynamical problems, and describe the Lorentz group as the isometry group of the interval.", "evidenceExpected": "Four-vector calculations (four-velocity, four-momentum, four-acceleration) with invariants identified." },
-    { "id": "o4", "description": "Apply conservation of four-momentum to collisions and decays, using invariant mass and thresholds, and state the limits in which Newtonian momentum and energy are recovered.", "evidenceExpected": "Collision and decay exercises solved with invariants, with the non-relativistic limit checked." },
-    { "id": "o5", "description": "State precisely what special relativity does and does not cover: inertial frames, the local character of free-float frames, and why tides mark the edge of flat spacetime.", "evidenceExpected": "The closing written explanation distinguishing special from general relativity without claiming results of the latter." }
+    {
+      "id": "o1",
+      "description": "Compute and interpret spacetime intervals and proper times along specified timelike paths between events in given frames, classify separations as timelike, spacelike or lightlike, and translate between the sign conventions of different sources.",
+      "evidenceExpected": "Calculation exercises with units carried, classification stated, and the frame in which two events are co-located or simultaneous identified or shown not to exist."
+    },
+    {
+      "id": "o2",
+      "description": "Derive the Lorentz transformation from the principle of relativity and the invariance of the interval, and obtain time dilation, length contraction, the relativity of simultaneity and velocity addition as corollaries.",
+      "evidenceExpected": "A written derivation of the boost, a rapidity (hyperbolic rotation) formulation, and a resolved 'paradox' analysed in two frames."
+    },
+    {
+      "id": "o3",
+      "description": "Use four-vectors and the Minkowski inner product to solve kinematic and dynamical problems, and describe the Lorentz group as the group of linear transformations preserving the Minkowski inner product and fixing the origin.",
+      "evidenceExpected": "Four-vector calculations (four-velocity, four-momentum, four-acceleration) with invariants identified."
+    },
+    {
+      "id": "o4",
+      "description": "Apply conservation of four-momentum to collisions and decays, using invariant mass and thresholds, and state the limits in which Newtonian momentum and energy are recovered.",
+      "evidenceExpected": "Collision and decay exercises solved with invariants, with the non-relativistic limit checked."
+    },
+    {
+      "id": "o5",
+      "description": "State precisely what special relativity does and does not cover: inertial frames, the local character of free-float frames, and why tides mark the edge of flat spacetime.",
+      "evidenceExpected": "The closing written explanation distinguishing special from general relativity without claiming results of the latter."
+    }
   ],
-  "prerequisiteRuleIds": ["PHY-210-mechanics-or-maths", "PHY-210-newtonian-kinematics"],
-  "recommendedConceptIds": ["linear-algebra-vector-spaces", "multivariable-calculus", "newtonian-mechanics"],
-  "teachesConceptIds": ["minkowski-spacetime", "lorentz-transformation", "spacetime-causal-structure", "four-vectors", "relativistic-energy-momentum", "equivalence-principle", "lorentzian-metric"],
-  "primarySourceIds": ["taylor-wheeler-spacetime-physics"],
-  "supplementalSourceIds": ["tong-dynamics-relativity", "mit-sr-2021"],
-  "unitIds": ["PHY-210-u01", "PHY-210-u02", "PHY-210-u03", "PHY-210-u04", "PHY-210-u05", "PHY-210-u06", "PHY-210-u07", "PHY-210-u08", "PHY-210-u09", "PHY-210-u10"],
+  "prerequisiteRuleIds": [
+    "PHY-210-mechanics-or-maths",
+    "PHY-210-newtonian-kinematics"
+  ],
+  "recommendedConceptIds": [
+    "linear-algebra-vector-spaces",
+    "multivariable-calculus",
+    "newtonian-mechanics"
+  ],
+  "teachesConceptIds": [
+    "minkowski-spacetime",
+    "lorentz-transformation",
+    "spacetime-causal-structure",
+    "four-vectors",
+    "relativistic-energy-momentum",
+    "equivalence-principle",
+    "lorentzian-metric"
+  ],
+  "primarySourceIds": [
+    "taylor-wheeler-spacetime-physics"
+  ],
+  "supplementalSourceIds": [
+    "tong-dynamics-relativity",
+    "mit-sr-2021"
+  ],
+  "unitIds": [
+    "PHY-210-u01",
+    "PHY-210-u02",
+    "PHY-210-u03",
+    "PHY-210-u04",
+    "PHY-210-u05",
+    "PHY-210-u06",
+    "PHY-210-u07",
+    "PHY-210-u08",
+    "PHY-210-u09",
+    "PHY-210-u10"
+  ],
   "assessmentSpecs": [
-    { "id": "a1", "title": "Problem sets", "kind": "problem_set", "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Every calculation carries units and names the frame in which each quantity is measured; revision is expected and the record of attempts is the assessment.", "weight": 0.5, "rubricSummary": ["frames named for every measured quantity", "invariants used where they simplify", "units and significant figures", "limiting cases (v ≪ c) checked", "sign convention stated"] },
-    { "id": "a2", "title": "Mid-course synthesis: one paradox, two frames", "kind": "written_explanation", "description": "After unit 5: a written analysis of one standard 'paradox' (pole and barn, twins, spacecraft on a rope, or another agreed with the tutor) carried out fully in two frames with a spacetime diagram, identifying exactly which statement about simultaneity the paradox smuggles in. Open book, untimed by default.", "weight": 0.2, "rubricSummary": ["both frames analysed consistently", "the hidden simultaneity assumption named", "diagram and algebra agree"] },
-    { "id": "a3", "title": "Final synthesis: the geometry of Minkowski space", "kind": "written_explanation", "description": "A written account, for a reader trained in geometry, of Minkowski space as a flat Lorentzian manifold: the interval, the Lorentz group and its structure, four-vectors and conservation of four-momentum, and a precise statement of where this description stops (the edge of special relativity). Optional oral explanation to the tutor.", "weight": 0.3, "rubricSummary": ["correct mathematics with conventions stated", "physics connected to each structure", "boundary of the theory stated honestly"] }
+    {
+      "id": "a1",
+      "title": "Problem sets",
+      "kind": "problem_set",
+      "description": "Each unit's exercises are submitted as immutable attempts and assessed with line-localised feedback. Every calculation carries units and names the frame in which each quantity is measured; revision is expected and the record of attempts is the assessment.",
+      "weight": 0.5,
+      "rubricSummary": [
+        "frames named for every measured quantity",
+        "invariants used where they simplify",
+        "units and significant figures",
+        "limiting cases (v ≪ c) checked",
+        "sign convention stated"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Mid-course synthesis: a causal puzzle in two frames",
+      "kind": "written_explanation",
+      "description": "Unit5 exercise3: derive and diagram a hypothetical superluminal reply protocol in two inertial frames, identify all signalling assumptions, and explain why spacelike correlation alone is not a causal contradiction. Alternative standard paradox analyses may be agreed with the tutor. Open book, untimed by default.",
+      "weight": 0.2,
+      "rubricSummary": [
+        "event tables and diagrams agree in both frames",
+        "invariant classifications and coordinate time order are distinguished",
+        "physical signalling assumptions and limitations are explicit"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Final synthesis: the geometry of Minkowski space",
+      "kind": "written_explanation",
+      "description": "A written account, for a reader trained in geometry, of Minkowski space as a flat Lorentzian manifold: the interval, the Lorentz group and its structure, four-vectors and conservation of four-momentum, and a precise statement of where this description stops (the edge of special relativity). Optional oral explanation to the tutor.",
+      "weight": 0.3,
+      "rubricSummary": [
+        "correct mathematics with conventions stated",
+        "physics connected to each structure",
+        "boundary of the theory stated honestly"
+      ]
+    }
   ],
-  "workloadHours": { "minimum": 60, "typical": 90, "maximum": 120 },
+  "workloadHours": {
+    "minimum": 60,
+    "typical": 90,
+    "maximum": 120
+  },
   "readiness": "teaching_ready",
   "blockers": [],
   "provenance": {
-    "authoringMethod": "Hand-authored by the build agent from Taylor and Wheeler's Spacetime Physics (2nd ed.) as released under CC BY 4.0 on eftaylor.com: the download page and licence statement were opened on 2026-10-30 and the contents, Chapter 1, Chapter 3 and Special Topic PDFs were downloaded and their OCR text extracted, with section and printed-page locators recorded; Chapters 2 and 4–9 are located at file level with section titles from the contents pages. Supplements: David Tong's Dynamics and Relativity page (opened; Chapter 7 PDF read to verify headings and sign convention) and MIT OCW 8.20 (course, syllabus, readings and weekly video pages opened). Exercises are original and every reference solution was re-derived. Workload estimated from ten units at roughly 6–12 hours each.",
-    "verifiedAt": "2026-10-30",
+    "authoringMethod": "Original Corniversity lessons and problems completed in the authorised Codex session on 2026-11-12, without Corniversity runtime subscription or model API generation. Existing units01–02 reviewed and repaired; units03–08 authored by a physics content worker, units09–10 by the lead. Primary source passages read directly from Taylor–Wheeler chapter PDFs; Tong used as reference-only supplementary reading. Source mapping, corrections and author recomputations are in REVIEW.md. Independent review is tracked separately and remains a release gate.",
+    "verifiedAt": "2026-11-12",
     "reviewerNotes": [
-      "Prepared and outlined unit counts are shown live in the unit list; this note does not claim a number.",
-      "The spine is a free, CC BY 4.0 book; no acquisition request is needed. MIT 8.20's textbooks (French, Resnick) are not used.",
-      "The Taylor–Wheeler scans are OCR'd page images; quotations in lessons were checked against the extracted text and should be re-checked against the page image before being relied on verbatim.",
-      "Units 6 and 9 draw more on Tong's Chapter 7 (reference-only) than on the spine; nothing from Tong is copied."
+      "All ten units are authored; individual check records distinguish author checks from pending independent review.",
+      "Metric convention is(-,+,+,+), opposite to Tong and the positive timelike-interval convention of Taylor–Wheeler.",
+      "The1992 source lists neutrinos as massless/lightlike; modern oscillation evidence invalidates that example. Lessons use photons for physical null paths.",
+      "Tong§7.5.1 printedp146 incorrectly describes Higgs diphoton decay as dominant; lesson08 identifies the correction with a CERN source. Kinematics does not predict branching fractions.",
+      "Existing exercise IDs and source IDs are preserved. Null classification in unit01 is performed before rounding; proper time is explicitly path dependent.",
+      "Workload estimates include full source reading and substantial written work; they have not been learner-tested.",
+      "Final independent academic review completed 2026-11-12: PHYSICS_REVIEW.md, with source-specific scope and limitations. Every current exercise has independently checked reference reasoning. Not human certification or measured learning effectiveness."
     ]
   },
-  "modesOffered": ["enrolled", "audit", "reading_seminar"],
+  "modesOffered": [
+    "enrolled",
+    "audit",
+    "reading_seminar"
+  ],
   "convenorPersonaId": "ines-valdivia",
   "tutorPersonaId": "ines-valdivia",
   "externalSyllabusNote": "Adapted study path using Taylor and Wheeler, Spacetime Physics (2nd edition, 1992), released by the authors under CC BY 4.0, with David Tong's Cambridge Dynamics and Relativity notes (reference-only) and MIT OpenCourseWare 8.20 Introduction to Special Relativity (IAP 2021, CC BY-NC-SA 4.0) video lectures as supplements. The MIT course ran as a four-week intensive with problem sets and exams; Corniversity re-paces the material as 10 units following the book's order and sets its own exercises and assessments. This is not an MIT or Cambridge course and confers no credit anywhere."

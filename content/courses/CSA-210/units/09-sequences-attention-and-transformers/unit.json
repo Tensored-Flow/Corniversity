@@ -3,27 +3,149 @@
   "courseId": "CSA-210",
   "sequence": 9,
   "title": "Sequences, attention and transformers",
-  "summary": "From sequence processing and the NLP pipeline to attention: queries, keys and values; scaled dot-product and multi-head attention as content-dependent linear maps; positional encoding; the transformer block; training transformers; BERT and GPT as pretraining recipes, cited as the tutorials present them.",
+  "summary": "Sequence information boundaries, scaled attention, masks, permutation symmetry, positions, multihead costs and a decoder audit.",
   "objectives": [
-    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D5 Tutorial 2 (Natural Language Processing and LLMs) and W3D1 Tutorial 1 (Learn how to work with Transformers) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u09-o1",
+      "description": "Compute scaled dot-product attention with shapes, masks and stable normalisation."
+    },
+    {
+      "id": "u09-o2",
+      "description": "Distinguish conditional linearity in values from full input-dependent attention."
+    },
+    {
+      "id": "u09-o3",
+      "description": "Prove unmasked permutation equivariance and understand positional/causal structure."
+    },
+    {
+      "id": "u09-o4",
+      "description": "Calculate attention parameter/memory costs and audit sequence-prediction leakage."
+    }
   ],
-  "prerequisiteConceptIds": ["multilayer-perceptron", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["attention-transformers"],
+  "prerequisiteConceptIds": [
+    "multilayer-perceptron",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "attention-transformers"
+  ],
   "preparation": [
-    { "description": "Read W3D1 Tutorial 1 (attention overview; queries, keys and values; multihead attention; transformer overview; positional encoding; training) and W2D5 Tutorial 2 (NLP architectures and pipeline, BERT, GPT).", "locatorId": "nmadl-w3d1-t1", "estimatedMinutes": 80 }
+    {
+      "locatorId": "nmadl-w3d1-t1",
+      "description": "Read queries/keys/values, multihead and transformer components, positional encoding and training. Videos are optional and were not used as verification.",
+      "estimatedMinutes": 80
+    }
   ],
   "activities": [
-    { "id": "u09-a1", "type": "reading", "title": "W2D5 Tutorial 2 and W3D1 Tutorial 1", "instructions": "Read the tutorials for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["nmadl-w2d5", "nmadl-w2d5-t2", "nmadl-w3d1", "nmadl-w3d1-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u09-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 125,
+      "sourceLocatorIds": [
+        "nmadl-w3d1-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u09-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 185,
+      "sourceLocatorIds": [
+        "nmadl-w3d1-t1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u09-ex1",
+        "CSA-210-u09-ex2",
+        "CSA-210-u09-ex3",
+        "CSA-210-u09-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u09-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w3d1-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 260,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u09-ex1",
+    "CSA-210-u09-ex2",
+    "CSA-210-u09-ex3",
+    "CSA-210-u09-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u09-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Self-attention is a fixed linear map of its inputs.",
+      "correction": "It is linear in values only when attention weights are held fixed; those weights generally depend on inputs.",
+      "correctionLocatorIds": [
+        "nmadl-w3d1-t1"
+      ]
+    },
+    {
+      "claim": "A zero masked score excludes a future token.",
+      "correction": "It contributes exp(0)=1; exclusion must occur before normalisation.",
+      "correctionLocatorIds": [
+        "nmadl-w3d1-t1"
+      ]
+    },
+    {
+      "claim": "A causal mask repairs same-position target leakage.",
+      "correction": "Inputs and next-token targets must also be shifted correctly; the current input can otherwise reveal the answer.",
+      "correctionLocatorIds": [
+        "nmadl-w3d1-t1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 410,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Both chapter pages and both tutorial pages opened 2026-10-30 (HTTP 200; titles 'Tutorial 2: Natural Language Processing and LLMs' and 'Tutorial 1: Learn how to work with Transformers'; section lists recorded in the source record)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W3D1 Tutorial1 sections1–7: queries/keys/values, multihead dimensions, transformer components, positional encoding and training. Original masked-attention implementation, symmetry proof and next-token data audit; no claims of current state-of-the-art performance."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 410 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u09-ex1.reference-solution.md",
+    "CSA-210-u09-ex2.reference-solution.md",
+    "CSA-210-u09-ex3.reference-solution.md",
+    "CSA-210-u09-ex4.reference-solution.md"
+  ]
 }

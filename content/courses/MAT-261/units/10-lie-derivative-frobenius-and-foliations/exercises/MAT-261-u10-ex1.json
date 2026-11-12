@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u10-ex1",
+  "sequence": 1,
+  "title": "Bracket, flow, and a failed surface",
+  "kind": "proof",
+  "promptMarkdown": "For $X=\\partial_x+y\\partial_z$ and $Y=\\partial_y$ on $\\mathbb R^3$, compute both flows and $[X,Y]$. Calculate the effect of the four moves: flow along $X$ for $s$, along $Y$ for $t$, along $X$ for $-s$, then along $Y$ for $-t$. Use this and the Frobenius criterion to decide whether their rank-two span is integrable.",
+  "conceptIds": [
+    "lie-derivative-frobenius"
+  ],
+  "hintLadder": [
+    "Solve each constant-coefficient-in-time ODE.",
+    "Write every intermediate point; the coefficient y changes after the second move.",
+    "A vector in the span with zero x and y components must vanish."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct flows and bracket sign.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct commutator displacement.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Valid nonintegrability argument.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

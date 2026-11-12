@@ -1,0 +1,92 @@
+{
+  "id": "PHY-210-u09-ex3",
+  "sequence": 3,
+  "title": "A completely smooth reunion",
+  "kind": "derivation",
+  "promptMarkdown": "In flat 1+1 spacetime define a traveller by $\\theta(\\tau)=q\\sin(2\\pi\\tau/T)$ for $0\\leq\\tau\\leq T$, where $q>0$ and $T>0$. Set $t(0)=x(0)=0$ and $dX/d\\tau=c(\\cosh\\theta,\\sinh\\theta)$. Prove reunion at $x=0$ at rest, find the signed proper acceleration, and prove $T<t(T)\\leq T\\cosh q$. No closed form for the integral is required. Does nonzero proper acceleration imply curved spacetime?",
+  "conceptIds": [
+    "four-vectors",
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Compare the integrands at $\\tau$ and $\\tau+T/2$.",
+    "Proper acceleration in one dimension is $c\\,d\\theta/d\\tau$.",
+    "Bound $\\cosh(q\\sin s)$ and identify where equality with one is possible."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Reunion and endpoint rest are justified by symmetry, not asserted.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Acceleration includes the correct time scale and units.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Strict clock inequality is proved and curvature distinguished.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "A smooth prescribed rapidity replaces piecewise constant force; symmetry and integral bounds solve the clock problem."
+  }
+}

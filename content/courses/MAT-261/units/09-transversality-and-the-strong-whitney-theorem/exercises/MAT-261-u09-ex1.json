@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u09-ex1",
+  "sequence": 1,
+  "title": "A bifurcation of transverse intersections",
+  "kind": "proof",
+  "promptMarkdown": "For $f_a(t)=(t,t^3-t+a)$ and $Z=\\mathbb R\\times\\{0\\}$, determine all parameters for which $f_a\\pitchfork Z$ and count the intersections for each parameter range. Verify that $F(a,t)=f_a(t)$ is a submersion and reconcile the exceptional parameters with Sard.",
+  "conceptIds": [
+    "transversality",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "A horizontal target tangent misses only the vertical derivative component.",
+    "Solve the derivative-zero and height-zero equations together.",
+    "Use the two turning values of the cubic."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Exact exceptional parameters.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct distinct intersection counts.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Submersion and theorem interpretation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

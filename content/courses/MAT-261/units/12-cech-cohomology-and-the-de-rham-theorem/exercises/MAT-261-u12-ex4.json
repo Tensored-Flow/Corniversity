@@ -1,0 +1,111 @@
+{
+  "id": "MAT-261-u12-ex4",
+  "sequence": 4,
+  "title": "Capstone: the sphere through local primitives and integration",
+  "kind": "proof",
+  "promptMarkdown": "Write a complete connected account of the Čech–de Rham theorem, illustrated on $S^2$. (a) Verify that the four tetrahedral hemispheres in the lesson form a good cover with all triple intersections nonempty and empty fourfold intersection. Compute the two coboundary ranks and all cover cohomology groups. (b) Establish the comparison via the double complex: prove row acyclicity by the partition homotopy, state the column exactness supplied by Poincaré, specify the total sign, and explain the finite elimination argument. For a closed two-form $\\sigma$, describe local one-form primitives $\\eta_i$, overlap functions $f_{ij}$, and the constant triple-overlap cocycle they produce; show its class is independent of the choices. (c) Compute $\\int_{S^2}\\Omega$, prove $\\Omega$ is not exact, and identify the real cohomology generator. State which inputs are proved in this course, which covering result is assumed for a general manifold, and why this real theorem does not identify integer torsion.",
+  "conceptIds": [
+    "cech-de-rham-theorem"
+  ],
+  "hintLadder": [
+    "Build the nerve from which intersections are nonempty and contractible.",
+    "For a triangle cocycle use vertex 0 to reconstruct vertex potentials.",
+    "Track local primitives: closed 2-form → local 1-forms → overlap functions → triple constants.",
+    "The partition homotopy resolves one direction, Poincaré resolves the other; use the total sign before claiming a complex.",
+    "A nonzero integral on a closed oriented manifold obstructs exactness."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Good-cover verification and exact cohomology computation.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Double-complex sign, two exactness mechanisms and terminating elimination.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Local-primitive cocycle and choice independence.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Area integral, nonexactness, generator and explicit proof/coefficient boundaries.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 150,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

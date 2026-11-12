@@ -3,8 +3,11 @@
   "sequence": 1,
   "title": "The boost, derived and composed",
   "kind": "derivation",
-  "promptMarkdown": "Frame $S'$ moves at speed $v$ along the $+x$ axis of frame $S$; origins coincide at $t = t' = 0$.\n\n1. Assuming only that the transformation $(ct,x)\\mapsto(ct',x')$ is linear and that it preserves $-c^2t^2 + x^2$ for every event, derive the Lorentz transformation. Give your own route; you may follow the structure of the book's derivation but every step must be yours. State the units of each term in $t' = \\gamma(t - vx/c^2)$.\n2. Show that there is a real number $\\phi$ (the rapidity) with $\\gamma = \\cosh\\phi$ and $\\gamma v/c = \\sinh\\phi$, and write the transformation as a $2\\times2$ matrix $\\Lambda(\\phi)$ acting on $(ct,x)^T$. Verify explicitly that $\\Lambda(\\phi)^T\\eta\\Lambda(\\phi) = \\eta$ with $\\eta = \\mathrm{diag}(-1,+1)$.\n3. Prove $\\Lambda(\\phi_1)\\Lambda(\\phi_2) = \\Lambda(\\phi_1+\\phi_2)$ and deduce the velocity-addition law for collinear velocities. Check that $|w| < c$ whenever $|u|,|v| < c$.\n4. Take the limit $v\\ll c$ of the transformation and of the addition law and name what you recover.",
-  "conceptIds": ["lorentz-transformation", "minkowski-spacetime"],
+  "promptMarkdown": "Frame $S'$ moves at speed $v$ along the $+x$ axis of frame $S$; origins coincide at $t = t' = 0$.\n\n1. Assuming that the transformation $(ct,x)\\mapsto(ct',x')$ is linear and that it preserves $-c^2t^2 + x^2$ for every event, and choosing aligned spatial orientation, future-directed clocks and continuity to identity at $v=0$, derive the Lorentz transformation. Give your own route; you may follow the structure of the book's derivation but every step must be yours. State the units of each term in $t' = \\gamma(t - vx/c^2)$.\n2. Show that there is a real number $\\phi$ (the rapidity) with $\\gamma = \\cosh\\phi$ and $\\gamma v/c = \\sinh\\phi$, and write the transformation as a $2\\times2$ matrix $\\Lambda(\\phi)$ acting on $(ct,x)^T$. Verify explicitly that $\\Lambda(\\phi)^T\\eta\\Lambda(\\phi) = \\eta$ with $\\eta = \\mathrm{diag}(-1,+1)$.\n3. Prove $\\Lambda(\\phi_1)\\Lambda(\\phi_2) = \\Lambda(\\phi_1+\\phi_2)$ and deduce the velocity-addition law for collinear velocities. Check that $|w| < c$ whenever $|u|,|v| < c$.\n4. Take the nonrelativistic limit $c\\to\\infty$ at fixed coordinates and velocities for the transformation, and $|u|,|v|\\ll c$ for the addition law. Name what you recover and explain why a small boost speed alone need not make simultaneity offsets negligible over arbitrarily large distances.",
+  "conceptIds": [
+    "lorentz-transformation",
+    "minkowski-spacetime"
+  ],
   "hintLadder": [
     "Write $ct' = A\\,ct + Bx$, $x' = C\\,ct + Dx$. Which event tells you $C/D$? (Where is the origin of $S'$ at time $t$ in $S$?)",
     "Impose $-c^2t'^2 + x'^2 = -c^2t^2 + x^2$ for all $(t,x)$ and compare the coefficients of $t^2$, $x^2$ and $tx$: three equations for the remaining unknowns.",
@@ -41,17 +44,94 @@
       "kind": "expression_present",
       "description": "the hyperbolic-rotation form (cosh, sinh, tanh or 'rapidity') appears",
       "params": {
-        "patterns": [ "cosh", "sinh", "tanh", "rapidity" ]
+        "patterns": [
+          "cosh",
+          "sinh",
+          "tanh",
+          "rapidity"
+        ]
       }
     }
   ],
   "rubric": {
-    "version": 1,
+    "version": 2,
     "criteria": [
-      { "id": "derivation", "criterion": "The transformation is derived from linearity and invariance with the coefficient conditions written out (cross term vanishes; x² and t² coefficients equal 1 and −1), not quoted; units of vx/c² checked.", "weight": 0.35, "levels": [ { "label": "met", "description": "Complete and own." }, { "label": "partially met", "description": "A coefficient condition asserted." }, { "label": "not met", "description": "Transformation quoted or wrong." } ] },
-      { "id": "hyperbolic", "criterion": "Rapidity defined via tanh φ = v/c; Λ(φ) written; Λᵀ η Λ = η verified using cosh² − sinh² = 1.", "weight": 0.25, "levels": [ { "label": "met", "description": "All three." }, { "label": "partially met", "description": "Verification incomplete." }, { "label": "not met", "description": "Missing." } ] },
-      { "id": "composition", "criterion": "Composition law proved via addition formulas (or exponential form); w = (u + v)/(1 + uv/c²) derived; |w| < c argued (e.g. from |tanh| < 1).", "weight": 0.25, "levels": [ { "label": "met", "description": "All three." }, { "label": "partially met", "description": "Addition law without the bound." }, { "label": "not met", "description": "Wrong." } ] },
-      { "id": "limit", "criterion": "Galilean transformation and ordinary velocity addition recovered for v ≪ c, with the neglected terms named.", "weight": 0.15, "levels": [ { "label": "met", "description": "Both limits." }, { "label": "partially met", "description": "One." }, { "label": "not met", "description": "Missing." } ] }
+      {
+        "id": "derivation",
+        "criterion": "The transformation is derived from linearity and invariance with the coefficient conditions written out (cross term vanishes; x² and t² coefficients equal 1 and −1), not quoted; units of vx/c² checked.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete and own."
+          },
+          {
+            "label": "partially met",
+            "description": "A coefficient condition asserted."
+          },
+          {
+            "label": "not met",
+            "description": "Transformation quoted or wrong."
+          }
+        ]
+      },
+      {
+        "id": "hyperbolic",
+        "criterion": "Rapidity defined via tanh φ = v/c; Λ(φ) written; Λᵀ η Λ = η verified using cosh² − sinh² = 1.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three."
+          },
+          {
+            "label": "partially met",
+            "description": "Verification incomplete."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "composition",
+        "criterion": "Composition law proved via addition formulas (or exponential form); w = (u + v)/(1 + uv/c²) derived; |w| < c argued (e.g. from |tanh| < 1).",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three."
+          },
+          {
+            "label": "partially met",
+            "description": "Addition law without the bound."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "limit",
+        "criterion": "Recovers the Galilean transformation as c tends to infinity at fixed coordinates and velocities, and ordinary velocity addition when both speeds are small compared with c; identifies neglected terms and why small boost speed alone does not control offsets across arbitrarily large distances.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both limits."
+          },
+          {
+            "label": "partially met",
+            "description": "One."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -62,17 +142,26 @@
     {
       "label": "correct LaTeX solution",
       "text": "Linearity gives $x' = D(x - vt)$. Invariance then forces $D = \\gamma = \\frac{1}{\\sqrt{1-v^2/c^2}}$ and $t' = \\gamma(t - vx/c^2)$. With $\\tanh\\phi = v/c$, $\\gamma = \\cosh\\phi$, and $\\Lambda(\\phi_1)\\Lambda(\\phi_2) = \\Lambda(\\phi_1+\\phi_2)$ by the addition formulas, so rapidities add and $w = (u+v)/(1+uv/c^2)$.",
-      "expect": { "gamma-formula": true, "rapidity": true }
+      "expect": {
+        "gamma-formula": true,
+        "rapidity": true
+      }
     },
     {
       "label": "plain-text solution",
       "text": "gamma = 1/sqrt(1 - β^2); the boost is a rotation by the rapidity φ with tanh φ = β, and rapidities add.",
-      "expect": { "gamma-formula": true, "rapidity": true }
+      "expect": {
+        "gamma-formula": true,
+        "rapidity": true
+      }
     },
     {
       "label": "no hyperbolic form",
       "text": "I derived t' = γ(t − vx/c²) with γ = (1 − v²/c²)^{-1/2} but did not get the matrix form.",
-      "expect": { "gamma-formula": true, "rapidity": false }
+      "expect": {
+        "gamma-formula": true,
+        "rapidity": false
+      }
     }
   ]
 }

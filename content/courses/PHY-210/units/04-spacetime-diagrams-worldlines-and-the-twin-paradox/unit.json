@@ -5,28 +5,163 @@
   "title": "Spacetime diagrams, worldlines and the twin paradox",
   "summary": "Spacetime maps and the light cone; the invariant hyperbola and axis calibration; worldlines and proper time as length along a worldline; the straight worldline maximises proper time; the kinked worldline and the twin paradox; the stretch factor.",
   "objectives": [
-    { "id": "u04-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapters 4 and 5, Tong Section 7.1.2, and MIT 8.20 Week 2." }
+    {
+      "id": "u04-o1",
+      "description": "Calibrate Lorentz-boosted axes using invariant hyperbolae."
+    },
+    {
+      "id": "u04-o2",
+      "description": "Compute clock time along piecewise and smooth worldlines and prove the Minkowski maximum-age property."
+    },
+    {
+      "id": "u04-o3",
+      "description": "Resolve the twin comparison in both inertial descriptions using simultaneity slices."
+    },
+    {
+      "id": "u04-o4",
+      "description": "Distinguish time dilation from received Doppler rates."
+    }
   ],
-  "prerequisiteConceptIds": ["minkowski-spacetime", "lorentz-transformation"],
-  "teachesConceptIds": ["spacetime-causal-structure"],
+  "prerequisiteConceptIds": [
+    "minkowski-spacetime",
+    "lorentz-transformation"
+  ],
+  "teachesConceptIds": [
+    "spacetime-causal-structure"
+  ],
   "preparation": [
-    { "description": "Read Spacetime Physics Chapter 5 Trekking through Spacetime (pp. 137–170): spacetime maps, invariant hyperbola, worldlines, wristwatch time along a worldline, kinked worldline, stretch factor.", "locatorId": "stp-ch5", "estimatedMinutes": 70 },
-    { "description": "Read Chapter 4 Trip to Canopus (pp. 121–136): the round trip, 4.6 Twin Paradox, 4.9 Relativity of Simultaneity, 4.10 Experimental Evidence.", "locatorId": "stp-ch4", "estimatedMinutes": 40 },
-    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.1.2 Spacetime Diagrams (within Section 7.1; reference-only).", "locatorId": "tong-dr-ch7-s1", "estimatedMinutes": 15 },
-    { "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.3 Spacetime Diagrams and Lecture 6.2 Twin Paradox.", "locatorId": "sr21-week2", "estimatedMinutes": 25 }
+    {
+      "description": "Read Spacetime Physics Chapter 5 Trekking through Spacetime (pp. 137–170): spacetime maps, invariant hyperbola, worldlines, wristwatch time along a worldline, kinked worldline, stretch factor.",
+      "locatorId": "stp-ch5",
+      "estimatedMinutes": 70
+    },
+    {
+      "description": "Read Chapter 4 Trip to Canopus (pp. 121–136): the round trip, 4.6 Twin Paradox, 4.9 Relativity of Simultaneity, 4.10 Experimental Evidence.",
+      "locatorId": "stp-ch4",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "Second account: Tong, Dynamics and Relativity, Section 7.1.2 Spacetime Diagrams (within Section 7.1; reference-only).",
+      "locatorId": "tong-dr-ch7-s1",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 2 videos, Lecture 5.3 Spacetime Diagrams and Lecture 6.2 Twin Paradox.",
+      "locatorId": "sr21-week2",
+      "estimatedMinutes": 25
+    }
   ],
   "activities": [
-    { "id": "u04-a1", "type": "reading", "title": "Reading: diagrams and worldlines", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["stp-ch5", "stp-ch4", "tong-dr-ch7-s1", "sr21-week2"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u04-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "stp-ch5",
+        "stp-ch4",
+        "tong-dr-ch7-s1",
+        "sr21-week2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u04-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "stp-ch5",
+        "stp-ch4",
+        "tong-dr-ch7-s1",
+        "sr21-week2"
+      ],
+      "exerciseIds": [
+        "PHY-210-u04-ex1",
+        "PHY-210-u04-ex2",
+        "PHY-210-u04-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u04-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "stp-ch5",
+        "stp-ch4",
+        "tong-dr-ch7-s1",
+        "sr21-week2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 260,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u04-ex1",
+    "PHY-210-u04-ex2",
+    "PHY-210-u04-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u04-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A tilted time axis can be calibrated with a ruler on the page.",
+      "correction": "Its unit mark is fixed by the invariant hyperbola, not Euclidean length.",
+      "correctionLocatorIds": [
+        "stp-ch5"
+      ]
+    },
+    {
+      "claim": "The endpoint interval gives the elapsed time of every route.",
+      "correction": "It gives the inertial route; accelerated routes require an integral or segment sum.",
+      "correctionLocatorIds": [
+        "stp-ch5"
+      ]
+    },
+    {
+      "claim": "Earth physically ages suddenly when the traveller changes direction.",
+      "correction": "The distant event assigned simultaneous changes; no single Earth clock jumps.",
+      "correctionLocatorIds": [
+        "stp-ch5"
+      ]
+    }
+  ],
+  "estimatedMinutes": 390,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapters 4 and 5 PDFs listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.1.2 heading verified in dynrel7.pdf; MIT 8.20 Week 2 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: actual chapter5 §§5.2–5.8 and chapter4 §§4.6–4.9 read, including diagram calibration, proper-time sums and the two distinct traveller frames. Original numerical paths, simultaneity slices and Doppler counts re-derived; no copied exercise answers."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 390 active minutes including source reading, worked reasoning, 3 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u04-ex1.reference-solution.md",
+    "PHY-210-u04-ex2.reference-solution.md",
+    "PHY-210-u04-ex3.reference-solution.md"
+  ]
 }

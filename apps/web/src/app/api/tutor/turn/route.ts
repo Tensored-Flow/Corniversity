@@ -1,9 +1,8 @@
-import { boundedHistory, buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
-import { citedHistory } from "@corniversity/core/grounding/citations";
+import { buildTutorSystemPrompt, ROLE_CONTRACTS, TUTOR_PROMPT_VERSION } from "@corniversity/ai";
 import { getEnv } from "@corniversity/db/env";
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
 import { getOrCreateAttempt } from "@corniversity/db/services/learning";
-import { localOnlyAssetsForCourse } from "@corniversity/db/services/library";
+import { localOnlyAssetsForCourse, sourcePassagesStillPermitted } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
 import { attachRunToAssistance, recordAssistance } from "@corniversity/db/services/study-session";
 import {
@@ -19,6 +18,7 @@ import { db } from "@/lib/db";
 import { streamPersonaTurn } from "@/lib/model-runs";
 import { requireApiSession } from "@/lib/session";
 import { DEFAULT_HELP_MESSAGE, TutorRequest, tutorAttachments } from "@/lib/tutor-context";
+import { tutorHistory } from "@/lib/tutor-history";
 
 const Body = TutorRequest.extend({ message: z.string().trim().max(6000).default("") });
 
@@ -50,7 +50,7 @@ export async function POST(request: Request): Promise<Response> {
   if (!ctx.decision.allowed) {
     return NextResponse.json({ error: ctx.decision.reason, code: "help_refused" }, { status: 422 });
   }
-  const { session, unitDetail, activity, exercise, latestAttempt, latestVersion, selection } = ctx;
+  const { session, unitDetail, activity, exercise, latestAttempt, latestVersion, selection, attemptContext, lessonContext } = ctx;
   const courseDetail = await getCourseDetail(database, unitDetail.course.id);
   const tutor = courseDetail?.tutor ?? null;
   const profile = await ensureProfile(database, ownerId);
@@ -106,23 +106,20 @@ export async function POST(request: Request): Promise<Response> {
     assistanceMode: latestAttempt?.mode ?? "practice",
     learnerStyle: profile.learningStyles[unitDetail.course.primaryDepartmentId],
     evidencePrompt: evidence.prompt,
-    relevantAttempts: latestAttempt?.draftMarkdown
-      ? [`Current draft (revision ${latestAttempt.draftRevision}): ${latestAttempt.draftMarkdown.slice(0, 1500)}`]
-      : latestVersion
-        ? [`Submission v${latestVersion.version} (${latestAttempt?.state}): ${latestVersion.contentMarkdown.slice(0, 1500)}`]
-        : [],
+    lessonContext: `${lessonContext.note}\n${lessonContext.text}`,
+    relevantAttempts: attemptContext.text
+      ? [
+          `${latestAttempt?.draftMarkdown ? `Current draft (revision ${latestAttempt.draftRevision})` : `Submission v${latestVersion?.version} (${latestAttempt?.state})`}: ${attemptContext.note}\n${attemptContext.text}`,
+        ]
+      : [],
     approvedSummaries: [],
     help: ctx.help,
     selection: selection ? { ...selection, scope: req.scope } : undefined,
   });
   // Bounded context: the most recent turns within a fixed size; the record keeps every turn.
-  const chat = boundedHistory([
-    ...priorMessages.map((m) => ({
-      role: (m.sender === "learner" ? "user" : "assistant") as "user" | "assistant",
-      content: m.sender === "learner" ? m.contentMarkdown : citedHistory(m.contentMarkdown, m.citations),
-    })),
-    { role: "user" as const, content: message },
-  ]);
+  const history = await tutorHistory(priorMessages, message, (ref) =>
+    sourcePassagesStillPermitted(database, ownerId, unitDetail.course.id, [ref]),
+  );
 
   const haystack = message.toLowerCase();
   const localOnlyMentioned = (await localOnlyAssetsForCourse(database, ownerId, unitDetail.course.id)).filter((a) =>
@@ -145,10 +142,12 @@ export async function POST(request: Request): Promise<Response> {
     purpose: `tutor-${req.mode.replace("_", "-")}`,
     promptVersion: `${TUTOR_PROMPT_VERSION};role:${ROLE_CONTRACTS.tutor.version}`,
     system,
-    messages: chat,
+    messages: history.chat,
     scenario,
     speaker: tutor?.name ?? "The tutor",
-    prefix: localOnlyNote,
+    prefix: `${localOnlyNote}${history.omitted ? "*(Earlier replies citing unavailable library passages were left out of this turn; your saved conversation is unchanged.)*\n\n" : ""}`,
+    sourcesStillPermitted: () =>
+      sourcePassagesStillPermitted(database, ownerId, unitDetail.course.id, [...evidence.refs, ...history.sourceRefs]),
     onFinish: async (raw, runId) => {
       await attachRunToAssistance(database, assistanceId, runId);
       await appendPersonaMessage(database, {

@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u10-ex4",
+  "sequence": 4,
+  "title": "Frobenius from adapted fields to global limits",
+  "kind": "proof",
+  "promptMarkdown": "Prove the local Frobenius theorem for a smooth constant-rank distribution using the graph-form frame $X_i$ in the lesson. Explain why involutivity makes those fields commute and how their flows form coordinates. Complete your account with the irrational-slope torus example: establish injectivity and density of a leaf, and explain why neither a global embedded leaf nor a Hausdorff leaf space follows from the local theorem. Relate this limitation to what holonomy and Reeb stability add.",
+  "conceptIds": [
+    "lie-derivative-frobenius"
+  ],
+  "hintLadder": [
+    "Make the horizontal projection invertible before choosing the frame.",
+    "Zero bracket makes local flows commute.",
+    "Distinguish the topology on the line parameter from the topology of its image."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Complete local normal-form proof.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct torus injectivity/density/topology.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Clear local/global boundary and stability connection.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 80,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

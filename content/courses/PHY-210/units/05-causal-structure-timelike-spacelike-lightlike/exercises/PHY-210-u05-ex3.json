@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u05-ex3",
+  "sequence": 3,
+  "title": "Mid-course synthesis: a hypothetical causal loop in two frames",
+  "kind": "derivation",
+  "promptMarkdown": "Alice and Bob meet at $(t,x)=(0,0)$; Bob moves at $v=0.9c$. At $t_0>0$, Alice sends a hypothetical controllable signal at $u=2c$ in her frame. Bob replies immediately at speed $-2c$ in his frame. Derive the outgoing reception event B and Alice's reply-reception event C. Show that C precedes Alice's original emission while the reply goes forward in Bob's coordinate time. Provide event tables and labelled diagrams in both frames; classify both signal legs; identify every assumption about the hypothetical device. Explain why this does not prove that spacelike correlations alone cause contradictions.",
+  "conceptIds": [
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Intersect the outgoing signal line with Bob's worldline.",
+    "Apply the Lorentz equations to the displacement from B to C, not merely a velocity formula with an ambiguous time sign.",
+    "Compute $\\Delta t\\prime$ directly to verify Bob's emission order.",
+    "List what permits Bob to send a new message, rather than just observe a correlation."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Both event tables and transformed signal legs are derived consistently.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "The early return and positive Bob reply time are checked.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Diagrams, causal classifications and signalling assumptions agree.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

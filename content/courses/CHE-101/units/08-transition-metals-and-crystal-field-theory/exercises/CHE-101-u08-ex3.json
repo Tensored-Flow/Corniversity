@@ -1,0 +1,91 @@
+{
+  "id": "CHE-101-u08-ex3",
+  "sequence": 3,
+  "title": "A spectrum with an alternative explanation",
+  "kind": "calculation",
+  "promptMarkdown": "Two otherwise comparable hypothetical octahedral d¹ complexes absorb at 640 nm and 480 nm. Assume each band is the single d-shell gap. Calculate molar splitting energies using h=6.62607015×10⁻³⁴ J s, c=2.99792458×10⁸ m s⁻¹ and N_A=6.02214076×10²³ mol⁻¹. Which has larger splitting, by what ratio? A third d¹⁰ complex is strongly coloured. Explain why this does not refute its electron count, and propose a measurement or analysis to investigate the colour mechanism.",
+  "conceptIds": [
+    "transition-metal-coordination"
+  ],
+  "hintLadder": [
+    "Convert nm to metres and distinguish one photon from one mole of photons.",
+    "Take the ratio before detailed arithmetic.",
+    "The absence of d–d transitions is not the absence of every possible transition."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Obtains splittings with correct molecular/molar units",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Explains inverse wavelength and observed-colour distinction",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Proposes a plausible alternative and discriminating evidence",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Uses spectral evidence to challenge an overgeneralisation about electron count rather than simply filling a supplied diagram."
+  }
+}

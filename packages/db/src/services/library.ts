@@ -474,10 +474,17 @@ export async function searchAsset(db: DbOrTx, assetId: string, query: string, li
  * converge?" almost never does, so the tutor would see no passage at all.
  */
 function anyOfTheWords(question: string): string {
-  return (question.match(/[\p{L}\p{N}]+/gu) ?? []).join(" or ");
+  return [...new Set(question.match(/[\p{L}\p{N}]+/gu) ?? [])].slice(0, 96).join(" or ");
 }
 
-export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, courseId: string, query: string, limit = 6) {
+export async function permittedPassagesForCourse(
+  db: DbOrTx,
+  ownerId: string,
+  courseId: string,
+  query: string,
+  limit = 6,
+  sourceVersionIds?: readonly string[],
+) {
   const assets = await db
     .select()
     .from(resourceAsset)
@@ -486,13 +493,19 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
         eq(resourceAsset.ownerId, ownerId),
         eq(resourceAsset.status, "processed"),
         isNull(resourceAsset.deletedAt),
+        eq(resourceAsset.localOnly, false),
         sql`${resourceAsset.courseIds} ? ${courseId}`,
       ),
     );
   const allowed: AssetRow[] = [];
-  for (const a of assets) if (await isAllowed(db, ownerId, a.id, "external_ai")) allowed.push(a);
+  for (const a of assets) {
+    if (sourceVersionIds && (!a.sourceVersionId || !sourceVersionIds.includes(a.sourceVersionId))) continue;
+    if (await isAllowed(db, ownerId, a.id, "external_ai")) allowed.push(a);
+  }
   if (allowed.length === 0 || !query.trim()) return [];
   const words = anyOfTheWords(query);
+  if (!words) return [];
+  const boundedLimit = Math.min(12, Math.max(1, Math.trunc(limit)));
   const rows = await db.execute(sql`
     select p.id, p.asset_id, p.text, p.heading, e.physical_index, e.printed_label,
            ts_rank(p.tsv, websearch_to_tsquery('english', ${words})) as rank
@@ -501,7 +514,7 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
       allowed.map((a) => sql`${a.id}::uuid`),
       sql`, `,
     )}) and p.tsv @@ websearch_to_tsquery('english', ${words})
-    order by rank desc limit ${limit}`);
+    order by rank desc, p.id asc limit ${boundedLimit}`);
   return (
     rows.rows as {
       id: string;
@@ -516,6 +529,55 @@ export async function permittedPassagesForCourse(db: DbOrTx, ownerId: string, co
     ...r,
     asset: allowed.find((a) => a.id === r.asset_id)!,
   }));
+}
+
+/** Revalidate the exact cached passages immediately before sending a prompt. A permission
+ * row alone is insufficient: deleting an asset or withdrawing storage removes its passages
+ * without necessarily changing the separate external-AI permission. One query observes both
+ * availability and the latest effective permission at the same database snapshot. */
+export async function sourcePassagesStillPermitted(
+  db: DbOrTx,
+  ownerId: string,
+  courseId: string,
+  refs: readonly { assetId?: string; passageId?: string; sourceVersionId?: string | null }[],
+  sourceVersionIds?: readonly string[],
+): Promise<boolean> {
+  const requested = refs.filter((ref) => ref.assetId || ref.passageId);
+  if (!requested.length) return true;
+  if (requested.some((ref) => !ref.assetId || !ref.passageId || !isUuid(ref.assetId) || !isUuid(ref.passageId))) return false;
+  if (sourceVersionIds?.length === 0) return false;
+  const rows = await db
+    .select({ passageId: passage.id, assetId: passage.assetId, sourceVersionId: resourceAsset.sourceVersionId })
+    .from(passage)
+    .innerJoin(resourceAsset, eq(resourceAsset.id, passage.assetId))
+    .where(
+      and(
+        inArray(
+          passage.id,
+          requested.map((ref) => ref.passageId!),
+        ),
+        eq(resourceAsset.ownerId, ownerId),
+        sql`${resourceAsset.courseIds} ? ${courseId}`,
+        eq(resourceAsset.status, "processed"),
+        isNull(resourceAsset.deletedAt),
+        eq(resourceAsset.localOnly, false),
+        sourceVersionIds ? inArray(resourceAsset.sourceVersionId, [...sourceVersionIds]) : undefined,
+        sql`(select ${processingPermission.status} from ${processingPermission}
+          where ${processingPermission.assetId} = ${resourceAsset.id}
+            and ${processingPermission.ownerId} = ${ownerId}
+            and ${processingPermission.action} = 'external_ai'
+            and ${processingPermission.revokedAt} is null
+          order by ${processingPermission.recordedAt} desc limit 1) = 'allowed'`,
+      ),
+    );
+  return requested.every((ref) =>
+    rows.some(
+      (row) =>
+        row.passageId === ref.passageId &&
+        row.assetId === ref.assetId &&
+        (ref.sourceVersionId === undefined || ref.sourceVersionId === row.sourceVersionId),
+    ),
+  );
 }
 
 // ---------------------------------------------------------------------------------------------

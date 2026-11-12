@@ -5,27 +5,155 @@
   "title": "Momenergy: relativistic momentum and energy",
   "summary": "The four-momentum as the momenergy arrow; E = γmc², p = γmv and the invariant E² = p²c² + m²c⁴; the Newtonian limit; mass as invariant; massless particles; conservation of four-momentum.",
   "objectives": [
-    { "id": "u07-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Spacetime Physics Chapter 7, Tong Section 7.4, and MIT 8.20 Week 3 (Lectures 9.1–9.2)." }
+    {
+      "id": "u07-o1",
+      "description": "Derive the massive energy–momentum relation and its low-speed expansion with SI units."
+    },
+    {
+      "id": "u07-o2",
+      "description": "Transform energy and momentum together and recover a particle velocity."
+    },
+    {
+      "id": "u07-o3",
+      "description": "Treat photon momentum as a null vector and derive Doppler/aberration relations."
+    },
+    {
+      "id": "u07-o4",
+      "description": "Conserve total four-momentum and distinguish system invariant mass from constituent masses."
+    }
   ],
-  "prerequisiteConceptIds": ["four-vectors", "newtonian-mechanics"],
-  "teachesConceptIds": ["relativistic-energy-momentum"],
+  "prerequisiteConceptIds": [
+    "four-vectors",
+    "newtonian-mechanics"
+  ],
+  "teachesConceptIds": [
+    "relativistic-energy-momentum"
+  ],
   "preparation": [
-    { "description": "Read Spacetime Physics Chapter 7 Momenergy (pp. 189–220): Sections 7.1–7.7 and the exercises.", "locatorId": "stp-ch7", "estimatedMinutes": 70 },
-    { "description": "Second account: Tong, Dynamics and Relativity, Section 7.4 Relativistic Kinematics, including 7.4.4 Massless Particles (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 30 },
-    { "description": "Optional: MIT 8.20 Week 3 videos, Lecture 9.1 Momentum Conservation and Lecture 9.2 Energy Conservation.", "locatorId": "sr21-week3", "estimatedMinutes": 25 }
+    {
+      "description": "Read Spacetime Physics Chapter 7 Momenergy (pp. 189–220): Sections 7.1–7.7 and the exercises.",
+      "locatorId": "stp-ch7",
+      "estimatedMinutes": 70
+    },
+    {
+      "description": "Second account: Tong, Dynamics and Relativity, Section 7.4 Relativistic Kinematics, including 7.4.4 Massless Particles (reference-only).",
+      "locatorId": "tong-dr-ch7-s4",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 3 videos, Lecture 9.1 Momentum Conservation and Lecture 9.2 Energy Conservation.",
+      "locatorId": "sr21-week3",
+      "estimatedMinutes": 25
+    }
   ],
   "activities": [
-    { "id": "u07-a1", "type": "reading", "title": "Reading: momenergy", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["stp-ch7", "tong-dr-ch7-s4", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u07-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 105,
+      "sourceLocatorIds": [
+        "stp-ch7",
+        "tong-dr-ch7-s4",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u07-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 125,
+      "sourceLocatorIds": [
+        "stp-ch7",
+        "tong-dr-ch7-s4",
+        "sr21-week3"
+      ],
+      "exerciseIds": [
+        "PHY-210-u07-ex1",
+        "PHY-210-u07-ex2",
+        "PHY-210-u07-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u07-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "stp-ch7",
+        "tong-dr-ch7-s4",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 250,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u07-ex1",
+    "PHY-210-u07-ex2",
+    "PHY-210-u07-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u07-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A fast particle has a larger invariant mass.",
+      "correction": "Its energy and momentum increase; its mass-shell invariant is unchanged.",
+      "correctionLocatorIds": [
+        "stp-ch7"
+      ]
+    },
+    {
+      "claim": "A photon has zero energy because its mass is zero.",
+      "correction": "A nonzero null momentum has E=c|p| and positive energy.",
+      "correctionLocatorIds": [
+        "stp-ch7"
+      ]
+    },
+    {
+      "claim": "The mass of a system is always the sum of individual rest masses.",
+      "correction": "Relative motion and internal energy contribute to the system invariant mass.",
+      "correctionLocatorIds": [
+        "stp-ch7"
+      ]
+    }
+  ],
+  "estimatedMinutes": 375,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter 7 PDF listed on the authors' download page (opened 2026-10-30) with section titles and printed pages read from the contents PDF; Tong Section 7.4 headings verified in dynrel7.pdf; MIT 8.20 Week 3 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: actual Taylor–Wheeler chapter7 §§7.2–7.6 and chapter8 §§8.1–8.4 text read; original SI conversions, detector inference, photon boost and two-frame collision re-derived. No old particle-property numerical claims adopted."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 375 active minutes including source reading, worked reasoning, 3 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u07-ex1.reference-solution.md",
+    "PHY-210-u07-ex2.reference-solution.md",
+    "PHY-210-u07-ex3.reference-solution.md"
+  ]
 }

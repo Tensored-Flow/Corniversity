@@ -3,30 +3,197 @@
   "courseId": "CHE-101",
   "sequence": 10,
   "title": "Synthesis: equilibrium from both sides",
-  "summary": "The synthesis-week unit: the thermodynamic view of equilibrium (ΔG° = −RT ln K, temperature dependence through ΔH°) and the kinetic view (K = k_f/k_r for elementary steps, temperature dependence of rate constants through E_a) brought together on one system chosen by the learner, with the assumptions of each view stated; preparation for the written synthesis assessment.",
+  "summary": "Cumulative synthesis of thermodynamic and kinetic equilibrium, coupled speciation and a carbon-conversion model integrating stoichiometry, bonding, pH, electrochemistry, coordination and evidence.",
   "objectives": [
-    { "id": "u10-o1", "description": "Objectives for this unit will be finalised when it is prepared; it revisits lecture 18 pages 1–2, lecture 31 page 4 and lecture 33 page 6 of 5.111SC with OpenStax 13.1 and 16.4." }
+    {
+      "id": "u10-o1",
+      "description": "Reconcile thermodynamic equilibrium and elementary kinetics with standard-state conventions."
+    },
+    {
+      "id": "u10-o2",
+      "description": "Combine equilibria to calculate free and total species while preserving balances."
+    },
+    {
+      "id": "u10-o3",
+      "description": "Design quantitative bidirectional tests of equilibrium and relaxation."
+    },
+    {
+      "id": "u10-o4",
+      "description": "Integrate stoichiometry, bonding, acid speciation, electrochemistry, coordination and kinetics in a defensible model-based report."
+    }
   ],
-  "prerequisiteConceptIds": ["chemical-equilibrium-constant", "kinetic-view-of-equilibrium", "arrhenius-temperature-dependence"],
-  "teachesConceptIds": ["kinetic-view-of-equilibrium", "chemical-equilibrium-constant"],
+  "prerequisiteConceptIds": [
+    "chemical-equilibrium-constant",
+    "kinetic-view-of-equilibrium",
+    "arrhenius-temperature-dependence"
+  ],
+  "teachesConceptIds": [
+    "kinetic-view-of-equilibrium",
+    "chemical-equilibrium-constant"
+  ],
   "preparation": [
-    { "description": "Lecture 18 notes page 2: ΔG = ΔG° + RT ln Q and ΔG° = −RT ln K.", "locatorId": "chem14-n18-p2", "estimatedMinutes": 15 },
-    { "description": "Lecture 31 notes page 4: K as the ratio of forward and reverse rate constants.", "locatorId": "chem14-n31-p4", "estimatedMinutes": 10 },
-    { "description": "Lecture 33 notes page 6: rate constants versus equilibrium constants with temperature.", "locatorId": "chem14-n33-p6", "estimatedMinutes": 10 },
-    { "description": "OpenStax 16.4 Free Energy (free energy and equilibrium) and 13.1 Chemical Equilibria (dynamic equilibrium).", "locatorId": "ox-16-4", "estimatedMinutes": 30 }
+    {
+      "description": "Thermodynamic direction and dimensionless Q",
+      "locatorId": "chem14-n18-p2",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Elementary kinetic equilibrium and unit conventions",
+      "locatorId": "chem14-n31-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Temperature and equilibrium; qualify rate statements by the model",
+      "locatorId": "chem14-n33-p6",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Connecting chemical domains in a case study",
+      "locatorId": "chem14-n35-p1",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Bonding, thermodynamics and acid–base connections",
+      "locatorId": "chem14-n35-p2",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Transition-metal electron counting and catalysis",
+      "locatorId": "chem14-n35-p3",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Coupled equilibria",
+      "locatorId": "chem14-n35-p4",
+      "estimatedMinutes": 10
+    }
   ],
   "activities": [
-    { "id": "u10-a1", "type": "reading", "title": "Revisiting the two views of equilibrium", "instructions": "Re-read the three lecture-notes pages and the two OpenStax sections for this unit with the question: which assumptions does each view make, and where do they meet? The prepared synthesis guidance and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["chem14-n18-p2", "chem14-n31-p4", "chem14-n33-p6", "ox-16-4", "ox-13-1"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u10-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4",
+        "chem14-n33-p6",
+        "chem14-n35-p1",
+        "chem14-n35-p2",
+        "chem14-n35-p3",
+        "chem14-n35-p4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u10-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 265,
+      "sourceLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4",
+        "chem14-n33-p6",
+        "chem14-n35-p1",
+        "chem14-n35-p2",
+        "chem14-n35-p3",
+        "chem14-n35-p4"
+      ],
+      "exerciseIds": [
+        "CHE-101-u10-ex1",
+        "CHE-101-u10-ex2",
+        "CHE-101-u10-ex3",
+        "CHE-101-u10-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u10-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4",
+        "chem14-n33-p6",
+        "chem14-n35-p1",
+        "chem14-n35-p2",
+        "chem14-n35-p3",
+        "chem14-n35-p4"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared; it will be the written synthesis (assessment a4)." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CHE-101-u10-ex1",
+    "CHE-101-u10-ex2",
+    "CHE-101-u10-ex3",
+    "CHE-101-u10-ex4"
+  ],
+  "exitCheck": {
+    "description": "Submit the multi-part carbon-conversion capstone: conservation and bonding, pH-dependent electrochemistry and reversible work, acid speciation, charge/product/energy calculations, coordination evidence and a controlled test of equilibrium versus kinetics. Address all six weighted criteria and state model limits. Revisit earlier problem-sheet gaps separately; completion is evidence for integration, not blanket mastery.",
+    "exerciseId": "CHE-101-u10-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "At equilibrium the total Gibbs energy must be zero.",
+      "correction": "The reaction free-energy change vanishes at equilibrium; the system Gibbs energy itself need not be zero.",
+      "correctionLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4"
+      ]
+    },
+    {
+      "claim": "K always equals an unqualified ratio of rate constants.",
+      "correction": "The relation depends on the elementary rate law and standard-state factors; differing molecularities require dimensional care.",
+      "correctionLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4"
+      ]
+    },
+    {
+      "claim": "An imposed-voltage cell is automatically a closed equilibrium system.",
+      "correction": "External electrical and material reservoirs change the system boundary and may maintain a nonequilibrium state.",
+      "correctionLocatorIds": [
+        "chem14-n18-p2",
+        "chem14-n31-p4"
+      ]
+    }
+  ],
+  "estimatedMinutes": 495,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture 18, 31 and 33 notes PDFs text-extracted 2026-10-30 with the cited pages verified; OpenStax 13.1 and 16.4 opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read MIT lecture18 pp.1–2, lecture31 p.4, lecture33 pp.1–2,4,6 and lecture35 pp.1–4; reconcile thermodynamic/kinetic models and integrated chemical reasoning. Capstone is original with explicitly illustrative data, not an experimental performance claim."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimates 495 active minutes including assigned reading, lecture work, original problems and delayed retrieval; estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CHE-101-u10-ex1.reference-solution.md",
+    "CHE-101-u10-ex2.reference-solution.md",
+    "CHE-101-u10-ex3.reference-solution.md",
+    "CHE-101-u10-ex4.reference-solution.md"
+  ]
 }

@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u12-ex3",
+  "sequence": 3,
+  "title": "Stokes on an annulus and a disk",
+  "kind": "proof",
+  "promptMarkdown": "On the oriented planar annulus $A=\\{1\\le x^2+y^2\\le4\\}$ let $\\omega=(-y\\,dx+x\\,dy)/(x^2+y^2)$ and $\\eta=x\\,dy-y\\,dx$. Compute $d\\omega,d\\eta$, and both boundary integrals with the induced orientations. Explain why applying Stokes to $\\omega$ on the whole disk of radius 2 is invalid, whereas it is valid for $\\eta$.",
+  "conceptIds": [
+    "cech-de-rham-theorem"
+  ],
+  "hintLadder": [
+    "Use polar pullbacks $\\omega=d\\theta$ and $\\eta=r^2d\\theta$.",
+    "The inner boundary orientation is reversed.",
+    "Check where each form is defined before choosing an integration domain."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct derivatives.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Boundary signs and numerical integrals.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Smooth-domain hypothesis and disk comparison.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

@@ -20,8 +20,8 @@ fades only, disabled under `prefers-reduced-motion`; none during scored work.
 
 ## Components
 
-Wordmark/crest (original SVG), `PageFrame`, `SideNav` (Campus, My Studies, Timetable, Library,
-Notebook, Common Room, Catalogue, Programmes; Director as a quiet affordance), `CommandSearch`, `Card`, `Button`
+Wordmark/crest (original SVG), `PageFrame`, `SideNav` (Courses, Catalogue, Library and Notebook;
+other university screens retain their routes and records), `CommandSearch`, `Card`, `Button`
 (primary brass, secondary stone, quiet text), `Field` with accessible errors, `Badge` (readiness,
 AI label, evidence state), `Math` / `Markdown` (KaTeX, sanitised), `SourcePanel`, `HintLadder`,
 `ProofEditor`, `FeedbackCard` (line-localised), `Timetable` (week/agenda), `ReadingRoom`,
@@ -75,10 +75,28 @@ explicit *Use the whole unit* choice. Video: an exact link to the authorised lec
 timestamp notes (mm:ss), because no external player is controlled. External-only reading: the
 exact reference and a manual progress field ("read to §2.3 / p. 34"), never an embedded book.
 
+**Teaching text.** Notes, proofs and executable examples use one Markdown document so blank
+lines inside code or lists remain intact and reference links/footnotes resolve. Named definitions,
+theorems and examples retain their visual treatment. Mathematics and chemistry render through
+KaTeX/mhchem under the same sanitisation boundary as learner and model text. The kinetics
+laboratory labels a numerical readout with the actual nearest sample time, not the requested
+time when rounding or the end of the run selects a different sample.
+
+**Tutor attachment preview.** The tutor receives current learner-facing notes and saved work,
+with limits of 12,000 and 20,000 characters respectively; an empty draft falls back to the latest
+submission. Complete text is labelled complete. Excerpts state the omitted ranges and preserve
+opening assumptions plus the selection or conclusion. The tutor must not judge missing steps as
+wrong. Replies tied to recorded library citations that are no longer permitted are omitted from
+replayed history with a visible explanation; the saved conversation remains. A final permission
+failure says no text was sent and keeps the work available.
+
 **Help controls** on every exercise, the same four everywhere: *Small hint*, *Discuss my approach*,
 *Check this step* (needs selected lines of the attempt) and *Full explanation* (practice mode
 only; in self-test it is refused before any model call). Each request is recorded as assistance
-with its mode; none is a penalty and none is evidence of understanding.
+with its mode; none is a penalty and none is evidence of understanding. Small hints stay brief;
+a requested full explanation has room for assumptions, intermediate reasoning and interpretation
+within the provider budget, rather than an arbitrary 300-word cap. Instructor solutions remain
+separate from the tutor's context.
 
 **Attempt editor.** Typed Markdown/LaTeX or paper pages (photos or PDF) with a transcription the
 learner confirms. Save states: *Saving…* → *Saved on the server* (revision n) | *Saved on this
@@ -98,3 +116,12 @@ supported by specific work, self-reported (unverified), not yet shown, and wheth
 prepared or unprepared. *Explain this prerequisite* opens `/bridges/[conceptId]` with a breadcrumb
 back to the exact session, exercise and position; bridges nest at most two deep, and a cycle is
 reported instead of followed.
+
+## Preparation and review wording
+
+A missing source body produces a concrete source-access blocker before a generation reservation.
+A registered title or section label is not described as inspected text. The draft stage is labelled
+“Evidence and teaching-structure checks”; passing it is never presented as proof of correctness.
+Source review, independent solution checks and final repair review are separate recorded evidence.
+The five selected courses retain long-form notes, problem sheets and cumulative work; readiness
+describes available teaching, not the learner's mastery or an accredited university experience.

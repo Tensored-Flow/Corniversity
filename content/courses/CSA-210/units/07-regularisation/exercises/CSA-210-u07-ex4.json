@@ -1,0 +1,109 @@
+{
+  "id": "CSA-210-u07-ex4",
+  "sequence": 4,
+  "title": "Design an invariance and regularisation study",
+  "kind": "model_interpretation",
+  "promptMarkdown": "A team classifies handwritten digits and also predicts the location of a marked point in each image. They rotate every image by 180°, keep both labels unchanged, create ten augmented copies before random row splitting, standardise all splits together, and choose dropout,λ and early-stopping epoch by the best of80 test runs. Give a corrected study design for both tasks. Specify which labels may need transformation, the split unit, preprocessing, a small reproducible ablation and selection budget, baseline, seed policy, final evaluation and a concrete failure case. Explain why ten crops are not ten independent originals.",
+  "conceptIds": [
+    "regularisation-dl"
+  ],
+  "hintLadder": [
+    "Separate invariant classification labels from equivariant coordinates.",
+    "Trace each descendant back to its original source.",
+    "Every architecture/penalty/dropout/checkpoint choice belongs inside selection."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Tests transformations against each task label",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Prevents descendant/group and preprocessing leakage",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Defines a bounded fair ablation and selection protocol",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Reports meaningful final evidence and failure cases",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 65,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

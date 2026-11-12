@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u10-ex1",
+  "sequence": 1,
+  "title": "A good reconstruction can discard the label",
+  "kind": "calculation",
+  "promptMarkdown": "LetX=(U, V) with independent centred coordinatesVarU=9, VarV=1; assumeV is a symmetric continuous random variable and labelY=1[V>0]. For rank-one orthogonal linear reconstruction, derive expected squared error for a unit directiona=(cosθ, sinθ), find its minimiser and explain why the retained PCA coordinate cannot predictY better than the majority baseline. Compare reconstruction onto the second axis and its predictive information. State assumptions needed for thePCA/linear-autoencoder connection.",
+  "conceptIds": [
+    "representation-learning-unsupervised"
+  ],
+  "hintLadder": [
+    "UseE||X−PX||²=trC−trPC.",
+    "Separate the variance criterion from the conditional distribution ofY given the retained coordinate.",
+    "A subspace can be identifiable while latent coordinates remain nonunique."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives projection error and optimum",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Proves the label-information limitation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "States autoencoder assumptions and coordinate nonuniqueness",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

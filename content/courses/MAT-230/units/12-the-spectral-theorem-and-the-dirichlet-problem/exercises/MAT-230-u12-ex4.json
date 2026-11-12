@@ -1,0 +1,151 @@
+{
+  "id": "MAT-230-u12-ex4",
+  "sequence": 4,
+  "title": "Final proof portfolio: compact self-adjoint spectral theorem",
+  "kind": "proof",
+  "promptMarkdown": "Let $H$ be a separable complex Hilbert space, with inner product linear in the first argument, and let $K:H\\to H$ be compact and self-adjoint. Prove the compact self-adjoint spectral theorem and connect it to the boundary-value construction. You may use the earlier Hilbert projection, Bessel and orthonormal-basis results, compactness, and the bounded-operator norm rules. You may not quote the spectral theorem or the extremal-eigenvector lemma as a black box. The precise assigned source proofs remain MIT Lectures 21–22; this portfolio requires you to reconstruct the following steps.\n\n1. Prove for every bounded self-adjoint $T$ that $\\|T\\|=\\sup_{\\|x\\|=1}|\\langle Tx,x\\rangle|$. Use a quadratic-form polarization estimate, with the complex convention checked.\n2. If $K\\ne0$, prove it has a unit eigenvector whose eigenvalue is either $\\|K\\|$ or $-\\|K\\|$. Start with a maximizing quadratic-form sequence, estimate $\\|Kx_j-\\lambda x_j\\|$, and use compactness to obtain a norm limit of $x_j$; do not assume the unit sphere itself is compact.\n3. Prove reality of eigenvalues, orthogonality of distinct eigenspaces, and finite multiplicity of every nonzero eigenvalue. Repeatedly restrict to invariant orthogonal complements to construct a finite or countable list $(e_j,\\lambda_j)$ of nonzero eigenvectors. If the list is infinite, prove $\\lambda_j\\to0$ and $|\\lambda_j|$ is nonincreasing.\n4. Prove $\\overline{\\operatorname{span}}\\{e_j\\}=(\\ker K)^\\perp$, include the possible kernel, and establish $Kx=\\sum_j\\lambda_j\\langle x,e_j\\rangle e_j$ in norm. Prove the sharp truncation error $\\|K-K_N\\|=|\\lambda_{N+1}|$ whenever a next eigenvector exists, and handle finite rank and $K=0$.\n5. Prove all nonzero spectral values are precisely the listed eigenvalues by constructing the inverse for a nonzero complex number outside the list. Explain when zero belongs to the spectrum in finite and infinite dimensions, and why zero need not be an eigenvalue in infinite dimensions.\n6. Apply the proved theorem to $S=G^{1/2}M_VG^{1/2}$ in the Dirichlet construction, with continuous real $V\\ge0$. Prove $I+S$ is invertible with inverse norm at most one, including its action on $\\ker S$. Identify which additional regularity argument from the other final problems is still needed to obtain a classical differential-equation solution. Distinguish that analytic bridge from the spectral theorem itself.",
+  "conceptIds": [
+    "spectral-theorem-compact",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Bound the difference q(x+y)−q(x−y), then choose y in the direction of Tx.",
+    "Choose a subsequence whose real quadratic forms approach one of the two extremal signs.",
+    "Expand the squared norm of Kx−lambda x; compactness of Kx then controls x because lambda is nonzero.",
+    "Self-adjointness makes each orthogonal complement invariant; select the next eigenvector using the restriction norm.",
+    "If the eigenvalues did not tend to zero, their orthogonal images would have no Cauchy subsequence.",
+    "The same restriction-norm estimate proves the expansion, the kernel complement, and the sharp truncation error. For a resolvent point, inspect the eigenvector and kernel denominators separately."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Proves the self-adjoint norm/quadratic-form equality with a valid complex-inner-product argument.",
+        "weight": 0.12,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves extremal eigenvector existence using a residual estimate and compactness, without compactness of the unit sphere or a spectral theorem.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves eigenspace properties and carries out the invariant-complement construction, including decay of an infinite eigenvalue list.",
+        "weight": 0.18,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Proves completeness modulo the kernel, the norm expansion and sharp operator-norm remainder, with finite/zero cases.",
+        "weight": 0.22,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "criterion": "Constructs the bounded resolvent outside the nonzero eigenvalue list and treats zero correctly in finite and infinite dimensions.",
+        "weight": 0.16,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c6",
+        "criterion": "Applies the proved theorem to the positive Green-factor operator, including its kernel, and separates the classical regularity bridge.",
+        "weight": 0.12,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 210,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "An extended proof portfolio requiring explicit hypotheses, complete limit arguments, and connections among earlier results; time is a planning estimate, not empirically calibrated."
+    },
+    "knownAmbiguities": []
+  }
+}
