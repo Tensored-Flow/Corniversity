@@ -255,3 +255,10 @@ User-selected scope: complete all five courses now, not opening units only. CHE-
 Implemented: permissioned source passage admission and final recheck; objective/worked-example/progression/repetition draft gates; honest structural-check labels; complete bounded tutor context; alternate-proof assessment; current-source history filtering; safe whole-document Markdown rendering; published-unit seed protection. Validation: 601 regression cases, seven-package typecheck, content validator, strict KaTeX and production build pass. All 53 targeted browser cases now pass after mobile containment/accessibility repairs. Reviewed release 36ae0c3 is deployed to the existing Railway worker and web services, both SUCCESS. Source-to-database content hashes match and the existing owner has five active enrolments. The teacher remains in scripted-demo mode; live-provider setup and empirical teaching evaluation remain outside the completed release checks. See STATUS.md and QA_REPORT.md.
 
 Gate: all 54 complete, exact independent review scope documented, no unresolved substantive academic findings, app checks pass, existing project released and owner enrolled where authenticated access permits. Never equate automated structure checks or agent consensus with human certification or measured educational outcomes.
+
+
+## Milestone 21 — Branded hosted address — done
+
+The existing Railway web service uses https://corniversity.up.railway.app on port 3000. Web and worker use that same `BETTER_AUTH_URL`, and both redeployments report SUCCESS. The database and academic records stay in place. No domain purchase, plan upgrade, application-code change, migration or model call is part of this change.
+
+Gate: active domain, matching service configuration, successful redeployments, valid HTTPS, healthy database/migrations, rendered sign-in form and anonymous private-route protection. These checks pass. The owner signs in again on the new host; authenticated login and private client URL updates remain owner-side checks, not claimed as tested.

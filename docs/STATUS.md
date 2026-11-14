@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 12 November 2026. Milestone 20 completes the five selected courses and strengthens source-grounded preparation and tutorial context. Academic review, build and browser gates pass. The reviewed release is deployed to the existing Railway project, and the existing owner is enrolled in all five courses. The live tutor remains in scripted-demo mode; no provider connection was enabled or exercised.
+Last updated: 14 November 2026. The hosted address is https://corniversity.up.railway.app; milestone 21 replaces the generated hostname and keeps the existing account/database. Milestone 20 completes the five selected courses and strengthens source-grounded preparation and tutorial context. Academic review, build and browser gates pass. The reviewed release is deployed to the existing Railway project, and the existing owner is enrolled in all five courses. The live tutor was last verified in scripted-demo mode on 12 November; no provider setting is changed or exercised by the hostname update.
 
 ## Current teaching
 
@@ -35,10 +35,10 @@ No Corniversity runtime model, ChatGPT-plan subscription or paid model API was u
 
 ## Release and remaining owner setup
 
-Code release `36ae0c3baf61bc139b9b6bf76f12d6f3b53fabc7` is live. Worker deployment `bd7dfc36-f7ec-4e2d-aaf5-de7ac4f7e2f8` and web deployment `11c199fd-ebe4-45c1-aa44-135b4ee49477` both report SUCCESS. Public health reports a healthy database, current migrations, all seven scripted assets and tutor/assessor prompts 1.4/1.3.
+Code release `36ae0c3baf61bc139b9b6bf76f12d6f3b53fabc7` is live. Current worker deployment `3eef63c1-2560-4035-b5cd-3824b3fe0c18` and web deployment `520dc417-6688-476a-94d0-019ee60877b4` both report SUCCESS. These are redeployments of the existing release with the updated public URL; the 12 November deployment evidence remains in QA_REPORT.md. Public health reports a healthy database, current migrations, all seven scripted assets and tutor/assessor prompts 1.4/1.3.
 
 All five current database content hashes match the deployed source before enrolment. The normal enrolment service created five active enrolled records in one transaction for the existing owner; the prior enrolment list was empty. Source edition numbers above are distinct from database revision sequence numbers: CHE-101=3, PHY-210=2, MAT-230=3, MAT-261=2, CSA-210=2. Existing account, preferences and learning records were not reset.
 
-Open the hosted campus and sign in with the existing account. The remaining owner choice is whether to configure a live teacher in Settings; the courses are already available without it. Provider configuration and live-model evaluation are not claimed complete. The source branch is `codex/university-teaching-quality`, with draft PR #1; main has not been merged. Keep `.env`, source-download caches and credentials out of git.
+Open https://corniversity.up.railway.app/campus and sign in with the existing account. Both services use `BETTER_AUTH_URL=https://corniversity.up.railway.app`. HTTPS health, sign-in form and anonymous private-route protection pass; an authenticated owner sign-in is not claimed. Old bookmarks must use the new address. Previously paired companion clients or external calendar subscriptions, if any, need their stored server URL updated; no private client configuration was inspected. The remaining owner choice is whether to configure a live teacher in Settings; the courses are already available without it. Provider configuration and live-model evaluation are not claimed complete. The source branch is `codex/university-teaching-quality`, with draft PR #1; main has not been merged. Keep `.env`, source-download caches and credentials out of git.
 
 Historical release evidence remains in QA_REPORT.md and prior milestones in PLAN.md. The old Windows owner installation is separate from this Linux QA checkout. `pnpm deploy:railway` is a first-deployment script and must not be used for this existing project.

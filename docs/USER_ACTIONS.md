@@ -6,7 +6,7 @@ sign-in and any sign-in with a model provider are separate: one never stands in 
 
 The hosted app and the earlier local owner installation have separate databases. The Linux build/QA stack is a third, disposable test environment:
 
-- **The hosted site:** https://web-production-4c692.up.railway.app, reachable from any device.
+- **The hosted site:** https://corniversity.up.railway.app, reachable from any device.
   It teaches with an Anthropic API key, or with the labelled scripted demo.
 - **Your earlier local owner installation:** on its original computer, at http://127.0.0.1:3300. It has its own
   database, separate from the hosted site and from the test stack. It is the only place you can
@@ -14,7 +14,7 @@ The hosted app and the earlier local owner installation have separate databases.
 
 ## 1. Sign in to the existing hosted owner account
 
-The existing owner is already enrolled in CHE-101, PHY-210, MAT-230, MAT-261 and CSA-210: five active enrolments verified on 12 November 2026. Open https://web-production-4c692.up.railway.app/campus and sign in with your existing credentials. No replacement account or password reset is needed. Never paste credentials into the chat.
+The existing owner is already enrolled in CHE-101, PHY-210, MAT-230, MAT-261 and CSA-210: five active enrolments verified on 12 November 2026. Open https://corniversity.up.railway.app/campus and sign in with your existing credentials. Use the new address above and sign in again: browser login cookies do not carry across hostnames. The same account and learning records remain in place. No replacement account or password reset is needed. Never paste credentials into the chat.
 
 ## 2. Retire the bootstrap code (after item 1)
 

@@ -23,6 +23,8 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
   and object storage is not available without new billing. Documented deviation from the brief's
   "object storage" preference; S3-compatible driver is a later option.
 
+The public web origin is `https://corniversity.up.railway.app`, a Railway-provided service domain routing to port 3000. Both web and worker use that origin as `BETTER_AUTH_URL`; authentication, absolute application redirects, calendar links and new companion pairing URLs derive from it. A hostname change requires both services to restart and the owner to sign in again because cookies are host-bound. Existing companion/calendar clients may retain their previously saved URL.
+
 ## Packages and boundaries
 
 | Package | Owns | Must not |

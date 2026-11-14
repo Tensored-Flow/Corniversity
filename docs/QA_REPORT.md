@@ -3,6 +3,12 @@
 Separates automated software checks, fixture tests, live-model checks, source verification and
 academic uncertainty. Nothing below is claimed until the command and result are recorded.
 
+## Current hostname verification — 14 November 2026
+
+The existing Railway service domain is `corniversity.up.railway.app`, ACTIVE on port 3000. Both existing services have `BETTER_AUTH_URL=https://corniversity.up.railway.app`. Web deployment `520dc417-6688-476a-94d0-019ee60877b4` and worker deployment `3eef63c1-2560-4035-b5cd-3824b3fe0c18` report SUCCESS. The source release and database are unchanged; this check does not repeat the course-review suites. Older URLs below describe their dated release evidence.
+
+HTTPS checks use normal certificate validation. `/api/health` returns 200 with healthy database, current migrations and current prompt assets; `/sign-in` returns 200 with its password form; anonymous `/campus` returns 307 to `/sign-in?next=%2Fcampus`; anonymous `/api/auth/get-session` returns 200/null. No owner credentials, academic records or model provider are used by these checks. A full authenticated login is not verified. Empty sign-in payload and cookieless sign-out probes do not exercise origin enforcement: BetterAuth validates the body first and skips the ordinary origin check without a Cookie header. A corrected anonymous sign-out probe with only the unrelated cookie `domain_probe=1` returns 200 for the configured origin and 403 `INVALID_ORIGIN` for `https://example.invalid`. It uses no signed session token and cannot revoke an owner session.
+
 ## Software checks
 
 All runs on 30–31 October 2026, Windows 11, local embedded PostgreSQL, fixture AI provider.
