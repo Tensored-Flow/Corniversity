@@ -5,6 +5,9 @@
 //
 //   pnpm library:live-check            five live requests
 //   pnpm library:live-check --record   re-record packages/db/src/scholarly/fixtures (about 26 requests)
+//   pnpm library:live-check --record-group <name>
+//                                      record only the requests in scripts/scholarly-record/<name>.ts,
+//                                      adding them to the manifest beside the earlier recordings
 //
 // arXiv calls are spaced 3.5 s apart (arXiv allows one request every three seconds). No email
 // address is sent unless the owner set CROSSREF_MAILTO; OPENALEX_API_KEY, when set, is sent only as
@@ -20,6 +23,7 @@ import {
   ScholarlyProviderError,
 } from "../packages/db/src/scholarly/index";
 import { RecordingTransport } from "../packages/db/src/scholarly/recording";
+import type { RecordGroup } from "./scholarly-record/types";
 
 loadRootEnv();
 const setting = (name: string) => {
@@ -32,7 +36,13 @@ if (settings.CROSSREF_MAILTO && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(settings.CROS
   process.exit(1);
 }
 const secrets = [settings.OPENALEX_API_KEY, settings.CROSSREF_MAILTO];
-const record = process.argv.includes("--record");
+const groupIndex = process.argv.indexOf("--record-group");
+const group = groupIndex > 0 ? process.argv[groupIndex + 1] : undefined;
+if (groupIndex > 0 && !(group && /^[a-z][a-z0-9-]{0,30}$/.test(group))) {
+  console.error("--record-group takes the lower-case name of a module in scripts/scholarly-record/.");
+  process.exit(1);
+}
+const record = process.argv.includes("--record") || group !== undefined;
 const ARXIV_GAP_MS = 3500;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -111,6 +121,15 @@ if (!record) {
     (w) =>
       `${quoted(w.title)}; ${w.integrityNotices.length} integrity notices (${w.integrityNotices.map((n) => `${n.type} via ${n.source}`).join(", ")}); retrieved ${w.provenance.retrievedAt}`,
   );
+} else if (group) {
+  // One stream's requests only; earlier recordings stay as they are.
+  const module = (await import(`./scholarly-record/${group}.ts`)) as { default: RecordGroup };
+  await module.default(client, { check, checkNotFound, sleep, arxivGapMs: ARXIV_GAP_MS });
+  recorder?.writeManifest(
+    `Responses recorded from the live providers by \`pnpm library:live-check --record\` and \`--record-group\` (${new Date().toISOString().slice(0, 10)}). ` +
+      "Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
+  );
+  console.log(`Recorded ${recorder?.recorded.length ?? 0} responses (group ${group}).`);
 } else {
   // OpenAlex: one filtered search page, single works (DOI, W, arXiv new and old style, a missing DOI),
   // a cited-by page, the reference and related batches of one work, the taxonomy, one subject list.
