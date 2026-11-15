@@ -1,4 +1,5 @@
 import { type AssetReport, checkAiAssets } from "@corniversity/ai/assets";
+import { getEnv } from "@corniversity/db/env";
 import { migrationStatus } from "@corniversity/db/migration-status";
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -23,7 +24,8 @@ function aiAssets() {
  * polls it) and reveals nothing but whether the database answers and carries this build's
  * migrations (the worker applies them; until then the web service is not ready), and whether the
  * prompt and scripted-response assets load (counts, role names and prompt versions only; never
- * their text or where they are stored). Never caches.
+ * their text or where they are stored), and whether scholarly providers are live or recorded
+ * fixtures (journeys refuse a stack that is not in fixture mode). Never caches.
  */
 export async function GET(): Promise<Response> {
   const startedAt = Date.now();
@@ -49,6 +51,7 @@ export async function GET(): Promise<Response> {
         database: "ok",
         migrations: "current",
         aiAssets: aiAssets(),
+        scholarlyProviders: getEnv().SCHOLARLY_PROVIDER,
         latencyMs: Date.now() - startedAt,
         at: new Date().toISOString(),
       },

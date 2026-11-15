@@ -102,8 +102,10 @@ test.describe("unauthenticated access", () => {
     expect(response.status()).toBe(200);
     const body = (await response.json()) as Record<string, unknown>;
     expect(body.ok).toBe(true);
-    expect(Object.keys(body).sort()).toEqual(["aiAssets", "at", "database", "latencyMs", "migrations", "ok"]);
+    expect(Object.keys(body).sort()).toEqual(["aiAssets", "at", "database", "latencyMs", "migrations", "ok", "scholarlyProviders"]);
     expect(body.migrations).toBe("current");
+    // Only whether scholarly providers are live or recorded fixtures; never keys or addresses.
+    expect(["live", "fixture"]).toContain(body.scholarlyProviders);
     // Prompt and scripted-response assets: a count and version names, never their text or location.
     const assets = body.aiAssets as { ok: boolean; scripted: string; prompts: Record<string, string> };
     expect(Object.keys(assets).sort()).toEqual(["ok", "prompts", "scripted"]);
