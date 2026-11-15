@@ -273,8 +273,12 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   work, OpenAlex's or Crossref's record, or an arXiv id with the reason OpenAlex did not answer),
   `openAlexRecordForWork`, `paperList` (references, cited by, related), `openAlexBrowsingRefusal`.
 - `library-collections.ts`: create, rename, describe, delete, add, remove, move up/down, reason.
-- `discover.ts`: `discoverPage(ownerId, day)`, `subjectRoom`, `surprise(ownerId, seed)`,
-  `citedByYourPapers`, built from the cache and the owner's works.
+- `discover.ts`: `discoverPage`, `subjectLists`, `subjectRoom`, `subjectSubfields`,
+  `citedByYourPapers`, `similarToRecent`, `fromYourCourses`, `surprise(n)` (seeded from the day and
+  `n`), `getDiscoverSubjects`/`setDiscoverSubjects` (the owner's subjects in `library_preference`),
+  `refreshSubjectLists` (worker), built from the cache and the owner's works.
+- `reader.ts`: `readerDocument` (the Document, its work with merges followed, identifiers, version,
+  arXiv versions, reading position and annotations; `null` for another owner's Document).
 - `library.ts` (existing): the Document transitions above; annotation kinds, anchors and
   conflict-checked edits; the reading-position rule; `listReadingNotes` searches in SQL, includes
   highlights and bookmarks, filters by kind, work, collection; `reconcileAnnotations` runs after each
@@ -282,8 +286,9 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   scholarly Documents; `requestIngestion` changes status and enqueues in one transaction.
 - `records.ts`: the export includes works with identifiers, collections with reasons, reading
   positions and annotations with kind, colour, quote and version.
-- Jobs: `scholarly-arxiv` (concurrency 1, spacing), `scholarly-refresh` (works, subject lists,
-  integrity), maintenance purge of the cache.
+- Jobs: `scholarly-arxiv` (concurrency 1, spacing), `scholarly-refresh` (works, integrity),
+  `scholarly-lists` (subject lists: daily at 05:20 UTC, and on demand from Discover at most once per
+  owner, subject and kind per hour), maintenance purge of the cache.
 
 ## 7. The reader
 

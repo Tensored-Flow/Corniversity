@@ -48,8 +48,8 @@ export function LibraryHeader({ title, lede, active, sync }: { title: string; le
   return (
     <header className="mb-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="mt-1 text-3xl text-ink">{title}</h1>
+        <div className="min-w-0">
+          <h1 className="mt-1 text-3xl text-ink [overflow-wrap:anywhere]">{title}</h1>
         </div>
         {sync ? <SyncBadge state={sync} /> : null}
       </div>

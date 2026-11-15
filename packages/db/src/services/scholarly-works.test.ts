@@ -24,7 +24,6 @@ import {
   createWorkFromUpload,
   deleteWorkCompletely,
   editWorkFields,
-  getLibrarySubjects,
   getWork,
   getWorkByIdentifier,
   importByIdentifier,
@@ -44,7 +43,6 @@ import {
   ScholarlyError,
   saveWork,
   searchMyLibrary,
-  setLibrarySubjects,
   setWorkFlags,
   unsaveWork,
   workDeletionSummary,
@@ -610,14 +608,6 @@ describe("flags, lists, search and subjects", () => {
     const owner = await freshOwner("list-item");
     const imported = await importFromOpenAlexRecord(handle.db, owner, oaRecord("W1601", { doi: "10.1234/item", title: "A listed work" }));
     expect((await getWork(handle.db, owner, imported.workId))!.work.title).toBe("A listed work");
-  });
-
-  it("subjects default to the four primary ones and keep the owner's choice in order", async () => {
-    const owner = await freshOwner("subjects");
-    expect(await getLibrarySubjects(handle.db, owner)).toEqual(["mathematics", "physics", "computer-science", "artificial-intelligence"]);
-    expect(await setLibrarySubjects(handle.db, owner, ["physics", "mathematics"])).toEqual(["mathematics", "physics"]);
-    expect(await getLibrarySubjects(handle.db, owner)).toEqual(["mathematics", "physics"]);
-    await expect(setLibrarySubjects(handle.db, owner, ["astrology"])).rejects.toThrow("Choose subjects from the list.");
   });
 });
 

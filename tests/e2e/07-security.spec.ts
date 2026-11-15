@@ -37,6 +37,17 @@ const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/director/turn", { conversationId: "00000000-0000-4000-8000-000000000000", message: "x" }],
   ["/api/discussions/turn", { discussionId: "00000000-0000-4000-8000-000000000000", message: "x" }],
   ["/api/library/ask", { assetId: "00000000-0000-4000-8000-000000000000", physicalIndex: 0, selectedText: "x", question: "y" }],
+  ["/api/library/annotations", { assetId: "00000000-0000-4000-8000-000000000000", kind: "bookmark", physicalIndex: 0 }],
+  [
+    "/api/library/position",
+    {
+      assetId: "00000000-0000-4000-8000-000000000000",
+      position: { pageIndex: 0, top: 0, left: 0, zoom: 1 },
+      changedAgoMs: 0,
+      tab: "tab-00000000",
+      seq: 1,
+    },
+  ],
   ["/api/companion/register", {}],
   ["/api/companion/status", {}],
   ["/api/companion/upload", {}],
@@ -74,6 +85,21 @@ test.describe("unauthenticated access", () => {
       expect(response.status(), path).toBe(path.startsWith("/api/calendar/") ? 404 : 401);
       const text = await response.text();
       expect(text).not.toContain("%PDF");
+    }
+  });
+  test("the annotation routes and the paper upload forms refuse anonymous requests", async ({ request, baseURL }) => {
+    for (const method of ["patch", "delete"] as const) {
+      const response = await request[method]("/api/library/annotations", { data: { id: "00000000-0000-4000-8000-000000000000" } });
+      expect(response.status(), method).toBe(401);
+    }
+    // Plain HTML forms post here: another site is refused, and this site without a session goes to sign-in.
+    const origin = new URL(baseURL ?? "http://localhost:3000").origin;
+    for (const path of ["/api/library/papers/new", "/api/library/papers/00000000-0000-4000-8000-000000000000/attach"]) {
+      const crossSite = await request.post(path, { multipart: { title: "x" }, maxRedirects: 0 });
+      expect(crossSite.status(), path).toBe(403);
+      const sameSite = await request.post(path, { multipart: { title: "x" }, headers: { origin }, maxRedirects: 0 });
+      expect(sameSite.status(), path).toBe(303);
+      expect(sameSite.headers().location ?? "", path).toContain("/sign-in");
     }
   });
   test("a forged session cookie is refused by the server itself, not only by the redirect", async ({ page, baseURL }) => {

@@ -17,7 +17,6 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { MAINTENANCE_SCHEDULES, NonRetryableError, scheduleMaintenance } from "./index";
 import { maintenanceHandler } from "./maintenance";
 import { ArxivGate, type ScholarlyHandlerContext, scholarlyArxivHandler, scholarlyRefreshHandler } from "./scholarly";
-import { makePdf } from "./test-pdf";
 
 /**
  * The worker side of the research library: arXiv requests spaced at least 3.1 s apart (a fake
@@ -203,21 +202,8 @@ describe("scholarly-arxiv jobs", () => {
     });
     const linked = await openArxivVersion(handle.db, OWNER, imported.workId, "2305.18290", 3);
     expect((await requestPrivateCopy(handle.db, OWNER, linked.id)).queued).toBe(true);
-    // The fixtures hold no PDF: in fixture mode the job reports the copy as unavailable.
-    const missing = await scholarlyArxivHandler(context(fixture, gate), {
-      idempotencyKey: `copy:${randomUUID()}`,
-      ownerId: OWNER,
-      task: "private-copy",
-      assetId: linked.id,
-    }).catch((e: unknown) => e);
-    expect(missing).toBeInstanceOf(NonRetryableError);
-    expect((missing as Error).message).toBe("No recorded provider response exists for this request (fixture mode), so it is unavailable.");
-    // A scripted PDF stands in for arXiv's bytes.
-    const client: ScholarlyClient = {
-      ...fixture,
-      arxivPdf: async () => new Uint8Array(makePdf(["Direct preference optimisation, page one."], false)),
-    };
-    const result = await scholarlyArxivHandler(context(client, gate), {
+    // In fixture mode arXiv's PDF is the fixture provider's labelled stand-in (packages/db/src/scholarly/fixture-pdf.ts).
+    const result = await scholarlyArxivHandler(context(fixture, gate), {
       idempotencyKey: `copy:${randomUUID()}`,
       ownerId: OWNER,
       task: "private-copy",

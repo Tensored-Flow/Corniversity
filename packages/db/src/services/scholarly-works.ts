@@ -2,16 +2,13 @@ import {
   arxivAbsUrl,
   arxivIdFromDoi,
   checkDrift,
-  DEFAULT_SUBJECT_SLUGS,
   type IdentifierRef,
   type IdentifierScheme,
   identifierKey,
   identifierLockKeys,
   isArxivDoi,
-  isSubjectSlug,
   linkedDocumentKey,
   normaliseIdentifier,
-  orderSubjects,
   type PermissionGrant,
   parseArxivId,
   privateCopyPermissions,
@@ -32,7 +29,6 @@ import {
   annotation,
   auditEvent,
   libraryCollectionItem,
-  libraryPreference,
   notebookEntry,
   processingPermission,
   readingProgress,
@@ -2332,24 +2328,4 @@ export async function deleteWorkCompletely(
   });
   for (const asset of result.assets) if (asset.storageKey) await blobs.delete(asset.storageKey).catch(() => undefined);
   return { documents: result.assets.length, annotations: result.removedAnnotations };
-}
-
-// ---------------------------------------------------------------------------------------------
-// The owner's subjects
-
-/** The owner's Discover subjects in display order (the four primary subjects until they choose). */
-export async function getLibrarySubjects(db: DbOrTx, ownerId: string): Promise<string[]> {
-  const [row] = await db.select().from(libraryPreference).where(eq(libraryPreference.ownerId, ownerId)).limit(1);
-  const slugs = row ? row.subjects.filter(isSubjectSlug) : [...DEFAULT_SUBJECT_SLUGS];
-  return orderSubjects(slugs).map((s) => s.slug);
-}
-
-export async function setLibrarySubjects(db: DbOrTx, ownerId: string, slugs: readonly string[]): Promise<string[]> {
-  if (slugs.some((s) => !isSubjectSlug(s))) throw new ScholarlyError("invalid_state", "Choose subjects from the list.");
-  const ordered = orderSubjects([...new Set(slugs)]).map((s) => s.slug);
-  await db
-    .insert(libraryPreference)
-    .values({ ownerId, subjects: ordered })
-    .onConflictDoUpdate({ target: libraryPreference.ownerId, set: { subjects: ordered, updatedAt: new Date() } });
-  return ordered;
 }

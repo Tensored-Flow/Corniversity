@@ -12,6 +12,17 @@ import { TEST_PORT, testDatabaseUrl } from "./port";
 export { TEST_PORT };
 export const TEST_DATABASE_URL = testDatabaseUrl();
 
+// embedded-postgres registers async-exit-hook when imported, which answers 'beforeExit' with
+// process.exit(0) and so replaced the failure code vitest leaves in process.exitCode: a run with
+// failing tests exited 0. Keep vitest's code.
+let vitestExitCode: typeof process.exitCode;
+process.on("beforeExit", () => {
+  vitestExitCode ??= process.exitCode;
+});
+process.on("exit", () => {
+  if (vitestExitCode) process.exitCode = vitestExitCode;
+});
+
 const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", `corniversity-test-pg-${TEST_PORT}`);
 
 export default async function setup(): Promise<() => Promise<void>> {

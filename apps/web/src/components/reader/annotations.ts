@@ -7,7 +7,7 @@
  * unrotated `page.view` width and height, the owner's selected text kept as the quote. The server
  * fills `engine` and `documentSha256`, which names the file the rects were measured on.
  */
-import { checkDrift } from "@corniversity/core/scholarly/anchors";
+import { checkDrift } from "@corniversity/core/scholarly/drift";
 
 export const ANNOTATION_COLORS = ["brass", "moss", "rust", "slate", "neutral"] as const;
 export type AnnotationColor = (typeof ANNOTATION_COLORS)[number];
