@@ -1,5 +1,5 @@
 {
-  "description": "Responses recorded from the live providers by `pnpm library:live-check --record` (2026-11-15). Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
+  "description": "Responses recorded from the live providers by `pnpm library:live-check --record` and `--record-group` (2026-11-15). Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
   "entries": [
     {
       "request": "GET https://api.crossref.org/works/10.1016%2Fs0140-6736(97)11096-0",
@@ -9,11 +9,32 @@
       "retrievedAt": "2026-11-15T03:13:43.597Z"
     },
     {
+      "request": "GET https://api.crossref.org/works/10.1023%2Fa%3A1026654312961",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "crossref/works_10.1023_2Fa_3A1026654312961-2bbf928497.json",
+      "retrievedAt": "2026-11-15T05:49:20.641Z"
+    },
+    {
       "request": "GET https://api.crossref.org/works/10.48550%2Farxiv.2305.18290",
       "status": 404,
       "contentType": "text/plain",
       "file": "crossref/works_10.48550_2Farxiv.2305.18290-352f3251e5.txt",
       "retrievedAt": "2026-11-15T03:13:43.803Z"
+    },
+    {
+      "request": "GET https://api.crossref.org/works/10.52202%2F075280-2338",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "crossref/works_10.52202_2F075280-2338-9be2200f37.json",
+      "retrievedAt": "2026-11-15T05:49:15.253Z"
+    },
+    {
+      "request": "GET https://api.crossref.org/works/10.7717%2Fcorniversity-no-such-work",
+      "status": 404,
+      "contentType": "text/plain",
+      "file": "crossref/works_10.7717_2Fcorniversity-no-such-work-eb42e21ff2.txt",
+      "retrievedAt": "2026-11-15T05:49:21.517Z"
     },
     {
       "request": "GET https://api.crossref.org/works/10.7717%2Fpeerj.4375",
@@ -37,11 +58,60 @@
       "retrievedAt": "2026-11-15T03:15:27.068Z"
     },
     {
+      "request": "GET https://api.openalex.org/works/W2117847125",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2117847125-92b237449a.json",
+      "retrievedAt": "2026-11-15T05:49:17.571Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2166248051",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2166248051-0a484681b1.json",
+      "retrievedAt": "2026-11-15T05:49:18.840Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2626778328",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2626778328-02cf4dd1e7.json",
+      "retrievedAt": "2026-11-15T05:49:20.994Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2741809807",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2741809807-6bede8d013.json",
+      "retrievedAt": "2026-11-15T05:49:15.461Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W4391941798",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W4391941798-67260dd48b.json",
+      "retrievedAt": "2026-11-15T05:49:14.067Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W4402753790",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W4402753790-a08e61c75f.json",
+      "retrievedAt": "2026-11-15T05:49:14.221Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works/W7133208539",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_W7133208539-3a8f8651b5.json",
       "retrievedAt": "2026-11-15T03:13:07.219Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/arxiv:1706.03762",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_arxiv_1706.03762-0a39d9fee1.json",
+      "retrievedAt": "2026-11-15T05:49:20.798Z"
     },
     {
       "request": "GET https://api.openalex.org/works/arxiv:2305.18290",
@@ -51,11 +121,32 @@
       "retrievedAt": "2026-11-15T03:13:07.361Z"
     },
     {
+      "request": "GET https://api.openalex.org/works/arxiv:2607.20049",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_arxiv_2607.20049-e3c77578b5.json",
+      "retrievedAt": "2026-11-15T05:49:21.189Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/arxiv:2611.99999",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "file": "openalex/works_arxiv_2611.99999-9af7061042.txt",
+      "retrievedAt": "2026-11-15T05:49:21.411Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works/arxiv:hep-th%2F9711200",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_arxiv_hep-th_2F9711200-cae0603234.json",
       "retrievedAt": "2026-11-15T03:13:07.512Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/doi:10.1016%2Fs0140-6736(97)11096-0",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_doi_10.1016_2Fs0140-6736_97_11096-0-5c5b302859.json",
+      "retrievedAt": "2026-11-15T05:49:17.434Z"
     },
     {
       "request": "GET https://api.openalex.org/works/doi:10.7717%2Fcorniversity-no-such-work",
@@ -72,11 +163,81 @@
       "retrievedAt": "2026-11-15T03:13:07.056Z"
     },
     {
+      "request": "GET https://api.openalex.org/works?filter=cites%3AW2117847125&page=1&per_page=50&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_cites_3AW2117847125_page_1_per_page_50_select_id_2Cdoi_2Cdisplay_na-f9bcaf6855.json",
+      "retrievedAt": "2026-11-15T05:49:18.704Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=cites%3AW2166248051&page=1&per_page=50&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_cites_3AW2166248051_page_1_per_page_50_select_id_2Cdoi_2Cdisplay_na-effda09571.json",
+      "retrievedAt": "2026-11-15T05:49:20.381Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=cites%3AW2741809807&page=1&per_page=50&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_cites_3AW2741809807_page_1_per_page_50_select_id_2Cdoi_2Cdisplay_na-41b1b5f63c.json",
+      "retrievedAt": "2026-11-15T05:49:17.220Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works?filter=cites%3AW7133208539&page=1&per_page=5&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_filter_cites_3AW7133208539_page_1_per_page_5_select_id_2Cdoi_2Cdisplay_nam-9aa583c380.json",
       "retrievedAt": "2026-11-15T03:13:07.968Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=cites%3AW7133208539&page=1&per_page=50&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_cites_3AW7133208539_page_1_per_page_50_select_id_2Cdoi_2Cdisplay_na-2ce10423ca.json",
+      "retrievedAt": "2026-11-15T05:49:14.952Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW136826894%7CW1501466444%7CW1530375446%7CW1547355309%7CW1586285643%7CW1594613125%7CW1763748250%7CW1841385761%7CW1971606033%7CW1975563732%7CW1977008578%7CW1980596762%7CW1981255177%7CW1994796114%7CW1995477676%7CW1999282340%7CW2000610068%7CW2001511269%7CW2002296425%7CW2008610740%7CW2008797769%7CW2011227093%7CW2011578505%7CW2016849204%7CW2017982600%7CW2023221968%7CW2024319665%7CW2028727458%7CW2029403139%7CW2030654484%7CW2031274161%7CW2033649663%7CW2034183153%7CW2035221514%7CW2045051157%7CW2047270818%7CW2047669004%7CW2054179381%7CW2055219144%7CW2059113498%7CW2060174253%7CW2064448358%7CW2066583090%7CW2070087540%7CW2070197840%7CW2071313683%7CW2073614231%7CW2075162597%7CW2079493130%7CW2079862888%7CW2080839711%7CW2080957087%7CW2081176120%7CW2082588464%7CW2090160745%7CW2090952309%7CW2091435645%7CW2093470965%7CW2095263597%7CW2104679918%7CW2111102093%7CW2117709364%7CW2122209056%7CW2124570425%7CW2125907559%7CW2127699314%7CW2130491267%7CW2138793297%7CW2139604313%7CW2140003285%7CW2146152858%7CW2150781355%7CW2156235575%7CW2593824906%7CW2963492768%7CW3037110019%7CW4239681002&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW136826894_7CW1501466444_7CW1530375446_7CW1547355309_7CW-c65b1dfd53.json",
+      "retrievedAt": "2026-11-15T05:49:19.452Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW1560783210%7CW1724212071%7CW1767272795%7CW1917633107%7CW1931854307%7CW1944943415%7CW1957687230%7CW1989318653%7CW2003844967%7CW2016860460%7CW2020807482%7CW2029057325%7CW2031754690%7CW2048185449%7CW2078310052%7CW2089123513%7CW2115339903%7CW2140880926%7CW2160597895%7CW2231201268%7CW2299516731%7CW2306268324%7CW2322381034%7CW2343014812%7CW2345375849%7CW2463568293%7CW2511661767%7CW2511663072%7CW2520991028%7CW2563251083%7CW2566143661%7CW2587705861%7CW2588027260%7CW2611818942%7CW2753353163%7CW2762597540%7CW2785823074%7CW2953072907%7CW2997143876%7CW3012252063%7CW3121567788%7CW4298108315%7CW4301734034%7CW6640061894%7CW6887727194%7CW6948399261&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW1560783210_7CW1724212071_7CW1767272795_7CW1917633107_7C-c90a85c7fe.json",
+      "retrievedAt": "2026-11-15T05:49:16.045Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW19804704%7CW40430408%7CW141317774%7CW1966535127%7CW1967035877%7CW1978222253%7CW1979047426%7CW1992308980%7CW1998420106%7CW1999722248%7CW2005383370%7CW2015151182%7CW2024571744%7CW2047024130%7CW2052072164%7CW2060419140%7CW2077238261%7CW2106182761%7CW2151181921%7CW2159011576%7CW2276306589%7CW3033949515%7CW4205253110%7CW4234374866%7CW6600804475&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW19804704_7CW40430408_7CW141317774_7CW1966535127_7CW1967-5888aa93ad.json",
+      "retrievedAt": "2026-11-15T05:49:17.834Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW2730456447%7CW4392024337%7CW7099415777%7CW2051944252%7CW2073957428%7CW2524779259%7CW1978736209%7CW113771487%7CW2967229155&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW2730456447_7CW4392024337_7CW7099415777_7CW2051944252_7C-336636a417.json",
+      "retrievedAt": "2026-11-15T05:49:18.146Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW2980172586%7CW2745347329%7CW7098458325%7CW2089123513%7CW6911180224%7CW2947429641%7CW4321102419%7CW1944943415%7CW6950559171&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW2980172586_7CW2745347329_7CW7098458325_7CW2089123513_7C-89a0ca539b.json",
+      "retrievedAt": "2026-11-15T05:49:16.350Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW4211049521%7CW7095711833%7CW7099321432%7CW2339544276%7CW1889142700%7CW198397528%7CW7097545271%7CW1985919107%7CW2029713934%7CW7098220006&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW4211049521_7CW7095711833_7CW7099321432_7CW2339544276_7C-4d9a735991.json",
+      "retrievedAt": "2026-11-15T05:49:19.627Z"
     },
     {
       "request": "GET https://api.openalex.org/works?filter=openalex%3AW43928053%7CW2013784666%7CW2032950725%7CW2044493620%7CW2119717200%7CW2302703641%7CW2760781482%7CW2799082722%7CW2963929190%7CW2968297680%7CW2978455699%7CW3092995464%7CW3187255235%7CW3196731672%7CW3210246763%7CW4224308101%7CW4224685053%7CW4322718191%7CW4360836968%7CW6969036009&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
@@ -93,6 +254,13 @@
       "retrievedAt": "2026-11-15T03:13:08.350Z"
     },
     {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17%2Cpublication_year%3A2023-2024%2Copen_access.is_oa%3Atrue&page=1&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A17_2Cpublication_year_3A2023-2024_2Copen_a-0af323ec47.json",
+      "retrievedAt": "2026-11-15T05:49:13.808Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17&page=1&per_page=5&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
       "status": 200,
       "contentType": "application/json",
@@ -105,6 +273,20 @@
       "contentType": "application/json",
       "file": "openalex/works_filter_primary_topic.field.id_3A26_page_1_per_page_5_select_id_2Cdoi_2Cdis-b083fc7ade.json",
       "retrievedAt": "2026-11-15T03:13:09.111Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?page=1&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_page_1_per_page_25_search_direct_preference_optimization_select_id_2Cdoi_2-8e914ab05b.json",
+      "retrievedAt": "2026-11-15T05:49:12.321Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?page=2&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_page_2_per_page_25_search_direct_preference_optimization_select_id_2Cdoi_2-ddb87f3859.json",
+      "retrievedAt": "2026-11-15T05:49:13.096Z"
     },
     {
       "request": "GET https://export.arxiv.org/api/query?id_list=1706.03762&max_results=1",

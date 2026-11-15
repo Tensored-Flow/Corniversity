@@ -4,6 +4,7 @@ export * from "./cache-pg";
 export * from "./client";
 export * from "./crossref";
 export * from "./errors";
+export * from "./fixture-pdf";
 export * from "./fixture-transport";
 export * from "./openalex";
 export * from "./records";

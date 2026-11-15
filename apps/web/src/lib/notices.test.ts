@@ -49,6 +49,13 @@ describe("error notices", () => {
     );
   });
 
+  it("maps the upload refusals a paper's file can meet, including the size message with its numbers", () => {
+    expect(errorCode("The file does not start with a PDF signature; it was not stored.")).toBe("upload-not-pdf-signature");
+    expect(errorCode("A paper's file must be a PDF; nothing was stored.")).toBe("paper-file-pdf-only");
+    expect(errorCode("The file is 250.0 MB; the limit is 200 MB.")).toBe("attach-too-large");
+    expect(errorCode("The file is empty.")).toBe("file-empty");
+  });
+
   it("builds redirect targets that carry only the code", () => {
     expect(errorHref("/settings", "unknown-run", "#provider")).toBe("/settings?error=unknown-run#provider");
     expect(errorHref("/library/read/x?page=2", "write-note-before-saving")).toBe("/library/read/x?page=2&error=write-note-before-saving");
@@ -59,11 +66,13 @@ describe("error notices", () => {
     const files = readdirSync(root).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts"));
     const listed = new Set<string>(Object.values(ERROR_NOTICES));
     const missing: string[] = [];
-    const throwSite = /new (\w+Error)\(([^;]*?)\)\s*;/gs;
+    // Arguments may hold string literals with semicolons ("…; it was not stored."), so a literal
+    // is skipped whole rather than ending the throw site at its semicolon.
+    const throwSite = /new (\w+Error)\(((?:"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`|[^;"`])*?)\)\s*;/gs;
     const literal = /"((?:[^"\\]|\\.)*)"/g;
     // The research library's services also keep refusal sentences in upper-case constants.
     const messageConstant = /const [A-Z][A-Z0-9_]*\s*=\s*"((?:[^"\\]|\\.)*)"\s*;/g;
-    const constantFiles = new Set(["library.ts", "scholarly-works.ts", "library-collections.ts"]);
+    const constantFiles = new Set(["library.ts", "scholarly-works.ts", "library-collections.ts", "paper-lists.ts"]);
     for (const file of files) {
       const source = readFileSync(join(root, file), "utf8");
       for (const site of source.matchAll(throwSite)) {
@@ -81,6 +90,31 @@ describe("error notices", () => {
         if (text.includes(" ") && /[.]$/.test(text) && !listed.has(text)) missing.push(`${file}: ${text}`);
       }
     }
+    expect(missing).toEqual([]);
+  });
+
+  it("lists every sentence the paper pages' actions and upload routes send through errorCode", () => {
+    const web = resolve(__dirname, "..");
+    const files = [
+      "app/(app)/library/papers/[workId]/actions.ts",
+      "components/scholarly/save-action.ts",
+      "app/api/library/papers/[workId]/attach/route.ts",
+      "app/api/library/papers/new/route.ts",
+    ];
+    const listed = new Set<string>(Object.values(ERROR_NOTICES));
+    const missing: string[] = [];
+    // errorCode("…"), fail("…") and errorTo(path, "…") carry a sentence; every one must be listed.
+    const site = /(?:(?:errorCode|fail)\(|errorTo\([^,]+,)\s*"((?:[^"\\]|\\.)*)"/g;
+    let found = 0;
+    for (const file of files) {
+      const source = readFileSync(join(web, file), "utf8");
+      for (const m of source.matchAll(site)) {
+        found++;
+        const text = JSON.parse(`"${m[1]}"`) as string;
+        if (!listed.has(text)) missing.push(`${file}: ${text}`);
+      }
+    }
+    expect(found).toBeGreaterThan(5);
     expect(missing).toEqual([]);
   });
 });

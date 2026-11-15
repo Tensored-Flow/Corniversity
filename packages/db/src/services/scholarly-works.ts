@@ -1056,6 +1056,16 @@ export interface WorkDetail {
   integrityNotices: IntegrityNotice[];
   /** The latest arXiv job for this work (the paper page says *Fetching the arXiv record* while it runs). */
   arxivJob: { status: string; error: string | null; createdAt: Date } | null;
+  /** The latest private-copy and extraction job of each live Document (the page refreshes while one runs). */
+  documentJobs: DocumentJob[];
+}
+
+export interface DocumentJob {
+  assetId: string;
+  kind: "private_copy" | "extraction";
+  status: string;
+  error: string | null;
+  createdAt: Date;
 }
 
 /**
@@ -1114,7 +1124,77 @@ export async function getWork(db: DbOrTx, ownerId: string, workId: string): Prom
       permissions: await getPermissions(db, ownerId, asset.id),
     });
   }
-  return { work, identifiers, versions, documents, integrityNotices: work.integrityNotices, arxivJob: job[0] ?? null };
+  const jobs = assets.length
+    ? await db
+        .select({
+          assetId: sql<string>`${jobRecord.payload}->>'assetId'`,
+          queue: jobRecord.queue,
+          task: sql<string | null>`${jobRecord.payload}->>'task'`,
+          status: jobRecord.status,
+          error: jobRecord.error,
+          createdAt: jobRecord.createdAt,
+        })
+        .from(jobRecord)
+        .where(
+          and(
+            eq(jobRecord.ownerId, ownerId),
+            inArray(jobRecord.queue, [QUEUES.scholarlyArxiv, QUEUES.ingestAsset]),
+            sql`${jobRecord.payload}->>'assetId' in (${sql.join(
+              assets.map((a) => sql`${a.id}`),
+              sql`, `,
+            )})`,
+          ),
+        )
+        .orderBy(desc(jobRecord.createdAt))
+    : [];
+  const documentJobs: DocumentJob[] = [];
+  for (const j of jobs) {
+    const kind = j.queue === QUEUES.ingestAsset ? "extraction" : j.task === "private-copy" ? "private_copy" : null;
+    if (!kind || documentJobs.some((d) => d.assetId === j.assetId && d.kind === kind)) continue;
+    documentJobs.push({ assetId: j.assetId, kind, status: j.status, error: j.error, createdAt: j.createdAt });
+  }
+  return { work, identifiers, versions, documents, integrityNotices: work.integrityNotices, arxivJob: job[0] ?? null, documentJobs };
+}
+
+/**
+ * What *Delete this paper and its notes* would remove for this exact id (merges are not followed,
+ * as in `deleteWorkCompletely`): the Documents (and how many hold stored bytes), their annotations,
+ * and the paper notes that stay in the notebook without the link. Null for another owner's id.
+ */
+export async function workDeletionSummary(
+  db: DbOrTx,
+  ownerId: string,
+  workId: string,
+): Promise<{ documents: number; storedCopies: number; annotations: number; notebookEntries: number; collections: number } | null> {
+  if (!isUuid(workId)) return null;
+  const [work] = await db
+    .select({ id: scholarlyWork.id })
+    .from(scholarlyWork)
+    .where(and(eq(scholarlyWork.id, workId), eq(scholarlyWork.ownerId, ownerId)))
+    .limit(1);
+  if (!work) return null;
+  const rows = await db.execute(sql`
+    with works as (
+      select id from scholarly_work where owner_id = ${ownerId} and (id = ${work.id} or merged_into_id = ${work.id})
+    ), docs as (
+      select a.id, a.storage_key from resource_asset a
+      join scholarly_version v on v.id = a.scholarly_version_id and v.owner_id = a.owner_id
+      where a.owner_id = ${ownerId} and v.work_id in (select id from works)
+    )
+    select
+      (select count(*)::int from docs) as documents,
+      (select count(*)::int from docs where storage_key is not null) as stored,
+      (select count(*)::int from annotation where owner_id = ${ownerId} and asset_id in (select id from docs)) as annotations,
+      (select count(*)::int from notebook_entry where owner_id = ${ownerId} and scholarly_work_id in (select id from works)) as notes,
+      (select count(*)::int from library_collection_item where owner_id = ${ownerId} and work_id in (select id from works)) as collections`);
+  const r = rows.rows[0] as { documents: number; stored: number; annotations: number; notes: number; collections: number };
+  return {
+    documents: r.documents,
+    storedCopies: r.stored,
+    annotations: r.annotations,
+    notebookEntries: r.notes,
+    collections: r.collections,
+  };
 }
 
 export type WorkListView = "saved" | "read_later" | "favourites" | "read" | "recent";
@@ -1173,16 +1253,36 @@ export async function listWorks(
   return rows.map((work) => ({ work, lastOpenedAt: null }));
 }
 
-/** Full-text search over the owner's works (title, abstract, author names), best match first. */
+/** Filters for a search of the owner's own works (each as reported on the work). */
+export interface LibrarySearchFilters {
+  yearFrom?: number;
+  yearTo?: number;
+  /** The work type as reported (`article`, `preprint` …). */
+  type?: string;
+  /** An OpenAlex field or subfield id among the work's subjects (as classified by OpenAlex). */
+  fieldId?: string;
+  subfieldId?: string;
+}
+
+/**
+ * Full-text search over the owner's works (title, abstract, author names), best match first, with
+ * optional filters on the year, the type and the OpenAlex field or subfield, and offset paging.
+ */
 export async function searchMyLibrary(
   db: DbOrTx,
   ownerId: string,
   query: string,
-  options: { limit?: number } = {},
+  options: { limit?: number; offset?: number } & LibrarySearchFilters = {},
 ): Promise<{ work: WorkRow; rank: number }[]> {
   const q = query.trim().slice(0, 300);
   if (!q) return [];
   const limit = Math.min(Math.max(Math.trunc(options.limit ?? 25), 1), 100);
+  const offset = Math.min(Math.max(Math.trunc(options.offset ?? 0), 0), 10_000);
+  const year = (n: number | undefined) => (n !== undefined && Number.isInteger(n) ? n : undefined);
+  const from = year(options.yearFrom);
+  const to = year(options.yearTo);
+  const subject = (id: string | undefined, level: "field" | "subfield") =>
+    id !== undefined && /^\d{1,6}$/.test(id) ? sql`${scholarlyWork.subjects} @> ${JSON.stringify([{ id, level }])}::jsonb` : undefined;
   const rank = sql<number>`ts_rank(${scholarlyWork.tsv}, websearch_to_tsquery('english', ${q}))`;
   const rows = await db
     .select({ work: scholarlyWork, rank })
@@ -1192,10 +1292,16 @@ export async function searchMyLibrary(
         eq(scholarlyWork.ownerId, ownerId),
         isNull(scholarlyWork.mergedIntoId),
         sql`${scholarlyWork.tsv} @@ websearch_to_tsquery('english', ${q})`,
+        from !== undefined ? sql`${scholarlyWork.publicationYear} >= ${from}` : undefined,
+        to !== undefined ? sql`${scholarlyWork.publicationYear} <= ${to}` : undefined,
+        options.type ? eq(scholarlyWork.workType, options.type.slice(0, 100)) : undefined,
+        subject(options.fieldId, "field"),
+        subject(options.subfieldId, "subfield"),
       ),
     )
-    .orderBy(desc(rank), desc(scholarlyWork.savedAt))
-    .limit(limit);
+    .orderBy(desc(rank), desc(scholarlyWork.savedAt), desc(scholarlyWork.id))
+    .limit(limit)
+    .offset(offset);
   return rows.map((r) => ({ work: r.work, rank: Number(r.rank) }));
 }
 
@@ -1556,6 +1662,19 @@ async function attachRuleFor(db: DbOrTx, ownerId: string, workId: string, existi
 }
 
 const VERSION_HAS_FILE = "This version already has a stored file in your library. Remove that copy first if this file should replace it.";
+const PAPER_FILE_PDF_ONLY = "A paper's file must be a PDF; nothing was stored.";
+
+/**
+ * A paper's file is a PDF (the reader opens PDFs; the Files list takes Markdown and plain text):
+ * anything not named or typed as one is refused before validation, which then checks the signature.
+ */
+function requirePdfUpload(input: { data: Buffer; mediaType: string; filename: string; maxBytes: number }): void {
+  const type = input.mediaType.split(";")[0]?.trim().toLowerCase() ?? "";
+  if (!input.filename.toLowerCase().endsWith(".pdf") && type !== "application/pdf")
+    throw new ScholarlyError("refused", PAPER_FILE_PDF_ONLY);
+  const { mediaType } = validateUpload(input.data, input.mediaType, input.filename, input.maxBytes);
+  if (mediaType !== "application/pdf") throw new ScholarlyError("refused", PAPER_FILE_PDF_ONLY);
+}
 
 async function createOwnerCopyVersion(tx: DbOrTx, ownerId: string, workId: string): Promise<string> {
   const [row] = await tx
@@ -1611,7 +1730,7 @@ async function attachBytes(
     maxBytes: number;
   },
 ): Promise<{ asset: AssetRow; outcome: "stored" | "promoted" | "adopted" | "reused" | "revived" }> {
-  validateUpload(input.data, input.mediaType, input.filename, input.maxBytes);
+  requirePdfUpload(input);
   const hash = sha256(input.data);
   const [existing] = await db
     .select()
@@ -1734,7 +1853,7 @@ export async function createWorkFromUpload(
   blobs: BlobStore,
   input: { ownerId: string; filename: string; mediaType: string; data: Buffer; maxBytes: number; title?: string },
 ): Promise<{ workId: string; asset: AssetRow; outcome: "stored" | "adopted" | "revived" }> {
-  validateUpload(input.data, input.mediaType, input.filename, input.maxBytes);
+  requirePdfUpload(input);
   const hash = sha256(input.data);
   const [existing] = await db
     .select()
@@ -2081,6 +2200,21 @@ export async function refreshIntegrity(
   const notices = mergeNotices(work.integrityNotices, incoming, ["crossref", "retraction-watch"], new Set(dois));
   await db.update(scholarlyWork).set({ integrityNotices: notices, integrityCheckedAt: new Date() }).where(eq(scholarlyWork.id, work.id));
   return { checked: dois, notices: incoming.length };
+}
+
+/**
+ * After a save: queues the Crossref check for corrections and retractions when the work has a
+ * Crossref-registered DOI (not an arXiv DataCite DOI) and its notices were never checked.
+ */
+export async function requestIntegrityCheckIfDue(db: DbOrTx, ownerId: string, workId: string): Promise<{ queued: boolean }> {
+  const work = await requireWork(db, ownerId, workId);
+  if (work.integrityCheckedAt) return { queued: false };
+  const dois = await db
+    .select({ value: scholarlyIdentifier.value })
+    .from(scholarlyIdentifier)
+    .where(and(eq(scholarlyIdentifier.ownerId, ownerId), eq(scholarlyIdentifier.workId, work.id), eq(scholarlyIdentifier.scheme, "doi")));
+  if (!dois.some((d) => !isArxivDoi(d.value))) return { queued: false };
+  return requestWorkRefresh(db, ownerId, work.id, "integrity");
 }
 
 /** Queues a refresh of a work (and its integrity notices) for the worker. */

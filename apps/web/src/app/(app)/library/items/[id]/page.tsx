@@ -6,6 +6,7 @@ import { workIdForDocument } from "@corniversity/db/services/scholarly-works";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -242,7 +243,9 @@ export default async function ItemPage({
                 {asset.status === "processed" ? "Re-extract and re-index" : "Extract and index"}
               </Button>
             </form>
-            {asset.status === "processed" ? <LinkButton href={`/library/read/${asset.id}`}>Open in the reading room</LinkButton> : null}
+            {pageViewAvailable(asset) || textViewAvailable(asset) ? (
+              <LinkButton href={`/library/read/${asset.id}`}>Open in the reading room</LinkButton>
+            ) : null}
           </div>
           {processBlocker ? <p className="mt-2 text-xs text-ink-3">{processBlocker}</p> : null}
           {asset.status === "processed" ? (

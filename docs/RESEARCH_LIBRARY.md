@@ -33,11 +33,12 @@ Everything stays under `/library`. Main navigation is unchanged.
 | Route | Screen |
 |---|---|
 | `/library` | **Library home**, database only: find box, *Continue reading* (≤ 3), saved papers (all · read later · favourites · read), shelves and trails, and the existing **Files** list with its current markup, links, sync badge and `?deleted` notice (Upload, Desktop sync and Jobs are links in the Files header). h1 stays "Library" |
-| `/library/find` | **Find papers**: one box (DOI, DOI inside any URL, arXiv id or URL, OpenAlex id or URL, or words), scope *All papers* / *My library*, filters, exact identifier match first; PDF upload link |
+| `/library/find` | **Find papers**: one box (DOI, DOI inside any URL, arXiv id or URL, OpenAlex id or URL, or words; identifiers are parsed out of links as text, nothing is fetched). An exact identifier opens the paper page when the owner has the paper, else its preview. Words search OpenAlex (*All papers*, 25 a page, pages up to OpenAlex's 10,000 results) or the owner's works (*My library*); filters: published from/to (year), type, field (the subjects of §4), free to read (All papers only). Rows: title, first authors, year, venue, type, *cited by N according to OpenAlex*, *Free to read according to OpenAlex*, *In your library* (`ownerWorkIndex`; a paper the owner removed from the library says *Not in your saved papers* and offers Save again), Save (returns to the same page). A page past the last says so and links back; a link with no identifier and no words says that, and nothing is searched. Provider failures say what happened (fixture recording missing, unavailable, allowance used up with its reset time), never "no results"; in production without `OPENALEX_API_KEY` word search says *OpenAlex browsing needs an API key on this server*. Links to *Add a paper without an identifier* and to Upload |
+| `/library/papers/new` | a PDF becomes a new, unidentified paper (`createWorkFromUpload`, optional title, nothing read from the file; other files are refused); the form posts to `/api/library/papers/new` |
 | `/library/discover` | **Discover**: your subjects, per subject *New on arXiv*, *Reviews and surveys*, *Most cited*, *Earlier work*; *Cited by 2 or more of your papers*; *Similar to …* ; *From your courses*; *Surprise me* |
 | `/library/subjects/[slug]` | subject room: subfields and the same three or four lists |
-| `/library/works/[scheme]/[value]` | preview of a paper not in the library (`scheme` = doi, arxiv, openalex); redirects to the paper page when the owner has it |
-| `/library/papers/[workId]` | paper page (same `PaperView` component as the preview) |
+| `/library/works/[scheme]/[...value]` | preview of a paper not in the library (`scheme` = doi, arxiv, openalex; the value may contain slashes); redirects to the paper page when the owner has it by this or any identifier the provider reports. Otherwise OpenAlex's record (through the provider cache), or Crossref's for a DOI OpenAlex lacks, in `PaperView` with *Save to library* (import, save, queue the Crossref integrity check for a publisher DOI, open the paper page). An arXiv id OpenAlex did not answer for says why and still offers Save, which creates the work and queues its arXiv record. A DOI neither provider knows says so |
+| `/library/papers/[workId]` | paper page (same `PaperView` component as the preview; a merged tombstone redirects to its survivor): integrity notices first; title line, authors, date with its precision, venue, type, abstract with its source, identifiers with source and retrieval date, OpenAlex's subjects; *Fixture data* where provenance is fixture. *Read*: an arXiv version (server action `openArxivVersion`, then `/library/read/<assetId>`), a stored file (a stored copy of the latest version replaces its arXiv Read), or for a DOI-only paper the best free-to-read location OpenAlex reports (host and version named) and the publisher's page through doi.org (new tab, `noopener noreferrer`). Flags (favourite, read later, have read), *Remove from library*, *Notes for this paper* (`/notebook?library=1&work=<id>`). Versions: date, licence as arXiv reported it for that version (or *No licence reported by arXiv for this version*), *Withdrawn on arXiv*, *Read vN*, *Keep a private copy of vN* only where `storageDecision` allows (`requestPrivateCopy`); *Fetching the arXiv record* with automatic refresh while the job runs. Files: stored copies with status, permissions (per action, with basis), extraction, removal (each form acts only on this paper's stored files); *Attach your copy* posts to `/api/library/papers/[workId]/attach` (`attachUploadToWork`, PDFs only; refusals shown with a link to the paper a file belongs to). Shelves and trails (add with an optional reason, create and add, remove). References, cited by and related (streamed; about 10, *Show more* up to 50; what OpenAlex counted, how many records it returned, and how many are listed; related labelled similarity, not citation). Without JavaScript a streamed part's placeholder links to the page rendered whole (`?full=1`). Possible duplicates with an owner-confirmed merge. *Edit details* (only changed fields become owner edits). *Delete this paper and its notes* behind a confirmation step listing what goes (`workDeletionSummary`); a merged id is refused and opens the survivor |
 | `/library/read/[assetId]` | the reader, in its own route group `(reader)` with a full-height layout |
 | `/library/shelves`, `/library/trails`, `/library/shelves/[id]`, `/library/trails/[id]` | collections (one table, two kinds) |
 | `/notebook?library=1&work=<id>&kind=…` | every library note: highlights, page and area notes, bookmarks, paper notes |
@@ -207,11 +208,26 @@ other 4xx, zod-validated responses, errors with URLs and keys redacted.
 
 `SCHOLARLY_PROVIDER=live|fixture` (default `live`). `fixture` is an in-process provider reading
 recorded responses from `packages/db/src/scholarly/fixtures/` (captured once by an opt-in live
-script, whose run is recorded as live). Records created in fixture mode carry source `fixture` and are
-visibly labelled *Fixture data*. Production and `pnpm local:owner` refuse `fixture`; the journeys
-refuse a stack that is not in fixture mode (and report it through `/api/health`). Journeys answer the
-browser's `https://arxiv.org/pdf/**` requests with Playwright route interception, so the tested
-build has exactly the production CSP.
+script, whose run is recorded as live; each stream records only its own requests with
+`--record-group`, never re-recording existing ones). Records created in fixture mode carry source
+`fixture` and are visibly labelled *Fixture data*. A request with no recording is reported as
+unavailable in fixture mode, never as "no results". No PDF is recorded: in fixture mode a request for
+an arXiv version's PDF is answered with a generated, deterministic stand-in whose own text says it is
+a fixture stand-in for arXiv:{id}v{n} and not arXiv's file, so private copies can be tested. Production
+and `pnpm local:owner` refuse `fixture`; the journeys refuse a stack that is not in fixture mode (and
+report it through `/api/health`). Journeys answer the browser's `https://arxiv.org/pdf/**` requests
+with Playwright route interception, so the tested build has exactly the production CSP.
+
+Find papers, the preview and the paper page read OpenAlex (and Crossref for a DOI OpenAlex lacks)
+in the request through the provider cache; the paper page streams its OpenAlex parts (open
+locations, references, cited by, related), so it renders from the database first; `?full=1` renders
+them in the page instead, for browsers without JavaScript. Find pages are
+25 results; cited-by lists ask OpenAlex for the 50 most cited citing works; reference and related
+lists are one batch of up to 100 ids, shown in OpenAlex's order. In production without
+`OPENALEX_API_KEY`, word searches and these lists (metered) are not requested and say *OpenAlex
+browsing needs an API key on this server*; single lookups by identifier still run. A Save queues the
+Crossref integrity check (`scholarly-refresh`, task `integrity`) when the work has a publisher DOI
+that was never checked.
 
 Cache lifetimes: taxonomy 30 days; works, references, cited-by and related 7 days; search pages and
 subject lists 24 hours (stale lists are shown with their date and refreshed in the background);
@@ -238,17 +254,24 @@ parameter so tests use fixtures. Every service has a test that another owner's i
 - `scholarly-works.ts`: `resolveInput`, `importByIdentifier`, `importFromOpenAlexRecord`,
   `applyArxivRecord` (worker), `saveWork`, `unsaveWork`, `setWorkFlags`, `editWorkFields` (records
   `owner_edited_fields`), `getWork` (work, identifiers, versions, Documents with permissions,
-  integrity notices), `getWorkByIdentifier`, `ownerWorkIndex` (every identifier → work id, used for
-  every "in your library" marker), `listWorks(view)`, `searchMyLibrary`, `openArxivVersion`
+  integrity notices, the latest arXiv job, and each Document's latest private-copy and extraction
+  job), `getWorkByIdentifier`, `ownerWorkIndex` (every identifier → work id, used for
+  every "in your library" marker), `listWorks(view)`, `searchMyLibrary` (filters: year from/to,
+  type, OpenAlex field or subfield among the work's subjects; offset paging), `workDeletionSummary`
+  (what deletion would remove, for the confirmation step), `requestIntegrityCheckIfDue` (after a
+  save), `openArxivVersion`
   (creates or reuses the linked Document; refuses withdrawn versions), `recordObservedHash`,
   `acceptNewFile` (drift: owner accepts the new observed hash when page geometry matches),
   `keepPrivateCopy` (worker fetch of an open-licence arXiv PDF, promotion in place),
-  `attachUploadToWork`, `createWorkFromUpload` (unidentified), `possibleDuplicates`, `mergeWorks`
+  `attachUploadToWork` and `createWorkFromUpload` (unidentified; both take PDFs only), `possibleDuplicates`, `mergeWorks`
   (owner-initiated; `SELECT … FOR UPDATE` both works; collection items `ON CONFLICT DO NOTHING`;
   trail steps, versions, Documents and notebook links re-pointed; flags combined (earliest
   `saved_at`, OR of favourite and read later, latest `read_at`); A's owner edits win; B becomes a
   tombstone; the full mapping goes to `audit_event`), `refreshWork`, `refreshIntegrity`,
-  `deleteWorkCompletely`.
+  `deleteWorkCompletely`. Beside it, `paper-lists.ts` reads providers for the pages and writes
+  nothing: `searchPapers` (Find's OpenAlex page with filters and markers; a marker says whether the owner's work is saved), `previewPaper` (the owner's
+  work, OpenAlex's or Crossref's record, or an arXiv id with the reason OpenAlex did not answer),
+  `openAlexRecordForWork`, `paperList` (references, cited by, related), `openAlexBrowsingRefusal`.
 - `library-collections.ts`: create, rename, describe, delete, add, remove, move up/down, reason.
 - `discover.ts`: `discoverPage(ownerId, day)`, `subjectRoom`, `surprise(ownerId, seed)`,
   `citedByYourPapers`, built from the cache and the owner's works.
@@ -360,7 +383,8 @@ Checks: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:integration`, `pn
 | arXiv PDFs are read by the owner's browser from arxiv.org (`linked_remote`); nothing is stored or served | arXiv's terms allow retrieval for personal use and ask services to direct users to arXiv rather than store and serve; most papers in the owner's subjects carry arXiv's non-exclusive licence; arXiv sends `Access-Control-Allow-Origin: *`. The owner may instead choose private copies of non-exclusive papers for personal use (USER_ACTIONS) |
 | A linked Document is identified by its arXiv version, not by a hash | arXiv's ETag is not the hash of the served bytes and arXiv regenerates PDFs from source; the browser's hash only detects change |
 | Private copies only for open licences reported by arXiv OAI-PMH for that exact version | licences and host terms decide storage per version; provider-reported licences elsewhere are display-only |
-| DOI-only papers: *Read* opens the best open location (host and version named) or the publisher page; *Attach your copy* on the paper page makes it readable at once | the common case outside arXiv fields, without an unrestricted fetcher |
+| DOI-only papers: *Read* opens the best free-to-read location OpenAlex reports (host and version named) and the publisher's page through doi.org for the DOI OpenAlex names as the work's own (the only publisher DOI when OpenAlex cannot be asked; repository DOIs stay under Identifiers); *Attach your copy* on the paper page makes it readable at once | the common case outside arXiv fields, without an unrestricted fetcher |
+| Paper uploads (*Attach your copy*, *Add a paper without an identifier*) are plain multipart forms posting to `/api/library/papers/…`, which answer with 303 redirects and refuse requests from other sites | they work without JavaScript, avoid the 1 MB server-action limit, and stay outside the proxy, which buffers request bodies only up to 10 MB on the `/library` paths it matches |
 | No URL is ever fetched from user input | identifiers are parsed out of URLs; no SSRF surface |
 | Only the worker calls arXiv, one request at a time | arXiv's rate rule applies across all processes |
 | Owner-scoped works with composite foreign keys | single-owner institution with a labelled demo learner; cross-owner links impossible |

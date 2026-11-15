@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { UNPDF_PINNED_OPTIONS } from "@corniversity/core/pdf/unpdf";
 import { storageDecision } from "@corniversity/core/scholarly/index";
+import { extractText, getDocumentProxy } from "unpdf";
 import { describe, expect, it } from "vitest";
 import { ARXIV_MIN_SPACING_MS, arxivCategoryQuery, getArxivEntries, getArxivPdf, parseArxivRaw } from "./arxiv";
 import { createScholarlyClient } from "./client";
@@ -227,8 +229,27 @@ describe("arXiv PDFs and spacing", () => {
     await expect(getArxivPdf(transport, "../../etc", 1, 1000)).rejects.toMatchObject({ code: "invalid_identifier" });
   });
 
-  it("has no recorded PDFs in fixture mode, and exposes arXiv's minimum spacing for the worker queue", async () => {
-    await expect(client.arxivPdf("2305.18290", 3, 1000)).rejects.toMatchObject({ code: "fixture_missing" });
+  it("answers an arXiv PDF in fixture mode with a generated stand-in whose own text says what it is", async () => {
+    const bytes = await client.arxivPdf("2305.18290", 3, 1_000_000);
+    expect(new TextDecoder().decode(bytes.subarray(0, 5))).toBe("%PDF-");
+    // Byte for byte the same each time, and different for another version.
+    expect(Buffer.from(await client.arxivPdf("2305.18290", 3, 1_000_000)).equals(Buffer.from(bytes))).toBe(true);
+    expect(Buffer.from(await client.arxivPdf("2305.18290", 2, 1_000_000)).equals(Buffer.from(bytes))).toBe(false);
+    // The text a reader or the extractor sees names the exact version and disowns being arXiv's file.
+    const pdf = await getDocumentProxy(new Uint8Array(bytes), UNPDF_PINNED_OPTIONS);
+    const { text } = await extractText(pdf, { mergePages: true });
+    expect(text).toContain("Fixture stand-in for arXiv:2305.18290v3");
+    expect(text).toContain("This is not arXiv's file.");
+    expect(text).toContain("It contains no text of the paper.");
+    const old = await getDocumentProxy(new Uint8Array(await client.arxivPdf("hep-th/9711200", 3, 1_000_000)), UNPDF_PINNED_OPTIONS);
+    expect((await extractText(old, { mergePages: true })).text).toContain("Fixture stand-in for arXiv:hep-th/9711200v3");
+    // The size cap still applies, and only a versioned arXiv id is answered.
+    await expect(client.arxivPdf("2305.18290", 3, 100)).rejects.toMatchObject({ code: "too_large" });
+    await expect(
+      new FixtureTransport(dir).getPdf({ provider: "arxiv", host: "export.arxiv.org", path: "/pdf/2305.18290", maxBytes: 1e6 }),
+    ).rejects.toMatchObject({
+      code: "invalid_identifier",
+    });
     expect(ARXIV_MIN_SPACING_MS).toBe(3100);
   });
 });

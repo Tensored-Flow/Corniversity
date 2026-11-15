@@ -313,6 +313,38 @@ export const ERROR_NOTICES = {
   "copy-licence-nc-nd":
     "This licence carries non-commercial or no-derivatives terms; Corniversity keeps private copies only under CC BY, CC BY-SA, CC0 or public domain.",
   "copy-licence-not-open": "This licence is not one Corniversity recognises as open, so the version stays reference-only.",
+  // paper-lists.ts (Find papers, the preview, the paper page's lists)
+  "openalex-browsing-needs-key": "OpenAlex browsing needs an API key on this server.",
+  "find-type-words": "Type words to search for.",
+  "find-page-limit": "OpenAlex pages stop at 10,000 results.",
+  "find-years-invalid": "Give the years as whole numbers between 1000 and 2100, the first no later than the second.",
+  "find-type-unknown": "Choose a type from the list.",
+  "find-field-unknown": "Choose a field from the list.",
+  "doi-unknown-everywhere": "Neither OpenAlex nor Crossref has a record of this DOI.",
+  // web-papers (paper page, attaching a file, adding a paper without an identifier)
+  "attach-choose-file": "Choose a PDF file to attach.",
+  "attach-too-large": "The file is larger than this server's upload limit.",
+  "paper-file-pdf-only": "A paper's file must be a PDF; nothing was stored.",
+  "upload-not-pdf-signature": "The file does not start with a PDF signature; it was not stored.",
+  // Service sentences with a semicolon, which the notices test's scan used to skip.
+  "community-two-classmates-most": "A discussion takes at most two classmates, so that it stays a conversation you lead; choose two.",
+  "proposal-existing-department": "Choose one of the existing departments; a proposal does not create a department.",
+  "proposal-changed-while-publishing": "The proposal changed while it was being published; open it again.",
+  "attempt-already-accepted": "This attempt has already been accepted; start a new one.",
+  "attempt-has-work-finish-first": "This attempt already has work in it; finish or submit it before starting another.",
+  "prediction-cannot-be-changed": "A saved prediction is a dated record and cannot be changed; write a new note, or predict again.",
+  "prediction-laboratory-only": "Only a laboratory saves predictions; an existing note cannot be tagged as one.",
+  "paper-work-attempt-accepted": "This attempt has been accepted; start a new attempt to add pages.",
+  "paper-work-confirm-transcription": "Confirm the transcription before submitting; the review reads it, not the photograph.",
+  "paper-work-transcription-reads-photographs":
+    "Model transcription reads photographs; attach images of the pages, or transcribe a PDF yourself.",
+  "unit-already-prepared": "This unit is already prepared; a draft only fills an outlined unit.",
+  "settlement-above-worst-case":
+    "That is more than this run's worst case, which should not be possible. Nothing was changed; please report it, since the bound would need correcting.",
+  "shelf-verified-sources-only": "Only verified source records can go on the shelf; add other titles as leads.",
+  "tick-box-remove-file": "Tick the box to remove this file.",
+  "tick-box-merge-papers": "Tick the box to merge these papers.",
+  "tick-box-delete-paper": "Tick the box to delete this paper and its notes.",
   // library-collections.ts (shelves and trails)
   "collection-give-name": "Give it a name.",
   "collection-name-length": "Keep the name under 120 characters.",
@@ -338,6 +370,8 @@ const PREFIX_CODES: readonly (readonly [string, ErrorCode])[] = [
 /** Middle words of messages that open with a detail (a licence name), and the code each maps to. */
 const CONTAINED_CODES: readonly (readonly [string, ErrorCode])[] = [
   [" carries non-commercial or no-derivatives terms; ", "copy-licence-nc-nd"],
+  // validateUpload (library.ts): "The file is 250.0 MB; the limit is 200 MB."
+  [" MB; the limit is ", "attach-too-large"],
 ];
 
 const CODE_BY_TEXT: ReadonlyMap<string, ErrorCode> = new Map(

@@ -24,7 +24,25 @@ received (plus a final newline).
 
 No merged OpenAlex id was found among the recorded works (the one id missing from the reference batch,
 `W6969036009`, exists but lies outside OpenAlex's default corpus), so the merge case is tested with a
-simulated response, labelled as such in the test. No PDF is recorded.
+simulated response, labelled as such in the test. No PDF is recorded (see *PDFs in fixture mode*).
 
 To re-record (about 26 live requests): `pnpm library:live-check --record`. Review the diff before
 committing; responses change as the providers update their records.
+
+## Recording group `find` (2026-11-15, 05:49 UTC)
+
+Recorded live by `pnpm library:live-check --record-group find` (`scripts/scholarly-record/find.ts`;
+26 requests, OpenAlex and Crossref only, no OpenAlex key, no email address, no arXiv request) for
+Find papers, the preview and the paper page. Requests recorded earlier were not repeated.
+
+| Provider | Recorded |
+|---|---|
+| OpenAlex | the search `direct preference optimization` in pages of 25 (pages 1 and 2, and page 1 filtered to field 17, 2023 to 2024, free to read); the first two result rows by W (`W4391941798`, `W4402753790`); cited by in pages of 50 for `W7133208539`, `W2741809807`, `W2117847125` and `W2166248051`; works by W `W2741809807` (The state of OA), `W2117847125` (retracted; also by DOI `10.1016/s0140-6736(97)11096-0`), `W2166248051` and `W2626778328`, with the reference and related batches of the first three; by arXiv id `1706.03762` and `2607.20049`, and a 404 for `2611.99999` |
+| Crossref | `10.52202/075280-2338` (DPO's DOI), `10.1023/a:1026654312961`, and a 404 for `10.7717/corniversity-no-such-work` |
+
+## PDFs in fixture mode
+
+No arXiv PDF is recorded. The fixture provider answers a request for an arXiv version's PDF with a
+generated stand-in (`../fixture-pdf.ts`): two pages whose text says it is a fixture stand-in for that
+exact `arXiv:{id}v{n}` and not arXiv's file, the same bytes every time. It exists so private copies
+can be tested; production refuses the fixture provider.

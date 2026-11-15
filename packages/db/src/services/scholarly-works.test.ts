@@ -21,6 +21,7 @@ import {
   acceptNewFile,
   applyArxivRecord,
   attachUploadToWork,
+  createWorkFromUpload,
   deleteWorkCompletely,
   editWorkFields,
   getLibrarySubjects,
@@ -37,6 +38,7 @@ import {
   recordObservedHash,
   refreshIntegrity,
   refreshWork,
+  requestIntegrityCheckIfDue,
   requestPrivateCopy,
   resolveInput,
   ScholarlyError,
@@ -45,6 +47,7 @@ import {
   setLibrarySubjects,
   setWorkFlags,
   unsaveWork,
+  workDeletionSummary,
   workIdFor,
 } from "./scholarly-works";
 
@@ -196,23 +199,30 @@ describe("importing with recorded provider data (fixture mode)", () => {
     );
     expect(detail.identifiers.every((i) => i.source === "fixture")).toBe(true);
     expect(detail.work.referencedOpenalexIds.length).toBe(46);
-    // Importing again attaches to the same work.
-    const again = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "openalex", value: "W2741809807" }).catch(
-      (e: unknown) => e,
+    // Importing again (by its W, recorded by the find group) attaches to the same work.
+    const again = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "openalex", value: "W2741809807" });
+    expect(again).toMatchObject({ workId: imported.workId, created: false });
+    // A W lookup with no recording is unavailable, never "not found" or "no results".
+    const unrecorded = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "openalex", value: "W1" }).catch((e: unknown) => e);
+    expect((unrecorded as Error).message).toBe(
+      "No recorded provider response exists for this request (fixture mode), so it is unavailable.",
     );
-    // The fixture has no recording for that W lookup: unavailable, never "not found" or "no results".
-    expect((again as Error).message).toBe("No recorded provider response exists for this request (fixture mode), so it is unavailable.");
     expect((await resolveInput(handle.db, OWNER, "10.7717/peerj.4375")).kind).toBe("identifier");
     const resolved = await resolveInput(handle.db, OWNER, "https://doi.org/10.7717/peerj.4375");
     expect(resolved.kind === "identifier" && resolved.workId).toBe(imported.workId);
   });
 
-  it("an unknown DOI falls through to Crossref; with no recording the import is reported unavailable", async () => {
+  it("an unknown DOI falls through to Crossref; a DOI neither knows is not found, an unrecorded one unavailable", async () => {
     const error = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "doi", value: "10.7717/corniversity-no-such-work" }).catch(
       (e: unknown) => e,
     );
     expect(error).toBeInstanceOf(ScholarlyError);
-    expect((error as ScholarlyError).details.providerCode).toBe("fixture_missing");
+    expect((error as ScholarlyError).message).toBe("Crossref has no record of this DOI.");
+    expect((error as ScholarlyError).details.providerCode).toBe("not_found");
+    const unrecorded = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "doi", value: "10.7717/peerj.9999" }).catch(
+      (e: unknown) => e,
+    );
+    expect((unrecorded as ScholarlyError).details.providerCode).toBe("fixture_missing");
     await expect(importByIdentifier(handle.db, OWNER, fixture, { scheme: "doi", value: "not a doi" })).rejects.toThrow(
       "That identifier is not valid.",
     );
@@ -880,5 +890,126 @@ describe("review fixes: merges, provenance, refresh, deletion", () => {
     const entry = { ...entries.entries[0]!, version: 2, withdrawalHint: false };
     await applyArxivRecord(handle.db, owner, { workId: imported.workId, arxivId: "2607.20049", entry, raw: null });
     expect(await withdrawn()).toBe(true);
+  });
+});
+
+describe("find and paper pages: library search filters, document jobs, deletion summary, integrity checks", () => {
+  it("searches the owner's works with year, type and OpenAlex field filters and offset paging", async () => {
+    const owner = await freshOwner("library-filters");
+    const record = (id: string, title: string, year: number, type: string, field: string) => ({
+      ...oaRecord(id, { doi: `10.1234/${id.toLowerCase()}`, title }),
+      publicationYear: year,
+      workType: type,
+      subjects: [{ id: field, name: `Field ${field}`, level: "field" as const, score: null }],
+    });
+    const client = scripted({
+      "doi:10.1234/w2001": result(record("W2001", "Spectral theory of operators", 2019, "article", "26")),
+      "doi:10.1234/w2002": result(record("W2002", "Spectral methods for networks", 2023, "preprint", "17")),
+      "doi:10.1234/w2003": result(record("W2003", "Spectral sequences explained", 2024, "article", "26")),
+    });
+    for (const id of ["w2001", "w2002", "w2003"])
+      await importByIdentifier(handle.db, owner, client, { scheme: "doi", value: `10.1234/${id}` });
+    const titles = async (options: Parameters<typeof searchMyLibrary>[3]) =>
+      (await searchMyLibrary(handle.db, owner, "spectral", options)).map((r) => r.work.title).sort();
+    expect((await titles({})).length).toBe(3);
+    expect(await titles({ yearFrom: 2023 })).toEqual(["Spectral methods for networks", "Spectral sequences explained"]);
+    expect(await titles({ yearTo: 2020 })).toEqual(["Spectral theory of operators"]);
+    expect(await titles({ type: "preprint" })).toEqual(["Spectral methods for networks"]);
+    expect(await titles({ fieldId: "26" })).toEqual(["Spectral sequences explained", "Spectral theory of operators"]);
+    expect(await titles({ fieldId: "26", yearFrom: 2024 })).toEqual(["Spectral sequences explained"]);
+    // Offset paging returns the rest, in the same order.
+    const all = (await searchMyLibrary(handle.db, owner, "spectral", { limit: 3 })).map((r) => r.work.id);
+    expect((await searchMyLibrary(handle.db, owner, "spectral", { limit: 2, offset: 1 })).map((r) => r.work.id)).toEqual(all.slice(1));
+    // A malformed field id is ignored rather than injected.
+    expect((await titles({ fieldId: "26') or ('1" })).length).toBe(3);
+    expect(await searchMyLibrary(handle.db, OTHER, "spectral", { fieldId: "26" })).toEqual([]);
+  });
+
+  it("summarises what deleting a paper removes, exactly what deleteWorkCompletely then removes; another owner's id is null", async () => {
+    const owner = await freshOwner("deletion-summary");
+    const imported = await importByIdentifier(handle.db, owner, scripted({}), { scheme: "arxiv", value: "2305.18290" });
+    const raw = await fixture.arxivRaw("2305.18290");
+    const entries = await fixture.arxivEntries([{ id: "2305.18290", version: null }]);
+    await applyArxivRecord(handle.db, owner, { workId: imported.workId, arxivId: "2305.18290", entry: entries.entries[0]!, raw });
+    const linked = await openArxivVersion(handle.db, owner, imported.workId, "2305.18290", 2);
+    const stored = await attachUploadToWork(handle.db, blobs, {
+      ownerId: owner,
+      workId: imported.workId,
+      filename: "own.pdf",
+      mediaType: "application/pdf",
+      data: Buffer.from(`%PDF-1.4\n% summary ${randomUUID()}\n`, "latin1"),
+      maxBytes: 1_000_000,
+    });
+    await createAnnotation(handle.db, owner, { assetId: linked.id, physicalIndex: 0, kind: "bookmark" });
+    await createAnnotation(handle.db, owner, { assetId: stored.asset.id, physicalIndex: 0, noteMarkdown: "mine" });
+    await createAnnotation(handle.db, owner, { assetId: stored.asset.id, physicalIndex: 1, noteMarkdown: "mine too" });
+    await handle.db.insert(notebookEntry).values({ ownerId: owner, title: "Paper note", scholarlyWorkId: imported.workId });
+    const summary = await workDeletionSummary(handle.db, owner, imported.workId);
+    expect(summary).toEqual({ documents: 2, storedCopies: 1, annotations: 3, notebookEntries: 1, collections: 0 });
+    expect(await workDeletionSummary(handle.db, OTHER, imported.workId)).toBeNull();
+    expect(await workDeletionSummary(handle.db, owner, "not-a-uuid")).toBeNull();
+    expect(await deleteWorkCompletely(handle.db, blobs, owner, imported.workId)).toEqual({ documents: 2, annotations: 3 });
+  });
+
+  it("lists each Document's latest private-copy job, and the fixture provider's stand-in PDF becomes the stored copy", async () => {
+    const owner = await freshOwner("document-jobs");
+    const imported = await importByIdentifier(handle.db, owner, scripted({}), { scheme: "arxiv", value: "2305.18290" });
+    const raw = await fixture.arxivRaw("2305.18290");
+    const entries = await fixture.arxivEntries([{ id: "2305.18290", version: null }]);
+    await applyArxivRecord(handle.db, owner, { workId: imported.workId, arxivId: "2305.18290", entry: entries.entries[0]!, raw });
+    const linked = await openArxivVersion(handle.db, owner, imported.workId, "2305.18290", 3);
+    expect((await getWork(handle.db, owner, imported.workId))!.documentJobs).toEqual([]);
+    expect(await requestPrivateCopy(handle.db, owner, linked.id)).toEqual({ queued: true });
+    const queued = (await getWork(handle.db, owner, imported.workId))!.documentJobs;
+    expect(queued).toEqual([expect.objectContaining({ assetId: linked.id, kind: "private_copy", status: "queued" })]);
+    // The recorded fixture provider answers arXiv's PDF with its labelled stand-in (no scripted bytes here).
+    const done = await keepPrivateCopy(handle.db, blobs, fixture, { ownerId: owner, assetId: linked.id, maxBytes: 1_000_000 });
+    expect(done.outcome).toBe("promoted");
+    const detail = (await getWork(handle.db, owner, imported.workId))!;
+    const doc = detail.documents.find((d) => d.asset.id === linked.id)!;
+    expect(doc.asset.storageKey).not.toBeNull();
+    const bytes = await blobs.get(doc.asset.storageKey!);
+    expect(Buffer.from(bytes!).toString("latin1")).toContain("Fixture stand-in for arXiv:2305.18290v3");
+    expect(detail.documentJobs.map((j) => j.kind).sort()).toEqual(["extraction", "private_copy"]);
+    // Another owner sees neither the work nor its jobs.
+    expect(await getWork(handle.db, OTHER, imported.workId)).toBeNull();
+  });
+
+  it("queues the Crossref integrity check after a save only for a publisher DOI not yet checked", async () => {
+    const owner = await freshOwner("integrity-due");
+    const client = scripted({ "doi:10.1234/due": result(oaRecord("W2101", { doi: "10.1234/due" })) });
+    const doi = (await importByIdentifier(handle.db, owner, client, { scheme: "doi", value: "10.1234/due" })).workId;
+    const arxiv = (await importByIdentifier(handle.db, owner, scripted({}), { scheme: "arxiv", value: "2607.20049" })).workId;
+    expect(await requestIntegrityCheckIfDue(handle.db, owner, doi)).toEqual({ queued: true });
+    expect(await requestIntegrityCheckIfDue(handle.db, owner, arxiv)).toEqual({ queued: false });
+    await handle.db.update(scholarlyWork).set({ integrityCheckedAt: new Date() }).where(eq(scholarlyWork.id, doi));
+    expect(await requestIntegrityCheckIfDue(handle.db, owner, doi)).toEqual({ queued: false });
+    await expect(requestIntegrityCheckIfDue(handle.db, OTHER, doi)).rejects.toThrow("Paper not found.");
+  });
+
+  it("a paper's file is a PDF: other files are refused before anything is stored or created", async () => {
+    const owner = await freshOwner("pdf-only");
+    const client = scripted({ "doi:10.1234/pdf-only": result(oaRecord("W2201", { doi: "10.1234/pdf-only" })) });
+    const workId = (await importByIdentifier(handle.db, owner, client, { scheme: "doi", value: "10.1234/pdf-only" })).workId;
+    const notes = Buffer.from(`Plain notes ${randomUUID()}\n`, "utf8");
+    const base = { ownerId: owner, data: notes, maxBytes: 1_000_000 };
+    for (const [filename, mediaType] of [
+      ["notes.txt", "text/plain"],
+      ["notes.md", "text/markdown"],
+      ["notes", "application/octet-stream"],
+    ] as const) {
+      await expect(attachUploadToWork(handle.db, blobs, { ...base, workId, filename, mediaType })).rejects.toThrow(
+        "A paper's file must be a PDF; nothing was stored.",
+      );
+      await expect(createWorkFromUpload(handle.db, blobs, { ...base, filename, mediaType })).rejects.toThrow(
+        "A paper's file must be a PDF; nothing was stored.",
+      );
+    }
+    // Named as a PDF but not one: refused by its signature.
+    await expect(
+      attachUploadToWork(handle.db, blobs, { ...base, workId, filename: "fake.pdf", mediaType: "application/pdf" }),
+    ).rejects.toThrow("The file does not start with a PDF signature; it was not stored.");
+    expect(await handle.db.select().from(resourceAsset).where(eq(resourceAsset.ownerId, owner))).toEqual([]);
+    expect((await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.ownerId, owner))).map((w) => w.id)).toEqual([workId]);
   });
 });
