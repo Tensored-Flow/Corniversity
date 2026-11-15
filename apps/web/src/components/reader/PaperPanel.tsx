@@ -26,7 +26,7 @@ export function PaperPanel({ info, title }: { info: ReaderDocumentInfo; title: s
               ? `Details as reported by ${paper.sources.map((s) => (s.day ? `${s.name} on ${s.day}` : s.name)).join(", ")}.`
               : "No provider has reported details yet."}
           </p>
-          <Link href={paper.href} className="mt-1 text-brass underline underline-offset-4">
+          <Link href={paper.href} className="mt-1 inline-flex min-h-6 items-center self-start text-brass underline underline-offset-4">
             Paper page
           </Link>
         </section>
@@ -34,7 +34,7 @@ export function PaperPanel({ info, title }: { info: ReaderDocumentInfo; title: s
         <section aria-label="Item" className="flex flex-col gap-1">
           <p className="font-display text-base text-ink">{title}</p>
           <p className="text-ink-2">{info.item.filename}</p>
-          <Link href={info.item.href} className="mt-1 text-brass underline underline-offset-4">
+          <Link href={info.item.href} className="mt-1 inline-flex min-h-6 items-center self-start text-brass underline underline-offset-4">
             Item page
           </Link>
         </section>

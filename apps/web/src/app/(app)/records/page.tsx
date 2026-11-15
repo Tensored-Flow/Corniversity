@@ -156,7 +156,7 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                 </div>
                 <h3 className="mt-1 text-base text-ink">
                   {item.href ? (
-                    <Link href={item.href} className="hover:underline">
+                    <Link href={item.href} className="inline-flex min-h-6 items-center hover:underline">
                       {item.title}
                     </Link>
                   ) : (
@@ -190,12 +190,15 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                   <span className="text-xs text-ink-3">{when(p.updatedAt)}</span>
                 </div>
                 <h3 className="mt-1 text-base text-ink">
-                  <Link href={`/studio/${p.id}`} className="hover:underline">
+                  <Link href={`/studio/${p.id}`} className="inline-flex min-h-6 items-center hover:underline">
                     {p.title}
                   </Link>
                 </h3>
                 <p className="mt-1 text-sm text-ink-2">{p.question}</p>
-                <a href={`/api/studio/${p.id}/report`} className="mt-1 inline-block text-xs text-brass underline underline-offset-4">
+                <a
+                  href={`/api/studio/${p.id}/report`}
+                  className="mt-1 inline-flex min-h-6 items-center text-xs text-brass underline underline-offset-4"
+                >
                   Report as Markdown
                 </a>
               </Card>
@@ -291,7 +294,10 @@ export default async function RecordsPage({ searchParams }: { searchParams: Prom
                   {EXPORTS.find((x) => x.kind === e.kind)?.label ?? e.kind} · <span className="text-ink-3">{when(e.createdAt)}</span>
                 </span>
                 {e.status === "ready" ? (
-                  <a href={`/api/records/exports/${e.id}`} className="text-brass underline underline-offset-4">
+                  <a
+                    href={`/api/records/exports/${e.id}`}
+                    className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+                  >
                     Download
                   </a>
                 ) : (

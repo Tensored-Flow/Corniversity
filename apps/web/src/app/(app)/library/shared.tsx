@@ -54,7 +54,8 @@ export function LibraryHeader({ title, lede, active, sync }: { title: string; le
         {sync ? <SyncBadge state={sync} /> : null}
       </div>
       {lede ? <p className="mt-2 max-w-prose text-sm text-ink-2">{lede}</p> : null}
-      <nav aria-label="Library sections" className="mt-4 flex gap-1 overflow-x-auto border-b border-stone">
+      {/* The tabs wrap on a phone instead of scrolling sideways, so every section and the current one stay in view. */}
+      <nav aria-label="Library sections" className="mt-4 flex flex-wrap gap-x-1 border-b border-stone">
         {TABS.map((tab) => (
           <Link
             key={tab.href}

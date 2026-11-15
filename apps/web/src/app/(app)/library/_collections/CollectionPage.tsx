@@ -118,7 +118,7 @@ export async function CollectionPage({
         <span>
           {text.singular} · {total} {total === 1 ? "paper" : "papers"}
         </span>
-        <Link href={text.path} className="text-brass underline underline-offset-4">
+        <Link href={text.path} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
           All {text.plural.toLowerCase()}
         </Link>
       </p>
@@ -164,7 +164,10 @@ export async function CollectionPage({
                 Apply
               </Button>
               {filtered || order === "added" ? (
-                <Link href={`${text.path}/${collection.id}#papers`} className="text-sm text-brass underline underline-offset-4">
+                <Link
+                  href={`${text.path}/${collection.id}#papers`}
+                  className="text-sm inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+                >
                   Clear
                 </Link>
               ) : null}
@@ -221,7 +224,7 @@ export async function CollectionPage({
                     ) : null}
                     <Reason kind={kind} reason={entry.item.reason} />
                     <details className="text-sm">
-                      <summary className="cursor-pointer text-brass">
+                      <summary className="cursor-pointer py-0.5 text-brass">
                         {text.reasonEdit}
                         <span className="sr-only">: {title}</span>
                       </summary>
@@ -355,6 +358,13 @@ export async function CollectionPage({
   );
 }
 
+/**
+ * A row's quiet action (Move up, Move down, Remove): narrow padding, so on a phone the three fit on one
+ * row beside Read, and still a target of at least 24 px.
+ */
+const ROW_ACTION =
+  "inline-flex min-h-6 items-center justify-center rounded-[var(--radius-control)] px-1 py-2 text-sm font-medium text-brass underline-offset-4 hover:underline";
+
 function ItemControls({
   collectionId,
   collectionName,
@@ -378,9 +388,9 @@ function ItemControls({
           <input type="hidden" name="collectionId" value={collectionId} />
           <input type="hidden" name="workId" value={work.id} />
           <input type="hidden" name="direction" value="up" />
-          <Button type="submit" variant="quiet" aria-label={`Move up: ${title}`}>
+          <button type="submit" className={ROW_ACTION} aria-label={`Move up: ${title}`}>
             Move up
-          </Button>
+          </button>
         </form>
       ) : null}
       {movable && !last ? (
@@ -388,21 +398,21 @@ function ItemControls({
           <input type="hidden" name="collectionId" value={collectionId} />
           <input type="hidden" name="workId" value={work.id} />
           <input type="hidden" name="direction" value="down" />
-          <Button type="submit" variant="quiet" aria-label={`Move down: ${title}`}>
+          <button type="submit" className={ROW_ACTION} aria-label={`Move down: ${title}`}>
             Move down
-          </Button>
+          </button>
         </form>
       ) : null}
       <form action={removeCollectionItemAction}>
         <input type="hidden" name="collectionId" value={collectionId} />
         <input type="hidden" name="workId" value={work.id} />
-        <Button type="submit" variant="quiet">
+        <button type="submit" className={ROW_ACTION}>
           Remove
           <span className="sr-only">
             {" "}
             {title} from {collectionName}
           </span>
-        </Button>
+        </button>
       </form>
     </>
   );

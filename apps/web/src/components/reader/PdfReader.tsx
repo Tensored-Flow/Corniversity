@@ -4,7 +4,7 @@ import "./reader.css";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { PDFDocumentLoadingTask } from "pdfjs-dist/legacy/build/pdf.mjs";
-import type { EventBus, PDFLinkService, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
+import type { EventBus, PDFLinkService, PDFPageView, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
 import { type FormEvent, type KeyboardEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ANNOTATION_COLORS,
@@ -216,7 +216,7 @@ function failureText(error: unknown, arxiv: boolean): string {
 }
 
 const control =
-  "inline-flex items-center justify-center gap-1 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50 sm:px-2.5 sm:py-1";
+  "inline-flex items-center justify-center gap-1 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 sm:px-2.5 sm:py-1";
 
 /**
  * The Page view: the official PDF.js viewer (rendering only visible pages, text and link layers,
@@ -234,6 +234,10 @@ export default function PdfReader(props: PdfReaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const asideRef = useRef<HTMLElement>(null);
+  const panelTitleRef = useRef<HTMLHeadingElement>(null);
+  const dialogTitleRef = useRef<HTMLHeadingElement>(null);
+  const panelsButtonRef = useRef<HTMLButtonElement>(null);
   const findInputRef = useRef<HTMLInputElement>(null);
   const selectionBarRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<{ viewer: PDFViewer; eventBus: EventBus; link: PDFLinkService } | null>(null);
@@ -260,6 +264,8 @@ export default function PdfReader(props: PdfReaderProps) {
     previous: false,
   });
   const [section, setSection] = useState<Section>("contents");
+  /** Counts the owner's requests to open a panel, so focus can move into it (see the effect after `openSection`). */
+  const [panelFocus, setPanelFocus] = useState(0);
   const [panelHidden, setPanelHidden] = useState(readPanelHidden);
   const [compact, setCompact] = useState(() => window.matchMedia(COMPACT).matches);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -417,7 +423,14 @@ export default function PdfReader(props: PdfReaderProps) {
         override async goToDestination(dest: string | unknown[]): Promise<void> {
           recordJump();
           markIntent();
-          return super.goToDestination(dest);
+          await super.goToDestination(dest);
+          // PDF.js moves keyboard focus to the destination page's text when that page next reports its text
+          // rendered. A page already rendered reports nothing until a zoom or width change redraws it, and
+          // focus would then jump into the pages from wherever the owner is. Report it now: focus moves at
+          // once, as it does for a page that renders after the jump, and nothing is left waiting.
+          const view: PDFPageView | undefined = this.pdfViewer?.getPageView(this.pdfViewer.currentPageNumber - 1);
+          if (view?.renderingState === lib.viewer.RenderingStates.FINISHED && view.textLayer)
+            this.eventBus.dispatch("textlayerrendered", { source: view, pageNumber: view.id, error: null });
         }
         override goToPage(value: number | string): void {
           recordJump();
@@ -696,9 +709,20 @@ export default function PdfReader(props: PdfReaderProps) {
   useEffect(() => {
     if (panelShown && section === "find") findInputRef.current?.focus();
   }, [panelShown, section]);
+  // A panel the owner opened takes keyboard focus, unless a control inside it already did (Find's box,
+  // a note being written, the companion's action): on the desktop the panel sits after the pages, whose
+  // PDF links would otherwise all lie between the bar's buttons and the panel.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once per request to open a panel, after the panel has rendered
+  useEffect(() => {
+    if (!panelFocus) return;
+    const area = compact ? dialogRef.current : asideRef.current;
+    if (!area || area.contains(document.activeElement)) return;
+    (compact ? dialogTitleRef : panelTitleRef).current?.focus();
+  }, [panelFocus]);
 
-  function openSection(next: Section) {
+  function openSection(next: Section, focus = false) {
     setSection(next);
+    if (focus) setPanelFocus((n) => n + 1);
     if (compact) {
       if (!dialogRef.current?.open) dialogRef.current?.showModal();
       setDialogOpen(true);
@@ -721,6 +745,18 @@ export default function PdfReader(props: PdfReaderProps) {
 
   function closeDialog() {
     dialogRef.current?.close();
+  }
+
+  /** The dialog returns focus to what had it; when that is gone (the selection bar), focus goes to Panels. */
+  function onDialogClose() {
+    setDialogOpen(false);
+    const active = document.activeElement;
+    if (!active || active === document.body) panelsButtonRef.current?.focus();
+  }
+
+  /** After the selection bar acts and goes, keyboard focus returns to the pages instead of being lost. */
+  function returnFocusFromSelectionBar() {
+    if (selectionBarRef.current?.contains(document.activeElement)) containerRef.current?.focus({ preventScroll: true });
   }
 
   function goToPage(event: FormEvent<HTMLFormElement>) {
@@ -868,6 +904,7 @@ export default function PdfReader(props: PdfReaderProps) {
   async function highlightSelection() {
     const current = selection;
     if (!current) return;
+    const fromBar = Boolean(selectionBarRef.current?.contains(document.activeElement));
     await creatingOne(async () => {
       const result = await createAnnotationRequest({
         assetId,
@@ -882,6 +919,7 @@ export default function PdfReader(props: PdfReaderProps) {
         return;
       }
       setAnnotations((list) => upsertAnnotation(list, result.value));
+      if (fromBar) containerRef.current?.focus({ preventScroll: true });
       clearSelection();
     });
   }
@@ -891,7 +929,7 @@ export default function PdfReader(props: PdfReaderProps) {
     setComposer(selection);
     setNoteError(null);
     clearSelection();
-    openSection("notes");
+    openSection("notes", true);
   }
 
   /** An added selection action (the companion's Ask): it receives the selection, then may open its panel. */
@@ -900,7 +938,7 @@ export default function PdfReader(props: PdfReaderProps) {
     action.run({ pageIndex: selection.pageIndex, quote: selection.quote, anchor: selection.anchor });
     if (!action.opens) return;
     clearSelection();
-    openSection(action.opens);
+    openSection(action.opens, true);
   }
 
   async function saveComposer(note: string): Promise<string | null> {
@@ -1148,7 +1186,7 @@ export default function PdfReader(props: PdfReaderProps) {
             </h1>
             {version && !compact ? <span className="shrink-0 text-sm text-ink-3">{version.label}</span> : null}
             {compact ? (
-              <button type="button" className={control} onClick={openPanels} aria-haspopup="dialog">
+              <button ref={panelsButtonRef} type="button" className={control} onClick={openPanels} aria-haspopup="dialog">
                 Panels
               </button>
             ) : (
@@ -1226,7 +1264,7 @@ export default function PdfReader(props: PdfReaderProps) {
                     key={s.id}
                     type="button"
                     className={control}
-                    onClick={() => openSection(s.id)}
+                    onClick={() => openSection(s.id, true)}
                     aria-pressed={panelShown && section === s.id}
                   >
                     {s.label}
@@ -1357,7 +1395,8 @@ export default function PdfReader(props: PdfReaderProps) {
               className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-2 border-t border-stone bg-paper-2 px-3 py-2 text-sm text-ink"
             >
               <span className={compact ? "sr-only" : "text-ink-2"}>Selection on {pageLabel(selection.pageIndex)}:</span>
-              <button type="button" className={control} onClick={() => void highlightSelection()} disabled={creating}>
+              {/* aria-disabled while the request runs, so the button keeps keyboard focus (a second press is ignored). */}
+              <button type="button" className={control} onClick={() => void highlightSelection()} aria-disabled={creating || undefined}>
                 Highlight
               </button>
               <label htmlFor="reader-selection-colour" className="sr-only">
@@ -1383,7 +1422,14 @@ export default function PdfReader(props: PdfReaderProps) {
                   {action.label}
                 </button>
               ))}
-              <button type="button" className={control} onClick={clearSelection}>
+              <button
+                type="button"
+                className={control}
+                onClick={() => {
+                  returnFocusFromSelectionBar();
+                  clearSelection();
+                }}
+              >
                 Clear
               </button>
               {selectionError ? (
@@ -1426,8 +1472,12 @@ export default function PdfReader(props: PdfReaderProps) {
           )}
         </div>
         {!compact && !panelHidden ? (
-          <aside aria-labelledby="reader-panel-title" className="w-[320px] shrink-0 overflow-y-auto border-l border-stone bg-paper-2 p-4">
-            <h2 id="reader-panel-title" className="mb-3 text-base text-ink">
+          <aside
+            ref={asideRef}
+            aria-labelledby="reader-panel-title"
+            className="w-[320px] shrink-0 overflow-y-auto border-l border-stone bg-paper-2 p-4"
+          >
+            <h2 id="reader-panel-title" ref={panelTitleRef} tabIndex={-1} className="mb-3 text-base text-ink">
               {sectionTitle}
             </h2>
             {panelBody}
@@ -1438,13 +1488,13 @@ export default function PdfReader(props: PdfReaderProps) {
       <dialog
         ref={dialogRef}
         aria-labelledby="reader-dialog-title"
-        onClose={() => setDialogOpen(false)}
+        onClose={onDialogClose}
         className="mx-0 mt-auto mb-0 w-full max-w-none overflow-hidden rounded-t-[var(--radius-panel)] border border-stone bg-paper-2 p-0 text-ink backdrop:bg-ink/30"
       >
         {/* The heading, the section switches and Close stay in view while a long list scrolls. */}
         <div className="flex max-h-[80dvh] flex-col">
           <div className="flex shrink-0 items-center justify-between gap-2 border-b border-stone px-4 py-2">
-            <h2 id="reader-dialog-title" className="text-base text-ink">
+            <h2 id="reader-dialog-title" ref={dialogTitleRef} tabIndex={-1} className="text-base text-ink">
               {sectionTitle}
             </h2>
             <button type="button" className={control} onClick={closeDialog}>

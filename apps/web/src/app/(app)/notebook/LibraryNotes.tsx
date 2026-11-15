@@ -122,7 +122,7 @@ export async function LibraryNotes({
                 <Link
                   href={href({ kind: undefined })}
                   aria-current={!kind ? "page" : undefined}
-                  className={!kind ? "text-ink" : "text-ink-2 hover:text-ink"}
+                  className={!kind ? "inline-block py-0.5 font-medium text-ink" : "inline-block py-0.5 text-ink-2 hover:text-ink"}
                 >
                   All kinds
                 </Link>
@@ -132,7 +132,9 @@ export async function LibraryNotes({
                   <Link
                     href={href({ kind: k.value })}
                     aria-current={kind === k.value ? "page" : undefined}
-                    className={kind === k.value ? "text-ink" : "text-ink-2 hover:text-ink"}
+                    className={
+                      kind === k.value ? "inline-block py-0.5 font-medium text-ink" : "inline-block py-0.5 text-ink-2 hover:text-ink"
+                    }
                   >
                     {k.label}
                   </Link>
@@ -151,7 +153,7 @@ export async function LibraryNotes({
                   <Link
                     href={href({ subject: undefined })}
                     aria-current={!subject ? "page" : undefined}
-                    className={!subject ? "text-ink" : "text-ink-2 hover:text-ink"}
+                    className={!subject ? "inline-block py-0.5 font-medium text-ink" : "inline-block py-0.5 text-ink-2 hover:text-ink"}
                   >
                     All subjects
                   </Link>
@@ -161,7 +163,9 @@ export async function LibraryNotes({
                     <Link
                       href={href({ subject: s.id })}
                       aria-current={subject === s.id ? "page" : undefined}
-                      className={subject === s.id ? "text-ink" : "text-ink-2 hover:text-ink"}
+                      className={
+                        subject === s.id ? "inline-block py-0.5 font-medium text-ink" : "inline-block py-0.5 text-ink-2 hover:text-ink"
+                      }
                     >
                       {s.name}
                     </Link>
@@ -180,7 +184,7 @@ export async function LibraryNotes({
             title="Paper not found"
             body="That paper is not in your library (it may have been deleted; its notebook entries stay, without the link)."
             action={
-              <Link href="/notebook?library=1" className="text-sm text-brass underline underline-offset-4">
+              <Link href="/notebook?library=1" className="text-sm inline-flex min-h-6 items-center text-brass underline underline-offset-4">
                 All library notes
               </Link>
             }
@@ -190,15 +194,18 @@ export async function LibraryNotes({
           <Card as="div">
             <p className="text-xs uppercase tracking-wide text-ink-3">Notes for this paper</p>
             <h2 className="mt-1 text-xl text-ink [overflow-wrap:anywhere]">
-              <Link href={`/library/papers/${paper.id}`} className="hover:underline">
+              <Link href={`/library/papers/${paper.id}`} className="inline-flex min-h-6 items-center hover:underline">
                 {paper.title ?? "Untitled paper"}
               </Link>
             </h2>
             <p className="mt-1 flex flex-wrap gap-x-4 text-sm">
-              <Link href={`/library/papers/${paper.id}`} className="text-brass underline underline-offset-4">
+              <Link
+                href={`/library/papers/${paper.id}`}
+                className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+              >
                 Paper page
               </Link>
-              <Link href={href({ work: undefined })} className="text-brass underline underline-offset-4">
+              <Link href={href({ work: undefined })} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
                 All library notes
               </Link>
             </p>
@@ -270,8 +277,9 @@ export async function LibraryNotes({
                   </Select>
                 </Field>
                 <div className="sm:col-span-2">
-                  <Field label="Note (Markdown with LaTeX)" htmlFor="paper-note-body">
-                    <Textarea id="paper-note-body" name="body" rows={8} required />
+                  {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
+                  <Field label="Note (Markdown with LaTeX)" htmlFor="paper-note-body" hint="Up to 50,000 characters.">
+                    <Textarea id="paper-note-body" name="body" rows={8} required maxLength={50_000} />
                   </Field>
                 </div>
                 <div className="sm:col-span-2">
@@ -348,7 +356,7 @@ async function AnnotationItem({ note }: { note: ReadingNote }) {
         <p className="mt-1 text-xs text-ink-2">The file this note was made on was removed; the note is kept.</p>
       ) : readerHref ? (
         <p className="mt-1 text-sm">
-          <Link href={readerHref} className="text-brass underline underline-offset-4">
+          <Link href={readerHref} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             {note.page ? `Open page ${note.page} in the reader` : "Open in the reader"}
           </Link>
           {note.mappingStatus === "needs_repair" ? (
@@ -369,7 +377,7 @@ async function PaperNoteItem({ note }: { note: PaperNote }) {
     <Card as="li">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <h3 className="min-w-0 text-base text-ink [overflow-wrap:anywhere]">
-          <Link href={`/notebook/${entry.id}`} className="hover:underline">
+          <Link href={`/notebook/${entry.id}`} className="inline-flex min-h-6 items-center hover:underline">
             {entry.title}
           </Link>
         </h3>

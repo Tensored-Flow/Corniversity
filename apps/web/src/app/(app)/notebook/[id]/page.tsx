@@ -167,8 +167,9 @@ export default async function EntryPage({
             </Select>
           </Field>
           <div className="sm:col-span-2">
-            <Field label="Body (Markdown with LaTeX)" htmlFor="edit-body">
-              <Textarea id="edit-body" name="body" rows={12} defaultValue={entry.bodyMarkdown} />
+            {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
+            <Field label="Body (Markdown with LaTeX)" htmlFor="edit-body" hint="Up to 50,000 characters.">
+              <Textarea id="edit-body" name="body" rows={12} defaultValue={entry.bodyMarkdown} maxLength={50_000} />
             </Field>
           </div>
           <div className="sm:col-span-2">

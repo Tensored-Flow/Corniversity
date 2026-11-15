@@ -2,11 +2,12 @@
 import dynamic from "next/dynamic";
 import type { PdfReaderProps } from "./PdfReader";
 
-// PDF.js runs only in the browser: the viewer is never rendered on the server.
+// PDF.js runs only in the browser: the viewer is never rendered on the server. Without JavaScript the
+// reading room's noscript notice hides this status (data-reader-loading) and says why instead.
 const PdfReader = dynamic(() => import("./PdfReader"), {
   ssr: false,
   loading: () => (
-    <div className="flex min-h-0 flex-1 items-center justify-center bg-paper-3 p-6">
+    <div data-reader-loading="" className="flex min-h-0 flex-1 items-center justify-center bg-paper-3 p-6">
       <p role="status" className="text-sm text-ink-2">
         Loading the reader…
       </p>

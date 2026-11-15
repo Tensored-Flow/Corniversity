@@ -105,7 +105,7 @@ export async function IssuesSection({ ownerId }: { ownerId: string }) {
       </ul>
       {closed.length ? (
         <details className="mt-4 text-sm">
-          <summary className="cursor-pointer text-ink-2">Resolved and dismissed ({closed.length})</summary>
+          <summary className="cursor-pointer py-0.5 text-ink-2">Resolved and dismissed ({closed.length})</summary>
           <ul className="mt-2 flex flex-col gap-2">
             {closed.map(({ issue }) => (
               <li key={issue.id} className="rounded-[var(--radius-control)] border border-stone bg-paper px-3 py-2 text-xs">
@@ -125,7 +125,7 @@ export async function IssuesSection({ ownerId }: { ownerId: string }) {
         </details>
       ) : null}
       <details className="mt-4 text-sm">
-        <summary className="cursor-pointer text-ink-2">Record an issue yourself</summary>
+        <summary className="cursor-pointer py-0.5 text-ink-2">Record an issue yourself</summary>
         <form action={createIssueAction} className="mt-2 flex flex-col gap-2">
           <label htmlFor="new-issue" className="text-xs text-ink-2">
             What went wrong, in which piece of work (for example: “In the C([0,1]) proof I used the triangle inequality the wrong way”)

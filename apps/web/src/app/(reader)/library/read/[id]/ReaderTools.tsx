@@ -78,7 +78,7 @@ export function ReaderTools({ assetId, physicalIndex, pageLabel, saveAnnotation,
 
       {/* Closed by default: the companion appears only when the owner opens it. */}
       <details id="ask" className="border-t border-stone pt-3">
-        <summary className="cursor-pointer text-sm font-medium text-ink">Ask</summary>
+        <summary className="cursor-pointer py-0.5 text-sm font-medium text-ink">Ask</summary>
         <div className="mt-3">
           <AskPanel
             data={companion}

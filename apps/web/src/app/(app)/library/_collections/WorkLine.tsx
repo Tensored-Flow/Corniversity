@@ -55,7 +55,7 @@ export function WorkLine({
     <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-x-4">
       <div className="min-w-0 [overflow-wrap:anywhere] sm:flex-1">
         <Heading className="text-base text-ink">
-          <Link href={paperHref(work.id)} className="hover:underline">
+          <Link href={paperHref(work.id)} className="inline-flex min-h-6 items-center hover:underline">
             {workTitle(work)}
           </Link>
         </Heading>
@@ -75,7 +75,8 @@ export function WorkLine({
               Read<span className="sr-only"> {workTitle(work)}</span>
             </LinkButton>
           ) : null}
-          {actions}
+          {/* The row's own controls wrap as one group, so on a phone Move up, Move down and Remove stay together. */}
+          {actions ? <div className="flex flex-wrap items-center gap-x-2 gap-y-1">{actions}</div> : null}
         </div>
       ) : null}
     </div>

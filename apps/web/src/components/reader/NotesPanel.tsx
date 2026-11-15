@@ -12,8 +12,10 @@ import {
 import { deleteAnnotationRequest, updateAnnotationRequest } from "./api";
 
 const control =
-  "inline-flex items-center justify-center rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50";
-const quiet = "text-sm text-brass underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50";
+// At least 24 px high, so a finger can hit it on a phone (WCAG 2.5.8).
+const quiet =
+  "inline-flex min-h-6 items-center text-sm text-brass underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-50";
 const field = "w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper px-2 py-1.5 text-sm text-ink";
 
 export interface NotesPanelProps {
@@ -54,15 +56,26 @@ export interface NotesPanelProps {
  */
 export function NotesPanel(props: NotesPanelProps) {
   const { notes, repair, problems, pageLabel, currentPage, ready, composer } = props;
+  const listHeading = useRef<HTMLHeadingElement>(null);
+  const pageNoteButton = useRef<HTMLButtonElement>(null);
+  // A saved or deleted note takes its controls away; keyboard focus moves to the list instead of being lost.
+  const focusList = () => listHeading.current?.focus();
   return (
     <div className="flex flex-col gap-4 text-sm">
       <div className="flex flex-col gap-2">
         <p className="text-ink-2">On {ready ? pageLabel(currentPage - 1) : "this page"}:</p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" className={control} onClick={props.onToggleBookmark} disabled={!ready || props.busy}>
+          {/* aria-disabled while a request runs, so the button keeps keyboard focus (the reader ignores a second press). */}
+          <button
+            type="button"
+            className={control}
+            onClick={props.onToggleBookmark}
+            disabled={!ready}
+            aria-disabled={props.busy || undefined}
+          >
             {props.bookmarked ? "Remove bookmark" : "Bookmark page"}
           </button>
-          <button type="button" className={control} onClick={props.onPageNote} disabled={!ready}>
+          <button ref={pageNoteButton} type="button" className={control} onClick={props.onPageNote} disabled={!ready}>
             Page note
           </button>
           <button type="button" className={control} onClick={props.onMarkArea} disabled={!ready}>
@@ -83,13 +96,20 @@ export function NotesPanel(props: NotesPanelProps) {
           pageLabel={pageLabel}
           color={props.composerColor}
           onColor={props.onComposerColor}
-          onSave={props.onSaveComposer}
-          onCancel={props.onCancelComposer}
+          onSave={async (note) => {
+            const failure = await props.onSaveComposer(note);
+            if (!failure) focusList();
+            return failure;
+          }}
+          onCancel={() => {
+            props.onCancelComposer();
+            pageNoteButton.current?.focus();
+          }}
         />
       ) : null}
 
       <section aria-labelledby="reader-notes-list" className="flex flex-col gap-2">
-        <h3 id="reader-notes-list" className="text-sm font-medium text-ink">
+        <h3 id="reader-notes-list" ref={listHeading} tabIndex={-1} className="text-sm font-medium text-ink">
           All notes ({notes.length})
         </h3>
         {notes.length === 0 ? (
@@ -103,7 +123,10 @@ export function NotesPanel(props: NotesPanelProps) {
                 pageLabel={pageLabel}
                 onJump={props.onJump}
                 onChanged={props.onChanged}
-                onDeleted={props.onDeleted}
+                onDeleted={(id) => {
+                  props.onDeleted(id);
+                  focusList();
+                }}
               />
             ))}
           </ul>
@@ -133,7 +156,10 @@ export function NotesPanel(props: NotesPanelProps) {
                 pageLabel={pageLabel}
                 onJump={props.onJump}
                 onChanged={props.onChanged}
-                onDeleted={props.onDeleted}
+                onDeleted={(id) => {
+                  props.onDeleted(id);
+                  focusList();
+                }}
                 repair
               />
             ))}
@@ -170,12 +196,17 @@ function Composer({
     event.preventDefault();
     if (!note.trim()) {
       setError("Write a note before saving.");
+      textRef.current?.focus();
       return;
     }
     setBusy(true);
     const failure = await onSave(note);
     setBusy(false);
-    if (failure) setError(failure);
+    if (failure) {
+      setError(failure);
+      // Saving disabled the buttons, which drops keyboard focus; the draft takes it back.
+      textRef.current?.focus();
+    }
   }
 
   return (
@@ -263,9 +294,22 @@ function NoteItem({
   const [conflict, setConflict] = useState<ReaderAnnotation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Edit, Cancel, Delete and Keep each replace the controls that were pressed: keyboard focus moves to
+  // the control that takes their place (the draft, Edit, Keep, Delete) instead of falling to the page.
+  const [focusNext, setFocusNext] = useState<"draft" | "edit" | "delete" | "keep" | null>(null);
+  const draftRef = useRef<HTMLTextAreaElement>(null);
+  const editRef = useRef<HTMLButtonElement>(null);
+  const deleteRef = useRef<HTMLButtonElement>(null);
+  const keepRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!focusNext) return;
+    ({ draft: draftRef, edit: editRef, delete: deleteRef, keep: keepRef })[focusNext].current?.focus();
+    setFocusNext(null);
+  }, [focusNext]);
   const label = annotationLabel(a);
   const coloured = Boolean(a.anchor?.rects.length);
   const editId = `reader-note-edit-${a.id}`;
+  const confirmId = `reader-note-delete-${a.id}`;
 
   function startEdit() {
     setDraft(a.noteMarkdown);
@@ -273,6 +317,12 @@ function NoteItem({
     setConflict(null);
     setError(null);
     setMode("edit");
+    setFocusNext("draft");
+  }
+
+  function backToView() {
+    setMode("view");
+    setFocusNext("edit");
   }
 
   async function save(expectedUpdatedAt: string) {
@@ -287,10 +337,13 @@ function NoteItem({
     setBusy(false);
     if (result.ok) {
       setConflict(null);
-      setMode("view");
+      backToView();
       onChanged(result.value);
-    } else if ("conflict" in result) setConflict(result.conflict);
+      return;
+    }
+    if ("conflict" in result) setConflict(result.conflict);
     else setError(result.message);
+    setFocusNext("draft");
   }
 
   async function remove() {
@@ -298,7 +351,10 @@ function NoteItem({
     const result = await deleteAnnotationRequest(a.id);
     setBusy(false);
     if (result.ok) onDeleted(a.id);
-    else setError(result.message);
+    else {
+      setError(result.message);
+      setFocusNext("keep");
+    }
   }
 
   return (
@@ -323,7 +379,14 @@ function NoteItem({
           <label htmlFor={editId} className="text-ink-2">
             {conflict ? "Your draft" : "Note"}
           </label>
-          <textarea id={editId} rows={3} value={draft} onChange={(event) => setDraft(event.target.value)} className={field} />
+          <textarea
+            id={editId}
+            ref={draftRef}
+            rows={3}
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            className={field}
+          />
           {coloured ? <ColorSelect id={`${editId}-colour`} value={color} onChange={setColor} /> : null}
           {conflict ? (
             <div
@@ -359,7 +422,7 @@ function NoteItem({
                   onClick={() => {
                     onChanged(conflict);
                     setConflict(null);
-                    setMode("view");
+                    backToView();
                   }}
                 >
                   Use the saved version
@@ -370,7 +433,7 @@ function NoteItem({
                 <button type="button" className={control} disabled={busy} onClick={() => void save(a.updatedAt)}>
                   {busy ? "Saving…" : "Save"}
                 </button>
-                <button type="button" className={control} disabled={busy} onClick={() => setMode("view")}>
+                <button type="button" className={control} disabled={busy} onClick={backToView}>
                   Cancel
                 </button>
               </>
@@ -386,12 +449,25 @@ function NoteItem({
             </p>
           ) : null}
           {mode === "confirm-delete" ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-ink-2">Delete this {label.toLowerCase()}?</span>
+            // Keep takes focus first, so a second Enter never deletes; the group's name is the question.
+            // biome-ignore lint/a11y/useSemanticElements: a fieldset's legend cannot sit on one line with the buttons it names
+            <div role="group" aria-labelledby={confirmId} className="flex flex-wrap items-center gap-2">
+              <span id={confirmId} className="text-ink-2">
+                Delete this {label.toLowerCase()}?
+              </span>
               <button type="button" className={control} disabled={busy} onClick={() => void remove()}>
                 Delete
               </button>
-              <button type="button" className={control} disabled={busy} onClick={() => setMode("view")}>
+              <button
+                ref={keepRef}
+                type="button"
+                className={control}
+                disabled={busy}
+                onClick={() => {
+                  setMode("view");
+                  setFocusNext("delete");
+                }}
+              >
                 Keep
               </button>
             </div>
@@ -401,6 +477,7 @@ function NoteItem({
                 Go to {pageLabel(a.pageIndex)}
               </button>
               <button
+                ref={editRef}
                 type="button"
                 className={quiet}
                 onClick={startEdit}
@@ -409,9 +486,13 @@ function NoteItem({
                 Edit
               </button>
               <button
+                ref={deleteRef}
                 type="button"
                 className={quiet}
-                onClick={() => setMode("confirm-delete")}
+                onClick={() => {
+                  setMode("confirm-delete");
+                  setFocusNext("keep");
+                }}
                 aria-label={`Delete ${label.toLowerCase()} on ${pageLabel(a.pageIndex)}`}
               >
                 Delete

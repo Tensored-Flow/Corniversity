@@ -26,7 +26,8 @@ const primary =
   "inline-flex items-center justify-center rounded-[var(--radius-control)] border border-transparent bg-brass px-3 py-1 text-sm font-medium text-paper-2 hover:bg-brass-strong disabled:cursor-not-allowed disabled:opacity-60";
 const danger =
   "inline-flex items-center justify-center rounded-[var(--radius-control)] border border-rust bg-paper-2 px-2.5 py-1 text-sm text-rust hover:bg-rust-soft disabled:cursor-not-allowed disabled:opacity-50";
-const quiet = "text-sm text-brass underline-offset-4 hover:underline";
+// At least 24 px high, so a finger can hit it on a phone (WCAG 2.5.8).
+const quiet = "inline-flex min-h-6 items-center text-sm text-brass underline-offset-4 hover:underline";
 const field = "w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper px-2 py-1.5 text-sm text-ink";
 const meta = "text-[0.7rem] uppercase tracking-wide text-ink-3";
 
@@ -142,13 +143,12 @@ export function AskPanel(props: AskPanelProps) {
     <div className="flex flex-col gap-4 text-sm">
       <div className="flex flex-col gap-1">
         <p>
-          <span
-            title={data.aiLabel.title}
-            className="inline-flex items-center rounded-full border border-stone bg-paper-3 px-2 py-0.5 text-[0.7rem] font-medium uppercase tracking-wide text-ink-2"
-          >
+          <span className="inline-flex items-center rounded-full border border-stone bg-paper-3 px-2 py-0.5 text-[0.7rem] font-medium uppercase tracking-wide text-ink-2">
             {data.aiLabel.text}
           </span>
         </p>
+        {/* Shown, not left in a tooltip: who answers (and why a live model is blocked) must not need a pointer. */}
+        <p className="text-xs text-ink-3">{data.aiLabel.title}</p>
         <p className="text-ink-3">Optional. Nothing is sent until you press Send.</p>
       </div>
 
@@ -198,7 +198,7 @@ export function AskPanel(props: AskPanelProps) {
               <fieldset className="flex flex-col gap-1">
                 <legend className="text-sm font-medium text-ink">Action</legend>
                 {ACTION_CHOICES.map((choice) => (
-                  <label key={choice.action} className="flex items-center gap-2 text-ink">
+                  <label key={choice.action} className="flex min-h-6 items-center gap-2 text-ink">
                     <input
                       ref={state.action === choice.action ? firstControl : undefined}
                       type="radio"
@@ -309,21 +309,27 @@ function Permission({
 }) {
   const id = useId();
   const allowed = status.status === "allowed";
+  // A recorded decision replaces the form's buttons; keyboard focus moves to the heading that states it.
+  const heading = useRef<HTMLHeadingElement>(null);
+  const [decided, setDecided] = useState(0);
+  useEffect(() => {
+    if (decided) heading.current?.focus();
+  }, [decided]);
+  const onSaved = () => setDecided((n) => n + 1);
   const explanation = (
     <>
       <p className="text-ink-2">
         Asking sends {permissionScope(data.kind)} to the model provider set in Settings; in the scripted demo nothing leaves this server.
         Only you can allow it.
       </p>
-      <p className="text-ink-2">
-        <span className="text-ink-3">Licence:</span> {data.licence}
-      </p>
+      {/* The line names itself ("Licence …", "No licence reported by arXiv …", "No licence is recorded …"). */}
+      <p className="text-ink-2">{data.licence}</p>
     </>
   );
   if (allowed)
     return (
       <section aria-labelledby={`${id}-heading`} className="flex flex-col gap-1">
-        <h3 id={`${id}-heading`} className="text-sm font-medium text-ink">
+        <h3 id={`${id}-heading`} ref={heading} tabIndex={-1} className="text-sm font-medium text-ink">
           External AI: allowed
         </h3>
         {status.basis ? <p className="break-words text-xs text-ink-3">Basis: {status.basis}</p> : null}
@@ -331,14 +337,14 @@ function Permission({
           <summary className={`${quiet} cursor-pointer`}>Change</summary>
           <div className="mt-2 flex flex-col gap-2">
             {explanation}
-            <PermissionForm data={data} store={store} actions={actions} status={status} />
+            <PermissionForm data={data} store={store} actions={actions} status={status} onSaved={onSaved} />
           </div>
         </details>
       </section>
     );
   return (
     <section aria-labelledby={`${id}-heading`} className="flex flex-col gap-2">
-      <h3 id={`${id}-heading`} className="text-sm font-medium text-ink">
+      <h3 id={`${id}-heading`} ref={heading} tabIndex={-1} className="text-sm font-medium text-ink">
         External AI: {status.status === "denied" ? "denied" : "not decided"}
       </h3>
       <p className="text-ink">
@@ -348,7 +354,7 @@ function Permission({
       </p>
       {status.basis ? <p className="break-words text-xs text-ink-3">Basis recorded: {status.basis}</p> : null}
       {explanation}
-      <PermissionForm data={data} store={store} actions={actions} status={status} />
+      <PermissionForm data={data} store={store} actions={actions} status={status} onSaved={onSaved} />
     </section>
   );
 }
@@ -358,11 +364,13 @@ function PermissionForm({
   store,
   actions,
   status,
+  onSaved,
 }: {
   data: AskPanelData;
   store: AskStore;
   actions: AskActions;
   status: { status: PermissionFormState["status"]; basis: string | null };
+  onSaved: () => void;
 }) {
   const id = useId();
   const [result, formAction, pending] = useActionState(actions.setPermission, {
@@ -371,8 +379,13 @@ function PermissionForm({
     error: null,
     saved: false,
   });
+  const basisRef = useRef<HTMLInputElement>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once per answer from the server action
   useEffect(() => {
-    if (result.saved) store.set({ permission: { status: result.status, basis: result.basis }, refusal: null });
+    if (result.saved) {
+      store.set({ permission: { status: result.status, basis: result.basis }, refusal: null });
+      onSaved();
+    } else if (result.error) basisRef.current?.focus();
   }, [result, store]);
   return (
     <form action={formAction} className="flex flex-col gap-2">
@@ -384,6 +397,7 @@ function PermissionForm({
       </label>
       <input
         id={`${id}-basis`}
+        ref={basisRef}
         name="basis"
         maxLength={300}
         placeholder="e.g. the licence above, or personal study"

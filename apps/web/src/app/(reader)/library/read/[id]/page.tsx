@@ -71,6 +71,51 @@ function TextBar({
 }
 
 /**
+ * Without JavaScript the Page view cannot start (PDF.js runs in the browser), so instead of its loading
+ * status this says so and offers the ways on: back, the Text view where the text is extracted, and the
+ * original (the owner's stored file, or the version's abstract page on arXiv). Plain links only: nothing
+ * inside a noscript element is hydrated.
+ */
+function PageViewWithoutScript({
+  backHref,
+  backLabel,
+  textHref,
+  original,
+}: {
+  backHref: string;
+  backLabel: string;
+  textHref: string | null;
+  original: { href: string; label: string; external: boolean } | null;
+}) {
+  return (
+    <noscript>
+      <style>{"[data-reader-loading]{display:none}"}</style>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
+        <div className="mx-auto w-full max-w-3xl">
+          <h1 className="text-2xl text-ink">The Page view needs JavaScript</h1>
+          <p className="mt-2 text-sm text-ink-2">JavaScript is off in this browser, so the pages cannot be shown here.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a href={backHref} className={barLink}>
+              {backLabel}
+            </a>
+            {textHref ? (
+              <a href={textHref} className={barLink}>
+                Text view
+              </a>
+            ) : null}
+            {original ? (
+              <a href={original.href} className={barLink} rel={original.external ? "noopener noreferrer" : undefined}>
+                {original.label}
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </noscript>
+  );
+}
+
+/**
  * The reading room. Page view (the default for a stored PDF that passed validation) shows the
  * original pages with PDF.js. Text view keeps the extracted-text reading room: table of contents
  * from detected headings, page jump, search within the item, the page's extracted text with
@@ -130,35 +175,51 @@ export default async function ReadPage({
       askPanelData(database, ownerId, asset.id),
     ]);
     if (!companion) notFound();
+    const info = documentInfo(doc);
+    const startPage = requested ?? remembered + 1;
     return (
-      <CompanionPageView
-        companion={companion}
-        companionActions={companionActions}
-        assetId={asset.id}
-        title={title}
-        source={
-          linked && doc.arxiv
-            ? { kind: "arxiv", id: doc.arxiv.id, version: doc.arxiv.version }
-            : { kind: "stored", url: `/api/library/assets/${asset.id}/file` }
-        }
-        initialPage={requested ?? remembered + 1}
-        pageRequested={requested !== null}
-        // ?page=N chooses the page and opens at its top; otherwise the remembered place inside the page.
-        initialPosition={requested === null ? (doc.position?.position ?? null) : null}
-        headings={toc.map((entry) => ({ physicalIndex: entry.physicalIndex, printedLabel: entry.printedLabel, heading: entry.heading }))}
-        backHref={backHref}
-        backLabel={backLabel}
-        textHref={textAvailable ? `/library/read/${asset.id}?view=text` : null}
-        info={documentInfo(doc)}
-        annotations={annotations}
-        notice={errorNotice(query.error)}
-        actions={{
-          markOpened: markOpenedAction,
-          reportObservedHash: reportObservedHashAction,
-          keepNotesOnNewFile: keepNotesOnNewFileAction,
-          openArxivVersion: openArxivVersionAction,
-        }}
-      />
+      <>
+        <PageViewWithoutScript
+          backHref={backHref}
+          backLabel={backLabel}
+          textHref={textAvailable ? `/library/read/${asset.id}?view=text&page=${startPage}` : null}
+          original={
+            linked
+              ? info.version?.arxiv
+                ? { href: info.version.arxiv.absUrl, label: "Abstract page on arXiv", external: true }
+                : null
+              : { href: `/api/library/assets/${asset.id}/file#page=${startPage}`, label: "Open the original PDF", external: false }
+          }
+        />
+        <CompanionPageView
+          companion={companion}
+          companionActions={companionActions}
+          assetId={asset.id}
+          title={title}
+          source={
+            linked && doc.arxiv
+              ? { kind: "arxiv", id: doc.arxiv.id, version: doc.arxiv.version }
+              : { kind: "stored", url: `/api/library/assets/${asset.id}/file` }
+          }
+          initialPage={startPage}
+          pageRequested={requested !== null}
+          // ?page=N chooses the page and opens at its top; otherwise the remembered place inside the page.
+          initialPosition={requested === null ? (doc.position?.position ?? null) : null}
+          headings={toc.map((entry) => ({ physicalIndex: entry.physicalIndex, printedLabel: entry.printedLabel, heading: entry.heading }))}
+          backHref={backHref}
+          backLabel={backLabel}
+          textHref={textAvailable ? `/library/read/${asset.id}?view=text` : null}
+          info={info}
+          annotations={annotations}
+          notice={errorNotice(query.error)}
+          actions={{
+            markOpened: markOpenedAction,
+            reportObservedHash: reportObservedHashAction,
+            keepNotesOnNewFile: keepNotesOnNewFileAction,
+            openArxivVersion: openArxivVersionAction,
+          }}
+        />
+      </>
     );
   }
 
@@ -238,7 +299,10 @@ export default async function ReadPage({
               ) : (
                 <Badge tone="neutral">no printed label</Badge>
               )}
-              <Link href={`/library/items/${asset.id}`} className="text-brass underline underline-offset-4">
+              <Link
+                href={`/library/items/${asset.id}`}
+                className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+              >
                 item page
               </Link>
             </div>

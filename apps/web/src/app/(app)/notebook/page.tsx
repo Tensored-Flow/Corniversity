@@ -14,6 +14,8 @@ import { excerpt, KIND_LABEL, KIND_OPTIONS, KindBadge } from "./shared";
 export const metadata = { title: "Notebook" };
 
 const KINDS = Object.keys(KIND_LABEL) as NotebookKind[];
+/** A filter link in the side navigation: at least 24 px high, so a finger can hit it on a phone (WCAG 2.5.8). */
+const FILTER_LINK = "inline-block min-w-6 py-0.5";
 
 /**
  * The notebook: every durable thought the learner keeps (definitions, theorems, examples, proof
@@ -160,59 +162,79 @@ export default async function NotebookPage({
               </div>
             </form>
           </Card>
-          <Card as="nav" aria-label="Kinds">
-            <h2 className="text-sm font-medium text-ink">Kind</h2>
-            <ul className="mt-2 flex flex-col gap-1 text-sm">
-              <li>
-                <Link href={filterHref({ kind: undefined, q: undefined })} className={!kind ? "text-ink" : "text-ink-2 hover:text-ink"}>
-                  All
-                </Link>
-              </li>
-              {KINDS.map((k) => (
-                <li key={k}>
-                  <Link href={filterHref({ kind: k, q: undefined })} className={kind === k ? "text-ink" : "text-ink-2 hover:text-ink"}>
-                    {KIND_LABEL[k].label}
+          {/* The named element wraps the Card (Card does not pass aria attributes on), so each landmark has its name. */}
+          <nav aria-label="Kinds">
+            <Card as="div">
+              <h2 className="text-sm font-medium text-ink">Kind</h2>
+              <ul className="mt-2 flex flex-col gap-1 text-sm">
+                <li>
+                  <Link
+                    href={filterHref({ kind: undefined, q: undefined })}
+                    aria-current={!kind ? "page" : undefined}
+                    className={[FILTER_LINK, !kind ? "font-medium text-ink" : "text-ink-2 hover:text-ink"].join(" ")}
+                  >
+                    All
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </Card>
-          {tags.length ? (
-            <Card as="nav" aria-label="Tags">
-              <h2 className="text-sm font-medium text-ink">Tags</h2>
-              <ul className="mt-2 flex flex-wrap gap-1">
-                {tags.map((t) => (
-                  <li key={t.tag}>
+                {KINDS.map((k) => (
+                  <li key={k}>
                     <Link
-                      href={filterHref({ tag: params.tag === t.tag ? undefined : t.tag, q: undefined })}
-                      className={[
-                        "rounded-full border px-2 py-0.5 text-xs",
-                        params.tag === t.tag ? "border-brass bg-brass-soft text-brass-strong" : "border-stone text-ink-2 hover:text-ink",
-                      ].join(" ")}
+                      href={filterHref({ kind: k, q: undefined })}
+                      aria-current={kind === k ? "page" : undefined}
+                      className={[FILTER_LINK, kind === k ? "font-medium text-ink" : "text-ink-2 hover:text-ink"].join(" ")}
                     >
-                      {t.tag} <span className="text-ink-3">{t.count}</span>
+                      {KIND_LABEL[k].label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </Card>
+          </nav>
+          {tags.length ? (
+            <nav aria-label="Tags">
+              <Card as="div">
+                <h2 className="text-sm font-medium text-ink">Tags</h2>
+                <ul className="mt-2 flex flex-wrap gap-1">
+                  {tags.map((t) => (
+                    <li key={t.tag}>
+                      <Link
+                        href={filterHref({ tag: params.tag === t.tag ? undefined : t.tag, q: undefined })}
+                        aria-current={params.tag === t.tag ? "page" : undefined}
+                        className={[
+                          "inline-flex min-h-6 items-center gap-1 rounded-full border px-2 py-0.5 text-xs",
+                          params.tag === t.tag ? "border-brass bg-brass-soft text-brass-strong" : "border-stone text-ink-2 hover:text-ink",
+                        ].join(" ")}
+                      >
+                        {t.tag}
+                        <span className="text-ink-3">{t.count}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </nav>
           ) : null}
           {enrolments.length ? (
-            <Card as="nav" aria-label="Courses">
-              <h2 className="text-sm font-medium text-ink">Course</h2>
-              <ul className="mt-2 flex flex-col gap-1 text-sm">
-                {enrolments.map((e) => (
-                  <li key={e.enrolment.id}>
-                    <Link
-                      href={filterHref({ course: params.course === e.course.id ? undefined : e.course.id, q: undefined })}
-                      className={params.course === e.course.id ? "text-ink" : "text-ink-2 hover:text-ink"}
-                    >
-                      <span className="font-mono text-xs text-ink-3">{e.course.id}</span> {e.course.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            <nav aria-label="Courses">
+              <Card as="div">
+                <h2 className="text-sm font-medium text-ink">Course</h2>
+                <ul className="mt-2 flex flex-col gap-1 text-sm">
+                  {enrolments.map((e) => (
+                    <li key={e.enrolment.id}>
+                      <Link
+                        href={filterHref({ course: params.course === e.course.id ? undefined : e.course.id, q: undefined })}
+                        aria-current={params.course === e.course.id ? "page" : undefined}
+                        className={[FILTER_LINK, params.course === e.course.id ? "font-medium text-ink" : "text-ink-2 hover:text-ink"].join(
+                          " ",
+                        )}
+                      >
+                        <span className="font-mono text-xs text-ink-3">{e.course.id}</span> {e.course.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </nav>
           ) : null}
         </aside>
 
@@ -272,7 +294,7 @@ export default async function NotebookPage({
                   <Card key={e.id} as="li">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <h3 className="text-base text-ink">
-                        <Link href={`/notebook/${e.id}`} className="hover:underline">
+                        <Link href={`/notebook/${e.id}`} className="inline-flex min-h-6 items-center hover:underline">
                           {e.title}
                         </Link>
                       </h3>
@@ -364,8 +386,9 @@ export default async function NotebookPage({
                 </Select>
               </Field>
               <div className="sm:col-span-2">
-                <Field label="Body (Markdown with LaTeX)" htmlFor="nb-body">
-                  <Textarea id="nb-body" name="body" rows={8} />
+                {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
+                <Field label="Body (Markdown with LaTeX)" htmlFor="nb-body" hint="Up to 50,000 characters.">
+                  <Textarea id="nb-body" name="body" rows={8} maxLength={50_000} />
                 </Field>
               </div>
               <div className="sm:col-span-2">

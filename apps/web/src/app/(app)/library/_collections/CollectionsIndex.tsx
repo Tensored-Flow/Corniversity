@@ -49,7 +49,7 @@ export async function CollectionsIndex({
                 <Card as="li" key={c.id}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2 [overflow-wrap:anywhere]">
                     <h3 className="min-w-0 text-lg text-ink">
-                      <Link href={`${text.path}/${c.id}`} className="hover:underline">
+                      <Link href={`${text.path}/${c.id}`} className="inline-block py-0.5 hover:underline">
                         {c.name}
                       </Link>
                     </h3>

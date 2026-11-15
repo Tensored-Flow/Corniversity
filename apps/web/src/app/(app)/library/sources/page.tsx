@@ -95,7 +95,7 @@ export default async function SourcesPage({ searchParams }: { searchParams: Prom
               </dl>
               {entry.version.limitations.length ? (
                 <details className="mt-3 text-sm">
-                  <summary className="cursor-pointer text-ink-2">Limitations recorded ({entry.version.limitations.length})</summary>
+                  <summary className="cursor-pointer py-0.5 text-ink-2">Limitations recorded ({entry.version.limitations.length})</summary>
                   <ul className="mt-1 list-disc pl-5 text-ink-2">
                     {entry.version.limitations.map((l) => (
                       <li key={l}>{l}</li>
