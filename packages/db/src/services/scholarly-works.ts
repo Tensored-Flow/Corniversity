@@ -8,6 +8,7 @@ import {
   identifierLockKeys,
   isArxivDoi,
   linkedDocumentKey,
+  normaliseDoi,
   normaliseIdentifier,
   type PermissionGrant,
   parseArxivId,
@@ -147,6 +148,21 @@ export async function resolveWorkId(db: DbOrTx, ownerId: string, workId: string)
   return null;
 }
 
+/**
+ * Which of these ids name a paper of the owner's that still exists (a merged one counts: its page
+ * opens the paper it was merged into). Ids that are not UUIDs, another owner's and deleted papers'
+ * are left out. For the Jobs page, which links a job's paper only while there is one.
+ */
+export async function existingWorkIds(db: DbOrTx, ownerId: string, workIds: readonly string[]): Promise<Set<string>> {
+  const ids = [...new Set(workIds.filter(isUuid))];
+  if (ids.length === 0) return new Set();
+  const rows = await db
+    .select({ id: scholarlyWork.id })
+    .from(scholarlyWork)
+    .where(and(eq(scholarlyWork.ownerId, ownerId), inArray(scholarlyWork.id, ids)));
+  return new Set(rows.map((r) => r.id));
+}
+
 async function requireWork(db: DbOrTx, ownerId: string, workId: string): Promise<WorkRow> {
   const id = await resolveWorkId(db, ownerId, workId);
   if (!id) throw new ScholarlyError("not_found", "Paper not found.");
@@ -221,7 +237,8 @@ export function workIdFor(index: ReadonlyMap<string, string>, ref: IdentifierRef
 
 export type ResolvedInput =
   | { kind: "empty" }
-  | { kind: "search"; query: string; host: string | null }
+  /** `invalidDoi`: shaped like a DOI but not a valid one, so Find searches nothing (core `recogniseInput`). */
+  | { kind: "search"; query: string; host: string | null; invalidDoi?: true }
   | { kind: "identifier"; ref: IdentifierRef; arxivVersion: number | null; host: string | null; workId: string | null };
 
 /**
@@ -232,7 +249,8 @@ export type ResolvedInput =
 export async function resolveInput(db: DbOrTx, ownerId: string, raw: unknown): Promise<ResolvedInput> {
   const input: RecognisedInput = recogniseInput(raw);
   if (input.kind === "empty") return { kind: "empty" };
-  if (input.kind === "search") return { kind: "search", query: input.query, host: input.host };
+  if (input.kind === "search")
+    return { kind: "search", query: input.query, host: input.host, ...(input.invalidDoi ? { invalidDoi: true as const } : {}) };
   let ref: IdentifierRef;
   let arxivVersion: number | null = null;
   if (input.kind === "doi") {
@@ -969,9 +987,63 @@ export interface WorkEdit {
   workType?: string | null;
 }
 
-/** The owner's corrections; each edited field is recorded in `owner_edited_fields` so no refresh overwrites it. */
-export async function editWorkFields(db: DbOrTx, ownerId: string, workId: string, edit: WorkEdit): Promise<WorkRow> {
-  const work = await requireWork(db, ownerId, workId);
+const EDIT_CONFLICT =
+  "These details changed after you opened the form, so nothing was saved. The page now shows them; make your correction again.";
+
+type EditField = keyof WorkEdit;
+
+/** A field as the edit form shows it, so what a form showed can be compared with what is stored now. */
+function shownValue(work: WorkRow, field: EditField): string {
+  switch (field) {
+    case "title":
+      return (work.title ?? "").trim();
+    case "authors":
+      return work.authors.map((a) => a.name.trim()).join("\n");
+    case "abstract":
+      return (work.abstract ?? "").trim();
+    case "publicationYear":
+      return work.publicationYear === null ? "" : String(work.publicationYear);
+    case "venue":
+      return (work.venue ?? "").trim();
+    case "workType":
+      return (work.workType ?? "").trim();
+  }
+}
+
+/** The same canonical form for a value a form sent (or showed). */
+function formValue(values: WorkEdit, field: EditField): string {
+  const value = values[field];
+  if (field === "authors")
+    return ((value as string[] | undefined) ?? [])
+      .map((name) => name.trim())
+      .filter(Boolean)
+      .join("\n");
+  if (field === "publicationYear") return value === null || value === undefined ? "" : String(value);
+  return typeof value === "string" ? value.trim() : "";
+}
+
+/**
+ * The owner's corrections; each edited field is recorded in `owner_edited_fields` so no refresh
+ * overwrites it. With `expected` (what the form showed for each edited field), a field changed
+ * meanwhile (another tab, or the worker's arXiv record arriving while the form was open) refuses the
+ * whole edit and nothing is written: a stale form never overwrites newer details. Fields the form
+ * did not change are not in `edit` and are never touched.
+ */
+export async function editWorkFields(db: DbOrTx, ownerId: string, workId: string, edit: WorkEdit, expected?: WorkEdit): Promise<WorkRow> {
+  const found = await requireWork(db, ownerId, workId);
+  return db.transaction(async (tx) => {
+    const [work] = await tx.select().from(scholarlyWork).where(eq(scholarlyWork.id, found.id)).for("update");
+    if (!work) throw new ScholarlyError("not_found", "Paper not found.");
+    if (expected) {
+      const edited = (Object.keys(edit) as EditField[]).filter((field) => edit[field] !== undefined);
+      if (edited.some((field) => field in expected && formValue(expected, field) !== shownValue(work, field)))
+        throw new ScholarlyError("conflict", EDIT_CONFLICT);
+    }
+    return applyWorkEdit(tx, ownerId, work, edit);
+  });
+}
+
+async function applyWorkEdit(db: DbOrTx, ownerId: string, work: WorkRow, edit: WorkEdit): Promise<WorkRow> {
   const patch: Partial<typeof scholarlyWork.$inferInsert> = {};
   const fields = new Set<ScholarlyField>(work.ownerEditedFields);
   const stamp = { source: "owner" as const, retrievedAt: new Date().toISOString() };
@@ -1054,6 +1126,11 @@ export interface WorkDetail {
   arxivJob: { status: string; error: string | null; createdAt: Date } | null;
   /** The latest private-copy and extraction job of each live Document (the page refreshes while one runs). */
   documentJobs: DocumentJob[];
+  /**
+   * The latest Crossref check for corrections and retractions (a `scholarly-refresh` job): its status,
+   * its error (a registered sentence or the job's text), and the DOIs fixture mode had no recording for.
+   */
+  integrityJob: { status: string; error: string | null; unrecorded: string[]; createdAt: Date } | null;
 }
 
 export interface DocumentJob {
@@ -1076,7 +1153,7 @@ export async function getWork(db: DbOrTx, ownerId: string, workId: string): Prom
     .where(and(eq(scholarlyWork.id, workId), eq(scholarlyWork.ownerId, ownerId)))
     .limit(1);
   if (!work) return null;
-  const [identifiers, versions, job] = await Promise.all([
+  const [identifiers, versions, job, refresh] = await Promise.all([
     db
       .select()
       .from(scholarlyIdentifier)
@@ -1092,6 +1169,18 @@ export async function getWork(db: DbOrTx, ownerId: string, workId: string): Prom
       .from(jobRecord)
       .where(
         and(eq(jobRecord.ownerId, ownerId), eq(jobRecord.queue, QUEUES.scholarlyArxiv), sql`${jobRecord.payload}->>'workId' = ${work.id}`),
+      )
+      .orderBy(desc(jobRecord.createdAt))
+      .limit(1),
+    db
+      .select({ status: jobRecord.status, error: jobRecord.error, result: jobRecord.result, createdAt: jobRecord.createdAt })
+      .from(jobRecord)
+      .where(
+        and(
+          eq(jobRecord.ownerId, ownerId),
+          eq(jobRecord.queue, QUEUES.scholarlyRefresh),
+          sql`${jobRecord.payload}->>'workId' = ${work.id}`,
+        ),
       )
       .orderBy(desc(jobRecord.createdAt))
       .limit(1),
@@ -1149,7 +1238,30 @@ export async function getWork(db: DbOrTx, ownerId: string, workId: string): Prom
     if (!kind || documentJobs.some((d) => d.assetId === j.assetId && d.kind === kind)) continue;
     documentJobs.push({ assetId: j.assetId, kind, status: j.status, error: j.error, createdAt: j.createdAt });
   }
-  return { work, identifiers, versions, documents, integrityNotices: work.integrityNotices, arxivJob: job[0] ?? null, documentJobs };
+  const integrityJob = refresh[0]
+    ? {
+        status: refresh[0].status,
+        error: refresh[0].error,
+        unrecorded: unrecordedDois(refresh[0].result),
+        createdAt: refresh[0].createdAt,
+      }
+    : null;
+  return {
+    work,
+    identifiers,
+    versions,
+    documents,
+    integrityNotices: work.integrityNotices,
+    arxivJob: job[0] ?? null,
+    documentJobs,
+    integrityJob,
+  };
+}
+
+/** The DOIs a finished integrity check could not check in fixture mode (its job's result), each a valid DOI. */
+function unrecordedDois(result: unknown): string[] {
+  const list = result && typeof result === "object" ? (result as { unrecorded?: unknown }).unrecorded : undefined;
+  return Array.isArray(list) ? list.filter((d): d is string => typeof d === "string" && normaliseDoi(d) === d).slice(0, 5) : [];
 }
 
 /**
@@ -1418,10 +1530,13 @@ export async function recordObservedHash(
 }
 
 /**
- * The owner keeps their notes on arXiv's changed file: accepted only when the page count (when
- * known) and the page view of every annotated page are unchanged; then the new hash is stored and
- * the anchored annotations are drawable again, each taking the Document's key (notes made on an
- * earlier stored copy included). Otherwise they are marked for repair.
+ * The owner keeps their notes on arXiv's changed file. The check covers the resolved anchors that
+ * were not measured on the new bytes (`observedSha256`): accepted only when the page count (when
+ * known) and the page view of each of their pages are unchanged. Then the new hash is stored, and
+ * those anchors and the ones measured on the new bytes take the Document's key (notes made on an
+ * earlier stored copy included). Refused, only the checked anchors are marked for repair. Anchors
+ * already marked for repair are neither checked nor changed, so one note on a changed page never
+ * blocks keeping the others, and nothing unchecked is declared drawable.
  */
 export async function acceptNewFile(
   db: DbOrTx,
@@ -1441,11 +1556,14 @@ export async function acceptNewFile(
     throw new ScholarlyError("invalid_state", "The reported page geometry is not valid.");
   const asset = await requireLinked(db, ownerId, assetId);
   const anchored = await db
-    .select({ id: annotation.id, anchor: annotation.anchor })
+    .select({ id: annotation.id, anchor: annotation.anchor, mappingStatus: annotation.mappingStatus })
     .from(annotation)
     .where(and(eq(annotation.ownerId, ownerId), eq(annotation.assetId, asset.id), isNotNull(annotation.anchor)));
+  // Checked: drawn as resolved and measured on another file. Measured on the new bytes: already on it.
+  const checked = anchored.filter((a) => a.mappingStatus === "resolved" && a.anchor!.documentSha256 !== input.observedSha256);
+  const onNewBytes = anchored.filter((a) => a.anchor!.documentSha256 === input.observedSha256);
   const drift = checkDrift({
-    anchors: anchored.map((a) => ({ pageIndex: a.anchor!.pageIndex, pageView: a.anchor!.pageView })),
+    anchors: checked.map((a) => ({ pageIndex: a.anchor!.pageIndex, pageView: a.anchor!.pageView })),
     pageCount: input.pageCount,
     pageViews: input.pageViews,
     previousPageCount: asset.pageCount,
@@ -1457,28 +1575,23 @@ export async function acceptNewFile(
         .update(resourceAsset)
         .set({ observedSha256: input.observedSha256, observedAt: new Date(), pageCount: input.pageCount })
         .where(eq(resourceAsset.id, asset.id));
-      if (anchored.length)
+      const rekeyed = [...checked, ...onNewBytes].map((a) => a.id);
+      if (rekeyed.length)
         await tx
           .update(annotation)
           .set({
-            mappingStatus: "resolved",
             anchor: sql`jsonb_set(${annotation.anchor}, '{documentSha256}', to_jsonb(${asset.sha256}::text))`,
             updatedAt: keep,
           })
-          .where(
-            inArray(
-              annotation.id,
-              anchored.map((a) => a.id),
-            ),
-          );
-    } else if (anchored.length) {
+          .where(inArray(annotation.id, rekeyed));
+    } else if (checked.length) {
       await tx
         .update(annotation)
         .set({ mappingStatus: "needs_repair", updatedAt: keep })
         .where(
           inArray(
             annotation.id,
-            anchored.map((a) => a.id),
+            checked.map((a) => a.id),
           ),
         );
     }
@@ -2165,14 +2278,16 @@ export async function refreshWork(
  * Checks Crossref for corrections, retractions and expressions of concern on the work's DOIs
  * (arXiv DOIs are DataCite's and not covered). Crossref's notices replace earlier Crossref and
  * Retraction Watch notices for the DOIs checked; a DOI Crossref does not know counts as checked
- * with no notices. A provider failure changes nothing.
+ * with no notices. In fixture mode a DOI with no recorded Crossref response is `unrecorded`: it is
+ * not checked, its earlier notices stay, and the work is not marked checked (nothing is invented
+ * for it). A provider failure changes nothing.
  */
 export async function refreshIntegrity(
   db: DbOrTx,
   ownerId: string,
   client: ScholarlyClient,
   workId: string,
-): Promise<{ checked: string[]; notices: number }> {
+): Promise<{ checked: string[]; notices: number; unrecorded: string[] }> {
   const work = await requireWork(db, ownerId, workId);
   const dois = (
     await db
@@ -2184,18 +2299,25 @@ export async function refreshIntegrity(
     .filter((doi) => !isArxivDoi(doi))
     .slice(0, 5);
   const incoming: IntegrityNotice[] = [];
+  const checked: string[] = [];
+  const unrecorded: string[] = [];
   for (const doi of dois) {
     try {
       const crossref = await client.crossrefWork(doi, { cache: "refresh" });
       incoming.push(...crossref.integrityNotices);
+      checked.push(doi);
     } catch (error) {
-      if (error instanceof ScholarlyProviderError && error.code === "not_found") continue;
-      providerFailure(error);
+      if (error instanceof ScholarlyProviderError && error.code === "not_found") checked.push(doi);
+      else if (error instanceof ScholarlyProviderError && error.code === "fixture_missing") unrecorded.push(doi);
+      else providerFailure(error);
     }
   }
-  const notices = mergeNotices(work.integrityNotices, incoming, ["crossref", "retraction-watch"], new Set(dois));
-  await db.update(scholarlyWork).set({ integrityNotices: notices, integrityCheckedAt: new Date() }).where(eq(scholarlyWork.id, work.id));
-  return { checked: dois, notices: incoming.length };
+  const notices = mergeNotices(work.integrityNotices, incoming, ["crossref", "retraction-watch"], new Set(checked));
+  await db
+    .update(scholarlyWork)
+    .set({ integrityNotices: notices, ...(unrecorded.length ? {} : { integrityCheckedAt: new Date() }) })
+    .where(eq(scholarlyWork.id, work.id));
+  return { checked, notices: incoming.length, unrecorded };
 }
 
 /**

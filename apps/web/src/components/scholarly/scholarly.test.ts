@@ -9,8 +9,11 @@ import {
   listCountSentence,
   locationLabel,
   previewHref,
+  readElsewhereNote,
+  rejectionText,
   reportedBy,
   resetSentence,
+  resultsSummary,
   showMoreLabel,
   typeLabel,
 } from "./format";
@@ -154,5 +157,78 @@ describe("provenance said once", () => {
     expect(sameStamp(later, common)).toBe(true);
     expect(sameStamp(owner, common)).toBe(false);
     expect(commonStamp({ stamps: {}, abstract: null })).toBeNull();
+  });
+});
+
+/**
+ * Find's line above OpenAlex's results. Past the last page, and no papers at all, are tested here
+ * with page data written for the test (no fixture recording holds a page past OpenAlex's last; none
+ * is invented), and the service's page arithmetic in paper-lists.test.ts.
+ */
+describe("Find's results line (test-only page data)", () => {
+  const base = { perPage: 25, lastPage: 400, count: 12_345 as number | null };
+  it("states the results shown and OpenAlex's count", () => {
+    expect(resultsSummary({ ...base, page: 2, shown: 25 })).toEqual({ line: "Results 26–50 of 12,345 according to OpenAlex", goTo: null });
+    expect(resultsSummary({ ...base, count: null, page: 1, shown: 3 })).toEqual({ line: "Results 1–3 according to OpenAlex", goTo: null });
+  });
+
+  it("past the last page says the page is empty while OpenAlex still counts results, and offers the last page", () => {
+    expect(resultsSummary({ ...base, count: 30, lastPage: 2, page: 5, shown: 0 })).toEqual({
+      line: "No results on page 5; OpenAlex counts 30 for these words and filters.",
+      goTo: 2,
+    });
+    // A count that changed between cached pages: the page before this one.
+    expect(resultsSummary({ ...base, count: 60, lastPage: 3, page: 3, shown: 0 })).toEqual({
+      line: "No results on page 3; OpenAlex counts 60 for these words and filters.",
+      goTo: 2,
+    });
+    // No count: the first page.
+    expect(resultsSummary({ ...base, count: null, lastPage: 4, page: 4, shown: 0 })).toEqual({ line: "No results on page 4.", goTo: 1 });
+  });
+
+  it("says OpenAlex found no papers only when it counts none", () => {
+    expect(resultsSummary({ ...base, count: 0, lastPage: 1, page: 1, shown: 0 })).toEqual({
+      line: "OpenAlex found no papers for these words and filters.",
+      goTo: null,
+    });
+    expect(resultsSummary({ ...base, count: null, lastPage: 1, page: 1, shown: 0 }).line).toBe(
+      "OpenAlex found no papers for these words and filters.",
+    );
+  });
+});
+
+describe("states the paper page names", () => {
+  it("a rejected file says why in the page's own words, never the parser's message", () => {
+    expect(rejectionText("The PDF could not be parsed: Invalid PDF structure.")).toEqual({
+      text: "This file could not be read as a PDF, so its text was not extracted.",
+      next: "Remove this file under Permissions and removal, then attach a copy that opens.",
+    });
+    expect(rejectionText("stored bytes missing").text).toBe("This file's stored bytes are missing, so its text could not be extracted.");
+    expect(rejectionText(null).text).toBe("This file could not be processed; the Jobs page has the details.");
+    expect(JSON.stringify(rejectionText("<script>"))).not.toContain("<script>");
+  });
+
+  it("a readable PDF that is too long or has a password is not called unreadable, nor told to be replaced by one that opens", () => {
+    // The worker's reasons (apps/worker/src/handlers/ingest.ts; pdf.js's PasswordException message).
+    const long = rejectionText("The PDF could not be parsed: 2500 pages exceeds the 2000-page limit");
+    expect(long.text).toBe("This PDF has 2,500 pages, more than the 2,000 whose text is extracted here, so its text was not extracted.");
+    expect(long.next).not.toContain("a copy that opens");
+    const locked = rejectionText("The PDF could not be parsed: No password given");
+    expect(locked.text).toBe("This PDF is protected by a password, so its text was not extracted.");
+    expect(locked.next).toBe("Remove this file under Permissions and removal, then attach a copy without a password.");
+  });
+
+  it("where a paper with no file here can be read: never an empty block", () => {
+    expect(readElsewhereNote({ record: true, openCopy: false, publisher: true, failed: false })).toBe(
+      "OpenAlex reports no free-to-read copy.",
+    );
+    expect(readElsewhereNote({ record: true, openCopy: true, publisher: true, failed: false })).toBeNull();
+    // An unidentified paper whose file was removed: no record, no failure, no publisher link.
+    expect(readElsewhereNote({ record: false, openCopy: false, publisher: false, failed: false })).toBe(
+      "No file of this paper can be read here, and it has no identifier a provider can look up, so where it can be read is not known.",
+    );
+    // A failure says itself; a publisher link is something to follow.
+    expect(readElsewhereNote({ record: false, openCopy: false, publisher: false, failed: true })).toBeNull();
+    expect(readElsewhereNote({ record: false, openCopy: false, publisher: true, failed: false })).toBeNull();
   });
 });

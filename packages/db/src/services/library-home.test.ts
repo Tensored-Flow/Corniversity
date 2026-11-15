@@ -9,8 +9,10 @@ import { createDb } from "../client";
 import { user } from "../schema/auth";
 import { readingProgress, resourceAsset } from "../schema/library";
 import { scholarlyVersion, scholarlyWork } from "../schema/scholarly";
-import { markDocumentOpened, receiveUpload, saveReadingPosition } from "./library";
+import { listStoredAssets, markDocumentOpened, readingNotesPage, receiveUpload, saveReadingPosition } from "./library";
+import { listCollections } from "./library-collections";
 import { continueReading, documentsForWorks } from "./library-home";
+import { listWorks, searchMyLibrary } from "./scholarly-works";
 
 /** The Library home's reads: Continue reading (at most three, newest first, with the page) and the Documents of listed papers. */
 const OTHER = "home-test-other";
@@ -123,5 +125,21 @@ describe("continue reading", () => {
     expect(await documentsForWorks(handle.db, OTHER, [work.id])).toEqual([]);
     expect(await continueReading(handle.db, OTHER)).toEqual([]);
     expect(await documentsForWorks(handle.db, owner, [])).toEqual([]);
+  });
+});
+
+describe("a new owner's empty library", () => {
+  it("every list the home reads is empty, nothing is invented, and another owner's papers never appear", async () => {
+    const fresh = `home-empty-${randomUUID().slice(0, 8)}`;
+    await handle.db.insert(user).values({ id: fresh, name: "Empty", email: `${fresh}@example.test` });
+    // The other owner of this file has papers and opened files; none of them reach the new owner.
+    expect(await continueReading(handle.db, fresh)).toEqual([]);
+    for (const view of ["saved", "read_later", "favourites", "read", "recent"] as const)
+      expect(await listWorks(handle.db, fresh, view, { limit: 21 }), view).toEqual([]);
+    expect(await listCollections(handle.db, fresh)).toEqual([]);
+    expect(await listStoredAssets(handle.db, fresh)).toEqual([]);
+    expect(await documentsForWorks(handle.db, fresh, [])).toEqual([]);
+    expect(await searchMyLibrary(handle.db, fresh, "anything")).toEqual([]);
+    expect(await readingNotesPage(handle.db, fresh)).toEqual({ notes: [], nextOffset: null });
   });
 });

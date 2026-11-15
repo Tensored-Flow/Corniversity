@@ -1,6 +1,12 @@
 "use server";
 import { deleteAsset, LibraryError, type ProcessingAction, requestIngestion, setPermission } from "@corniversity/db/services/library";
-import { addToCollection, CollectionError, createCollection, removeFromCollection } from "@corniversity/db/services/library-collections";
+import {
+  addToCollection,
+  CollectionError,
+  collectionsForWork,
+  createCollection,
+  removeFromCollection,
+} from "@corniversity/db/services/library-collections";
 import {
   deleteWorkCompletely,
   editWorkFields,
@@ -12,19 +18,20 @@ import {
   saveWork,
   setWorkFlags,
   unsaveWork,
-  type WorkEdit,
 } from "@corniversity/db/services/scholarly-works";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
-import { errorCode, errorHref } from "@/lib/notices";
+import { errorCode, placed } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
+import { editFormValues, workEditFromForm } from "./edit-form";
 
 /**
  * The paper page's actions. Each takes the session's owner, validates ids, lets the service check
  * ownership, and returns to the paper page with a registered notice code (never a message) on a
- * refusal. Files arrive through /api/library/papers/[workId]/attach instead (no 1 MB action limit).
+ * refusal. A form returns to its own section (`#…`, named again as `at=`), where the page shows its
+ * notice. Files arrive through /api/library/papers/[workId]/attach instead (no 1 MB action limit).
  */
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -40,10 +47,9 @@ const PERMISSION_ACTIONS: readonly ProcessingAction[] = [
 const text = (form: FormData, key: string): string => String(form.get(key) ?? "").trim();
 const paper = (workId: string, query = "", hash = "") => `/library/papers/${workId}${query ? `?${query}` : ""}${hash}`;
 
-/** A refusal's return address: the registered code goes into the query, before any #fragment of `back`. */
+/** A refusal's return address: the registered code goes into the query, and the #fragment of `back` names where it is shown. */
 function errorTo(back: string, message: string): string {
-  const at = back.indexOf("#");
-  return at < 0 ? errorHref(back, errorCode(message)) : errorHref(back.slice(0, at), errorCode(message), back.slice(at));
+  return placed(back, `error=${errorCode(message)}`);
 }
 
 /** The work id the form names (a UUID), or back to Find papers. */
@@ -79,10 +85,11 @@ async function requirePaperFile(ownerId: string, workId: string, assetId: string
     redirect(errorTo(back, "Asset not found."));
 }
 
+/** Back to the paper page with its confirmation; `hash` names the section the notice is shown in. */
 function done(workId: string, saved: string, hash = ""): never {
   revalidatePath(paper(workId));
   revalidatePath("/library");
-  redirect(paper(workId, `saved=${saved}`, hash));
+  redirect(placed(paper(workId, "", hash), `saved=${saved}`));
 }
 
 /** Favourite, read later and read: each a toggle with the value it sets. */
@@ -110,41 +117,46 @@ export async function saveAgainAction(form: FormData): Promise<void> {
   done(workId, "saved");
 }
 
-/** The owner's corrections: only fields that differ from what is shown are recorded as edited. */
+/**
+ * The owner's corrections. Only the fields changed in this form (against the values it showed,
+ * which travel as `shown_*`) become owner edits, and the service refuses them if one of those
+ * fields changed meanwhile, so an open form never blanks or reverts details that arrived since.
+ * A form without the shown values (an older page) is compared with the stored values instead.
+ */
 export async function editFieldsAction(form: FormData): Promise<void> {
   const { ownerId, workId } = await owned(form);
   const back = paper(workId, "", "#edit");
+  const submitted = editFormValues(form);
+  if (form.has("shown_title")) {
+    const { edit, expected } = workEditFromForm(submitted, editFormValues(form, "shown_"));
+    await attempt(back, () => editWorkFields(db(), ownerId, workId, edit, expected));
+    done(workId, "edited", "#edit");
+  }
   const detail = await getWork(db(), ownerId, workId);
   if (!detail) redirect("/library/find");
   const { work } = detail;
-  const edit: WorkEdit = {};
-  const title = text(form, "title");
-  if (title !== (work.title ?? "")) edit.title = title;
-  const authors = text(form, "authors")
-    .split(/\r?\n/)
-    .map((a) => a.trim())
-    .filter(Boolean);
-  if (authors.join("\n") !== work.authors.map((a) => a.name).join("\n")) edit.authors = authors;
-  const abstract = String(form.get("abstract") ?? "").trim();
-  if (abstract !== (work.abstract ?? "").trim()) edit.abstract = abstract || null;
-  const yearText = text(form, "year");
-  const year = yearText === "" ? null : /^\d{1,4}$/.test(yearText) ? Number(yearText) : Number.NaN;
-  if (year !== work.publicationYear) edit.publicationYear = year;
-  const venue = text(form, "venue");
-  if (venue !== (work.venue ?? "")) edit.venue = venue || null;
-  const workType = text(form, "workType");
-  if (workType !== (work.workType ?? "")) edit.workType = workType || null;
+  const stored = {
+    title: work.title ?? "",
+    authors: work.authors.map((a) => a.name).join("\n"),
+    abstract: work.abstract ?? "",
+    year: work.publicationYear === null ? "" : String(work.publicationYear),
+    venue: work.venue ?? "",
+    workType: work.workType ?? "",
+  };
+  const { edit } = workEditFromForm(submitted, stored);
   await attempt(back, () => editWorkFields(db(), ownerId, workId, edit));
-  done(workId, "edited");
+  done(workId, "edited", "#edit");
 }
 
-/** *Read* on an arXiv version: its Document (linked to arxiv.org, or the stored copy), then the reader. */
+/**
+ * *Read* on an arXiv version: its Document (linked to arxiv.org, or the stored copy), then the
+ * reader. A refusal returns to the form it came from (the Read block or the version's row).
+ */
 export async function readArxivAction(form: FormData): Promise<void> {
   const { ownerId, workId } = await owned(form);
   const version = Number(text(form, "version"));
-  const asset = await attempt(paper(workId, "", "#versions"), () =>
-    openArxivVersion(db(), ownerId, workId, text(form, "arxivId"), version),
-  );
+  const back = paper(workId, "", text(form, "from") === "read" ? "#read" : "#versions");
+  const asset = await attempt(back, () => openArxivVersion(db(), ownerId, workId, text(form, "arxivId"), version));
   redirect(`/library/read/${asset.id}`);
 }
 
@@ -257,11 +269,21 @@ export async function createCollectionAction(form: FormData): Promise<void> {
   done(workId, "collection", "#collections");
 }
 
+/**
+ * Takes the paper off a shelf or trail (the paper, its notes and files stay). When a note or a
+ * step's reason is written there, the row asks first, as the shelf and trail pages do, because that
+ * text goes with the paper's place: only a form carrying `confirm=1` removes it.
+ */
 export async function removeFromCollectionAction(form: FormData): Promise<void> {
   const { ownerId, workId } = await owned(form);
   const back = paper(workId, "", "#collections");
   const collectionId = text(form, "collectionId");
   if (!UUID.test(collectionId)) redirect(back);
+  if (form.get("confirm") !== "1") {
+    const memberships = await collectionsForWork(db(), ownerId, workId);
+    if (memberships.some((m) => m.id === collectionId && m.reason))
+      redirect(placed(paper(workId, "", `#collection-${collectionId}`), `remove=${collectionId}`));
+  }
   const removed = await attempt(back, () => removeFromCollection(db(), ownerId, collectionId, workId));
   // The note (a trail step's reason) written there goes with the paper's place; the notice says so.
   done(workId, removed.reason ? "collection-removed-note" : "collection-removed", "#collections");

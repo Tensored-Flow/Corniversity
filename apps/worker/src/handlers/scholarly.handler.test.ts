@@ -229,15 +229,30 @@ describe("scholarly-arxiv jobs", () => {
 });
 
 describe("scholarly-refresh jobs", () => {
-  it("refreshes a work and its integrity notices; a missing recording fails without retries", async () => {
+  it("refreshes a work and its integrity notices; a DOI with no recorded Crossref answer is reported, never invented", async () => {
     const imported = await importByIdentifier(handle.db, OWNER, fixture, { scheme: "doi", value: "10.7717/peerj.4375" });
     const gate = new ArxivGate(fakeClock().clock);
-    // The fixture has no recording of the W lookup a refresh makes: unavailable, never retried.
-    const error = await scholarlyRefreshHandler(context(fixture, gate), {
+    // Crossref's answers for the paper's two Zenodo DOIs were never recorded: the job completes, checks the
+    // recorded PeerJ DOI, names the other two as unchecked in fixture mode, and the work is not marked checked.
+    const refreshed = await scholarlyRefreshHandler(context(fixture, gate), {
       idempotencyKey: `refresh:${randomUUID()}`,
       ownerId: OWNER,
       task: "work",
       workId: imported.workId,
+    });
+    expect(refreshed).toMatchObject({ workId: imported.workId, integrityChecked: 1 });
+    expect([...(refreshed.unrecorded as string[])].sort()).toEqual(["10.5281/zenodo.18201069", "10.5281/zenodo.18201070"]);
+    expect((await getWork(handle.db, OWNER, imported.workId))!.work.integrityCheckedAt).toBeNull();
+    // An unrecorded OpenAlex lookup still fails without retries: there is no record to refresh from.
+    const [bare] = await handle.db.insert(scholarlyWork).values({ ownerId: OWNER, title: "No recorded OpenAlex record" }).returning();
+    await handle.db
+      .insert(scholarlyIdentifier)
+      .values({ ownerId: OWNER, workId: bare!.id, scheme: "openalex", value: "W1", source: "fixture" });
+    const error = await scholarlyRefreshHandler(context(fixture, gate), {
+      idempotencyKey: `refresh:${randomUUID()}`,
+      ownerId: OWNER,
+      task: "work",
+      workId: bare!.id,
     }).catch((e: unknown) => e);
     expect(error).toBeInstanceOf(NonRetryableError);
     // Crossref's recorded answer for the retracted Lancet paper (Retraction Watch notices).

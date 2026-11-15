@@ -9,7 +9,14 @@ import {
 import { ScholarlyError } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
 import { scholarly } from "@/components/scholarly/client";
-import { identifierHref, listCountSentence, locationLabel, resetSentence, showMoreLabel } from "@/components/scholarly/format";
+import {
+  identifierHref,
+  listCountSentence,
+  locationLabel,
+  readElsewhereNote,
+  resetSentence,
+  showMoreLabel,
+} from "@/components/scholarly/format";
 import { FixtureBadge, ProviderFailure } from "@/components/scholarly/PaperView";
 import { WorkSummaryRow } from "@/components/scholarly/WorkSummaryRow";
 import { Card } from "@/components/ui";
@@ -58,6 +65,12 @@ export async function ReadElsewhere({ recordPromise, dois }: { recordPromise: Pr
   const primary = record ? record.doi : dois.length === 1 ? dois[0]! : null;
   const publisher = primary && normaliseDoi(primary) && !isArxivDoi(primary) ? identifierHref("doi", primary) : null;
   const reset = failure ? resetSentence(failure.resetAt) : null;
+  const note = readElsewhereNote({
+    record: record !== null,
+    openCopy: Boolean(open),
+    publisher: Boolean(publisher),
+    failed: Boolean(failure),
+  });
   const link = "text-brass underline underline-offset-4";
   return (
     <div className="flex flex-col gap-1 text-sm">
@@ -79,7 +92,7 @@ export async function ReadElsewhere({ recordPromise, dois }: { recordPromise: Pr
           </a>
         </p>
       ) : null}
-      {!open && record ? <p className="text-xs text-ink-3">OpenAlex reports no free-to-read copy.</p> : null}
+      {note ? <p className="text-xs text-ink-3">{note}</p> : null}
       {failure ? (
         <p className="text-xs text-ink-3">
           Open locations could not be looked up: {failure.message}

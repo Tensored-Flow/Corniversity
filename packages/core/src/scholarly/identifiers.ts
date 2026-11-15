@@ -191,8 +191,10 @@ export type RecognisedInput =
   /**
    * Words to search titles for. For a link with no identifier in it, `host` names the site (shown
    * to the owner) and `query` holds the words of the link's last path segment, possibly empty.
+   * `invalidDoi` marks text shaped like a DOI (`doi:…`, or `10.` with a slash and no spaces) that is
+   * not a valid one: it is not searched for as words.
    */
-  | { kind: "search"; query: string; host: string | null };
+  | { kind: "search"; query: string; host: string | null; invalidDoi?: true };
 
 /**
  * What the Find box was given: a DOI (bare, `doi:`, a doi.org link or any link whose path contains
@@ -212,6 +214,8 @@ export function recogniseInput(raw: unknown): RecognisedInput {
   if (/^doi:/i.test(text) || text.startsWith("10.")) {
     const doi = normaliseDoi(text);
     if (doi) return { kind: "doi", doi, host: null };
+    if (/^doi:/i.test(text) || /^10\.\S*\/\S*$/.test(text))
+      return { kind: "search", query: searchQuery(text), host: null, invalidDoi: true };
   }
   const arxiv = parseArxivId(text);
   if (arxiv) return { kind: "arxiv", id: arxiv.id, version: arxiv.version, host: null };

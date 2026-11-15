@@ -282,6 +282,8 @@ export const ERROR_NOTICES = {
   "paper-not-found": "Paper not found.",
   "arxiv-record-other-paper": "The arXiv record belongs to a different paper.",
   "paper-needs-title": "Give the paper a title.",
+  "paper-edit-conflict":
+    "These details changed after you opened the form, so nothing was saved. The page now shows them; make your correction again.",
   "paper-year-range": "The year must be a whole number between 1000 and 2100.",
   "arxiv-record-not-fetched": "The arXiv record of this paper has not been fetched yet, so this version cannot be opened.",
   "arxiv-version-withdrawn": "This arXiv version was withdrawn, so it is not opened here.",
@@ -348,6 +350,7 @@ export const ERROR_NOTICES = {
   "doi-unknown-everywhere": "Neither OpenAlex nor Crossref has a record of this DOI.",
   // web-papers (paper page, attaching a file, adding a paper without an identifier)
   "attach-choose-file": "Choose a PDF file to attach.",
+  "upload-interrupted": "The file did not arrive in full (the connection may have dropped), so nothing was stored. Attach it again.",
   "attach-too-large": "The file is larger than this server's upload limit.",
   "paper-file-pdf-only": "A paper's file must be a PDF; nothing was stored.",
   "upload-not-pdf-signature": "The file does not start with a PDF signature; it was not stored.",
@@ -453,4 +456,18 @@ export function errorNotice(code: string | string[] | undefined): string | null 
 /** A redirect target carrying an error code: `path` may already have a query; `hash` keeps its `#`. */
 export function errorHref(path: string, code: ErrorCode, hash = ""): string {
   return `${path}${path.includes("?") ? "&" : "?"}error=${code}${hash}`;
+}
+
+const withParam = (path: string, param: string) => `${path}${path.includes("?") ? "&" : "?"}${param}`;
+
+/**
+ * `back` with `param` (a notice: `saved=…` or `error=…`) in its query. A #fragment stays last and is
+ * also named as `at`, so the page shows the notice inside the section the browser scrolls to, where
+ * it is in view, instead of above it.
+ */
+export function placed(back: string, param: string): string {
+  const i = back.indexOf("#");
+  if (i < 0) return withParam(back, param);
+  const hash = back.slice(i);
+  return `${withParam(withParam(back.slice(0, i), `at=${hash.slice(1)}`), param)}${hash}`;
 }

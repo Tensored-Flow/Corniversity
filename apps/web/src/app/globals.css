@@ -114,6 +114,8 @@ h3,
   font-size: 1.0625rem;
   line-height: 1.6;
   max-width: 68ch;
+  /* A long unbroken word or address in owner text or model output wraps instead of widening the page. */
+  overflow-wrap: anywhere;
 }
 
 .prose-reading h1,
@@ -239,6 +241,8 @@ h3,
 }
 math {
   font-size: 1.08em;
+  /* Formulas never break where reading prose may (.prose-reading wraps long words anywhere). */
+  overflow-wrap: normal;
 }
 
 :focus-visible {

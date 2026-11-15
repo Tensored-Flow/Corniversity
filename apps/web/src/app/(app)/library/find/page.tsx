@@ -7,7 +7,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { browsingRefusal, scholarly } from "@/components/scholarly/client";
 import { type FindParams, findHref, hasFilters, parseFindParams } from "@/components/scholarly/find-params";
-import { count, paperHref, previewHref, typeLabel } from "@/components/scholarly/format";
+import { count, paperHref, previewHref, resultsSummary, typeLabel } from "@/components/scholarly/format";
 import { LibraryWorkRow } from "@/components/scholarly/LibraryWorkRow";
 import { FixtureBadge, ProviderFailure } from "@/components/scholarly/PaperView";
 import { WorkSummaryRow } from "@/components/scholarly/WorkSummaryRow";
@@ -47,8 +47,10 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
 
   // A link with no identifier whose path gives no words: one notice, nothing searched.
   const emptyLink = input.kind === "search" && Boolean(input.host) && !input.query.trim();
+  // Text shaped like a DOI that is not a valid one: said so, and not searched as words.
+  const invalidDoi = input.kind === "search" && input.invalidDoi === true;
   let results: Results = { kind: "none" };
-  if (input.kind === "search" && !emptyLink) {
+  if (input.kind === "search" && !emptyLink && !invalidDoi) {
     const subject = params.field ? subjectBySlug(params.field) : null;
     if (params.scope === "mine") {
       const rows = await searchMyLibrary(database, ownerId, input.query, {
@@ -146,6 +148,14 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
         </Link>
       </p>
 
+      {invalidDoi ? (
+        <div className="mt-4">
+          <Notice tone="slate">
+            That is not a valid DOI: a DOI starts with 10., then four to nine digits, a slash and the rest (for example 10.7717/peerj.4375).
+            Nothing was searched; check it, or search by words.
+          </Notice>
+        </div>
+      ) : null}
       {input.kind === "search" && input.host ? (
         <div className="mt-4">
           <Notice tone="slate">
@@ -249,20 +259,18 @@ function Pager({ params, page, hasNext, lastPage }: { params: FindParams; page: 
 
 function OpenAlexResults({ page, params, back }: { page: PaperPage; params: FindParams; back: string }) {
   const first = (page.page - 1) * page.perPage + 1;
-  const last = first + page.items.length - 1;
-  // Past the last page (an edited address, or a count that changed between cached pages): OpenAlex
-  // still counts results, so this is never "no papers".
-  const pastEnd = page.items.length === 0 && ((page.count ?? 0) > 0 || (page.count === null && page.page > 1));
-  // The last page OpenAlex's count allows, or the first when it gave no count.
-  const lastWithResults = page.count !== null ? Math.max(1, Math.min(page.lastPage, page.page - 1)) : 1;
+  // Past the last page OpenAlex still counts results, so this is never "no papers" (resultsSummary).
+  const summary = resultsSummary({
+    page: page.page,
+    perPage: page.perPage,
+    lastPage: page.lastPage,
+    count: page.count,
+    shown: page.items.length,
+  });
   return (
     <>
       <p className="mb-2 flex flex-wrap items-center gap-2 text-sm text-ink-2">
-        {page.items.length
-          ? `Results ${count(first)}–${count(last)}${page.count !== null ? ` of ${count(page.count)}` : ""} according to OpenAlex`
-          : pastEnd
-            ? `No results on page ${count(page.page)}${page.count !== null ? `; OpenAlex counts ${count(page.count)} for these words and filters` : ""}.`
-            : "OpenAlex found no papers for these words and filters."}
+        {summary.line}
         {page.provenance.source === "fixture" ? <FixtureBadge /> : null}
         <span className="text-xs text-ink-3">
           {page.provenance.source === "fixture" ? "recorded" : "retrieved"} {page.provenance.retrievedAt.slice(0, 10)}
@@ -283,10 +291,10 @@ function OpenAlexResults({ page, params, back }: { page: PaperPage; params: Find
       ) : null}
       {page.items.length ? (
         <Pager params={params} page={page.page} hasNext={page.page < page.lastPage} lastPage={page.lastPage} />
-      ) : pastEnd && lastWithResults !== page.page ? (
+      ) : summary.goTo !== null ? (
         <p className="mt-4 text-sm">
-          <Link href={findHref({ ...params, page: lastWithResults })} className="text-brass underline underline-offset-4">
-            Go to page {count(lastWithResults)}
+          <Link href={findHref({ ...params, page: summary.goTo })} className="text-brass underline underline-offset-4">
+            Go to page {count(summary.goTo)}
           </Link>
         </p>
       ) : null}

@@ -212,6 +212,15 @@ describe("recogniseInput", () => {
     expect(recogniseInput("https://api.openalex.org/works/w2741809807")).toMatchObject({ kind: "openalex", id: "W2741809807" });
   });
 
+  it("marks text shaped like a DOI that is not a valid one, so it is not searched as words", () => {
+    for (const text of ["10.12/abc", "doi:not-a-doi", "DOI: 10.1/x", "10.12345/"])
+      expect(recogniseInput(text), text).toMatchObject({ kind: "search", host: null, invalidDoi: true });
+    // Words that merely start with "10." are words; a valid DOI is a DOI.
+    expect(recogniseInput("10.5 percent of papers")).toEqual({ kind: "search", query: "10.5 percent of papers", host: null });
+    expect(recogniseInput("10.5")).toEqual({ kind: "search", query: "10.5", host: null });
+    expect(recogniseInput("10.7717/peerj.4375")).toMatchObject({ kind: "doi", doi: "10.7717/peerj.4375" });
+  });
+
   it("turns other links into a title search that names the host, and never fetches", () => {
     expect(recogniseInput("https://www.nature.com/articles/s41586-021-03819-2")).toEqual({ kind: "search", query: "", host: "nature.com" });
     expect(recogniseInput("https://example.org/blog/attention-is-all-you-need")).toEqual({
@@ -226,7 +235,7 @@ describe("recogniseInput", () => {
     expect(recogniseInput("Attention is   all you need")).toEqual({ kind: "search", query: "Attention is all you need", host: null });
     expect(recogniseInput("javascript:alert(1)")).toEqual({ kind: "search", query: "javascript:alert(1)", host: null });
     expect(recogniseInput("ftp://example.org/10.1234/abc")).toMatchObject({ kind: "search", host: null });
-    expect(recogniseInput("10.1234/abc\u202edef")).toEqual({ kind: "search", query: "10.1234/abc def", host: null });
+    expect(recogniseInput("10.1234/abc\u202edef")).toEqual({ kind: "search", query: "10.1234/abc def", host: null, invalidDoi: true });
     const long = recogniseInput(`${"word ".repeat(1000)}`);
     expect(long.kind).toBe("search");
     if (long.kind === "search") expect(long.query.length).toBeLessThanOrEqual(MAX_SEARCH_QUERY_LENGTH);

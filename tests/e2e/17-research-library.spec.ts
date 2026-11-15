@@ -69,8 +69,14 @@ async function deleteCurrentPaper(page: Page): Promise<void> {
   await expect(page.getByText(/^Paper deleted, with its files/)).toBeVisible();
 }
 
+/**
+ * No sideways scroll, measured against the viewport's layout width: on the mobile project an
+ * overflowing page widens window.innerWidth to the content, so innerWidth would hide the overflow.
+ */
 async function noHorizontalScroll(page: Page): Promise<void> {
-  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth))
+    .toBeLessThanOrEqual(1);
 }
 
 async function noSeriousAxeViolations(page: Page, label: string): Promise<void> {
@@ -134,6 +140,11 @@ test.describe("research library: find and paper", () => {
       page.getByText("No recorded provider response exists for this request (fixture mode), so it is unavailable."),
     ).toBeVisible();
     await expect(page.locator("ol > li")).toHaveCount(0);
+
+    // Text shaped like a DOI that is not a valid one: said so, nothing searched.
+    await find(page, "10.12/peerj");
+    await expect(page.getByText(/^That is not a valid DOI/)).toBeVisible();
+    await expect(page.getByRole("region", { name: "All papers" })).toHaveCount(0);
 
     // A link with no identifier and no words in its path: one notice, nothing searched.
     await find(page, "https://doi.org/not-a-doi");
@@ -315,15 +326,33 @@ test.describe("research library: find and paper", () => {
     await expect(page.getByRole("button", { name: "Read arXiv v3" })).toHaveCount(0);
     await screenshot(page, "research-library-private-copy");
 
-    // A shelf with a reason, then off it again.
+    // A shelf with a reason (Markdown with LaTeX, rendered through the sanitiser), then off it again:
+    // Remove asks first on the row, because the reason goes with the paper's place.
     await page.getByLabel("Name").fill(shelf);
-    await page.getByLabel("Why (optional)").last().fill("The method this course of reading starts from.");
+    await page.getByLabel("Why (optional)").last().fill("The method this course of reading **starts** from: $\\beta$.");
     await page.getByRole("button", { name: "Create and add" }).click();
     const collections = page.locator("#collections");
+    await expect(page).toHaveURL(/at=collections&saved=collection#collections$/);
+    await expect(collections.getByText("Added.")).toBeVisible();
     await expect(collections).toContainText(shelf);
-    await expect(collections).toContainText("The method this course of reading starts from.");
+    await expect(collections.locator("strong", { hasText: "starts" })).toBeVisible();
+    await expect(collections.locator("math")).toHaveCount(1);
+    const shelfHref = await collections.getByRole("link", { name: shelf }).getAttribute("href");
     await collections.getByRole("button", { name: `Remove from ${shelf}` }).click();
+    const row = page.locator(`#collection-${shelfHref!.split("/").pop()}`);
+    await expect(row.getByText(/^Removing this paper also deletes the note you wrote for it on this shelf/)).toBeVisible();
+    await row.getByRole("link", { name: "Keep it" }).click();
+    await expect(page.locator("#collections")).toContainText(shelf);
+    await page
+      .locator("#collections")
+      .getByRole("button", { name: `Remove from ${shelf}` })
+      .click();
+    await page.getByRole("button", { name: /^Remove and delete the note/ }).click();
     await expect(page.locator("#collections")).toContainText("Not on a shelf or trail.");
+    await expect(
+      page.locator("#collections").getByText(/^Removed from that shelf or trail, with the note you wrote for it there/),
+    ).toBeVisible();
+    await noHorizontalScroll(page);
 
     // A correction is the owner's and says so; a long unbroken value wraps instead of widening the page.
     await page.getByText("Edit details", { exact: true }).click();
@@ -352,6 +381,16 @@ test.describe("research library: find and paper", () => {
     await page.goto(peerj);
     await deleteCurrentPaper(page);
     expect((await page.goto(dpo))?.status()).toBe(404);
+    // A deleted paper's 404 has exactly one main landmark.
+    await expect(page.locator("main")).toHaveCount(1);
+    await expect(page.locator("#main")).toHaveCount(1);
+
+    // The shelf this test made goes too (behind its confirmation box).
+    await page.goto(shelfHref!);
+    await page.getByRole("checkbox", { name: /^Delete this shelf/ }).check();
+    await page.getByRole("button", { name: "Delete shelf" }).click();
+    await expect(page).toHaveURL(/\/library\/shelves\?deleted=1/);
+    await expect(page.getByRole("link", { name: shelf })).toHaveCount(0);
   });
 
   test("a paper without an identifier: added from a PDF, readable at once, merged into the identified paper after confirmation", async ({

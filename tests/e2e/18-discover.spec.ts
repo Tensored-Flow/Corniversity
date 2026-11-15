@@ -84,8 +84,10 @@ test.describe("Discover", () => {
     await signInOrBootstrap(page);
   });
 
+  // Against the viewport's layout width: on the mobile project an overflowing page widens
+  // window.innerWidth to the content, so innerWidth would hide the overflow.
   async function noHorizontalScroll(page: Page): Promise<void> {
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   }
 
   async function noSeriousAxeFindings(page: Page): Promise<void> {

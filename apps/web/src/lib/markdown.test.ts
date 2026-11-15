@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderMarkdown } from "./markdown";
+import { isSameOriginImage, renderMarkdown } from "./markdown";
 
 /**
  * Everything rendered through the Markdown pipeline is untrusted: learner text, model output,
@@ -31,5 +31,93 @@ describe("renderMarkdown", () => {
     const html = await renderMarkdown('<iframe src="https://example.org"></iframe>\n\nplain');
     expect(html).not.toContain("<iframe");
     expect(html).toContain("plain");
+  });
+});
+
+/**
+ * Images: the production CSP allows images from this site only, and model output or owner text could
+ * carry an image that calls out to another host. No content the app seeds uses Markdown images.
+ */
+describe("images in Markdown", () => {
+  it("never loads an image from another site: it becomes a link named by its alternative text", async () => {
+    const html = await renderMarkdown("See ![Figure 1](https://example.org/figure.png) below.");
+    expect(html).not.toContain("<img");
+    expect(html).toContain('href="https://example.org/figure.png"');
+    expect(html).toContain("Image not shown: Figure 1");
+    expect(html).toContain('rel="noopener noreferrer"');
+    const unnamed = await renderMarkdown("![](https://example.org/x.png)");
+    expect(unnamed).not.toContain("<img");
+    expect(unnamed).toContain("Image not shown");
+  });
+
+  it("treats protocol-relative and other-scheme addresses as other sites", async () => {
+    for (const src of ["//example.org/x.png", "http://example.org/x.png", "data:image/png;base64,AAAA"]) {
+      const html = await renderMarkdown(`![x](${src})`);
+      expect(html, src).not.toContain("<img");
+      expect(html, src).toContain("Image not shown: x");
+    }
+    const script = await renderMarkdown("![x](javascript:alert(1))");
+    expect(script).not.toContain("<img");
+    expect(script).not.toMatch(/javascript:/i);
+    // Markdown percent-encodes a backslash, so `/\host/…` arrives as a path on this site, which no browser reads as a host.
+    expect(await renderMarkdown("![x](/\\example.org/x.png)")).toContain('<img src="/%5Cexample.org/x.png" alt="x">');
+  });
+
+  it("keeps an image on this site (a relative path)", async () => {
+    const html = await renderMarkdown("![A diagram](/visuals/diagram.svg)");
+    expect(html).toContain('<img src="/visuals/diagram.svg" alt="A diagram">');
+  });
+
+  it("puts no link inside a link: an image from elsewhere inside one becomes text", async () => {
+    const html = await renderMarkdown("[![badge](https://example.org/b.svg)](https://example.org/)");
+    expect(html).not.toContain("<img");
+    expect(html.match(/<a /g)).toHaveLength(1);
+    expect(html).toContain("Image not shown: badge");
+  });
+
+  it("never keeps an address with a scheme but no slashes, which a page served over http reads as another host", async () => {
+    // Against an https page `https:example.org/x.png` is a relative path; against http://127.0.0.1:3300 it is example.org.
+    for (const src of ["https:example.org/x.png", "https:/example.org/x.png", "http:example.org/x.png"]) {
+      const html = await renderMarkdown(`![x](${src})`);
+      expect(html, src).not.toContain("<img");
+      expect(html, src).toContain("Image not shown: x");
+    }
+  });
+
+  it("makes no link of an image whose address is not a web address: its text only, never a link that goes nowhere", async () => {
+    for (const src of ["data:image/png;base64,iVBORw0KGgo=", "javascript:x"]) {
+      const html = await renderMarkdown(`![d](${src})`);
+      expect(html, src).not.toContain("<a");
+      expect(html, src).not.toContain("<img");
+      expect(html, src).toContain("Image not shown: d");
+    }
+  });
+
+  it("leaves no link whose address the sanitiser removed: its text stays as text", async () => {
+    const html = await renderMarkdown("Before [plain](javascript:alert(1)) after.");
+    expect(html).not.toContain("<a");
+    expect(html).toContain("Before plain after.");
+    expect(await renderMarkdown("[kept](https://example.org/)")).toContain('<a href="https://example.org/">kept</a>');
+  });
+});
+
+describe("isSameOriginImage", () => {
+  it("accepts relative paths only", () => {
+    expect(isSameOriginImage("/visuals/a.svg")).toBe(true);
+    expect(isSameOriginImage("figure.png")).toBe(true);
+    for (const src of [
+      "https://example.org/a.png",
+      "//example.org/a.png",
+      "/\\example.org/a.png",
+      "data:image/png;base64,AA",
+      "blob:x",
+      "https:example.org/a.png",
+      "https:/example.org/a.png",
+      "https://a.invalid/a.png",
+      "http://a.invalid/a.png",
+      "https://b.invalid/a.png",
+      "//b.invalid/a.png",
+    ])
+      expect(isSameOriginImage(src), src).toBe(false);
   });
 });
