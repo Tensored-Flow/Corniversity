@@ -321,6 +321,23 @@ export const ERROR_NOTICES = {
   "shelf-name-taken": "You already have a shelf with that name.",
   "trail-name-taken": "You already have a trail with that name.",
   "collection-move-direction": "Move a paper up or down.",
+  // discover.ts (Discover and subject rooms): a list that cannot be shown says what happened, never "no results"
+  "subject-not-found": "Subject not found.",
+  "surprise-choose-from-page": "Choose a surprise from this page.",
+  "discover-openalex-key-needed": "OpenAlex browsing needs an API key on this server.",
+  "discover-list-budget": "OpenAlex's daily allowance for this server is used up, so this list was not fetched.",
+  "discover-list-rate-limited": "The provider was limiting requests when this list was fetched; it is tried again later.",
+  "discover-list-unavailable": "The provider could not be reached when this list was fetched; it is tried again later.",
+  "discover-list-fixture-missing": "Not recorded in fixture mode, so this list is unavailable.",
+  "discover-list-unusable": "The provider's answer for this list could not be used.",
+  "discover-list-refresh-failed": "Fetching this list failed; the job's record is on the Jobs page.",
+  // An out-of-date list stays on the page; its refresh failed
+  "discover-refresh-budget": "OpenAlex's daily allowance for this server is used up, so this list was not refreshed.",
+  "discover-refresh-rate-limited": "The provider was limiting requests when this list was refreshed; it is tried again later.",
+  "discover-refresh-unavailable": "The provider could not be reached when this list was refreshed; it is tried again later.",
+  "discover-refresh-fixture-missing": "Not recorded in fixture mode, so this list was not refreshed.",
+  "discover-refresh-unusable": "The provider's answer could not be used, so this list was not refreshed.",
+  "discover-refresh-failed": "Refreshing this list failed; the job's record is on the Jobs page.",
 } as const;
 
 export type ErrorCode = keyof typeof ERROR_NOTICES;

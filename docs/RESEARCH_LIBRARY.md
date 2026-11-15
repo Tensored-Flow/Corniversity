@@ -322,16 +322,46 @@ trails are deferred.
 
 ## 9. Discover, honestly
 
-Rendered from the cache and the owner's works; OpenAlex lists may load in the request with
-streaming and honest failure states; arXiv lists come only from worker jobs. Per primary subject:
-*New on arXiv* (newest submissions), *Reviews and surveys* (OpenAlex type review), *Most cited* (a
-count), *Earlier work* (most cited published before 1990, a count). Across subjects: *Cited by 2 or
-more of your papers*, *Similar to <recently saved title>* (OpenAlex similarity, not a citation),
-*From your courses* (registry sources with a DOI or arXiv id). *Surprise me*: one review with an
-abstract, free to read according to OpenAlex, from a field outside the owner's subjects, chosen by
-OpenAlex sampling. Lists are bounded; no feeds, scores, streaks, reading-time counts or AI
+The owner's subjects live in `library_preference` (the four primary subjects until the owner
+chooses; none is a valid choice with its own empty state), chosen on `/library/discover` with a
+checkbox form. Per subject, ten rows each (Discover shows five, the subject room all ten), most cited
+first where a count applies: *New on arXiv* (the ten newest submissions in the subject's arXiv
+categories; primary subjects only), *Reviews and surveys* (OpenAlex type review, published in the
+last five calendar years), *Most cited* and *Earlier work* (published before 1990), each count named
+as OpenAlex's ("Cited by N works in OpenAlex"). Subject lists are read from the provider cache only:
+the worker fetches them, the OpenAlex lists on the `scholarly-lists` queue and the arXiv listings on
+`scholarly-arxiv` (the only queue that calls arXiv), daily at 05:20 UTC for every chosen subject (and
+the defaults while an owner has not chosen) and whenever a page finds a list missing or out of date
+(at most one job per owner, subject and kind an hour, recorded in the owner's jobs). A missing list
+says *Not fetched yet* while its job is queued or running, and with JavaScript the page refreshes
+itself until it arrives (and says so only then); *Check again* reloads the page, also without
+JavaScript. A stale list keeps its rows and date and says what its refresh is doing: refreshing in
+the background while the job is queued or running, what the job reported when the refresh failed, or,
+when the hour's job has already finished, the hour after which the page asks again; a list the hour's
+job finished but the cache no longer holds says the same instead of *Not fetched yet*. A failed fetch
+shows what the job reported (allowance spent with its reset time, rate limited, unavailable, not
+recorded in fixture mode), never an empty list. A failed *Save* returns to its list and shows its
+notice there.
+
+Across subjects, rendered at once from the cache when it holds them fresh, else fetched in the request
+and streamed (a stale cached list shows its date meanwhile; without JavaScript a streamed list says to
+reload, since the server caches it either way): *Cited by 2 or more of your papers* (core
+`citedByLibrary` over the saved papers' `referenced_openalex_ids`, papers already in the library left
+out, titles from one OpenAlex batch); *Similar to <title>* (OpenAlex's `related_to` works of the most
+recently saved paper that has an OpenAlex identifier, labelled similarity, not a citation; when no
+saved paper has one, it says so); *From your courses* (registry sources of
+the courses the owner takes whose address carries a DOI or arXiv id, found by parsing only;
+read-only, no Save); *Surprise me*, fetched only when asked: one review with an abstract, free to read
+according to OpenAlex and not retracted, from a field outside the owner's subjects, chosen by OpenAlex
+sampling with a seed from the day and the count of surprises asked for (*Another*), its abstract from
+the single work. Rows show title, first three authors, year, the count or arXiv submission date, an
+*In your library* marker (`ownerWorkIndex`) or *Save* (`importByIdentifier`, then `saveWork`), and
+link to the paper page or the preview. Every list names its provider and retrieval date; fixture data
+is labelled *Fixture data*. In fixture mode recorded responses sit behind the same cache (under keys
+of their own), so lists arrive only through the worker's jobs, and the day is the recording day
+(2026-11-15), which fixes seeds and year ranges. No feeds, scores, streaks, reading-time counts or AI
 summaries. Without an OpenAlex key in production, OpenAlex lists say *OpenAlex browsing needs an API
-key on this server* while lookups by identifier still work.
+key on this server* and the worker asks OpenAlex for none, while lookups by identifier still work.
 
 ## 10. Build order and checks
 

@@ -1,0 +1,333 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/xn611ryeCDnDvmVYOJ6SWZuh1qk</id>
+  <title>arXiv Query: search_query=cat:cs.AI&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2026-11-15T05:04:31Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:cs.AI&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>212730</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17323v1</id>
+    <title>AgentSSL: Can MLE Agents Leverage Unlabeled Data?</title>
+    <updated>2026-11-12T18:59:06Z</updated>
+    <link href="https://arxiv.org/abs/2611.17323v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17323v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Applying machine learning systems to new domains introduces bottlenecks in both labeled data acquisition and manual pipeline engineering. While recent MLE agents show promise in automating pipeline design, they have been studied almost exclusively in fully supervised settings, leaving them untested in realistic regimes where labeled data is scarce but unlabeled data is abundant. In this work, we introduce Agentic Semi-Supervised Learning (AgentSSL), framing SSL as a program search problem and studying how agents navigate this space under limited supervision. We find that even under weak feedback and matched compute, agents can synthesize code that combines and adapts established SSL techniques, exceeding the strongest human-engineered baselines in 8 of 12 settings by up to +21.8%. However, our results identify program selection as a critical bottleneck in AgentSSL, where performance drops by as much as 47% when selecting based on the agent's feedback metric. To systematically study this bottleneck, we introduce ProgramSelectBench, a large-scale benchmark with a combined total of 16,977 agent-generated and human-engineered SSL programs, and evaluate both unsupervised and active program selection methods. We further evaluate AgentSSL on real-world ecology detection tasks, highlighting the opportunities and challenges of transferring agent-discovered strategies beyond controlled benchmarks.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:06Z</published>
+    <arxiv:comment>NeurIPS 2026. Project Website: https://codiscovery.ai/AgentSSL</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Ethan Lin</name>
+    </author>
+    <author>
+      <name>Akanksha Sarkar</name>
+    </author>
+    <author>
+      <name>Ziang Liu</name>
+    </author>
+    <author>
+      <name>Kristin Branson</name>
+    </author>
+    <author>
+      <name>Jennifer J. Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17316v1</id>
+    <title>CoReMem: Cost-Internalizing Memory for Successive Coding Tasks with Prospective Valuation</title>
+    <updated>2026-11-12T18:58:22Z</updated>
+    <link href="https://arxiv.org/abs/2611.17316v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17316v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Coding agents tackle successive tasks on an evolving repository, carrying forward edits and writing memory before the next task is known. Selecting memory for unknown next tasks requires balancing future usefulness against the costs of writing and reading it. The actor must also decide when acting on available memory saves effort as the task unfolds. We introduce Coding-Repository Memory (CoReMem), a cost-internalizing framework that guides memory design and actor adaptation through measured memory value on the next task. Prospective segment valuation compares runs of the next task with and without individual trajectory segments from the same inherited repository state, guiding a compact memory built around anchors: repository locations and executable checks. Actor adaptation estimates on-policy memory value within rollout groups with and without memory, using a reward that prioritizes resolution and penalizes step count in successful runs. Provenance-gated value credit assigns the additional value term to steps identified as using memory-supplied anchors, while every step retains outcome credit. On ChainSWE, CoReMem raises the 27B actor's resolve rate from 21.0% to 25.7%, with 17% fewer steps and 11% fewer total cache-aware tokens, including memory-module calls, relative to the untrained actor model without memory.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:58:22Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Peiwen Li</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Harshit Verma</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Sophia Zhou</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Haiwen Wang</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Ngoc Bui</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Heng Chang</name>
+      <arxiv:affiliation>Tsinghua University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Fei Fei</name>
+      <arxiv:affiliation>Goodvision AI</arxiv:affiliation>
+    </author>
+    <author>
+      <name>David van Dijk</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Rex Ying</name>
+      <arxiv:affiliation>Yale University</arxiv:affiliation>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17313v1</id>
+    <title>Sketching Language Models for Context Attribution</title>
+    <updated>2026-11-12T18:57:48Z</updated>
+    <link href="https://arxiv.org/abs/2611.17313v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17313v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Context attribution asks how removing parts of a prompt changes a language model's output. We study leave-one-out (LOO) attribution for a prompt of $n$ tokens and a fixed measurement function. Computing all LOO values directly requires $n$ model evaluations. Under a stability assumption, our algorithm estimates all LOO values to error proportional to $\varepsilon$ with constant probability using $O(\sqrt{\log(1/\varepsilon)}/\varepsilon)$ evaluation calls. To complement our upper bound, we prove a matching $Ω(\sqrt{\log(1/\varepsilon)}/\varepsilon)$ lower bound on the number of evaluation calls in an oracle model. Empirically, we verify coefficient decay consistent with stability and evaluate the performance of our sketching algorithm on a small language-model retrieval task.
+  Technically, our result is based on a sketching algorithm for arithmetic circuits whose Taylor coefficients satisfy the stability condition recently introduced by Gunn [Gun26]. A direct adaptation of their forward differentiation sketches would require $\widetilde{O}(\log(n)/\varepsilon^2)$ evaluation calls. Our key observation is that we can apply forward differentiation to the backpropagation circuit, with only constant overhead over a forward sketch of the same Taylor degree. This reduces the variance of the sketches and is key to our improved evaluation bound. Our lower bound builds on the techniques of Amsel, Chen, Duman Keles, Halikias, Musco, and Musco [ACDH+26, SIAM Journal on Matrix Analysis and Applications] for lower bounding the number of matrix-vector queries to estimate the diagonal elements of random matrices.</summary>
+    <category term="cs.DS" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:57:48Z</published>
+    <arxiv:primary_category term="cs.DS"/>
+    <author>
+      <name>Christopher Liaw</name>
+    </author>
+    <author>
+      <name>Aranyak Mehta</name>
+    </author>
+    <author>
+      <name>Grigoris Velegkas</name>
+    </author>
+    <author>
+      <name>Felix Zhou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17309v1</id>
+    <title>Classical Energies Learn to Reason 1,000x Faster than Looped Models</title>
+    <updated>2026-11-12T18:56:56Z</updated>
+    <link href="https://arxiv.org/abs/2611.17309v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17309v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Looped models have emerged as a prominent paradigm for reasoning, with successes on simple reasoning puzzles such as Sudoku-Extreme and Maze-Unique. However, these models can be unstable, slow to train, and use many parameters and FLOPs to solve simple puzzles. Descent on an energy not only mitigates these issues but also offers advantages: built-in early stopping, compute that adapts to problem difficulty, fast training without differentiating through a solver, and interpretable weights that learn the constraints of the puzzle. Here we demonstrate this with a learned version of Hopfield &amp; Tank's energy from the 80s, which we term CRAM, solves 99.996% of Sudoku-Extreme and 100% of Maze-Unique test puzzles after 42 ms and 132 ms of training on one GPU, at least 1,000x faster than looped models on these tasks. CRAM also matches baseline looped models at their highest accuracy on Sudoku-Extreme using at least 282x fewer inference FLOPs. Our work suggests two things. First, that energies are an extremely promising direction for training reasoning from data. Second, a caution against using trivially solvable benchmarks like Sudoku and Maze to test the scalability of looped reasoning techniques.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:56:56Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Benjamin Hoover</name>
+    </author>
+    <author>
+      <name>Hugh Blayney</name>
+    </author>
+    <author>
+      <name>James C. R. Whittington</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17298v1</id>
+    <title>Consistent Video-to-Video Translation via Explicit Correspondences</title>
+    <updated>2026-11-12T18:55:09Z</updated>
+    <link href="https://arxiv.org/abs/2611.17298v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17298v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Interactive video-to-video applications require real-time generation while maintaining long-range temporal consistency. However, recent methods achieve speed by restricting attention to a fixed-length causal window. This limits long-range consistency whenever relevant history falls outside the context window. To address this limitation, we introduce vid2vid-long, a correspondence-based approach grounded in a simple observation. Video-to-video translation provides an explicit cross-frame reference: the regions that match in the input video should match in the output video too. Concretely, we compute patch-level correspondences in the input, guiding retrieval of previously generated outputs in the corresponding regions, and condition the model on these patches through correspondence cross-attention. Our experiments demonstrate that vid2vid-long consistently improves long-range temporal consistency across recent video models while preserving generation quality and real-time performance.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:55:09Z</published>
+    <arxiv:comment>ECCV 2026. Project Website: https://www.cs.cmu.edu/~vid2vid-long/</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Gaurav Parmar</name>
+    </author>
+    <author>
+      <name>Zhengqi Li</name>
+    </author>
+    <author>
+      <name>Richard Zhang</name>
+    </author>
+    <author>
+      <name>Jun-Yan Zhu</name>
+    </author>
+    <author>
+      <name>Srinivasa Narasimhan</name>
+    </author>
+    <author>
+      <name>Eli Shechtman</name>
+    </author>
+    <author>
+      <name>Yotam Nitzan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17297v1</id>
+    <title>Goal Encoding in LLMs</title>
+    <updated>2026-11-12T18:55:06Z</updated>
+    <link href="https://arxiv.org/abs/2611.17297v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17297v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We investigate whether and how LLMs encode goals: internal neural representations that precede and guide action, and that are flexible enough to be realized through many different execution paths. We construct a coding setting with multiple sub-tasks that allows us to evaluate goal-seeking behavior and the selection of sub-goals. In this setting, we localize an encoding of the next sub-goal in the outputs of a sparse set of attention heads. The same heads can be used to decode the LM's future actions in natural language (e.g., "I'm checking if a word is a palindrome"). We verify that this encoding is causal for next action and is plastic: transplanting it into a different environment, e.g., another programming language, triggers the same operation realized with a different sequence of tokens. The LM also sustains the encoding throughout the action's execution, which is puzzling because a transformer LM without recurrence cannot carry a state forward for more tokens than it has layers left. We propose that it does not need to. Under a non-recurrent goal-seeking (NRGS) account, the LM frequently re-reads the goal from the task specification, compares it with the progress visible in the growing context, and pursues what remains. We test the predictions of this account with targeted causal interventions.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:55:06Z</published>
+    <arxiv:comment>Project page, code and data: https://goals.baulab.info/</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Arnab Sen Sharma</name>
+    </author>
+    <author>
+      <name>Eric Todd</name>
+    </author>
+    <author>
+      <name>Sheridan Feucht</name>
+    </author>
+    <author>
+      <name>Andy Arditi</name>
+    </author>
+    <author>
+      <name>Rohit Gandikota</name>
+    </author>
+    <author>
+      <name>Natalie Shapira</name>
+    </author>
+    <author>
+      <name>Gabriele Sarti</name>
+    </author>
+    <author>
+      <name>Constanza Fierro</name>
+    </author>
+    <author>
+      <name>Lisa Schut</name>
+    </author>
+    <author>
+      <name>David Bau</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17294v1</id>
+    <title>Metal Sandbox: Isolated Execution and Command Scheduling for GPU Coding Agents on Apple Silicon</title>
+    <updated>2026-11-12T18:54:42Z</updated>
+    <link href="https://arxiv.org/abs/2611.17294v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17294v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>On-device inference requires kernels that make effective use of local accelerators. Efficient training and evaluation of models that generate Apple Metal kernels benefit from native macOS tools and concurrent agent sessions. These sessions alternate between model requests, development commands, and GPU execution, leaving GPU capacity idle for much of a rollout. We present Metal Sandbox, infrastructure that combines restricted per-instance file access, native command execution, and command-level scheduling across interconnected Macs. Each agent retains its workspace and private development environment. Parallel commands can run concurrently, while serial commands share one execution slot per node; eligible waiting commands can migrate to available Macs and return results to the original agent. Integration with Harbor supports task execution, automatic verification, and rollout collection through a common workflow. Controlled experiments on four Mac mini M4 nodes achieve $1.68\times$--$2.05\times$ gains in command throughput under concentrated demand. Sixteen static agent traces give an estimated $2.14\times$ sustained-throughput gain for four sessions per node versus one, assuming continuously replenished sessions and unchanged mean durations. Replaying these measured traces under dynamic scheduling reduces mean tool waiting by 18.8% and batch elapsed time by 22.3%, assuming unchanged phase durations. Metal Sandbox and its Harbor integration are open-source on GitHub.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:54:42Z</published>
+    <arxiv:comment>16 pages, 7 figures, 5 tables. Code available at https://github.com/WangHaoZhe/metal-sandbox and https://github.com/WangHaoZhe/harbor</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Haozhe Wang</name>
+    </author>
+    <author>
+      <name>Lina Chen</name>
+    </author>
+    <author>
+      <name>Fanqi Wan</name>
+    </author>
+    <author>
+      <name>Qi Han</name>
+    </author>
+    <author>
+      <name>Yinmin Zhang</name>
+    </author>
+    <author>
+      <name>Zheng Ge</name>
+    </author>
+    <author>
+      <name>Daxin Jiang</name>
+    </author>
+    <author>
+      <name>Junchi Yan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17280v1</id>
+    <title>Synthesis Smuggling: Maliciously Hiding Inferred Personal Attributes in LLM Outputs</title>
+    <updated>2026-11-12T18:51:05Z</updated>
+    <link href="https://arxiv.org/abs/2611.17280v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17280v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We propose Synthesis Smuggling, a novel threat model in which an adversarial LLM infers sensitive information about a user from routine assistance-seeking interactions and steganographically encodes that into innocuous-looking model-generated content. The user may then unknowingly transmit that information by sharing the generated artifact, say as an email, social-media post, or message, through ordinary communication channels. An adversary monitoring these channels can discover this information. We demonstrate this threat by training two open-weight models to infer gender and age-group labels from conversational cues and encode their predictions using invisible characters or word choices. These results show that user-shared model outputs can become a covert channel for personal inferences, even when the model itself has no direct means of contacting an adversary.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:51:05Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Gautam Galada</name>
+    </author>
+    <author>
+      <name>Supreeth Shastri</name>
+    </author>
+    <author>
+      <name>Sagnik Ray Choudhury</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17267v1</id>
+    <title>LiveGeo: Benchmarking Geographic Agents in Continuously Evolving Worlds</title>
+    <updated>2026-11-12T18:45:58Z</updated>
+    <link href="https://arxiv.org/abs/2611.17267v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17267v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We introduce GeoWorld, a controllable and continuously evolving geographic environment platform for LLM agents, and LiveGeo, a benchmark for evaluating reliable decision-making in real-world geographic environments using GeoWorld. Unlike existing evaluations that largely reason and plan over fixed geographic states, GeoWorld is grounded in real-world geographic structure and allows external world states to evolve along their own temporal processes while preserving verifiable state histories. LiveGeo places geographic tasks within this evolving environment, requiring agents to actively acquire task-relevant information, verify whether the evidence supporting prior decisions remains valid, and revise their plans when necessary. Our results reveal that even frontier LLMs struggle with static tasks, with no model consistently excelling across tasks, while strong static performance does not ensure dynamic reliability. Further analysis identifies a key bottleneck: agents struggle to acquire and translate relevant evidence into valid decisions and maintain their correctness as the world evolves. By releasing LiveGeo together with its GeoWorld platform, we aim to provide the community with a flexible and extensible infrastructure for studying the next generation of agents capable of reliable action in evolving geographic worlds.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:45:58Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Pengcheng Zhou</name>
+    </author>
+    <author>
+      <name>Xuanyu Liu</name>
+    </author>
+    <author>
+      <name>Yanchen Yin</name>
+    </author>
+    <author>
+      <name>Tianjie Ju</name>
+    </author>
+    <author>
+      <name>Bobo Li</name>
+    </author>
+    <author>
+      <name>Shengqiong Wu</name>
+    </author>
+    <author>
+      <name>Hao Fei</name>
+    </author>
+    <author>
+      <name>Mong-Li Lee</name>
+    </author>
+    <author>
+      <name>Wynne Hsu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17241v1</id>
+    <title>Ballad: Bandit-Based LLM Routing for Automated Heuristic Discovery</title>
+    <updated>2026-11-12T18:28:08Z</updated>
+    <link href="https://arxiv.org/abs/2611.17241v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17241v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Modern automated heuristic discovery (AHD) systems increasingly rival hand-crafted heuristics by leveraging Large Language Models (LLMs) to iteratively mutate and refine solutions. A natural assumption is that more powerful and more expensive models consistently yield better heuristics. We challenge this empirically: across multiple NP-hard combinatorial optimization problems, we find no consistent advantage for larger, costlier models. This raises a deeper question: given a pool of LLMs spanning frontier and freely hosted or open-weight models, how should one adaptively select which model to invoke at each step of the search? The challenge is non-trivial. The optimal LLM may shift over the course of a run, and because one LLM's output seeds the context for subsequent calls, each model's reward signal is non-stationary and entangled across the heuristic population, thus violating the independence assumptions of classical online decision-making settings. We address this through Ballad (Bandit-based LLM Routing for Automated Heuristic Discovery), an online bandit algorithm that learns to orchestrate a pool of LLMs into an ensemble that matches or exceeds what any soloist LLM achieves alone. This orchestration is powered by an LLM selection policy that favors rare, high-scoring heuristics over stable averages, a DAG-based credit propagation mechanism through the genealogy of the heuristic population, and discounting of stale observations to remain attuned to each model's current utility. Across five NP-hard combinatorial optimization problems and a pool of four models of varying capability and cost, Ballad not only matches the best individual LLM in hindsight but, in several cases, surpasses every individual model while reducing API cost by up to 65.6% relative to always using the strongest model.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:28:08Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Samidha Verma</name>
+    </author>
+    <author>
+      <name>Ankit Anand</name>
+    </author>
+    <author>
+      <name>Sayan Ranu</name>
+    </author>
+  </entry>
+</feed>
