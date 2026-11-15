@@ -1,6 +1,7 @@
 import type { Database } from "@corniversity/db/client";
 import type { Env } from "@corniversity/db/env";
 import { QUEUES } from "@corniversity/db/jobs";
+import { discoverClient } from "@corniversity/db/services/discover";
 import type { PgBoss } from "pg-boss";
 import { assessHandler } from "./assess";
 import { exportHandler } from "./export";
@@ -8,7 +9,8 @@ import { ingestHandler } from "./ingest";
 import { markJob } from "./job-record";
 import { maintenanceHandler } from "./maintenance";
 import { prepareHandler } from "./prepare";
-import { scholarlyArxivHandler, scholarlyRefreshHandler } from "./scholarly";
+import { type ScholarlyHandlerContext, scholarlyArxivHandler, scholarlyRefreshHandler } from "./scholarly";
+import { scholarlyListsHandler } from "./scholarly-lists";
 import { transcribeHandler } from "./transcribe";
 
 export interface HandlerContext {
@@ -39,12 +41,12 @@ export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Pr
   const ctx: HandlerContext = { db, env, boss };
 
   const wrap =
-    (handler: Handler) =>
+    (handler: Handler, context: HandlerContext = ctx) =>
     async ([job]: { data: unknown }[]) => {
       if (!job) return;
       await markJob(db, job.data, "active");
       try {
-        const result = await handler(ctx, job.data);
+        const result = await handler(context, job.data);
         await markJob(db, job.data, "completed", { result });
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -60,12 +62,32 @@ export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Pr
   await boss.work(QUEUES.exportRecords, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(exportHandler));
   await boss.work(QUEUES.transcribePages, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(transcribeHandler));
   await boss.work(QUEUES.prepareUnit, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(prepareHandler));
-  // arXiv: one job at a time (the queue's singleton key does the same across processes).
-  await boss.work(QUEUES.scholarlyArxiv, { batchSize: 1, localConcurrency: 1, pollingIntervalSeconds: 2 }, wrap(scholarlyArxivHandler));
+  // arXiv: one job at a time (the queue's singleton key does the same across processes). Its client
+  // is Discover's, so newest-submission listings land in the cache Discover reads, in fixture mode too.
+  const arxivCtx: ScholarlyHandlerContext = { ...ctx, scholarly: discoverClient(env, db) };
+  await boss.work(
+    QUEUES.scholarlyArxiv,
+    { batchSize: 1, localConcurrency: 1, pollingIntervalSeconds: 2 },
+    wrap(scholarlyArxivHandler, arxivCtx),
+  );
   await boss.work(QUEUES.scholarlyRefresh, { batchSize: 1, pollingIntervalSeconds: 5 }, wrap(scholarlyRefreshHandler));
-  // scholarly-lists (subject-list refreshes) is defined in jobs.ts; its handler arrives with Discover.
+  await boss.work(QUEUES.scholarlyLists, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(scholarlyListsHandler));
 
   await scheduleMaintenance(boss);
+  await scheduleSubjectLists(boss);
+}
+
+/** Discover's subject lists (and their arXiv listings) once a day; pages ask for a list when it is missing or out of date. */
+export const SUBJECT_LISTS_SCHEDULE = {
+  cron: "20 5 * * *",
+  // pg-boss keys allow letters, digits, _ - . and / only.
+  key: "subject-lists-daily",
+  data: { idempotencyKey: "scholarly-lists:daily", task: "subject-lists", arxivListings: true },
+} as const;
+
+export async function scheduleSubjectLists(boss: Pick<PgBoss, "schedule">): Promise<void> {
+  const s = SUBJECT_LISTS_SCHEDULE;
+  await boss.schedule(QUEUES.scholarlyLists, s.cron, { ...s.data }, { key: s.key });
 }
 
 /**

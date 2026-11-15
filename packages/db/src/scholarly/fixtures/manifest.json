@@ -51,6 +51,27 @@
       "retrievedAt": "2026-11-15T03:15:26.930Z"
     },
     {
+      "request": "GET https://api.openalex.org/subfields?filter=field.id%3A16&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/subfields_filter_field.id_3A16_per_page_200_select_id_2Cdisplay_name_2Cdescripti-c4d95ce0ae.json",
+      "retrievedAt": "2026-11-15T05:58:46.227Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/subfields?filter=field.id%3A17&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/subfields_filter_field.id_3A17_per_page_200_select_id_2Cdisplay_name_2Cdescripti-ce96cd41a5.json",
+      "retrievedAt": "2026-11-15T05:58:46.071Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/subfields?filter=field.id%3A26&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/subfields_filter_field.id_3A26_per_page_200_select_id_2Cdisplay_name_2Cdescripti-697a3e33d2.json",
+      "retrievedAt": "2026-11-15T05:58:45.799Z"
+    },
+    {
       "request": "GET https://api.openalex.org/subfields?filter=field.id%3A31%7C17%7C26&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
       "status": 200,
       "contentType": "application/json",
@@ -58,11 +79,39 @@
       "retrievedAt": "2026-11-15T03:15:27.068Z"
     },
     {
+      "request": "GET https://api.openalex.org/subfields?filter=field.id%3A31&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/subfields_filter_field.id_3A31_per_page_200_select_id_2Cdisplay_name_2Cdescripti-8f625d08a2.json",
+      "retrievedAt": "2026-11-15T05:58:45.933Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2023271753",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2023271753-994aaf1711.json",
+      "retrievedAt": "2026-11-15T06:01:12.045Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2086957099",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2086957099-b0de022179.json",
+      "retrievedAt": "2026-11-15T06:01:12.300Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works/W2117847125",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_W2117847125-92b237449a.json",
       "retrievedAt": "2026-11-15T05:49:17.571Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W2143981217",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W2143981217-c2649e6523.json",
+      "retrievedAt": "2026-11-15T06:01:12.504Z"
     },
     {
       "request": "GET https://api.openalex.org/works/W2166248051",
@@ -86,6 +135,13 @@
       "retrievedAt": "2026-11-15T05:49:15.461Z"
     },
     {
+      "request": "GET https://api.openalex.org/works/W4389336563",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W4389336563-e7d705136d.json",
+      "retrievedAt": "2026-11-15T05:58:47.336Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works/W4391941798",
       "status": 200,
       "contentType": "application/json",
@@ -98,6 +154,20 @@
       "contentType": "application/json",
       "file": "openalex/works_W4402753790-a08e61c75f.json",
       "retrievedAt": "2026-11-15T05:49:14.221Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W4413840294",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W4413840294-f030acc20c.json",
+      "retrievedAt": "2026-11-15T06:01:11.815Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W4414264151",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W4414264151-cd40170b34.json",
+      "retrievedAt": "2026-11-15T05:58:47.039Z"
     },
     {
       "request": "GET https://api.openalex.org/works/W7133208539",
@@ -212,6 +282,13 @@
       "retrievedAt": "2026-11-15T05:49:16.045Z"
     },
     {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW1624531027&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW1624531027_per_page_100_select_id_2Cdoi_2Cdisplay_name_-19a705b638.json",
+      "retrievedAt": "2026-11-15T06:01:13.059Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works?filter=openalex%3AW19804704%7CW40430408%7CW141317774%7CW1966535127%7CW1967035877%7CW1978222253%7CW1979047426%7CW1992308980%7CW1998420106%7CW1999722248%7CW2005383370%7CW2015151182%7CW2024571744%7CW2047024130%7CW2052072164%7CW2060419140%7CW2077238261%7CW2106182761%7CW2151181921%7CW2159011576%7CW2276306589%7CW3033949515%7CW4205253110%7CW4234374866%7CW6600804475&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
       "status": 200,
       "contentType": "application/json",
@@ -254,11 +331,53 @@
       "retrievedAt": "2026-11-15T03:13:08.350Z"
     },
     {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A16%2Cpublication_year%3A%3C1990&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A16_2Cpublication_year_3A_3C1990_page_1_per-57f7a61e9d.json",
+      "retrievedAt": "2026-11-15T05:58:45.652Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A16%2Ctype%3Areview%2Cpublication_year%3A2022-2026&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A16_2Ctype_3Areview_2Cpublication_year_3A20-a440cb0c60.json",
+      "retrievedAt": "2026-11-15T05:58:45.059Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A16&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A16_page_1_per_page_10_select_id_2Cdoi_2Cdi-183b9cb532.json",
+      "retrievedAt": "2026-11-15T05:58:45.397Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17%2Cpublication_year%3A%3C1990&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A17_2Cpublication_year_3A_3C1990_page_1_per-25fdef4971.json",
+      "retrievedAt": "2026-11-15T05:58:43.529Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17%2Cpublication_year%3A2023-2024%2Copen_access.is_oa%3Atrue&page=1&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_filter_primary_topic.field.id_3A17_2Cpublication_year_3A2023-2024_2Copen_a-0af323ec47.json",
       "retrievedAt": "2026-11-15T05:49:13.808Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17%2Ctype%3Areview%2Cpublication_year%3A2022-2026&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A17_2Ctype_3Areview_2Cpublication_year_3A20-bc2b017e29.json",
+      "retrievedAt": "2026-11-15T05:58:42.843Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A17_page_1_per_page_10_select_id_2Cdoi_2Cdi-aab24d5528.json",
+      "retrievedAt": "2026-11-15T05:58:43.123Z"
     },
     {
       "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17&page=1&per_page=5&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
@@ -268,11 +387,102 @@
       "retrievedAt": "2026-11-15T03:13:06.834Z"
     },
     {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A18%2Ctype%3Areview%2Copen_access.is_oa%3Atrue%2Chas_abstract%3Atrue%2Cis_retracted%3Afalse&page=1&per_page=1&sample=1&seed=960406498&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A18_2Ctype_3Areview_2Copen_access.is_oa_3At-6705a9320a.json",
+      "retrievedAt": "2026-11-15T05:58:46.789Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A26%2Cpublication_year%3A%3C1990&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A26_2Cpublication_year_3A_3C1990_page_1_per-d9aa9224cf.json",
+      "retrievedAt": "2026-11-15T05:58:41.255Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A26%2Ctype%3Areview%2Cpublication_year%3A2022-2026&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A26_2Ctype_3Areview_2Cpublication_year_3A20-cbbe2c0a71.json",
+      "retrievedAt": "2026-11-15T05:58:40.593Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A26&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A26_page_1_per_page_10_select_id_2Cdoi_2Cdi-88fe66a8a0.json",
+      "retrievedAt": "2026-11-15T05:58:40.993Z"
+    },
+    {
       "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A26&page=1&per_page=5&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
       "status": 200,
       "contentType": "application/json",
       "file": "openalex/works_filter_primary_topic.field.id_3A26_page_1_per_page_5_select_id_2Cdoi_2Cdis-b083fc7ade.json",
       "retrievedAt": "2026-11-15T03:13:09.111Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A29%2Ctype%3Areview%2Copen_access.is_oa%3Atrue%2Chas_abstract%3Atrue%2Cis_retracted%3Afalse&page=1&per_page=1&sample=1&seed=943628879&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A29_2Ctype_3Areview_2Copen_access.is_oa_3At-6406faefa1.json",
+      "retrievedAt": "2026-11-15T06:01:11.665Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A31%2Cpublication_year%3A%3C1990&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A31_2Cpublication_year_3A_3C1990_page_1_per-99867b4493.json",
+      "retrievedAt": "2026-11-15T05:58:42.362Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A31%2Ctype%3Areview%2Cpublication_year%3A2022-2026&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A31_2Ctype_3Areview_2Cpublication_year_3A20-50f2945ffe.json",
+      "retrievedAt": "2026-11-15T05:58:41.733Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A31&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A31_page_1_per_page_10_select_id_2Cdoi_2Cdi-ad77cc54d2.json",
+      "retrievedAt": "2026-11-15T05:58:42.153Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A36%2Ctype%3Areview%2Copen_access.is_oa%3Atrue%2Chas_abstract%3Atrue%2Cis_retracted%3Afalse&page=1&per_page=1&sample=1&seed=943628879&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A36_2Ctype_3Areview_2Copen_access.is_oa_3At-a43d343837.json",
+      "retrievedAt": "2026-11-15T05:58:47.196Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.subfield.id%3A1702%2Cpublication_year%3A%3C1990&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.subfield.id_3A1702_2Cpublication_year_3A_3C1990_page_-eaa28a0222.json",
+      "retrievedAt": "2026-11-15T05:58:44.698Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.subfield.id%3A1702%2Ctype%3Areview%2Cpublication_year%3A2022-2026&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.subfield.id_3A1702_2Ctype_3Areview_2Cpublication_year-cd73d3bf7a.json",
+      "retrievedAt": "2026-11-15T05:58:43.934Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.subfield.id%3A1702&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.subfield.id_3A1702_page_1_per_page_10_select_id_2Cdoi-96891c097f.json",
+      "retrievedAt": "2026-11-15T05:58:44.311Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=related_to%3AW2086957099&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_related_to_3AW2086957099_page_1_per_page_10_select_id_2Cdoi_2Cdispl-58b7f8b7c2.json",
+      "retrievedAt": "2026-11-15T06:01:12.885Z"
     },
     {
       "request": "GET https://api.openalex.org/works?page=1&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
@@ -315,6 +525,34 @@
       "contentType": "application/atom+xml; charset=utf-8",
       "file": "arxiv/api_query_id_list_hep-th_2F9711200_max_results_1-9d63934c4e.xml",
       "retrievedAt": "2026-11-15T03:13:17.483Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?max_results=10&search_query=cat%3Aastro-ph.*+OR+cat%3Acond-mat.*+OR+cat%3Agr-qc+OR+cat%3Ahep-ex+OR+cat%3Ahep-lat+OR+cat%3Ahep-ph+OR+cat%3Ahep-th+OR+cat%3Amath-ph+OR+cat%3Anlin.*+OR+cat%3Anucl-ex+OR+cat%3Anucl-th+OR+cat%3Aphysics.*+OR+cat%3Aquant-ph&sortBy=submittedDate&sortOrder=descending",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_max_results_10_search_query_cat_3Aastro-ph._OR_cat_3Acond-mat._OR_cat_-c988f27608.xml",
+      "retrievedAt": "2026-11-15T06:01:03.746Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?max_results=10&search_query=cat%3Acs.*&sortBy=submittedDate&sortOrder=descending",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_max_results_10_search_query_cat_3Acs._sortBy_submittedDate_sortOrder_d-5268ef53d4.xml",
+      "retrievedAt": "2026-11-15T06:01:07.767Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?max_results=10&search_query=cat%3Acs.AI&sortBy=submittedDate&sortOrder=descending",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_max_results_10_search_query_cat_3Acs.AI_sortBy_submittedDate_sortOrder-e8a3e13cfa.xml",
+      "retrievedAt": "2026-11-15T06:01:11.370Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?max_results=10&search_query=cat%3Amath.*&sortBy=submittedDate&sortOrder=descending",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_max_results_10_search_query_cat_3Amath._sortBy_submittedDate_sortOrder-8afe3465d1.xml",
+      "retrievedAt": "2026-11-15T06:00:56.381Z"
     },
     {
       "request": "GET https://export.arxiv.org/api/query?max_results=5&search_query=cat%3Amath.*&sortBy=submittedDate&sortOrder=descending",

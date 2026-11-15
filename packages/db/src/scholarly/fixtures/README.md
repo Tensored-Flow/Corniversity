@@ -46,3 +46,20 @@ No arXiv PDF is recorded. The fixture provider answers a request for an arXiv ve
 generated stand-in (`../fixture-pdf.ts`): two pages whose text says it is a fixture stand-in for that
 exact `arXiv:{id}v{n}` and not arXiv's file, the same bytes every time. It exists so private copies
 can be tested; production refuses the fixture provider.
+
+## Discover (`--record-group discover`)
+
+Recorded on **2026-11-15 between 05:58 and 06:01 UTC**, with no OpenAlex key, by
+`scripts/scholarly-record/discover.ts`, which builds every request with the Discover service's own
+functions (so they are exactly the requests the worker and the pages send in fixture mode, where the
+service fixes the day to 2026-11-15). 42 live OpenAlex requests and 4 live arXiv requests, 3.5 s
+apart; ten single-work lookups from a first attempt at choosing the journey's papers were removed
+again because nothing requests them.
+
+| Provider | Recorded |
+|---|---|
+| OpenAlex | Reviews and surveys (type review, 2022–2026), Most cited and Earlier work (before 1990), ten each, most cited first, for mathematics (field 26), physics (31), computer science (17), artificial intelligence (subfield 1702) and chemistry (16); `/subfields` of fields 26, 31, 17 and 16; Surprise me samples (seeded) and their single works for the first and second surprise of the default subjects and the first of the journey's subjects; single works `W2023271753`, `W2086957099` and `W2143981217` (density-functional papers from the physics lists); works related to `W2086957099`; the work both `W2023271753` and `W2086957099` cite |
+| arXiv export API | the ten newest submissions in `math.*`, in the thirteen physics archives and categories of `packages/core/src/scholarly/subjects.ts`, in `cs.*` and in `cs.AI` |
+
+The group answers requests that are already recorded from the fixtures and calls the providers only
+for the rest, so running it again records nothing that exists.

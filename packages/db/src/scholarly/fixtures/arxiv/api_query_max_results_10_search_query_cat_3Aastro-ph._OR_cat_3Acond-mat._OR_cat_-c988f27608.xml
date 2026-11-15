@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/Xgc+OLe0cfs0CusK2tSIQGsLIwU</id>
+  <title>arXiv Query: search_query=cat:astro-ph.* OR cat:cond-mat.* OR cat:gr-qc OR cat:hep-ex OR cat:hep-lat OR cat:hep-ph OR cat:hep-th OR cat:math-ph OR cat:nlin.* OR cat:nucl-ex OR cat:nucl-th OR cat:physics.* OR cat:quant-ph&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2026-11-15T06:01:02Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:astro-ph.*+OR+(cat:cond-mat.*+OR+(cat:gr-qc+OR+(cat:hep-ex+OR+(cat:hep-lat+OR+(cat:hep-ph+OR+(cat:hep-th+OR+(cat:math-ph+OR+(cat:nlin.*+OR+(cat:nucl-ex+OR+(cat:nucl-th+OR+(cat:physics.*+OR+cat:quant-ph)))))))))))&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1533402</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17337v1</id>
+    <title>The full Gaia colour-magnitude diagram with white dwarfs reveals a declining Milky Way star formation history</title>
+    <updated>2026-11-12T18:59:56Z</updated>
+    <link href="https://arxiv.org/abs/2611.17337v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17337v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>White dwarfs (WDs) provide a fossil record of the Milky Way star formation history (SFH) through the combined effects of stellar evolution and cooling. They have, however, generally been modelled in isolation from the non-degenerate population, so that no single self-consistent set of Galactic assumptions has been required to reproduce both. We present CALOMERA, a semi-analytic chemo-dynamical population synthesis framework in which the vertical density profiles of mono-age subpopulations are computed self-consistently with the Galactic potential and coupled to modern WD cooling sequences, metallicity-dependent progenitor lifetimes and synthetic photometry. We calibrate 18 parameters describing the initial mass function, SFH, initial-final mass relation and WD population against a Gaia DR3 sample of $7.98\times10^{6}$ stars within 1 kpc, including $1.1\times10^{5}$ WDs. The calibrated model reproduces the star counts in each colour-magnitude diagram region to within 3% and the total number count to within 0.5%, compared with the 81% excess in the predicted WD count obtained with the previous main-sequence-only calibration. The recovered SFH peaks early, declines exponentially thereafter, and includes two recent bursts, located at $τ\approx2.4$ and $0.5$ Gyr. Three cooling libraries (Montréal, BaSTI and LPCODE) yield comparably good fits, with differences confined to ${\rm M_G}\gtrsim15$ mag. The predicted luminosity function is in reasonable agreement with the 100 pc Gaia WD sample. We further predict the Galactic WD distribution and differential number counts for surveys of varying depth. Extending the framework to the substellar regime using ATMO models, we predict the Galactic L, T, and Y dwarf populations and their contribution to the deep JWST fields.</summary>
+    <category term="astro-ph.GA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="astro-ph.SR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:56Z</published>
+    <arxiv:comment>Submitted to MNRAS, 20 pages main text + 4 pages appendix, 13 figures</arxiv:comment>
+    <arxiv:primary_category term="astro-ph.GA"/>
+    <author>
+      <name>K. Sysoliatina</name>
+    </author>
+    <author>
+      <name>Akash Vani</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17335v1</id>
+    <title>Long-lived light-driven bimagnons at finite momentum in NiO</title>
+    <updated>2026-11-12T18:59:55Z</updated>
+    <link href="https://arxiv.org/abs/2611.17335v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17335v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Light can manipulate magnetic order and its excitations on ultrafast timescales, including through resonantly driven phonons. In antiferromagnets, light can also create correlated magnon pairs, or bimagnons. Unlike single magnons, whose damping has been measured and modeled in detail, little is known about the lifetime, interactions and decay of such correlated pairs: prior two-magnon measurements show broad linewidths or coherences that dephase within 200 fs. Here we pump the phonon-assisted two-magnon absorption of NiO with mid-infrared pulses, far below its bandgap, and probe the resulting magnetic dynamics at finite momentum with time-resolved resonant inelastic X-ray scattering (RIXS). Upon photoexcitation, the one-magnon linewidth and energy are essentially unchanged, indicating that the long-range magnetic order is preserved without the photocarrier-induced demagnetization characteristic of above-bandgap excitation. A pump-induced two-magnon signal appears on the energy-gain (anti-Stokes) side of the spectrum. Its spectral weight peaks 4 ps after the pump, well beyond our 0.5 ps time resolution, indicative of a delayed growth likely due to momentum redistribution of the light-induced magnon pairs across the Brillouin zone. This two-magnon signal decays with a time constant of $28\pm11$ ps, exceeding the previously reported two-magnon dephasing time by more than two orders of magnitude. These results establish long-lived light-driven bimagnon correlations beyond the one-magnon state, akin to the higher-order correlations measured in ultracold gases.</summary>
+    <category term="cond-mat.str-el" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.mtrl-sci" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="physics.optics" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:55Z</published>
+    <arxiv:primary_category term="cond-mat.str-el"/>
+    <author>
+      <name>Xian P. Yang</name>
+    </author>
+    <author>
+      <name>Christopher T. Parzyck</name>
+    </author>
+    <author>
+      <name>Martin Cross</name>
+    </author>
+    <author>
+      <name>Ella Blake</name>
+    </author>
+    <author>
+      <name>Octave Duros</name>
+    </author>
+    <author>
+      <name>Yinchuan Lv</name>
+    </author>
+    <author>
+      <name>Hari Paudyal</name>
+    </author>
+    <author>
+      <name>Che-Min Lin</name>
+    </author>
+    <author>
+      <name>Sharon S. Philip</name>
+    </author>
+    <author>
+      <name>Lingjia Shen</name>
+    </author>
+    <author>
+      <name>Daniel Jost</name>
+    </author>
+    <author>
+      <name>Giacomo Coslovich</name>
+    </author>
+    <author>
+      <name>Joshua J. Turner</name>
+    </author>
+    <author>
+      <name>Choongwon Seo</name>
+    </author>
+    <author>
+      <name>Elyse Schriber</name>
+    </author>
+    <author>
+      <name>Michael E. Flatté</name>
+    </author>
+    <author>
+      <name>Xiaoqin Li</name>
+    </author>
+    <author>
+      <name>Yuri Suzuki</name>
+    </author>
+    <author>
+      <name>Durga Paudyal</name>
+    </author>
+    <author>
+      <name>Harold Y. Hwang</name>
+    </author>
+    <author>
+      <name>Georgi L. Dakovski</name>
+    </author>
+    <author>
+      <name>Matthias C. Hoffmann</name>
+    </author>
+    <author>
+      <name>Wei-Sheng Lee</name>
+    </author>
+    <author>
+      <name>Alexander H. Reid</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17333v1</id>
+    <title>Discrete Time Crystals from Anti-Unitary Floquet Driving and Dynamical Freezing</title>
+    <updated>2026-11-12T18:59:53Z</updated>
+    <link href="https://arxiv.org/abs/2611.17333v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17333v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We show anti-unitary periodic drive paves a direct path for stabilizing a Discrete Time-Crystal by Dynamical Freezing (DF). The magnetization appears as an emergent conserved operator, and an exact pairing of two-cycle quasi-energies pins the subharmonic response. DF keeps the effective Hamiltonian $\textit{quasi-local}$; infinite-chain simulations show no detectable decay for a generic state with any finite magnetization. We outline an experimental realization of the anti-unitary drive.</summary>
+    <category term="cond-mat.stat-mech" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:53Z</published>
+    <arxiv:primary_category term="cond-mat.stat-mech"/>
+    <author>
+      <name>Anirban Das</name>
+    </author>
+    <author>
+      <name>Asmi Haldar</name>
+    </author>
+    <author>
+      <name>Arnab Das</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17328v1</id>
+    <title>A Dark-Sector Mass Flip-Flop Mechanism for the ANITA-IV Events</title>
+    <updated>2026-11-12T18:59:33Z</updated>
+    <link href="https://arxiv.org/abs/2611.17328v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17328v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>ANITA-IV has observed four upward-going air-shower candidates just below the horizon, consistent with ultra-high-energy $ν_τ$, yet IceCube, despite its much larger exposure, has detected no neutrino events at such energies. We propose a dark-sector mass flip-flop mechanism that reconciles these observations. We consider an all-sky, monoenergetic flux of ultra-high-energy $N_1$, that is lighter than its partner $N_2$ and stable in vacuum. In our scenario, an ultralight scalar mediating interactions with Earth matter inverts the mass ordering of $N_1$ and $N_2$, allowing an incident $N_1$ to decay into $N_2$ deep underground. The resulting $N_2$ propagates unimpeded through matter and exits the Earth, where the decay $N_2 \to N_1 Z'$ becomes kinematically allowed in the atmosphere, initiating an extensive air shower. At IceCube depths, neither $N_1\to N_2 Z'$ nor $N_2\to N_1 Z'$ is kinematically allowed, which explains the absence of analogous events at IceCube. Normalizing the $N_1$ flux to the four ANITA-IV events, we also predict three events during PUEO's first flight.</summary>
+    <category term="hep-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="astro-ph.HE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-ex" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:33Z</published>
+    <arxiv:comment>6+2 pages, 4 figures</arxiv:comment>
+    <arxiv:primary_category term="hep-ph"/>
+    <author>
+      <name>Dibya S. Chattopadhyay</name>
+    </author>
+    <author>
+      <name>Carlos A. Argüelles</name>
+    </author>
+    <author>
+      <name>Vedran Brdar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17327v1</id>
+    <title>Decoupling Dynamics: A Tale of Two Limits</title>
+    <updated>2026-11-12T18:59:31Z</updated>
+    <link href="https://arxiv.org/abs/2611.17327v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17327v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The symmetries of a $d$-dimensional QFT are known to be captured by a topological theory in one dimension higher, the Symmetry Topological Field Theory (SymTFT), which is invariant under gauging finite symmetries of the QFT, but not under dynamical gauging of continuous symmetries. We show that the distinct SymTFTs of a $d$-dimensional QFT before and after dynamical gauging of a continuous Abelian symmetry arise as different topological limits of the same dynamical holographic gauge theory in $(d+1)$-dimensions. Gauging changes the boundary condition of this dynamical theory and thereby selects a different topological limit, explaining why the associated SymTFT changes. We give a fully quantum definition of these SymTFTs at the level of Hilbert spaces and operators by combining suitable limits of the bulk holographic theory with photon truncation. This construction clarifies how topological symmetry defects, charges, and anomalies survive while the dynamical information carried by currents is discarded. We study non-anomalous and anomalous examples, providing a complete quantum analysis for $(2+1)$-dimensional bulks. For a four-dimensional boundary theory with a mixed axial-vector anomaly, we recover the SymTFT of the non-invertible chiral symmetry that remains after gauging the vector symmetry.</summary>
+    <category term="hep-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:31Z</published>
+    <arxiv:comment>30 pages</arxiv:comment>
+    <arxiv:primary_category term="hep-th"/>
+    <author>
+      <name>Andrea Antinucci</name>
+    </author>
+    <author>
+      <name>Oscar Lewis</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17325v1</id>
+    <title>Bound States of Two D0-Branes and the Three-Graviton Coupling</title>
+    <updated>2026-11-12T18:59:14Z</updated>
+    <link href="https://arxiv.org/abs/2611.17325v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17325v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We numerically solve for the ground state of the $SU(2)$ BFSS matrix model for M-theory. This state corresponds to the zero-energy bound state of two D0-branes or, by the BFSS conjecture, to the eleven-dimensional graviton with two units of momentum along the M-theory circle. The wavefunction exhibits a strongly coupled core, as well as an asymptotic power-law tail where the D0-branes are well separated. The coefficient of this power-law decay is the three-graviton coupling, previously computed by Herderschee and Maldacena, which our numerical solution reproduces with high accuracy. We also show that this coupling is protected by supersymmetry in the matrix model, and derive its value from the non-renormalized one-loop interaction of the two D0-branes. Lastly, we provide a simple representation-theoretic argument regarding the recently proposed excited bound states of the model.</summary>
+    <category term="hep-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:14Z</published>
+    <arxiv:comment>8 pages + appendices</arxiv:comment>
+    <arxiv:primary_category term="hep-th"/>
+    <author>
+      <name>Sergio Sanjurjo</name>
+    </author>
+    <author>
+      <name>Themistocles Zikopoulos</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17322v1</id>
+    <title>Ensemble phase transitions in measurement-unitary hybrid quantum circuits</title>
+    <updated>2026-11-12T18:59:03Z</updated>
+    <link href="https://arxiv.org/abs/2611.17322v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17322v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The universal properties of state ensembles generated by quantum dynamics provide a refined lens into Hilbert-space ergodicity and deep thermalisation, or lack thereof. We investigate deep-ergodicity breaking transitions of an ancillary qubit entangled with a system undergoing dynamics via hybrid quantum circuits, where unitary evolution is interspersed with projective measurements. Specifically, we analyse the statistical properties of two distinct state ensembles: the trajectory ensemble (TE) conditioned on the measurement outcomes of the hybrid circuit, and the projected ensemble (PE) generated by further projective measurements of the system at the final temporal boundary. We find that both ensembles undergo non-analytic changes -- ensemble phase transitions -- at the critical point of the measurement-induced purification transition, despite their first moments remaining completely maximally mixed and blind to the transition. For Haar-random circuits, the TE transitions from a trivial identity ensemble to the uniform Haar ensemble, while the PE transitions from the Haar ensemble to a trivial singleton pure state. In Clifford circuits, absence of non-stabiliserness limits the PE to a $1$-design, while the TE forms a $k$-design for $k \leq 3$. We demonstrate that these genuine ensemble transitions offer a clear physical mechanism for the measurement-induced entanglement or purification transitions, illustrating how the capacity to ergodically steer a quantum subsystem shifts from the temporal boundary measurements in the mixed phase to the bulk trajectory measurements in the pure phase.</summary>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.dis-nn" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.stat-mech" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.str-el" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:59:03Z</published>
+    <arxiv:comment>14 pages, 6 figures</arxiv:comment>
+    <arxiv:primary_category term="quant-ph"/>
+    <author>
+      <name>Saptarshi Mandal</name>
+    </author>
+    <author>
+      <name>Sthitadhi Roy</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17319v1</id>
+    <title>The Cauchy problem for skew-torsion-parallel spinors with applications to supergravity</title>
+    <updated>2026-11-12T18:58:38Z</updated>
+    <link href="https://arxiv.org/abs/2611.17319v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17319v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We solve the Cauchy problem for an irreducible real spinor parallel with respect to a metric connection with skew-symmetric torsion on a globally hyperbolic Lorentzian four-manifold, proving that it is well-posed modulo an obstruction that we identify explicitly, and obtaining an initial-data characterization of such spinors. Our proof relies on the theory of spinorial forms, which we use to explicitly integrate the coupled flow for the spinor and underlying metric via a rotated pull-back action of the flow generated by a vector field on the Cauchy hypersurface $Σ$. We characterize the corresponding constraint equations as an explicit exterior differential system and describe all its solutions in terms of contact structures and flat foliations, obtaining a complete classification in the compact case. In particular, we conclude that every oriented compact three-manifold arises as the Cauchy hypersurface of a globally hyperbolic Lorentzian four-manifold equipped with a skew-torsion parallel spinor. Building on these results, we study the interaction between the four-dimensional Neveu-Schwarz supergravity evolution flow on an abelian bundle gerbe and the spinorial evolution flow determined by its supersymmetric conditions, which we prove to be well-posed and compatible. This establishes the well-posedness of the supersymmetric Neveu-Schwarz system in four dimensions and provides an initial-data characterization of supersymmetry. Furthermore, we obtain a strong rigidity result stating that every globally hyperbolic supersymmetric Neveu-Schwarz solution with a compact Cauchy hypersurface is flat and has vanishing bundle-gerbe curvature.</summary>
+    <category term="math.DG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="gr-qc" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="hep-th" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:58:38Z</published>
+    <arxiv:comment>65 pages. Comments welcome!</arxiv:comment>
+    <arxiv:primary_category term="math.DG"/>
+    <author>
+      <name>C. S. Shahbazi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17310v1</id>
+    <title>Quantum Metrology and Quantum Battery in a Hyperfine-Coupled Spin System</title>
+    <updated>2026-11-12T18:56:57Z</updated>
+    <link href="https://arxiv.org/abs/2611.17310v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17310v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We investigate multiparameter quantum metrology and the energetic properties of an effective electron--proton spin system inspired by the hyperfine structure of the hydrogen atom. Considering the external magnetic field $\mathcal B$ and the hyperfine coupling strength $Λ$ as unknown parameters, we derive the quantum Fisher information matrix and establish the corresponding quantum Cramér--Rao bounds for their simultaneous estimation. We analyze the estimation precision and the correlations between the two parameters, showing that the weak-commutativity condition is satisfied despite the noncommutativity of the associated symmetric logarithmic derivatives. Independently, we explore the energetic properties of the system under a unitary charging protocol, characterizing its ergotropy, anti-ergotropy, storage capacity, and energy-basis coherence. We investigate the dependence of these quantities on the magnetic field, hyperfine coupling, temperature, and charging time. Our results provide a comprehensive characterization of the metrological properties and energetic performance of a hyperfine spin-based quantum system, highlighting its potential as a platform for quantum sensing and energy storage.</summary>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.mes-hall" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:56:57Z</published>
+    <arxiv:comment>14 pages, 8 figures</arxiv:comment>
+    <arxiv:primary_category term="quant-ph"/>
+    <author>
+      <name>Omar Bachain</name>
+    </author>
+    <author>
+      <name>Mohamed Amazioug</name>
+    </author>
+    <author>
+      <name>Rachid Ahl Laamara</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17306v1</id>
+    <title>Statistics of Fock-space correlation lengths in the many-body localised phase</title>
+    <updated>2026-11-12T18:56:50Z</updated>
+    <link href="https://arxiv.org/abs/2611.17306v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17306v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The presence of long-ranged, many-body resonances in the many-body localised phase of disordered quantum systems is manifest in strong inhomogeneities of eigenstate amplitudes on the Fock space. We develop a quantitative, microscopic theory for this, centred on two-point Fock-space correlation functions. Exact diagonalisation of the disordered tilted-field Ising chain uncovers a stark contrast: typical correlations decay perfectly exponentially, whereas average correlations exhibit subexponential decay with systematic system-size dependence driven by rare resonant nodes. We show that this behaviour stems from an underlying distribution of Fock-space correlation lengths with a variance that scales inversely with system size. Crucially, the interplay of this distribution with the high-dimensional geometry of the hypercubic Fock-space graph, leads to the qualitative difference between the typical and average behaviours. The theory also allows us to derive the singularity spectrum of the many-body localised eigenstates, and to establish theoretically the anomalous symmetry violation of quantum multifractality as an inherent consequence of the Fock-space geometry.</summary>
+    <category term="cond-mat.dis-nn" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cond-mat.stat-mech" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="quant-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T18:56:50Z</published>
+    <arxiv:comment>7 pages, 5 figures, and supplementary material</arxiv:comment>
+    <arxiv:primary_category term="cond-mat.dis-nn"/>
+    <author>
+      <name>Bibek Saha</name>
+    </author>
+    <author>
+      <name>David E. Logan</name>
+    </author>
+    <author>
+      <name>Sthitadhi Roy</name>
+    </author>
+  </entry>
+</feed>

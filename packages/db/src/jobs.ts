@@ -135,12 +135,18 @@ export type ScholarlyRefreshPayload = z.infer<typeof ScholarlyRefreshPayload>;
 
 const SubjectSlug = z.string().refine((slug) => isSubjectSlug(slug), "a known subject");
 
-/** Subject lists (Discover, subject rooms) refreshed into the provider cache from OpenAlex. */
+/**
+ * Subject lists (Discover, subject rooms) refreshed into the provider cache from OpenAlex. Without
+ * `subjects` (the daily schedule): every subject an owner has chosen, plus the defaults while some
+ * owner has not chosen. `arxivListings` also queues those subjects' arXiv listings on the
+ * scholarly-arxiv queue, the only queue that calls arXiv.
+ */
 export const ScholarlyListsPayload = z.object({
   idempotencyKey: z.string().min(1),
   ownerId: z.string().min(1).optional(),
   task: z.literal("subject-lists"),
-  subjects: z.array(SubjectSlug).min(1).max(30),
+  subjects: z.array(SubjectSlug).min(1).max(30).optional(),
+  arxivListings: z.boolean().optional(),
 });
 export type ScholarlyListsPayload = z.infer<typeof ScholarlyListsPayload>;
 
