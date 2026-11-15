@@ -7,11 +7,13 @@ import {
   clampPage,
   FIND_STATE,
   findStatus,
+  firstParam,
   formatMegabytes,
   isLargeDocument,
   isPresetZoom,
   keyAction,
   LARGE_DOCUMENT_BYTES,
+  laterVersions,
   pageViewAvailable,
   popBack,
   printedLabel,
@@ -76,6 +78,14 @@ describe("view availability", () => {
     expect(pageViewAvailable({ storageKey: "k", mediaType: "application/epub+zip", status: "processed" })).toBe(false);
   });
 
+  it("opens a paper read from arxiv.org in Page view: nothing is stored, the browser fetches arXiv's file", () => {
+    const linked = { storageKey: null, mediaType: "application/pdf", status: "linked_remote" };
+    expect(pageViewAvailable(linked)).toBe(true);
+    expect(textViewAvailable({ status: "linked_remote", pageCount: 12 })).toBe(false);
+    expect(chooseView({ requested: "text", pageAvailable: true, textAvailable: false, sizeBytes: 0, pageCount: 12 })).toBe("unavailable");
+    expect(chooseView({ requested: undefined, pageAvailable: true, textAvailable: false, sizeBytes: 0, pageCount: null })).toBe("page");
+  });
+
   it("needs processed text with pages for Text view", () => {
     expect(textViewAvailable({ status: "processed", pageCount: 3 })).toBe(true);
     expect(textViewAvailable({ status: "processed", pageCount: null })).toBe(false);
@@ -88,6 +98,14 @@ describe("page parameters", () => {
     expect(requestedPage("3")).toBe(3);
     expect(requestedPage(" 12 ")).toBe(12);
     for (const raw of [undefined, "", "0", "-2", "2.5", "1e3", "abc", "1234567"]) expect(requestedPage(raw)).toBeNull();
+  });
+
+  it("takes the first of a repeated parameter (Next passes ?page=1&page=2 as an array)", () => {
+    expect(firstParam(["1", "2"])).toBe("1");
+    expect(firstParam("3")).toBe("3");
+    expect(firstParam(undefined)).toBeUndefined();
+    expect(firstParam([])).toBeUndefined();
+    expect(requestedPage(firstParam(["2", "5"]))).toBe(2);
   });
 
   it("clamps to the document", () => {
@@ -216,5 +234,25 @@ describe("outline links", () => {
     expect(safeOutlineUrl("http://example.org/a")).toBe("http://example.org/a");
     for (const url of ["javascript:alert(1)", "data:text/html,x", "file:///c:/x", "mailto:a@b.c", "not a url", null, undefined])
       expect(safeOutlineUrl(url)).toBeNull();
+  });
+});
+
+describe("later arXiv versions", () => {
+  const versions = [
+    { version: 1, label: "arXiv v1", withdrawn: false },
+    { version: 2, label: "arXiv v2", withdrawn: false },
+    { version: 3, label: "arXiv v3", withdrawn: false },
+  ];
+
+  it("links the newest later version and nothing from the newest", () => {
+    expect(laterVersions(1, versions)).toEqual({ newest: versions[2], withdrawn: [] });
+    expect(laterVersions(3, versions)).toEqual({ newest: null, withdrawn: [] });
+  });
+
+  it("names withdrawn later versions without linking them", () => {
+    const withdrawnLast = [versions[0]!, { version: 2, label: "arXiv v2", withdrawn: true }];
+    expect(laterVersions(1, withdrawnLast)).toEqual({ newest: null, withdrawn: [withdrawnLast[1]] });
+    const withdrawnMiddle = [versions[0]!, { version: 2, label: "arXiv v2", withdrawn: true }, versions[2]!];
+    expect(laterVersions(1, withdrawnMiddle)).toEqual({ newest: versions[2], withdrawn: [withdrawnMiddle[1]] });
   });
 });

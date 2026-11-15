@@ -8,7 +8,7 @@ const ok = { ok: true, status: 200, contentType: "application/pdf" };
 describe("arXiv URLs", () => {
   it("are built only from valid identifiers and versions", () => {
     expect(arxivPdfUrl("2305.18290", 3)).toBe("https://arxiv.org/pdf/2305.18290v3");
-    expect(arxivPdfUrl("math.GT/0309136", 1)).toBe("https://arxiv.org/pdf/math.GT/0309136v1");
+    expect(arxivPdfUrl("math/0309136", 1)).toBe("https://arxiv.org/pdf/math/0309136v1");
     expect(arxivPdfUrl("hep-th/9901001", 2)).toBe("https://arxiv.org/pdf/hep-th/9901001v2");
     expect(arxivAbstractUrl("2305.18290", 3)).toBe("https://arxiv.org/abs/2305.18290v3");
   });
@@ -22,6 +22,10 @@ describe("arXiv URLs", () => {
       "2305.182",
       "",
       "2305.18290?x=1",
+      // Not core's normal form: the old-style subject class is dropped from stored ids.
+      "math.GT/0309136",
+      " 2305.18290",
+      "arXiv:2305.18290",
     ]) {
       expect(isArxivId(id)).toBe(false);
       expect(() => arxivPdfUrl(id, 1)).toThrow();

@@ -9,6 +9,7 @@
  * Every response must succeed, say it is a PDF and start with the PDF signature before PDF.js
  * sees it. The URL of an arXiv version is always built from a validated identifier here.
  */
+import { arxivAbsUrl, arxivPdfUrl as coreArxivPdfUrl, parseArxivId } from "@corniversity/core/scholarly/identifiers";
 
 export type PdfSource = { kind: "stored"; url: string } | { kind: "arxiv"; id: string; version: number };
 
@@ -32,22 +33,26 @@ export class PdfLoadError extends Error {
   }
 }
 
-const NEW_STYLE_ARXIV = /^\d{4}\.\d{4,5}$/;
-const OLD_STYLE_ARXIV = /^[a-z]+(?:-[a-z]+)*(?:\.[A-Z]{2})?\/\d{7}$/;
-
-/** arXiv identifier without its version: 2305.18290 or math.GT/0309136. */
+/**
+ * An arXiv identifier without its version, in the normal form core's `parseArxivId` gives
+ * (`2305.18290`, `hep-th/9711200`: old-style ids without the optional subject class).
+ */
 export function isArxivId(id: string): boolean {
-  return NEW_STYLE_ARXIV.test(id) || OLD_STYLE_ARXIV.test(id);
+  const parsed = parseArxivId(id);
+  return parsed !== null && parsed.version === null && parsed.id === id;
 }
 
+/** https://arxiv.org/pdf/{id}v{n}, built only from a validated identifier and version. */
 export function arxivPdfUrl(id: string, version: number): string {
   if (!isArxivId(id)) throw new Error("Not an arXiv identifier.");
   if (!Number.isInteger(version) || version < 1 || version > 999) throw new Error("Not an arXiv version.");
-  return `https://arxiv.org/pdf/${id}v${version}`;
+  return coreArxivPdfUrl(id, version);
 }
 
+/** The abstract page arXiv asks services to link to. */
 export function arxivAbstractUrl(id: string, version: number): string {
-  return arxivPdfUrl(id, version).replace("/pdf/", "/abs/");
+  arxivPdfUrl(id, version);
+  return arxivAbsUrl(id, version);
 }
 
 const PDF_SIGNATURE = [0x25, 0x50, 0x44, 0x46, 0x2d]; // "%PDF-"
