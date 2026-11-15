@@ -1,18 +1,14 @@
-import { getCourseDetail } from "@corniversity/db/services/catalogue";
-import { companionState, getPage, isAllowed, listPairings, searchAsset, tableOfContents } from "@corniversity/db/services/library";
+import { companionState, getPage, listPairings, searchAsset, tableOfContents } from "@corniversity/db/services/library";
 import { readerDocument } from "@corniversity/db/services/reader";
-import { latestConversationForAsset, listMessages } from "@corniversity/db/services/tutoring";
 import Form from "next/form";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteAnnotationAction, saveAnnotationAction } from "@/app/(app)/library/actions";
 import { assetTitle, FlashNotices, LibraryHeader } from "@/app/(app)/library/shared";
-import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
-import { RenderedHtml } from "@/components/RenderedHtml";
 import { toReaderAnnotations } from "@/components/reader/annotation-data";
+import { CompanionPageView } from "@/components/reader/CompanionPageView";
 import { documentInfo } from "@/components/reader/document-info";
-import { PageView } from "@/components/reader/PageView";
 import {
   chooseView,
   firstParam,
@@ -24,13 +20,21 @@ import {
 } from "@/components/reader/rules";
 import { Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
-import { renderMarkdown } from "@/lib/markdown";
 import { errorNotice } from "@/lib/notices";
-import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
-import { keepNotesOnNewFileAction, markOpenedAction, openArxivVersionAction, reportObservedHashAction } from "./actions";
+import {
+  companionAnswerAction,
+  companionPermissionAction,
+  keepNotesOnNewFileAction,
+  markOpenedAction,
+  openArxivVersionAction,
+  reportObservedHashAction,
+} from "./actions";
+import { askPanelData } from "./companion-data";
 import { ProgressSaver } from "./ProgressSaver";
 import { ReaderTools } from "./ReaderTools";
+
+const companionActions = { setPermission: companionPermissionAction, latestAnswer: companionAnswerAction };
 
 export const metadata = { title: "Reading room" };
 
@@ -70,8 +74,9 @@ function TextBar({
  * The reading room. Page view (the default for a stored PDF that passed validation) shows the
  * original pages with PDF.js. Text view keeps the extracted-text reading room: table of contents
  * from detected headings, page jump, search within the item, the page's extracted text with
- * quality flags, the original PDF at the same page, notes anchored to a locator, and passage
- * questions that the server permits or refuses explicitly. `?view=page|text` chooses; `?page=N`
+ * quality flags, the original PDF at the same page and notes anchored to a locator. Both views carry
+ * the reading companion's *Ask* panel (contract §8), closed until the owner opens it; the server
+ * permits or refuses each request explicitly. `?view=page|text` chooses; `?page=N`
  * (1-based physical page) overrides the remembered position in both, and switching carries it.
  * Large Documents open in Text view when their text is extracted. A paper read from arxiv.org opens
  * only in Page view: the owner's browser fetches arXiv's file, and nothing of it is stored here.
@@ -119,12 +124,16 @@ export default async function ReadPage({
       : null;
 
   if (view === "page") {
-    const [toc, annotations] = await Promise.all([
+    const [toc, annotations, companion] = await Promise.all([
       textAvailable ? tableOfContents(database, asset.id) : Promise.resolve([]),
       toReaderAnnotations(doc.annotations),
+      askPanelData(database, ownerId, asset.id),
     ]);
+    if (!companion) notFound();
     return (
-      <PageView
+      <CompanionPageView
+        companion={companion}
+        companionActions={companionActions}
         assetId={asset.id}
         title={title}
         source={
@@ -188,39 +197,14 @@ export default async function ReadPage({
 
   const physicalIndex = Math.min(asset.pageCount - 1, Math.max(0, requested !== null ? requested - 1 : remembered));
   const annotations = doc.annotations;
-  const [page, toc, hits, conversation] = await Promise.all([
+  const [page, toc, hits, companion] = await Promise.all([
     getPage(database, asset.id, physicalIndex),
     tableOfContents(database, asset.id),
     query.q ? searchAsset(database, asset.id, query.q, 20) : Promise.resolve([]),
-    latestConversationForAsset(database, ownerId, asset.id),
+    askPanelData(database, ownerId, asset.id),
   ]);
-  if (!page) notFound();
+  if (!page || !companion) notFound();
   const pageLabel = page.printedLabel ? `p. ${page.printedLabel}` : `PDF page ${physicalIndex + 1}`;
-  const externalAi = await isAllowed(database, ownerId, asset.id, "external_ai");
-  let personaName = "the reading-room lecturer";
-  for (const courseId of asset.courseIds) {
-    const detail = await getCourseDetail(database, courseId);
-    if (detail?.tutor) {
-      personaName = detail.tutor.name;
-      break;
-    }
-  }
-  const messages = conversation ? await listMessages(database, conversation.id) : [];
-  const producedBy = await producerLabels(
-    database,
-    messages.slice(-6).map((m) => m.providerRunId),
-  );
-  const rendered = await Promise.all(
-    messages.slice(-6).map(async (m) => ({
-      id: m.id,
-      sender: m.sender,
-      producedBy: producedBy(m.providerRunId),
-      html: await renderMarkdown(m.contentMarkdown),
-      citations: m.citations,
-      labels: m.labels,
-      uncited: m.uncitedClaims.length,
-    })),
-  );
   const pageAnnotations = annotations.filter((a) => a.locator.kind === "pdf" && a.locator.physicalPageIndex === physicalIndex);
   const needsRepair = annotations.filter((a) => a.mappingStatus === "needs_repair");
   // Text view links keep the view, so moving between pages never switches to the pages.
@@ -292,7 +276,8 @@ export default async function ReadPage({
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[220px_1fr_320px]">
+          {/* One bounded column below lg (minmax(0, 1fr)), so a long contents entry is cut off instead of widening the page. */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[220px_1fr_320px]">
             <aside className="order-2 lg:order-1">
               <Card as="div">
                 <h2 className="text-sm font-medium text-ink">Contents</h2>
@@ -403,54 +388,10 @@ export default async function ReadPage({
                   assetId={asset.id}
                   physicalIndex={physicalIndex}
                   pageLabel={pageLabel}
-                  personaName={personaName}
-                  ask={
-                    externalAi
-                      ? { allowed: true }
-                      : {
-                          allowed: false,
-                          reason: `External AI processing is not permitted for this item, so nothing from it is sent to a model and no tutor can discuss it. Allow it on the item page if the licence permits.`,
-                        }
-                  }
                   saveAnnotation={saveAnnotationAction}
+                  companion={companion}
+                  companionActions={companionActions}
                 />
-                {rendered.length ? (
-                  <div className="mt-4 flex flex-col gap-2 border-t border-stone pt-3">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-medium text-ink">Recent answers</h3>
-                      <AiLabel kind="lecturer" />
-                    </div>
-                    {rendered.map((m) => (
-                      <div
-                        key={m.id}
-                        className={[
-                          "rounded-[var(--radius-panel)] px-3 py-2 text-sm",
-                          m.sender === "learner" ? "border border-stone bg-paper" : "border border-stone bg-paper-3/60",
-                        ].join(" ")}
-                      >
-                        <p className="mb-1 text-[0.65rem] uppercase tracking-wide text-ink-3">
-                          {m.sender === "learner" ? "You" : `${personaName}${m.producedBy ? ` · ${m.producedBy}` : ""}`}
-                        </p>
-                        <RenderedHtml html={m.html} className="text-sm" />
-                        {m.sender === "persona" ? (
-                          <div className="mt-1 flex flex-wrap gap-1">
-                            {m.labels.map((l) => (
-                              <Badge key={l} tone={l === "source_backed" ? "moss" : l === "needs_checking" ? "rust" : "neutral"}>
-                                {l.replace("_", " ")}
-                              </Badge>
-                            ))}
-                            {m.citations.map((c) => (
-                              <span key={c.tag} className="text-[0.7rem] text-ink-3">
-                                {c.tag}: {c.label}
-                              </span>
-                            ))}
-                            {m.uncited > 0 ? <Badge tone="rust">{m.uncited} unverifiable citation removed</Badge> : null}
-                          </div>
-                        ) : null}
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
               </Card>
 
               <Card as="div">

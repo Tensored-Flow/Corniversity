@@ -36,7 +36,10 @@ const PRIVATE_POSTS: [string, unknown][] = [
   ["/api/tutor/turn", { sessionId: "00000000-0000-4000-8000-000000000000", message: "x" }],
   ["/api/director/turn", { conversationId: "00000000-0000-4000-8000-000000000000", message: "x" }],
   ["/api/discussions/turn", { discussionId: "00000000-0000-4000-8000-000000000000", message: "x" }],
-  ["/api/library/ask", { assetId: "00000000-0000-4000-8000-000000000000", physicalIndex: 0, selectedText: "x", question: "y" }],
+  [
+    "/api/library/ask",
+    { assetId: "00000000-0000-4000-8000-000000000000", action: "explain_passage", pageIndex: 0, selection: "x", text: "y" },
+  ],
   ["/api/library/annotations", { assetId: "00000000-0000-4000-8000-000000000000", kind: "bookmark", physicalIndex: 0 }],
   [
     "/api/library/position",
@@ -135,7 +138,7 @@ test.describe("unauthenticated access", () => {
     // Prompt and scripted-response assets: a count and version names, never their text or location.
     const assets = body.aiAssets as { ok: boolean; scripted: string; prompts: Record<string, string> };
     expect(Object.keys(assets).sort()).toEqual(["ok", "prompts", "scripted"]);
-    expect(assets).toMatchObject({ ok: true, scripted: "7 of 7" });
+    expect(assets).toMatchObject({ ok: true, scripted: "13 of 13" });
     for (const [role, version] of Object.entries(assets.prompts)) expect(version).toMatch(new RegExp(`^${role}-\\d+\\.\\d+$`));
   });
   test("once the owner exists, sign-up is closed even with the owner email and the bootstrap code", async ({ request }) => {

@@ -1,23 +1,25 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { COMPANION_ACTIONS } from "@corniversity/core/scholarly/companion";
 import { findFixtureRoot } from "./fixture";
 import { ASSESSOR_PROMPT_VERSION } from "./prompts/assessor";
 import { DIRECTOR_PROMPT_VERSION } from "./prompts/director";
 import { DISCUSSION_PROMPT_VERSION } from "./prompts/discussion";
-import { READING_PROMPT_VERSION } from "./prompts/reading";
+import { READING_PROMPT_VERSION, readingScenario } from "./prompts/reading";
 import { SUPERVISOR_PROMPT_VERSION } from "./prompts/supervisor";
 import { TUTOR_PROMPT_VERSION } from "./prompts/tutor";
 
 /** The scripted responses the application asks for by name; each must load for the scripted demo to answer. */
-export const REQUIRED_FIXTURES = [
+export const REQUIRED_FIXTURES: readonly { role: string; scenario: string }[] = [
   { role: "tutor", scenario: "default" },
   { role: "assessor", scenario: "default" },
   { role: "director", scenario: "default" },
   { role: "director", scenario: "welcome-note" },
-  { role: "lecturer", scenario: "reading-passage" },
   { role: "peer", scenario: "default" },
   { role: "seminar_chair", scenario: "default" },
-] as const;
+  // The reading companion: one scripted response per action, each labelled as scripted.
+  ...COMPANION_ACTIONS.map((action) => ({ role: "lecturer", scenario: readingScenario(action) })),
+];
 
 export interface AssetReport {
   ok: boolean;

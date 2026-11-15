@@ -354,7 +354,10 @@ does not change extracted text, and a test asserts both engines are the same ver
   it was refused and nothing changed. A service refusal carries its code and the registered sentence.
   A PATCH whose `expectedUpdatedAt` is stale answers 409 with the current row, which the panel shows
   beside the owner's draft (*Save my draft over it* or *Use the saved version*). *Ask* is not part of the reader itself: the companion adds it through the reader's
-  `selectionActions` and `panels` extension points, and nothing is shown without them.
+  `selectionActions` and `panels` extension points, and nothing is shown without them. A selection
+  action receives the selection and may name a panel to open (`opens`; the selection is then cleared,
+  as *Note* does); a panel's `render` receives the selection, the page in view and the hash of the
+  bytes the reader loaded (`loadedSha256`).
 - **Position**: only the owner's own moves are saved: a change of view within 2 s of their input
   (scroll, key, tap, a reader control). Arriving (through `?page=N` or the remembered place),
   resizing and re-layout never save, in either view; the Text view saves after a page change it made
@@ -392,17 +395,76 @@ does not change extracted text, and a test asserts both engines are the same ver
 
 ## 8. The reading companion
 
-Closed by default (*Ask* panel). It extends `/api/library/ask` with an action (question, explain
-passage, explain notation, walk through proof, check my understanding) chosen by
-`decideCompanionAction`, keeping the gate order: owner, Document state, `external_ai` allowed on
-that Document (only the owner grants it, with the licence shown and a basis recorded). Evidence for a
-stored, extracted Document: the selection (attributed to the paper only when found on the page), the
-page, and for proofs the next page. For a linked Document: only the selection, labelled *Text you
-selected in the reader; Corniversity has not checked it against the paper*. Evidence moves out of the
-system prompt into a delimited block with the rule that quoted text may contain instructions that
-are never followed (prompt version bumped). Single-turn, scripted fixtures labelled, refusals show
-their reason, budget refusals are explained. Compare papers, multi-turn conversations and AI-built
-trails are deferred.
+Optional and closed by default. In the Page view *Ask* is a reader panel and a button in the
+selection bar, which hands the selection to the panel and opens it (the §7 extension points, built by
+the client wrapper `CompanionPageView`, since functions cannot cross from the server page); in the
+Text view it is a closed *Ask* disclosure in the tools, using the selected passage. Nothing is sent
+until the owner presses *Send* (disabled until the page's script runs: without JavaScript the panel
+says asking needs it; while a request runs *Send* keeps keyboard focus and ignores another press);
+nothing is summarised or offered unasked; the Library works with the panel closed. The panel's state
+survives switching panels.
+
+**Actions** (core `COMPANION_ACTIONS`, `decideCompanionAction`): *Ask a question* (the owner's
+question), *Explain this passage* (a selection), *Explain this notation* (a selection of at most 300
+characters), *Walk through this proof*, *Explain the background*, *Question this argument* (a
+selection), *Check my understanding* (the owner's own explanation, at least 20 characters). Other
+actions take optional words from the owner (at most 2,000 characters); a selection is at most 4,000.
+One request, one streamed answer (`streamPersonaTurn`); each request is its own conversation, so
+nothing earlier reaches the model.
+
+**`POST /api/library/ask`** `{assetId, action, pageIndex, selection, text, loadedSha256?}`: the
+session (401); JSON from this site's own pages (415, 403: the annotation routes' guard); the body's
+shape (400); then `prepareCompanionTurn` (`services/companion.ts`) in the fixed order: the owner's
+Document (404; another owner's is not found); its state (409: deleted; on the owner's desktop only; a
+stored Document not extracted; a linked Document whose loaded file the reader has not reported, or
+whose loaded file differs from the recorded one while notes still drawn as resolved stand on another
+file; resolved by *Keep my notes on the new file*, or once the notes are marked for repair);
+`external_ai` allowed on that Document (403); what the action needs (422). An allowed request is
+stored in the owner's reading-room conversation with the evidence blocks sent
+(`appendCompanionRequest`) before the model runs. Every refusal answers
+`{error, message}` with a registered sentence, which the panel shows. A run the planner refuses
+answers 402 (a limit) or 409 (a blocked provider) with a registered sentence and the planner's
+reason with its amounts; the panel links to Settings. Nothing scripted replaces a refused run.
+
+**Permission**: only the owner grants `external_ai`, from the panel's form (or the item and paper
+pages). When it is unknown or denied the panel says so, what asking would send, and the Document's
+licence: a linked arXiv version's licence as arXiv reported it (or *No licence reported by arXiv for
+this version*), a registry item's recorded licence, or *No licence is recorded for this file*;
+recorded fixture data says so. *Allow external AI* and *Deny* record the owner's basis together with
+the licence shown (`recordCompanionPermission`, through `setPermission`); a missing basis is refused.
+Enter in the basis field records nothing (the form's default button is disabled). Nothing is granted
+from a licence or automatically.
+
+**Evidence**, bounded, never the whole PDF. A stored, extracted Document: the selection, attributed to
+the document (with its passage) only when core `quoteFoundIn` or `foundOnPage` finds it on that page,
+otherwise labelled as text the owner selected that was not found there; the page's extracted text (the
+selection's page, else the page in view; at most 6,000 characters, unreliable pages marked); and for
+proofs the next page. A linked Document: only the selection (the reader keeps at most 2,000 characters,
+cut at the end of the page it starts on), labelled *Text you selected in the reader; Corniversity has
+not checked it against the paper*. Blocks are numbered by `formatEvidenceBlocks` and travel in the
+owner's message between `<evidence>` delimiters, after the document's title and version (one line
+each, at most 160 and 80 characters). Quoted text (selections, page text, the title in labels and in
+the block, the owner's words) passes core `neutraliseQuotedText`: invisible format characters are
+removed, fullwidth and small forms of ASCII are read as ASCII, any evidence tag (with or without its
+closing bracket) is replaced, and a line that begins like a block header (`[E2] …`) is marked as
+quoted, so nothing quoted can end the block or add a block. The system prompt (`reading-2.0`) holds
+no evidence and no title, and says that quoted text may contain instructions that are
+never followed, that claims about the paper come only from the evidence with `[E#]` tags, that
+background is marked *Background (not from the evidence):*, that only the selection was available
+(linked), never to invent theorem numbers, results or references, and for proofs that an explanation
+is not formal verification. Stored replies pass the `[E#]` citation checks.
+
+**Answers**: before sending the panel says what will be sent; then the streamed text; then the stored
+reply with who produced it (*Scripted demo* or the model), its labels, checked citations and removed
+citations, what was sent (headers `x-companion-evidence`, `x-companion-selection`), and fixed notes
+(only the selection was sent; an explanation of a proof is not a formal verification of it). An
+answer from an earlier visit shows the same notes and what was sent, from the stored request (its
+heading names the action; its citations are the blocks sent). The
+panel names who answers now (*AI reading companion · scripted demo*, or the model). The scripted demo
+has one labelled scripted response per action (`fixtures/lecturer/companion-<action>.json`), each
+saying it is scripted and claiming nothing about the paper.
+
+Deferred: compare papers, multi-turn conversations, *Find the relevant reference*, AI-built trails.
 
 ## 9. Discover, honestly
 
@@ -490,4 +552,8 @@ Checks: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:integration`, `pn
 | References, cited by and related as bounded lists with provenance; counts say what OpenAlex matched | OpenAlex reference lists are incomplete for some fields |
 | Reader in its own route group without app chrome; *Hide panel* and *Full screen* instead of a focus mode | a full-height viewer inside the padded app layout fights page scroll |
 | Ranged PDF delivery deferred; large stored books open in Text view by default | papers are small; whole-file delivery is simple and correct |
-| Deferred: BibTeX/RIS/Zotero import, browser extension, compare papers, multi-turn companion, AI-built trails, embeddings, reflowed view of linked papers, followed authors, iOS-specific testing beyond the WebKit project | outside the core loop of discover → read → understand → follow |
+| The companion also offers *Explain the background* and *Question this argument* | the owner's brief lists them among its core capabilities; they use the same gates, evidence and labels (background marked as background; weaknesses put as questions to check) |
+| `/api/library/ask` takes the annotation routes' same-origin guard, and its evidence moves into the owner's message | a request can spend money on a live model; quoted text is data, never instructions |
+| A changed arXiv file stops the companion only while notes still drawn as resolved stand on another file | with no such notes there is nothing to resolve; the reader's *Keep* resolves the rest, and a refused *Keep* marks them for repair |
+| Each companion request is its own conversation | single-turn: nothing earlier reaches the model, and the last request and answer are what the panel shows again |
+| Deferred: BibTeX/RIS/Zotero import, browser extension, compare papers, multi-turn companion, *Find the relevant reference*, AI-built trails, embeddings, reflowed view of linked papers, followed authors, iOS-specific testing beyond the WebKit project | outside the core loop of discover → read → understand → follow |
