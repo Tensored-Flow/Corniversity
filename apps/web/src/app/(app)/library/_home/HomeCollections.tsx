@@ -7,9 +7,18 @@ import { createCollectionAction } from "../actions";
 
 /**
  * Shelves and trails on the home page: names, how many papers each holds, links, and a form for a new
- * one. A refusal of that form returns to the form (`#new-collection`) and its notice is shown there.
+ * one. A refusal of that form returns to the form (`#new-collection`) and its notice is shown there,
+ * with the kind and name the owner typed (`typed`) filled in again.
  */
-export function HomeCollections({ collections, error }: { collections: (CollectionRow & { itemCount: number })[]; error?: string }) {
+export function HomeCollections({
+  collections,
+  error,
+  typed,
+}: {
+  collections: (CollectionRow & { itemCount: number })[];
+  error?: string;
+  typed?: { kind: "shelf" | "trail"; name: string };
+}) {
   const shelves = collections.filter((c) => c.kind === "shelf");
   const trails = collections.filter((c) => c.kind === "trail");
   return (
@@ -50,6 +59,8 @@ export function HomeCollections({ collections, error }: { collections: (Collecti
           ) : null,
         )}
         <form
+          // A new form after a refusal, so the typed values are its defaults (React resets the form that was sent).
+          key={typed ? `${typed.kind}:${typed.name}` : "new"}
           id="new-collection"
           action={createCollectionAction}
           className="mt-4 flex scroll-mt-4 flex-col gap-3 border-t border-stone pt-4"
@@ -58,13 +69,13 @@ export function HomeCollections({ collections, error }: { collections: (Collecti
           {error ? <Notice tone="rust">{errorNotice(error)}</Notice> : null}
           <div className="grid gap-3 sm:grid-cols-[max-content_1fr] lg:grid-cols-1 xl:grid-cols-[max-content_1fr]">
             <Field label="New" htmlFor="home-collection-kind">
-              <Select id="home-collection-kind" name="kind" defaultValue="shelf">
+              <Select id="home-collection-kind" name="kind" defaultValue={typed?.kind ?? "shelf"}>
                 <option value="shelf">Shelf</option>
                 <option value="trail">Trail</option>
               </Select>
             </Field>
             <Field label="Name" htmlFor="home-collection-name">
-              <Input id="home-collection-name" name="name" required maxLength={120} />
+              <Input id="home-collection-name" name="name" required maxLength={120} defaultValue={typed?.name ?? ""} />
             </Field>
           </div>
           <div>

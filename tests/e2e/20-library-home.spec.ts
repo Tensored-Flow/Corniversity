@@ -157,6 +157,13 @@ test.describe("library home, shelves, trails and notes", () => {
     paths.attention = await openSaved(page, "arXiv:1706.03762");
     paths.becke = await openSaved(page, "W2143981217");
     await expect(page.getByRole("heading", { level: 1, name: BECKE })).toBeVisible();
+    // Saving queues Crossref's check for its DOI, which has no recorded response: the page says it was
+    // not made, once the worker has run it, and never shows the paper as checked.
+    await expect(async () => {
+      await page.goto(paths.becke);
+      await expect(page.getByText("Not checked for corrections and retractions")).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 90_000 });
+    await expect(page.getByText(/No recorded response in fixture mode for DOI 10\.1063\/1\.464913/)).toBeVisible();
     for (const path of [paths.large, paths.attention]) {
       await page.goto(path);
       await expect(page.getByRole("button", { name: /^Read arXiv v\d+$/ })).toBeVisible({ timeout: 120_000 });
@@ -502,6 +509,9 @@ test.describe("library home, shelves, trails and notes", () => {
     await home.getByLabel("Name").fill(name);
     await home.getByRole("button", { name: "Create" }).click();
     await expect(page.getByText("You already have a trail with that name.")).toBeInViewport();
+    // The refused form keeps what was typed (the redirect carries it; this also holds without JavaScript).
+    await expect(home.getByLabel("Name")).toHaveValue(name);
+    await expect(home.getByLabel("New")).toHaveValue("trail");
     await page.goto(trail);
     await page
       .getByLabel("Description", { exact: true })

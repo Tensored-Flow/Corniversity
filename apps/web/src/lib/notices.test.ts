@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ERROR_NOTICES, errorCode, errorHref, errorNotice, NEUTRAL_NOTICE } from "./notices";
+import { ERROR_NOTICES, errorCode, errorHref, errorNotice, NEUTRAL_NOTICE, placed } from "./notices";
 
 describe("error notices", () => {
   it("never shows text supplied in a URL: a crafted message gets the neutral notice", () => {
@@ -59,6 +59,14 @@ describe("error notices", () => {
   it("builds redirect targets that carry only the code", () => {
     expect(errorHref("/settings", "unknown-run", "#provider")).toBe("/settings?error=unknown-run#provider");
     expect(errorHref("/library/read/x?page=2", "write-note-before-saving")).toBe("/library/read/x?page=2&error=write-note-before-saving");
+  });
+
+  it("places a notice in the section a redirect lands on: the #fragment stays last and is named again as `at`", () => {
+    expect(placed("/library/papers/w#files", "saved=permission")).toBe("/library/papers/w?at=files&saved=permission#files");
+    expect(placed("/library/papers/w?delete=confirm#delete", "error=tick-box-delete-paper")).toBe(
+      "/library/papers/w?delete=confirm&at=delete&error=tick-box-delete-paper#delete",
+    );
+    expect(placed("/library/papers/w", "saved=flags")).toBe("/library/papers/w?saved=flags");
   });
 
   it("lists every literal message the services throw, so none silently becomes the neutral notice", () => {

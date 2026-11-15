@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 /**
  * *Add a paper without an identifier* (a plain multipart form from /library/papers/new): the PDF
  * becomes a new, unidentified paper with "Your copy" as its file (`createWorkFromUpload`), titled
- * only if the owner gave a title. A file already attached to another paper is refused with a link.
+ * only if the owner gave a title. A file already attached to another paper is refused with a link;
+ * a body that did not arrive whole says so.
  */
 export async function POST(request: Request): Promise<Response> {
   const back = "/library/papers/new";
@@ -24,6 +25,7 @@ export async function POST(request: Request): Promise<Response> {
   const fail = (message: string, other?: string) =>
     seeOther(errorHref(other && isUuid(other) ? `${back}?other=${other}` : back, errorCode(message)));
   const form = await request.formData().catch(() => null);
+  if (!form) return fail("The file did not arrive in full (the connection may have dropped), so nothing was stored. Attach it again.");
   const file = uploadedFile(form);
   if (!file) return fail("Choose a PDF file to attach.");
   if (file.size > maxBytes) return fail("The file is larger than this server's upload limit.");

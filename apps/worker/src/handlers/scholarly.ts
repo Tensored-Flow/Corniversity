@@ -159,10 +159,22 @@ export async function scholarlyRefreshHandler(ctx: ScholarlyHandlerContext, raw:
       const refreshed = await refreshWork(ctx.db, payload.ownerId, client, payload.workId);
       // The requested work's DOIs (merges followed), where Crossref's notices live.
       const integrity = await refreshIntegrity(ctx.db, payload.ownerId, client, payload.workId);
-      return { workId: refreshed.workId, openalexMerged: refreshed.merged, integrityChecked: integrity.checked.length };
+      return {
+        workId: refreshed.workId,
+        openalexMerged: refreshed.merged,
+        integrityChecked: integrity.checked.length,
+        unrecorded: integrity.unrecorded,
+      };
     }
+    // In fixture mode a DOI with no recorded Crossref response is reported in the result (the paper
+    // page says so) instead of failing the job: nothing was checked for it and nothing is invented.
     const integrity = await refreshIntegrity(ctx.db, payload.ownerId, client, payload.workId);
-    return { workId: payload.workId, integrityChecked: integrity.checked.length, notices: integrity.notices };
+    return {
+      workId: payload.workId,
+      integrityChecked: integrity.checked.length,
+      notices: integrity.notices,
+      unrecorded: integrity.unrecorded,
+    };
   } catch (error) {
     throw asJobError(error);
   }

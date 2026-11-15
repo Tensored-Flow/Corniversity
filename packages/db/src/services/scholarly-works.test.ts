@@ -24,6 +24,7 @@ import {
   createWorkFromUpload,
   deleteWorkCompletely,
   editWorkFields,
+  existingWorkIds,
   getWork,
   getWorkByIdentifier,
   importByIdentifier,
@@ -39,6 +40,7 @@ import {
   refreshWork,
   requestIntegrityCheckIfDue,
   requestPrivateCopy,
+  requestWorkRefresh,
   resolveInput,
   ScholarlyError,
   saveWork,
@@ -208,6 +210,14 @@ describe("importing with recorded provider data (fixture mode)", () => {
     expect((await resolveInput(handle.db, OWNER, "10.7717/peerj.4375")).kind).toBe("identifier");
     const resolved = await resolveInput(handle.db, OWNER, "https://doi.org/10.7717/peerj.4375");
     expect(resolved.kind === "identifier" && resolved.workId).toBe(imported.workId);
+    // Text shaped like a DOI that is not one: marked, so Find says so and searches nothing.
+    expect(await resolveInput(handle.db, OWNER, "10.12/peerj")).toEqual({
+      kind: "search",
+      query: "10.12/peerj",
+      host: null,
+      invalidDoi: true,
+    });
+    expect(await resolveInput(handle.db, OWNER, "peerj open access")).toEqual({ kind: "search", query: "peerj open access", host: null });
   });
 
   it("an unknown DOI falls through to Crossref; a DOI neither knows is not found, an unrecorded one unavailable", async () => {
@@ -505,7 +515,8 @@ describe("a paper's Documents", () => {
     expect(accepted).toEqual({ accepted: true, problems: [] });
     const [after] = await handle.db.select().from(resourceAsset).where(eq(resourceAsset.id, linked.id));
     expect(after?.observedSha256).toBe("2".repeat(64));
-    expect((await handle.db.select().from(annotation).where(eq(annotation.assetId, linked.id)))[0]?.mappingStatus).toBe("resolved");
+    // Marked for repair by the refusal, the note is neither checked nor changed by the acceptance (see the next test).
+    expect((await handle.db.select().from(annotation).where(eq(annotation.assetId, linked.id)))[0]?.mappingStatus).toBe("needs_repair");
     await expect(recordObservedHash(handle.db, owner, linked.id, { sha256: "not-a-hash" })).rejects.toThrow(
       "The reported file hash is not valid.",
     );
@@ -515,6 +526,66 @@ describe("a paper's Documents", () => {
       queued: false,
       reason: "arXiv's licence for this version does not permit Corniversity to store a copy; it is read from arxiv.org.",
     });
+  });
+
+  it("keeps the notes on a changed file by checking only resolved anchors measured on another file", async () => {
+    const owner = await freshOwner("accept-scope");
+    const imported = await importByIdentifier(handle.db, owner, scripted({}), { scheme: "arxiv", value: "1706.03762" });
+    const raw = await fixture.arxivRaw("1706.03762");
+    const entries = await fixture.arxivEntries([{ id: "1706.03762", version: null }]);
+    await applyArxivRecord(handle.db, owner, { workId: imported.workId, arxivId: "1706.03762", entry: entries.entries[0]!, raw });
+    const linked = await openArxivVersion(handle.db, owner, imported.workId, "1706.03762", 7);
+    const [oldBytes, newBytes] = ["a".repeat(64), "b".repeat(64)];
+    await recordObservedHash(handle.db, owner, linked.id, { sha256: oldBytes, pageCount: 15 });
+    const anchor = (pageIndex: number) => ({
+      v: 1,
+      coordSpace: "pdf_user_space",
+      pageIndex,
+      pageView: [612, 792],
+      rotate: 0,
+      rects: [[72, 600, 400, 612]],
+    });
+    // Resolved on the recorded file (page 3), marked for repair earlier (page 4), and made on the new bytes (page 5).
+    const resolved = await createAnnotation(handle.db, owner, {
+      assetId: linked.id,
+      physicalIndex: 2,
+      kind: "highlight",
+      anchor: anchor(2),
+    });
+    const repair = await createAnnotation(handle.db, owner, { assetId: linked.id, physicalIndex: 3, kind: "highlight", anchor: anchor(3) });
+    await handle.db.update(annotation).set({ mappingStatus: "needs_repair" }).where(eq(annotation.id, repair.id));
+    expect((await recordObservedHash(handle.db, owner, linked.id, { sha256: newBytes })).status).toBe("changed");
+    const onNew = await createAnnotation(handle.db, owner, {
+      assetId: linked.id,
+      physicalIndex: 4,
+      kind: "highlight",
+      anchor: anchor(4),
+      loadedSha256: newBytes,
+    });
+    expect(onNew.anchor?.documentSha256).toBe(newBytes);
+    const row = async (id: string) => (await handle.db.select().from(annotation).where(eq(annotation.id, id)))[0]!;
+    const views = (changed: number[]) =>
+      Array.from({ length: 15 }, (_, i) => (changed.includes(i) ? [600, 800] : [612, 792]) as [number, number]);
+
+    // Refused (the resolved note's page differs): only that note is marked; the others are left as they were.
+    const refused = await acceptNewFile(handle.db, owner, linked.id, { observedSha256: newBytes, pageCount: 15, pageViews: views([2, 4]) });
+    expect(refused.accepted).toBe(false);
+    expect((await row(resolved.id)).mappingStatus).toBe("needs_repair");
+    expect((await row(onNew.id)).mappingStatus).toBe("resolved");
+    expect((await row(onNew.id)).anchor?.documentSha256).toBe(newBytes);
+    expect((await row(repair.id)).mappingStatus).toBe("needs_repair");
+
+    // Accepted although the page of the note already marked for repair differs: that note is neither checked nor changed.
+    await handle.db.update(annotation).set({ mappingStatus: "resolved" }).where(eq(annotation.id, resolved.id));
+    const accepted = await acceptNewFile(handle.db, owner, linked.id, { observedSha256: newBytes, pageCount: 15, pageViews: views([3]) });
+    expect(accepted).toEqual({ accepted: true, problems: [] });
+    expect((await row(resolved.id)).anchor?.documentSha256).toBe(linked.sha256);
+    expect((await row(resolved.id)).mappingStatus).toBe("resolved");
+    expect((await row(onNew.id)).anchor?.documentSha256).toBe(linked.sha256);
+    expect((await row(onNew.id)).mappingStatus).toBe("resolved");
+    expect((await row(repair.id)).mappingStatus).toBe("needs_repair");
+    const [after] = await handle.db.select().from(resourceAsset).where(eq(resourceAsset.id, linked.id));
+    expect(after?.observedSha256).toBe(newBytes);
   });
 
   it("keeps a private copy of an openly licensed version: promoted in place with the licence as basis", async () => {
@@ -564,6 +635,45 @@ describe("a paper's Documents", () => {
     expect((await keepPrivateCopy(handle.db, blobs, client, { ownerId: owner, assetId: linked.id, maxBytes: 1_000_000 })).outcome).toBe(
       "already_stored",
     );
+  });
+});
+
+describe("corrections and saving conflicts", () => {
+  it("refuses a correction whose field changed after the form showed it; fields the form did not change stay as they are", async () => {
+    const owner = await freshOwner("edit-conflict");
+    const [work] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: owner, title: "Original title", venue: "Old venue", abstract: "Reported by arXiv." })
+      .returning();
+    const id = work!.id;
+    // Another tab corrects the venue first.
+    await editWorkFields(handle.db, owner, id, { venue: "Venue from tab B" }, { venue: "Old venue" });
+    // This form still showed the old venue and changes it too: refused as a whole, nothing written.
+    await expect(
+      editWorkFields(
+        handle.db,
+        owner,
+        id,
+        { venue: "Venue from tab A", title: "New title" },
+        { venue: "Old venue", title: "Original title" },
+      ),
+    ).rejects.toThrow(
+      "These details changed after you opened the form, so nothing was saved. The page now shows them; make your correction again.",
+    );
+    let current = (await getWork(handle.db, owner, id))!.work;
+    expect([current.title, current.venue]).toEqual(["Original title", "Venue from tab B"]);
+    // A form that changes only the title leaves the venue (changed meanwhile) and the abstract alone.
+    await editWorkFields(handle.db, owner, id, { title: "New title" }, { title: "Original title" });
+    current = (await getWork(handle.db, owner, id))!.work;
+    expect([current.title, current.venue, current.abstract]).toEqual(["New title", "Venue from tab B", "Reported by arXiv."]);
+    expect([...current.ownerEditedFields].sort()).toEqual(["title", "venue"]);
+    // A form showing values the way the page does (authors one per line, an empty year) compares equal to what is stored.
+    await editWorkFields(handle.db, owner, id, { publicationYear: 2017 }, { publicationYear: null, authors: [] });
+    expect((await getWork(handle.db, owner, id))!.work.publicationYear).toBe(2017);
+    // Without the shown values (an older form) a correction applies as before.
+    await editWorkFields(handle.db, owner, id, { workType: "article" });
+    expect((await getWork(handle.db, owner, id))!.work.workType).toBe("article");
+    await expect(editWorkFields(handle.db, OTHER, id, { title: "x" }, { title: "New title" })).rejects.toThrow("Paper not found.");
   });
 });
 
@@ -629,6 +739,44 @@ describe("integrity notices and complete deletion", () => {
     await expect(refreshIntegrity(handle.db, OTHER, fixture, work!.id)).rejects.toThrow("Paper not found.");
   });
 
+  it("in fixture mode a DOI with no recorded Crossref answer is not checked: its notices stay and the work is not marked checked", async () => {
+    const owner = await freshOwner("integrity-unrecorded");
+    const earlier = {
+      type: "correction" as const,
+      source: "crossref" as const,
+      concerns: "10.1063/1.464913",
+      label: "Correction",
+      retrievedAt: "2026-01-01T00:00:00.000Z",
+    };
+    const [work] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: owner, title: "Two DOIs, one recorded", integrityNotices: [earlier] })
+      .returning();
+    await handle.db.insert(scholarlyIdentifier).values([
+      { ownerId: owner, workId: work!.id, scheme: "doi", value: "10.1016/s0140-6736(97)11096-0", source: "fixture" },
+      { ownerId: owner, workId: work!.id, scheme: "doi", value: "10.1063/1.464913", source: "fixture" },
+    ]);
+    const result = await refreshIntegrity(handle.db, owner, fixture, work!.id);
+    expect(result).toEqual({ checked: ["10.1016/s0140-6736(97)11096-0"], notices: 2, unrecorded: ["10.1063/1.464913"] });
+    const detail = (await getWork(handle.db, owner, work!.id))!;
+    expect(detail.work.integrityCheckedAt).toBeNull();
+    expect(detail.integrityNotices).toContainEqual(earlier);
+    expect(detail.integrityNotices.some((n) => n.type === "retraction")).toBe(true);
+    // The paper page reads the latest check from its job: the unrecorded DOIs, each a valid DOI.
+    expect(detail.integrityJob).toBeNull();
+    await requestWorkRefresh(handle.db, owner, work!.id, "integrity");
+    await handle.db
+      .update(jobRecord)
+      .set({ status: "completed", result: { unrecorded: ["10.1063/1.464913", "<b>not a doi</b>"] } })
+      .where(and(eq(jobRecord.ownerId, owner), sql`${jobRecord.payload}->>'workId' = ${work!.id}`));
+    expect((await getWork(handle.db, owner, work!.id))!.integrityJob).toMatchObject({
+      status: "completed",
+      error: null,
+      unrecorded: ["10.1063/1.464913"],
+    });
+    expect((await getWork(handle.db, OTHER, work!.id))?.integrityJob).toBeUndefined();
+  });
+
   it("deletes the work, its Documents, blobs, annotations and positions; notebook entries stay unlinked", async () => {
     const owner = await freshOwner("delete");
     const imported = await importByIdentifier(handle.db, owner, scripted({}), { scheme: "arxiv", value: "2305.18290" });
@@ -657,6 +805,8 @@ describe("integrity notices and complete deletion", () => {
     const removed = await deleteWorkCompletely(handle.db, blobs, owner, imported.workId);
     expect(removed).toEqual({ documents: 2, annotations: 2 });
     expect(await getWork(handle.db, owner, imported.workId)).toBeNull();
+    // The Jobs page links a job's paper only while it exists.
+    expect(await existingWorkIds(handle.db, owner, [imported.workId])).toEqual(new Set());
     expect(await blobs.exists(stored.asset.storageKey!)).toBe(false);
     expect(await handle.db.select().from(resourceAsset).where(eq(resourceAsset.ownerId, owner))).toEqual([]);
     expect(await handle.db.select().from(scholarlyIdentifier).where(eq(scholarlyIdentifier.ownerId, owner))).toEqual([]);
@@ -672,6 +822,8 @@ describe("another owner's ids are not found", () => {
     const client = scripted({ "doi:10.1234/mine": result(oaRecord("W1701", { doi: "10.1234/mine" })) });
     const mine = (await importByIdentifier(handle.db, OWNER, client, { scheme: "doi", value: "10.1234/mine" })).workId;
     expect(await getWork(handle.db, OTHER, mine)).toBeNull();
+    expect(await existingWorkIds(handle.db, OWNER, [mine, "not-a-uuid", mine])).toEqual(new Set([mine]));
+    expect(await existingWorkIds(handle.db, OTHER, [mine])).toEqual(new Set());
     expect(await getWorkByIdentifier(handle.db, OTHER, "doi", "10.1234/mine")).toBeNull();
     expect(workIdFor(await ownerWorkIndex(handle.db, OTHER), { scheme: "doi", value: "10.1234/mine" })).toBeNull();
     for (const attempt of [

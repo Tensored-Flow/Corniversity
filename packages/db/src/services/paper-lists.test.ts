@@ -94,6 +94,32 @@ describe("Find papers: OpenAlex word search (recorded)", () => {
     expect((missing as Error).message).toBe("No recorded provider response exists for this request (fixture mode), so it is unavailable.");
   });
 
+  it("a page past OpenAlex's last has no items while OpenAlex still counts results (test-only client, not a recording)", async () => {
+    // TEST-ONLY TRANSPORT: no fixture recording holds a page past OpenAlex's last, and none is written.
+    // This double answers every search with an empty page and the count it is given.
+    const testOnlyPastTheEnd = (count: number | null): ScholarlyClient => ({
+      ...fixture,
+      openalexSearch: async (params) => ({
+        provenance: { provider: "openalex", source: "fixture", retrievedAt: "2026-11-15T00:00:00.000Z", stale: false },
+        count,
+        page: params.page ?? 1,
+        perPage: params.perPage ?? FIND_PAGE_SIZE,
+        items: [],
+      }),
+    });
+    const past = await searchPapers(handle.db, OWNER, testOnlyPastTheEnd(30), { query: "test-only words", page: 5 });
+    expect(past).toMatchObject({ page: 5, count: 30, lastPage: 2, items: [] });
+    // With no count OpenAlex's pages cannot be known: an empty page is the last one there is.
+    const uncounted = await searchPapers(handle.db, OWNER, testOnlyPastTheEnd(null), { query: "test-only words", page: 4 });
+    expect(uncounted).toMatchObject({ page: 4, count: null, lastPage: 4, items: [] });
+    // Nothing found at all: a count of zero, one page.
+    expect(await searchPapers(handle.db, OWNER, testOnlyPastTheEnd(0), { query: "test-only words" })).toMatchObject({
+      count: 0,
+      lastPage: 1,
+      items: [],
+    });
+  });
+
   it("builds OpenAlex filters only from the lists, and refuses browsing on a production server without a key", () => {
     expect(openAlexFiltersFor({})).toEqual({});
     expect(openAlexFiltersFor({ subject: "artificial-intelligence", type: "review", yearFrom: 1990, freeToRead: true })).toEqual({

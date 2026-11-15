@@ -1,4 +1,5 @@
 import "server-only";
+import type { Element, ElementContent, Root, RootContent } from "hast";
 import { defaultSchema } from "hast-util-sanitize";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
@@ -100,13 +101,96 @@ const schema = {
   clobberPrefix: "md-",
 };
 
+/**
+ * Two bases no real page has, with different schemes and hosts. A relative address stays on each;
+ * an address that names a scheme or a host leaves at least one of them, whatever the page's own
+ * scheme: `https:host/x` reads as relative only against an https base, `//b.invalid/x` stays only on
+ * its own host's base.
+ */
+const LOCAL_BASES = [new URL("http://a.invalid/"), new URL("https://b.invalid/")];
+
+/**
+ * Whether an image address stays on this site: a relative path. Anything that names a scheme or
+ * another host (`https://…`, `https:host/…`, `//host/…`, `/\host/…`, `data:`) is not; URL parsing
+ * decides, as the browser would, against both bases.
+ */
+export function isSameOriginImage(src: string): boolean {
+  return LOCAL_BASES.every((base) => {
+    try {
+      return new URL(src, base).origin === base.origin;
+    } catch {
+      return false;
+    }
+  });
+}
+
+/** Whether an address would make a working link: http or https (protocol-relative counts). */
+function isWebAddress(src: string): boolean {
+  try {
+    const { protocol } = new URL(src, LOCAL_BASES[1]);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/** What an image from elsewhere becomes: its alternative text, said to be an image that is not shown. */
+function imageLabel(image: Element): string {
+  const alt = typeof image.properties?.alt === "string" ? image.properties.alt.trim() : "";
+  return alt ? `Image not shown: ${alt}` : "Image not shown";
+}
+
+/**
+ * Images from other sites are never loaded (the production CSP allows images from this site only,
+ * so each would also log a violation, and model output could carry one to call out to its host):
+ * each becomes a link to its address named by its alternative text, or plain text inside a link or
+ * when the address is not a web address (`data:`, `javascript:`), which would make no working link.
+ * Relative images, which stay on this site, are kept.
+ */
+export function rehypeExternalImages() {
+  const walk = (children: (RootContent | ElementContent)[], inLink: boolean): (RootContent | ElementContent)[] =>
+    children.map((child) => {
+      if (child.type !== "element") return child;
+      if (child.tagName === "img") {
+        const src = typeof child.properties?.src === "string" ? child.properties.src : "";
+        if (src && isSameOriginImage(src)) return child;
+        const text: ElementContent = { type: "text", value: imageLabel(child) };
+        if (inLink || !isWebAddress(src)) return text;
+        return { type: "element", tagName: "a", properties: { href: src, rel: ["noopener", "noreferrer"] }, children: [text] };
+      }
+      child.children = walk(child.children, inLink || child.tagName === "a") as ElementContent[];
+      return child;
+    });
+  return (tree: Root) => {
+    tree.children = walk(tree.children, false) as RootContent[];
+  };
+}
+
+/**
+ * After sanitising: a link whose address the sanitiser removed (`javascript:`, `data:`) would still
+ * look like a link but go nowhere and take no focus; its text stays, as plain text.
+ */
+function rehypeUnwrapDeadLinks() {
+  const walk = (children: (RootContent | ElementContent)[]): (RootContent | ElementContent)[] =>
+    children.flatMap((child): (RootContent | ElementContent)[] => {
+      if (child.type !== "element") return [child];
+      child.children = walk(child.children) as ElementContent[];
+      return child.tagName === "a" && child.properties?.href === undefined ? child.children : [child];
+    });
+  return (tree: Root) => {
+    tree.children = walk(tree.children) as RootContent[];
+  };
+}
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkMath)
   .use(remarkRehype, { allowDangerousHtml: false })
   .use(rehypeKatexLocal)
+  .use(rehypeExternalImages)
   .use(rehypeSanitize, schema)
+  .use(rehypeUnwrapDeadLinks)
   .use(rehypeStringify);
 
 /**

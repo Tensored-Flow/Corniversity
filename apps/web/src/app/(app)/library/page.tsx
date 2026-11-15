@@ -32,8 +32,12 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   const viewParam = one(params.view);
   const view: WorkListView = VIEWS.some((v) => v.view === viewParam) ? (viewParam as WorkListView) : "saved";
   const page = savedPageNumber(one(params.page) ?? "");
-  // A refusal of the shelf-or-trail form returns to that form (`at=new-collection`) and is shown there, in view.
+  // A refusal of the shelf-or-trail form returns to that form (`at=new-collection`) and is shown there, in view,
+  // with the kind and name the owner typed.
   const errorInCollections = one(params.at) === "new-collection" ? error : undefined;
+  const typed = errorInCollections
+    ? { kind: one(params.kind) === "trail" ? ("trail" as const) : ("shelf" as const), name: (one(params.name) ?? "").slice(0, 120) }
+    : undefined;
   const database = db();
   const ownerId = session.user.id;
   const [assets, pairings, reading, works, collections] = await Promise.all([
@@ -103,7 +107,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
           />
         </div>
         <div className="min-w-0">
-          <HomeCollections collections={collections} error={errorInCollections} />
+          <HomeCollections collections={collections} error={errorInCollections} typed={typed} />
         </div>
       </div>
 

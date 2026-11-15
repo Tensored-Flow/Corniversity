@@ -4,7 +4,7 @@ import { LibraryError } from "@corniversity/db/services/library";
 import { attachUploadToWork, ScholarlyError } from "@corniversity/db/services/scholarly-works";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
-import { errorCode, errorHref } from "@/lib/notices";
+import { errorCode, errorHref, placed } from "@/lib/notices";
 import { formSession, fromThisSite, refusedCrossSite, seeOther, uploadedFile } from "../../_form";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,9 @@ export const dynamic = "force-dynamic";
  * *Attach your copy* on a paper page (a plain multipart form): the owner's PDF becomes the paper's
  * file through `attachUploadToWork` (a linked arXiv version is promoted in place; bytes already in
  * the library are adopted, reused or refused by the contract's rules). Refusals return to the paper
- * page with their registered notice, and, for a file that belongs to another paper, a link to it.
+ * page's Files section (`at=files`) with their registered notice, and, for a file that belongs to
+ * another paper, a link to it. A body that did not arrive whole (the connection dropped mid-upload)
+ * says so rather than claiming no file was chosen.
  */
 export async function POST(request: Request, context: { params: Promise<{ workId: string }> }): Promise<Response> {
   const { workId } = await context.params;
@@ -25,8 +27,9 @@ export async function POST(request: Request, context: { params: Promise<{ workId
   const env = getEnv();
   const maxBytes = env.MAX_UPLOAD_MB * 1_048_576;
   const fail = (message: string, other?: string) =>
-    seeOther(errorHref(other && isUuid(other) ? `${back}?other=${other}` : back, errorCode(message), "#files"));
+    seeOther(placed(`${other && isUuid(other) ? `${back}?other=${other}` : back}#files`, `error=${errorCode(message)}`));
   const form = await request.formData().catch(() => null);
+  if (!form) return fail("The file did not arrive in full (the connection may have dropped), so nothing was stored. Attach it again.");
   const file = uploadedFile(form);
   if (!file) return fail("Choose a PDF file to attach.");
   if (file.size > maxBytes) return fail("The file is larger than this server's upload limit.");
@@ -41,7 +44,7 @@ export async function POST(request: Request, context: { params: Promise<{ workId
       data: Buffer.from(await file.arrayBuffer()),
       maxBytes,
     });
-    return seeOther(`${back}?saved=attached-${result.outcome}#files`);
+    return seeOther(placed(`${back}#files`, `saved=attached-${result.outcome}`));
   } catch (error) {
     if (error instanceof ScholarlyError && error.code === "not_found" && error.message === "Paper not found.")
       return seeOther(errorHref("/library/find", errorCode(error.message)));

@@ -1,14 +1,14 @@
-import Link from "next/link";
+import { NotFoundMessage } from "./_not-found/NotFoundMessage";
 
+/**
+ * The 404 for an address no route matches, rendered in the root layout alone, which has no `main`:
+ * this one is the page's only main. Pages under (app) and (reader) have their own not-found files,
+ * rendered inside their layout's main.
+ */
 export default function NotFound() {
   return (
-    <main id="main" className="mx-auto flex min-h-dvh w-full max-w-xl flex-col justify-center px-4 py-16">
-      <p className="text-sm uppercase tracking-[0.18em] text-brass">Not found</p>
-      <h1 className="mt-2 text-3xl text-ink">There is no room here.</h1>
-      <p className="mt-3 text-ink-2">The page you asked for does not exist or has moved.</p>
-      <Link href="/campus" className="mt-6 text-brass underline underline-offset-4">
-        Back to Campus
-      </Link>
+    <main id="main" className="flex min-h-dvh flex-col justify-center px-4 py-16">
+      <NotFoundMessage />
     </main>
   );
 }

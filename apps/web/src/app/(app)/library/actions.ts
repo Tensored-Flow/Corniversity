@@ -40,7 +40,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
-import { errorCode, errorHref } from "@/lib/notices";
+import { errorCode, errorHref, placed } from "@/lib/notices";
 import { importOpenResource } from "@/lib/open-import";
 import { requireSession } from "@/lib/session";
 
@@ -329,19 +329,6 @@ const CREATE_BACK: Record<string, string> = {
   trails: "/library/trails#new",
 };
 
-const withParam = (path: string, param: string) => `${path}${path.includes("?") ? "&" : "?"}${param}`;
-
-/**
- * `back` with `param` in its query. A #fragment stays last and is also named as `at`, so the page
- * shows the notice inside the section the browser scrolls to, where it is in view.
- */
-function placed(back: string, param: string): string {
-  const i = back.indexOf("#");
-  if (i < 0) return withParam(back, param);
-  const hash = back.slice(i);
-  return `${withParam(withParam(back.slice(0, i), `at=${hash.slice(1)}`), param)}${hash}`;
-}
-
 /** A refusal of a collection form: back to `back` (which may carry a #fragment) with the registered code. */
 function refuse(back: string, message: string): never {
   redirect(placed(back, `error=${errorCode(message)}`));
@@ -392,12 +379,19 @@ function collectionDone(path: string, query: string, hash = ""): never {
   redirect(placed(`${path}${hash}`, query));
 }
 
-/** A new shelf or trail (name and optional description); it opens on its own page. */
+/**
+ * A new shelf or trail (name and optional description); it opens on its own page. A refusal returns
+ * to the form with the kind and the name the owner typed (`kind=`, `name=`), so the form shows them
+ * again, without JavaScript too.
+ */
 export async function createCollectionAction(form: FormData): Promise<void> {
   const session = await requireSession("/library");
   const kind = text(form, "kind");
   const from = text(form, "from");
-  const back = Object.hasOwn(CREATE_BACK, from) ? CREATE_BACK[from]! : CREATE_BACK.home!;
+  const typed = new URLSearchParams({ kind: kind === "trail" ? "trail" : "shelf", name: text(form, "name").slice(0, 120) }).toString();
+  const formBack = Object.hasOwn(CREATE_BACK, from) ? CREATE_BACK[from]! : CREATE_BACK.home!;
+  const hash = formBack.indexOf("#");
+  const back = `${formBack.slice(0, hash)}?${typed}${formBack.slice(hash)}`;
   if (kind !== "shelf" && kind !== "trail") refuse(back, "Choose a shelf or a trail.");
   const created = await collectionAttempt(back, () =>
     createCollection(db(), session.user.id, { kind, name: text(form, "name"), description: String(form.get("description") ?? "") }),

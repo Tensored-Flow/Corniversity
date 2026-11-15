@@ -15,18 +15,20 @@ import {
 } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Suspense } from "react";
+import { type ReactNode, Suspense } from "react";
+import { Markdown } from "@/components/Markdown";
 import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
 import { browsingRefusal, scholarly } from "@/components/scholarly/client";
-import { count, paperHref, reportedBy } from "@/components/scholarly/format";
+import { count, paperHref, rejectionText, reportedBy } from "@/components/scholarly/format";
 import { paperFromWork } from "@/components/scholarly/model";
 import { FixtureBadge, PaperView } from "@/components/scholarly/PaperView";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice, Select, Textarea } from "@/components/ui";
 import { db } from "@/lib/db";
-import { ERROR_NOTICES } from "@/lib/notices";
+import { ERROR_NOTICES, errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "../../../sessions/[id]/AutoRefresh";
-import { AssetStatusBadge, FlashNotices, LibraryHeader, PERMISSIONS, PermissionSummary } from "../../shared";
+import { KIND_TEXT } from "../../_collections/text";
+import { AssetStatusBadge, LibraryHeader, PERMISSIONS, PermissionSummary } from "../../shared";
 import {
   addToCollectionAction,
   createCollectionAction,
@@ -43,31 +45,15 @@ import {
   setFlagAction,
   unsaveAction,
 } from "./actions";
+import { EDIT_FIELDS } from "./edit-form";
 import { ListFallback, PaperListSection, ReadElsewhere, ReadElsewhereFallback } from "./openalex-sections";
+import { savedText } from "./saved-text";
 
 export const metadata = { title: "Paper" };
 
-const SAVED_TEXT: Record<string, string> = {
-  flags: "Saved.",
-  removed: "Removed from your saved papers. The paper, its files and notes stay here.",
-  saved: "Saved to your library.",
-  edited: "Your corrections are saved; a refresh from a provider never overwrites them.",
-  "private-copy": "Private copy requested. The worker fetches it from arXiv; this page updates when it is stored.",
-  permission: "Permission recorded.",
-  processing: "Extraction queued.",
-  "copy-removed": "File removed.",
-  merged: "Merged into this paper.",
-  collection: "Added.",
-  "collection-removed": "Removed from that shelf or trail.",
-  "collection-removed-note":
-    "Removed from that shelf or trail, with the note you wrote for it there. The paper, its notes and files stay here.",
-  "attached-stored": "Your copy is attached and can be read here.",
-  "attached-promoted": "Your copy is attached to that version and can be read here.",
-  "attached-adopted": "That file was already in your library; it is now this paper's file.",
-  "attached-reused": "That file was already this paper's; nothing was stored twice.",
-  "attached-revived": "That file was deleted earlier; it is back as this paper's file.",
-  added: "Paper added from your PDF. Give it a title, authors and year under Edit details.",
-};
+/** The sections a form returns to (besides a shelf or trail's own row, `collection-<id>`); anything else is the top. */
+const SECTIONS = ["read", "versions", "files", "collections", "duplicates", "edit", "delete"] as const;
+type Section = (typeof SECTIONS)[number];
 
 const PENDING = new Set(["queued", "active"]);
 
@@ -90,7 +76,16 @@ export default async function PaperPage({
   searchParams,
 }: {
   params: Promise<{ workId: string }>;
-  searchParams: Promise<{ error?: string; saved?: string; other?: string; more?: string; delete?: string; full?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    saved?: string;
+    other?: string;
+    more?: string;
+    delete?: string;
+    full?: string;
+    at?: string;
+    remove?: string;
+  }>;
 }) {
   const session = await requireSession("/library/find");
   const { workId } = await params;
@@ -140,24 +135,50 @@ export default async function PaperPage({
     arxivPending || detail.documentJobs.some((j) => PENDING.has(j.status)) || detail.documents.some((d) => d.asset.status === "processing");
   const other = query.other && isUuid(query.other) ? query.other : null;
   const env = getEnv();
+  // Each form returns to its own section (`at`, the redirect's #fragment); its notice is shown there, in view.
+  const present: Record<Section, boolean> = {
+    read: true,
+    versions: arxivVersions.length > 0 || hasArxivId,
+    files: true,
+    collections: true,
+    duplicates: duplicates.length > 0,
+    edit: true,
+    delete: true,
+  };
+  const at = typeof query.at === "string" ? query.at : "";
+  const place =
+    ((SECTIONS as readonly string[]).includes(at) && present[at as Section]) || memberships.some((m) => at === `collection-${m.id}`)
+      ? at
+      : "top";
+  const errorText = errorNotice(query.error);
+  const extracting =
+    detail.documentJobs.some((j) => j.kind === "extraction" && PENDING.has(j.status)) ||
+    detail.documents.some((d) => d.asset.status === "processing");
+  const confirmation = savedText(query.saved, { extracting });
+  const notices =
+    errorText || confirmation ? (
+      <div className="mb-4 flex flex-col gap-2">
+        {errorText ? <Notice tone="rust">{errorText}</Notice> : null}
+        {other ? (
+          <p className="text-sm">
+            <Link href={paperHref(other)} className="text-brass underline underline-offset-4">
+              Open the paper that file belongs to
+            </Link>
+          </p>
+        ) : null}
+        {confirmation ? <Notice tone="moss">{confirmation}</Notice> : null}
+      </div>
+    ) : null;
+  /** The notices, in the one place the redirect aimed at. */
+  const noticesAt = (where: string) => (place === where ? notices : null);
+  const removing = typeof query.remove === "string" && isUuid(query.remove) ? query.remove : null;
+  const integrity = detail.integrityJob;
 
   return (
     <div className="mx-auto w-full max-w-5xl">
       <AutoRefresh active={refreshing} intervalMs={3000} />
       <LibraryHeader title={work.title ?? "Untitled paper"} active="/library" />
-      <FlashNotices error={query.error} />
-      {query.saved && SAVED_TEXT[query.saved] ? (
-        <div className="mb-4">
-          <Notice tone="moss">{SAVED_TEXT[query.saved]}</Notice>
-        </div>
-      ) : null}
-      {other ? (
-        <p className="-mt-2 mb-4 text-sm">
-          <Link href={paperHref(other)} className="text-brass underline underline-offset-4">
-            Open the paper that file belongs to
-          </Link>
-        </p>
-      ) : null}
+      {noticesAt("top")}
       {arxivPending ? (
         <div className="mb-4">
           <Notice tone="slate" title="Fetching the arXiv record">
@@ -178,6 +199,23 @@ export default async function PaperPage({
           </Notice>
         </div>
       ) : null}
+      {integrity?.status === "completed" && integrity.unrecorded.length ? (
+        <div className="mb-4">
+          <Notice tone="neutral" title="Not checked for corrections and retractions">
+            No recorded response in fixture mode for {integrity.unrecorded.length === 1 ? "DOI" : "DOIs"} {integrity.unrecorded.join(", ")},
+            so Crossref's check could not be made. Nothing is shown as checked.
+          </Notice>
+        </div>
+      ) : integrity?.status === "failed" ? (
+        <div className="mb-4">
+          <Notice tone="brass" title="The check for corrections and retractions failed">
+            {jobFailure(integrity.error, "The jobs page has the details.")}{" "}
+            <Link href="/library/jobs" className="underline underline-offset-4">
+              Jobs
+            </Link>
+          </Notice>
+        </div>
+      ) : null}
       {fixture && !paper.fixture ? (
         <p className="mb-4">
           <FixtureBadge />
@@ -189,8 +227,9 @@ export default async function PaperPage({
         mode="paper"
         actions={
           <div className="flex flex-col gap-4">
-            <div id="read">
+            <div id="read" className="scroll-mt-4">
               <h3 className="text-sm font-medium text-ink">Read</h3>
+              {noticesAt("read")}
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 {readable.map((d) => (
                   <LinkButton
@@ -204,6 +243,7 @@ export default async function PaperPage({
                 {latest && !latestStored ? (
                   <form action={readArxivAction}>
                     <input type="hidden" name="workId" value={work.id} />
+                    <input type="hidden" name="from" value="read" />
                     <input type="hidden" name="arxivId" value={latest.arxivId!} />
                     <input type="hidden" name="version" value={latest.arxivVersion!} />
                     <Button type="submit">Read arXiv v{latest.arxivVersion}</Button>
@@ -267,6 +307,7 @@ export default async function PaperPage({
             documents={detail.documents}
             jobs={detail.documentJobs}
             pending={arxivPending}
+            notices={noticesAt("versions")}
           />
         ) : null}
         <Files
@@ -275,8 +316,16 @@ export default async function PaperPage({
           versions={arxivVersions.filter((v) => !v.withdrawn)}
           jobs={detail.documentJobs}
           maxMb={env.MAX_UPLOAD_MB}
+          notices={noticesAt("files")}
         />
-        <Collections workId={work.id} memberships={memberships} collections={collections} />
+        <Collections
+          workId={work.id}
+          memberships={memberships}
+          collections={collections}
+          notices={noticesAt("collections")}
+          rowNotices={(id) => noticesAt(`collection-${id}`)}
+          removing={removing}
+        />
         {(["references", "cited_by", "related"] as const).map((kind) => {
           const section = (
             <PaperListSection
@@ -298,9 +347,9 @@ export default async function PaperPage({
             </Suspense>
           );
         })}
-        {duplicates.length ? <Duplicates workId={work.id} duplicates={duplicates} /> : null}
-        <Edit detail={detail} />
-        <Delete workId={work.id} confirm={confirmDelete} summary={deletion} />
+        {duplicates.length ? <Duplicates workId={work.id} duplicates={duplicates} notices={noticesAt("duplicates")} /> : null}
+        <Edit detail={detail} notices={noticesAt("edit")} open={place === "edit" && errorText !== null} />
+        <Delete workId={work.id} confirm={confirmDelete} summary={deletion} notices={noticesAt("delete")} />
       </PaperView>
     </div>
   );
@@ -341,19 +390,22 @@ function Versions({
   documents,
   jobs,
   pending,
+  notices,
 }: {
   workId: string;
   versions: VersionRow[];
   documents: WorkDocument[];
   jobs: DocumentJob[];
   pending: boolean;
+  notices: ReactNode;
 }) {
   const sorted = [...versions].sort(
     (a, b) => (a.arxivId ?? "").localeCompare(b.arxivId ?? "") || (a.arxivVersion ?? 0) - (b.arxivVersion ?? 0),
   );
   return (
-    <Card as="section" id="versions">
+    <Card as="section" id="versions" className="scroll-mt-4">
       <h2 className="text-lg text-ink">Versions</h2>
+      {notices ? <div className="mt-3">{notices}</div> : null}
       {sorted.length === 0 ? (
         <p className="mt-2 text-sm text-ink-3">{pending ? "Fetching the arXiv record." : "No arXiv versions have been recorded yet."}</p>
       ) : (
@@ -387,6 +439,7 @@ function Versions({
                   {v.withdrawn ? null : (
                     <form action={readArxivAction}>
                       <input type="hidden" name="workId" value={workId} />
+                      <input type="hidden" name="from" value="versions" />
                       <input type="hidden" name="arxivId" value={v.arxivId!} />
                       <input type="hidden" name="version" value={v.arxivVersion!} />
                       <Button type="submit" variant="secondary">
@@ -444,22 +497,26 @@ function Files({
   versions,
   jobs,
   maxMb,
+  notices,
 }: {
   workId: string;
   stored: WorkDocument[];
   versions: VersionRow[];
   jobs: DocumentJob[];
   maxMb: number;
+  notices: ReactNode;
 }) {
   return (
-    <Card as="section" id="files">
+    <Card as="section" id="files" className="scroll-mt-4">
       <h2 className="text-lg text-ink">Files</h2>
+      {notices ? <div className="mt-3">{notices}</div> : null}
       {stored.length === 0 ? (
         <p className="mt-2 text-sm text-ink-3">No file of this paper is stored here.</p>
       ) : (
         <ul className="mt-3 flex flex-col">
           {stored.map((d) => {
             const extraction = jobs.find((j) => j.assetId === d.asset.id && j.kind === "extraction");
+            const rejection = d.asset.status === "rejected" ? rejectionText(d.asset.rejectionReason) : null;
             return (
               <li key={d.asset.id} className="flex flex-col gap-2 border-t border-stone py-3 first:border-t-0">
                 <div className="flex flex-wrap items-center gap-2">
@@ -473,7 +530,12 @@ function Files({
                   {d.asset.pageCount ? ` · ${count(d.asset.pageCount)} pages` : ""}
                 </p>
                 <PermissionSummary permissions={d.permissions} />
-                {extraction?.status === "failed" ? (
+                {rejection ? (
+                  <p className="text-xs text-rust">
+                    {rejection.text} {rejection.next}
+                  </p>
+                ) : null}
+                {extraction?.status === "failed" && d.asset.status !== "rejected" ? (
                   <p className="text-xs text-rust">Extraction failed: {jobFailure(extraction.error, "the jobs page has the details.")}</p>
                 ) : null}
                 <div className="flex flex-wrap items-center gap-2">
@@ -600,53 +662,90 @@ function Collections({
   workId,
   memberships,
   collections,
+  notices,
+  rowNotices,
+  removing,
 }: {
   workId: string;
   memberships: CollectionMembership[];
   collections: { id: string; kind: "shelf" | "trail"; name: string }[];
+  notices: ReactNode;
+  rowNotices: (collectionId: string) => ReactNode;
+  /** The shelf or trail whose Remove asks first (`?remove=`): a note or reason is written there. */
+  removing: string | null;
 }) {
   const available = collections.filter((c) => !memberships.some((m) => m.id === c.id));
   return (
-    <Card as="section" id="collections">
+    <Card as="section" id="collections" className="scroll-mt-4">
       <h2 className="text-lg text-ink">Shelves and trails</h2>
+      {notices ? <div className="mt-3">{notices}</div> : null}
       {memberships.length ? (
-        <ul className="mt-3 flex flex-col gap-2 text-sm">
+        <ul className="mt-3 flex flex-col">
           {memberships.map((m) => (
-            <li key={m.id} className="flex flex-wrap items-center gap-x-2 gap-y-1 [overflow-wrap:anywhere]">
-              {m.kind === "trail" ? (
-                <span className="text-ink">
-                  Trail:{" "}
-                  <Link href={`/library/trails/${m.id}`} className="text-brass underline underline-offset-4">
-                    {m.name}
-                  </Link>
-                  , step {m.step} of {m.steps}
-                  {m.next ? (
-                    <>
-                      ; next:{" "}
-                      <Link href={paperHref(m.next.workId)} className="text-brass underline underline-offset-4">
-                        {m.next.title ?? "Untitled paper"}
-                      </Link>
-                    </>
-                  ) : (
-                    "; the last step"
-                  )}
-                </span>
-              ) : (
-                <span className="text-ink">
-                  Shelf:{" "}
-                  <Link href={`/library/shelves/${m.id}`} className="text-brass underline underline-offset-4">
-                    {m.name}
-                  </Link>
-                </span>
-              )}
-              {m.reason ? <span className="text-ink-2">— {m.reason}</span> : null}
-              <form action={removeFromCollectionAction}>
-                <input type="hidden" name="workId" value={workId} />
-                <input type="hidden" name="collectionId" value={m.id} />
-                <Button type="submit" variant="quiet" aria-label={`Remove from ${m.name}`}>
-                  Remove
-                </Button>
-              </form>
+            <li
+              key={m.id}
+              id={`collection-${m.id}`}
+              className="flex scroll-mt-4 flex-col gap-2 border-t border-stone py-3 text-sm [overflow-wrap:anywhere] first:border-t-0"
+            >
+              {rowNotices(m.id)}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                {m.kind === "trail" ? (
+                  <span className="text-ink">
+                    Trail:{" "}
+                    <Link href={`/library/trails/${m.id}`} className="text-brass underline underline-offset-4">
+                      {m.name}
+                    </Link>
+                    , step {m.step} of {m.steps}
+                    {m.next ? (
+                      <>
+                        ; next:{" "}
+                        <Link href={paperHref(m.next.workId)} className="text-brass underline underline-offset-4">
+                          {m.next.title ?? "Untitled paper"}
+                        </Link>
+                      </>
+                    ) : (
+                      "; the last step"
+                    )}
+                  </span>
+                ) : (
+                  <span className="text-ink">
+                    Shelf:{" "}
+                    <Link href={`/library/shelves/${m.id}`} className="text-brass underline underline-offset-4">
+                      {m.name}
+                    </Link>
+                  </span>
+                )}
+                <form action={removeFromCollectionAction}>
+                  <input type="hidden" name="workId" value={workId} />
+                  <input type="hidden" name="collectionId" value={m.id} />
+                  <Button type="submit" variant="quiet" aria-label={`Remove from ${m.name}`}>
+                    Remove
+                  </Button>
+                </form>
+              </div>
+              {m.reason ? (
+                <div className="rounded-[var(--radius-control)] border-l-2 border-brass bg-paper px-3 py-2">
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink-3">{KIND_TEXT[m.kind].reasonLabel}</p>
+                  <Markdown source={m.reason} className="text-sm [overflow-wrap:anywhere]" />
+                </div>
+              ) : null}
+              {removing === m.id && m.reason ? (
+                <div className="rounded-[var(--radius-panel)] border border-rust bg-paper px-4 py-3">
+                  <p className="text-ink">{KIND_TEXT[m.kind].removeAsk}</p>
+                  <form action={removeFromCollectionAction} className="mt-3 flex flex-wrap items-center gap-3">
+                    <input type="hidden" name="workId" value={workId} />
+                    <input type="hidden" name="collectionId" value={m.id} />
+                    <input type="hidden" name="confirm" value="1" />
+                    <Button type="submit" variant="danger">
+                      {KIND_TEXT[m.kind].removeConfirm}
+                      <span className="sr-only"> on {m.name}</span>
+                    </Button>
+                    <Link href={`${paperHref(workId)}#collection-${m.id}`} className="text-brass underline underline-offset-4">
+                      Keep it
+                    </Link>
+                  </form>
+                </div>
+              ) : null}
             </li>
           ))}
         </ul>
@@ -669,7 +768,7 @@ function Collections({
                 ))}
               </Select>
             </Field>
-            <Field label="Why (optional)" htmlFor="collection-add-reason">
+            <Field label="Why (optional)" htmlFor="collection-add-reason" hint="Markdown and LaTeX.">
               <Input id="collection-add-reason" name="reason" maxLength={2000} />
             </Field>
             <div>
@@ -692,7 +791,7 @@ function Collections({
               <Input id="collection-new-name" name="name" required maxLength={120} />
             </Field>
           </div>
-          <Field label="Why (optional)" htmlFor="collection-new-reason">
+          <Field label="Why (optional)" htmlFor="collection-new-reason" hint="Markdown and LaTeX.">
             <Input id="collection-new-reason" name="reason" maxLength={2000} />
           </Field>
           <div>
@@ -709,13 +808,16 @@ function Collections({
 function Duplicates({
   workId,
   duplicates,
+  notices,
 }: {
   workId: string;
   duplicates: { workId: string; title: string | null; reason: "shared_identifier" | "similar_title" }[];
+  notices: ReactNode;
 }) {
   return (
-    <Card as="section" id="duplicates">
+    <Card as="section" id="duplicates" className="scroll-mt-4">
       <h2 className="text-lg text-ink">Possible duplicates</h2>
+      {notices ? <div className="mt-3">{notices}</div> : null}
       <p className="mt-1 text-sm text-ink-2">
         Merging moves the other paper's identifiers, versions, files, notes and shelf places here; it then points to this paper. Nothing is
         merged unless you confirm it.
@@ -750,12 +852,22 @@ function Duplicates({
   );
 }
 
-function Edit({ detail }: { detail: WorkDetail }) {
+function Edit({ detail, notices, open }: { detail: WorkDetail; notices: ReactNode; open: boolean }) {
   const { work } = detail;
   const edited = work.ownerEditedFields;
+  // What the form shows; it travels back as `shown_*`, so only the fields changed here become edits.
+  const shown = {
+    title: work.title ?? "",
+    authors: work.authors.map((a) => a.name).join("\n"),
+    abstract: work.abstract ?? "",
+    year: work.publicationYear === null ? "" : String(work.publicationYear),
+    venue: work.venue ?? "",
+    workType: work.workType ?? "",
+  };
   return (
-    <Card as="section" id="edit">
-      <details>
+    <Card as="section" id="edit" className="scroll-mt-4">
+      {notices}
+      <details open={open || undefined}>
         <summary className="cursor-pointer text-lg text-ink">Edit details</summary>
         <p className="mt-2 text-sm text-ink-2">
           Your corrections are kept as yours: a refresh from a provider never overwrites a field you edited.
@@ -763,25 +875,28 @@ function Edit({ detail }: { detail: WorkDetail }) {
         </p>
         <form action={editFieldsAction} className="mt-4 flex flex-col gap-4">
           <input type="hidden" name="workId" value={work.id} />
+          {EDIT_FIELDS.map((field) => (
+            <input key={field} type="hidden" name={`shown_${field}`} value={shown[field]} />
+          ))}
           <Field label="Title" htmlFor="edit-title">
-            <Input id="edit-title" name="title" maxLength={500} defaultValue={work.title ?? ""} />
+            <Input id="edit-title" name="title" maxLength={500} defaultValue={shown.title} />
           </Field>
           <Field label="Authors (one per line)" htmlFor="edit-authors">
-            <Textarea id="edit-authors" name="authors" rows={4} defaultValue={work.authors.map((a) => a.name).join("\n")} />
+            <Textarea id="edit-authors" name="authors" rows={4} defaultValue={shown.authors} />
           </Field>
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label="Year" htmlFor="edit-year">
-              <Input id="edit-year" name="year" inputMode="numeric" maxLength={4} defaultValue={work.publicationYear ?? ""} />
+              <Input id="edit-year" name="year" inputMode="numeric" maxLength={4} defaultValue={shown.year} />
             </Field>
             <Field label="Venue" htmlFor="edit-venue">
-              <Input id="edit-venue" name="venue" maxLength={500} defaultValue={work.venue ?? ""} />
+              <Input id="edit-venue" name="venue" maxLength={500} defaultValue={shown.venue} />
             </Field>
             <Field label="Type" htmlFor="edit-type">
-              <Input id="edit-type" name="workType" maxLength={100} defaultValue={work.workType ?? ""} />
+              <Input id="edit-type" name="workType" maxLength={100} defaultValue={shown.workType} />
             </Field>
           </div>
           <Field label="Abstract" htmlFor="edit-abstract">
-            <Textarea id="edit-abstract" name="abstract" rows={6} defaultValue={work.abstract ?? ""} />
+            <Textarea id="edit-abstract" name="abstract" rows={6} defaultValue={shown.abstract} />
           </Field>
           <div>
             <Button type="submit">Save corrections</Button>
@@ -799,14 +914,17 @@ function Delete({
   workId,
   confirm,
   summary,
+  notices,
 }: {
   workId: string;
   confirm: boolean;
   summary: { documents: number; storedCopies: number; annotations: number; notebookEntries: number; collections: number } | null;
+  notices: ReactNode;
 }) {
   return (
-    <Card as="section" id="delete">
+    <Card as="section" id="delete" className="scroll-mt-4">
       <h2 className="text-lg text-ink">Delete this paper and its notes</h2>
+      {notices ? <div className="mt-3">{notices}</div> : null}
       {confirm && summary ? (
         <form action={deleteWorkAction} className="mt-3 flex flex-col gap-3">
           <input type="hidden" name="workId" value={workId} />

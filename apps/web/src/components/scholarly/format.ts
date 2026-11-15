@@ -204,3 +204,86 @@ export function showMoreLabel(kind: PaperListKind, list: { total: number | null;
   const available = Math.max(list.listed, kind === "cited_by" ? (list.total ?? list.listed) : list.returned);
   return list.listed < available ? `Show more (${count(list.listed)} of ${count(available)})` : `Show more (all ${count(list.listed)})`;
 }
+
+/** Where a rejected file is removed, on the paper page. */
+const REMOVE = "Remove this file under Permissions and removal";
+
+/**
+ * Why a paper's file was rejected, in the page's own words (the worker's reason, a parser's message,
+ * is never shown raw on the paper page), and what can be done next: a PDF longer than the extraction
+ * limit or protected by a password is a readable PDF, so only an unreadable one is told to be replaced
+ * by "a copy that opens".
+ */
+export function rejectionText(reason: string | null): { text: string; next: string } {
+  if (reason?.startsWith("The PDF could not be parsed")) {
+    const pages = /(\d+) pages exceeds the (\d+)-page limit/.exec(reason);
+    if (pages)
+      return {
+        text: `This PDF has ${count(Number(pages[1]))} pages, more than the ${count(Number(pages[2]))} whose text is extracted here, so its text was not extracted.`,
+        next: `${REMOVE}; a shorter part of it, such as one chapter, can be attached instead.`,
+      };
+    if (/No password given|Incorrect Password/i.test(reason))
+      return {
+        text: "This PDF is protected by a password, so its text was not extracted.",
+        next: `${REMOVE}, then attach a copy without a password.`,
+      };
+    return {
+      text: "This file could not be read as a PDF, so its text was not extracted.",
+      next: `${REMOVE}, then attach a copy that opens.`,
+    };
+  }
+  if (reason === "stored bytes missing")
+    return { text: "This file's stored bytes are missing, so its text could not be extracted.", next: `${REMOVE}, then attach it again.` };
+  return { text: "This file could not be processed; the Jobs page has the details.", next: `${REMOVE}, then attach a copy that opens.` };
+}
+
+/**
+ * What *Read* says under a paper with no file here and no arXiv version, besides its links: that
+ * OpenAlex reports no free copy, or, for a paper with no identifier a provider can look up (and so
+ * no record, no failure and no publisher link), that where it can be read is not known. Never an
+ * empty block.
+ */
+export function readElsewhereNote(facts: { record: boolean; openCopy: boolean; publisher: boolean; failed: boolean }): string | null {
+  if (facts.record && !facts.openCopy) return "OpenAlex reports no free-to-read copy.";
+  if (!facts.record && !facts.failed && !facts.publisher)
+    return "No file of this paper can be read here, and it has no identifier a provider can look up, so where it can be read is not known.";
+  return null;
+}
+
+/** A Find page of OpenAlex's results as the page states it. */
+export interface ResultsSummary {
+  /** The line above the results. */
+  line: string;
+  /** Past the last page: the page to go back to (the last one OpenAlex's count allows, else the first). */
+  goTo: number | null;
+}
+
+/**
+ * The line above a Find page of OpenAlex's word search: the results shown and OpenAlex's count; past
+ * the last page (an edited address, or a count that changed between cached pages), that this page is
+ * empty while OpenAlex still counts results, with the page to go back to; and only when OpenAlex
+ * counts nothing at all, that it found no papers. Never "no results" for a page past the end.
+ */
+export function resultsSummary(page: {
+  page: number;
+  perPage: number;
+  lastPage: number;
+  count: number | null;
+  shown: number;
+}): ResultsSummary {
+  const first = (page.page - 1) * page.perPage + 1;
+  if (page.shown > 0) {
+    const last = first + page.shown - 1;
+    return {
+      line: `Results ${count(first)}–${count(last)}${page.count !== null ? ` of ${count(page.count)}` : ""} according to OpenAlex`,
+      goTo: null,
+    };
+  }
+  const pastEnd = (page.count ?? 0) > 0 || (page.count === null && page.page > 1);
+  if (!pastEnd) return { line: "OpenAlex found no papers for these words and filters.", goTo: null };
+  const back = page.count !== null ? Math.max(1, Math.min(page.lastPage, page.page - 1)) : 1;
+  return {
+    line: `No results on page ${count(page.page)}${page.count !== null ? `; OpenAlex counts ${count(page.count)} for these words and filters` : ""}.`,
+    goTo: back !== page.page ? back : null,
+  };
+}

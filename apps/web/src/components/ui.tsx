@@ -84,14 +84,24 @@ export function Card({
   className,
   id,
   as: Tag = "section",
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
 }: {
   children: ReactNode;
   className?: string;
   id?: string;
   as?: "section" | "article" | "div" | "aside" | "li" | "nav";
+  /** Names the card, so a section or nav is a named landmark (TypeScript accepts any aria-* prop, so both are forwarded explicitly). */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }) {
   return (
-    <Tag id={id} className={["rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-5", className].filter(Boolean).join(" ")}>
+    <Tag
+      id={id}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      className={["rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-5", className].filter(Boolean).join(" ")}
+    >
       {children}
     </Tag>
   );

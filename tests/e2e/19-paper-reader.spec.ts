@@ -1,23 +1,20 @@
-import { join } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Locator, type Page, type Request, test } from "@playwright/test";
 import { createDb, type DbHandle } from "../../packages/db/src/client";
-import { getBoss, stopBoss } from "../../packages/db/src/queue";
-import { createFixtureScholarlyClient } from "../../packages/db/src/scholarly/client";
-import { importByIdentifier, openArxivVersion } from "../../packages/db/src/services/scholarly-works";
-import { ownerEnv, screenshot } from "./helpers";
+import { AUTH_STATE, ownerEnv, screenshot } from "./helpers";
 import { makePdf } from "./pdf";
 import { expectFixtureProviders } from "./scholarly";
 
 /**
  * Journey 19: reading a paper from arxiv.org in the reader, in fixture mode at both viewports.
  *
- * Setup (until the paper page's Read button exists in this checkout, which the integration stage
- * switches this journey to): the linked arXiv Documents are created with the services against the
- * rehearsal database (E2E_DATABASE_URL, test data only): importByIdentifier for the arXiv id, the
- * stack worker's arXiv job applying the recorded fixtures, then openArxivVersion. The browser's
- * requests to https://arxiv.org/pdf/** are answered with generated PDFs (tests/e2e/pdf.ts), so no
- * arXiv server is contacted and the tested build keeps its production CSP.
+ * Setup goes through the pages, as the owner does: Find the arXiv id, Save it from its preview (the
+ * stack's worker applies the recorded arXiv record), then the paper page's *Read v1*, which creates
+ * the linked Document and opens the reader. The rehearsal database (E2E_DATABASE_URL, test data only)
+ * is used only to reset those two Documents (annotations, positions, the observed hash), so both
+ * projects start from a Document nobody has read. The browser's requests to https://arxiv.org/pdf/**
+ * are answered with generated PDFs (tests/e2e/pdf.ts), so no arXiv server is contacted and the
+ * tested build keeps its production CSP.
  *
  * Covered: attribution and disclosure; highlight, selection note, bookmark, page note and area note,
  * persisted and drawn again after a reload; an edit conflict (409) shown beside the draft; the
@@ -32,7 +29,7 @@ test.describe.configure({ mode: "serial" });
 
 const DPO = "2305.18290";
 const WITHDRAWN = "2607.20049";
-const FIXTURES = join(process.cwd(), "packages/db/src/scholarly/fixtures");
+const BOX = "DOI, arXiv id, OpenAlex id, a link to one of them, or words";
 // Six pages, so a phone can scroll page 3 to the top of the view.
 const pages = (variant: string, count = 6) =>
   makePdf(
@@ -57,46 +54,48 @@ async function sql<T = Record<string, unknown>>(text: string, values: unknown[] 
   return (await handle.pool.query(text, values)).rows as T[];
 }
 
-async function waitForVersions(arxivId: string, count: number): Promise<void> {
-  await expect
-    .poll(
-      async () =>
-        Number(
-          (
-            await sql<{ n: string }>("select count(*) as n from scholarly_version where owner_id = $1 and arxiv_id = $2", [
-              ownerId,
-              arxivId,
-            ])
-          )[0]!.n,
-        ),
-      {
-        message: `the stack's worker applies the recorded arXiv record of ${arxivId}`,
-        timeout: 120_000,
-        intervals: [1_000],
-      },
-    )
-    .toBeGreaterThanOrEqual(count);
+/**
+ * The linked Document of arXiv `arxivId` version `version`, made the way the owner makes it: Find, Save
+ * from the preview (once), then *Read vN* on the paper page, which opens the reader on it. The reader's
+ * request to arxiv.org is refused here, so it records no file; the page is left once the reader has
+ * said so and its opening was recorded (the reset below then clears that).
+ */
+async function readFromPaperPage(page: Page, arxivId: string, version: number): Promise<{ workId: string; assetId: string }> {
+  await page.goto("/library/find");
+  await page.getByLabel(BOX).fill(`arXiv:${arxivId}`);
+  await page.getByRole("button", { name: "Find", exact: true }).click();
+  await page.waitForLoadState("domcontentloaded");
+  if (/\/library\/works\//.test(page.url())) await page.getByRole("button", { name: "Save to library" }).click();
+  await expect(page).toHaveURL(/\/library\/papers\/[0-9a-f-]{36}/);
+  const work = new URL(page.url()).pathname.split("/").pop()!;
+  // The stack's worker applies the recorded arXiv record; the paper page refreshes itself until the versions appear.
+  const read = page.locator("#versions").getByRole("button", { name: `Read v${version}`, exact: true });
+  await expect(read, `the worker applies the recorded arXiv record of ${arxivId}`).toBeVisible({ timeout: 120_000 });
+  await read.click();
+  await expect(page).toHaveURL(/\/library\/read\/[0-9a-f-]{36}/);
+  const assetId = new URL(page.url()).pathname.split("/").pop()!;
+  await expect(page.getByText("Your browser could not fetch the PDF from arXiv (network or arXiv's access policy).")).toBeVisible({
+    timeout: 30_000,
+  });
+  await page.waitForLoadState("networkidle");
+  return { workId: work, assetId };
 }
 
-test.beforeAll(async () => {
+test.beforeAll(async ({ browser }, testInfo) => {
   test.setTimeout(300_000);
   const url = process.env.E2E_DATABASE_URL;
   if (!url)
-    throw new Error("Journey 19 needs E2E_DATABASE_URL (the rehearsal database, test data only) to create its linked arXiv Documents.");
+    throw new Error("Journey 19 needs E2E_DATABASE_URL (the rehearsal database, test data only) to reset its linked arXiv Documents.");
   handle = createDb(url, { max: 2 });
-  // importByIdentifier queues the arXiv job on this stack's queue; the stack's worker runs it from the fixtures.
-  await getBoss({ connectionString: url });
   const [owner] = await sql<{ id: string }>('select id from "user" where email = $1', [ownerEnv().email]);
   if (!owner) throw new Error("The owner account does not exist yet; the setup project creates it.");
   ownerId = owner.id;
-  const fixture = createFixtureScholarlyClient({ dir: FIXTURES });
-  const dpo = await importByIdentifier(handle.db, ownerId, fixture, { scheme: "arxiv", value: DPO });
-  const withdrawn = await importByIdentifier(handle.db, ownerId, fixture, { scheme: "arxiv", value: WITHDRAWN });
-  await waitForVersions(DPO, 3);
-  await waitForVersions(WITHDRAWN, 2);
-  workId = dpo.workId;
-  linkedId = (await openArxivVersion(handle.db, ownerId, dpo.workId, DPO, 1)).id;
-  withdrawnId = (await openArxivVersion(handle.db, ownerId, withdrawn.workId, WITHDRAWN, 1)).id;
+  const context = await browser.newContext({ storageState: AUTH_STATE, baseURL: testInfo.project.use.baseURL });
+  const setup = await context.newPage();
+  await setup.route("https://arxiv.org/pdf/**", (route) => route.abort("blockedbyclient"));
+  ({ workId, assetId: linkedId } = await readFromPaperPage(setup, DPO, 1));
+  ({ assetId: withdrawnId } = await readFromPaperPage(setup, WITHDRAWN, 1));
+  await context.close();
   // Each project starts from a Document nobody has read or annotated (test data only).
   const ids = [linkedId, withdrawnId];
   await sql("delete from annotation where owner_id = $1 and asset_id = any($2::uuid[])", [ownerId, ids]);
@@ -105,7 +104,6 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  await stopBoss();
   await handle?.close();
 });
 

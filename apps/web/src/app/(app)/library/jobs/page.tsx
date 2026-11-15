@@ -1,6 +1,7 @@
 import { listJobs } from "@corniversity/db/services/jobs-admin";
 import { companionState, listPairings } from "@corniversity/db/services/library";
 import { ensureProfile } from "@corniversity/db/services/onboarding";
+import { existingWorkIds } from "@corniversity/db/services/scholarly-works";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import { Badge, Button, Card } from "@/components/ui";
@@ -9,6 +10,7 @@ import { requireSession } from "@/lib/session";
 import { AutoRefresh } from "../../sessions/[id]/AutoRefresh";
 import { cancelJobAction, retryJobAction } from "../actions";
 import { FlashNotices, LibraryHeader } from "../shared";
+import { describeJob, jobProgress } from "./describe";
 
 export const metadata = { title: "Jobs" };
 
@@ -21,9 +23,12 @@ const TONE: Record<string, "neutral" | "brass" | "moss" | "rust"> = {
 };
 
 /**
- * Background jobs: ingestion, assessment, exports and maintenance, each with its idempotency
- * key, progress, result or error. Cancel a queued or running job; retry a failed or cancelled
- * one as a new job whose key is derived from the original.
+ * Background jobs: ingestion, assessment, exports, maintenance and the research library's provider
+ * requests, each described in words (never by its idempotency key, which can carry the account id)
+ * with its progress while it runs, and its outcome or error once it ends. A job's paper is linked
+ * while the paper exists; a job about a deleted paper says so and offers no Retry, which could only
+ * fail again. Cancel a queued or running job; retry a failed or cancelled one as a new job whose key
+ * is derived from the original.
  */
 export default async function JobsPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const session = await requireSession("/library/jobs");
@@ -37,6 +42,13 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   const zone = profile.timezone;
   const when = (d: Date | null) => (d ? DateTime.fromJSDate(d).setZone(zone).toFormat("d LLL HH:mm:ss") : "—");
   const live = jobs.some((j) => j.status === "queued" || j.status === "active");
+  // What each job does, in words; its idempotency key can carry the account id, so it is not shown.
+  const described = new Map(jobs.map((job) => [job.id, describeJob(job.kind, job.payload)]));
+  const papers = await existingWorkIds(
+    database,
+    session.user.id,
+    [...described.values()].flatMap((d) => (d.workId ? [d.workId] : [])),
+  );
 
   return (
     <div className="mx-auto w-full max-w-6xl">
@@ -67,13 +79,21 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
             </thead>
             <tbody>
               {jobs.map((job) => {
-                const assetId = (job.payload as { assetId?: string }).assetId;
+                const { text, workId, assetId } = described.get(job.id)!;
+                const paperGone = workId !== null && !papers.has(workId);
+                const progress = jobProgress(job);
                 return (
                   <tr key={job.id} className="border-t border-stone align-top">
                     <td className="px-4 py-2">
-                      <p className="text-ink">{job.kind}</p>
-                      <p className="font-mono text-[0.7rem] text-ink-3">{job.idempotencyKey}</p>
-                      {assetId ? (
+                      <p className="text-ink">{text}</p>
+                      <p className="font-mono text-[0.7rem] text-ink-3">{job.kind}</p>
+                      {paperGone ? (
+                        <p className="text-xs text-ink-3">That paper is no longer in your library.</p>
+                      ) : workId ? (
+                        <Link href={`/library/papers/${workId}`} className="text-xs text-brass underline underline-offset-4">
+                          paper
+                        </Link>
+                      ) : assetId ? (
                         <Link href={`/library/items/${assetId}`} className="text-xs text-brass underline underline-offset-4">
                           item
                         </Link>
@@ -83,8 +103,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
                       <Badge tone={TONE[job.status] ?? "neutral"}>{job.status}</Badge>
                     </td>
                     <td className="px-4 py-2 text-ink-2">
-                      {job.progress.stage}
-                      {typeof job.progress.percent === "number" ? ` · ${job.progress.percent}%` : ""}
+                      {progress}
                       {job.error ? <p className="mt-1 max-w-sm text-xs text-rust">{job.error}</p> : null}
                     </td>
                     <td className="px-4 py-2 text-ink-2">{when(job.createdAt)}</td>
@@ -97,7 +116,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
                             Cancel
                           </Button>
                         </form>
-                      ) : job.status === "failed" || job.status === "cancelled" ? (
+                      ) : (job.status === "failed" || job.status === "cancelled") && !paperGone ? (
                         <form action={retryJobAction}>
                           <input type="hidden" name="jobId" value={job.id} />
                           <Button type="submit" variant="secondary">
