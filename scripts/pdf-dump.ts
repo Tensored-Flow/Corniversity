@@ -7,6 +7,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
+import { UNPDF_PINNED_OPTIONS } from "../packages/core/src/pdf/unpdf";
 
 const target = process.argv[2];
 const maxChars = Number(process.argv[3] ?? 1500);
@@ -37,7 +38,8 @@ async function load(): Promise<Uint8Array> {
 
 const data = await load();
 console.log(`sha256 ${createHash("sha256").update(data).digest("hex")}`);
-const pdf = await getDocumentProxy(data, { maxImageSize: 16_777_216 });
+// The same options as the ingest handler, so this stays its reference.
+const pdf = await getDocumentProxy(data, { ...UNPDF_PINNED_OPTIONS, maxImageSize: 16_777_216 });
 const labels = (await pdf.getPageLabels()) ?? null;
 const { info } = await getMeta(pdf);
 console.log(

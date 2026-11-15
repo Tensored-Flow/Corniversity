@@ -515,6 +515,12 @@ export default function PdfReader(props: PdfReaderProps) {
         type="search"
         value={findQuery}
         onChange={(event) => setFindQuery(event.target.value)}
+        onKeyDown={(event) => {
+          // In the phone dialog one Esc closes it; a search field would spend the first Esc clearing itself.
+          if (event.key !== "Escape" || !dialogRef.current?.open) return;
+          event.preventDefault();
+          closeDialog();
+        }}
         className="w-full rounded-[var(--radius-control)] border border-stone-2 bg-paper px-3 py-1.5 text-sm text-ink"
         disabled={!ready}
       />
@@ -549,7 +555,8 @@ export default function PdfReader(props: PdfReaderProps) {
             {title}
           </h1>
           {textHref ? (
-            <Link href={`${textHref}&page=${page.number}`} className={control}>
+            // Not prefetched: its href changes on every page turn, and each prefetch is a server request.
+            <Link href={`${textHref}&page=${page.number}`} prefetch={false} className={control}>
               Text view
             </Link>
           ) : null}
@@ -674,7 +681,7 @@ export default function PdfReader(props: PdfReaderProps) {
                       Try again
                     </button>
                     {textHref ? (
-                      <Link href={`${textHref}&page=${page.number}`} className={control}>
+                      <Link href={`${textHref}&page=${page.number}`} prefetch={false} className={control}>
                         Text view
                       </Link>
                     ) : null}

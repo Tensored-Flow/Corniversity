@@ -1,4 +1,5 @@
 import { mkdtempSync, rmSync } from "node:fs";
+import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { FsBlobStore } from "@corniversity/db/blob";
@@ -17,6 +18,7 @@ import {
 } from "@corniversity/db/services/library";
 import { eq } from "drizzle-orm";
 import type { PgBoss } from "pg-boss";
+import { extractText, getDocumentProxy } from "unpdf";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { type HandlerContext, NonRetryableError } from "./index";
 import { ingestHandler } from "./ingest";
@@ -62,6 +64,47 @@ export function makePdf(pages: string[], withLabels: boolean): Buffer {
   for (const offset of offsets) xref += `${String(offset).padStart(10, "0")} 00000 n \n`;
   body += `${xref}trailer\n<< /Size ${count} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
   return Buffer.from(body, "latin1");
+}
+
+/**
+ * A generated one-page PDF whose text uses a non-embedded CID font with the predefined CMap
+ * UniJIS-UCS2-H (U+65E5 U+672C U+8A9E, then "CMap" through the same CMap). Decoding it needs CMap
+ * files, which unpdf uses only when it can resolve pdfjs-dist, so it tells the two option sets apart.
+ */
+function makeCMapPdf(): Buffer {
+  const content = "BT /F1 24 Tf 72 700 Td <65E5672C8A9E> Tj 0 -40 Td <0043004D00610070> Tj ET";
+  const objects = [
+    "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n",
+    "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n",
+    "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 7 0 R >>\nendobj\n",
+    "4 0 obj\n<< /Type /Font /Subtype /Type0 /BaseFont /KozMinPro-Regular-Acro /Encoding /UniJIS-UCS2-H /DescendantFonts [5 0 R] >>\nendobj\n",
+    "5 0 obj\n<< /Type /Font /Subtype /CIDFontType0 /BaseFont /KozMinPro-Regular-Acro /CIDSystemInfo << /Registry (Adobe) /Ordering (Japan1) /Supplement 4 >> /FontDescriptor 6 0 R /DW 1000 >>\nendobj\n",
+    "6 0 obj\n<< /Type /FontDescriptor /FontName /KozMinPro-Regular-Acro /Flags 4 /FontBBox [0 -120 1000 880] /ItalicAngle 0 /Ascent 880 /Descent -120 /CapHeight 700 /StemV 80 >>\nendobj\n",
+    `7 0 obj\n<< /Length ${Buffer.byteLength(content, "latin1")} >>\nstream\n${content}\nendstream\nendobj\n`,
+  ];
+  let body = "%PDF-1.7\n";
+  const offsets: number[] = [];
+  for (const object of objects) {
+    offsets.push(Buffer.byteLength(body, "latin1"));
+    body += object;
+  }
+  const xrefOffset = Buffer.byteLength(body, "latin1");
+  const count = objects.length + 1;
+  let xref = `xref\n0 ${count}\n0000000000 65535 f \n`;
+  for (const offset of offsets) xref += `${String(offset).padStart(10, "0")} 00000 n \n`;
+  body += `${xref}trailer\n<< /Size ${count} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+  return Buffer.from(body, "latin1");
+}
+
+/** Whether unpdf can resolve pdfjs-dist, checked the way unpdf itself checks it. */
+function pdfjsDistVisibleFromUnpdf(): boolean {
+  try {
+    const unpdfEntry = createRequire(import.meta.url).resolve("unpdf");
+    createRequire(unpdfEntry).resolve("pdfjs-dist/package.json");
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const OWNER = "ingest-test-owner";
@@ -165,6 +208,26 @@ describe("ingestHandler", () => {
     expect(result).toMatchObject({ skipped: true });
     expect((await getAsset(handle.db, OWNER, assetId))!.status).toBe("validated");
     expect(await listPages(handle.db, assetId)).toEqual([]);
+  });
+
+  it("extracts the same text whether or not the reader's pdfjs-dist is installed", async () => {
+    const bytes = makeCMapPdf();
+    const assetId = await storedAsset("cmap.pdf", bytes);
+    await ingestHandler(ctx, payload(assetId));
+    const pages = await listPages(handle.db, assetId);
+    expect(pages).toHaveLength(1);
+    // unpdf's own defaults (the production worker image installs without pdfjs-dist) cannot
+    // decode a predefined CMap, so this page has no text there; it must have none here either.
+    expect(pages[0]!.text).toBe("");
+
+    // Control: where pdfjs-dist resolves (a full install), an unpinned call decodes the page, so
+    // an ingest call without the pinned options would fail the assertion above.
+    if (pdfjsDistVisibleFromUnpdf()) {
+      const unpinned = await getDocumentProxy(new Uint8Array(bytes), { maxImageSize: 16_777_216 });
+      const { text } = await extractText(unpinned, { mergePages: true });
+      await unpinned.loadingTask.destroy();
+      expect(text).toContain("日本語");
+    }
   });
 
   it("never runs for an item whose permission was never granted", async () => {

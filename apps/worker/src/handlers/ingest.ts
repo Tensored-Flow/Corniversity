@@ -1,3 +1,4 @@
+import { UNPDF_PINNED_OPTIONS } from "@corniversity/core/pdf/unpdf";
 import { createBlobStore } from "@corniversity/db/blob";
 import { IngestAssetPayload } from "@corniversity/db/jobs";
 import { extractedPage, passage, resourceAsset } from "@corniversity/db/schema/index";
@@ -44,7 +45,8 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
   if (asset.mediaType === "application/pdf") {
     let pdf: Awaited<ReturnType<typeof getDocumentProxy>>;
     try {
-      pdf = await getDocumentProxy(new Uint8Array(data), { maxImageSize: 16_777_216 });
+      // Pinned options: the extracted text must not depend on whether pdfjs-dist is installed.
+      pdf = await getDocumentProxy(new Uint8Array(data), { ...UNPDF_PINNED_OPTIONS, maxImageSize: 16_777_216 });
       if (pdf.numPages > MAX_PDF_PAGES) throw new Error(`${pdf.numPages} pages exceeds the ${MAX_PDF_PAGES}-page limit`);
       labels = (await pdf.getPageLabels()) ?? null;
       const meta = await getMeta(pdf).catch(() => ({ info: {} as Record<string, unknown> }));

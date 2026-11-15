@@ -2,7 +2,7 @@ import { execSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, type Request, test } from "@playwright/test";
 import { activityButton, screenshot, signInOrBootstrap, takeCourse } from "./helpers";
 import { makePdf } from "./pdf";
 
@@ -21,7 +21,9 @@ import { makePdf } from "./pdf";
  *
  * Also: a file named .pdf without the signature is refused; a corrupt PDF fails cleanly with a
  * reason and no retries; an unauthenticated browser cannot fetch a stored file or open the
- * library. The companion really runs as a child process against the local server.
+ * library; the reading room's Page view turns pages without prefetching the Text view, and one
+ * Esc closes its Find panel on a phone. The companion really runs as a child process against the
+ * local server.
  */
 test.describe.configure({ mode: "serial" });
 
@@ -276,6 +278,42 @@ test.describe("library, companion and reading room", () => {
     await expect(page.getByText(/^ingest:/).first()).toBeVisible();
     await expect(page.getByText("completed").first()).toBeVisible();
     await screenshot(page, "25-library-jobs");
+  });
+
+  test("reading room Page view: page turns do not prefetch the Text view, and one Esc closes the phone Find panel", async ({ page }) => {
+    test.setTimeout(120_000);
+    await signInOrBootstrap(page);
+    // Next prefetches only in a production build; against a development server this check cannot fail.
+    const textViewRequests: string[] = [];
+    const recordTextView = (request: Request) => {
+      if (request.url().includes("view=text")) textViewRequests.push(request.url());
+    };
+    page.on("request", recordTextView);
+    await page.goto(`${readUrl}?view=page&page=1`);
+    await expect(page.getByRole("region", { name: `Pages of Banach notes ${run}` })).toBeVisible();
+    const pageBox = page.getByLabel("Page", { exact: true });
+    await expect(pageBox).toBeEnabled({ timeout: 30_000 });
+    await expect(page.getByRole("link", { name: "Text view" })).toBeVisible();
+    for (const expected of ["2", "3"]) {
+      await page.getByRole("button", { name: "Next page" }).click();
+      await expect(pageBox).toHaveValue(expected);
+    }
+    // A prefetch starts as soon as its link is on screen; allow it more than the time it needs.
+    await page.waitForTimeout(1_500);
+    page.off("request", recordTextView);
+    expect(textViewRequests).toEqual([]);
+
+    // On phones the panel is a native dialog: one Esc in a filled Find box closes it.
+    if ((page.viewportSize()?.width ?? 0) <= 640) {
+      const findButton = page.getByRole("button", { name: "Find", exact: true });
+      await findButton.click();
+      const dialog = page.getByRole("dialog", { name: "Find" });
+      await expect(dialog).toBeVisible();
+      await dialog.getByLabel("Find in this PDF").fill("Banach");
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+      await expect(findButton).toBeFocused();
+    }
   });
 
   test("validation: a fake PDF is refused and a corrupt PDF fails cleanly without retries", async ({ page }) => {
