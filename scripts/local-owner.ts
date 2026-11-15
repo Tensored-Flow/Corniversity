@@ -16,7 +16,7 @@
  * (which applies migrations and seeds the institution's content) and the web app. Uploads are kept
  * in the database (BLOB_STORE=pg, as on the hosted site), so one backup holds records and uploads.
  */
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import pg from "pg";
@@ -99,6 +99,13 @@ if (process.argv[2] === "backup") {
 }
 
 function start() {
+  // Next is started directly below, bypassing the web `dev` script, so the reader's PDF.js
+  // assets are copied into public/pdfjs/ here.
+  const vendored = spawnSync(process.execPath, [join(ROOT, "apps", "web", "scripts", "vendor-pdfjs.mjs")], { stdio: "inherit" });
+  if (vendored.status !== 0) {
+    console.error("Could not copy the PDF.js assets for the reader (apps/web/scripts/vendor-pdfjs.mjs).");
+    process.exit(1);
+  }
   const children = [
     spawn("pnpm", ["--filter", "@corniversity/worker", "dev"], { cwd: ROOT, env, stdio: "inherit", shell }),
     spawn("pnpm", ["--filter", "@corniversity/web", "exec", "next", "dev", "--webpack", "-p", String(PORT), "-H", "127.0.0.1"], {

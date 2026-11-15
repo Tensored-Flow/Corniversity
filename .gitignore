@@ -8,6 +8,8 @@ dist/
 out/
 coverage/
 *.tsbuildinfo
+# PDF.js worker and assets, copied from pdfjs-dist by apps/web/scripts/vendor-pdfjs.mjs
+apps/web/public/pdfjs/
 
 # environment and secrets (never commit)
 .env

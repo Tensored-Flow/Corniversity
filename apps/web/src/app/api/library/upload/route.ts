@@ -1,3 +1,4 @@
+import { UNPDF_PINNED_OPTIONS } from "@corniversity/core/pdf/unpdf";
 import { getEnv } from "@corniversity/db/env";
 import { LibraryError, receiveUpload, setCandidateMetadata } from "@corniversity/db/services/library";
 import { NextResponse } from "next/server";
@@ -35,7 +36,9 @@ export async function POST(request: Request): Promise<Response> {
     });
     if (result.outcome === "stored" && result.asset.mediaType === "application/pdf") {
       try {
-        const pdf = await getDocumentProxy(new Uint8Array(data));
+        // Pinned options: with pdfjs-dist installed for the reader, unpdf would otherwise switch
+        // to its fonts, CMaps and wasm folders, so reading here stays the same as without it.
+        const pdf = await getDocumentProxy(new Uint8Array(data), UNPDF_PINNED_OPTIONS);
         const meta = await getMeta(pdf).catch(() => ({ info: {} as Record<string, unknown> }));
         const info = (meta.info ?? {}) as Record<string, unknown>;
         const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim().slice(0, 300) : undefined);

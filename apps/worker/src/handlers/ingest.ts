@@ -1,3 +1,4 @@
+import { UNPDF_PINNED_OPTIONS } from "@corniversity/core/pdf/unpdf";
 import { createBlobStore } from "@corniversity/db/blob";
 import { IngestAssetPayload } from "@corniversity/db/jobs";
 import { extractedPage, passage, resourceAsset } from "@corniversity/db/schema/index";
@@ -12,13 +13,7 @@ import { reportProgress } from "./job-record";
  * installed beside it (the reader's engine): unpdf would otherwise switch to that package's
  * standard fonts, CMaps and wasm decoders in Node. Its own bundled engine and system fonts stay.
  */
-export const EXTRACTION_PDF_OPTIONS = {
-  maxImageSize: 16_777_216,
-  useSystemFonts: true,
-  standardFontDataUrl: undefined,
-  cMapUrl: undefined,
-  wasmUrl: undefined,
-} as const;
+export const EXTRACTION_PDF_OPTIONS = { ...UNPDF_PINNED_OPTIONS, maxImageSize: 16_777_216 } as const;
 
 /**
  * Ingestion: original bytes → validated document → per-page native text with physical index and

@@ -1,0 +1,30 @@
+/*
+  The reading room's Page view. Loaded only with the PDF.js viewer component, after
+  pdf_viewer.css. Colour roles only; PDF pages stay white in both themes, as printed.
+*/
+
+/* pdf_viewer.css declares `color-scheme: light dark` on :root; the app's own theme decides. */
+html:root {
+  color-scheme: light;
+}
+html:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Tailwind's preflight makes every box border-box; PDF.js sizes its pages as content boxes,
+   so the canvas, text layer and link layer would otherwise disagree by the page border. */
+.pdfViewer,
+.pdfViewer :where(*, ::before, ::after) {
+  box-sizing: content-box;
+}
+
+/* Two-finger gestures belong to the reader's pinch zoom, not to the browser's page zoom. */
+.reader-pages {
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+.reader-pages:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
