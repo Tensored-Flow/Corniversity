@@ -79,13 +79,20 @@ export interface ReaderSelectionAction {
   id: string;
   label: string;
   run: (selection: ReaderSelection) => void;
+  /** A panel (by id) to open after `run`; the selection is then cleared, as Note does. */
+  opens?: string;
 }
 
 /** Extension point: a panel a later stage adds beside Contents, Find, Notes and Paper (the companion's Ask panel). */
 export interface ReaderPanel {
   id: string;
   label: string;
-  render: (context: { selection: ReaderSelection | null; pageIndex: number }) => ReactNode;
+  render: (context: {
+    selection: ReaderSelection | null;
+    pageIndex: number;
+    /** The SHA-256 of the bytes the reader loaded (arXiv's file for a linked Document), once known. */
+    loadedSha256: string | null;
+  }) => ReactNode;
 }
 
 /** The reading room's server actions (each requires the session and acts on the owner's own Document). */
@@ -887,6 +894,15 @@ export default function PdfReader(props: PdfReaderProps) {
     openSection("notes");
   }
 
+  /** An added selection action (the companion's Ask): it receives the selection, then may open its panel. */
+  function runSelectionAction(action: ReaderSelectionAction) {
+    if (!selection) return;
+    action.run({ pageIndex: selection.pageIndex, quote: selection.quote, anchor: selection.anchor });
+    if (!action.opens) return;
+    clearSelection();
+    openSection(action.opens);
+  }
+
   async function saveComposer(note: string): Promise<string | null> {
     if (!composer) return null;
     const result = await createAnnotationRequest({
@@ -1110,7 +1126,9 @@ export default function PdfReader(props: PdfReaderProps) {
     ) : section === "paper" ? (
       <PaperPanel info={info} title={title} />
     ) : (
-      (extraPanels.find((p) => p.id === section)?.render({ selection: readerSelection, pageIndex: page.number - 1 }) ?? null)
+      (extraPanels
+        .find((p) => p.id === section)
+        ?.render({ selection: readerSelection, pageIndex: page.number - 1, loadedSha256: loadedShaRef.current }) ?? null)
     );
   const sectionTitle = sections.find((s) => s.id === section)?.label ?? "Contents";
 
@@ -1361,7 +1379,7 @@ export default function PdfReader(props: PdfReaderProps) {
                 Note
               </button>
               {(props.selectionActions ?? []).map((action) => (
-                <button key={action.id} type="button" className={control} onClick={() => readerSelection && action.run(readerSelection)}>
+                <button key={action.id} type="button" className={control} onClick={() => runSelectionAction(action)}>
                   {action.label}
                 </button>
               ))}

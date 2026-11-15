@@ -1,11 +1,14 @@
 "use server";
+import { CompanionError, recordCompanionPermission } from "@corniversity/db/services/companion";
 import { LibraryError, markDocumentOpened } from "@corniversity/db/services/library";
 import { readerDocument } from "@corniversity/db/services/reader";
 import { acceptNewFile, openArxivVersion, recordObservedHash, ScholarlyError } from "@corniversity/db/services/scholarly-works";
 import { redirect } from "next/navigation";
+import type { CompanionAnswerView, PermissionFormState } from "@/components/reader/ask";
 import { db } from "@/lib/db";
 import { ERROR_NOTICES, errorCode, errorHref } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
+import { companionAnswerView } from "./companion-data";
 
 /**
  * The reading room's server actions. Each requires the session, validates its input before any
@@ -97,4 +100,32 @@ export async function openArxivVersionAction(form: FormData): Promise<void> {
     redirect(errorHref(back, errorCode(error.message)));
   }
   redirect(target);
+}
+
+/**
+ * The owner's external-AI decision for this Document, from the Ask panel's form: the basis they
+ * write and the licence they were shown are recorded with it (services/companion.ts). Allow and Deny
+ * are the form's two submit buttons; nothing is granted any other way. The reader is not re-rendered:
+ * the panel shows the returned state.
+ */
+export async function companionPermissionAction(state: PermissionFormState, form: FormData): Promise<PermissionFormState> {
+  const session = await requireSession("/library");
+  const assetId = String(form.get("assetId") ?? "");
+  const status = String(form.get("status") ?? "");
+  if (!UUID.test(assetId) || (status !== "allowed" && status !== "denied"))
+    return { ...state, error: ERROR_NOTICES["unknown-permission"], saved: false };
+  try {
+    const recorded = await recordCompanionPermission(db(), session.user.id, assetId, status, String(form.get("basis") ?? ""));
+    return { status: recorded.status, basis: recorded.basis, error: null, saved: true };
+  } catch (error) {
+    if (!(error instanceof CompanionError) && !(error instanceof LibraryError)) throw error;
+    return { ...state, error: ERROR_NOTICES[errorCode(error.message)], saved: false };
+  }
+}
+
+/** The last request and answer stored for this Document (after a streamed answer ends), rendered by the server. */
+export async function companionAnswerAction(assetId: string): Promise<CompanionAnswerView | null> {
+  const session = await requireSession("/library");
+  if (typeof assetId !== "string" || !UUID.test(assetId)) return null;
+  return companionAnswerView(db(), session.user.id, assetId);
 }

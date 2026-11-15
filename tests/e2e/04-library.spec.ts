@@ -144,13 +144,14 @@ test.describe("library, companion and reading room", () => {
     await page.goto(`/library/read/${id}`);
     await expect(page.getByText("This item is on your desktop only")).toBeVisible();
 
-    // The passage endpoint refuses with the exact reason; no model is consulted.
+    // The passage endpoint (the reading companion; JSON from this site's pages only) refuses with the exact reason; no model is consulted.
     const refused = await page.request.post("/api/library/ask", {
-      data: { assetId: id, physicalIndex: 0, selectedText: "anything", question: "What does this say?" },
+      headers: { origin: new URL(page.url()).origin },
+      data: { assetId: id, action: "question", pageIndex: 0, selection: "anything", text: "What does this say?" },
     });
-    expect(refused.status()).toBe(403);
+    expect(refused.status()).toBe(409);
     const body = (await refused.json()) as { error: string; message: string };
-    expect(body.error).toBe("local_only");
+    expect(body.error).toBe("companion-local-only");
     expect(body.message).toContain("never left your device");
 
     // No bytes exist to fetch, even for the owner.
@@ -262,9 +263,11 @@ test.describe("library, companion and reading room", () => {
           .getByText(/Banach space/),
       ).toBeVisible({ timeout: 2_000 });
     }).toPass({ timeout: 30_000 });
-    await page.getByLabel(/Question for/).fill("What hypotheses does this definition rely on?");
-    await page.getByRole("button", { name: "Ask", exact: true }).click();
-    await expect(page.getByText("Recent answers")).toBeVisible({ timeout: 60_000 });
+    // The companion's Ask is closed until the owner opens it.
+    await page.locator("details#ask > summary").click();
+    await page.getByLabel("Your question").fill("What hypotheses does this definition rely on?");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(page.getByText("Last answer")).toBeVisible({ timeout: 60_000 });
     await expect(page.getByText(`E1: Banach notes ${run}, p. 1 (PDF page 3): selected passage`)).toBeVisible();
     await screenshot(page, "24-reading-room-answer");
 

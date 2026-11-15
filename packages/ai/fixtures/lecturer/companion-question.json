@@ -1,0 +1,4 @@
+{
+  "note": "Deterministic scripted response of the reading companion, used when no model is configured. It says it is scripted, claims nothing about the paper, and cites [E1] so the citation checks run end to end.",
+  "text": "{needs-checking} *(Scripted demo response: no model is configured, so this does not answer your question.)*\n\nThe only material shown to the companion is listed under this answer [E1]. With a model configured in Settings, it would answer from that evidence alone, cite it, and say plainly where the evidence does not answer the question.\n\nNothing beyond that evidence has been read, and nothing here is a statement about the paper."
+}
