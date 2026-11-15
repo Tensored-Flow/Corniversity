@@ -1,7 +1,7 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, type SQL, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
-import { type Citation, notebookEntry, type StudyAnchor } from "../schema/index";
+import { type Citation, notebookEntry, type StudyAnchor, scholarlyWork } from "../schema/index";
 
 export type NotebookEntryRow = typeof notebookEntry.$inferSelect;
 export type NotebookKind = NotebookEntryRow["kind"];
@@ -53,9 +53,17 @@ export async function createEntry(
     /** The study session the note was written in, and exactly what it points at. */
     learningSessionId?: string | null;
     anchor?: StudyAnchor | null;
+    /** A paper note: the paper (one of the owner's works; a merged work's survivor is used). */
+    scholarlyWorkId?: string | null;
   },
 ): Promise<NotebookEntryRow> {
   const fields = clean(input);
+  let scholarlyWorkId: string | null = null;
+  if (input.scholarlyWorkId) {
+    const paper = await notesPaper(db, ownerId, input.scholarlyWorkId);
+    if (!paper) throw new NotebookError("not_found", "Paper not found.");
+    scholarlyWorkId = paper.id;
+  }
   const [row] = await db
     .insert(notebookEntry)
     .values({
@@ -66,6 +74,7 @@ export async function createEntry(
       unitId: input.unitId ?? null,
       learningSessionId: input.learningSessionId ?? null,
       anchor: input.anchor ?? null,
+      scholarlyWorkId,
     })
     .returning();
   return row!;
@@ -224,4 +233,86 @@ export async function countEntries(db: DbOrTx, ownerId: string): Promise<{ total
     from notebook_entry where owner_id = ${ownerId}`);
   const row = result.rows[0] as { total: number; open_questions: number } | undefined;
   return { total: row?.total ?? 0, openQuestions: row?.open_questions ?? 0 };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Paper notes (research library, contract §2 and §3): notebook entries with `scholarly_work_id`
+
+/** The paper a note is (or would be) about: the owner's work, merges followed to the survivor; null for any other id. */
+export async function notesPaper(db: DbOrTx, ownerId: string, workId: string): Promise<{ id: string; title: string | null } | null> {
+  if (!isUuid(workId)) return null;
+  let current = workId;
+  for (let hop = 0; hop < 10; hop++) {
+    const [row] = await db
+      .select({ id: scholarlyWork.id, title: scholarlyWork.title, mergedIntoId: scholarlyWork.mergedIntoId })
+      .from(scholarlyWork)
+      .where(and(eq(scholarlyWork.id, current), eq(scholarlyWork.ownerId, ownerId)))
+      .limit(1);
+    if (!row) return null;
+    if (!row.mergedIntoId) return { id: row.id, title: row.title };
+    current = row.mergedIntoId;
+  }
+  return null;
+}
+
+export interface PaperNote {
+  entry: NotebookEntryRow;
+  workTitle: string | null;
+}
+
+export interface PaperNotesQuery {
+  workId?: string;
+  /** An OpenAlex field id among the paper's subjects (as classified by OpenAlex). */
+  subject?: string;
+  /** Full-text search over the note's title and body. */
+  query?: string;
+  limit?: number;
+}
+
+/** OpenAlex field ids are short digit strings ("17"). */
+export const OPENALEX_FIELD_ID = /^\d{1,6}$/;
+
+/** Paper notes, most recently updated first, by paper, by the paper's OpenAlex field, and by words. */
+export async function paperNotes(db: DbOrTx, ownerId: string, filters: PaperNotesQuery = {}): Promise<PaperNote[]> {
+  const conditions: SQL[] = [eq(notebookEntry.ownerId, ownerId), isNotNull(notebookEntry.scholarlyWorkId)];
+  if (filters.workId !== undefined) {
+    if (!isUuid(filters.workId)) return [];
+    conditions.push(eq(notebookEntry.scholarlyWorkId, filters.workId));
+  }
+  if (filters.subject !== undefined) {
+    if (!OPENALEX_FIELD_ID.test(filters.subject)) return [];
+    conditions.push(sql`${scholarlyWork.subjects} @> ${JSON.stringify([{ id: filters.subject, level: "field" }])}::jsonb`);
+  }
+  const q = filters.query?.trim().slice(0, 300);
+  if (q) conditions.push(sql`${notebookEntry.tsv} @@ websearch_to_tsquery('english', ${q})`);
+  const rows = await db
+    .select({ entry: notebookEntry, workTitle: scholarlyWork.title })
+    .from(notebookEntry)
+    .innerJoin(scholarlyWork, and(eq(scholarlyWork.id, notebookEntry.scholarlyWorkId), eq(scholarlyWork.ownerId, ownerId)))
+    .where(and(...conditions))
+    .orderBy(desc(notebookEntry.updatedAt), desc(notebookEntry.id))
+    .limit(Math.min(Math.max(Math.trunc(filters.limit ?? 100), 1), 200));
+  return rows;
+}
+
+/**
+ * The OpenAlex fields (as OpenAlex classified the papers) of the owner's papers that carry a library
+ * note: an annotation on one of their files or a paper note. The notebook's subject filter offers these.
+ */
+export async function libraryNoteSubjects(db: DbOrTx, ownerId: string): Promise<{ id: string; name: string }[]> {
+  const result = await db.execute(sql`
+    select distinct s->>'id' as id, s->>'name' as name
+    from scholarly_work w, jsonb_array_elements(w.subjects) as s
+    where w.owner_id = ${ownerId} and w.merged_into_id is null and s->>'level' = 'field'
+      and (
+        exists (select 1 from notebook_entry n where n.owner_id = ${ownerId} and n.scholarly_work_id = w.id)
+        or exists (
+          select 1 from annotation a
+          join resource_asset r on r.id = a.asset_id and r.owner_id = ${ownerId}
+          join scholarly_version v on v.id = r.scholarly_version_id
+          where a.owner_id = ${ownerId} and v.work_id = w.id
+        )
+      )
+    order by name, id`);
+  return (result.rows as { id: string; name: string }[]).filter((r) => OPENALEX_FIELD_ID.test(r.id) && r.name);
 }

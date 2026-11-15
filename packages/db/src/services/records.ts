@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { ExportRecordsPayload, QUEUES } from "../jobs";
@@ -15,9 +15,15 @@ import {
   feedbackReview,
   learnerProfile,
   learningSession,
+  libraryCollection,
+  libraryCollectionItem,
   notebookEntry,
   portfolioArtifact,
+  readingProgress,
   resourceAsset,
+  scholarlyIdentifier,
+  scholarlyVersion,
+  scholarlyWork,
   submissionVersion,
   teachingUnit,
   unitExercise,
@@ -365,7 +371,144 @@ export interface RecordsBundle {
   concepts: { id: string; title: string; state: string; selfConfidence: number | null }[];
   evidence: { conceptId: string; type: string; observedAt: Date; interpretation: string; reviewStatus: string }[];
   notebook: (typeof notebookEntry.$inferSelect)[];
-  annotations: { item: string; locator: unknown; selectedText: string | null; note: string; createdAt: Date; mappingStatus: string }[];
+  annotations: RecordAnnotation[];
+  library: LibraryRecord;
+}
+
+/** A reading note as exported: where it is, what it says, and the exact file version it was made on. */
+export interface RecordAnnotation {
+  item: string;
+  locator: unknown;
+  selectedText: string | null;
+  note: string;
+  createdAt: Date;
+  mappingStatus: string;
+  kind: string;
+  colour: string | null;
+  /** The owner's selected text the anchor keeps (or the selected text of a note without an anchor). */
+  quote: string | null;
+  quoteMatched: boolean | null;
+  /** 1-based page the note was made on, when it is a page of a PDF. */
+  page: number | null;
+  /** The paper and the version of it ("arXiv v3", "Your copy") the file is, when it is a paper's file. */
+  work: { id: string; title: string | null } | null;
+  version: { label: string; arxivId: string | null; arxivVersion: number | null } | null;
+  /** The anchor (rects in PDF user space, the file they were measured on), when there is one. */
+  anchor: unknown;
+  updatedAt: Date;
+}
+
+/** The research library as recorded: papers with identifiers, shelves and trails with reasons, reading positions. */
+export interface LibraryRecord {
+  works: {
+    id: string;
+    title: string | null;
+    authors: string[];
+    year: number | null;
+    venue: string | null;
+    workType: string | null;
+    savedAt: Date | null;
+    favourite: boolean;
+    readLater: boolean;
+    readAt: Date | null;
+    identifiers: { scheme: string; value: string; source: string; retrievedAt: Date; status: string }[];
+    /** Who reported each detail and when (a provider, fixture data, or the owner's edit). */
+    provenance: unknown;
+  }[];
+  collections: {
+    id: string;
+    kind: string;
+    name: string;
+    description: string | null;
+    items: { step: number; workId: string; title: string | null; reason: string | null; addedAt: Date }[];
+  }[];
+  readingPositions: {
+    assetId: string;
+    item: string;
+    workId: string | null;
+    version: string | null;
+    page: number;
+    position: unknown;
+    lastOpenedAt: Date | null;
+    savedAt: Date | null;
+  }[];
+}
+
+/** The research library part of the records (contract §6 records.ts). */
+export async function libraryRecord(db: DbOrTx, ownerId: string): Promise<LibraryRecord> {
+  const works = await db
+    .select()
+    .from(scholarlyWork)
+    .where(and(eq(scholarlyWork.ownerId, ownerId), isNull(scholarlyWork.mergedIntoId)))
+    .orderBy(desc(scholarlyWork.savedAt), asc(scholarlyWork.createdAt));
+  const identifiers = await db
+    .select()
+    .from(scholarlyIdentifier)
+    .where(eq(scholarlyIdentifier.ownerId, ownerId))
+    .orderBy(asc(scholarlyIdentifier.scheme), asc(scholarlyIdentifier.value));
+  const collections = await db
+    .select()
+    .from(libraryCollection)
+    .where(eq(libraryCollection.ownerId, ownerId))
+    .orderBy(asc(libraryCollection.kind), asc(libraryCollection.name));
+  const items = await db
+    .select({ item: libraryCollectionItem, title: scholarlyWork.title })
+    .from(libraryCollectionItem)
+    .innerJoin(scholarlyWork, eq(scholarlyWork.id, libraryCollectionItem.workId))
+    .where(eq(libraryCollectionItem.ownerId, ownerId))
+    .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt), asc(libraryCollectionItem.workId));
+  const positions = await db
+    .select({
+      progress: readingProgress,
+      title: resourceAsset.confirmedTitle,
+      filename: resourceAsset.filename,
+      versionLabel: scholarlyVersion.label,
+      workId: scholarlyVersion.workId,
+      workTitle: scholarlyWork.title,
+    })
+    .from(readingProgress)
+    .innerJoin(resourceAsset, and(eq(resourceAsset.id, readingProgress.assetId), eq(resourceAsset.ownerId, ownerId)))
+    .leftJoin(scholarlyVersion, eq(scholarlyVersion.id, resourceAsset.scholarlyVersionId))
+    .leftJoin(scholarlyWork, eq(scholarlyWork.id, scholarlyVersion.workId))
+    .where(and(eq(readingProgress.ownerId, ownerId), isNull(resourceAsset.deletedAt)))
+    .orderBy(desc(readingProgress.updatedAt));
+  return {
+    works: works.map((w) => ({
+      id: w.id,
+      title: w.title,
+      authors: w.authors.map((a) => a.name),
+      year: w.publicationYear,
+      venue: w.venue,
+      workType: w.workType,
+      savedAt: w.savedAt,
+      favourite: w.favourite,
+      readLater: w.readLater,
+      readAt: w.readAt,
+      identifiers: identifiers
+        .filter((i) => i.workId === w.id)
+        .map((i) => ({ scheme: i.scheme, value: i.value, source: i.source, retrievedAt: i.retrievedAt, status: i.status })),
+      provenance: w.provenance,
+    })),
+    collections: collections.map((c) => ({
+      id: c.id,
+      kind: c.kind,
+      name: c.name,
+      description: c.description,
+      items: items
+        .filter((i) => i.item.collectionId === c.id)
+        .map((i, index) => ({ step: index + 1, workId: i.item.workId, title: i.title, reason: i.item.reason, addedAt: i.item.addedAt })),
+    })),
+    readingPositions: positions.map((p) => ({
+      assetId: p.progress.assetId,
+      item: p.workTitle ?? p.title ?? p.filename,
+      workId: p.workId,
+      version: p.versionLabel,
+      page: (p.progress.position?.pageIndex ?? p.progress.physicalIndex) + 1,
+      position: p.progress.position,
+      lastOpenedAt: p.progress.lastOpenedAt,
+      savedAt: p.progress.effectiveAt,
+    })),
+  };
 }
 
 export async function buildRecordsBundle(db: DbOrTx, ownerId: string): Promise<RecordsBundle> {
@@ -390,10 +533,20 @@ export async function buildRecordsBundle(db: DbOrTx, ownerId: string): Promise<R
     .limit(2000);
   const notes = await db.select().from(notebookEntry).where(eq(notebookEntry.ownerId, ownerId)).orderBy(desc(notebookEntry.updatedAt));
   const annotations = await db
-    .select({ annotation, title: resourceAsset.confirmedTitle, filename: resourceAsset.filename })
+    .select({
+      annotation,
+      title: resourceAsset.confirmedTitle,
+      filename: resourceAsset.filename,
+      version: scholarlyVersion,
+      workTitle: scholarlyWork.title,
+    })
     .from(annotation)
-    .leftJoin(resourceAsset, eq(annotation.assetId, resourceAsset.id))
-    .where(eq(annotation.ownerId, ownerId));
+    .leftJoin(resourceAsset, and(eq(annotation.assetId, resourceAsset.id), eq(resourceAsset.ownerId, ownerId)))
+    .leftJoin(scholarlyVersion, eq(scholarlyVersion.id, resourceAsset.scholarlyVersionId))
+    .leftJoin(scholarlyWork, eq(scholarlyWork.id, scholarlyVersion.workId))
+    .where(eq(annotation.ownerId, ownerId))
+    .orderBy(asc(annotation.createdAt), asc(annotation.id));
+  const library = await libraryRecord(db, ownerId);
   return {
     format: "corniversity-records/1",
     generatedAt: new Date().toISOString(),
@@ -424,13 +577,27 @@ export async function buildRecordsBundle(db: DbOrTx, ownerId: string): Promise<R
     })),
     notebook: notes,
     annotations: annotations.map((a) => ({
-      item: a.title ?? a.filename ?? "(deleted item)",
+      item: a.workTitle ?? a.title ?? a.filename ?? "(deleted item)",
       locator: a.annotation.locator,
       selectedText: a.annotation.selectedText,
       note: a.annotation.noteMarkdown,
       createdAt: a.annotation.createdAt,
       mappingStatus: a.annotation.mappingStatus,
+      kind: a.annotation.kind,
+      colour: a.annotation.color,
+      quote: a.annotation.anchor?.quote ?? a.annotation.selectedText,
+      quoteMatched: a.annotation.quoteMatched,
+      page: a.annotation.anchor
+        ? a.annotation.anchor.pageIndex + 1
+        : a.annotation.locator.kind === "pdf"
+          ? a.annotation.locator.physicalPageIndex + 1
+          : null,
+      work: a.version ? { id: a.version.workId, title: a.workTitle } : null,
+      version: a.version ? { label: a.version.label, arxivId: a.version.arxivId, arxivVersion: a.version.arxivVersion } : null,
+      anchor: a.annotation.anchor,
+      updatedAt: a.annotation.updatedAt,
     })),
+    library,
   };
 }
 
@@ -491,12 +658,14 @@ export function renderMarkdownExport(bundle: RecordsBundle): string {
     if (c.unfinished.length) lines.push(`- Met but not yet demonstrated: ${c.unfinished.join(", ")}`);
     lines.push(`- Recommendation: ${c.recommendation}`, "");
   }
+  const paperTitle = new Map(bundle.library.works.map((w) => [w.id, w.title ?? "Untitled paper"]));
   lines.push("## Notebook", "");
   for (const n of bundle.notebook) {
+    const paper = n.scholarlyWorkId ? paperTitle.get(n.scholarlyWorkId) : undefined;
     lines.push(
       `### ${n.title}`,
       "",
-      `*${n.kind}${n.courseId ? ` · ${n.courseId}` : ""}${n.tags.length ? ` · ${n.tags.join(", ")}` : ""} · ${n.updatedAt.toISOString().slice(0, 10)}*`,
+      `*${n.kind}${n.courseId ? ` · ${n.courseId}` : ""}${paper ? ` · paper: ${paper}` : ""}${n.tags.length ? ` · ${n.tags.join(", ")}` : ""} · ${n.updatedAt.toISOString().slice(0, 10)}*`,
       "",
       n.bodyMarkdown,
       "",
@@ -505,13 +674,63 @@ export function renderMarkdownExport(bundle: RecordsBundle): string {
   }
   if (bundle.annotations.length) {
     lines.push("## Reading notes", "");
-    for (const a of bundle.annotations)
+    for (const a of bundle.annotations) {
+      const where = [
+        a.version ? `${a.item} (${a.version.label})` : a.item,
+        a.colour ? `${a.kind}, ${a.colour}` : a.kind,
+        a.page ? `page ${a.page}` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ");
       lines.push(
-        `- ${a.createdAt.toISOString().slice(0, 10)} · ${a.item}${a.mappingStatus === "needs_repair" ? " (anchor needs repair)" : ""}: ${a.note}${a.selectedText ? ` — on: "${a.selectedText.slice(0, 160)}"` : ""}`,
+        `- ${a.createdAt.toISOString().slice(0, 10)} · ${where}${a.mappingStatus === "needs_repair" ? " (anchor needs repair)" : ""}${a.note ? `: ${a.note}` : ""}${a.quote ? ` — on: "${a.quote.slice(0, 160)}"` : ""}`,
+      );
+    }
+    lines.push("");
+  }
+  lines.push(...renderLibraryMarkdown(bundle.library));
+  return `${lines.join("\n")}\n`;
+}
+
+const IDENTIFIER_PREFIX: Record<string, string> = { doi: "doi:", arxiv: "arXiv:", openalex: "OpenAlex ", pmid: "PMID ", pmcid: "" };
+
+/** The research library in the Markdown export: papers with identifiers, shelves and trails with reasons, reading positions. */
+function renderLibraryMarkdown(library: LibraryRecord): string[] {
+  if (!library.works.length && !library.collections.length && !library.readingPositions.length) return [];
+  const day = (d: Date | null) => (d ? d.toISOString().slice(0, 10) : null);
+  const lines = ["## Research library", "", "### Papers", ""];
+  if (library.works.length === 0) lines.push("No papers.", "");
+  for (const w of library.works) {
+    const ids = w.identifiers
+      .filter((i) => i.status === "current")
+      .map((i) => `${IDENTIFIER_PREFIX[i.scheme] ?? `${i.scheme} `}${i.value}`);
+    const marks = [
+      w.savedAt ? `saved ${day(w.savedAt)}` : "not in your saved papers",
+      w.favourite ? "favourite" : null,
+      w.readLater ? "read later" : null,
+      w.readAt ? `read ${day(w.readAt)}` : null,
+    ].filter(Boolean);
+    lines.push(
+      `- **${w.title ?? "Untitled paper"}**${w.year ? ` (${w.year})` : ""}${w.authors.length ? ` · ${w.authors.slice(0, 3).join(", ")}${w.authors.length > 3 ? " et al." : ""}` : ""}${w.venue ? ` · ${w.venue}` : ""}${ids.length ? ` · ${ids.join(", ")}` : ""} · ${marks.join(", ")}`,
+    );
+  }
+  lines.push("");
+  for (const c of library.collections) {
+    lines.push(`### ${c.kind === "trail" ? "Trail" : "Shelf"}: ${c.name}`, "");
+    if (c.description) lines.push(c.description, "");
+    if (c.items.length === 0) lines.push("No papers.", "");
+    for (const item of c.items) lines.push(`${item.step}. ${item.title ?? "Untitled paper"}${item.reason ? ` — ${item.reason}` : ""}`);
+    lines.push("");
+  }
+  if (library.readingPositions.length) {
+    lines.push("### Reading positions", "");
+    for (const p of library.readingPositions)
+      lines.push(
+        `- ${p.item}${p.version ? ` (${p.version})` : ""} · page ${p.page}${p.lastOpenedAt ? ` · last opened ${day(p.lastOpenedAt)}` : ""}`,
       );
     lines.push("");
   }
-  return `${lines.join("\n")}\n`;
+  return lines;
 }
 
 export type ExportKind = "full" | "notebook" | "records" | "alter_markdown";

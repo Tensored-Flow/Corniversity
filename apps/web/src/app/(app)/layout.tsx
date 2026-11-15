@@ -14,7 +14,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[200px_1fr]">
       <aside className="border-b border-stone bg-paper md:border-b-0 md:border-r">
-        <div className="flex items-center justify-between px-4 py-4 md:block">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-4 md:block">
           <Link href="/campus" className="rounded-sm">
             <Wordmark compact />
           </Link>

@@ -2,6 +2,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getEnv } from "@corniversity/db/env";
+import type { CollectionKind } from "@corniversity/db/schema/scholarly";
 import { cancelJob, retryJob } from "@corniversity/db/services/jobs-admin";
 import {
   confirmMetadata,
@@ -22,6 +23,19 @@ import {
   setRequestStatus,
   suggestedRequests,
 } from "@corniversity/db/services/library";
+import {
+  addToCollection,
+  type CollectionEntry,
+  CollectionError,
+  createCollection,
+  deleteCollection,
+  describeCollection,
+  getCollection,
+  moveInCollection,
+  removeFromCollection,
+  renameCollection,
+  setItemReason,
+} from "@corniversity/db/services/library-collections";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { blobs } from "@/lib/blobs";
@@ -300,4 +314,157 @@ export async function importOpenFileAction(form: FormData): Promise<void> {
   revalidatePath("/library");
   if (!result.ok) failTo("/library/sources", result.reason);
   redirect(`/library/items/${result.assetId}?saved=${result.outcome === "duplicate" ? "duplicate" : "imported"}`);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Shelves and trails (contract §2, §3). Each action takes the session's owner, lets the service
+// check that the collection and the paper are the owner's, and returns with a registered notice
+// code on a refusal. Removing a paper or deleting a collection never deletes a paper.
+
+const COLLECTION_PATH: Record<CollectionKind, string> = { shelf: "/library/shelves", trail: "/library/trails" };
+/** Where a create form may return to on a refusal (the home page's form, or a list page's form). */
+const CREATE_BACK: Record<string, string> = {
+  home: "/library#new-collection",
+  shelves: "/library/shelves#new",
+  trails: "/library/trails#new",
+};
+
+const withParam = (path: string, param: string) => `${path}${path.includes("?") ? "&" : "?"}${param}`;
+
+/**
+ * `back` with `param` in its query. A #fragment stays last and is also named as `at`, so the page
+ * shows the notice inside the section the browser scrolls to, where it is in view.
+ */
+function placed(back: string, param: string): string {
+  const i = back.indexOf("#");
+  if (i < 0) return withParam(back, param);
+  const hash = back.slice(i);
+  return `${withParam(withParam(back.slice(0, i), `at=${hash.slice(1)}`), param)}${hash}`;
+}
+
+/** A refusal of a collection form: back to `back` (which may carry a #fragment) with the registered code. */
+function refuse(back: string, message: string): never {
+  redirect(placed(back, `error=${errorCode(message)}`));
+}
+
+/** Runs a collection service call; its refusal returns to `back` as the registered notice code. */
+async function collectionAttempt<T>(back: string, work: () => Promise<T>): Promise<T> {
+  let message: string | null = null;
+  let value: T | undefined;
+  try {
+    value = await work();
+  } catch (error) {
+    if (error instanceof CollectionError) message = error.message;
+    else throw error;
+  }
+  if (message !== null) refuse(back, message);
+  return value as T;
+}
+
+/** The owner's collection the form names, with its page; anything else returns to the shelves with a notice. */
+async function ownedCollection(form: FormData): Promise<{
+  ownerId: string;
+  id: string;
+  kind: CollectionKind;
+  path: string;
+  items: CollectionEntry[];
+}> {
+  const session = await requireSession("/library/shelves");
+  const id = text(form, "collectionId");
+  const detail = UUID.test(id) ? await getCollection(db(), session.user.id, id) : null;
+  if (!detail) failTo("/library/shelves", "Shelf or trail not found.");
+  const { kind } = detail.collection;
+  return {
+    ownerId: session.user.id,
+    id: detail.collection.id,
+    kind,
+    path: `${COLLECTION_PATH[kind]}/${detail.collection.id}`,
+    items: detail.items,
+  };
+}
+
+/** Back to the collection page with `query`; a `hash` names the section the notice is shown in (`at`). */
+function collectionDone(path: string, query: string, hash = ""): never {
+  revalidatePath("/library");
+  revalidatePath("/library/shelves");
+  revalidatePath("/library/trails");
+  revalidatePath(path);
+  redirect(placed(`${path}${hash}`, query));
+}
+
+/** A new shelf or trail (name and optional description); it opens on its own page. */
+export async function createCollectionAction(form: FormData): Promise<void> {
+  const session = await requireSession("/library");
+  const kind = text(form, "kind");
+  const from = text(form, "from");
+  const back = Object.hasOwn(CREATE_BACK, from) ? CREATE_BACK[from]! : CREATE_BACK.home!;
+  if (kind !== "shelf" && kind !== "trail") refuse(back, "Choose a shelf or a trail.");
+  const created = await collectionAttempt(back, () =>
+    createCollection(db(), session.user.id, { kind, name: text(form, "name"), description: String(form.get("description") ?? "") }),
+  );
+  collectionDone(`${COLLECTION_PATH[kind]}/${created.id}`, "saved=created");
+}
+
+export async function renameCollectionAction(form: FormData): Promise<void> {
+  const { ownerId, id, path } = await ownedCollection(form);
+  await collectionAttempt(`${path}#details`, () => renameCollection(db(), ownerId, id, text(form, "name")));
+  collectionDone(path, "saved=renamed", "#details");
+}
+
+/** The description: owner Markdown with LaTeX (rendered through the sanitiser); empty clears it. */
+export async function describeCollectionAction(form: FormData): Promise<void> {
+  const { ownerId, id, path } = await ownedCollection(form);
+  await collectionAttempt(`${path}#details`, () => describeCollection(db(), ownerId, id, String(form.get("description") ?? "")));
+  collectionDone(path, "saved=described", "#details");
+}
+
+/** Deletes the shelf or trail after its confirmation box; its papers, their notes and files stay. */
+export async function deleteCollectionAction(form: FormData): Promise<void> {
+  const { ownerId, id, kind, path } = await ownedCollection(form);
+  if (form.get("confirm") !== "1")
+    refuse(`${path}#delete`, kind === "trail" ? "Tick the box to delete this trail." : "Tick the box to delete this shelf.");
+  await collectionAttempt(`${path}#delete`, () => deleteCollection(db(), ownerId, id));
+  collectionDone(COLLECTION_PATH[kind], "deleted=1");
+}
+
+/** Adds one of the owner's papers at the end (a trail's next step), with an optional reason. */
+export async function addCollectionItemAction(form: FormData): Promise<void> {
+  const { ownerId, id, path } = await ownedCollection(form);
+  const words = text(form, "add").slice(0, 300);
+  const keep = words ? `&add=${encodeURIComponent(words)}` : "";
+  const result = await collectionAttempt(`${path}${words ? `?add=${encodeURIComponent(words)}` : ""}#add`, () =>
+    addToCollection(db(), ownerId, id, text(form, "workId"), text(form, "reason").slice(0, 2000) || null),
+  );
+  collectionDone(path, `saved=${result.added ? "added" : "already"}${keep}`, "#add");
+}
+
+/**
+ * Takes a paper off the shelf or trail; the paper, its notes and files stay in the library. A paper
+ * with a note (a trail step's reason) written here asks first, on its own row, because that text is
+ * deleted with it: only a form carrying `confirm=1` removes it.
+ */
+export async function removeCollectionItemAction(form: FormData): Promise<void> {
+  const { ownerId, id, path, items } = await ownedCollection(form);
+  const workId = text(form, "workId");
+  if (UUID.test(workId) && items.some((i) => i.work.id === workId && i.item.reason) && form.get("confirm") !== "1")
+    redirect(placed(`${path}#item-${workId}`, `remove=${workId}`));
+  const removed = await collectionAttempt(`${path}#papers`, () => removeFromCollection(db(), ownerId, id, workId));
+  collectionDone(path, removed.reason ? "saved=removed-note" : "saved=removed", "#papers");
+}
+
+export async function moveCollectionItemAction(form: FormData): Promise<void> {
+  const { ownerId, id, path } = await ownedCollection(form);
+  const workId = text(form, "workId");
+  const direction = text(form, "direction");
+  if (direction !== "up" && direction !== "down") refuse(`${path}#papers`, "Move a paper up or down.");
+  await collectionAttempt(`${path}#papers`, () => moveInCollection(db(), ownerId, id, workId, direction));
+  collectionDone(path, "saved=moved", UUID.test(workId) ? `#item-${workId}` : "#papers");
+}
+
+/** A trail step's reason or a shelf paper's note (Markdown with LaTeX); empty clears it. */
+export async function setCollectionItemReasonAction(form: FormData): Promise<void> {
+  const { ownerId, id, path } = await ownedCollection(form);
+  const workId = text(form, "workId");
+  await collectionAttempt(`${path}#papers`, () => setItemReason(db(), ownerId, id, workId, String(form.get("reason") ?? "")));
+  collectionDone(path, "saved=reason", UUID.test(workId) ? `#item-${workId}` : "#papers");
 }

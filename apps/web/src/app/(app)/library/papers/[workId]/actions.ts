@@ -262,6 +262,7 @@ export async function removeFromCollectionAction(form: FormData): Promise<void> 
   const back = paper(workId, "", "#collections");
   const collectionId = text(form, "collectionId");
   if (!UUID.test(collectionId)) redirect(back);
-  await attempt(back, () => removeFromCollection(db(), ownerId, collectionId, workId));
-  done(workId, "collection-removed", "#collections");
+  const removed = await attempt(back, () => removeFromCollection(db(), ownerId, collectionId, workId));
+  // The note (a trail step's reason) written there goes with the paper's place; the notice says so.
+  done(workId, removed.reason ? "collection-removed-note" : "collection-removed", "#collections");
 }

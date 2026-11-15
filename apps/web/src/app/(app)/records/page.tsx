@@ -18,11 +18,19 @@ const EXPORTS: { kind: "full" | "notebook" | "records" | "alter_markdown"; label
   {
     kind: "alter_markdown",
     label: "Markdown record",
-    help: "One readable document: courses, portfolio, every attempt with its outcome, appeals, review, notebook, reading notes.",
+    help: "One readable document: courses, portfolio, every attempt with its outcome, appeals, review, notebook, reading notes, and the research library (papers with identifiers, shelves and trails with reasons, reading positions).",
   },
   { kind: "records", label: "Records (JSON)", help: "Transcript, portfolio, review, concept states and evidence events." },
-  { kind: "notebook", label: "Notebook (JSON)", help: "Every notebook entry and reading note with its source links." },
-  { kind: "full", label: "Everything (JSON)", help: "The complete bundle, for import into a fresh installation." },
+  {
+    kind: "notebook",
+    label: "Notebook (JSON)",
+    help: "Every notebook entry and reading note with its source links; reading notes carry their kind, colour, quote and the file version they were made on.",
+  },
+  {
+    kind: "full",
+    label: "Everything (JSON)",
+    help: "The complete bundle, research library included, for import into a fresh installation.",
+  },
 ];
 
 /**

@@ -353,6 +353,10 @@ export const ERROR_NOTICES = {
   "shelf-name-taken": "You already have a shelf with that name.",
   "trail-name-taken": "You already have a trail with that name.",
   "collection-move-direction": "Move a paper up or down.",
+  // library/actions.ts: the fallback when an extraction request fails for another reason
+  "library-request-failed": "The request failed.",
+  "tick-box-delete-shelf": "Tick the box to delete this shelf.",
+  "tick-box-delete-trail": "Tick the box to delete this trail.",
   // discover.ts (Discover and subject rooms): a list that cannot be shown says what happened, never "no results"
   "subject-not-found": "Subject not found.",
   "surprise-choose-from-page": "Choose a surprise from this page.",

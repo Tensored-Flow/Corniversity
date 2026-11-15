@@ -1415,15 +1415,89 @@ export async function readingNotesPage(
   return { notes, nextOffset: rows.length > limit ? offset + limit : null };
 }
 
-/** The notebook's reading notes: a search string (the earlier form) or the full filter set. */
+/**
+ * The notebook's reading notes (highlights, page and area notes, bookmarks), newest first: a search
+ * string (the earlier form) or the full filter set, which adds `subject`, an OpenAlex field id among
+ * the subjects of the paper the Document belongs to (as OpenAlex classified it). Every filter is
+ * applied in SQL; an invalid id or kind matches nothing.
+ */
 export async function listReadingNotes(
   db: DbOrTx,
   ownerId: string,
-  queryOrFilters?: string | ReadingNotesQuery,
+  queryOrFilters?: string | (ReadingNotesQuery & { subject?: string }),
   limit = 50,
 ): Promise<ReadingNote[]> {
-  const filters = typeof queryOrFilters === "string" || queryOrFilters === undefined ? { query: queryOrFilters } : queryOrFilters;
-  return (await readingNotesPage(db, ownerId, { limit, ...filters })).notes;
+  const filters: ReadingNotesQuery & { subject?: string } =
+    typeof queryOrFilters === "string" || queryOrFilters === undefined ? { query: queryOrFilters } : queryOrFilters;
+  const take = Math.min(Math.max(Math.trunc(filters.limit ?? limit), 1), 200);
+  const offset = Math.max(Math.trunc(filters.offset ?? 0), 0);
+  const conditions: SQL[] = [eq(annotation.ownerId, ownerId)];
+  const q = filters.query?.trim();
+  if (q) conditions.push(sql`${annotation.tsv} @@ websearch_to_tsquery('english', ${q.slice(0, 300)})`);
+  if (filters.kind !== undefined) {
+    if (!READING_NOTE_KINDS.includes(filters.kind)) return [];
+    conditions.push(eq(annotation.kind, filters.kind));
+  }
+  if (filters.workId !== undefined) {
+    if (!isUuid(filters.workId)) return [];
+    conditions.push(eq(scholarlyVersion.workId, filters.workId));
+  }
+  if (filters.collectionId !== undefined) {
+    if (!isUuid(filters.collectionId)) return [];
+    conditions.push(
+      inArray(
+        scholarlyVersion.workId,
+        db
+          .select({ workId: libraryCollectionItem.workId })
+          .from(libraryCollectionItem)
+          .where(and(eq(libraryCollectionItem.collectionId, filters.collectionId), eq(libraryCollectionItem.ownerId, ownerId))),
+      ),
+    );
+  }
+  if (filters.subject !== undefined) {
+    if (!/^\d{1,6}$/.test(filters.subject)) return [];
+    conditions.push(sql`${scholarlyWork.subjects} @> ${JSON.stringify([{ id: filters.subject, level: "field" }])}::jsonb`);
+  }
+  const rows = await db
+    .select({
+      annotation,
+      title: resourceAsset.confirmedTitle,
+      filename: resourceAsset.filename,
+      deletedAt: resourceAsset.deletedAt,
+      versionLabel: scholarlyVersion.label,
+      workId: scholarlyWork.id,
+      workTitle: scholarlyWork.title,
+    })
+    .from(annotation)
+    .leftJoin(resourceAsset, and(eq(annotation.assetId, resourceAsset.id), eq(resourceAsset.ownerId, ownerId)))
+    .leftJoin(scholarlyVersion, eq(resourceAsset.scholarlyVersionId, scholarlyVersion.id))
+    .leftJoin(scholarlyWork, eq(scholarlyVersion.workId, scholarlyWork.id))
+    .where(and(...conditions))
+    .orderBy(desc(annotation.updatedAt), desc(annotation.id))
+    .limit(take)
+    .offset(offset);
+  return rows.map((r) => ({
+    id: r.annotation.id,
+    assetId: r.annotation.assetId,
+    item: r.workTitle ?? r.title ?? r.filename ?? "(item removed)",
+    note: r.annotation.noteMarkdown,
+    selectedText: r.annotation.selectedText,
+    page: r.annotation.anchor
+      ? r.annotation.anchor.pageIndex + 1
+      : r.annotation.locator.kind === "pdf"
+        ? r.annotation.locator.physicalPageIndex + 1
+        : null,
+    createdAt: r.annotation.createdAt,
+    mappingStatus: r.annotation.mappingStatus,
+    kind: r.annotation.kind,
+    color: r.annotation.color,
+    quoteMatched: r.annotation.quoteMatched,
+    updatedAt: r.annotation.updatedAt,
+    workId: r.workId,
+    workTitle: r.workTitle,
+    versionLabel: r.versionLabel,
+    documentDeleted: Boolean(r.deletedAt),
+  }));
 }
 
 export async function listAnnotations(db: DbOrTx, ownerId: string, assetId: string): Promise<AnnotationRow[]> {

@@ -1,48 +1,63 @@
-import { listJobs } from "@corniversity/db/services/jobs-admin";
-import {
-  companionState,
-  getPermissions,
-  listPairings,
-  listResourceRequests,
-  listSourceRegistry,
-  listStoredAssets,
-} from "@corniversity/db/services/library";
+import { companionState, getPermissions, listPairings, listStoredAssets } from "@corniversity/db/services/library";
+import { listCollections } from "@corniversity/db/services/library-collections";
+import { continueReading, documentsForWorks } from "@corniversity/db/services/library-home";
+import { listWorks, type WorkListView } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
-import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
+import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
+import { Badge, Button, Card, EmptyState, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
+import { savedPageNumber } from "./_collections/text";
+import { readableByWork } from "./_collections/WorkLine";
+import { ContinueReading } from "./_home/ContinueReading";
+import { HomeCollections } from "./_home/HomeCollections";
+import { SAVED_PAGE_SIZE, SavedPapers, VIEWS } from "./_home/SavedPapers";
 import { AssetStatusBadge, assetTitle, FlashNotices, LibraryHeader, PermissionSummary } from "./shared";
 
 export const metadata = { title: "Library" };
 
+const one = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
+
 /**
- * The shelf: every item the owner holds here, its state (on the desktop only, quarantined,
- * confirmed, processing, ready, rejected) and the processing it is permitted. Verified sources
- * the catalogue rests on live under Sources; this page is about the owner's own files.
+ * The Library home (contract §2), read from the database only: a find box, *Continue reading*,
+ * the saved papers by view, shelves and trails, and the owner's files with their states (on the
+ * desktop only, quarantined, confirmed, processing, ready, rejected) and the processing each is
+ * permitted. Nothing here calls a provider; Discover and Find papers are a tab away.
  */
-export default async function LibraryPage({ searchParams }: { searchParams: Promise<{ deleted?: string; error?: string }> }) {
+export default async function LibraryPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const session = await requireSession("/library");
-  const { deleted, error } = await searchParams;
+  const params = await searchParams;
+  const deleted = one(params.deleted);
+  const error = one(params.error);
+  const viewParam = one(params.view);
+  const view: WorkListView = VIEWS.some((v) => v.view === viewParam) ? (viewParam as WorkListView) : "saved";
+  const page = savedPageNumber(one(params.page) ?? "");
+  // A refusal of the shelf-or-trail form returns to that form (`at=new-collection`) and is shown there, in view.
+  const errorInCollections = one(params.at) === "new-collection" ? error : undefined;
   const database = db();
   const ownerId = session.user.id;
-  const [assets, pairings, registry, requests, jobs] = await Promise.all([
+  const [assets, pairings, reading, works, collections] = await Promise.all([
     listStoredAssets(database, ownerId),
     listPairings(database, ownerId),
-    listSourceRegistry(database),
-    listResourceRequests(database, ownerId),
-    listJobs(database, ownerId, 50),
+    continueReading(database, ownerId, 3),
+    listWorks(database, ownerId, view, { limit: SAVED_PAGE_SIZE + 1, offset: (page - 1) * SAVED_PAGE_SIZE }),
+    listCollections(database, ownerId),
   ]);
-  const permissions = await Promise.all(assets.map((a) => getPermissions(database, ownerId, a.id)));
+  const shown = works.slice(0, SAVED_PAGE_SIZE);
+  const [permissions, documents] = await Promise.all([
+    Promise.all(assets.map((a) => getPermissions(database, ownerId, a.id))),
+    documentsForWorks(
+      database,
+      ownerId,
+      shown.map((w) => w.work.id),
+    ),
+  ]);
   const state = companionState(pairings);
-  const running = jobs.filter((j) => j.status === "queued" || j.status === "active").length;
-  const openRequests = requests.filter((r) => r.status === "open").length;
-  const localOnly = assets.filter((a) => a.localOnly).length;
-  const locators = registry.reduce((n, e) => n + e.locatorCount, 0);
 
   return (
     <div className="mx-auto w-full max-w-6xl">
-      <LibraryHeader title="Library" lede="Your files and sources. Each item has its own permissions." active="/library" sync={state} />
-      <FlashNotices error={error} />
+      <LibraryHeader title="Library" lede="Your papers, shelves, trails and files." active="/library" sync={state} />
+      <FlashNotices error={errorInCollections ? undefined : error} />
       {deleted ? (
         <div className="mb-4">
           <Notice tone="moss">
@@ -51,41 +66,45 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
         </div>
       ) : null}
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-4">
-        <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-ink-3">On the shelf</p>
-          <p className="mt-1 text-2xl text-ink">{assets.length}</p>
-          <p className="text-xs text-ink-3">{localOnly} on your desktop only</p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-ink-3">Verified sources</p>
-          <p className="mt-1 text-2xl text-ink">{registry.length}</p>
-          <p className="text-xs text-ink-3">
-            {locators} pinned locations ·{" "}
-            <Link href="/library/sources" className="text-brass underline underline-offset-4">
-              registry
-            </Link>
-          </p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-ink-3">Books to obtain</p>
-          <p className="mt-1 text-2xl text-ink">{openRequests}</p>
-          <p className="text-xs text-ink-3">
-            open requests ·{" "}
-            <Link href="/library/requests" className="text-brass underline underline-offset-4">
-              list
-            </Link>
-          </p>
-        </Card>
-        <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-ink-3">Jobs running</p>
-          <p className="mt-1 text-2xl text-ink">{running}</p>
-          <p className="text-xs text-ink-3">
-            <Link href="/library/jobs" className="text-brass underline underline-offset-4">
-              all jobs
-            </Link>
-          </p>
-        </Card>
+      <Card as="div" className="mb-6">
+        <form method="get" action="/library/find" aria-label="Find papers" className="flex flex-col gap-1.5">
+          <label htmlFor="home-find" className="text-sm font-medium text-ink">
+            Find a paper: DOI, arXiv id, OpenAlex id, a link to one of them, or words
+          </label>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input id="home-find" name="q" type="search" maxLength={2000} autoComplete="off" spellCheck={false} />
+            <Button type="submit" className="shrink-0">
+              Find
+            </Button>
+          </div>
+        </form>
+        <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+          <Link href="/library/find" className="text-brass underline underline-offset-4">
+            Add a paper
+          </Link>
+          <Link href="/library/discover" className="text-brass underline underline-offset-4">
+            Discover
+          </Link>
+          <Link href="/notebook?library=1" className="text-brass underline underline-offset-4">
+            Library notes
+          </Link>
+        </p>
+      </Card>
+
+      <div className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <div className="flex min-w-0 flex-col gap-6">
+          <ContinueReading items={reading} />
+          <SavedPapers
+            view={view}
+            page={page}
+            items={shown}
+            hasNext={works.length > SAVED_PAGE_SIZE}
+            readable={readableByWork(documents)}
+          />
+        </div>
+        <div className="min-w-0">
+          <HomeCollections collections={collections} error={errorInCollections} />
+        </div>
       </div>
 
       {state === "offline" ? (
@@ -116,7 +135,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
       </div>
       {assets.length === 0 ? (
         <EmptyState
-          title="Your shelf is empty"
+          title="No files yet"
           body="Upload a file, pair your desktop so the companion registers what is in your inbox, or import an open source from the registry."
           action={
             <div className="flex flex-wrap justify-center gap-2">
@@ -166,7 +185,9 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
                   <LinkButton href={`/library/items/${asset.id}`} variant="secondary">
                     Details
                   </LinkButton>
-                  {asset.status === "processed" ? <LinkButton href={`/library/read/${asset.id}`}>Read</LinkButton> : null}
+                  {pageViewAvailable(asset) || textViewAvailable(asset) ? (
+                    <LinkButton href={`/library/read/${asset.id}`}>Read</LinkButton>
+                  ) : null}
                 </div>
               </div>
             </Card>

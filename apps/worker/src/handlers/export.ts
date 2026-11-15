@@ -7,8 +7,10 @@ import type { HandlerContext } from "./index";
 
 /**
  * Builds a portable export from the database (the source of truth) and stores it as a private
- * blob the owner downloads from the Records page. Formats: the JSON bundle (`full`, `records`),
- * the notebook alone (`notebook`) and a human-readable Markdown document (`alter_markdown`).
+ * blob the owner downloads from the Records page. Formats: the whole JSON bundle (`full`, which
+ * includes the research library), the academic record without notes or library (`records`), the
+ * notebook with every reading note (`notebook`) and a human-readable Markdown document
+ * (`alter_markdown`, research library included).
  */
 export async function exportHandler(ctx: HandlerContext, raw: unknown): Promise<Record<string, unknown>> {
   const payload = ExportRecordsPayload.parse(raw);
@@ -31,7 +33,7 @@ export async function exportHandler(ctx: HandlerContext, raw: unknown): Promise<
       "utf8",
     );
   else if (payload.kind === "records")
-    body = Buffer.from(JSON.stringify({ ...bundle, notebook: undefined, annotations: undefined }, null, 2), "utf8");
+    body = Buffer.from(JSON.stringify({ ...bundle, notebook: undefined, annotations: undefined, library: undefined }, null, 2), "utf8");
   else body = Buffer.from(JSON.stringify(bundle, null, 2), "utf8");
   const blobs = createBlobStore(ctx.env.BLOB_STORE, ctx.db, ctx.env.CORNIVERSITY_DATA_ROOT);
   const stored = await blobs.put(body);

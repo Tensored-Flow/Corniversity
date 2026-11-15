@@ -1,7 +1,7 @@
 import { arxivAbsUrl, classifyLicence, isArxivDoi, licenceAttribution, storageDecision } from "@corniversity/core";
 import { getEnv } from "@corniversity/db/env";
 import { isUuid } from "@corniversity/db/ids";
-import { collectionsForWork, listCollections } from "@corniversity/db/services/library-collections";
+import { type CollectionMembership, collectionsForWork, listCollections } from "@corniversity/db/services/library-collections";
 import { openAlexRecordForWork, type WorkRecordResult } from "@corniversity/db/services/paper-lists";
 import {
   type DocumentJob,
@@ -59,6 +59,8 @@ const SAVED_TEXT: Record<string, string> = {
   merged: "Merged into this paper.",
   collection: "Added.",
   "collection-removed": "Removed from that shelf or trail.",
+  "collection-removed-note":
+    "Removed from that shelf or trail, with the note you wrote for it there. The paper, its notes and files stay here.",
   "attached-stored": "Your copy is attached and can be read here.",
   "attached-promoted": "Your copy is attached to that version and can be read here.",
   "attached-adopted": "That file was already in your library; it is now this paper's file.",
@@ -250,6 +252,9 @@ export default async function PaperPage({
               )}
               <Link href={`/notebook?library=1&work=${work.id}`} className="text-brass underline underline-offset-4">
                 Notes for this paper
+              </Link>
+              <Link href={`/notebook?library=1&work=${work.id}#new-note`} className="text-brass underline underline-offset-4">
+                New note for this paper
               </Link>
             </div>
           </div>
@@ -597,7 +602,7 @@ function Collections({
   collections,
 }: {
   workId: string;
-  memberships: { id: string; kind: "shelf" | "trail"; name: string; reason: string | null }[];
+  memberships: CollectionMembership[];
   collections: { id: string; kind: "shelf" | "trail"; name: string }[];
 }) {
   const available = collections.filter((c) => !memberships.some((m) => m.id === c.id));
@@ -607,9 +612,33 @@ function Collections({
       {memberships.length ? (
         <ul className="mt-3 flex flex-col gap-2 text-sm">
           {memberships.map((m) => (
-            <li key={m.id} className="flex flex-wrap items-center gap-2">
-              <span className="text-ink">{m.name}</span>
-              <span className="text-xs text-ink-3">({m.kind})</span>
+            <li key={m.id} className="flex flex-wrap items-center gap-x-2 gap-y-1 [overflow-wrap:anywhere]">
+              {m.kind === "trail" ? (
+                <span className="text-ink">
+                  Trail:{" "}
+                  <Link href={`/library/trails/${m.id}`} className="text-brass underline underline-offset-4">
+                    {m.name}
+                  </Link>
+                  , step {m.step} of {m.steps}
+                  {m.next ? (
+                    <>
+                      ; next:{" "}
+                      <Link href={paperHref(m.next.workId)} className="text-brass underline underline-offset-4">
+                        {m.next.title ?? "Untitled paper"}
+                      </Link>
+                    </>
+                  ) : (
+                    "; the last step"
+                  )}
+                </span>
+              ) : (
+                <span className="text-ink">
+                  Shelf:{" "}
+                  <Link href={`/library/shelves/${m.id}`} className="text-brass underline underline-offset-4">
+                    {m.name}
+                  </Link>
+                </span>
+              )}
               {m.reason ? <span className="text-ink-2">— {m.reason}</span> : null}
               <form action={removeFromCollectionAction}>
                 <input type="hidden" name="workId" value={workId} />

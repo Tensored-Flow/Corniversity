@@ -117,4 +117,26 @@ describe("error notices", () => {
     expect(found).toBeGreaterThan(5);
     expect(missing).toEqual([]);
   });
+
+  it("lists every sentence the library's and the notebook's actions can send (shelves, trails, paper notes)", () => {
+    const web = resolve(__dirname, "..");
+    const files = ["app/(app)/library/actions.ts", "app/(app)/notebook/actions.ts"];
+    const listed = new Set<string>(Object.values(ERROR_NOTICES));
+    const missing: string[] = [];
+    // These server actions hold no page text: every sentence literal in them is a refusal sent
+    // through failTo/fail/withError (some chosen by a condition), so each must be listed.
+    const literal = /"((?:[^"\\]|\\.)*)"/g;
+    let found = 0;
+    for (const file of files) {
+      const source = readFileSync(join(web, file), "utf8");
+      for (const m of source.matchAll(literal)) {
+        const text = JSON.parse(`"${m[1]}"`) as string;
+        if (!/^[A-Z]/.test(text) || !text.includes(" ") || !text.endsWith(".")) continue;
+        found++;
+        if (!listed.has(text)) missing.push(`${file}: ${text}`);
+      }
+    }
+    expect(found).toBeGreaterThan(15);
+    expect(missing).toEqual([]);
+  });
 });

@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, gt, lt, max, sql } from "drizzle-orm";
+import { and, asc, count, eq, inArray, max, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { type CollectionKind, libraryCollection, libraryCollectionItem, scholarlyWork } from "../schema/index";
@@ -89,13 +89,59 @@ export async function listCollections(
   return rows.map((r) => ({ ...r.collection, itemCount: Number(r.itemCount) }));
 }
 
-export interface CollectionDetail {
-  collection: CollectionRow;
-  items: { item: CollectionItemRow; work: typeof scholarlyWork.$inferSelect }[];
+type WorkRow = typeof scholarlyWork.$inferSelect;
+
+export interface CollectionEntry {
+  item: CollectionItemRow;
+  work: WorkRow;
+  /** 1-based place in the collection's own order (a trail's step number), whatever the view shows. */
+  step: number;
 }
 
-/** A shelf or trail with its papers in order (by position, then when added). */
-export async function getCollection(db: DbOrTx, ownerId: string, id: string): Promise<CollectionDetail | null> {
+export interface CollectionDetail {
+  collection: CollectionRow;
+  /** The items the view shows, in its order. */
+  items: CollectionEntry[];
+  /** How many papers the collection holds (before any search or filter). */
+  total: number;
+}
+
+/** "position": the collection's own order (the order of adding until the owner moves papers); "added": newest first. */
+export type CollectionOrder = "position" | "added";
+/** The owner's own marks on a paper. */
+export type CollectionFlag = "favourite" | "read_later" | "read";
+
+export interface CollectionView {
+  /** Words that must all appear in the title, an author's name, the venue or the year (case and accents ignored). */
+  query?: string;
+  flag?: CollectionFlag;
+  order?: CollectionOrder;
+}
+
+const fold = (value: string) => value.normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase();
+
+/** Whether a work matches the words of a search within a collection (every word, anywhere in its text). */
+export function workMatches(work: Pick<WorkRow, "title" | "authors" | "venue" | "publicationYear">, query: string): boolean {
+  const words = fold(query).split(/\s+/).filter(Boolean);
+  if (words.length === 0) return true;
+  const text = fold(
+    [work.title ?? "", ...work.authors.map((a) => a.name), work.venue ?? "", work.publicationYear ? String(work.publicationYear) : ""].join(
+      " ",
+    ),
+  );
+  return words.every((w) => text.includes(w));
+}
+
+function flagged(work: WorkRow, flag: CollectionFlag): boolean {
+  return flag === "favourite" ? work.favourite : flag === "read_later" ? work.readLater : work.readAt !== null;
+}
+
+/**
+ * A shelf or trail with its papers: in its own order (by position, then when added), or newest
+ * first, optionally searched and filtered by the owner's flags. Step numbers always count the
+ * collection's own order, so a filtered trail still names each paper's step.
+ */
+export async function getCollection(db: DbOrTx, ownerId: string, id: string, view: CollectionView = {}): Promise<CollectionDetail | null> {
   if (!isUuid(id)) return null;
   const [collection] = await db
     .select()
@@ -103,13 +149,18 @@ export async function getCollection(db: DbOrTx, ownerId: string, id: string): Pr
     .where(and(eq(libraryCollection.id, id), eq(libraryCollection.ownerId, ownerId)))
     .limit(1);
   if (!collection) return null;
-  const items = await db
+  const rows = await db
     .select({ item: libraryCollectionItem, work: scholarlyWork })
     .from(libraryCollectionItem)
     .innerJoin(scholarlyWork, eq(scholarlyWork.id, libraryCollectionItem.workId))
     .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.ownerId, ownerId)))
-    .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt));
-  return { collection, items };
+    .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt), asc(libraryCollectionItem.workId));
+  const query = view.query?.trim().slice(0, 300) ?? "";
+  let items = rows
+    .map((r, index) => ({ ...r, step: index + 1 }))
+    .filter((r) => (!query || workMatches(r.work, query)) && (!view.flag || flagged(r.work, view.flag)));
+  if (view.order === "added") items = [...items].sort((a, b) => b.item.addedAt.getTime() - a.item.addedAt.getTime() || b.step - a.step);
+  return { collection, items, total: rows.length };
 }
 
 export async function createCollection(
@@ -204,10 +255,20 @@ export async function addToCollection(
   });
 }
 
-export async function removeFromCollection(db: DbOrTx, ownerId: string, id: string, workId: string): Promise<void> {
+/**
+ * Takes a paper off a collection. The paper, its annotations, notebook entries and files are never
+ * touched; the item's own note (a trail step's reason) goes with it, and is returned as `reason` so
+ * the caller can say so. `removed` is false when the paper was not in the collection.
+ */
+export async function removeFromCollection(
+  db: DbOrTx,
+  ownerId: string,
+  id: string,
+  workId: string,
+): Promise<{ removed: boolean; reason: string | null }> {
   const collection = await requireCollection(db, ownerId, id);
   if (!isUuid(workId)) throw new CollectionError("not_found", "Paper not found.");
-  await db
+  const [row] = await db
     .delete(libraryCollectionItem)
     .where(
       and(
@@ -215,41 +276,40 @@ export async function removeFromCollection(db: DbOrTx, ownerId: string, id: stri
         eq(libraryCollectionItem.ownerId, ownerId),
         eq(libraryCollectionItem.workId, workId),
       ),
-    );
+    )
+    .returning({ reason: libraryCollectionItem.reason });
+  return { removed: Boolean(row), reason: row?.reason ?? null };
 }
 
-/** Moves a paper one place up or down by swapping it with its neighbour. */
+/**
+ * Moves a paper one place up or down in the order the collection shows (position, then when added).
+ * The items are renumbered 1…n in that order with the two swapped, so positions a merge made equal
+ * cannot make a move skip a paper or do nothing.
+ */
 export async function moveInCollection(db: DbOrTx, ownerId: string, id: string, workId: string, direction: "up" | "down"): Promise<void> {
   const collection = await requireCollection(db, ownerId, id);
   if (!isUuid(workId)) throw new CollectionError("not_found", "Paper not found.");
   if (direction !== "up" && direction !== "down") throw new CollectionError("invalid", "Move a paper up or down.");
   await db.transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${`collection:${collection.id}`}, 0))`);
-    const [item] = await tx
-      .select()
+    const items = await tx
+      .select({ workId: libraryCollectionItem.workId, position: libraryCollectionItem.position })
       .from(libraryCollectionItem)
-      .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.workId, workId)));
-    if (!item) throw new CollectionError("not_found", "Paper not found.");
-    const [neighbour] = await tx
-      .select()
-      .from(libraryCollectionItem)
-      .where(
-        and(
-          eq(libraryCollectionItem.collectionId, collection.id),
-          direction === "up" ? lt(libraryCollectionItem.position, item.position) : gt(libraryCollectionItem.position, item.position),
-        ),
-      )
-      .orderBy(direction === "up" ? desc(libraryCollectionItem.position) : asc(libraryCollectionItem.position))
-      .limit(1);
-    if (!neighbour) return;
-    await tx
-      .update(libraryCollectionItem)
-      .set({ position: neighbour.position })
-      .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.workId, item.workId)));
-    await tx
-      .update(libraryCollectionItem)
-      .set({ position: item.position })
-      .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.workId, neighbour.workId)));
+      .where(eq(libraryCollectionItem.collectionId, collection.id))
+      .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt), asc(libraryCollectionItem.workId));
+    const index = items.findIndex((i) => i.workId === workId);
+    if (index < 0) throw new CollectionError("not_found", "Paper not found.");
+    const other = direction === "up" ? index - 1 : index + 1;
+    if (other < 0 || other >= items.length) return;
+    const order = items.map((i) => i.workId);
+    [order[index], order[other]] = [order[other]!, order[index]!];
+    for (const [i, id] of order.entries()) {
+      if (items.find((item) => item.workId === id)!.position === i + 1) continue;
+      await tx
+        .update(libraryCollectionItem)
+        .set({ position: i + 1 })
+        .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.workId, id)));
+    }
   });
 }
 
@@ -271,17 +331,47 @@ export async function setItemReason(db: DbOrTx, ownerId: string, id: string, wor
   if (updated.length === 0) throw new CollectionError("not_found", "Paper not found.");
 }
 
-/** The shelves and trails holding a work, for its paper page. */
-export async function collectionsForWork(
-  db: DbOrTx,
-  ownerId: string,
-  workId: string,
-): Promise<{ id: string; kind: CollectionKind; name: string; reason: string | null }[]> {
+export interface CollectionMembership {
+  id: string;
+  kind: CollectionKind;
+  name: string;
+  reason: string | null;
+  /** The paper's place in the collection's order (a trail's step), and how many papers it holds. */
+  step: number;
+  steps: number;
+  /** The papers before and after it in that order (a trail's previous and next step). */
+  previous: { workId: string; title: string | null } | null;
+  next: { workId: string; title: string | null } | null;
+}
+
+/** The shelves and trails holding a work, for its paper page, each with the paper's step and its neighbours. */
+export async function collectionsForWork(db: DbOrTx, ownerId: string, workId: string): Promise<CollectionMembership[]> {
   if (!isUuid(workId)) return [];
-  return db
+  const memberships = await db
     .select({ id: libraryCollection.id, kind: libraryCollection.kind, name: libraryCollection.name, reason: libraryCollectionItem.reason })
     .from(libraryCollectionItem)
     .innerJoin(libraryCollection, eq(libraryCollection.id, libraryCollectionItem.collectionId))
     .where(and(eq(libraryCollectionItem.ownerId, ownerId), eq(libraryCollectionItem.workId, workId)))
     .orderBy(asc(libraryCollection.kind), asc(sql`lower(${libraryCollection.name})`));
+  if (memberships.length === 0) return [];
+  const items = await db
+    .select({ collectionId: libraryCollectionItem.collectionId, workId: libraryCollectionItem.workId, title: scholarlyWork.title })
+    .from(libraryCollectionItem)
+    .innerJoin(scholarlyWork, eq(scholarlyWork.id, libraryCollectionItem.workId))
+    .where(
+      and(
+        eq(libraryCollectionItem.ownerId, ownerId),
+        inArray(
+          libraryCollectionItem.collectionId,
+          memberships.map((m) => m.id),
+        ),
+      ),
+    )
+    .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt), asc(libraryCollectionItem.workId));
+  return memberships.map((m) => {
+    const order = items.filter((i) => i.collectionId === m.id);
+    const index = order.findIndex((i) => i.workId === workId);
+    const neighbour = (i: number) => (order[i] ? { workId: order[i]!.workId, title: order[i]!.title } : null);
+    return { ...m, step: index + 1, steps: order.length, previous: neighbour(index - 1), next: neighbour(index + 1) };
+  });
 }

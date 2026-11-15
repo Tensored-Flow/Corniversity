@@ -166,7 +166,7 @@ export function FlashNotices({ error, saved, written }: { error?: string; saved?
   return (
     <div className="mb-4 flex flex-col gap-2">
       {error ? <Notice tone="rust">{errorNotice(error)}</Notice> : null}
-      {saved ? <Notice tone="moss">{savedText[saved] ?? "Saved."}</Notice> : null}
+      {saved ? <Notice tone="moss">{Object.hasOwn(savedText, saved) ? savedText[saved] : "Saved."}</Notice> : null}
       {written ? <Notice tone="moss">Written to {written} (requests.md and requests.json).</Notice> : null}
     </div>
   );

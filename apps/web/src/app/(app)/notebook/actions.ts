@@ -1,5 +1,5 @@
 "use server";
-import { createEntry, deleteEntry, NotebookError, setResolved, updateEntry } from "@corniversity/db/services/notebook";
+import { createEntry, deleteEntry, getEntry, NotebookError, setResolved, updateEntry } from "@corniversity/db/services/notebook";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
@@ -38,6 +38,36 @@ export async function createEntryAction(form: FormData): Promise<void> {
   }
 }
 
+/**
+ * *New note for this paper*: a notebook entry linked to one of the owner's papers (Markdown with
+ * LaTeX, like every entry). It opens on its own page; a refusal returns to the paper's notes.
+ */
+export async function createPaperNoteAction(form: FormData): Promise<void> {
+  const session = await requireSession("/notebook");
+  const workId = text(form, "workId");
+  if (!UUID.test(workId)) fail("/notebook?library=1", "Paper not found.");
+  // The refusal returns to the form (#new-note, named again as `at`), which shows the notice in view.
+  const refuse = (message: string): never =>
+    redirect(errorHref(`/notebook?library=1&work=${workId}&at=new-note`, errorCode(message), "#new-note"));
+  const body = String(form.get("body") ?? "").trim();
+  if (!body) refuse("Write the entry itself; a title on its own is not kept.");
+  let id = "";
+  try {
+    const entry = await createEntry(db(), session.user.id, {
+      title: text(form, "title"),
+      bodyMarkdown: body,
+      kind: text(form, "kind") || "note",
+      scholarlyWorkId: workId,
+    });
+    id = entry.id;
+  } catch (error) {
+    if (error instanceof NotebookError) refuse(error.message);
+    throw error;
+  }
+  revalidatePath("/notebook");
+  redirect(`/notebook/${id}?saved=created`);
+}
+
 export async function updateEntryAction(form: FormData): Promise<void> {
   const session = await requireSession("/notebook");
   const id = text(form, "id");
@@ -74,6 +104,8 @@ export async function deleteEntryAction(form: FormData): Promise<void> {
   const id = text(form, "id");
   if (!UUID.test(id)) redirect("/notebook");
   if (form.get("confirm") !== "1") fail(`/notebook/${id}`, "Tick the confirmation box to delete this entry.");
+  // A paper note's deletion returns to that paper's notes.
+  const paperId = (await getEntry(db(), session.user.id, id))?.scholarlyWorkId ?? null;
   try {
     await deleteEntry(db(), session.user.id, id);
   } catch (error) {
@@ -81,5 +113,5 @@ export async function deleteEntryAction(form: FormData): Promise<void> {
     throw error;
   }
   revalidatePath("/notebook");
-  redirect("/notebook?deleted=1");
+  redirect(paperId ? `/notebook?library=1&work=${paperId}&deleted=1` : "/notebook?deleted=1");
 }

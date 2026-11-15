@@ -8,6 +8,7 @@ import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { createEntryAction, toggleResolvedAction } from "./actions";
 import { IssuesSection } from "./IssuesSection";
+import { LibraryNotes } from "./LibraryNotes";
 import { excerpt, KIND_LABEL, KIND_OPTIONS, KindBadge } from "./shared";
 
 export const metadata = { title: "Notebook" };
@@ -23,15 +24,77 @@ const KINDS = Object.keys(KIND_LABEL) as NotebookKind[];
 /** How many entries one listing shows; older ones are reached by search or a filter. */
 const LIST_LIMIT = 100;
 
+/** The notebook's two views: every entry, and the library's notes (`?library=1`). */
+function ViewTabs({ library }: { library: boolean }) {
+  const tab = (active: boolean) =>
+    [
+      "-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm",
+      active ? "border-brass font-medium text-ink" : "border-transparent text-ink-2 hover:text-ink",
+    ].join(" ");
+  return (
+    <nav aria-label="Notebook views" className="mt-4 flex gap-1 overflow-x-auto border-b border-stone">
+      <Link href="/notebook" aria-current={library ? undefined : "page"} className={tab(!library)}>
+        All entries
+      </Link>
+      <Link href="/notebook?library=1" aria-current={library ? "page" : undefined} className={tab(library)}>
+        Library notes
+      </Link>
+    </nav>
+  );
+}
+
+const one = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
+
 export default async function NotebookPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; kind?: string; tag?: string; course?: string; error?: string; deleted?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    kind?: string;
+    tag?: string;
+    course?: string;
+    error?: string;
+    deleted?: string;
+    library?: string;
+    work?: string;
+    subject?: string;
+    at?: string;
+  }>;
 }) {
   const session = await requireSession("/notebook");
   const params = await searchParams;
   const database = db();
   const ownerId = session.user.id;
+  if (one(params.library)) {
+    // A refusal of *New note for this paper* returns to that form (`at=new-note`) and is shown there.
+    const noteError = one(params.at) === "new-note" ? one(params.error) : undefined;
+    return (
+      <div className="mx-auto w-full max-w-6xl">
+        <header className="mb-6">
+          <h1 className="text-3xl text-ink">Notebook</h1>
+          <p className="mt-2 max-w-prose text-sm text-ink-2">
+            Highlights, page and area notes and bookmarks from the reader, and notes on papers. Markdown and LaTeX.
+          </p>
+          <ViewTabs library />
+        </header>
+        {params.error && !noteError ? (
+          <div className="mb-4">
+            <Notice tone="rust">{errorNotice(params.error)}</Notice>
+          </div>
+        ) : null}
+        {params.deleted ? (
+          <div className="mb-4">
+            <Notice tone="moss">Entry deleted.</Notice>
+          </div>
+        ) : null}
+        <LibraryNotes
+          ownerId={ownerId}
+          params={{ work: one(params.work), kind: one(params.kind), subject: one(params.subject), q: one(params.q) }}
+          noteError={noteError}
+        />
+      </div>
+    );
+  }
   const kind = KINDS.includes(params.kind as NotebookKind) ? (params.kind as NotebookKind) : undefined;
   const [entries, questions, tags, counts, enrolments, readingNotes] = await Promise.all([
     params.q
@@ -63,6 +126,7 @@ export default async function NotebookPage({
             Showing the {LIST_LIMIT} most recently updated entries; search, or choose a kind, tag or course, to find older ones.
           </p>
         ) : null}
+        <ViewTabs library={false} />
       </header>
       {params.error ? (
         <div className="mb-4">
@@ -152,7 +216,7 @@ export default async function NotebookPage({
           ) : null}
         </aside>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6 [overflow-wrap:anywhere]">
           <IssuesSection ownerId={ownerId} />
           {questions.length ? (
             <Card as="section" aria-labelledby="questions-heading">
@@ -235,13 +299,18 @@ export default async function NotebookPage({
               <h2 id="reading-notes-heading" className="text-lg text-ink">
                 Reading notes
               </h2>
-              <p className="mt-1 text-xs text-ink-3">Written in the reading room; each one opens the page it was made on.</p>
+              <p className="mt-1 text-xs text-ink-3">
+                Written in the reading room; each one opens the page it was made on.{" "}
+                <Link href="/notebook?library=1" className="text-brass underline underline-offset-4">
+                  All library notes, by paper, kind and subject
+                </Link>
+              </p>
               <ul className="mt-3 flex flex-col gap-2 text-sm">
                 {readingNotes.map((n) => (
                   <li key={n.id} className="rounded-[var(--radius-panel)] border border-stone bg-paper-2 px-3 py-2">
                     <p className="text-ink">{n.note}</p>
                     <p className="mt-1 text-xs text-ink-3">
-                      {n.assetId ? (
+                      {n.assetId && !n.documentDeleted ? (
                         <Link
                           href={`/library/read/${n.assetId}${n.page ? `?page=${n.page}` : ""}`}
                           className="text-brass underline underline-offset-4"

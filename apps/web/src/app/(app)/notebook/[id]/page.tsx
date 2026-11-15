@@ -1,6 +1,6 @@
 import { getLocators } from "@corniversity/db/services/catalogue";
 import { listEnrolments } from "@corniversity/db/services/enrolment";
-import { getEntry, listEntries } from "@corniversity/db/services/notebook";
+import { getEntry, listEntries, notesPaper } from "@corniversity/db/services/notebook";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LocatorLink } from "@/components/LocatorLink";
@@ -27,7 +27,7 @@ export default async function EntryPage({
   const database = db();
   const entry = await getEntry(database, session.user.id, id);
   if (!entry) notFound();
-  const [locators, enrolments, related] = await Promise.all([
+  const [locators, enrolments, related, paper] = await Promise.all([
     getLocators(
       database,
       entry.sourceLinks.map((l) => l.locatorId).filter((v): v is string => Boolean(v)),
@@ -38,6 +38,7 @@ export default async function EntryPage({
       : entry.courseId
         ? listEntries(database, session.user.id, { courseId: entry.courseId, limit: 8 })
         : Promise.resolve([]),
+    entry.scholarlyWorkId ? notesPaper(database, session.user.id, entry.scholarlyWorkId) : Promise.resolve(null),
   ]);
   const locatorById = new Map(locators.map((l) => [l.id, l]));
 
@@ -57,7 +58,7 @@ export default async function EntryPage({
       ) : null}
       {flash.saved ? (
         <div className="mb-4">
-          <Notice tone="moss">Saved.</Notice>
+          <Notice tone="moss">{flash.saved === "created" ? "Note saved." : "Saved."}</Notice>
         </div>
       ) : null}
       <Card as="article">
@@ -70,8 +71,21 @@ export default async function EntryPage({
           </span>
         </div>
         <h1 className="mt-2 text-2xl text-ink">{entry.title}</h1>
+        {paper ? (
+          <p className="mt-1 flex flex-wrap gap-x-4 text-sm text-ink-2 [overflow-wrap:anywhere]">
+            <span>
+              Paper:{" "}
+              <Link href={`/library/papers/${paper.id}`} className="text-brass underline underline-offset-4">
+                {paper.title ?? "Untitled paper"}
+              </Link>
+            </span>
+            <Link href={`/notebook?library=1&work=${paper.id}`} className="text-brass underline underline-offset-4">
+              All notes for this paper
+            </Link>
+          </p>
+        ) : null}
         <div className="mt-4">
-          <Markdown source={entry.bodyMarkdown || "*(empty)*"} />
+          <Markdown source={entry.bodyMarkdown || "*(empty)*"} className="[overflow-wrap:anywhere]" />
         </div>
         {entry.tags.length ? (
           <ul className="mt-4 flex flex-wrap gap-1">

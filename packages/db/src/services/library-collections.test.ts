@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../client";
 import { user } from "../schema/auth";
@@ -78,7 +78,9 @@ describe("shelves and trails", () => {
     expect(detail.items.map((i) => i.work.title)).toEqual(["First step", "Third step", "Second step"]);
     expect(detail.items.map((i) => i.item.reason)).toEqual(["Start with the definitions", "The main theorem", "Builds the tools"]);
     await moveInCollection(handle.db, OWNER, trail.id, a.id, "up"); // already first: nothing changes
-    await removeFromCollection(handle.db, OWNER, trail.id, c.id);
+    // Removal reports the step's reason it deleted, so the page can say so; a paper not there is not removed.
+    expect(await removeFromCollection(handle.db, OWNER, trail.id, c.id)).toEqual({ removed: true, reason: "The main theorem" });
+    expect(await removeFromCollection(handle.db, OWNER, trail.id, c.id)).toEqual({ removed: false, reason: null });
     detail = (await getCollection(handle.db, OWNER, trail.id))!;
     expect(detail.items.map((i) => i.work.title)).toEqual(["First step", "Second step"]);
     expect(await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, c.id))).toHaveLength(1);
@@ -92,6 +94,93 @@ describe("shelves and trails", () => {
     await deleteCollection(handle.db, OWNER, trail.id);
     expect(await getCollection(handle.db, OWNER, trail.id)).toBeNull();
     expect(await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, a.id))).toHaveLength(1);
+  });
+
+  it("searches and filters within a collection, orders by date added, and keeps each paper's step", async () => {
+    const shelf = await createCollection(handle.db, OWNER, { kind: "shelf", name: `View ${randomUUID().slice(0, 6)}` });
+    const [a] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: OWNER, title: "Banach spaces", authors: [{ name: "Stefan Banach" }], venue: "Fundamenta", savedAt: new Date() })
+      .returning();
+    const [b] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: OWNER, title: "Hilbert spaces", authors: [{ name: "Émile Borel" }], favourite: true, savedAt: new Date() })
+      .returning();
+    const [c] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: OWNER, title: "Operators", publicationYear: 1932, readAt: new Date() })
+      .returning();
+    for (const w of [a!, b!, c!]) {
+      await addToCollection(handle.db, OWNER, shelf.id, w.id);
+      await new Promise((r) => setTimeout(r, 5));
+    }
+    const titles = (d: Awaited<ReturnType<typeof getCollection>>) => d!.items.map((i) => i.work.title);
+    const all = await getCollection(handle.db, OWNER, shelf.id);
+    expect(titles(all)).toEqual(["Banach spaces", "Hilbert spaces", "Operators"]);
+    expect(all!.items.map((i) => i.step)).toEqual([1, 2, 3]);
+    expect(all!.total).toBe(3);
+    // Words anywhere in the title, an author's name (accents ignored), the venue or the year.
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { query: "spaces" }))).toEqual(["Banach spaces", "Hilbert spaces"]);
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { query: "emile" }))).toEqual(["Hilbert spaces"]);
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { query: "fundamenta banach" }))).toEqual(["Banach spaces"]);
+    const filtered = await getCollection(handle.db, OWNER, shelf.id, { query: "1932" });
+    expect(filtered!.items.map((i) => [i.work.title, i.step])).toEqual([["Operators", 3]]);
+    expect(filtered!.total).toBe(3);
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { flag: "favourite" }))).toEqual(["Hilbert spaces"]);
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { flag: "read" }))).toEqual(["Operators"]);
+    expect(titles(await getCollection(handle.db, OWNER, shelf.id, { flag: "read_later" }))).toEqual([]);
+    // Newest first; the steps still name the collection's own order.
+    const added = await getCollection(handle.db, OWNER, shelf.id, { order: "added" });
+    expect(added!.items.map((i) => [i.work.title, i.step])).toEqual([
+      ["Operators", 3],
+      ["Hilbert spaces", 2],
+      ["Banach spaces", 1],
+    ]);
+  });
+
+  it("names a paper's step, previous and next paper in each trail it is on", async () => {
+    const trail = await createCollection(handle.db, OWNER, { kind: "trail", name: `Steps ${randomUUID().slice(0, 6)}` });
+    const a = await work(OWNER, "Step A");
+    const b = await work(OWNER, "Step B");
+    const c = await work(OWNER, "Step C");
+    for (const w of [a, b, c]) await addToCollection(handle.db, OWNER, trail.id, w.id, `Why ${w.title}`);
+    expect(await collectionsForWork(handle.db, OWNER, b.id)).toEqual([
+      {
+        id: trail.id,
+        kind: "trail",
+        name: trail.name,
+        reason: "Why Step B",
+        step: 2,
+        steps: 3,
+        previous: { workId: a.id, title: "Step A" },
+        next: { workId: c.id, title: "Step C" },
+      },
+    ]);
+    const [first] = await collectionsForWork(handle.db, OWNER, a.id);
+    expect([first!.step, first!.previous, first!.next?.title]).toEqual([1, null, "Step B"]);
+    const [last] = await collectionsForWork(handle.db, OWNER, c.id);
+    expect([last!.step, last!.steps, last!.next]).toEqual([3, 3, null]);
+  });
+
+  it("moves a paper past a neighbour that shares its position (positions a merge left equal)", async () => {
+    const trail = await createCollection(handle.db, OWNER, { kind: "trail", name: `Ties ${randomUUID().slice(0, 6)}` });
+    const a = await work(OWNER, "Tie A");
+    const b = await work(OWNER, "Tie B");
+    const c = await work(OWNER, "Tie C");
+    for (const w of [a, b, c]) {
+      await addToCollection(handle.db, OWNER, trail.id, w.id);
+      await new Promise((r) => setTimeout(r, 5));
+    }
+    // A and B end up on the same position, as when a merge re-points one item onto another's place.
+    await handle.db.execute(sql`update library_collection_item set position = 1 where collection_id = ${trail.id} and work_id = ${b.id}`);
+    const order = async () => (await getCollection(handle.db, OWNER, trail.id))!.items.map((i) => i.work.title);
+    expect(await order()).toEqual(["Tie A", "Tie B", "Tie C"]);
+    await moveInCollection(handle.db, OWNER, trail.id, b.id, "up");
+    expect(await order()).toEqual(["Tie B", "Tie A", "Tie C"]);
+    await moveInCollection(handle.db, OWNER, trail.id, a.id, "down");
+    expect(await order()).toEqual(["Tie B", "Tie C", "Tie A"]);
+    await moveInCollection(handle.db, OWNER, trail.id, a.id, "down"); // already last: nothing changes
+    expect(await order()).toEqual(["Tie B", "Tie C", "Tie A"]);
   });
 
   it("another owner's collections and papers are not found", async () => {

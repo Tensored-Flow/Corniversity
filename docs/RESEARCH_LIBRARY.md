@@ -32,16 +32,17 @@ Everything stays under `/library`. Main navigation is unchanged.
 
 | Route | Screen |
 |---|---|
-| `/library` | **Library home**, database only: find box, *Continue reading* (≤ 3), saved papers (all · read later · favourites · read), shelves and trails, and the existing **Files** list with its current markup, links, sync badge and `?deleted` notice (Upload, Desktop sync and Jobs are links in the Files header). h1 stays "Library" |
+| `/library` | **Library home**, database only (no provider call): a find box (a GET form to Find papers) with *Add a paper*, *Discover* and *Library notes* links; *Continue reading* (`continueReading`: at most 3 Documents by `reading_progress.last_opened_at`, newest first, each named by its paper, or the file, with its version and the saved page; the link opens the reader, which restores the place); *Saved papers* with views *All saved · Read later · Favourites · Read · Recently opened* (`?view=`, `listWorks`, 20 a page with `?page=`; a page past the last says so), rows with title, first authors, year, venue, *Fixture data* and an integrity label where recorded, and *Read* where a Document of the paper can be opened (`documentsForWorks`: the most recently opened readable one, else the newest); *Shelves and trails* with their counts, links and a create form (kind, name); and the existing **Files** list with its markup, links, sync badge and `?deleted` notice (Upload, Desktop sync and Jobs are links in the Files header; *Read* where `pageViewAvailable` or `textViewAvailable`). Every view has a plain empty state saying what fills it. h1 stays "Library" |
 | `/library/find` | **Find papers**: one box (DOI, DOI inside any URL, arXiv id or URL, OpenAlex id or URL, or words; identifiers are parsed out of links as text, nothing is fetched). An exact identifier opens the paper page when the owner has the paper, else its preview. Words search OpenAlex (*All papers*, 25 a page, pages up to OpenAlex's 10,000 results) or the owner's works (*My library*); filters: published from/to (year), type, field (the subjects of §4), free to read (All papers only). Rows: title, first authors, year, venue, type, *cited by N according to OpenAlex*, *Free to read according to OpenAlex*, *In your library* (`ownerWorkIndex`; a paper the owner removed from the library says *Not in your saved papers* and offers Save again), Save (returns to the same page). A page past the last says so and links back; a link with no identifier and no words says that, and nothing is searched. Provider failures say what happened (fixture recording missing, unavailable, allowance used up with its reset time), never "no results"; in production without `OPENALEX_API_KEY` word search says *OpenAlex browsing needs an API key on this server*. Links to *Add a paper without an identifier* and to Upload |
 | `/library/papers/new` | a PDF becomes a new, unidentified paper (`createWorkFromUpload`, optional title, nothing read from the file; other files are refused); the form posts to `/api/library/papers/new` |
 | `/library/discover` | **Discover**: your subjects, per subject *New on arXiv*, *Reviews and surveys*, *Most cited*, *Earlier work*; *Cited by 2 or more of your papers*; *Similar to …* ; *From your courses*; *Surprise me* |
 | `/library/subjects/[slug]` | subject room: subfields and the same three or four lists |
 | `/library/works/[scheme]/[...value]` | preview of a paper not in the library (`scheme` = doi, arxiv, openalex; the value may contain slashes); redirects to the paper page when the owner has it by this or any identifier the provider reports. Otherwise OpenAlex's record (through the provider cache), or Crossref's for a DOI OpenAlex lacks, in `PaperView` with *Save to library* (import, save, queue the Crossref integrity check for a publisher DOI, open the paper page). An arXiv id OpenAlex did not answer for says why and still offers Save, which creates the work and queues its arXiv record. A DOI neither provider knows says so |
-| `/library/papers/[workId]` | paper page (same `PaperView` component as the preview; a merged tombstone redirects to its survivor): integrity notices first; title line, authors, date with its precision, venue, type, abstract with its source, identifiers with source and retrieval date, OpenAlex's subjects; *Fixture data* where provenance is fixture. *Read*: an arXiv version (server action `openArxivVersion`, then `/library/read/<assetId>`), a stored file (a stored copy of the latest version replaces its arXiv Read), or for a DOI-only paper the best free-to-read location OpenAlex reports (host and version named) and the publisher's page through doi.org (new tab, `noopener noreferrer`). Flags (favourite, read later, have read), *Remove from library*, *Notes for this paper* (`/notebook?library=1&work=<id>`). Versions: date, licence as arXiv reported it for that version (or *No licence reported by arXiv for this version*), *Withdrawn on arXiv*, *Read vN*, *Keep a private copy of vN* only where `storageDecision` allows (`requestPrivateCopy`); *Fetching the arXiv record* with automatic refresh while the job runs. Files: stored copies with status, permissions (per action, with basis), extraction, removal (each form acts only on this paper's stored files); *Attach your copy* posts to `/api/library/papers/[workId]/attach` (`attachUploadToWork`, PDFs only; refusals shown with a link to the paper a file belongs to). Shelves and trails (add with an optional reason, create and add, remove). References, cited by and related (streamed; about 10, *Show more* up to 50; what OpenAlex counted, how many records it returned, and how many are listed; related labelled similarity, not citation). Without JavaScript a streamed part's placeholder links to the page rendered whole (`?full=1`). Possible duplicates with an owner-confirmed merge. *Edit details* (only changed fields become owner edits). *Delete this paper and its notes* behind a confirmation step listing what goes (`workDeletionSummary`); a merged id is refused and opens the survivor |
+| `/library/papers/[workId]` | paper page (same `PaperView` component as the preview; a merged tombstone redirects to its survivor): integrity notices first; title line, authors, date with its precision, venue, type, abstract with its source, identifiers with source and retrieval date, OpenAlex's subjects; *Fixture data* where provenance is fixture. *Read*: an arXiv version (server action `openArxivVersion`, then `/library/read/<assetId>`), a stored file (a stored copy of the latest version replaces its arXiv Read), or for a DOI-only paper the best free-to-read location OpenAlex reports (host and version named) and the publisher's page through doi.org (new tab, `noopener noreferrer`). Flags (favourite, read later, have read), *Remove from library*, *Notes for this paper* (`/notebook?library=1&work=<id>`) and *New note for this paper* (the same view's form). Versions: date, licence as arXiv reported it for that version (or *No licence reported by arXiv for this version*), *Withdrawn on arXiv*, *Read vN*, *Keep a private copy of vN* only where `storageDecision` allows (`requestPrivateCopy`); *Fetching the arXiv record* with automatic refresh while the job runs. Files: stored copies with status, permissions (per action, with basis), extraction, removal (each form acts only on this paper's stored files); *Attach your copy* posts to `/api/library/papers/[workId]/attach` (`attachUploadToWork`, PDFs only; refusals shown with a link to the paper a file belongs to). Shelves and trails, each named and linked (a trail with the paper's step and the next paper: *Trail: X, step 3 of 7; next: Y*, or *the last step*); add with an optional reason, create and add, remove. References, cited by and related (streamed; about 10, *Show more* up to 50; what OpenAlex counted, how many records it returned, and how many are listed; related labelled similarity, not citation). Without JavaScript a streamed part's placeholder links to the page rendered whole (`?full=1`). Possible duplicates with an owner-confirmed merge. *Edit details* (only changed fields become owner edits). *Delete this paper and its notes* behind a confirmation step listing what goes (`workDeletionSummary`); a merged id is refused and opens the survivor |
 | `/library/read/[assetId]` | the reader, in its own route group `(reader)` with a full-height layout |
-| `/library/shelves`, `/library/trails`, `/library/shelves/[id]`, `/library/trails/[id]` | collections (one table, two kinds) |
-| `/notebook?library=1&work=<id>&kind=…` | every library note: highlights, page and area notes, bookmarks, paper notes |
+| `/library/shelves`, `/library/trails` | the owner's shelves (or trails) with how many papers each holds, and a form for a new one (name, optional description) |
+| `/library/shelves/[id]`, `/library/trails/[id]` | one collection (one table, two kinds; an id of the other kind redirects to its page): the description (owner Markdown and LaTeX through the sanitiser; a trail's holds its question, prerequisites and links to other trails or papers); the papers in the collection's order, each with its note (shelf) or numbered step and reason (trail), both Markdown and LaTeX, *Read* where a Document can be opened, *Move up* and *Move down* (offered in the collection's own order with nothing filtered) and *Remove* (the paper, its notes and files stay; a paper with a note or reason written here asks first on its row, since that text goes with it); a shelf also searches its papers (every word in the title, an author, the venue or the year) and filters by the owner's flags, and orders by *Recently added*; *Add from your library* (`searchMyLibrary` for words, else the recently saved papers not on it; when every match is already there it says so; a trail step takes an optional reason); rename and describe; *Delete* behind a confirmation box that says the papers, their notes and files are kept. Each form returns to its own section (`#…`, named again as `at=`) and its notice is shown inside that section, in view; so do the create forms of `/library` and the list pages and the notebook's *New note for this paper*. No AI-built trails |
+| `/notebook?library=1&work=<id>&kind=…&subject=…&q=…` | every library note, newest first (the 100 most recent of each kind; search or filters reach older ones): highlights, page and area notes and bookmarks (`listReadingNotes`; the quote as text, the note through the sanitiser, colour, the paper and version, *Open page N in the reader*; an anchor that needs repair says so and opens the page it was made on; a removed file says so) and paper notes (`paperNotes`: notebook entries with `scholarly_work_id`). Filters: `work`, `kind` (highlight, note, bookmark, paper), `subject` (an OpenAlex field of the papers that carry notes, as OpenAlex classified them), `q` (both searches). With a paper: its title and *New note for this paper* (title, kind, Markdown with LaTeX); a merged paper's id redirects to its survivor's notes; an id that is not the owner's paper says so. `/notebook` keeps every entry (free notes included); a paper note's page names its paper |
 | existing `/library/items/[id]`, `/sources`, `/requests`, `/sync`, `/jobs`, `/upload` | unchanged (an item with a scholarly version redirects to its paper page) |
 
 LibraryHeader: one row of tabs *My library · Discover · Find papers · Shelves · Trails · Sources ·
@@ -132,12 +133,18 @@ exist; quote disagreement only sets `quote_matched = false`. Edits carry `expect
 conflict, both texts shown).
 
 **`notebook_entry`** gains `scholarly_work_id` (composite FK, set null; index (owner, work)):
-paper notes set it; merges re-point it; the notebook filters by it.
+paper notes set it (the service follows a merged paper to its survivor and refuses any id that is
+not the owner's paper); merges re-point it; the notebook filters by it.
 
 **`library_collection`** (`id`, `owner_id`, `kind` shelf | trail, `name`, `description`,
 timestamps; unique (owner, kind, lower(name))) and **`library_collection_item`** (`collection_id`,
 `owner_id`, `work_id`, `position`, `reason` (a trail step's "why"; a shelf's optional note),
-`added_at`; PK (collection, work); composite FKs; work FK `ON DELETE RESTRICT`).
+`added_at`; PK (collection, work); composite FKs; work FK `ON DELETE RESTRICT`). A collection's
+order is `position`, then `added_at`, then `work_id`; adding appends; moving renumbers the items
+1…n in that order with the two swapped, so positions a merge left equal never block a move. A
+paper can be on many collections; removing it, or deleting a collection (with its items' reasons),
+never touches the paper, its annotations, notebook entries or files. Trail notes are the
+description and the step reasons; there is no other trail note store.
 
 **`library_preference`** (`owner_id` PK, `subjects text[]`, `updated_at`): the owner's subjects
 (default mathematics, physics, computer science, artificial intelligence).
@@ -272,7 +279,19 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   nothing: `searchPapers` (Find's OpenAlex page with filters and markers; a marker says whether the owner's work is saved), `previewPaper` (the owner's
   work, OpenAlex's or Crossref's record, or an arXiv id with the reason OpenAlex did not answer),
   `openAlexRecordForWork`, `paperList` (references, cited by, related), `openAlexBrowsingRefusal`.
-- `library-collections.ts`: create, rename, describe, delete, add, remove, move up/down, reason.
+- `library-collections.ts`: create, rename, describe, delete, add (follows merges; appends),
+  remove (returns the item's note or reason it deleted, so the page can say so), move up/down
+  (renumbers, §3), reason; `listCollections` (with item counts);
+  `getCollection(view)` (search words over title, authors, venue and year; the owner's flags;
+  the collection's order or newest first; each paper keeps its step in the collection's own order,
+  and `total` counts the whole collection); `collectionsForWork` (each shelf or trail with the
+  paper's step, the number of steps and the previous and next paper).
+- `library-home.ts`: `continueReading` (the Documents opened most recently, at most 3 by default,
+  with the paper or file name, version and saved page; deleted Documents never) and
+  `documentsForWorks` (the live Documents of listed papers, most recently opened first, then newest).
+- `notebook.ts` (existing): paper notes: `createEntry` takes `scholarlyWorkId`, `notesPaper`
+  (the owner's paper, merges followed), `paperNotes` (by paper, OpenAlex field and words, newest
+  first), `libraryNoteSubjects` (the OpenAlex fields of papers that carry library notes).
 - `discover.ts`: `discoverPage`, `subjectLists`, `subjectRoom`, `subjectSubfields`,
   `citedByYourPapers`, `similarToRecent`, `fromYourCourses`, `surprise(n)` (seeded from the day and
   `n`), `getDiscoverSubjects`/`setDiscoverSubjects` (the owner's subjects in `library_preference`),
@@ -281,11 +300,19 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   arXiv versions, reading position and annotations; `null` for another owner's Document).
 - `library.ts` (existing): the Document transitions above; annotation kinds, anchors and
   conflict-checked edits; the reading-position rule; `listReadingNotes` searches in SQL, includes
-  highlights and bookmarks, filters by kind, work, collection; `reconcileAnnotations` runs after each
+  highlights and bookmarks, filters by kind, work, collection and `subject` (an OpenAlex field among
+  the subjects of the Document's paper), newest first; `reconcileAnnotations` runs after each
   successful re-extraction; `confirmMetadata` no longer clears `sourceVersionId` and refuses
   scholarly Documents; `requestIngestion` changes status and enqueues in one transaction.
 - `records.ts`: the export includes works with identifiers, collections with reasons, reading
-  positions and annotations with kind, colour, quote and version.
+  positions and annotations with kind, colour, quote and version: `buildRecordsBundle` adds
+  `library` (`libraryRecord`: works with flags, identifiers and provenance; shelves and trails with
+  their items in order, steps and reasons; reading positions with the paper or file, version and
+  page) and gives each annotation its kind, colour, quote, `quote_matched`, page, paper, version
+  and anchor. The Markdown export gains a *Research library* section and names each reading note's
+  version, kind, colour and page; the notebook JSON carries the annotations; the records JSON
+  leaves the library out, as it leaves out notes. Format names are unchanged; the worker builds
+  every export.
 - Jobs: `scholarly-arxiv` (concurrency 1, spacing), `scholarly-refresh` (works, integrity),
   `scholarly-lists` (subject lists: daily at 05:20 UTC, and on demand from Discover at most once per
   owner, subject and kind per hour), maintenance purge of the cache.
@@ -483,8 +510,14 @@ Checks: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:integration`, `pn
 | Annotations anchored by rects in PDF user space; the owner's selected quote is kept with the note | mathematical PDFs have unreliable text layers; the quote is the owner's own copying for study and is never used as companion or tutor evidence for a linked Document |
 | Reading positions ordered on the server's clock | device clocks disagree |
 | `/library` stays a database-only home; Discover is one tab over and renders from the cache | the entrance is fast and works when providers fail; existing journeys and links stay valid |
+| The home leads with papers (find box, *Continue reading*, saved views, shelves and trails); the Files list keeps its markup below them, and the four count cards that stood above it (files, sources, books to obtain, running jobs) are gone | each count already has its tab or its link in the Files header; "on the shelf" would now be confused with Shelves |
+| *Read* on a home or collection row appears only where a Document of the paper exists (the one opened last); an arXiv version never opened is read from the paper page | the home stays database-only and never creates Documents as a side effect of listing papers |
 | Shelves and trails are one collection table with a kind | a trail is an ordered shelf with a reason per step |
+| A shelf's search runs over its own papers in the service (every word in the title, an author, the venue or the year, accents ignored); moves are offered only in the collection's own order with nothing filtered | collections are small and partial words should match; moving inside a filtered or re-sorted list would be ambiguous |
+| Trail notes are the trail's description and its steps' reasons, owner Markdown and LaTeX through the sanitiser; no separate trail note store and no AI-built trails | one place per note; a bibliography is never generated |
+| *Remove* on a shelf or trail page asks first, on the paper's row, when a note or reason is written there; the paper page's *Remove* acts at once, with that note shown beside it, and its notice says the note went | the owner's own text is deleted with the paper's place, while the paper and its notes stay |
 | Notes stay in `/notebook` with a Library filter | the notebook is the single place for notes |
+| Paper notes are written in the notebook's library view (the paper page's *New note for this paper* opens that form); the view merges reading notes and paper notes newest first, at most 100 of each kind | one note form, the notebook's own; older notes are reached by search or filters, as in the notebook |
 | No curated lists or trails; *Earlier work* and *From your courses* instead | curation would need every entry verified by opening; counts and registry sources are already factual |
 | No *Unexpected connections* | co-classification by a topic model is noise presented as insight |
 | References, cited by and related as bounded lists with provenance; counts say what OpenAlex matched | OpenAlex reference lists are incomplete for some fields |
