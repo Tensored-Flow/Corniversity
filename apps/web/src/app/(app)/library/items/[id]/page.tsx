@@ -2,9 +2,10 @@ import { auditEvent } from "@corniversity/db/schema/index";
 import { listCatalogue } from "@corniversity/db/services/catalogue";
 import { latestIngestJob } from "@corniversity/db/services/jobs-admin";
 import { companionState, getAsset, getPermissions, listPairings } from "@corniversity/db/services/library";
+import { workIdForDocument } from "@corniversity/db/services/scholarly-works";
 import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -32,6 +33,11 @@ export default async function ItemPage({
   const database = db();
   const asset = await getAsset(database, session.user.id, id);
   if (!asset) notFound();
+  // A paper's file (read from arXiv or stored) is managed on its paper page.
+  if (asset.scholarlyVersionId) {
+    const workId = await workIdForDocument(database, session.user.id, asset.id);
+    if (workId) redirect(`/library/papers/${workId}`);
+  }
   const [permissions, pairings, catalogue, job, audit] = await Promise.all([
     getPermissions(database, session.user.id, asset.id),
     listPairings(database, session.user.id),

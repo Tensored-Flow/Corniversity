@@ -50,6 +50,16 @@ const lines = (form: FormData, key: string): string[] =>
 function failTo(path: string, message: string): never {
   redirect(errorHref(path, errorCode(message)));
 }
+/** A library refusal (a paper's file through the old item forms, for instance) as its message; other errors are thrown. */
+async function refusal(work: Promise<unknown>): Promise<string | null> {
+  try {
+    await work;
+    return null;
+  } catch (error) {
+    if (error instanceof LibraryError) return error.message;
+    throw error;
+  }
+}
 
 export async function confirmMetadataAction(form: FormData): Promise<void> {
   const session = await requireSession("/library");
@@ -67,7 +77,8 @@ export async function confirmMetadataAction(form: FormData): Promise<void> {
     .getAll("courseIds")
     .map(String)
     .filter((id) => COURSE_ID.test(id));
-  await confirmMetadata(db(), session.user.id, assetId, { title, authors, edition, courseIds });
+  const refused = await refusal(confirmMetadata(db(), session.user.id, assetId, { title, authors, edition, courseIds }));
+  if (refused) failTo(item, refused);
   revalidatePath(item);
   revalidatePath("/library");
   redirect(`${item}?saved=metadata`);
@@ -87,7 +98,8 @@ export async function setPermissionAction(form: FormData): Promise<void> {
       item,
       "Say briefly on what basis you are deciding (for example the licence, or 'my own notes'). It is recorded with the decision.",
     );
-  await setPermission(db(), session.user.id, assetId, action, status, basis, blobs());
+  const refused = await refusal(setPermission(db(), session.user.id, assetId, action, status, basis, blobs()));
+  if (refused) failTo(item, refused);
   revalidatePath(item);
   revalidatePath("/library");
   redirect(`${item}?saved=permission`);
@@ -113,7 +125,8 @@ export async function deleteAssetAction(form: FormData): Promise<void> {
   const assetId = text(form, "assetId");
   if (!UUID.test(assetId)) redirect("/library");
   if (form.get("confirm") !== "1") failTo(`/library/items/${assetId}`, "Tick the confirmation box to delete this item.");
-  await deleteAsset(db(), blobs(), session.user.id, assetId);
+  const refused = await refusal(deleteAsset(db(), blobs(), session.user.id, assetId));
+  if (refused) failTo(`/library/items/${assetId}`, refused);
   revalidatePath("/library");
   redirect("/library?deleted=1");
 }

@@ -248,6 +248,79 @@ export const ERROR_NOTICES = {
   "plan-limit-daily-ceiling": "The daily limit can be at most 200 requests.",
   "plan-limit-monthly-ceiling": "The monthly limit can be at most 3000 requests.",
   "plan-sign-in-failed": "The sign-in with ChatGPT could not be completed, so nothing was connected. Start again from Settings.",
+  // research library
+  // library.ts (Documents, annotations, reading positions)
+  "annotation-conflict": "This note was changed elsewhere after you opened it. Both versions are shown; nothing was overwritten.",
+  "document-already-stored": "This paper's file is already stored here.",
+  "file-stored-for-other-version": "This file is already stored for another version or paper in your library.",
+  "file-in-library-as-other-item":
+    "This file is already in your library as another item. Delete that item first, then attach the file here; its notes come with it.",
+  "linked-key-taken": "Another file in your library already stands for this arXiv version, so this copy was not removed.",
+  "item-changed-while-arriving": "The item changed while the file was arriving; nothing was stored.",
+  "paper-file-details-on-paper-page": "This file belongs to a paper in your library; its details are edited on the paper's page.",
+  "linked-keep-copy-on-paper-page": "This paper is read from arxiv.org; keep a private copy from its paper page instead.",
+  "linked-nothing-to-delete": "A paper read from arxiv.org has no stored file to delete.",
+  "linked-nothing-to-extract": "This paper is read from arxiv.org; nothing is stored here to extract.",
+  "reading-position-invalid": "The reading position is not valid.",
+  "annotation-kind-unknown": "Unknown annotation kind.",
+  "annotation-place-invalid": "The annotation's place on the page is not valid.",
+  "highlight-needs-area": "A highlight needs the marked area of the page.",
+  "highlight-colour-unknown": "Unknown highlight colour.",
+  "annotation-not-found": "Annotation not found.",
+  "annotation-edit-no-version": "The edit does not say which version it changes.",
+  // scholarly-works.ts (provider failures are the service's own sentences, never the provider's)
+  "arxiv-no-record": "arXiv has no record of this identifier.",
+  "crossref-no-record": "Crossref has no record of this DOI.",
+  "openalex-no-record": "OpenAlex has no record of this identifier.",
+  "identifier-not-valid": "That identifier is not valid.",
+  "provider-rate-limited": "The provider is limiting requests just now. Nothing was changed; try again later.",
+  "openalex-budget-used": "OpenAlex's daily allowance for this server is used up. Nothing was changed; lookups work again after it resets.",
+  "provider-unreachable": "The provider could not be reached just now. Nothing was changed; try again later.",
+  "provider-fixture-missing": "No recorded provider response exists for this request (fixture mode), so it is unavailable.",
+  "provider-not-fetched-yet": "Not fetched from the provider yet.",
+  "provider-answer-unusable": "The provider's answer could not be used. Nothing was changed.",
+  "paper-not-found": "Paper not found.",
+  "arxiv-record-other-paper": "The arXiv record belongs to a different paper.",
+  "paper-needs-title": "Give the paper a title.",
+  "paper-year-range": "The year must be a whole number between 1000 and 2100.",
+  "arxiv-record-not-fetched": "The arXiv record of this paper has not been fetched yet, so this version cannot be opened.",
+  "arxiv-version-withdrawn": "This arXiv version was withdrawn, so it is not opened here.",
+  "paper-file-not-linked": "This paper's file could not be linked; try again.",
+  "observed-hash-linked-only": "Only a paper read from arxiv.org reports what the browser received.",
+  "observed-hash-invalid": "The reported file hash is not valid.",
+  "page-geometry-invalid": "The reported page geometry is not valid.",
+  "file-not-paper-version": "This file is not a version of a paper.",
+  "file-attached-other-paper": "This file is already attached to another paper in your library.",
+  "file-changed-while-attaching": "The file changed while it was being attached; nothing was changed.",
+  "version-has-stored-file":
+    "This version already has a stored file in your library. Remove that copy first if this file should replace it.",
+  "private-copy-in-library":
+    "arXiv's file for this version is already in your library as another item. Delete that item first, then keep the private copy; its notes come with it.",
+  "paper-changed-while-updating": "The paper changed while it was being updated; try again.",
+  "delete-merged-paper": "This paper was merged into another paper; delete it from that paper's page.",
+  "merge-into-itself": "A paper cannot be merged into itself.",
+  "merge-already-merged": "One of these papers was already merged into another.",
+  "paper-no-lookup-identifier": "This paper has no identifier a provider can look up.",
+  "subjects-from-list": "Choose subjects from the list.",
+  // private copies refused: the reasons of storageDecision (packages/core/src/scholarly/licence.ts)
+  "copy-version-withdrawn": "This version was withdrawn on arXiv, so Corniversity keeps no copy of it.",
+  "copy-exact-arxiv-version-only": "Private copies are kept only for an exact arXiv version whose licence arXiv reports.",
+  "copy-licence-display-only":
+    "This licence is reported by a provider other than arXiv; it is shown for information and does not permit a private copy.",
+  "copy-no-arxiv-licence": "arXiv has not reported a licence for this version, so it stays reference-only.",
+  "copy-licence-no-date": "The licence has no retrieval date, so it cannot be the basis of a private copy.",
+  "copy-arxiv-nonexclusive": "arXiv's licence for this version does not permit Corniversity to store a copy; it is read from arxiv.org.",
+  "copy-licence-nc-nd":
+    "This licence carries non-commercial or no-derivatives terms; Corniversity keeps private copies only under CC BY, CC BY-SA, CC0 or public domain.",
+  "copy-licence-not-open": "This licence is not one Corniversity recognises as open, so the version stays reference-only.",
+  // library-collections.ts (shelves and trails)
+  "collection-give-name": "Give it a name.",
+  "collection-name-length": "Keep the name under 120 characters.",
+  "collection-not-found": "Shelf or trail not found.",
+  "collection-kind-choose": "Choose a shelf or a trail.",
+  "shelf-name-taken": "You already have a shelf with that name.",
+  "trail-name-taken": "You already have a trail with that name.",
+  "collection-move-direction": "Move a paper up or down.",
 } as const;
 
 export type ErrorCode = keyof typeof ERROR_NOTICES;
@@ -259,6 +332,12 @@ const PREFIX_CODES: readonly (readonly [string, ErrorCode])[] = [
   ["The sign-in could not be completed", "plan-sign-in-failed"],
   ["Main courses must be between", "study-main-courses-range"],
   ["Exploratory courses must be between", "study-exploratory-courses-range"],
+  ["This licence is as reported by ", "copy-licence-display-only"],
+];
+
+/** Middle words of messages that open with a detail (a licence name), and the code each maps to. */
+const CONTAINED_CODES: readonly (readonly [string, ErrorCode])[] = [
+  [" carries non-commercial or no-derivatives terms; ", "copy-licence-nc-nd"],
 ];
 
 const CODE_BY_TEXT: ReadonlyMap<string, ErrorCode> = new Map(
@@ -279,6 +358,7 @@ export function errorCode(message: string): ErrorCode {
   if (exact) return exact;
   for (const [text, code] of CODE_BY_TEXT) if (message.startsWith(`${text} `)) return code;
   for (const [prefix, code] of PREFIX_CODES) if (message.startsWith(prefix)) return code;
+  for (const [middle, code] of CONTAINED_CODES) if (message.includes(middle)) return code;
   console.warn("[notices] unlisted error message shown as the neutral notice:", message.slice(0, 200));
   return "not-completed";
 }

@@ -1,16 +1,18 @@
 // Starts a throw-away embedded PostgreSQL cluster for the db integration tests and applies the
-// migrations. The URL is fixed in vitest.config.ts (test.env), so tests can create their own
-// connections without sharing state through globals.
+// migrations. The port comes from CORNIVERSITY_TEST_PG_PORT (default 5438) and the cluster folder
+// carries the port, so several checkouts can run their suites at the same time; vitest.config.ts
+// builds DATABASE_URL from the same setting, so tests create their own connections.
 import { mkdirSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import EmbeddedPostgres from "embedded-postgres";
 import { createDb } from "../src/client";
 import { runMigrations } from "../src/migrate";
+import { TEST_PORT, testDatabaseUrl } from "./port";
 
-export const TEST_PORT = 5438;
-export const TEST_DATABASE_URL = `postgres://corniversity:corniversity@127.0.0.1:${TEST_PORT}/corniversity_test`;
+export { TEST_PORT };
+export const TEST_DATABASE_URL = testDatabaseUrl();
 
-const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", "corniversity-test-pg");
+const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", `corniversity-test-pg-${TEST_PORT}`);
 
 export default async function setup(): Promise<() => Promise<void>> {
   rmSync(dir, { recursive: true, force: true });

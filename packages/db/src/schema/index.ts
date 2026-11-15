@@ -10,5 +10,6 @@ export * from "./operations";
 export * from "./planning";
 export * from "./preparation";
 export * from "./research";
+export * from "./scholarly";
 export * from "./study";
 export * from "./visuals";

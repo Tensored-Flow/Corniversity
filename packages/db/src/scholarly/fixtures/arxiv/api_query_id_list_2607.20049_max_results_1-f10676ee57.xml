@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/wRNFlXEM5PnkHtn8AuOM6Yq9esg</id>
+  <title>arXiv Query: search_query=&amp;id_list=2607.20049&amp;start=0&amp;max_results=1</title>
+  <updated>2026-11-15T03:13:19Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=1&amp;id_list=2607.20049" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>1</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2607.20049v2</id>
+    <title>A Counterexample to the Global Injectivity of a Jacobian Mapping in \mathbb{C}^5 and Its Analytical Roots</title>
+    <updated>2026-07-23T02:14:07Z</updated>
+    <link href="https://arxiv.org/abs/2607.20049v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.20049v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study a specific polynomial mapping G: \mathbb{C}^5 \to \mathbb{C}^5 induced by a homogeneous polynomial F of degree 6 consisting of four tridiagonal harmonic blocks. We prove that while the Jacobian matrix of this mapping is unipotent at every point (implying det J_G(x) \equiv 1), the mapping itself is not globally injective. We construct explicit algebraic sparse pairs of distinct points a \neq b that map to the identical image G(a) = G(b) = \vec{0}. Furthermore, we perform a comprehensive classification of the zero-set structure of the corresponding gradient field, uncovering a total of 37 precise analytical complex solutions split across six distinct geometric series.</summary>
+    <category term="math.AC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.AG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.RA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-22T11:48:40Z</published>
+    <arxiv:comment>The paper has been withdrawn due to a crucial mistake in the proof</arxiv:comment>
+    <arxiv:primary_category term="math.AC"/>
+    <author>
+      <name>Sergey Sverchkov</name>
+    </author>
+  </entry>
+</feed>

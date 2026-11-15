@@ -5,9 +5,10 @@ import { FsBlobStore } from "@corniversity/db/blob";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { user } from "@corniversity/db/schema/auth";
-import { resourceAsset } from "@corniversity/db/schema/index";
+import { annotation, resourceAsset, scholarlyIdentifier, scholarlyVersion, scholarlyWork } from "@corniversity/db/schema/index";
 import {
   confirmMetadata,
+  createAnnotation,
   getAsset,
   listPages,
   permittedPassagesForCourse,
@@ -15,54 +16,15 @@ import {
   searchAsset,
   setPermission,
 } from "@corniversity/db/services/library";
+import { attachUploadToWork, openArxivVersion } from "@corniversity/db/services/scholarly-works";
 import { eq } from "drizzle-orm";
 import type { PgBoss } from "pg-boss";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { type HandlerContext, NonRetryableError } from "./index";
-import { ingestHandler } from "./ingest";
+import { EXTRACTION_PDF_OPTIONS, ingestHandler } from "./ingest";
+import { makePdf } from "./test-pdf";
 
-/**
- * Builds a small but structurally valid PDF (correct xref offsets) with one text page per
- * entry and, optionally, a /PageLabels tree giving roman numerals to the first two pages. This
- * lets the tests check physical index and printed label separately without a binary fixture.
- */
-export function makePdf(pages: string[], withLabels: boolean): Buffer {
-  const esc = (s: string) => s.replace(/[\\()]/g, (c) => `\\${c}`);
-  const pageIds: number[] = [];
-  const pageObjects: string[] = [];
-  let nextId = 4;
-  for (const text of pages) {
-    const pageId = nextId++;
-    const contentId = nextId++;
-    pageIds.push(pageId);
-    // pdf.js drops glyphs placed beyond the page edge, as a real viewer would, so wrap at ~75 characters.
-    const lines = text.split("\n").flatMap((line) => line.match(/.{1,75}(?:\s|$)|\S+/g) ?? [""]);
-    const stream = `BT /F1 12 Tf 72 720 Td 14 TL ${lines.map((l) => `(${esc(l.trimEnd())}) Tj T*`).join(" ")} ET`;
-    pageObjects.push(
-      `${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`,
-    );
-    pageObjects.push(`${contentId} 0 obj\n<< /Length ${Buffer.byteLength(stream, "latin1")} >>\nstream\n${stream}\nendstream\nendobj\n`);
-  }
-  const labels = withLabels ? " /PageLabels << /Nums [0 << /S /r >> 2 << /S /D >>] >>" : "";
-  const objects = [
-    `1 0 obj\n<< /Type /Catalog /Pages 2 0 R${labels} >>\nendobj\n`,
-    `2 0 obj\n<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(" ")}] /Count ${pages.length} >>\nendobj\n`,
-    "3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n",
-    ...pageObjects,
-  ];
-  let body = "%PDF-1.4\n";
-  const offsets: number[] = [];
-  for (const object of objects) {
-    offsets.push(Buffer.byteLength(body, "latin1"));
-    body += object;
-  }
-  const xrefOffset = Buffer.byteLength(body, "latin1");
-  const count = objects.length + 1;
-  let xref = `xref\n0 ${count}\n0000000000 65535 f \n`;
-  for (const offset of offsets) xref += `${String(offset).padStart(10, "0")} 00000 n \n`;
-  body += `${xref}trailer\n<< /Size ${count} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
-  return Buffer.from(body, "latin1");
-}
+export { makePdf };
 
 const OWNER = "ingest-test-owner";
 let handle: ReturnType<typeof createDb>;
@@ -172,5 +134,108 @@ describe("ingestHandler", () => {
     const result = await ingestHandler(ctx, payload(assetId));
     expect(result).toMatchObject({ skipped: true, reason: "extraction not permitted" });
     expect(await listPages(handle.db, assetId)).toEqual([]);
+  });
+
+  it("re-checks every annotation after each successful extraction", async () => {
+    const assetId = await storedAsset(
+      "reconcile.pdf",
+      makePdf(["Every Cauchy sequence in a complete space converges to a limit.", "A second page of text."], false),
+    );
+    // Made on the page view before any text was extracted: not yet verifiable.
+    const highlight = await createAnnotation(handle.db, OWNER, {
+      assetId,
+      physicalIndex: 0,
+      kind: "highlight",
+      anchor: {
+        v: 1,
+        coordSpace: "pdf_user_space",
+        pageIndex: 0,
+        pageView: [612, 792],
+        rotate: 0,
+        rects: [[72, 700, 300, 712]],
+        quote: "Every Cauchy sequence",
+      },
+    });
+    expect(highlight.mappingStatus).toBe("needs_repair");
+    const stray = await createAnnotation(handle.db, OWNER, { assetId, physicalIndex: 7, noteMarkdown: "a page this file does not have" });
+    const result = await ingestHandler(ctx, payload(assetId));
+    expect(result).toMatchObject({ pages: 2, annotationsNeedingRepair: 1 });
+    const [h] = await handle.db.select().from(annotation).where(eq(annotation.id, highlight.id));
+    expect(h?.mappingStatus).toBe("resolved");
+    expect(h?.quoteMatched).toBe(true);
+    const [s] = await handle.db.select().from(annotation).where(eq(annotation.id, stray.id));
+    expect(s?.mappingStatus).toBe("needs_repair");
+    // A re-extraction runs the check again.
+    await handle.db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, assetId));
+    expect(await ingestHandler(ctx, payload(assetId))).toMatchObject({ annotationsNeedingRepair: 1 });
+  });
+
+  it("carries rects made on arXiv's file over to the owner's promoted copy only when the page geometry matches", async () => {
+    const outcomes: Record<string, { status: string; key: string | undefined; assetKey: string }> = {};
+    for (const [label, pageView] of [
+      ["same geometry", [612, 792]],
+      ["other geometry", [595, 842]],
+    ] as const) {
+      const arxivId = label === "same geometry" ? "2509.50001" : "2509.50002";
+      const [work] = await handle.db
+        .insert(scholarlyWork)
+        .values({ ownerId: OWNER, title: `Paper ${arxivId}` })
+        .returning();
+      await handle.db
+        .insert(scholarlyIdentifier)
+        .values({ ownerId: OWNER, workId: work!.id, scheme: "arxiv", value: arxivId, source: "fixture" });
+      const [version] = await handle.db
+        .insert(scholarlyVersion)
+        .values({ ownerId: OWNER, workId: work!.id, kind: "preprint", label: "arXiv v1", arxivId, arxivVersion: 1, source: "fixture" })
+        .returning();
+      const linked = await openArxivVersion(handle.db, OWNER, work!.id, arxivId, 1);
+      // Made in the reader on arXiv's file (a 612 × 792 page), before any copy was stored.
+      const highlight = await createAnnotation(handle.db, OWNER, {
+        assetId: linked.id,
+        physicalIndex: 0,
+        kind: "highlight",
+        anchor: { v: 1, coordSpace: "pdf_user_space", pageIndex: 0, pageView, rotate: 0, rects: [[72, 700, 300, 712]] },
+      });
+      // The owner's own copy (bytes the reader never saw) is promoted in place, then extracted.
+      await attachUploadToWork(handle.db, blobs, {
+        ownerId: OWNER,
+        workId: work!.id,
+        versionId: version!.id,
+        filename: `${arxivId}.pdf`,
+        mediaType: "application/pdf",
+        data: makePdf([`Every Cauchy sequence converges (${label}).`], false),
+        maxBytes: 50_000_000,
+      });
+      await setPermission(handle.db, OWNER, linked.id, "local_extract", "allowed", "test");
+      await handle.db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, linked.id));
+      await ingestHandler(ctx, payload(linked.id));
+      const [h] = await handle.db.select().from(annotation).where(eq(annotation.id, highlight.id));
+      outcomes[label] = {
+        status: h!.mappingStatus,
+        key: h!.anchor?.documentSha256,
+        assetKey: (await getAsset(handle.db, OWNER, linked.id))!.sha256,
+      };
+    }
+    expect(outcomes["same geometry"]!.status).toBe("resolved");
+    expect(outcomes["same geometry"]!.key).toBe(outcomes["same geometry"]!.assetKey);
+    expect(outcomes["other geometry"]!.status).toBe("needs_repair");
+    expect(outcomes["other geometry"]!.key).toBe("arxiv:2509.50002v1");
+  });
+
+  it("pins unpdf's engine options so installing pdfjs-dist does not change extracted text", () => {
+    expect(EXTRACTION_PDF_OPTIONS).toEqual({
+      maxImageSize: 16_777_216,
+      useSystemFonts: true,
+      standardFontDataUrl: undefined,
+      cMapUrl: undefined,
+      wasmUrl: undefined,
+    });
+    expect(Object.keys(EXTRACTION_PDF_OPTIONS).sort()).toEqual([
+      "cMapUrl",
+      "maxImageSize",
+      "standardFontDataUrl",
+      "useSystemFonts",
+      "wasmUrl",
+    ]);
   });
 });

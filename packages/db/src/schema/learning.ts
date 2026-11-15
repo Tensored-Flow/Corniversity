@@ -1,10 +1,11 @@
 import type { DeterministicCheck, Rubric } from "@corniversity/core";
 import { type SQL, sql } from "drizzle-orm";
-import { boolean, index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import { boolean, foreignKey, index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAt, evidenceStateEnum, submissionStateEnum, tsvector, tz, updatedAt } from "./_shared";
 import { concept, course, courseVersion, teachingUnit, unitExercise } from "./academic";
 import { user } from "./auth";
 import { enrolment, scheduledSession } from "./planning";
+import { scholarlyWork } from "./scholarly";
 import type { StudyAnchor } from "./study";
 
 export interface Citation {
@@ -406,13 +407,27 @@ export const notebookEntry = pgTable(
     /** The study session the note was written in, and exactly what it points at. */
     learningSessionId: uuid("learning_session_id").references(() => learningSession.id, { onDelete: "set null" }),
     anchor: jsonb("anchor").$type<StudyAnchor>(),
+    /**
+     * A paper note's work (research library). The single-column key sets it null when the work is
+     * deleted; the composite key keeps it on a work of the same owner.
+     */
+    scholarlyWorkId: uuid("scholarly_work_id").references(() => scholarlyWork.id, { onDelete: "set null" }),
     tsv: tsvector("tsv").generatedAlwaysAs(
       (): SQL => sql`to_tsvector('english', coalesce(${notebookEntry.title}, '') || ' ' || coalesce(${notebookEntry.bodyMarkdown}, ''))`,
     ),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [index("notebook_owner_idx").on(t.ownerId, t.kind), index("notebook_tsv_idx").using("gin", t.tsv)],
+  (t) => [
+    index("notebook_owner_idx").on(t.ownerId, t.kind),
+    index("notebook_tsv_idx").using("gin", t.tsv),
+    index("notebook_owner_work_idx").on(t.ownerId, t.scholarlyWorkId),
+    foreignKey({
+      name: "notebook_entry_scholarly_work_owner_fk",
+      columns: [t.scholarlyWorkId, t.ownerId],
+      foreignColumns: [scholarlyWork.id, scholarlyWork.ownerId],
+    }),
+  ],
 );
 
 export const portfolioArtifact = pgTable(

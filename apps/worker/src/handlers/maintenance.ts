@@ -2,6 +2,7 @@ import { createBlobStore } from "@corniversity/db/blob";
 import { MaintenancePayload } from "@corniversity/db/jobs";
 import { pairingCode } from "@corniversity/db/schema/learner";
 import { exportRecord } from "@corniversity/db/schema/operations";
+import { purgeProviderCache } from "@corniversity/db/scholarly/cache-pg";
 import { markStaleRunsUnsettled } from "@corniversity/db/services/provider-config";
 import { and, eq, isNotNull, isNull, lt, sql } from "drizzle-orm";
 import type { HandlerContext } from "./index";
@@ -43,6 +44,11 @@ export async function maintenanceHandler(ctx: HandlerContext, raw: unknown): Pro
         await ctx.db.update(exportRecord).set({ status: "expired", storageKey: null }).where(eq(exportRecord.id, row.id));
       }
       return { expiredExports: stale.length };
+    }
+    case "purge-provider-cache": {
+      // Provider responses past their lifetime and a grace period go; the table is then capped.
+      const purged = await purgeProviderCache(ctx.db);
+      return { expiredCacheRows: purged.expired, cappedCacheRows: purged.capped };
     }
   }
 }

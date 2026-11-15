@@ -96,13 +96,21 @@ the blob):
 | — | open an arXiv version | `linked_remote` (insert on conflict do nothing, reselect) |
 | `linked_remote` | *Keep a private copy* (open licence) or the owner uploads a copy for that version | same row: real sha256, `storage_key`, `quarantined` → `validated` → existing flow |
 | stored arXiv-version Document | withdraw private storage / remove copy | same row back to `linked_remote` (blob and derived text deleted; annotations, position, permissions kept) |
-| soft-deleted row, same bytes uploaded | revive | `quarantined`; `private_cloud_store` allowed ("re-added by the owner"), every other earlier decision revoked, metadata and course ids from the new upload, annotations re-attached, audit `asset:revive` |
+| soft-deleted row, same bytes uploaded | revive | `quarantined`; `private_cloud_store` allowed ("re-added by the owner"), every other earlier decision revoked, metadata and course ids from the new upload (a paper's file: from its work, `validated`), annotations re-attached, audit `asset:revive` |
+| soft-deleted row, same bytes arrive for a `linked_remote` Document | owner's copy or private copy | the deleted row is folded into the linked row (annotations and, if the linked row has none, the position move; the empty row and its old decisions go; audit `asset:fold`), then promoted as above |
 | stored row, same bytes | upload | duplicate (existing behaviour) |
 | any row | `registerLocalAsset` matches a linked row | audit only; never rewrites it |
 
 Attaching bytes that already exist: an asset with no version is adopted; one bound to a version of
 the same work is reused; one bound to another work is refused ("This file is already attached to
-another paper in your library.") with a link to that paper. A soft delete never nulls
+another paper in your library.") with a link to that paper. A soft-deleted row is attached nowhere
+(it is revived for, or folded into, the paper it now arrives for). A version has at most one live
+Document: other bytes for a version whose file is stored are refused, and bytes a live item already
+holds are refused for a version with a linked Document, with the instruction to delete that item
+first (its notes then come along). An anchor's `documentSha256` names the file its rects were
+measured on: a transition re-keys anchors only when the new bytes are the ones the reader received
+(`observed_sha256`); otherwise the drift check decides (after extraction for a stored Document,
+with the extracted page geometry; in the reader for a linked one). A soft delete never nulls
 `annotation.asset_id` (it sets `needs_repair`; readers check `deleted_at`). Linked Documents have no
 Delete; requests to extract or store them through the old item forms are refused with a registered
 notice.
@@ -140,9 +148,10 @@ never cached; 404 is cached for 24 hours; the daily maintenance job deletes expi
 grace period and caps the table.
 
 Deleting: *Remove from library* clears `saved_at`. *Delete this paper and its notes* (confirmed,
-audited) removes the work, its identifiers, versions, linked Documents, stored copies (blobs and
-text), annotations and positions; notebook entries stay and lose the link. Nothing else ever
-deletes annotations.
+audited, for the exact id confirmed: a merged paper is refused, never resolved to its survivor)
+removes the work, its identifiers, versions, linked Documents, stored copies (blobs and text),
+annotations and positions; notebook entries stay and lose the link. Nothing else ever deletes
+annotations.
 
 ## 4. Pure rules (`packages/core/src/scholarly/`, unit-tested)
 
@@ -294,7 +303,8 @@ does not change extracted text, and a test asserts both engines are the same ver
   views with the anchors; equal → annotations are drawn with *arXiv's file has changed since these
   notes were made* and *Keep my notes on the new file*; otherwise they are listed as needing repair.
 - **Versions**: the reader names the exact version; when a newer version exists it links to it;
-  annotations stay where they were made; withdrawn versions say *Withdrawn by the authors*.
+  annotations stay where they were made; withdrawn versions say *Withdrawn on arXiv* (arXiv's
+  administrators withdraw versions too, so the reader does not say who withdrew it).
 
 ## 8. The reading companion
 

@@ -1,0 +1,180 @@
+{
+  "description": "Responses recorded from the live providers by `pnpm library:live-check --record` (2026-11-15). Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
+  "entries": [
+    {
+      "request": "GET https://api.crossref.org/works/10.1016%2Fs0140-6736(97)11096-0",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "crossref/works_10.1016_2Fs0140-6736_97_11096-0-5a5d6f31a3.json",
+      "retrievedAt": "2026-11-15T03:13:43.597Z"
+    },
+    {
+      "request": "GET https://api.crossref.org/works/10.48550%2Farxiv.2305.18290",
+      "status": 404,
+      "contentType": "text/plain",
+      "file": "crossref/works_10.48550_2Farxiv.2305.18290-352f3251e5.txt",
+      "retrievedAt": "2026-11-15T03:13:43.803Z"
+    },
+    {
+      "request": "GET https://api.crossref.org/works/10.7717%2Fpeerj.4375",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "crossref/works_10.7717_2Fpeerj.4375-2a00cc291f.json",
+      "retrievedAt": "2026-11-15T03:13:43.698Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/fields?per_page=100&select=id%2Cdisplay_name%2Cdescription%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/fields_per_page_100_select_id_2Cdisplay_name_2Cdescription_2Cdomain_2Cworks_coun-da7f94dabc.json",
+      "retrievedAt": "2026-11-15T03:15:26.930Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/subfields?filter=field.id%3A31%7C17%7C26&per_page=200&select=id%2Cdisplay_name%2Cdescription%2Cfield%2Cdomain%2Cworks_count",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/subfields_filter_field.id_3A31_7C17_7C26_per_page_200_select_id_2Cdisplay_name_2-5c80ff04c1.json",
+      "retrievedAt": "2026-11-15T03:15:27.068Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/W7133208539",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_W7133208539-3a8f8651b5.json",
+      "retrievedAt": "2026-11-15T03:13:07.219Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/arxiv:2305.18290",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_arxiv_2305.18290-858e3a885c.json",
+      "retrievedAt": "2026-11-15T03:13:07.361Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/arxiv:hep-th%2F9711200",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_arxiv_hep-th_2F9711200-cae0603234.json",
+      "retrievedAt": "2026-11-15T03:13:07.512Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/doi:10.7717%2Fcorniversity-no-such-work",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "file": "openalex/works_doi_10.7717_2Fcorniversity-no-such-work-9cd4cc8d2d.txt",
+      "retrievedAt": "2026-11-15T03:13:07.644Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works/doi:10.7717%2Fpeerj.4375",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_doi_10.7717_2Fpeerj.4375-254b9ed4e7.json",
+      "retrievedAt": "2026-11-15T03:13:07.056Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=cites%3AW7133208539&page=1&per_page=5&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_cites_3AW7133208539_page_1_per_page_5_select_id_2Cdoi_2Cdisplay_nam-9aa583c380.json",
+      "retrievedAt": "2026-11-15T03:13:07.968Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW43928053%7CW2013784666%7CW2032950725%7CW2044493620%7CW2119717200%7CW2302703641%7CW2760781482%7CW2799082722%7CW2963929190%7CW2968297680%7CW2978455699%7CW3092995464%7CW3187255235%7CW3196731672%7CW3210246763%7CW4224308101%7CW4224685053%7CW4322718191%7CW4360836968%7CW6969036009&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW43928053_7CW2013784666_7CW2032950725_7CW2044493620_7CW2-f7bf6cd500.json",
+      "retrievedAt": "2026-11-15T03:13:08.167Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=openalex%3AW7197030148%7CW4408466245%7CW4404781114%7CW7197011476%7CW7164034597%7CW4415800635%7CW7196948552%7CW7196958996%7CW7133199456%7CW7196976574&per_page=100&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_openalex_3AW7197030148_7CW4408466245_7CW4404781114_7CW7197011476_7C-6db26e21ab.json",
+      "retrievedAt": "2026-11-15T03:13:08.350Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A17&page=1&per_page=5&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A17_page_1_per_page_5_search_direct_prefere-519d4891bd.json",
+      "retrievedAt": "2026-11-15T03:13:06.834Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=primary_topic.field.id%3A26&page=1&per_page=5&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted&sort=cited_by_count%3Adesc",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_primary_topic.field.id_3A26_page_1_per_page_5_select_id_2Cdoi_2Cdis-b083fc7ade.json",
+      "retrievedAt": "2026-11-15T03:13:09.111Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?id_list=1706.03762&max_results=1",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_id_list_1706.03762_max_results_1-465aff150d.xml",
+      "retrievedAt": "2026-11-15T03:13:13.746Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?id_list=2305.18290&max_results=1",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_id_list_2305.18290_max_results_1-b953616650.xml",
+      "retrievedAt": "2026-11-15T03:13:10.153Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?id_list=2607.20049&max_results=1",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_id_list_2607.20049_max_results_1-f10676ee57.xml",
+      "retrievedAt": "2026-11-15T03:13:21.188Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?id_list=hep-th%2F9711200&max_results=1",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_id_list_hep-th_2F9711200_max_results_1-9d63934c4e.xml",
+      "retrievedAt": "2026-11-15T03:13:17.483Z"
+    },
+    {
+      "request": "GET https://export.arxiv.org/api/query?max_results=5&search_query=cat%3Amath.*&sortBy=submittedDate&sortOrder=descending",
+      "status": 200,
+      "contentType": "application/atom+xml; charset=utf-8",
+      "file": "arxiv/api_query_max_results_5_search_query_cat_3Amath._sortBy_submittedDate_sortOrder_-d2f4a7acbc.xml",
+      "retrievedAt": "2026-11-15T03:13:39.627Z"
+    },
+    {
+      "request": "GET https://oaipmh.arxiv.org/oai?identifier=oai%3AarXiv.org%3A1706.03762&metadataPrefix=arXivRaw&verb=GetRecord",
+      "status": 200,
+      "contentType": "text/xml",
+      "file": "arxiv/oai_identifier_oai_3AarXiv.org_3A1706.03762_metadataPrefix_arXivRaw_verb_GetReco-cc1eb9cc65.xml",
+      "retrievedAt": "2026-11-15T03:13:28.389Z"
+    },
+    {
+      "request": "GET https://oaipmh.arxiv.org/oai?identifier=oai%3AarXiv.org%3A2305.18290&metadataPrefix=arXivRaw&verb=GetRecord",
+      "status": 200,
+      "contentType": "text/xml",
+      "file": "arxiv/oai_identifier_oai_3AarXiv.org_3A2305.18290_metadataPrefix_arXivRaw_verb_GetReco-b8a6d5d49b.xml",
+      "retrievedAt": "2026-11-15T03:13:24.792Z"
+    },
+    {
+      "request": "GET https://oaipmh.arxiv.org/oai?identifier=oai%3AarXiv.org%3A2607.20049&metadataPrefix=arXivRaw&verb=GetRecord",
+      "status": 200,
+      "contentType": "text/xml",
+      "file": "arxiv/oai_identifier_oai_3AarXiv.org_3A2607.20049_metadataPrefix_arXivRaw_verb_GetReco-00cf0da126.xml",
+      "retrievedAt": "2026-11-15T03:13:35.811Z"
+    },
+    {
+      "request": "GET https://oaipmh.arxiv.org/oai?identifier=oai%3AarXiv.org%3A2611.99999&metadataPrefix=arXivRaw&verb=GetRecord",
+      "status": 200,
+      "contentType": "text/xml",
+      "file": "arxiv/oai_identifier_oai_3AarXiv.org_3A2611.99999_metadataPrefix_arXivRaw_verb_GetReco-aa5abce481.xml",
+      "retrievedAt": "2026-11-15T03:13:43.301Z"
+    },
+    {
+      "request": "GET https://oaipmh.arxiv.org/oai?identifier=oai%3AarXiv.org%3Ahep-th%2F9711200&metadataPrefix=arXivRaw&verb=GetRecord",
+      "status": 200,
+      "contentType": "text/xml",
+      "file": "arxiv/oai_identifier_oai_3AarXiv.org_3Ahep-th_2F9711200_metadataPrefix_arXivRaw_verb_G-72d85cf5be.xml",
+      "retrievedAt": "2026-11-15T03:13:32.071Z"
+    }
+  ]
+}

@@ -64,7 +64,32 @@ is reserved for the content pipeline; units are currently prepared in `content/`
   `rubric`, `instructor_artifact`.
 - **Library**: `source`, `source_version`, `locator`, `resource_asset`, `asset_blob`,
   `processing_permission`, `extracted_page`, `passage` (FTS `tsvector`), `passage_embedding`
-  (created only if pgvector exists), `annotation`, `resource_request`.
+  (created only if pgvector exists), `annotation`, `reading_progress`, `resource_request`.
+  - `resource_asset` is the Document of every file the reader opens. A paper's file points at its
+    `scholarly_version` (composite key with the owner, `ON DELETE RESTRICT`); `linked_remote` rows
+    store no bytes and hold `arxiv:{id}vN` in `sha256` (one linked Document per arXiv version under
+    the unique (owner, sha256) index); `observed_sha256` is the hash the owner's browser last received.
+    One routine (`placeDocumentBytes` in `services/library.ts`) decides every transition before a blob
+    is written and deletes the blob again if the database write fails; a stored arXiv copy returns to
+    `linked_remote` when its storage is withdrawn, a soft-deleted row with the same bytes is folded
+    into the linked Document they arrive for, a version has at most one live Document, and a soft
+    delete never detaches annotations. An anchor's `documentSha256` names the file its rects were
+    measured on; they move to a new file of the same Document only when the bytes are the ones the
+    reader received or the page geometry passes the drift check (after extraction, or in the reader).
+  - `annotation` carries `kind` (note, highlight, bookmark), a colour role, an `anchor` (rects in PDF
+    user space; the server fills the engine and the Document key), `quote_matched`, a foreign key to
+    `notebook_entry` and a full-text `tsv`. `reading_progress` carries `position`, `last_opened_at` and
+    `effective_at` (saves ordered on the database server's clock).
+- **Research library** (`schema/scholarly.ts`, docs/RESEARCH_LIBRARY.md): `scholarly_work` (owner-scoped
+  paper with per-field provenance, `owner_edited_fields`, integrity notices, referenced OpenAlex ids,
+  flags, `merged_into_id` tombstones and a full-text `tsv`), `scholarly_identifier` (unique per owner,
+  scheme and value; `current` or `superseded`), `scholarly_version` (arXiv id and version together or
+  neither, unique per owner; licence fields written once), `library_collection` and
+  `library_collection_item` (shelves and trails), `library_preference` (Discover subjects);
+  `notebook_entry.scholarly_work_id` links paper notes. Parents carry UNIQUE (id, owner_id) and children
+  composite foreign keys, so no row can point at another owner's row. Provider responses are cached in
+  `scholarly_cache.provider_cache`, a schema of its own that backups never read (keyed by the sha256 of
+  the request without credentials; 200 and 404 only; purged daily).
 - **Study/planning**: `term`, `enrolment`, `availability_window`, `commitment`, `day_off`,
   `plan_version`, `scheduled_session`, `change_proposal`, `calendar_token`, `programme_participation`
   (following, paused or left; never an enrolment), `academic_deadline` (assessment, examination or
@@ -181,7 +206,12 @@ The worker applies pending migrations on start and, when the deployment sets
 pg-boss 12 (`schema: pgboss`), queues: `transcribe-pages` (one per consent; no retry, since a retry
 would be a new billable call; consent and pages re-checked when it runs), `ingest-asset` (singletonKey = sha256), `prepare-unit`
 (one job per confirmed or resumed preparation request; stages hold leases so a duplicate run skips finished work), `assess-submission` (singletonKey = submission version id),
-`embed-passages`, `export-records`, `maintenance` (cron). Retries with backoff, expiry,
+`embed-passages`, `export-records`, `scholarly-arxiv` (every arXiv request: works' arXiv records,
+private copies of openly licensed versions, newest-submission listings; one active job across all
+processes through a shared singleton key, at least 3.1 s between requests, Retry-After honoured),
+`scholarly-refresh` (a work's OpenAlex metadata and Crossref integrity notices), `scholarly-lists`
+(subject-list refreshes; defined, handler pending), `maintenance` (cron; each task under its own
+schedule key, including the daily provider-cache purge). Retries with backoff, expiry,
 heartbeats for ingestion, dead-letter queues. `job_record` mirrors state for the UI.
 
 ## Security
@@ -233,8 +263,9 @@ only after the learner's recorded permission; camera and geolocation stay off.
 15. The owner's local installation (`pnpm local:owner`, http://127.0.0.1:3300) has its own
     database (`corniversity_owner`), data folder and compiled output, so the journeys' development
     stack never touches the owner's records; it keeps uploads in the database so one backup holds
-    records and uploads. Error notices after a redirect carry allowlisted codes
-    (`apps/web/src/lib/notices.ts`), never text from the address.
+    records and uploads, and it refuses `SCHOLARLY_PROVIDER=fixture` (the script and, through
+    `CORNIVERSITY_INSTALLATION=owner`, its web app and worker). Error notices after a redirect
+    carry allowlisted codes (`apps/web/src/lib/notices.ts`), never text from the address.
 
 16. The lean study format: a course is its units (notes, problem sheet, tutorial) and its exams.
     An exam answer is an attempt linked to the exam (`attempt.exam_id`), so it is marked by the

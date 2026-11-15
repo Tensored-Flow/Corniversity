@@ -1,7 +1,11 @@
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { defineConfig } from "vitest/config";
+import { TEST_PORT, testDatabaseUrl } from "./test/port";
 
-// Handler tests run against a throw-away embedded PostgreSQL (test/global-setup.ts); pure
-// tests (segmentation) run in the same project without touching it.
+// Handler tests run against a throw-away embedded PostgreSQL (test/global-setup.ts, on
+// CORNIVERSITY_WORKER_TEST_PG_PORT, default 5439); pure tests (segmentation) run in the same
+// project without touching it.
 export default defineConfig({
   test: {
     name: "worker",
@@ -12,12 +16,12 @@ export default defineConfig({
     testTimeout: 60_000,
     hookTimeout: 180_000,
     env: {
-      DATABASE_URL: "postgres://corniversity:corniversity@127.0.0.1:5439/corniversity_worker_test",
+      DATABASE_URL: testDatabaseUrl(),
       BETTER_AUTH_URL: "http://localhost:3000",
       BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-1234",
       OWNER_EMAIL: "owner@example.test",
       OWNER_BOOTSTRAP_CODE: "test-bootstrap-code",
-      CORNIVERSITY_DATA_ROOT: "C:/Users/leona/AppData/Local/Temp/corniversity-worker-test-data",
+      CORNIVERSITY_DATA_ROOT: join(tmpdir(), `corniversity-worker-test-data-${TEST_PORT}`).replaceAll("\\", "/"),
       NODE_ENV: "test",
     },
   },

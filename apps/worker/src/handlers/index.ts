@@ -8,6 +8,7 @@ import { ingestHandler } from "./ingest";
 import { markJob } from "./job-record";
 import { maintenanceHandler } from "./maintenance";
 import { prepareHandler } from "./prepare";
+import { scholarlyArxivHandler, scholarlyRefreshHandler } from "./scholarly";
 import { transcribeHandler } from "./transcribe";
 
 export interface HandlerContext {
@@ -59,22 +60,31 @@ export async function registerHandlers(boss: PgBoss, db: Database, env: Env): Pr
   await boss.work(QUEUES.exportRecords, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(exportHandler));
   await boss.work(QUEUES.transcribePages, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(transcribeHandler));
   await boss.work(QUEUES.prepareUnit, { batchSize: 1, pollingIntervalSeconds: 2 }, wrap(prepareHandler));
+  // arXiv: one job at a time (the queue's singleton key does the same across processes).
+  await boss.work(QUEUES.scholarlyArxiv, { batchSize: 1, localConcurrency: 1, pollingIntervalSeconds: 2 }, wrap(scholarlyArxivHandler));
+  await boss.work(QUEUES.scholarlyRefresh, { batchSize: 1, pollingIntervalSeconds: 5 }, wrap(scholarlyRefreshHandler));
+  // scholarly-lists (subject-list refreshes) is defined in jobs.ts; its handler arrives with Discover.
 
+  await scheduleMaintenance(boss);
+}
+
+/**
+ * The maintenance schedules. pg-boss keys schedules by (queue, key), so each task carries its own
+ * key; without one every schedule on the queue replaced the previous one and only the last ran.
+ * The keyless row an earlier build left behind is removed.
+ */
+export const MAINTENANCE_SCHEDULES = [
   // Nightly revision-due pass; cheap, idempotent by key per day.
-  await boss.schedule(QUEUES.maintenance, "15 3 * * *", {
-    idempotencyKey: "maintenance:revision-due:daily",
-    task: "revision-due",
-  });
-  await boss.schedule(QUEUES.maintenance, "45 3 * * *", {
-    idempotencyKey: "maintenance:revoke-stale-pairing-codes:daily",
-    task: "revoke-stale-pairing-codes",
-  });
-  await boss.schedule(QUEUES.maintenance, "*/15 * * * *", {
-    idempotencyKey: "maintenance:unsettle-stale-runs",
-    task: "unsettle-stale-runs",
-  });
-  await boss.schedule(QUEUES.maintenance, "30 4 * * 1", {
-    idempotencyKey: "maintenance:expire-old-exports:weekly",
-    task: "expire-old-exports",
-  });
+  { cron: "15 3 * * *", idempotencyKey: "maintenance:revision-due:daily", task: "revision-due" },
+  { cron: "45 3 * * *", idempotencyKey: "maintenance:revoke-stale-pairing-codes:daily", task: "revoke-stale-pairing-codes" },
+  { cron: "*/15 * * * *", idempotencyKey: "maintenance:unsettle-stale-runs", task: "unsettle-stale-runs" },
+  { cron: "30 4 * * 1", idempotencyKey: "maintenance:expire-old-exports:weekly", task: "expire-old-exports" },
+  { cron: "0 5 * * *", idempotencyKey: "maintenance:purge-provider-cache:daily", task: "purge-provider-cache" },
+] as const;
+
+export async function scheduleMaintenance(boss: Pick<PgBoss, "schedule" | "unschedule">): Promise<void> {
+  await boss.unschedule(QUEUES.maintenance, "").catch(() => undefined);
+  for (const s of MAINTENANCE_SCHEDULES) {
+    await boss.schedule(QUEUES.maintenance, s.cron, { idempotencyKey: s.idempotencyKey, task: s.task }, { key: s.task });
+  }
 }

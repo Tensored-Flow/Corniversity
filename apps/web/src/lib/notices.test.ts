@@ -35,6 +35,20 @@ describe("error notices", () => {
     expect(errorCode("Something no service says.")).toBe("not-completed");
   });
 
+  it("maps the private-copy refusals that name a licence or provider", () => {
+    expect(
+      errorCode(
+        "CC BY-NC-ND 4.0 carries non-commercial or no-derivatives terms; Corniversity keeps private copies only under CC BY, CC BY-SA, CC0 or public domain.",
+      ),
+    ).toBe("copy-licence-nc-nd");
+    expect(errorCode("This licence is as reported by OpenAlex; it is shown for information and does not permit a private copy.")).toBe(
+      "copy-licence-display-only",
+    );
+    expect(errorCode("arXiv's licence for this version does not permit Corniversity to store a copy; it is read from arxiv.org.")).toBe(
+      "copy-arxiv-nonexclusive",
+    );
+  });
+
   it("builds redirect targets that carry only the code", () => {
     expect(errorHref("/settings", "unknown-run", "#provider")).toBe("/settings?error=unknown-run#provider");
     expect(errorHref("/library/read/x?page=2", "write-note-before-saving")).toBe("/library/read/x?page=2&error=write-note-before-saving");
@@ -47,6 +61,9 @@ describe("error notices", () => {
     const missing: string[] = [];
     const throwSite = /new (\w+Error)\(([^;]*?)\)\s*;/gs;
     const literal = /"((?:[^"\\]|\\.)*)"/g;
+    // The research library's services also keep refusal sentences in upper-case constants.
+    const messageConstant = /const [A-Z][A-Z0-9_]*\s*=\s*"((?:[^"\\]|\\.)*)"\s*;/g;
+    const constantFiles = new Set(["library.ts", "scholarly-works.ts", "library-collections.ts"]);
     for (const file of files) {
       const source = readFileSync(join(root, file), "utf8");
       for (const site of source.matchAll(throwSite)) {
@@ -57,6 +74,11 @@ describe("error notices", () => {
           if (!text.includes(" ") || !/^[A-Z]/.test(text)) continue;
           if (!listed.has(text)) missing.push(`${file}: ${text}`);
         }
+      }
+      if (!constantFiles.has(file)) continue;
+      for (const m of source.matchAll(messageConstant)) {
+        const text = JSON.parse(`"${m[1]}"`) as string;
+        if (text.includes(" ") && /[.]$/.test(text) && !listed.has(text)) missing.push(`${file}: ${text}`);
       }
     }
     expect(missing).toEqual([]);

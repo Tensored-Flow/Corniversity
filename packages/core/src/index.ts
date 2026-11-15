@@ -9,3 +9,4 @@ export * from "./programme/next-step";
 export * from "./programme/progress";
 export * from "./programme/route";
 export * from "./research/studio";
+export * from "./scholarly/index";

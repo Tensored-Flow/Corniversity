@@ -159,7 +159,7 @@ describe("uploads, deduplication and processing permissions", () => {
     expect(await permittedPassagesForCourse(handle.db, OWNER, "MAT-230", "norm")).toEqual([]);
   });
 
-  it("deleting removes the bytes and leaves annotations visibly in need of repair", async () => {
+  it("deleting removes the bytes and leaves annotations attached and visibly in need of repair", async () => {
     const note = await createAnnotation(handle.db, OWNER, {
       assetId,
       physicalIndex: 0,
@@ -171,7 +171,8 @@ describe("uploads, deduplication and processing permissions", () => {
     expect(await blobs.exists(key)).toBe(false);
     expect(await getAsset(handle.db, OWNER, assetId)).toBeNull();
     const [row] = await handle.db.select().from(annotation).where(eq(annotation.id, note.id));
-    expect(row?.assetId).toBeNull();
+    // A soft delete never detaches an annotation from its row (contract §3): re-adding the file brings it back.
+    expect(row?.assetId).toBe(assetId);
     expect(row?.mappingStatus).toBe("needs_repair");
   });
 });

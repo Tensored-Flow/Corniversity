@@ -1,10 +1,26 @@
-import type { Locator } from "@corniversity/core";
+import type { Anchor, Locator, ReadingPosition } from "@corniversity/core";
 import { type SQL, sql } from "drizzle-orm";
-import { bigint, boolean, date, index, integer, jsonb, pgTable, primaryKey, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import {
+  bigint,
+  boolean,
+  check,
+  date,
+  foreignKey,
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  primaryKey,
+  text,
+  uniqueIndex,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { bytea, createdAt, permissionStatusEnum, processingActionEnum, tsvector, tz, updatedAt } from "./_shared";
 import { course } from "./academic";
 import { user } from "./auth";
 import { devicePairing } from "./learner";
+import { notebookEntry } from "./learning";
+import { scholarlyVersion } from "./scholarly";
 
 export const source = pgTable("source", {
   id: text("id").primaryKey(),
@@ -67,7 +83,11 @@ export type AssetStatus =
   | "processing"
   | "processed"
   | "rejected"
-  | "deleted";
+  | "deleted"
+  // A paper read by the owner's browser from arxiv.org: no bytes stored, sha256 holds arxiv:{id}v{n}.
+  | "linked_remote";
+
+export type AssetOrigin = "web_upload" | "companion" | "open_import" | "arxiv_link" | "scholarly_upload" | "scholarly_import";
 
 export const resourceAsset = pgTable(
   "resource_asset",
@@ -83,7 +103,7 @@ export const resourceAsset = pgTable(
     sha256: text("sha256").notNull(),
     storageKey: text("storage_key"),
     status: text("status").$type<AssetStatus>().notNull(),
-    origin: text("origin").$type<"web_upload" | "companion" | "open_import">().notNull(),
+    origin: text("origin").$type<AssetOrigin>().notNull(),
     candidateMetadata: jsonb("candidate_metadata")
       .$type<{ title?: string; author?: string; pageCount?: number; producer?: string }>()
       .notNull()
@@ -98,6 +118,11 @@ export const resourceAsset = pgTable(
     devicePairingId: uuid("device_pairing_id").references(() => devicePairing.id),
     localPathHint: text("local_path_hint"),
     rejectionReason: text("rejection_reason"),
+    /** The scholarly version this Document is a file of (research library). */
+    scholarlyVersionId: uuid("scholarly_version_id"),
+    /** Linked Documents: the sha256 of the bytes the owner's browser last received (a drift detector, not an identity). */
+    observedSha256: text("observed_sha256"),
+    observedAt: tz("observed_at"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
     deletedAt: tz("deleted_at"),
@@ -105,6 +130,16 @@ export const resourceAsset = pgTable(
   (t) => [
     uniqueIndex("resource_asset_owner_sha_unique").on(t.ownerId, t.sha256),
     index("resource_asset_owner_idx").on(t.ownerId, t.status),
+    index("resource_asset_scholarly_version_idx").on(t.ownerId, t.scholarlyVersionId),
+    foreignKey({
+      name: "resource_asset_scholarly_version_fk",
+      columns: [t.scholarlyVersionId, t.ownerId],
+      foreignColumns: [scholarlyVersion.id, scholarlyVersion.ownerId],
+    }).onDelete("restrict"),
+    check(
+      "resource_asset_linked_remote_check",
+      sql`${t.status} <> 'linked_remote' or (${t.storageKey} is null and ${t.localOnly} = false and ${t.scholarlyVersionId} is not null and ${t.sha256} like 'arxiv:%')`,
+    ),
   ],
 );
 
@@ -187,12 +222,29 @@ export const annotation = pgTable(
     selectedText: text("selected_text"),
     noteMarkdown: text("note_markdown").notNull().default(""),
     mappingStatus: text("mapping_status").$type<"resolved" | "needs_repair">().notNull().default("resolved"),
-    notebookEntryId: uuid("notebook_entry_id"),
+    notebookEntryId: uuid("notebook_entry_id").references(() => notebookEntry.id, { onDelete: "set null" }),
+    kind: text("kind").$type<AnnotationKind>().notNull().default("note"),
+    /** A colour-role name (brass, moss, rust, slate, neutral). */
+    color: text("color"),
+    /** Rects in PDF user space; the server fills documentSha256 and engine. */
+    anchor: jsonb("anchor").$type<Anchor>(),
+    /** Whether the kept quote was found on the extracted page; null when nothing was compared. */
+    quoteMatched: boolean("quote_matched"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
+    tsv: tsvector("tsv").generatedAlwaysAs(
+      (): SQL => sql`to_tsvector('english', coalesce(${annotation.noteMarkdown}, '') || ' ' || coalesce(${annotation.selectedText}, ''))`,
+    ),
   },
-  (t) => [index("annotation_owner_asset_idx").on(t.ownerId, t.assetId)],
+  (t) => [
+    index("annotation_owner_asset_idx").on(t.ownerId, t.assetId),
+    index("annotation_owner_kind_idx").on(t.ownerId, t.kind),
+    index("annotation_tsv_idx").using("gin", t.tsv),
+    check("annotation_kind_check", sql`${t.kind} in ('note', 'highlight', 'bookmark')`),
+  ],
 );
+
+export type AnnotationKind = "note" | "highlight" | "bookmark";
 
 /** Where the learner last was in each library item; one row per owner and asset. */
 export const readingProgress = pgTable(
@@ -205,6 +257,11 @@ export const readingProgress = pgTable(
       .notNull()
       .references(() => resourceAsset.id, { onDelete: "cascade" }),
     physicalIndex: integer("physical_index").notNull().default(0),
+    /** Position inside the page in PDF user space; pageIndex always equals physical_index. */
+    position: jsonb("position").$type<ReadingPosition>(),
+    lastOpenedAt: tz("last_opened_at"),
+    /** Server-clock time the saved position stands for (now − how long ago the reader last moved). */
+    effectiveAt: tz("effective_at"),
     updatedAt: updatedAt(),
   },
   (t) => [primaryKey({ columns: [t.ownerId, t.assetId] })],

@@ -1,18 +1,32 @@
 import { createHash, randomBytes, randomInt } from "node:crypto";
-import type { Locator } from "@corniversity/core";
-import { and, asc, count, desc, eq, gt, inArray, isNotNull, isNull, like, sql } from "drizzle-orm";
+import {
+  type AnchorRect,
+  buildAnchor,
+  checkDrift,
+  clampPosition,
+  type Locator,
+  linkedDocumentKey,
+  MAX_CHANGED_AGO_MS,
+  PositionSaveSchema,
+  quoteFoundIn,
+  type ReadingPosition,
+} from "@corniversity/core";
+import { and, asc, count, desc, eq, gt, inArray, isNotNull, isNull, like, ne, or, type SQL, sql } from "drizzle-orm";
 import type { BlobStore } from "../blob";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { IngestAssetPayload, QUEUES } from "../jobs";
 import { enqueue } from "../queue";
 import {
+  type AnnotationKind,
+  type AssetOrigin,
   annotation,
   auditEvent,
   course,
   courseVersion,
   devicePairing,
   extractedPage,
+  libraryCollectionItem,
   locator,
   pairingCode,
   passage,
@@ -22,6 +36,8 @@ import {
   readingProgress,
   resourceAsset,
   resourceRequest,
+  scholarlyVersion,
+  scholarlyWork,
   source,
   sourceVersion,
 } from "../schema/index";
@@ -46,11 +62,20 @@ export class LibraryError extends Error {
       | "permission_denied"
       | "invalid_state"
       | "bad_code"
-      | "revoked",
+      | "revoked"
+      | "conflict",
     message: string,
   ) {
     super(message);
     this.name = "LibraryError";
+  }
+}
+
+/** An annotation edit whose expected version is stale: the route shows both texts. */
+export class AnnotationConflictError extends LibraryError {
+  constructor(readonly current: AnnotationRow) {
+    super("conflict", "This note was changed elsewhere after you opened it. Both versions are shown; nothing was overwritten.");
+    this.name = "AnnotationConflictError";
   }
 }
 
@@ -114,6 +139,19 @@ export async function registerLocalAsset(
     .where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, input.sha256)))
     .limit(1);
   if (existing) {
+    // A Document of the research library (a paper's file, linked or stored) is never rewritten by
+    // the companion: the sighting is recorded and nothing else changes.
+    if (existing.status === "linked_remote" || existing.scholarlyVersionId) {
+      await db.insert(auditEvent).values({
+        ownerId: input.ownerId,
+        actor: `companion:${input.devicePairingId}`,
+        action: "asset:register-seen",
+        entity: "resource_asset",
+        entityId: existing.id,
+        details: { filename: input.filename, sizeBytes: input.sizeBytes },
+      });
+      return { asset: existing, outcome: "known" };
+    }
     if (existing.filename !== input.filename || existing.localPathHint !== input.localPathHint) {
       const [updated] = await db
         .update(resourceAsset)
@@ -154,6 +192,7 @@ export async function registerLocalAsset(
 /**
  * Receives bytes (web upload or companion upload after permission). Dedupes by hash, validates,
  * stores the immutable original, and leaves the asset in quarantine until metadata is confirmed.
+ * Every decision is taken by `placeDocumentBytes` before any bytes are written.
  */
 export async function receiveUpload(
   db: DbOrTx,
@@ -169,6 +208,89 @@ export async function receiveUpload(
     assetId?: string;
   },
 ): Promise<{ asset: AssetRow; outcome: "stored" | "duplicate" }> {
+  const placed = await placeDocumentBytes(db, blobs, input);
+  return { asset: placed.asset, outcome: placed.outcome === "duplicate" ? "duplicate" : "stored" };
+}
+
+/**
+ * What arriving bytes do to the Document rows (contract §3, the transition table), decided from
+ * the row already holding the same hash (`existing`, soft-deleted rows included) and, when the
+ * bytes are meant for a linked arXiv Document, that row (`target`). Pure: nothing is written.
+ *
+ * Bytes for a linked Document that a soft-deleted row already held: that row is folded into the
+ * linked Document (its notes and reading position move over, the empty row goes), so deleting a
+ * file never blocks attaching it to a paper later. Bytes a live item already holds are refused with
+ * an instruction: one Document per arXiv version, and an item's own notes and permissions are
+ * never merged into another item's silently.
+ */
+export type DocumentPlacement =
+  | { action: "store_new" }
+  | { action: "duplicate"; asset: AssetRow }
+  | { action: "fill_registered"; asset: AssetRow }
+  | { action: "revive"; asset: AssetRow }
+  | { action: "promote"; asset: AssetRow; fold?: AssetRow }
+  | { action: "refuse"; code: "invalid_state" | "duplicate"; message: string; existing?: AssetRow };
+
+export const FILE_IN_LIBRARY_AS_OTHER_ITEM =
+  "This file is already in your library as another item. Delete that item first, then attach the file here; its notes come with it.";
+
+export function decideDocumentPlacement(existing: AssetRow | null, target: AssetRow | null = null): DocumentPlacement {
+  if (target) {
+    if (target.status !== "linked_remote" || target.deletedAt)
+      return { action: "refuse", code: "invalid_state", message: "This paper's file is already stored here." };
+    if (!existing) return { action: "promote", asset: target };
+    if (existing.deletedAt) return { action: "promote", asset: target, fold: existing };
+    if (existing.storageKey && existing.scholarlyVersionId && existing.scholarlyVersionId !== target.scholarlyVersionId)
+      return {
+        action: "refuse",
+        code: "duplicate",
+        message: "This file is already stored for another version or paper in your library.",
+        existing,
+      };
+    return { action: "refuse", code: "duplicate", message: FILE_IN_LIBRARY_AS_OTHER_ITEM, existing };
+  }
+  if (!existing) return { action: "store_new" };
+  if (existing.deletedAt) return { action: "revive", asset: existing };
+  if (existing.storageKey) return { action: "duplicate", asset: existing };
+  if (existing.status === "upload_requested" || existing.status === "registered_local")
+    return { action: "fill_registered", asset: existing };
+  return { action: "refuse", code: "invalid_state", message: `Asset is ${existing.status}; bytes were not expected.`, existing };
+}
+
+export const REVIVE_BASIS = "re-added by the owner";
+
+/**
+ * The one routine through which bytes reach a Document. It reads the rows, decides with
+ * `decideDocumentPlacement` before any `blobs.put`, writes the blob only when the decision stores
+ * bytes, and deletes that blob again if the database write then fails, so no orphan is left.
+ *  - new bytes: a new quarantined row;
+ *  - the same bytes stored already: the existing row (duplicate);
+ *  - bytes for a companion registration: that row, quarantined;
+ *  - bytes of a soft-deleted row: the row revived (quarantined; private storage allowed with the
+ *    basis "re-added by the owner", every other earlier decision revoked, metadata and course ids
+ *    from the new upload, annotations re-attached, audit `asset:revive`); a paper's file takes its
+ *    metadata from its work at once (validated), since the item form does not edit it;
+ *  - bytes for a linked arXiv Document (`promoteAssetId`): the same row promoted in place (real
+ *    sha256, storage key, quarantined), keeping its annotations, position and permissions. A
+ *    soft-deleted row with the same bytes is folded into it first. Anchors made on arXiv's file
+ *    take the new key at once only when these are the very bytes the reader received
+ *    (`observed_sha256`); otherwise the geometry check after extraction decides.
+ */
+export async function placeDocumentBytes(
+  db: DbOrTx,
+  blobs: BlobStore,
+  input: {
+    ownerId: string;
+    filename: string;
+    mediaType: string;
+    data: Buffer;
+    origin: AssetOrigin;
+    maxBytes: number;
+    devicePairingId?: string;
+    promoteAssetId?: string;
+    actor?: string;
+  },
+): Promise<{ asset: AssetRow; outcome: "stored" | "duplicate" | "filled" | "revived" | "promoted" }> {
   const { mediaType } = validateUpload(input.data, input.mediaType, input.filename, input.maxBytes);
   const hash = sha256(input.data);
   const [existing] = await db
@@ -176,44 +298,278 @@ export async function receiveUpload(
     .from(resourceAsset)
     .where(and(eq(resourceAsset.ownerId, input.ownerId), eq(resourceAsset.sha256, hash)))
     .limit(1);
-  if (existing?.storageKey) return { asset: existing, outcome: "duplicate" };
-
-  const stored = await blobs.put(input.data);
-  if (existing) {
-    // A locally registered asset whose bytes have now been permitted to arrive.
-    if (existing.status !== "upload_requested" && existing.status !== "registered_local")
-      throw new LibraryError("invalid_state", `Asset is ${existing.status}; bytes were not expected.`);
-    const [updated] = await db
-      .update(resourceAsset)
-      .set({ storageKey: stored.key, status: "quarantined", localOnly: false, mediaType })
-      .where(eq(resourceAsset.id, existing.id))
-      .returning();
-    return { asset: updated!, outcome: "stored" };
+  let target: AssetRow | null = null;
+  if (input.promoteAssetId) {
+    target = await getAsset(db, input.ownerId, input.promoteAssetId);
+    if (!target) throw new LibraryError("not_found", "Asset not found.");
   }
-  const [asset] = await db
-    .insert(resourceAsset)
-    .values({
-      ownerId: input.ownerId,
-      filename: input.filename,
-      mediaType,
-      sizeBytes: input.data.byteLength,
-      sha256: hash,
-      storageKey: stored.key,
+  const decision = decideDocumentPlacement(existing ?? null, target);
+  if (decision.action === "duplicate") return { asset: decision.asset, outcome: "duplicate" };
+  if (decision.action === "refuse") throw new LibraryError(decision.code, decision.message);
+
+  const actor = input.actor ?? (input.origin === "companion" ? `companion:${input.devicePairingId}` : "learner");
+  const stored = await blobs.put(input.data);
+  try {
+    return await db.transaction(async (tx) => {
+      switch (decision.action) {
+        case "fill_registered": {
+          // A locally registered asset whose bytes have now been permitted to arrive.
+          const [updated] = await tx
+            .update(resourceAsset)
+            .set({ storageKey: stored.key, status: "quarantined", localOnly: false, mediaType })
+            .where(and(eq(resourceAsset.id, decision.asset.id), isNull(resourceAsset.storageKey)))
+            .returning();
+          if (!updated) throw new LibraryError("invalid_state", "The item changed while the file was arriving; nothing was stored.");
+          return { asset: updated, outcome: "filled" as const };
+        }
+        case "revive": {
+          let asset = await reviveDocument(tx, decision.asset, {
+            storageKey: stored.key,
+            filename: input.filename,
+            mediaType,
+            sizeBytes: input.data.byteLength,
+            origin: input.origin,
+            devicePairingId: input.devicePairingId ?? null,
+            actor,
+          });
+          if (asset.scholarlyVersionId) asset = await confirmDocumentFromWork(tx, input.ownerId, asset.id);
+          return { asset, outcome: "revived" as const };
+        }
+        case "promote": {
+          if (decision.fold) await foldDeletedDocument(tx, decision.fold, decision.asset, actor);
+          const [updated] = await tx
+            .update(resourceAsset)
+            .set({
+              sha256: hash,
+              storageKey: stored.key,
+              sizeBytes: input.data.byteLength,
+              mediaType,
+              status: "quarantined",
+              origin: input.origin,
+              localOnly: false,
+              rejectionReason: null,
+            })
+            .where(and(eq(resourceAsset.id, decision.asset.id), eq(resourceAsset.status, "linked_remote")))
+            .returning();
+          if (!updated) throw new LibraryError("invalid_state", "The item changed while the file was arriving; nothing was stored.");
+          // The very bytes the owner's browser received from arXiv: notes made there are on this file.
+          const sameAsObserved = decision.asset.observedSha256 === hash;
+          const anchorsRekeyed = sameAsObserved ? await rekeyAnchors(tx, updated.id, decision.asset.sha256, hash) : 0;
+          await tx.insert(auditEvent).values({
+            ownerId: input.ownerId,
+            actor,
+            action: "asset:promote",
+            entity: "resource_asset",
+            entityId: updated.id,
+            details: {
+              from: decision.asset.sha256,
+              sha256: hash,
+              sizeBytes: input.data.byteLength,
+              origin: input.origin,
+              sameAsObserved,
+              anchorsRekeyed,
+              folded: decision.fold?.id ?? null,
+            },
+          });
+          return { asset: updated, outcome: "promoted" as const };
+        }
+        case "store_new": {
+          const [asset] = await tx
+            .insert(resourceAsset)
+            .values({
+              ownerId: input.ownerId,
+              filename: input.filename,
+              mediaType,
+              sizeBytes: input.data.byteLength,
+              sha256: hash,
+              storageKey: stored.key,
+              status: "quarantined",
+              origin: input.origin,
+              localOnly: false,
+              devicePairingId: input.devicePairingId ?? null,
+            })
+            .returning();
+          await tx.insert(auditEvent).values({
+            ownerId: input.ownerId,
+            actor,
+            action: "asset:upload",
+            entity: "resource_asset",
+            entityId: asset!.id,
+            details: { filename: input.filename, sizeBytes: input.data.byteLength, mediaType },
+          });
+          return { asset: asset!, outcome: "stored" as const };
+        }
+      }
+    });
+  } catch (error) {
+    await blobs.delete(stored.key).catch(() => undefined);
+    throw error;
+  }
+}
+
+/** Brings a soft-deleted row back with new bytes (see `placeDocumentBytes`). */
+async function reviveDocument(
+  db: DbOrTx,
+  asset: AssetRow,
+  input: {
+    storageKey: string;
+    filename: string;
+    mediaType: string;
+    sizeBytes: number;
+    origin: AssetOrigin;
+    devicePairingId: string | null;
+    actor: string;
+  },
+): Promise<AssetRow> {
+  const [revived] = await db
+    .update(resourceAsset)
+    .set({
+      storageKey: input.storageKey,
       status: "quarantined",
-      origin: input.origin,
+      deletedAt: null,
       localOnly: false,
-      devicePairingId: input.devicePairingId ?? null,
+      filename: input.filename,
+      mediaType: input.mediaType,
+      sizeBytes: input.sizeBytes,
+      origin: input.origin,
+      devicePairingId: input.devicePairingId,
+      localPathHint: null,
+      candidateMetadata: {},
+      confirmedTitle: null,
+      confirmedAuthors: null,
+      confirmedEdition: null,
+      courseIds: [],
+      sourceVersionId: null,
+      pageCount: null,
+      printedLabelsPresent: null,
+      rejectionReason: null,
     })
+    .where(and(eq(resourceAsset.id, asset.id), isNotNull(resourceAsset.deletedAt)))
     .returning();
+  if (!revived) throw new LibraryError("invalid_state", "The item changed while the file was arriving; nothing was stored.");
+  const now = new Date();
+  await db
+    .update(processingPermission)
+    .set({ revokedAt: now })
+    .where(and(eq(processingPermission.assetId, asset.id), isNull(processingPermission.revokedAt)));
+  await db
+    .insert(processingPermission)
+    .values({ ownerId: asset.ownerId, assetId: asset.id, action: "private_cloud_store", status: "allowed", basis: REVIVE_BASIS });
+  // Annotations detached by an earlier version of the delete path find their file again.
+  const reattached = await db
+    .update(annotation)
+    .set({ assetId: asset.id, mappingStatus: "needs_repair", updatedAt: KEEP_UPDATED_AT })
+    .where(
+      and(
+        eq(annotation.ownerId, asset.ownerId),
+        isNull(annotation.assetId),
+        sql`(${annotation.locator}->>'sourceVersionId' = ${`asset:${asset.sha256.slice(0, 16)}`} or ${annotation.anchor}->>'documentSha256' = ${asset.sha256})`,
+      ),
+    )
+    .returning({ id: annotation.id });
   await db.insert(auditEvent).values({
-    ownerId: input.ownerId,
-    actor: input.origin === "companion" ? `companion:${input.devicePairingId}` : "learner",
-    action: "asset:upload",
+    ownerId: asset.ownerId,
+    actor: input.actor,
+    action: "asset:revive",
     entity: "resource_asset",
-    entityId: asset!.id,
-    details: { filename: input.filename, sizeBytes: input.data.byteLength, mediaType },
+    entityId: asset.id,
+    details: { filename: input.filename, sizeBytes: input.sizeBytes, reattachedAnnotations: reattached.length },
   });
-  return { asset: asset!, outcome: "stored" };
+  return revived;
+}
+
+/**
+ * Folds a soft-deleted row into the linked Document its bytes are now arriving for (same
+ * transaction, before the promotion takes the hash): its annotations (and ones an earlier delete
+ * path detached) move to the linked Document marked for repair, its reading position moves only
+ * when the linked Document has none, and the empty row is removed with its earlier permission
+ * decisions (a soft-deleted file's decisions are not carried over, as on revive). Audit `asset:fold`.
+ */
+async function foldDeletedDocument(tx: DbOrTx, from: AssetRow, into: AssetRow, actor: string): Promise<void> {
+  const moved = await tx
+    .update(annotation)
+    .set({ assetId: into.id, mappingStatus: "needs_repair", updatedAt: KEEP_UPDATED_AT })
+    .where(
+      and(
+        eq(annotation.ownerId, from.ownerId),
+        or(
+          eq(annotation.assetId, from.id),
+          and(
+            isNull(annotation.assetId),
+            sql`(${annotation.locator}->>'sourceVersionId' = ${`asset:${from.sha256.slice(0, 16)}`} or ${annotation.anchor}->>'documentSha256' = ${from.sha256})`,
+          ),
+        ),
+      ),
+    )
+    .returning({ id: annotation.id });
+  const [intoProgress] = await tx
+    .select({ assetId: readingProgress.assetId })
+    .from(readingProgress)
+    .where(and(eq(readingProgress.ownerId, into.ownerId), eq(readingProgress.assetId, into.id)))
+    .limit(1);
+  let position: "moved" | "kept" | "none" = intoProgress ? "kept" : "none";
+  if (!intoProgress) {
+    const carried = await tx
+      .update(readingProgress)
+      .set({ assetId: into.id })
+      .where(and(eq(readingProgress.ownerId, from.ownerId), eq(readingProgress.assetId, from.id)))
+      .returning({ assetId: readingProgress.assetId });
+    if (carried.length) position = "moved";
+  }
+  const [gone] = await tx
+    .delete(resourceAsset)
+    .where(and(eq(resourceAsset.id, from.id), eq(resourceAsset.ownerId, from.ownerId), isNotNull(resourceAsset.deletedAt)))
+    .returning({ id: resourceAsset.id });
+  if (!gone) throw new LibraryError("invalid_state", "The item changed while the file was arriving; nothing was stored.");
+  await tx.insert(auditEvent).values({
+    ownerId: into.ownerId,
+    actor,
+    action: "asset:fold",
+    entity: "resource_asset",
+    entityId: into.id,
+    details: { folded: from.id, filename: from.filename, sha256: from.sha256, annotations: moved.length, position },
+  });
+}
+
+/**
+ * Re-keys the anchors measured on one file of a Document (`fromKey`) to another key of the same
+ * Document, when both are known to be the same file. `updated_at` is kept (a system update).
+ */
+async function rekeyAnchors(db: DbOrTx, assetId: string, fromKey: string, toKey: string): Promise<number> {
+  const rows = await db
+    .update(annotation)
+    .set({ anchor: sql`jsonb_set(${annotation.anchor}, '{documentSha256}', to_jsonb(${toKey}::text))`, updatedAt: KEEP_UPDATED_AT })
+    .where(and(eq(annotation.assetId, assetId), sql`${annotation.anchor}->>'documentSha256' = ${fromKey}`))
+    .returning({ id: annotation.id });
+  return rows.length;
+}
+
+/**
+ * A paper's Document is described by its work: title and authors come from the work (when it has
+ * them; an unidentified paper without a title leaves the file's own) and a quarantined Document is
+ * validated at once (the item form refuses to edit it). Returns the row.
+ */
+export async function confirmDocumentFromWork(db: DbOrTx, ownerId: string, assetId: string): Promise<AssetRow> {
+  const [row] = await db
+    .select({ title: scholarlyWork.title, authors: scholarlyWork.authors })
+    .from(resourceAsset)
+    .innerJoin(scholarlyVersion, eq(scholarlyVersion.id, resourceAsset.scholarlyVersionId))
+    .innerJoin(scholarlyWork, eq(scholarlyWork.id, scholarlyVersion.workId))
+    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)))
+    .limit(1);
+  if (row) {
+    await db
+      .update(resourceAsset)
+      .set({
+        ...(row.title ? { confirmedTitle: row.title } : {}),
+        ...(row.authors.length ? { confirmedAuthors: row.authors.map((a) => a.name) } : {}),
+        status: sql`case when ${resourceAsset.status} = 'quarantined' then 'validated' else ${resourceAsset.status} end`,
+      })
+      .where(eq(resourceAsset.id, assetId));
+  }
+  const [fresh] = await db.select().from(resourceAsset).where(eq(resourceAsset.id, assetId)).limit(1);
+  if (!fresh) throw new LibraryError("not_found", "Asset not found.");
+  return fresh;
 }
 
 export async function setCandidateMetadata(
@@ -229,19 +585,26 @@ export async function setCandidateMetadata(
     .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)));
 }
 
-/** Owner confirms what the file is and which courses it supports; validated assets may be processed. */
+/**
+ * Owner confirms what the file is and which courses it supports; validated assets may be processed.
+ * A registry link (`sourceVersionId`) is changed only when the caller passes one (null removes it).
+ * A paper's Document is described by its work, so it is refused here.
+ */
 export async function confirmMetadata(
   db: DbOrTx,
   ownerId: string,
   assetId: string,
   input: { title: string; authors: string[]; edition?: string; courseIds: string[]; sourceVersionId?: string | null },
 ): Promise<AssetRow> {
+  if (!isUuid(assetId)) throw new LibraryError("not_found", "Asset not found.");
   const [asset] = await db
     .select()
     .from(resourceAsset)
-    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId)))
+    .where(and(eq(resourceAsset.id, assetId), eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt)))
     .limit(1);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
+  if (asset.scholarlyVersionId || asset.status === "linked_remote")
+    throw new LibraryError("invalid_state", "This file belongs to a paper in your library; its details are edited on the paper's page.");
   const nextStatus = asset.status === "quarantined" ? "validated" : asset.status;
   const [updated] = await db
     .update(resourceAsset)
@@ -250,7 +613,7 @@ export async function confirmMetadata(
       confirmedAuthors: input.authors,
       confirmedEdition: input.edition ?? null,
       courseIds: input.courseIds,
-      sourceVersionId: input.sourceVersionId ?? null,
+      sourceVersionId: input.sourceVersionId === undefined ? asset.sourceVersionId : input.sourceVersionId,
       status: nextStatus,
     })
     .where(eq(resourceAsset.id, assetId))
@@ -313,6 +676,8 @@ export async function setPermission(
   if (action === "private_cloud_store" && status === "denied" && asset.storageKey && !blobs) {
     throw new Error("withdrawing private storage needs the blob store so the stored copy can be removed");
   }
+  if (action === "private_cloud_store" && status === "allowed" && asset.status === "linked_remote")
+    throw new LibraryError("invalid_state", "This paper is read from arxiv.org; keep a private copy from its paper page instead.");
   await db
     .update(processingPermission)
     .set({ revokedAt: new Date() })
@@ -338,13 +703,18 @@ export async function setPermission(
       await db.update(resourceAsset).set({ status: "upload_requested" }).where(eq(resourceAsset.id, assetId));
     }
     if (status === "denied" && asset.storageKey && blobs) {
-      // The learner withdrew storage: the copy and everything derived from it go now. A file
-      // the companion registered stays on the shelf as a local-only record; a web upload has
-      // no other home and is deleted.
-      await blobs.delete(asset.storageKey).catch(() => undefined);
+      // The learner withdrew storage: the copy and everything derived from it go now. A stored
+      // copy of an arXiv version goes back to being read from arxiv.org (same row); a file the
+      // companion registered stays on the shelf as a local-only record; a web upload has no other
+      // home and is deleted. Annotations always stay attached to their row.
+      const arxiv = await arxivVersionOf(db, asset);
+      if (arxiv) {
+        await revertToLinked(db, blobs, asset, arxiv, "learner");
+        return;
+      }
       await db.delete(passage).where(eq(passage.assetId, assetId));
       await db.delete(extractedPage).where(eq(extractedPage.assetId, assetId));
-      await db.update(annotation).set({ assetId: null, mappingStatus: "needs_repair" }).where(eq(annotation.assetId, assetId));
+      await db.update(annotation).set({ mappingStatus: "needs_repair", updatedAt: KEEP_UPDATED_AT }).where(eq(annotation.assetId, assetId));
       const localOnly = asset.origin === "companion";
       await db
         .update(resourceAsset)
@@ -354,15 +724,95 @@ export async function setPermission(
             : { status: "deleted", deletedAt: new Date(), storageKey: null },
         )
         .where(eq(resourceAsset.id, assetId));
+      await blobs.delete(asset.storageKey).catch(() => undefined);
     }
   }
 }
+
+/** The arXiv id and version of a Document's scholarly version, or null when it has none. */
+export async function arxivVersionOf(db: DbOrTx, asset: AssetRow): Promise<{ arxivId: string; arxivVersion: number } | null> {
+  if (!asset.scholarlyVersionId) return null;
+  const [version] = await db
+    .select({ arxivId: scholarlyVersion.arxivId, arxivVersion: scholarlyVersion.arxivVersion })
+    .from(scholarlyVersion)
+    .where(and(eq(scholarlyVersion.id, asset.scholarlyVersionId), eq(scholarlyVersion.ownerId, asset.ownerId)))
+    .limit(1);
+  if (!version?.arxivId || !version.arxivVersion) return null;
+  return { arxivId: version.arxivId, arxivVersion: version.arxivVersion };
+}
+
+/**
+ * A stored copy of an arXiv version goes back to `linked_remote` under the same id: the stored
+ * bytes and the text derived from them are deleted; annotations, the reading position and the
+ * permission record stay. Anchors made on the stored copy take the linked key at once only when
+ * the stored bytes are the very bytes the reader last received from arXiv (`observed_sha256`);
+ * otherwise they keep the stored file's hash and the reader's drift check decides (accepting it
+ * re-keys them). Another row already holding this version's linked key is refused with a notice.
+ * The blob is deleted after the row no longer refers to it.
+ */
+export async function revertToLinked(
+  db: DbOrTx,
+  blobs: BlobStore,
+  asset: AssetRow,
+  arxiv: { arxivId: string; arxivVersion: number },
+  actor: string,
+): Promise<AssetRow> {
+  const key = linkedDocumentKey(arxiv.arxivId, arxiv.arxivVersion);
+  const reverted = await db.transaction(async (tx) => {
+    const [holder] = await tx
+      .select({ id: resourceAsset.id })
+      .from(resourceAsset)
+      .where(and(eq(resourceAsset.ownerId, asset.ownerId), eq(resourceAsset.sha256, key), ne(resourceAsset.id, asset.id)))
+      .limit(1);
+    if (holder) throw new LibraryError("invalid_state", LINKED_KEY_TAKEN);
+    await tx.delete(passage).where(eq(passage.assetId, asset.id));
+    await tx.delete(extractedPage).where(eq(extractedPage.assetId, asset.id));
+    const sameAsObserved = asset.observedSha256 !== null && asset.observedSha256 === asset.sha256;
+    const anchorsRekeyed = sameAsObserved ? await rekeyAnchors(tx, asset.id, asset.sha256, key) : 0;
+    const [row] = await tx
+      .update(resourceAsset)
+      .set({
+        status: "linked_remote",
+        origin: "arxiv_link",
+        sha256: key,
+        storageKey: null,
+        sizeBytes: 0,
+        mediaType: "application/pdf",
+        localOnly: false,
+        rejectionReason: null,
+      })
+      .where(eq(resourceAsset.id, asset.id))
+      .returning();
+    await tx.insert(auditEvent).values({
+      ownerId: asset.ownerId,
+      actor,
+      action: "asset:remove-copy",
+      entity: "resource_asset",
+      entityId: asset.id,
+      details: { sha256: asset.sha256, arxiv: `${arxiv.arxivId}v${arxiv.arxivVersion}`, sameAsObserved, anchorsRekeyed },
+    });
+    return row!;
+  });
+  if (asset.storageKey) await blobs.delete(asset.storageKey).catch(() => undefined);
+  return reverted;
+}
+
+const LINKED_KEY_TAKEN = "Another file in your library already stands for this arXiv version, so this copy was not removed.";
 
 export async function listAssets(db: DbOrTx, ownerId: string): Promise<AssetRow[]> {
   return db
     .select()
     .from(resourceAsset)
     .where(and(eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt)))
+    .orderBy(desc(resourceAsset.createdAt));
+}
+
+/** The owner's files: every non-deleted asset except papers read from arxiv.org (nothing of theirs is stored). */
+export async function listStoredAssets(db: DbOrTx, ownerId: string): Promise<AssetRow[]> {
+  return db
+    .select()
+    .from(resourceAsset)
+    .where(and(eq(resourceAsset.ownerId, ownerId), isNull(resourceAsset.deletedAt), ne(resourceAsset.status, "linked_remote")))
     .orderBy(desc(resourceAsset.createdAt));
 }
 
@@ -385,6 +835,7 @@ export async function getAsset(db: DbOrTx, ownerId: string, assetId: string): Pr
 export async function requestIngestion(db: DbOrTx, ownerId: string, assetId: string): Promise<{ queued: boolean; reason?: string }> {
   const asset = await getAsset(db, ownerId, assetId);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
+  if (asset.status === "linked_remote") return { queued: false, reason: LINKED_NOT_EXTRACTED };
   if (!asset.storageKey)
     return { queued: false, reason: "The file has not been stored; grant private cloud storage first (or upload it)." };
   if (asset.status === "processing") return { queued: false, reason: "This item is already being processed." };
@@ -404,34 +855,56 @@ export async function requestIngestion(db: DbOrTx, ownerId: string, assetId: str
     .from(jobRecord)
     .where(like(jobRecord.idempotencyKey, `${baseKey}%`));
   const idempotencyKey = prior && prior.n > 0 ? `${baseKey}#r${prior.n}` : baseKey;
-  const previousStatus = asset.status;
-  await db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, assetId));
   const payload = IngestAssetPayload.parse({ idempotencyKey, ownerId, assetId });
-  const result = await enqueue(db, { queue: QUEUES.ingestAsset, kind: "ingest-asset", payload, singletonKey: asset.sha256 });
-  if (!result.created) {
-    await db.update(resourceAsset).set({ status: previousStatus }).where(eq(resourceAsset.id, assetId));
-    return { queued: false, reason: "A job for this file already exists; see the jobs page." };
+  // The status change and the job are one transaction: a failed enqueue leaves the item as it was.
+  try {
+    await db.transaction(async (tx) => {
+      await tx.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, assetId));
+      const result = await enqueue(tx, { queue: QUEUES.ingestAsset, kind: "ingest-asset", payload, singletonKey: asset.sha256 });
+      if (!result.created) throw new NotQueued();
+    });
+  } catch (error) {
+    if (error instanceof NotQueued) return { queued: false, reason: "A job for this file already exists; see the jobs page." };
+    throw error;
   }
   return { queued: true };
 }
 
-/** Deletes originals, extracted text, passages and annotations' mapping; keeps the audit trail. */
+class NotQueued extends Error {}
+
+const LINKED_NOT_EXTRACTED = "This paper is read from arxiv.org; nothing is stored here to extract.";
+
+/**
+ * Deletes originals, extracted text and passages; keeps the audit trail. Annotations stay attached
+ * to the soft-deleted row and are marked for repair (readers check `deleted_at`), so re-adding the
+ * same file brings them back. A stored copy of an arXiv version goes back to being read from
+ * arxiv.org instead; a paper read from arxiv.org has nothing to delete.
+ */
 export async function deleteAsset(db: DbOrTx, blobs: BlobStore, ownerId: string, assetId: string): Promise<void> {
   const asset = await getAsset(db, ownerId, assetId);
   if (!asset) return;
-  if (asset.storageKey) await blobs.delete(asset.storageKey).catch(() => undefined);
-  await db.delete(passage).where(eq(passage.assetId, assetId));
-  await db.delete(extractedPage).where(eq(extractedPage.assetId, assetId));
-  await db.update(annotation).set({ assetId: null, mappingStatus: "needs_repair" }).where(eq(annotation.assetId, assetId));
-  await db.update(resourceAsset).set({ status: "deleted", deletedAt: new Date(), storageKey: null }).where(eq(resourceAsset.id, assetId));
-  await db.insert(auditEvent).values({
-    ownerId,
-    actor: "learner",
-    action: "asset:delete",
-    entity: "resource_asset",
-    entityId: assetId,
-    details: { filename: asset.filename },
+  if (asset.status === "linked_remote")
+    throw new LibraryError("invalid_state", "A paper read from arxiv.org has no stored file to delete.");
+  const arxiv = await arxivVersionOf(db, asset);
+  if (arxiv) {
+    await revertToLinked(db, blobs, asset, arxiv, "learner");
+    return;
+  }
+  await db.transaction(async (tx) => {
+    await tx.delete(passage).where(eq(passage.assetId, assetId));
+    await tx.delete(extractedPage).where(eq(extractedPage.assetId, assetId));
+    await tx.update(annotation).set({ mappingStatus: "needs_repair", updatedAt: KEEP_UPDATED_AT }).where(eq(annotation.assetId, assetId));
+    await tx.update(resourceAsset).set({ status: "deleted", deletedAt: new Date(), storageKey: null }).where(eq(resourceAsset.id, assetId));
+    await tx.insert(auditEvent).values({
+      ownerId,
+      actor: "learner",
+      action: "asset:delete",
+      entity: "resource_asset",
+      entityId: assetId,
+      details: { filename: asset.filename },
+    });
   });
+  if (asset.storageKey) await blobs.delete(asset.storageKey).catch(() => undefined);
 }
 
 export async function listPages(db: DbOrTx, assetId: string) {
@@ -702,6 +1175,19 @@ export async function localOnlyAssetsForCourse(db: DbOrTx, ownerId: string, cour
 
 export type AnnotationRow = typeof annotation.$inferSelect;
 
+/** The engine an anchor's rects were measured with; the server fills it, never the client. */
+export const ANNOTATION_ENGINE = "pdfjs-dist@6.4.299";
+/** Annotation colours are colour-role names of the design system. */
+export const ANNOTATION_COLORS = ["brass", "moss", "rust", "slate", "neutral"] as const;
+export type AnnotationColor = (typeof ANNOTATION_COLORS)[number];
+export const MAX_ANNOTATION_NOTE_CHARS = 20_000;
+const MAX_SELECTED_TEXT_CHARS = 2000;
+/**
+ * System updates of an annotation (repair flags, re-attachment) keep its `updated_at`, so an edit
+ * the owner has open does not report a conflict for a change it did not make.
+ */
+const KEEP_UPDATED_AT = sql`"annotation"."updated_at"`;
+
 export async function getReadingProgress(db: DbOrTx, ownerId: string, assetId: string): Promise<number> {
   const rows = await db
     .select({ physicalIndex: readingProgress.physicalIndex })
@@ -711,12 +1197,91 @@ export async function getReadingProgress(db: DbOrTx, ownerId: string, assetId: s
   return rows[0]?.physicalIndex ?? 0;
 }
 
+export interface ReadingPositionState {
+  physicalIndex: number;
+  position: ReadingPosition | null;
+  effectiveAt: Date | null;
+  lastOpenedAt: Date | null;
+  updatedAt: Date;
+}
+
+/** Where the owner was in a Document (page and position inside it), or null when never saved or opened. */
+export async function getReadingPosition(db: DbOrTx, ownerId: string, assetId: string): Promise<ReadingPositionState | null> {
+  if (!isUuid(assetId)) return null;
+  const [row] = await db
+    .select({
+      physicalIndex: readingProgress.physicalIndex,
+      position: readingProgress.position,
+      effectiveAt: readingProgress.effectiveAt,
+      lastOpenedAt: readingProgress.lastOpenedAt,
+      updatedAt: readingProgress.updatedAt,
+    })
+    .from(readingProgress)
+    .where(and(eq(readingProgress.ownerId, ownerId), eq(readingProgress.assetId, assetId)))
+    .limit(1);
+  return row ?? null;
+}
+
+/**
+ * The reading-position rule (contract §3), the one writer of `physical_index` and `position`.
+ * Saves are ordered on the database server's clock: the reader sends how long ago it last moved
+ * (`changedAgoMs`), the stored `effective_at` is `now() − clamp(changedAgoMs, 0, 10 min)`, and a
+ * save replaces the stored position only when its effective time is strictly later. A device's
+ * own clock never takes part, so devices that disagree about the time cannot freeze a position.
+ */
+export async function saveReadingPosition(
+  db: DbOrTx,
+  ownerId: string,
+  assetId: string,
+  save: unknown,
+): Promise<{ accepted: boolean; position: ReadingPosition; effectiveAt: Date | null }> {
+  const parsed = PositionSaveSchema.safeParse(save);
+  if (!parsed.success) throw new LibraryError("invalid_state", "The reading position is not valid.");
+  const asset = await getAsset(db, ownerId, assetId);
+  if (!asset) throw new LibraryError("not_found", "Asset not found.");
+  const position = clampPosition(parsed.data.position, asset.pageCount);
+  const ageMs = Math.min(Math.max(parsed.data.changedAgoMs, 0), MAX_CHANGED_AGO_MS);
+  const result = await db.execute(sql`
+    insert into reading_progress (owner_id, asset_id, physical_index, position, effective_at, updated_at)
+    values (${ownerId}, ${asset.id}, ${position.pageIndex}, ${JSON.stringify(position)}::jsonb,
+            now() - make_interval(secs => ${ageMs / 1000}::double precision), now())
+    on conflict (owner_id, asset_id) do update
+      set physical_index = excluded.physical_index,
+          position = excluded.position,
+          effective_at = excluded.effective_at,
+          updated_at = excluded.updated_at
+      where reading_progress.effective_at is null or excluded.effective_at > reading_progress.effective_at
+    returning effective_at`);
+  const accepted = result.rows.length > 0;
+  if (accepted) {
+    const effectiveAt = (result.rows[0] as { effective_at: Date | string }).effective_at;
+    return { accepted, position, effectiveAt: new Date(effectiveAt) };
+  }
+  const stored = await getReadingPosition(db, ownerId, asset.id);
+  return { accepted, position: stored?.position ?? position, effectiveAt: stored?.effectiveAt ?? null };
+}
+
+/**
+ * The Text view's page save: the same rule as `saveReadingPosition` with the position inside the
+ * page cleared (top-left of the page, the remembered zoom kept).
+ */
 export async function saveReadingProgress(db: DbOrTx, ownerId: string, assetId: string, physicalIndex: number): Promise<void> {
   if (!(await getAsset(db, ownerId, assetId))) throw new LibraryError("not_found", "Asset not found.");
+  const stored = await getReadingPosition(db, ownerId, assetId);
+  await saveReadingPosition(db, ownerId, assetId, {
+    position: { pageIndex: physicalIndex, top: 0, left: 0, zoom: stored?.position?.zoom ?? 1 },
+    changedAgoMs: 0,
+  });
+}
+
+/** Records that the owner opened a Document (for *Continue reading*); the position is not touched. */
+export async function markDocumentOpened(db: DbOrTx, ownerId: string, assetId: string): Promise<void> {
+  const asset = await getAsset(db, ownerId, assetId);
+  if (!asset) throw new LibraryError("not_found", "Asset not found.");
   await db
     .insert(readingProgress)
-    .values({ ownerId, assetId, physicalIndex })
-    .onConflictDoUpdate({ target: [readingProgress.ownerId, readingProgress.assetId], set: { physicalIndex, updatedAt: new Date() } });
+    .values({ ownerId, assetId: asset.id, physicalIndex: 0, lastOpenedAt: new Date() })
+    .onConflictDoUpdate({ target: [readingProgress.ownerId, readingProgress.assetId], set: { lastOpenedAt: new Date() } });
 }
 
 /** Headings seen in the extracted text (theorem, definition, chapter labels), in page order. */
@@ -749,30 +1314,116 @@ export interface ReadingNote {
   page: number | null;
   createdAt: Date;
   mappingStatus: "resolved" | "needs_repair";
+  kind: AnnotationKind;
+  color: string | null;
+  quoteMatched: boolean | null;
+  updatedAt: Date;
+  /** The paper the Document belongs to, when it is a paper's file. */
+  workId: string | null;
+  workTitle: string | null;
+  versionLabel: string | null;
+  /** The Document was deleted (the note stays, marked for repair). */
+  documentDeleted: boolean;
 }
 
-/** Notes written in the reading room, newest first, so the notebook can show and search them. */
-export async function listReadingNotes(db: DbOrTx, ownerId: string, query?: string, limit = 50): Promise<ReadingNote[]> {
+export interface ReadingNotesQuery {
+  /** Full-text search over the note and the selected text. */
+  query?: string;
+  kind?: AnnotationKind;
+  workId?: string;
+  collectionId?: string;
+  limit?: number;
+  offset?: number;
+}
+
+const READING_NOTE_KINDS: readonly AnnotationKind[] = ["note", "highlight", "bookmark"];
+
+/**
+ * Every annotation (notes, highlights, bookmarks), newest first, searched and filtered in SQL: by
+ * kind, by paper, by shelf or trail. `nextOffset` is set when more follow.
+ */
+export async function readingNotesPage(
+  db: DbOrTx,
+  ownerId: string,
+  filters: ReadingNotesQuery = {},
+): Promise<{ notes: ReadingNote[]; nextOffset: number | null }> {
+  const limit = Math.min(Math.max(Math.trunc(filters.limit ?? 50), 1), 200);
+  const offset = Math.max(Math.trunc(filters.offset ?? 0), 0);
+  const conditions: SQL[] = [eq(annotation.ownerId, ownerId)];
+  const q = filters.query?.trim();
+  if (q) conditions.push(sql`${annotation.tsv} @@ websearch_to_tsquery('english', ${q.slice(0, 300)})`);
+  if (filters.kind) {
+    if (!READING_NOTE_KINDS.includes(filters.kind)) return { notes: [], nextOffset: null };
+    conditions.push(eq(annotation.kind, filters.kind));
+  }
+  if (filters.workId !== undefined) {
+    if (!isUuid(filters.workId)) return { notes: [], nextOffset: null };
+    conditions.push(eq(scholarlyVersion.workId, filters.workId));
+  }
+  if (filters.collectionId !== undefined) {
+    if (!isUuid(filters.collectionId)) return { notes: [], nextOffset: null };
+    conditions.push(
+      inArray(
+        scholarlyVersion.workId,
+        db
+          .select({ workId: libraryCollectionItem.workId })
+          .from(libraryCollectionItem)
+          .where(and(eq(libraryCollectionItem.collectionId, filters.collectionId), eq(libraryCollectionItem.ownerId, ownerId))),
+      ),
+    );
+  }
   const rows = await db
-    .select({ annotation, title: resourceAsset.confirmedTitle, filename: resourceAsset.filename })
+    .select({
+      annotation,
+      title: resourceAsset.confirmedTitle,
+      filename: resourceAsset.filename,
+      deletedAt: resourceAsset.deletedAt,
+      versionLabel: scholarlyVersion.label,
+      workId: scholarlyWork.id,
+      workTitle: scholarlyWork.title,
+    })
     .from(annotation)
     .leftJoin(resourceAsset, eq(annotation.assetId, resourceAsset.id))
-    .where(and(eq(annotation.ownerId, ownerId), sql`length(${annotation.noteMarkdown}) > 0`))
-    .orderBy(desc(annotation.updatedAt))
-    .limit(limit);
-  const q = query?.trim().toLowerCase();
-  return rows
-    .filter((r) => !q || r.annotation.noteMarkdown.toLowerCase().includes(q) || (r.annotation.selectedText ?? "").toLowerCase().includes(q))
-    .map((r) => ({
-      id: r.annotation.id,
-      assetId: r.annotation.assetId,
-      item: r.title ?? r.filename ?? "(item removed)",
-      note: r.annotation.noteMarkdown,
-      selectedText: r.annotation.selectedText,
-      page: r.annotation.locator.kind === "pdf" ? r.annotation.locator.physicalPageIndex + 1 : null,
-      createdAt: r.annotation.createdAt,
-      mappingStatus: r.annotation.mappingStatus,
-    }));
+    .leftJoin(scholarlyVersion, eq(resourceAsset.scholarlyVersionId, scholarlyVersion.id))
+    .leftJoin(scholarlyWork, eq(scholarlyVersion.workId, scholarlyWork.id))
+    .where(and(...conditions))
+    .orderBy(desc(annotation.updatedAt), desc(annotation.id))
+    .limit(limit + 1)
+    .offset(offset);
+  const notes = rows.slice(0, limit).map((r) => ({
+    id: r.annotation.id,
+    assetId: r.annotation.assetId,
+    item: r.workTitle ?? r.title ?? r.filename ?? "(item removed)",
+    note: r.annotation.noteMarkdown,
+    selectedText: r.annotation.selectedText,
+    page: r.annotation.anchor
+      ? r.annotation.anchor.pageIndex + 1
+      : r.annotation.locator.kind === "pdf"
+        ? r.annotation.locator.physicalPageIndex + 1
+        : null,
+    createdAt: r.annotation.createdAt,
+    mappingStatus: r.annotation.mappingStatus,
+    kind: r.annotation.kind,
+    color: r.annotation.color,
+    quoteMatched: r.annotation.quoteMatched,
+    updatedAt: r.annotation.updatedAt,
+    workId: r.workId,
+    workTitle: r.workTitle,
+    versionLabel: r.versionLabel,
+    documentDeleted: Boolean(r.deletedAt),
+  }));
+  return { notes, nextOffset: rows.length > limit ? offset + limit : null };
+}
+
+/** The notebook's reading notes: a search string (the earlier form) or the full filter set. */
+export async function listReadingNotes(
+  db: DbOrTx,
+  ownerId: string,
+  queryOrFilters?: string | ReadingNotesQuery,
+  limit = 50,
+): Promise<ReadingNote[]> {
+  const filters = typeof queryOrFilters === "string" || queryOrFilters === undefined ? { query: queryOrFilters } : queryOrFilters;
+  return (await readingNotesPage(db, ownerId, { limit, ...filters })).notes;
 }
 
 export async function listAnnotations(db: DbOrTx, ownerId: string, assetId: string): Promise<AnnotationRow[]> {
@@ -783,19 +1434,60 @@ export async function listAnnotations(db: DbOrTx, ownerId: string, assetId: stri
     .orderBy(asc(annotation.createdAt));
 }
 
+/** Whether page `index` exists on this Document as far as the server can tell. */
+function pageKnownToExist(asset: AssetRow, index: number, extracted: boolean): boolean {
+  if (extracted) return true;
+  if (asset.pageCount != null) return index < asset.pageCount;
+  // A paper read from arxiv.org whose page count the reader has not reported yet.
+  return asset.status === "linked_remote";
+}
+
 /**
  * An annotation stores a locator (physical page, printed label, passage) rather than a row
  * reference, so it survives re-ingestion; `reconcileAnnotations` re-checks the mapping and
- * flags, never moves, anything that no longer resolves.
+ * flags, never moves, anything that no longer resolves. Highlights, area notes and bookmarks also
+ * carry an anchor: rects in PDF user space with the owner's quote; the server fills the engine and
+ * the Document key (`documentSha256`). The quote never decides whether an annotation is drawable;
+ * it only sets `quote_matched` when the extracted page can be compared.
  */
 export async function createAnnotation(
   db: DbOrTx,
   ownerId: string,
-  input: { assetId: string; physicalIndex: number; selectedText?: string; noteMarkdown: string; passageId?: string },
+  input: {
+    assetId: string;
+    physicalIndex: number;
+    selectedText?: string;
+    noteMarkdown?: string;
+    passageId?: string;
+    kind?: AnnotationKind;
+    color?: string | null;
+    /** What the reader sends (core `AnchorInputSchema`); validated and completed here. */
+    anchor?: unknown;
+  },
 ): Promise<AnnotationRow> {
   const asset = await getAsset(db, ownerId, input.assetId);
   if (!asset) throw new LibraryError("not_found", "Asset not found.");
+  const kind = input.kind ?? "note";
+  if (!READING_NOTE_KINDS.includes(kind)) throw new LibraryError("invalid_state", "Unknown annotation kind.");
+  const color = parseColor(input.color);
+  let anchor: AnnotationRow["anchor"] = null;
+  if (input.anchor !== undefined && input.anchor !== null) {
+    try {
+      anchor = buildAnchor(input.anchor, { engine: ANNOTATION_ENGINE, documentSha256: asset.sha256 });
+    } catch {
+      throw new LibraryError("invalid_state", "The annotation's place on the page is not valid.");
+    }
+    if (anchor.pageIndex !== input.physicalIndex)
+      throw new LibraryError("invalid_state", "The annotation's place on the page is not valid.");
+  }
+  const note = (input.noteMarkdown ?? "").slice(0, MAX_ANNOTATION_NOTE_CHARS);
+  if (kind === "note" && !note.trim()) throw new LibraryError("invalid_state", "Write a note before saving.");
+  if (kind === "highlight" && !anchor?.rects.length)
+    throw new LibraryError("invalid_state", "A highlight needs the marked area of the page.");
+  if (!Number.isInteger(input.physicalIndex) || input.physicalIndex < 0)
+    throw new LibraryError("invalid_state", "The annotation's place on the page is not valid.");
   const page = await getPage(db, asset.id, input.physicalIndex);
+  const quote = anchor?.quote ?? input.selectedText?.trim() ?? null;
   const loc: Locator = {
     kind: "pdf",
     sourceVersionId: asset.sourceVersionId ?? `asset:${asset.sha256.slice(0, 16)}`,
@@ -803,6 +1495,8 @@ export async function createAnnotation(
     printedPageLabel: page?.printedLabel ?? undefined,
     passageId: input.passageId,
   };
+  const anchored = Boolean(anchor) || kind === "bookmark";
+  const resolved = anchored ? pageKnownToExist(asset, input.physicalIndex, Boolean(page)) : Boolean(page);
   const [row] = await db
     .insert(annotation)
     .values({
@@ -810,33 +1504,141 @@ export async function createAnnotation(
       assetId: asset.id,
       sourceVersionId: asset.sourceVersionId ?? null,
       locator: loc,
-      selectedText: input.selectedText?.slice(0, 2000) ?? null,
-      noteMarkdown: input.noteMarkdown,
-      mappingStatus: page ? "resolved" : "needs_repair",
+      selectedText: quote ? quote.slice(0, MAX_SELECTED_TEXT_CHARS) : null,
+      noteMarkdown: note,
+      mappingStatus: resolved ? "resolved" : "needs_repair",
+      kind,
+      color,
+      anchor,
+      quoteMatched: anchor?.quote && page ? quoteFoundIn(anchor.quote, page.text) : null,
+      updatedAt: new Date(),
     })
     .returning();
   return row!;
 }
 
+function parseColor(value: string | null | undefined): AnnotationColor | null {
+  if (value === undefined || value === null || value === "") return null;
+  if (!(ANNOTATION_COLORS as readonly string[]).includes(value)) throw new LibraryError("invalid_state", "Unknown highlight colour.");
+  return value as AnnotationColor;
+}
+
+/**
+ * Edits an annotation's note or colour. The edit carries the `updatedAt` the editor last saw; if
+ * the row changed since (another device saved first), nothing is written and an
+ * `AnnotationConflictError` carries the current row so both texts can be shown.
+ */
+export async function updateAnnotation(
+  db: DbOrTx,
+  ownerId: string,
+  id: string,
+  input: { noteMarkdown?: string; color?: string | null; expectedUpdatedAt: Date | string },
+): Promise<AnnotationRow> {
+  if (!isUuid(id)) throw new LibraryError("not_found", "Annotation not found.");
+  const expected = new Date(input.expectedUpdatedAt);
+  if (Number.isNaN(expected.getTime())) throw new LibraryError("invalid_state", "The edit does not say which version it changes.");
+  const [current] = await db
+    .select()
+    .from(annotation)
+    .where(and(eq(annotation.id, id), eq(annotation.ownerId, ownerId)))
+    .limit(1);
+  if (!current) throw new LibraryError("not_found", "Annotation not found.");
+  const patch: Partial<typeof annotation.$inferInsert> = { updatedAt: new Date() };
+  if (input.noteMarkdown !== undefined) {
+    const note = input.noteMarkdown.slice(0, MAX_ANNOTATION_NOTE_CHARS);
+    if (current.kind === "note" && !note.trim()) throw new LibraryError("invalid_state", "Write a note before saving.");
+    patch.noteMarkdown = note;
+  }
+  if (input.color !== undefined) patch.color = parseColor(input.color);
+  const [updated] = await db
+    .update(annotation)
+    .set(patch)
+    .where(
+      and(
+        eq(annotation.id, id),
+        eq(annotation.ownerId, ownerId),
+        sql`date_trunc('milliseconds', ${annotation.updatedAt}) = date_trunc('milliseconds', ${expected.toISOString()}::timestamptz)`,
+      ),
+    )
+    .returning();
+  if (updated) return updated;
+  const [latest] = await db.select().from(annotation).where(eq(annotation.id, id)).limit(1);
+  throw new AnnotationConflictError(latest ?? current);
+}
+
 export async function deleteAnnotation(db: DbOrTx, ownerId: string, id: string): Promise<void> {
+  if (!isUuid(id)) return;
   await db.delete(annotation).where(and(eq(annotation.id, id), eq(annotation.ownerId, ownerId)));
 }
 
+/** The page geometry of a Document's file as the extraction measured it. */
+export interface PageGeometry {
+  /** [width, height] of every page in PDF user space, by index (pdf.js `page.view`, unrotated). */
+  pageViews: readonly (readonly [number, number])[];
+  /** The page count recorded for the Document before this extraction, when known. */
+  previousPageCount?: number | null;
+}
+
+/**
+ * Re-checks every annotation of a Document after a (re-)extraction. An annotation with rects is
+ * drawable whenever its page exists on the same file (`documentSha256` equals the Document's
+ * key), whatever its quote says; the quote only sets `quote_matched`. Rects measured on another
+ * file of this Document (arXiv's file before a promotion, or an earlier stored copy) are carried
+ * over only when the extraction's geometry passes the drift check for every annotation measured on
+ * that file (page count unchanged when known, each annotated page the same size); they then take
+ * this file's key. Without geometry, or when it differs, they need repair. An annotation without
+ * rects (an older note) resolves when its page exists and its selected text is found there.
+ */
 export async function reconcileAnnotations(
   db: DbOrTx,
   ownerId: string,
   assetId: string,
+  geometry?: PageGeometry,
 ): Promise<{ resolved: number; needsRepair: number }> {
+  const asset = await getAsset(db, ownerId, assetId);
+  if (!asset) return { resolved: 0, needsRepair: 0 };
   const rows = await listAnnotations(db, ownerId, assetId);
+  const carried = new Set<string>();
+  if (geometry) {
+    const otherFiles = new Map<string, AnnotationRow[]>();
+    for (const a of rows) {
+      if (!a.anchor || (a.anchor.rects as AnchorRect[]).length === 0 || a.anchor.documentSha256 === asset.sha256) continue;
+      otherFiles.set(a.anchor.documentSha256, [...(otherFiles.get(a.anchor.documentSha256) ?? []), a]);
+    }
+    for (const [key, group] of otherFiles) {
+      const drift = checkDrift({
+        anchors: group.map((a) => ({ pageIndex: a.anchor!.pageIndex, pageView: a.anchor!.pageView })),
+        pageCount: geometry.pageViews.length,
+        pageViews: geometry.pageViews,
+        previousPageCount: geometry.previousPageCount,
+      });
+      if (!drift.geometryMatches) continue;
+      await rekeyAnchors(db, asset.id, key, asset.sha256);
+      for (const a of group) carried.add(a.id);
+    }
+  }
   let resolved = 0;
   let needsRepair = 0;
   for (const a of rows) {
-    if (a.locator.kind !== "pdf") continue;
-    const page = await getPage(db, assetId, a.locator.physicalPageIndex);
-    const ok = Boolean(page) && (!a.selectedText || squash(page!.text).includes(squash(a.selectedText)));
+    const index = a.anchor ? a.anchor.pageIndex : a.locator.kind === "pdf" ? a.locator.physicalPageIndex : null;
+    if (index === null) continue;
+    const page = await getPage(db, assetId, index);
+    let ok: boolean;
+    let quoteMatched: boolean | null = a.quoteMatched;
+    if (a.anchor && (a.anchor.rects as AnchorRect[]).length > 0) {
+      const sameFile = a.anchor.documentSha256 === asset.sha256 || carried.has(a.id);
+      ok = sameFile && pageKnownToExist(asset, index, Boolean(page));
+      quoteMatched = a.anchor.quote && page ? quoteFoundIn(a.anchor.quote, page.text) : null;
+    } else if (a.kind === "bookmark") {
+      ok = pageKnownToExist(asset, index, Boolean(page));
+    } else {
+      ok =
+        Boolean(page) &&
+        (!a.selectedText || squash(page!.text).includes(squash(a.selectedText)) || quoteFoundIn(a.selectedText, page!.text));
+    }
     await db
       .update(annotation)
-      .set({ mappingStatus: ok ? "resolved" : "needs_repair" })
+      .set({ mappingStatus: ok ? "resolved" : "needs_repair", quoteMatched, updatedAt: KEEP_UPDATED_AT })
       .where(eq(annotation.id, a.id));
     if (ok) resolved++;
     else needsRepair++;

@@ -1,7 +1,7 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
-import { QUEUES, type QueueName } from "../jobs";
+import { ARXIV_SINGLETON_KEY, QUEUES, type QueueName } from "../jobs";
 import { enqueue, getBoss } from "../queue";
 import { jobRecord, resourceAsset } from "../schema/index";
 
@@ -93,7 +93,8 @@ export async function retryJob(db: DbOrTx, ownerId: string, jobId: string): Prom
     queue: job.queue as QueueName,
     kind: job.kind,
     payload,
-    singletonKey: `${job.kind}:${payload.idempotencyKey}`,
+    // arXiv jobs keep the shared key, so a retried one still waits for any other arXiv job.
+    singletonKey: job.queue === QUEUES.scholarlyArxiv ? ARXIV_SINGLETON_KEY : `${job.kind}:${payload.idempotencyKey}`,
   });
   return { ok: true, newJobId: result.jobRecordId };
 }

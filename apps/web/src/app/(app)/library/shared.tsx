@@ -5,12 +5,13 @@ import { Badge, Notice } from "@/components/ui";
 import { errorNotice } from "@/lib/notices";
 
 export const TABS = [
-  { href: "/library", label: "Shelf" },
+  { href: "/library", label: "My library" },
+  { href: "/library/discover", label: "Discover" },
+  { href: "/library/find", label: "Find papers" },
+  { href: "/library/shelves", label: "Shelves" },
+  { href: "/library/trails", label: "Trails" },
   { href: "/library/sources", label: "Sources" },
   { href: "/library/requests", label: "Books to obtain" },
-  { href: "/library/upload", label: "Upload" },
-  { href: "/library/sync", label: "Desktop sync" },
-  { href: "/library/jobs", label: "Jobs" },
 ] as const;
 
 export type SyncState = "online" | "paused" | "offline";
@@ -42,14 +43,15 @@ export function SyncBadge({ state }: { state: SyncState }) {
   );
 }
 
-export function LibraryHeader({ title, lede, active, sync }: { title: string; lede?: string; active: string; sync: SyncState }) {
+/** The Library's header: title, optional lede, the section tabs; the sync badge only where `sync` is given (home and material pages). */
+export function LibraryHeader({ title, lede, active, sync }: { title: string; lede?: string; active: string; sync?: SyncState }) {
   return (
     <header className="mb-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="mt-1 text-3xl text-ink">{title}</h1>
         </div>
-        <SyncBadge state={sync} />
+        {sync ? <SyncBadge state={sync} /> : null}
       </div>
       {lede ? <p className="mt-2 max-w-prose text-sm text-ink-2">{lede}</p> : null}
       <nav aria-label="Library sections" className="mt-4 flex gap-1 overflow-x-auto border-b border-stone">
@@ -92,6 +94,11 @@ export const ASSET_STATUS: Record<AssetStatus, { label: string; tone: "neutral" 
   },
   rejected: { label: "Rejected", tone: "rust", help: "The file could not be processed; the reason is on the item page." },
   deleted: { label: "Deleted", tone: "neutral", help: "Removed." },
+  linked_remote: {
+    label: "Read from arXiv",
+    tone: "slate",
+    help: "Your browser reads this paper's PDF directly from arxiv.org; nothing of it is stored here.",
+  },
 };
 
 export function AssetStatusBadge({ status }: { status: AssetStatus }) {

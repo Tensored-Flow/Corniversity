@@ -1,11 +1,24 @@
 import { createBlobStore } from "@corniversity/db/blob";
 import { IngestAssetPayload } from "@corniversity/db/jobs";
 import { extractedPage, passage, resourceAsset } from "@corniversity/db/schema/index";
-import { getAsset, isAllowed, MAX_PDF_PAGES } from "@corniversity/db/services/library";
+import { getAsset, isAllowed, MAX_PDF_PAGES, reconcileAnnotations } from "@corniversity/db/services/library";
 import { eq } from "drizzle-orm";
 import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
 import { type HandlerContext, NonRetryableError } from "./index";
 import { reportProgress } from "./job-record";
+
+/**
+ * Options for unpdf's PDF engine, pinned so extracted text does not change when pdfjs-dist is
+ * installed beside it (the reader's engine): unpdf would otherwise switch to that package's
+ * standard fonts, CMaps and wasm decoders in Node. Its own bundled engine and system fonts stay.
+ */
+export const EXTRACTION_PDF_OPTIONS = {
+  maxImageSize: 16_777_216,
+  useSystemFonts: true,
+  standardFontDataUrl: undefined,
+  cMapUrl: undefined,
+  wasmUrl: undefined,
+} as const;
 
 /**
  * Ingestion: original bytes → validated document → per-page native text with physical index and
@@ -40,11 +53,13 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
   let quality: { textLength: number; invisibleTextLength: number; imageCoverage: number }[] = [];
   let title: string | undefined;
   let author: string | undefined;
+  /** [width, height] of each page in PDF user space (pdf.js `page.view`), for the anchors' geometry check. */
+  let pageViews: [number, number][] | null = null;
 
   if (asset.mediaType === "application/pdf") {
     let pdf: Awaited<ReturnType<typeof getDocumentProxy>>;
     try {
-      pdf = await getDocumentProxy(new Uint8Array(data), { maxImageSize: 16_777_216 });
+      pdf = await getDocumentProxy(new Uint8Array(data), { ...EXTRACTION_PDF_OPTIONS });
       if (pdf.numPages > MAX_PDF_PAGES) throw new Error(`${pdf.numPages} pages exceeds the ${MAX_PDF_PAGES}-page limit`);
       labels = (await pdf.getPageLabels()) ?? null;
       const meta = await getMeta(pdf).catch(() => ({ info: {} as Record<string, unknown> }));
@@ -58,6 +73,11 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
         invisibleTextLength: p.invisibleTextLength,
         imageCoverage: p.imageCoverage,
       }));
+      pageViews = [];
+      for (let n = 1; n <= pdf.numPages; n++) {
+        const [x1, y1, x2, y2] = (await pdf.getPage(n)).view as [number, number, number, number];
+        pageViews.push([x2 - x1, y2 - y1]);
+      }
     } catch (error) {
       // A file that cannot be parsed will not parse better on retry: record why, keep the
       // original bytes (the owner may still read them in the source view) and stop.
@@ -132,8 +152,17 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
       })
       .where(eq(resourceAsset.id, asset.id));
   });
+  // Annotations keep their locators across re-extraction; re-check each against the new text, and
+  // rects measured on another file of this Document (arXiv's, before a promotion) against this
+  // file's page geometry.
+  const reconciled = await reconcileAnnotations(
+    db,
+    payload.ownerId,
+    asset.id,
+    pageViews ? { pageViews, previousPageCount: asset.pageCount } : undefined,
+  );
   await reportProgress(db, raw, { stage: "done", percent: 100 });
-  return { pages: pagesText.length, printedLabels: Boolean(labels) };
+  return { pages: pagesText.length, printedLabels: Boolean(labels), annotationsNeedingRepair: reconciled.needsRepair };
 }
 
 const HEADING = /^(definition|theorem|proposition|lemma|corollary|example|remark|exercise|proof|chapter|section|§)\b.{0,80}$/i;

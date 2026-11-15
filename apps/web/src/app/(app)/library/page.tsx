@@ -2,10 +2,10 @@ import { listJobs } from "@corniversity/db/services/jobs-admin";
 import {
   companionState,
   getPermissions,
-  listAssets,
   listPairings,
   listResourceRequests,
   listSourceRegistry,
+  listStoredAssets,
 } from "@corniversity/db/services/library";
 import Link from "next/link";
 import { Badge, Card, EmptyState, LinkButton, Notice } from "@/components/ui";
@@ -26,7 +26,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   const database = db();
   const ownerId = session.user.id;
   const [assets, pairings, registry, requests, jobs] = await Promise.all([
-    listAssets(database, ownerId),
+    listStoredAssets(database, ownerId),
     listPairings(database, ownerId),
     listSourceRegistry(database),
     listResourceRequests(database, ownerId),
@@ -100,6 +100,20 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
         </div>
       ) : null}
 
+      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-xl text-ink">Files</h2>
+        <p className="flex flex-wrap gap-3 text-sm">
+          <Link href="/library/upload" className="text-brass underline underline-offset-4">
+            Upload
+          </Link>
+          <Link href="/library/sync" className="text-brass underline underline-offset-4">
+            Desktop sync
+          </Link>
+          <Link href="/library/jobs" className="text-brass underline underline-offset-4">
+            Jobs
+          </Link>
+        </p>
+      </div>
       {assets.length === 0 ? (
         <EmptyState
           title="Your shelf is empty"
@@ -122,11 +136,11 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
             <Card as="li" key={asset.id}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <h2 className="text-lg text-ink">
+                  <h3 className="text-lg text-ink">
                     <Link href={`/library/items/${asset.id}`} className="hover:underline">
                       {assetTitle(asset)}
                     </Link>
-                  </h2>
+                  </h3>
                   <p className="text-sm text-ink-2">
                     {[
                       asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author,

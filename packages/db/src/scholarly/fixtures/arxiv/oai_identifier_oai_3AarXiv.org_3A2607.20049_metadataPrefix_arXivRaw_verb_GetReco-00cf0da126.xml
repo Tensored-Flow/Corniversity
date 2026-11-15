@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2026-11-15T03:13:34Z</responseDate>
+                <request verb="GetRecord" identifier="oai:arXiv.org:2607.20049" metadataPrefix="arXivRaw">http://oaipmh.arxiv.org/oai</request>
+
+
+    <GetRecord>
+                <record>
+                <header>
+        <identifier>oai:arXiv.org:2607.20049</identifier>
+        <datestamp>2026-07-24</datestamp>
+            <setSpec>math:math:AC</setSpec>
+            <setSpec>math:math:AG</setSpec>
+            <setSpec>math:math:RA</setSpec>
+    </header>
+
+            <metadata>
+                        <arXivRaw xmlns="http://arxiv.org/OAI/arXivRaw/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arxiv.org/OAI/arXivRaw/ https://oaipmh.arxiv.org/OAI/arXivRaw.xsd">
+        <id>2607.20049</id>
+        <submitter>Sergei Sverchkov R</submitter>
+            <version version="v1">
+                <date>Wed, 22 Jul 2026 11:48:40 GMT</date>
+                <size>4kb</size>
+            </version>
+            <version version="v2">
+                <date>Thu, 23 Jul 2026 02:14:07 GMT</date>
+                <size>0kb</size>
+                    <source_type>I</source_type>
+            </version>
+        <title>A Counterexample to the Global Injectivity of a Jacobian Mapping in \mathbb{C}^5 and Its Analytical Roots</title>
+        <authors>Sergey Sverchkov</authors>
+        <categories>math.AC math.AG math.RA</categories>
+            <comments>The paper has been withdrawn due to a crucial mistake in the proof</comments>
+            <msc-class>14R15</msc-class>
+            <license>http://creativecommons.org/licenses/by/4.0/</license>
+            <abstract>We study a specific polynomial mapping G: \mathbb{C}^5 \to \mathbb{C}^5 induced by a homogeneous polynomial F of degree 6 consisting of four tridiagonal harmonic blocks. We prove that while the Jacobian matrix of this mapping is unipotent at every point (implying det J_G(x) \equiv 1), the mapping itself is not globally injective. We construct explicit algebraic sparse pairs of distinct points a \neq b that map to the identical image G(a) = G(b) = \vec{0}. Furthermore, we perform a comprehensive classification of the zero-set structure of the corresponding gradient field, uncovering a total of 37 precise analytical complex solutions split across six distinct geometric series.</abstract>
+    </arXivRaw>
+
+            </metadata>
+        </record>
+
+    </GetRecord>
+</OAI-PMH>

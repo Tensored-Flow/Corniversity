@@ -20,6 +20,7 @@ import { spawn } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import pg from "pg";
+import { scholarlyProviderRefusal } from "../packages/db/src/env";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const PORT = 3300;
@@ -34,6 +35,16 @@ if (!existsSync(envFile)) {
 process.loadEnvFile(envFile);
 if (!process.env.DATABASE_URL || !process.env.CORNIVERSITY_DATA_ROOT) {
   console.error("The .env needs DATABASE_URL (the local cluster) and CORNIVERSITY_DATA_ROOT.");
+  process.exit(1);
+}
+// Recorded fixture data (tests and journeys) never reaches the owner's real records.
+const scholarlyRefusal = scholarlyProviderRefusal({
+  DEPLOYMENT_MODE: "local",
+  SCHOLARLY_PROVIDER: process.env.SCHOLARLY_PROVIDER?.trim() === "fixture" ? "fixture" : "live",
+  CORNIVERSITY_INSTALLATION: "owner",
+});
+if (scholarlyRefusal) {
+  console.error(scholarlyRefusal);
   process.exit(1);
 }
 const cluster = new URL(process.env.DATABASE_URL);
@@ -74,6 +85,8 @@ const env: NodeJS.ProcessEnv = {
   BLOB_STORE: "pg",
   SEED_CONTENT_ON_START: "1",
   CORNIVERSITY_NEXT_DIST_DIR: ".next-owner",
+  // The web app and worker refuse fixture data themselves too (getEnv).
+  CORNIVERSITY_INSTALLATION: "owner",
 };
 
 const shell = process.platform === "win32";

@@ -1,3 +1,4 @@
+import { isSubjectSlug, parseArxivId } from "@corniversity/core/scholarly/index";
 import { z } from "zod";
 
 /**
@@ -13,6 +14,9 @@ export const QUEUES = {
   exportRecords: "export-records",
   maintenance: "maintenance",
   transcribePages: "transcribe-pages",
+  scholarlyArxiv: "scholarly-arxiv",
+  scholarlyRefresh: "scholarly-refresh",
+  scholarlyLists: "scholarly-lists",
 } as const;
 export type QueueName = (typeof QUEUES)[keyof typeof QUEUES];
 
@@ -76,9 +80,69 @@ export type TranscribePagesPayload = z.infer<typeof TranscribePagesPayload>;
 
 export const MaintenancePayload = z.object({
   idempotencyKey: z.string().min(1),
-  task: z.enum(["revision-due", "revoke-stale-pairing-codes", "expire-old-exports", "unsettle-stale-runs"]),
+  task: z.enum(["revision-due", "revoke-stale-pairing-codes", "expire-old-exports", "unsettle-stale-runs", "purge-provider-cache"]),
 });
 export type MaintenancePayload = z.infer<typeof MaintenancePayload>;
+
+const ArxivIdField = z.string().refine((value) => {
+  const parsed = parseArxivId(value);
+  return parsed !== null && parsed.version === null && parsed.id === value;
+}, "an arXiv id without version");
+/** An arXiv category (`hep-th`, `cs.AI`) or archive wildcard (`math.*`). */
+const ArxivCategory = z.string().regex(/^[a-z-]+(\.[A-Za-z-]+|\.\*)?$/);
+
+/**
+ * Every arXiv request goes through this queue (concurrency 1 across processes, at least 3.1 s
+ * between requests, Retry-After honoured): the arXiv record of a work (versions, licences,
+ * withdrawals), a private copy of an openly licensed version, and newest-submission listings
+ * (fetched into the provider cache, which pages read).
+ */
+export const ScholarlyArxivPayload = z.discriminatedUnion("task", [
+  z.object({
+    idempotencyKey: z.string().min(1),
+    ownerId: z.string().min(1),
+    task: z.literal("record"),
+    workId: z.string().uuid(),
+    arxivId: ArxivIdField,
+  }),
+  z.object({
+    idempotencyKey: z.string().min(1),
+    ownerId: z.string().min(1),
+    task: z.literal("private-copy"),
+    assetId: z.string().uuid(),
+  }),
+  z.object({
+    idempotencyKey: z.string().min(1),
+    ownerId: z.string().min(1).optional(),
+    task: z.literal("listing"),
+    categories: z.array(ArxivCategory).min(1).max(20),
+    maxResults: z.number().int().min(1).max(50),
+  }),
+]);
+export type ScholarlyArxivPayload = z.infer<typeof ScholarlyArxivPayload>;
+
+/** All arXiv jobs share one singleton key, so at most one is active at a time in any process. */
+export const ARXIV_SINGLETON_KEY = "arxiv";
+
+/** A work's metadata refreshed from OpenAlex (and its integrity notices), or its integrity notices alone. */
+export const ScholarlyRefreshPayload = z.object({
+  idempotencyKey: z.string().min(1),
+  ownerId: z.string().min(1),
+  task: z.enum(["work", "integrity"]),
+  workId: z.string().uuid(),
+});
+export type ScholarlyRefreshPayload = z.infer<typeof ScholarlyRefreshPayload>;
+
+const SubjectSlug = z.string().refine((slug) => isSubjectSlug(slug), "a known subject");
+
+/** Subject lists (Discover, subject rooms) refreshed into the provider cache from OpenAlex. */
+export const ScholarlyListsPayload = z.object({
+  idempotencyKey: z.string().min(1),
+  ownerId: z.string().min(1).optional(),
+  task: z.literal("subject-lists"),
+  subjects: z.array(SubjectSlug).min(1).max(30),
+});
+export type ScholarlyListsPayload = z.infer<typeof ScholarlyListsPayload>;
 
 /** Queue configuration applied by whichever process starts pg-boss first. */
 export const QUEUE_CONFIG: Record<
@@ -137,6 +201,29 @@ export const QUEUE_CONFIG: Record<
     policy: "stately",
     retryLimit: 0,
     retryDelay: 0,
+    retryBackoff: false,
+    expireInSeconds: 10 * 60,
+  },
+  "scholarly-arxiv": {
+    // With every job carrying ARXIV_SINGLETON_KEY, "singleton" allows one active job across all
+    // processes; the handler spaces its requests and holds the slot for the spacing afterwards.
+    policy: "singleton",
+    retryLimit: 3,
+    retryDelay: 60,
+    retryBackoff: true,
+    expireInSeconds: 30 * 60,
+  },
+  "scholarly-refresh": {
+    policy: "stately",
+    retryLimit: 2,
+    retryDelay: 60,
+    retryBackoff: true,
+    expireInSeconds: 10 * 60,
+  },
+  "scholarly-lists": {
+    policy: "stately",
+    retryLimit: 1,
+    retryDelay: 300,
     retryBackoff: false,
     expireInSeconds: 10 * 60,
   },

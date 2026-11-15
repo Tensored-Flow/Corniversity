@@ -24,6 +24,11 @@ export function loadRootEnv(startDir = process.cwd()): void {
   }
 }
 
+/** An optional setting where an empty value (`NAME=` in .env) counts as unset. */
+function optional<T extends z.ZodType>(schema: T) {
+  return z.preprocess((value) => (typeof value === "string" && value.trim() === "" ? undefined : value), schema.optional());
+}
+
 const EnvSchema = z.object({
   INSTITUTION_NAME: z.string().min(1).default("Corniversity"),
   DEFAULT_TIMEZONE: z.string().min(1).default("Europe/London"),
@@ -49,6 +54,17 @@ const EnvSchema = z.object({
   AI_BUDGET_PER_RUN_USD: z.coerce.number().positive().default(1),
   AI_BUDGET_DAILY_USD: z.coerce.number().positive().default(3),
   AI_BUDGET_MONTHLY_USD: z.coerce.number().positive().default(40),
+  /**
+   * Scholarly providers for the research library. `fixture` answers from recorded responses (tests
+   * and journeys only; production and the owner's local installation refuse it). The OpenAlex key
+   * is sent only as a Bearer header; the Crossref address is used only when set here and never
+   * taken from OWNER_EMAIL.
+   */
+  SCHOLARLY_PROVIDER: z.enum(["live", "fixture"]).default("live"),
+  /** Set to `owner` by `pnpm local:owner` for the owner's own installation (never in .env). */
+  CORNIVERSITY_INSTALLATION: z.enum(["development", "owner"]).default("development"),
+  OPENALEX_API_KEY: optional(z.string().min(8).max(200)),
+  CROSSREF_MAILTO: optional(z.string().email()),
   BLOB_STORE: z.enum(["fs", "pg"]).default("fs"),
   MAX_UPLOAD_MB: z.coerce.number().positive().default(200),
   PORT: z.coerce.number().int().positive().default(3000),
@@ -81,8 +97,25 @@ export function getEnv(): Env {
     // run on the hosting platform by omission.
     throw new Error("DEPLOYMENT_MODE is 'local' but this process is running on Railway; set DEPLOYMENT_MODE=production.");
   }
+  const refusal = scholarlyProviderRefusal(parsed.data);
+  if (refusal) throw new Error(refusal);
   cached = parsed.data;
   return cached;
+}
+
+/**
+ * Why this configuration may not start, for the scholarly provider setting, or null. Recorded
+ * fixture data is refused in production and in the owner's local installation (its records are
+ * real study records); development stacks, tests and journeys may use it.
+ */
+export function scholarlyProviderRefusal(
+  env: Pick<Env, "DEPLOYMENT_MODE" | "SCHOLARLY_PROVIDER"> & { CORNIVERSITY_INSTALLATION?: string },
+): string | null {
+  if (env.SCHOLARLY_PROVIDER !== "fixture") return null;
+  if (env.DEPLOYMENT_MODE === "production") return "SCHOLARLY_PROVIDER is 'fixture' (recorded test data); refusing to start in production.";
+  if (env.CORNIVERSITY_INSTALLATION === "owner")
+    return "SCHOLARLY_PROVIDER is 'fixture' (recorded test data); the owner's local installation refuses it. Remove that line from .env or set it to live.";
+  return null;
 }
 
 /** Test helper: reset the cache after mutating process.env. */
