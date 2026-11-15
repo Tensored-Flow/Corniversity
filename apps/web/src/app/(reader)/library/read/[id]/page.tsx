@@ -1,26 +1,21 @@
 import { getCourseDetail } from "@corniversity/db/services/catalogue";
-import {
-  companionState,
-  getAsset,
-  getPage,
-  getReadingProgress,
-  isAllowed,
-  listAnnotations,
-  listPairings,
-  searchAsset,
-  tableOfContents,
-} from "@corniversity/db/services/library";
+import { companionState, getPage, isAllowed, listPairings, searchAsset, tableOfContents } from "@corniversity/db/services/library";
+import { readerDocument } from "@corniversity/db/services/reader";
 import { latestConversationForAsset, listMessages } from "@corniversity/db/services/tutoring";
+import Form from "next/form";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { deleteAnnotationAction, saveAnnotationAction, saveProgressAction } from "@/app/(app)/library/actions";
+import { deleteAnnotationAction, saveAnnotationAction } from "@/app/(app)/library/actions";
 import { assetTitle, FlashNotices, LibraryHeader } from "@/app/(app)/library/shared";
 import { AiLabel } from "@/components/AiLabel";
 import { Markdown } from "@/components/Markdown";
 import { RenderedHtml } from "@/components/RenderedHtml";
+import { toReaderAnnotations } from "@/components/reader/annotation-data";
+import { documentInfo } from "@/components/reader/document-info";
 import { PageView } from "@/components/reader/PageView";
 import {
   chooseView,
+  firstParam,
   formatMegabytes,
   isLargeDocument,
   pageViewAvailable,
@@ -30,8 +25,10 @@ import {
 import { Badge, Button, Card, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { renderMarkdown } from "@/lib/markdown";
+import { errorNotice } from "@/lib/notices";
 import { producerLabels } from "@/lib/producers";
 import { requireSession } from "@/lib/session";
+import { keepNotesOnNewFileAction, markOpenedAction, openArxivVersionAction, reportObservedHashAction } from "./actions";
 import { ProgressSaver } from "./ProgressSaver";
 import { ReaderTools } from "./ReaderTools";
 
@@ -41,11 +38,21 @@ const barLink =
   "inline-flex items-center justify-center rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2.5 py-1 text-sm text-ink hover:bg-paper-3";
 
 /** The Text view's compact bar: back, the title (the page's heading follows below) and the switch to the pages. */
-function TextBar({ backHref, title, pageSwitch }: { backHref: string; title: string; pageSwitch: { href: string; label: string } | null }) {
+function TextBar({
+  backHref,
+  backLabel,
+  title,
+  pageSwitch,
+}: {
+  backHref: string;
+  backLabel: string;
+  title: string;
+  pageSwitch: { href: string; label: string } | null;
+}) {
   return (
     <div className="flex items-center gap-2 border-b border-stone bg-paper-2 px-3 py-2 sm:px-4">
       <Link href={backHref} className={barLink}>
-        Back
+        {backLabel}
       </Link>
       <p className="min-w-0 flex-1 truncate font-display text-base text-ink sm:text-lg" title={title}>
         {title}
@@ -66,28 +73,42 @@ function TextBar({ backHref, title, pageSwitch }: { backHref: string; title: str
  * quality flags, the original PDF at the same page, notes anchored to a locator, and passage
  * questions that the server permits or refuses explicitly. `?view=page|text` chooses; `?page=N`
  * (1-based physical page) overrides the remembered position in both, and switching carries it.
- * Large Documents open in Text view when their text is extracted.
+ * Large Documents open in Text view when their text is extracted. A paper read from arxiv.org opens
+ * only in Page view: the owner's browser fetches arXiv's file, and nothing of it is stored here.
+ * Arriving never saves the position, in either view; the reader saves only after the owner moves.
  */
 export default async function ReadPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ page?: string; q?: string; error?: string; saved?: string; view?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const session = await requireSession("/library");
   const { id } = await params;
-  const query = await searchParams;
+  const raw = await searchParams;
+  // A repeated parameter arrives as an array; the first value counts.
+  const query = {
+    page: firstParam(raw.page),
+    q: firstParam(raw.q),
+    error: firstParam(raw.error),
+    saved: firstParam(raw.saved),
+    view: firstParam(raw.view),
+  };
   const database = db();
   const ownerId = session.user.id;
-  const asset = await getAsset(database, ownerId, id);
-  if (!asset) notFound();
-  const title = assetTitle(asset);
-  const backHref = `/library/items/${asset.id}`;
-  const pageAvailable = pageViewAvailable(asset);
+  const doc = await readerDocument(database, ownerId, id);
+  if (!doc) notFound();
+  const { asset } = doc;
+  const title = doc.work?.title ?? assetTitle(asset);
+  // A paper's file goes back to its paper page (built by the find stream); any other file to its item.
+  const backHref = doc.work ? `/library/papers/${doc.work.id}` : `/library/items/${asset.id}`;
+  const backLabel = doc.work ? "Back to paper" : "Back";
+  const linked = asset.status === "linked_remote";
+  const pageAvailable = linked ? doc.arxiv !== null : pageViewAvailable(asset);
   const textAvailable = textViewAvailable(asset);
   const view = chooseView({ requested: query.view, pageAvailable, textAvailable, sizeBytes: asset.sizeBytes, pageCount: asset.pageCount });
-  const remembered = await getReadingProgress(database, ownerId, asset.id);
+  const remembered = doc.position?.physicalIndex ?? 0;
   const requested = requestedPage(query.page);
   const pageSwitch = (pageNumber: number) =>
     pageAvailable
@@ -98,17 +119,36 @@ export default async function ReadPage({
       : null;
 
   if (view === "page") {
-    const toc = textAvailable ? await tableOfContents(database, asset.id) : [];
+    const [toc, annotations] = await Promise.all([
+      textAvailable ? tableOfContents(database, asset.id) : Promise.resolve([]),
+      toReaderAnnotations(doc.annotations),
+    ]);
     return (
       <PageView
         assetId={asset.id}
         title={title}
-        source={{ kind: "stored", url: `/api/library/assets/${asset.id}/file` }}
+        source={
+          linked && doc.arxiv
+            ? { kind: "arxiv", id: doc.arxiv.id, version: doc.arxiv.version }
+            : { kind: "stored", url: `/api/library/assets/${asset.id}/file` }
+        }
         initialPage={requested ?? remembered + 1}
+        pageRequested={requested !== null}
+        // ?page=N chooses the page and opens at its top; otherwise the remembered place inside the page.
+        initialPosition={requested === null ? (doc.position?.position ?? null) : null}
         headings={toc.map((entry) => ({ physicalIndex: entry.physicalIndex, printedLabel: entry.printedLabel, heading: entry.heading }))}
         backHref={backHref}
+        backLabel={backLabel}
         textHref={textAvailable ? `/library/read/${asset.id}?view=text` : null}
-        saveProgress={saveProgressAction}
+        info={documentInfo(doc)}
+        annotations={annotations}
+        notice={errorNotice(query.error)}
+        actions={{
+          markOpened: markOpenedAction,
+          reportObservedHash: reportObservedHashAction,
+          keepNotesOnNewFile: keepNotesOnNewFileAction,
+          openArxivVersion: openArxivVersionAction,
+        }}
       />
     );
   }
@@ -121,14 +161,19 @@ export default async function ReadPage({
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
         <div className="mx-auto w-full max-w-3xl">
           <LibraryHeader title={title} active="/library" sync={companionState(pairings)} />
-          <Notice tone="neutral" title={asset.localOnly ? "This item is on your desktop only" : "Not readable yet"}>
+          <Notice
+            tone="neutral"
+            title={asset.localOnly ? "This item is on your desktop only" : linked ? "No Text view for this paper" : "Not readable yet"}
+          >
             {asset.localOnly
               ? "Its contents have never left your device, so there is nothing to show here. Read it locally, or grant private storage and extraction on the item page."
-              : "The text has not been extracted. Confirm the metadata and allow extraction on the item page."}
+              : linked
+                ? "This paper is read from arxiv.org in the Page view; it has no extracted text here."
+                : "The text has not been extracted. Confirm the metadata and allow extraction on the item page."}
           </Notice>
           <div className="mt-4 flex flex-wrap gap-2">
-            <LinkButton href={`/library/items/${asset.id}`} variant="secondary">
-              Item page
+            <LinkButton href={backHref} variant="secondary">
+              {doc.work ? "Paper page" : "Item page"}
             </LinkButton>
             {openPages ? (
               <LinkButton href={openPages.href} variant="secondary">
@@ -142,10 +187,10 @@ export default async function ReadPage({
   }
 
   const physicalIndex = Math.min(asset.pageCount - 1, Math.max(0, requested !== null ? requested - 1 : remembered));
-  const [page, toc, annotations, hits, conversation] = await Promise.all([
+  const annotations = doc.annotations;
+  const [page, toc, hits, conversation] = await Promise.all([
     getPage(database, asset.id, physicalIndex),
     tableOfContents(database, asset.id),
-    listAnnotations(database, ownerId, asset.id),
     query.q ? searchAsset(database, asset.id, query.q, 20) : Promise.resolve([]),
     latestConversationForAsset(database, ownerId, asset.id),
   ]);
@@ -184,7 +229,7 @@ export default async function ReadPage({
 
   return (
     <>
-      <TextBar backHref={backHref} title={title} pageSwitch={pageSwitch(physicalIndex + 1)} />
+      <TextBar backHref={backHref} backLabel={backLabel} title={title} pageSwitch={pageSwitch(physicalIndex + 1)} />
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
         <div className="mx-auto w-full max-w-7xl">
           <ProgressSaver assetId={asset.id} physicalIndex={physicalIndex} />
@@ -224,7 +269,8 @@ export default async function ReadPage({
                   Next
                 </LinkButton>
               ) : null}
-              <form method="get" className="flex items-center gap-2">
+              {/* A client navigation (next/form), so the page it opens counts as the owner's move and is remembered. */}
+              <Form action="" prefetch={false} className="flex items-center gap-2">
                 <input type="hidden" name="view" value="text" />
                 {query.q ? <input type="hidden" name="q" value={query.q} /> : null}
                 <label htmlFor="jump" className="text-sm text-ink-2">
@@ -242,7 +288,7 @@ export default async function ReadPage({
                 <Button type="submit" variant="secondary">
                   Go
                 </Button>
-              </form>
+              </Form>
             </div>
           </div>
 

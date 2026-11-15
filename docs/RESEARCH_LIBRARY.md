@@ -302,32 +302,88 @@ does not change extracted text, and a test asserts both engines are the same ver
   CSP.
 - **Loading**: stored Document → fetch the owner-only file route, no hashing. Linked arXiv Document →
   `fetch('https://arxiv.org/pdf/{id}v{n}', {mode: 'cors', credentials: 'omit', redirect: 'error',
-  referrerPolicy: 'no-referrer'})`, check status, content type and `%PDF-`, hash, report
-  `observed_sha256`; then hand the bytes to PDF.js. Failure says *Your browser could not fetch the PDF
-  from arXiv (network or arXiv's access policy)* with *Open on arXiv* and *Try again*. Stored
-  Documents over 40 MB or 400 pages open in Text view (if extracted) with *Open page view (N MB)*.
+  referrerPolicy: 'no-referrer'})` with the URL built from core `parseArxivId`'s normal form, check
+  status, content type and `%PDF-`, hash; then hand the bytes to PDF.js, and once every page is known
+  report the hash and page count (`recordObservedHash`: first, same or changed). A network failure
+  says *Your browser could not fetch the PDF from arXiv (network or arXiv's access policy)*; an error
+  status or a response that is not a PDF says so; each with *Open on arXiv* and *Try again*. Stored
+  Documents over 40 MB or 400 pages open in Text view (if extracted) with *Open page view (N MB)*. A
+  linked Document has no Text view. The page loader is `readerDocument` (services/reader.ts: the
+  Document with its version, paper (merges followed), identifiers, sibling arXiv versions, position
+  and annotations, for its owner only).
 - **Attribution**: for linked Documents a persistent line *arXiv:{id}v{n} · read from arxiv.org ·
-  abstract page* and the disclosure *Your browser downloads this PDF directly from arxiv.org; arXiv
-  sees your IP address and which paper you open.*
+  abstract page* (the version notices share it) and the disclosure *Your browser downloads this PDF
+  directly from arxiv.org; arXiv sees your IP address and which paper you open.*
 - **Views**: `?view=page|text`, `?page=N` (1-based physical page; overrides the remembered
-  position) in both. The Text view keeps every existing label, id (`#page-text`) and parameter.
-- **Bar**: Back to paper · title · version · page n of N (printed label) · previous/next · go to page
-  · zoom select (fit width, fit page, percentages; ctrl+wheel and pinch) · Contents · Notes · Paper
-  · Ask · Hide panel · Full screen. No single-letter shortcuts; PageUp, PageDown, Home and End work
-  while the viewer (focusable, named "Pages of <title>") has focus. Desktop panel is an aside; on
-  phones panels open in a native `<dialog>` with a visible Close.
-- **Annotations**: selection → *Highlight · Note · Ask · Clear*; *Bookmark page*; *Page note*;
-  *Mark area* (two clicks with Cancel, for pages whose text layer is unusable). Overlays are
-  re-attached on `pagerendered`/`textlayerrendered`. Routes `POST/PATCH/DELETE
-  /api/library/annotations` and `POST /api/library/position` accept JSON only and require
-  `Sec-Fetch-Site: same-origin` or a matching Origin; position uses `fetch` with `keepalive` on page
-  hide.
-- **Drift**: if a linked Document's observed hash changes, the reader compares page count and page
-  views with the anchors; equal → annotations are drawn with *arXiv's file has changed since these
-  notes were made* and *Keep my notes on the new file*; otherwise they are listed as needing repair.
-- **Versions**: the reader names the exact version; when a newer version exists it links to it;
-  annotations stay where they were made; withdrawn versions say *Withdrawn on arXiv* (arXiv's
-  administrators withdraw versions too, so the reader does not say who withdrew it).
+  position) in both; a repeated parameter counts by its first value. The Text view keeps every
+  existing label, id (`#page-text`) and parameter; asked for on a linked Document it says *No Text view
+  for this paper*.
+- **Bar**: *Back to paper* (`/library/papers/<workId>`; *Back* to the item for a Document of no paper)
+  · title · version · page n of N (printed label) · previous/next · go to page · zoom select (fit
+  width, fit page, percentages; ctrl+wheel and pinch) · Contents · Find · Notes · Paper · Ask · Hide
+  panel · Full screen (and *Text view* when the text is extracted). No single-letter shortcuts;
+  PageUp, PageDown, Home and End work while the viewer (focusable, named "Pages of <title>") has
+  focus. Desktop panel is an aside. On phones and short landscape screens (at most 640 px wide or
+  500 px high) the bar is compact: *Back* · title · *Panels*, then previous/next · page · zoom (two
+  rows at 390 px, one row at 844 × 390); *Panels* opens a native `<dialog>` with the section switches,
+  a visible Close, *Text view* and *Full screen*. Paper panel: title, authors, year and venue as
+  reported (with who reported them and when; recorded fixture data is labelled *Fixture data*), the
+  exact version with its date and licence attribution, current identifiers linked only from their
+  normal form, and *Paper page*.
+- **Annotations**: a selection in the pages shows a bar at their foot: *Highlight* (with its colour:
+  one of the five roles brass, moss, rust, slate, neutral) · *Note* · *Ask* · *Clear*. A selection is
+  anchored on the page where it starts (cut at that page's end), one rect per line in PDF user space,
+  `pageView` the unrotated `page.view` size, the owner's selected text as the quote. The Notes panel
+  has *Bookmark page* (*Remove bookmark* when the page has one), *Page note* and *Mark area* (two
+  clicks on one page, with Cancel and Esc; links and selection pause meanwhile) for the page in view;
+  bookmarks and page notes carry a page anchor without rects; a bookmark's ribbon is drawn only while
+  the bookmark stands on the file shown (the drift rule below). *Highlight* and *Bookmark page* send
+  one request at a time, so a double click makes one annotation. It lists the Document's annotations in
+  reading order with *Go to*, *Edit* (note and colour) and *Delete* (confirmed), notes rendered by the
+  Markdown and KaTeX sanitiser, quotes as escaped text, and lists the others under *Needs repair*.
+  Overlays are drawn into a layer of each page, under the text layer, and re-attached on
+  `pagerendered`/`textlayerrendered`. Routes `POST/PATCH/DELETE /api/library/annotations` (PATCH and
+  DELETE name the annotation in the body) and `POST /api/library/position` require the session (401),
+  then accept JSON only (415) from `Sec-Fetch-Site: same-origin` or a matching Origin (403), then a
+  body of the right shape (400); these refusals carry a code, and for an annotation the reader says
+  it was refused and nothing changed. A service refusal carries its code and the registered sentence.
+  A PATCH whose `expectedUpdatedAt` is stale answers 409 with the current row, which the panel shows
+  beside the owner's draft (*Save my draft over it* or *Use the saved version*). *Ask* is not part of the reader itself: the companion adds it through the reader's
+  `selectionActions` and `panels` extension points, and nothing is shown without them.
+- **Position**: only the owner's own moves are saved: a change of view within 2 s of their input
+  (scroll, key, tap, a reader control). Arriving (through `?page=N` or the remembered place),
+  resizing and re-layout never save, in either view; the Text view saves after a page change it made
+  (its page form navigates on the client). The reader restores the page and the top-left inside it,
+  at its fit-width zoom (a zoom chosen on one screen does not suit another); a position whose top and
+  left are both 0 names only its page (the Text view's saves) and opens at the top of that page. Every
+  position the tab sends is also kept in its `sessionStorage` for 30 s, so a reload (or a return to the
+  reader) rendered before the last save reached the server opens where the owner was; `?page=N` still
+  wins. Saves wait 1.2 s after the
+  last move, one request at a time per tab, each numbered; the route drops a save that arrives after a
+  later one from the same tab (kept in the web process's memory). On page hide, and when the tab
+  becomes hidden, the latest move is sent with `fetch` and `keepalive`. Opening the reader records
+  `markDocumentOpened`.
+- **Drift**: an anchor measured on exactly the bytes just loaded, or on the Document key while the
+  server reports the same (or first) hash, is drawn. Every other anchor of a linked Document (arXiv's
+  file changed, the report failed, or it was made on other bytes or an earlier stored copy) goes
+  through the drift check together (page count unchanged when known, every annotated page the same
+  size). Equal → drawn. Those known to be on another file show *arXiv's file has changed since these
+  notes were made* (or *Some notes were made on another file of this paper*) with *Keep my notes on the
+  new file* (`acceptNewFile`), offered only when the same check over every anchored annotation (needs
+  repair included, as `acceptNewFile` checks) passes; otherwise the banner says which pages differ.
+  When the report failed, anchors on the Document key are drawn without the banner or the offer, and
+  the reader says it could not record which file arXiv sent. Not equal → listed as needing repair with
+  the reasons, in the reader only, so nothing is stored until the owner acts. If the server refuses
+  *Keep*, it marks the notes for repair and the reader lists them with its reasons. An annotation made
+  while a change is unaccepted, or before any file is recorded, names the bytes it was measured on
+  (the reader reports them; the server keys the anchor with them instead of the Document key and does
+  not check its page against the recorded page count, which is another file's). On a stored Document,
+  anchors made on another file wait for the server's re-check after extraction.
+- **Versions**: the reader names the exact version; the newest later arXiv version that was not
+  withdrawn is offered (*A newer version exists: Open arXiv vN*, a server action calling
+  `openArxivVersion`); annotations stay where they were made; withdrawn versions, the open one or a
+  later one, say *Withdrawn on arXiv* (arXiv's administrators withdraw versions too, so the reader
+  does not say who withdrew it).
 
 ## 8. The reading companion
 

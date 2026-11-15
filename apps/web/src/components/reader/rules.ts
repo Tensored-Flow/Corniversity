@@ -15,10 +15,12 @@ export function isLargeDocument(sizeBytes: number, pageCount: number | null | un
 }
 
 /**
- * Page view needs stored bytes of a PDF that has passed validation (it renders the original file);
- * Text view needs extracted text.
+ * Page view needs stored bytes of a PDF that has passed validation (it renders the original file),
+ * or a paper read from arxiv.org (the owner's browser fetches arXiv's file); Text view needs
+ * extracted text.
  */
 export function pageViewAvailable(asset: { storageKey: string | null; mediaType: string; status: string }): boolean {
+  if (asset.status === "linked_remote") return true;
   return (
     asset.storageKey !== null &&
     asset.mediaType === "application/pdf" &&
@@ -47,6 +49,11 @@ export function chooseView(input: {
   if (!input.pageAvailable) return input.textAvailable ? "text" : "unavailable";
   if (input.textAvailable && isLargeDocument(input.sizeBytes, input.pageCount)) return "text";
   return "page";
+}
+
+/** A search parameter as one value: Next passes a repeated parameter (`?page=1&page=2`) as an array; the first counts. */
+export function firstParam(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
 }
 
 /** `?page=N` is a 1-based physical page; anything else is ignored. */
@@ -188,4 +195,23 @@ export function safeOutlineUrl(url: string | null | undefined): string | null {
   } catch {
     return null;
   }
+}
+
+export interface ArxivVersionFact {
+  version: number;
+  label: string;
+  withdrawn: boolean;
+}
+
+/**
+ * What the reader's header says about later arXiv versions: the newest one that was not withdrawn
+ * (linked as "a newer version"), and the later versions arXiv lists as withdrawn (named, not linked).
+ */
+export function laterVersions(
+  current: number,
+  versions: readonly ArxivVersionFact[],
+): { newest: ArxivVersionFact | null; withdrawn: ArxivVersionFact[] } {
+  const later = versions.filter((v) => v.version > current).sort((a, b) => a.version - b.version);
+  const open = later.filter((v) => !v.withdrawn);
+  return { newest: open.at(-1) ?? null, withdrawn: later.filter((v) => v.withdrawn) };
 }

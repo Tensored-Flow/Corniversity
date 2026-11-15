@@ -1463,6 +1463,8 @@ export async function createAnnotation(
     color?: string | null;
     /** What the reader sends (core `AnchorInputSchema`); validated and completed here. */
     anchor?: unknown;
+    /** SHA-256 of the bytes the reader measured the anchor on (a linked Document; see `anchorDocumentKey`). */
+    loadedSha256?: string;
   },
 ): Promise<AnnotationRow> {
   const asset = await getAsset(db, ownerId, input.assetId);
@@ -1473,7 +1475,7 @@ export async function createAnnotation(
   let anchor: AnnotationRow["anchor"] = null;
   if (input.anchor !== undefined && input.anchor !== null) {
     try {
-      anchor = buildAnchor(input.anchor, { engine: ANNOTATION_ENGINE, documentSha256: asset.sha256 });
+      anchor = buildAnchor(input.anchor, { engine: ANNOTATION_ENGINE, documentSha256: anchorDocumentKey(asset, input.loadedSha256) });
     } catch {
       throw new LibraryError("invalid_state", "The annotation's place on the page is not valid.");
     }
@@ -1496,7 +1498,10 @@ export async function createAnnotation(
     passageId: input.passageId,
   };
   const anchored = Boolean(anchor) || kind === "bookmark";
-  const resolved = anchored ? pageKnownToExist(asset, input.physicalIndex, Boolean(page)) : Boolean(page);
+  // An anchor measured on bytes the server has not accepted for this Document (anchorDocumentKey):
+  // the recorded page count belongs to another file, so the reader's drift check decides instead.
+  const onOtherBytes = anchor !== null && anchor.documentSha256 !== asset.sha256;
+  const resolved = anchored ? onOtherBytes || pageKnownToExist(asset, input.physicalIndex, Boolean(page)) : Boolean(page);
   const [row] = await db
     .insert(annotation)
     .values({
@@ -1515,6 +1520,28 @@ export async function createAnnotation(
     })
     .returning();
   return row!;
+}
+
+const LOADED_SHA256 = /^[0-9a-f]{64}$/;
+
+/**
+ * The file an anchor's rects were measured on (contract §3: `documentSha256` names that file). For
+ * a linked Document it is the Document key (`arxiv:{id}v{n}`, standing for the file the owner's
+ * browser last had accepted, `observed_sha256`), except when the reader reports that it measured on
+ * other bytes: arXiv's file changed and the owner has not kept the notes on it yet, or no file has
+ * been recorded yet (the report failed or has not landed). The anchor then names the bytes it was
+ * made on, and the drift check decides about it like any other. A stored Document's anchors always
+ * name its own hash.
+ */
+function anchorDocumentKey(asset: AssetRow, loadedSha256: string | undefined): string {
+  if (
+    asset.status === "linked_remote" &&
+    loadedSha256 !== undefined &&
+    LOADED_SHA256.test(loadedSha256) &&
+    loadedSha256 !== asset.observedSha256
+  )
+    return loadedSha256;
+  return asset.sha256;
 }
 
 function parseColor(value: string | null | undefined): AnnotationColor | null {
@@ -1566,9 +1593,14 @@ export async function updateAnnotation(
   throw new AnnotationConflictError(latest ?? current);
 }
 
-export async function deleteAnnotation(db: DbOrTx, ownerId: string, id: string): Promise<void> {
-  if (!isUuid(id)) return;
-  await db.delete(annotation).where(and(eq(annotation.id, id), eq(annotation.ownerId, ownerId)));
+/** Deletes the owner's annotation; false when no such annotation of theirs exists. */
+export async function deleteAnnotation(db: DbOrTx, ownerId: string, id: string): Promise<boolean> {
+  if (!isUuid(id)) return false;
+  const deleted = await db
+    .delete(annotation)
+    .where(and(eq(annotation.id, id), eq(annotation.ownerId, ownerId)))
+    .returning({ id: annotation.id });
+  return deleted.length > 0;
 }
 
 /** The page geometry of a Document's file as the extraction measured it. */

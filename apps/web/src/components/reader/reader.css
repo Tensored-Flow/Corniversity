@@ -28,3 +28,86 @@ html:root[data-theme="dark"] {
   outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
+
+/* Annotations: one layer per page, above the canvas and under the text layer, never taking a click. */
+.reader-annotation-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.reader-mark {
+  position: absolute;
+  border-radius: 1px;
+  mix-blend-mode: multiply;
+  --mark: var(--brass);
+}
+.reader-mark[data-color="moss"] {
+  --mark: var(--moss);
+}
+.reader-mark[data-color="rust"] {
+  --mark: var(--rust);
+}
+.reader-mark[data-color="slate"] {
+  --mark: var(--slate);
+}
+.reader-mark[data-color="neutral"] {
+  --mark: var(--ink-3);
+}
+.reader-mark[data-kind="highlight"] {
+  background: color-mix(in srgb, var(--mark) 38%, transparent);
+}
+/* Notes on a selection or a marked area: an outline with a light wash, so they read apart from highlights. */
+.reader-mark[data-kind="note"] {
+  background: color-mix(in srgb, var(--mark) 12%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--mark);
+}
+.reader-mark[data-focused="true"] {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* A bookmarked page carries a small ribbon at its top right. */
+.reader-bookmark {
+  position: absolute;
+  top: 0;
+  right: 6%;
+  width: 14px;
+  height: 22px;
+  background: var(--brass);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+}
+
+/* Mark area: clicks pick corners, so text selection and links pause. */
+.reader-marking .page {
+  cursor: crosshair;
+}
+.reader-marking .textLayer,
+.reader-marking .textLayer :is(span, br) {
+  cursor: crosshair;
+  user-select: none;
+}
+.reader-marking .annotationLayer {
+  pointer-events: none;
+}
+
+/* The colour beside a note in the Notes panel. */
+.reader-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  background: var(--brass);
+}
+.reader-swatch-moss {
+  background: var(--moss);
+}
+.reader-swatch-rust {
+  background: var(--rust);
+}
+.reader-swatch-slate {
+  background: var(--slate);
+}
+.reader-swatch-neutral {
+  background: var(--ink-3);
+}

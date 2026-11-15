@@ -22,8 +22,9 @@ import { makePdf } from "./pdf";
  * Also: a file named .pdf without the signature is refused; a corrupt PDF fails cleanly with a
  * reason and no retries; an unauthenticated browser cannot fetch a stored file or open the
  * library; the reading room's Page view turns pages without prefetching the Text view, and one
- * Esc closes its Find panel on a phone. The companion really runs as a child process against the
- * local server.
+ * Esc closes its Find panel on a phone; the Text view remembers the owner's page turns but not an
+ * arrival through ?page=N, and the Page view opens a page the Text view remembered at its top. The
+ * companion really runs as a child process against the local server.
  */
 test.describe.configure({ mode: "serial" });
 
@@ -293,7 +294,9 @@ test.describe("library, companion and reading room", () => {
     await expect(page.getByRole("region", { name: `Pages of Banach notes ${run}` })).toBeVisible();
     const pageBox = page.getByLabel("Page", { exact: true });
     await expect(pageBox).toBeEnabled({ timeout: 30_000 });
-    await expect(page.getByRole("link", { name: "Text view" })).toBeVisible();
+    const phone = (page.viewportSize()?.width ?? 0) <= 640;
+    // On phones the Text view link sits in the Panels dialog; the prefetch check needs it on screen, so it runs on desktop.
+    if (!phone) await expect(page.getByRole("link", { name: "Text view" })).toBeVisible();
     for (const expected of ["2", "3"]) {
       await page.getByRole("button", { name: "Next page" }).click();
       await expect(pageBox).toHaveValue(expected);
@@ -303,17 +306,58 @@ test.describe("library, companion and reading room", () => {
     page.off("request", recordTextView);
     expect(textViewRequests).toEqual([]);
 
-    // On phones the panel is a native dialog: one Esc in a filled Find box closes it.
-    if ((page.viewportSize()?.width ?? 0) <= 640) {
-      const findButton = page.getByRole("button", { name: "Find", exact: true });
-      await findButton.click();
+    // On phones the panels are a native dialog opened through Panels: one Esc in a filled Find box closes it.
+    if (phone) {
+      const panels = page.getByRole("button", { name: "Panels" });
+      await panels.click();
+      await expect(page.getByRole("dialog").getByRole("link", { name: "Text view" })).toBeVisible();
+      await page.getByRole("dialog").getByRole("button", { name: "Find", exact: true }).click();
       const dialog = page.getByRole("dialog", { name: "Find" });
       await expect(dialog).toBeVisible();
       await dialog.getByLabel("Find in this PDF").fill("Banach");
       await page.keyboard.press("Escape");
       await expect(dialog).toBeHidden();
-      await expect(findButton).toBeFocused();
+      await expect(panels).toBeFocused();
     }
+  });
+
+  test("reading room Text view: arriving through ?page=N is not remembered; the owner's page turns are", async ({ page }) => {
+    test.setTimeout(120_000);
+    await signInOrBootstrap(page);
+    const opened = (n: number) => page.getByText(`PDF page ${n} of 3`);
+    // Arrive on page 1, then turn to page 2 inside the Text view: the turn is remembered.
+    await page.goto(`${readUrl}?view=text&page=1`);
+    await expect(opened(1)).toBeVisible();
+    await page.getByRole("link", { name: "Next", exact: true }).click();
+    await expect(opened(2)).toBeVisible();
+    await page.waitForTimeout(2_000);
+    // The Page view opens that page at its top: a Text view save names only its page (its top-left is
+    // not the point (0, 0), which in PDF user space is the bottom of the page).
+    await page.goto(`${readUrl}?view=page`);
+    const pageBox = page.getByLabel("Page", { exact: true });
+    await expect(pageBox).toBeEnabled({ timeout: 30_000 });
+    await expect(pageBox).toHaveValue("2");
+    const pageTop = () =>
+      page
+        .locator('.page[data-page-number="2"]')
+        .evaluate((el) => el.getBoundingClientRect().top - el.closest(".reader-pages")!.getBoundingClientRect().top);
+    await expect.poll(async () => Math.abs(await pageTop())).toBeLessThan(40);
+    // Arriving on page 3 through ?page=3 is not.
+    await page.goto(`${readUrl}?view=text&page=3`);
+    await expect(opened(3)).toBeVisible();
+    await page.waitForTimeout(2_000);
+    await page.goto(`${readUrl}?view=text`);
+    await expect(opened(2)).toBeVisible();
+    // The page form moves on the client, so the page it opens is the owner's move and is remembered.
+    await page.getByLabel("Go to PDF page").fill("3");
+    await page.getByRole("button", { name: "Go", exact: true }).click();
+    await expect(opened(3)).toBeVisible();
+    await page.waitForTimeout(2_000);
+    await page.goto(`${readUrl}?view=text`);
+    await expect(opened(3)).toBeVisible();
+    // Repeated parameters count by their first value instead of failing the page.
+    for (const query of ["?view=text&page=1&page=2&q=Banach&q=x", "?view=page&page=1&page=2"])
+      expect((await page.request.get(`${readUrl}${query}`)).status(), query).toBe(200);
   });
 
   test("validation: a fake PDF is refused and a corrupt PDF fails cleanly without retries", async ({ page }) => {
