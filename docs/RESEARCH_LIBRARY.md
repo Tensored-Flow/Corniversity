@@ -194,8 +194,10 @@ annotations.
 - `discover.ts`: factual explanations ("Cited by 3 papers in your library"; "Similar to *X* in
   OpenAlex (similarity, not a citation)"; "Most cited in OpenAlex (a count, not a judgement of
   importance)"), seeds, ordering.
-- `companion.ts`: `decideCompanionAction` (question, explain passage, explain notation, walk through
-  proof, check my understanding) with reasons for refusal before any model call.
+- `companion.ts`: `decideCompanionAction` (ask a question, explain this passage, explain this
+  notation, walk through this proof, explain the background, question this argument, check my
+  understanding) with reasons for refusal (`COMPANION_REFUSALS`) before any model call;
+  `neutraliseQuotedText`, `neutraliseEvidenceTags` and `quotedLine` for quoted text sent to the model.
 
 ## 5. Scholarly providers (`packages/db/src/scholarly/`)
 
@@ -298,6 +300,11 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   `refreshSubjectLists` (worker), built from the cache and the owner's works.
 - `reader.ts`: `readerDocument` (the Document, its work with merges followed, identifiers, version,
   arXiv versions, reading position and annotations; `null` for another owner's Document).
+- `companion.ts`: `companionDocument`, `prepareCompanionTurn` (gates and bounded, neutralised
+  evidence; refusals with `companionRefusalKind`), `appendCompanionRequest` (the request with the
+  evidence blocks sent), `companionActionOf`, `companionLearnerMessage`, `recordCompanionPermission`
+  (through `setPermission`), `latestCompanionExchange` (with the request's action and what was
+  sent), `companionLicenceLine`.
 - `library.ts` (existing): the Document transitions above; annotation kinds, anchors and
   conflict-checked edits; the reading-position rule; `listReadingNotes` searches in SQL, includes
   highlights and bookmarks, filters by kind, work, collection and `subject` (an OpenAlex field among
