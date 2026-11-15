@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { saveProgressAction } from "../../actions";
+import { saveProgressAction } from "@/app/(app)/library/actions";
 
 /** Remembers the page being read so the item reopens where the learner left it. */
 export function ProgressSaver({ assetId, physicalIndex }: { assetId: string; physicalIndex: number }) {

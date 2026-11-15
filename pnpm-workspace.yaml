@@ -12,3 +12,8 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - unpdf@2.1.0
+
+# pdfjs-dist renders in the browser only; its optional native canvas (tens of MB) serves Node
+# rendering, which nothing here does.
+ignoredOptionalDependencies:
+  - '@napi-rs/canvas'

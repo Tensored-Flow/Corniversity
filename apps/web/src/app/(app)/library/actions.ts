@@ -232,7 +232,9 @@ export async function saveAnnotationAction(form: FormData): Promise<void> {
   const physicalIndex = Number(text(form, "physicalIndex"));
   const note = text(form, "note").slice(0, 8000);
   const selectedText = text(form, "selectedText").slice(0, 2000) || undefined;
-  const back = `/library/read/${assetId}?page=${Number.isFinite(physicalIndex) ? physicalIndex + 1 : 1}`;
+  // A note written in the reading room's Text view returns to the Text view.
+  const view = text(form, "view") === "text" ? "&view=text" : "";
+  const back = `/library/read/${assetId}?page=${Number.isFinite(physicalIndex) ? physicalIndex + 1 : 1}${view}`;
   if (!note) failTo(back, "Write a note before saving.");
   await createAnnotation(db(), session.user.id, {
     assetId,

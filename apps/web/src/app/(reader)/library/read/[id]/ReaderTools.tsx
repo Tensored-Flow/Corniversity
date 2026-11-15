@@ -89,6 +89,7 @@ export function ReaderTools({ assetId, physicalIndex, pageLabel, personaName, as
         <input type="hidden" name="assetId" value={assetId} />
         <input type="hidden" name="physicalIndex" value={physicalIndex} />
         <input type="hidden" name="selectedText" value={selected} />
+        <input type="hidden" name="view" value="text" />
         <label htmlFor="note" className="text-sm font-medium text-ink">
           Note on {pageLabel}
         </label>

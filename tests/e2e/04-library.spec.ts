@@ -224,6 +224,8 @@ test.describe("library, companion and reading room", () => {
     await page.getByRole("link", { name: /open in the reading room/i }).click();
     await expect(page).toHaveURL(/\/library\/read\//);
     readUrl = page.url().split("?")[0]!;
+    // The reading room opens on the original pages; the extracted text is its Text view.
+    await page.goto(`${readUrl}?view=text`);
     await expect(page.getByText("PDF page 1 of 3")).toBeVisible();
     await expect(page.getByText("printed p. i")).toBeVisible();
     await expect(page.locator("#page-text")).toContainText("normed spaces");
