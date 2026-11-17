@@ -798,8 +798,8 @@ scripted demo (no model provider).
 
 The owner's brief *Corniversity Library*; contract and decision log in RESEARCH_LIBRARY.md (§10
 names the checks and what each journey covers). Windows 11, local embedded PostgreSQL 17, scripted
-demo (no model provider), scholarly providers in fixture mode (recorded responses). Test counts and
-the journeys' results are recorded in the PR; this section says what is tested and how.
+demo (no model provider), scholarly providers in fixture mode (recorded responses). Results on
+17 Nov 2026 are in the last column.
 
 | Check | Command | What it covers |
 |---|---|---|
@@ -807,7 +807,7 @@ the journeys' results are recorded in the PR; this section says what is tested a
 | Unit tests | `pnpm test` | core rules (`packages/core/src/scholarly/`: identifiers, licences and the private-copy decision, permissions, duplicates, anchors, drift, positions, subjects, Discover, the companion's gates, text); provider adapters, the HTTP client and the recorded-response transport (`packages/db/src/scholarly/`); the reader (`components/reader/`: loader, engine version parity, annotations, positions, rules, document info, ask); page helpers (`edit-form`, `saved-text`, Discover's failure sentences, collection text, `describeJob`); route handlers (`attach`, `ask`, the annotation guard); the exact production CSP (`csp.test.ts`); the offline test (`connection.test.ts`); the notices allowlist; worker handlers (`scholarly`, `scholarly-lists`) |
 | Integration tests | `pnpm test:integration` | services against throw-away PostgreSQL clusters: `scholarly-works`, `paper-lists`, `discover`, `reader`, `companion`, `library`, `library-documents` (Document transitions with both blob drivers, attach rules, rect anchors when a file changes), `library-reading`, `library-home`, `library-collections`, `notebook`, `records` (the export carries the library), the provider cache and the schema's composite keys |
 | Production build | `pnpm --filter @corniversity/web build` | built on 17 Nov 2026; `next build` reported that Next.js 16.4.3 is affected by a known security vulnerability (USER_ACTIONS 9) |
-| Journeys, production build on a new, empty database | journey 22 alone first, then 04, 07, 08, 15 and 17–22 at both sizes: desktop (Desktop Chrome, 1440 × 900) and phone (Pixel 7, 390 × 844) | see the PR |
+| Journeys, production build on a new, empty database | journey 22 alone first, then every journey (01–22) at both sizes: desktop (Desktop Chrome, 1440 × 900) and phone (Pixel 7, 390 × 844) | journey 22: 23 pass; then all journeys pass, the four touched by the last fixes (05, 08, 19, 20) rerun on the rebuilt code; skipped: phone- or desktop-only tests, hidden features, journey 16 (its rehearsal stack), the empty-library test once the owner has papers. Reader CSP: no violations. Unit 654 + 60, integration 382 |
 
 - **How the journeys run.** Against a production build, so the tested pages carry the production
   CSP. The stack must report `scholarlyProviders: fixture` on `/api/health`, or every
