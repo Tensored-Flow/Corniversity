@@ -7,7 +7,15 @@
   "objectives": [
     {
       "id": "u07-o1",
-      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 9–11 of the 18.102 notes."
+      "description": "Construct increasing simple approximations to a nonnegative measurable function."
+    },
+    {
+      "id": "u07-o2",
+      "description": "Define the nonnegative Lebesgue integral independently of a chosen representation."
+    },
+    {
+      "id": "u07-o3",
+      "description": "Use monotone convergence and Fatou's lemma, and diagnose invalid interchanges of limit and integral."
     }
   ],
   "prerequisiteConceptIds": [
@@ -29,9 +37,9 @@
     {
       "id": "u07-a1",
       "type": "reading",
-      "title": "Lectures 9–11: Measurable functions, simple functions and the integral",
-      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
-      "estimatedMinutes": 90,
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
       "sourceLocatorIds": [
         "fa21-lec09",
         "fa21-lec10",
@@ -39,27 +47,88 @@
       ],
       "exerciseIds": [],
       "sessionKind": "lecture"
+    },
+    {
+      "id": "u07-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 125,
+      "sourceLocatorIds": [
+        "fa21-lec09",
+        "fa21-lec10",
+        "fa21-lec11"
+      ],
+      "exerciseIds": [
+        "MAT-230-u07-ex1",
+        "MAT-230-u07-ex2",
+        "MAT-230-u07-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u07-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "fa21-lec09",
+        "fa21-lec10",
+        "fa21-lec11"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
     }
   ],
-  "exerciseIds": [],
+  "exerciseIds": [
+    "MAT-230-u07-ex1",
+    "MAT-230-u07-ex2",
+    "MAT-230-u07-ex3"
+  ],
   "exitCheck": {
-    "description": "To be defined when the unit is prepared."
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-230-u07-ex3"
   },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "commonMisconceptions": [
+    {
+      "claim": "A pointwise limit of Riemann integrable functions must remain Riemann integrable.",
+      "correction": "Indicators of increasing finite sets can converge to the Dirichlet function. Lebesgue measurability, unlike Riemann integrability, is stable under measurable pointwise limits.",
+      "correctionLocatorIds": [
+        "fa21-lec09"
+      ]
+    },
+    {
+      "claim": "Pointwise convergence permits exchanging limit and integral.",
+      "correction": "Monotone convergence needs an increasing nonnegative sequence; Fatou gives only an inequality without stronger control.",
+      "correctionLocatorIds": [
+        "fa21-lec09"
+      ]
+    }
+  ],
+  "estimatedMinutes": 310,
+  "status": "ready",
   "checks": [
     {
       "name": "source-locators",
       "result": "pass",
-      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
     },
     {
       "name": "mathematical-review",
-      "result": "needs_review",
-      "evidence": "Not yet prepared; no lesson or exercises to review."
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
     }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-230-u07-ex1.reference-solution.md",
+    "MAT-230-u07-ex2.reference-solution.md",
+    "MAT-230-u07-ex3.reference-solution.md"
+  ]
 }

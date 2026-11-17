@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u07-ex3",
+  "sequence": 3,
+  "title": "Exact dropout and a reproducible sampling check",
+  "kind": "code",
+  "promptMarkdown": "For fixed activationsa=(2,−1), unit output weights and independent inverted dropout with keep probabilityq=.5, enumerate the output distribution and derive mean, variance and expected squared error for targety=3. Write and run a standard-library Monte Carlo check with seed 17 and100000 masks; report sample mean, second moment and squared error. State a reasonable sampling-error scale and explain why deterministic evaluation gives a different squared error.",
+  "conceptIds": [
+    "regularisation-dl"
+  ],
+  "hintLadder": [
+    "Enumerate the four masks before using randomness.",
+    "Use E[(Z−y)²]=VarZ+(EZ−y)².",
+    "Specify keep probability and inverted scaling, not just “dropout .5”."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives exact distribution and loss",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Implements independent masks with reproducible seed",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Interprets sampling error and nonlinear evaluation difference",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Moves from an activation-mean claim to the distribution and loss of a stochastic model, then checks it numerically."
+  }
+}

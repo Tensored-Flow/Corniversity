@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u06-ex2",
+  "sequence": 2,
+  "title": "Choose, stop and restore",
+  "kind": "calculation",
+  "promptMarkdown": "A training run logs epochs1–8 with validation losses(.80,.62,.55,.56,.54,.55,.56,.53) and steadily falling training loss. Use this rule: an improvement must be strictly more than0.005 below the best saved validation loss; patience2 consecutive non-improvements; earliest accepted best wins ties. Start best=∞. Which epochs are saved, when does training stop, and which state is evaluated on test? Explain why epoch 8 is unavailable under this run and why holding a pointer to a mutable model is an implementation bug.",
+  "conceptIds": [
+    "overfitting-and-early-stopping"
+  ],
+  "hintLadder": [
+    "Track best loss and consecutive failures separately.",
+    "Reset patience only after an accepted improvement.",
+    "Distinguish the best saved state from the final visited state."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Applies all rule details consistently",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Identifies selected versus last checkpoint",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Explains counterfactual later data and state-copy integrity",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u05-ex2",
+  "sequence": 2,
+  "title": "The relay cannot escape the cone",
+  "kind": "proof",
+  "promptMarkdown": "Prove that the sum of two future-directed causal displacements is future-directed causal. Give necessary and sufficient conditions for a nonzero sum to be null. As a check, a light ray travels from $(ct,x,y)=(0,0,0)$ to $(3,3,0)\\,\\mathrm m$, is redirected, and arrives at $(7,3,4)\\,\\mathrm m$. Classify the endpoint separation and explain why the ray's own path has zero proper time although the endpoint separation is timelike.",
+  "conceptIds": [
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Use the ordinary spatial triangle inequality, then the causal bound.",
+    "Inspect equality in both inequalities, allowing a zero vector.",
+    "Compare the integral along a path with the interval of its endpoints."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "The closure proof and equality cases are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "The numerical interval and zero path integral are distinguished.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "No photon rest frame or photon clock is introduced.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

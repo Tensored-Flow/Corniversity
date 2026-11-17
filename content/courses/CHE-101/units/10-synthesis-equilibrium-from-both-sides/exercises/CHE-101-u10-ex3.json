@@ -1,0 +1,91 @@
+{
+  "id": "CHE-101-u10-ex3",
+  "sequence": 3,
+  "title": "An experiment that measures two things at once",
+  "kind": "model_interpretation",
+  "promptMarkdown": "For the A ⇌ B system of problem1, propose a small numerical or paper experiment at C=0.250M using starts B₀=0 and B₀=0.250M, with observations t=0,20,60,120min. Calculate both predicted time courses. A catalyst doubles k_f and k_r. Which quantities change, which stay fixed, and how would you estimate both the equilibrium fraction and relaxation rate from noisy measurements without assuming that the final observed sample is exactly equilibrium? Give a conservation check and one model-failure criterion.",
+  "conceptIds": [
+    "kinetic-view-of-equilibrium",
+    "chemical-equilibrium-constant"
+  ],
+  "hintLadder": [
+    "Use the solution B=Beq+(B0−Beq)e^(−λt) for each start.",
+    "A catalyst scaling both rates changes λ only.",
+    "Jointly fit the endpoint instead of declaring the last sample exact."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Calculates both trajectories and catalyst effect",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Designs a defensible parameter estimate with uncertainty",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Uses conservation and residuals to test model adequacy",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

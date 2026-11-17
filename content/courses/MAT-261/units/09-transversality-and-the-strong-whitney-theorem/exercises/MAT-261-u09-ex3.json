@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u09-ex3",
+  "sequence": 3,
+  "title": "Correct the parameter theorem and the Whitney shortcut",
+  "kind": "proof",
+  "promptMarkdown": "Write a synthesis in three parts. (a) Prove the regular-parameter/transverse-slice equivalence using the quotient by $T_zZ$. (b) For a Fredholm slice derivative $L$ and finite-dimensional $V=T_zZ$, compute the kernel and cokernel of the parameter projection and derive its index. (c) Explain why a generic immersion in $\\mathbb R^{2n}$ with finite transverse double points need not already be an embedding, and state exactly the extra theorem and proof input used to reach the strong Whitney conclusion.",
+  "conceptIds": [
+    "transversality",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Quotient out the tangent directions already supplied by Z.",
+    "The image in V is its intersection with the range of L.",
+    "A crossing is still a failure of injectivity."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct linear equivalence proof.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Kernel/cokernel/index with split and finite-dimensional hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Strong theorem and honest proof boundary.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 75,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

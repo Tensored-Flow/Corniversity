@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u05-ex1",
+  "sequence": 1,
+  "title": "Gluing a connection correctly",
+  "kind": "proof",
+  "promptMarkdown": "Let $\\nabla^{(i)}$ be connections on $E|_{U_i}$ and $(\\rho_i)$ a subordinate smooth locally finite partition. Prove $\\nabla=\\sum_i\\rho_i\\nabla^{(i)}$ is a connection. Show that the difference of two connections is $C^\\infty(M)$-linear in both the vector field and section. In a line-bundle frame changed by $e'=g e$, derive the change in the connection one-form.",
+  "conceptIds": [
+    "partitions-of-unity",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Write out the product rule before summing.",
+    "Subtract the two product rules.",
+    "Differentiate $ge$, then express the answer in the new frame."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Well-defined smooth sum.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Connection axioms and tensorial difference.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct frame-change formula.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

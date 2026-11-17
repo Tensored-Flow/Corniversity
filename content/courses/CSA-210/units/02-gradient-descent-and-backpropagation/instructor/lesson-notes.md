@@ -8,6 +8,6 @@ Numbers: the lesson's worked example ($x=1$, $y=0$, all-zero first layer) differ
 
 Statement labels for the tutor: steepest ascent, the quadratic analysis, the descent lemma and the adjoint recursion are derived; the PyTorch behaviours (dynamic graph, accumulation into `.grad`, zero subgradient for ReLU at 0) are source-backed from the tutorial and PyTorch's documented behaviour and should be labelled "needs checking" if the learner's installed version differs.
 
-Lab `gradient-descent-surface`: prediction-first protocol. The learner should predict divergence at $\eta=0.2$ and fastest convergence near $0.18$ before running; a learner who predicts "smaller is always better" has the first misconception of the unit and the lab will correct it visibly.
+Lab `gradient-descent-surface`: prediction-first protocol. The learner should predict nonconvergence by nondecaying oscillation at $\eta=0.2$, and divergence in the stiff direction for larger positive steps and fastest convergence near $0.18$ before running; a learner who predicts "smaller is always better" has the first misconception of the unit and the lab will correct it visibly.
 
 Staged misconception for a peer discussion, if enabled: a classmate may claim "autograd differentiates the Python code symbolically, so it would be slow for big models". The tutor resolves it with the edge-count argument: one reverse sweep, each edge once.

@@ -1,40 +1,16 @@
 # Handoff
 
-Written for Leon, the owner. Everything here was checked on 31 October, 1 November and
-9–10 November 2026, on the build machine (Windows 11) and, for the deployment, on the live site.
-Where something has not been verified, this document says so.
+## Current hosted installation
 
-## Where things stand
+Open https://corniversity.up.railway.app/campus and sign in with the existing owner account. The five reviewed courses are already enrolled. The branded Railway address replaces the generated hostname; browser login cookies do not transfer, so sign in again at the new address. The account and database stay in place.
 
-- **Status: deployed, waiting for your account.** The site runs at
-  https://web-production-4c692.up.railway.app, in the Railway project `corniversity` (PostgreSQL,
-  a web service and a worker). Milestone 10 was released on 9 November 2026: the worker first, which applied the three new
-  migrations and seeded the one changed course version, then the web service
-  ([QA_REPORT.md](QA_REPORT.md), Milestone 10). The audit's fixes followed on 10 November 2026
-  (commit `40c2624`: the worker first, with migration 0007, then the web service). Until you create the owner account there, sign-up
-  accepts only the owner email with the one-time code ([USER_ACTIONS.md](USER_ACTIONS.md),
-  item 1); then it closes for good.
-- **Live tutoring: blocked, not verified.** No model key is configured and no paid use is
-  approved. Tutors, the assessor, the director, the reading room, the seminar chair, the
-  classmates and the studio's feedback run as a *scripted demo*, labelled so wherever they speak;
-  scripted text never reads your work. The Anthropic integration has been checked against a local
-  server that speaks the documented wire format, but no request has reached Anthropic. If you
-  choose a live model before it can run, it is refused with the reason, and nothing scripted takes
-  its place.
-- **Behind sign-in on the live site: not checked.** Every journey ran on this computer, on the
-  development server and on the production build against an empty database; on the live site only
-  the public pages, the health check and the logs were checked, because no account exists there.
-  The checks that need your account are a short checklist you run yourself
-  ([USER_ACTIONS.md](USER_ACTIONS.md), item 4).
-- **Tests audited against your rules.** After the release, two reviewers with no prior context
-  compared the tests with your sections 13 to 18; the defects they found, about spending records,
-  citations, sign-up, saved records, the studio and the programme pages, are fixed, each with a test
-  ([QA_REPORT.md](QA_REPORT.md), "After the release").
-- **Repository:** `C:\Users\leona\Documents\Corniversity`, branch `main`, pushed to the public
-  repository https://github.com/Tensored-Flow/Corniversity (`origin`; [USER_ACTIONS.md](USER_ACTIONS.md), item 7). Milestone 10 started
-  from commit `5faa665`. It is commit `1b93eae`, followed by `6a01e17` (the studio's sign-in
-  return, found on the live site) and a commit that records the release; the audit's fixes are
-  `40c2624`, followed by a commit that records their release.
+The web and worker hostname redeployments both report SUCCESS. Public HTTPS health, the sign-in form and anonymous private-route protection pass. A real owner sign-in is not part of these checks. Live tutoring was last verified as scripted demo on 12 November and is not enabled by the hostname change.
+
+Current release and remaining setup: [STATUS.md](STATUS.md), [QA_REPORT.md](QA_REPORT.md) and [USER_ACTIONS.md](USER_ACTIONS.md). Source: https://github.com/Tensored-Flow/Corniversity, branch `codex/university-teaching-quality`; local checkout `/Users/leonardowang/Documents/ChatGPT/Corniversity`, Linux checkout `/home/leon/work/Corniversity`. The older Windows installation is separate from the hosted database and the isolated Linux QA stack.
+
+## Earlier Windows development reference
+
+The following installation and acceptance notes describe the earlier Windows development setup. They are not the current hosted owner setup; use the current documents linked above for live access.
 
 ## Start it (two PowerShell windows in the project folder)
 

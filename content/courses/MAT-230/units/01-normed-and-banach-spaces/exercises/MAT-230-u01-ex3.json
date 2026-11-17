@@ -4,7 +4,9 @@
   "title": "What completeness buys",
   "kind": "explanation",
   "promptMarkdown": "In your own words, and without the notes open, explain in under 200 words why completeness of a normed space matters when one solves problems by approximation. Then give one concrete example of a sequence that is Cauchy in a normed space but whose limit lies outside that space (you may use the example from exercise 2 or another).",
-  "conceptIds": ["banach-space"],
+  "conceptIds": [
+    "banach-space"
+  ],
   "hintLadder": [
     "What do iterative or approximation methods produce? A sequence. What do you need to know about that sequence to say the method 'converges to a solution'?",
     "Compare $\\mathbb{Q}$ and $\\mathbb{R}$: which Cauchy sequences of rationals have no rational limit?"
@@ -13,8 +15,44 @@
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "role-of-completeness", "criterion": "Explains that approximation schemes produce Cauchy sequences whose limits must exist inside the space for the scheme to yield a solution there.", "weight": 0.6, "levels": [{ "label": "met", "description": "Clear and correct." }, { "label": "partially met", "description": "Gestures at the idea." }, { "label": "not met", "description": "Missing or confused with boundedness or closedness." }] },
-      { "id": "example", "criterion": "Gives a correct concrete example of a Cauchy sequence without a limit in the space.", "weight": 0.4, "levels": [{ "label": "met", "description": "Example correct and the missing limit identified." }, { "label": "partially met", "description": "Example right but incompletely explained." }, { "label": "not met", "description": "No valid example." }] }
+      {
+        "id": "role-of-completeness",
+        "criterion": "Explains that approximation schemes produce Cauchy sequences whose limits must exist inside the space for the scheme to yield a solution there.",
+        "weight": 0.6,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Clear and correct."
+          },
+          {
+            "label": "partially met",
+            "description": "Gestures at the idea."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or confused with boundedness or closedness."
+          }
+        ]
+      },
+      {
+        "id": "example",
+        "criterion": "Gives a correct concrete example of a Cauchy sequence without a limit in the space.",
+        "weight": 0.4,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Example correct and the missing limit identified."
+          },
+          {
+            "label": "partially met",
+            "description": "Example right but incompletely explained."
+          },
+          {
+            "label": "not met",
+            "description": "No valid example."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false

@@ -1,0 +1,111 @@
+{
+  "id": "MAT-230-u01-ex4",
+  "sequence": 4,
+  "title": "Completeness depends on both the space and the norm",
+  "kind": "proof",
+  "promptMarkdown": "(a) Prove that $\\|f\\|_\\infty$ and $\\|f\\|_1=\\int_0^1|f|$ are norms on $C([0,1])$, saying where continuity is needed. (b) Reconstruct the proof that the sup norm is complete. (c) Construct a continuous sequence that is Cauchy in integral norm but has no continuous limit in that norm. (d) Explain why equivalence of the two norms would contradict (b) and (c), and why their restrictions to each fixed finite-dimensional polynomial space are nonetheless equivalent.",
+  "conceptIds": [
+    "normed-space",
+    "equivalent-norms",
+    "banach-space"
+  ],
+  "hintLadder": [
+    "For definiteness of the integral, use a neighbourhood of a nonzero value.",
+    "Separate construction of the sup limit, continuity, and norm convergence.",
+    "Approximate a step function by ramps, then use continuity of a hypothetical limit on both sides."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Norm axioms and continuity.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Full sup-completeness proof.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Integral-Cauchy counterexample with no continuous limit.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Norm equivalence and fixed-dimension distinction.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Combines the unit methods and checks a limiting or changed-context case."
+    },
+    "knownAmbiguities": []
+  }
+}

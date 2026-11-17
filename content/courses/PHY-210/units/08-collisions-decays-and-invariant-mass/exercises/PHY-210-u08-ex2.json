@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u08-ex2",
+  "sequence": 2,
+  "title": "Unequal daughters from a particle at rest",
+  "kind": "derivation",
+  "promptMarkdown": "A hypothetical parent of mass $5m$ at rest decays into daughters of masses $m$ and $2m$. Derive the general two-body daughter-energy formula, then compute each energy, the common momentum magnitude, and each speed for these masses. Check energy conservation and both mass shells. Identify what additional physics would be needed to predict the direction or lifetime.",
+  "conceptIds": [
+    "relativistic-energy-momentum"
+  ],
+  "hintLadder": [
+    "Eliminate the second daughter with $P_2=P-P_1$.",
+    "Use the parent rest frame when evaluating $P\\cdot P_1$.",
+    "Find speeds from $pc^2/E$, not from Newtonian $p/m$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "The general formula and both energies are derived.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Momentum, speeds and mass-shell checks agree.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Kinematic information is separated from decay dynamics.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

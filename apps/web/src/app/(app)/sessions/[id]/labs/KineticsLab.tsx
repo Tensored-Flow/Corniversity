@@ -24,6 +24,7 @@ export function KineticsLab() {
   const stableStep = valid ? eulerStableStep(params) : null;
   const euler = valid && dt > 0 ? simulateEuler(params, dt, Math.ceil(Math.max(1, tEnd) / dt)) : null;
   const rk4 = valid && dt > 0 ? simulateRk4(params, dt, Math.ceil(Math.max(1, tEnd) / dt)) : null;
+  const rk4Readout = rk4?.[Math.min(rk4.length - 1, Math.round(Math.max(0, tRead) / dt))];
   const eulerAudit = euler ? auditSeries(euler.series, params.c0) : null;
 
   return (
@@ -86,7 +87,7 @@ export function KineticsLab() {
             ) : (
               <Badge tone="moss">stays within [0, C₀]</Badge>
             )}
-            {rk4 ? ` · RK4 at t = ${tRead}: ${rk4[Math.min(rk4.length - 1, Math.round(Math.max(0, tRead) / dt))]?.a.toFixed(4)} M` : ""}
+            {rk4Readout ? ` · Nearest RK4 sample at t = ${rk4Readout.t}: ${rk4Readout.a.toFixed(4)} M` : ""}
           </p>
         ) : null}
       </div>

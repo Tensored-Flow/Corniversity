@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u12-ex3",
+  "sequence": 3,
+  "title": "Cumulative proof: from operators back to a boundary problem",
+  "kind": "proof",
+  "promptMarkdown": "Let V≥0 be continuous and f continuous on [0,1]. Reconstruct the G^{1/2} argument in the lesson, proving (i) S is compact, self-adjoint and nonnegative; (ii) I+S has an inverse of norm at most one; (iii) the resulting u is C² and satisfies the equation and boundary conditions; (iv) uniqueness. Identify the roles of completeness, Fourier completeness, compactness, and positivity.",
+  "conceptIds": [
+    "spectral-theorem-compact",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Compute the quadratic form of S before discussing its spectrum.",
+    "Prove uniform convergence of the G^{1/2} series with Cauchy–Schwarz, then return to the integral formula."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Verifies the operator hypotheses and inverse bound.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Builds the solution and proves classical regularity and boundaries.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves uniqueness and accurately identifies all structural hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 75,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

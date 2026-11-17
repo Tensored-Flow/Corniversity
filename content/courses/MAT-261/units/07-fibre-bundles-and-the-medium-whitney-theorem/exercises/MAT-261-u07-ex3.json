@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u07-ex3",
+  "sequence": 3,
+  "title": "Dimension reduction with all hypotheses",
+  "kind": "proof",
+  "promptMarkdown": "Prove that every compact smooth $n$-manifold with $n\\ge1$ embeds in $\\mathbb R^{2n+1}$ and immerses in $\\mathbb R^{2n}$. You may use the finite-dimensional embedding constructed in unit 5 and smooth Sard. Construct $P(TM)$ through its bundle charts, identify both bad-direction maps, and explain why the proof stops at different dimensions for the two conclusions.",
+  "conceptIds": [
+    "fibre-bundles",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Turn the tangent bundle transition matrices into projective transitions.",
+    "Keep the target direction dimension $N-1$ separate from the projected target dimension.",
+    "Repeat the topology step after each injective projection."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Bundle/direction constructions.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct Sard inequalities and iteration.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Immersion conclusion and precise limitation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

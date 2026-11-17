@@ -3,6 +3,7 @@
 // carries the port, so several checkouts can run their suites at the same time; vitest.config.ts
 // builds DATABASE_URL from the same setting, so tests create their own connections.
 import { mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import EmbeddedPostgres from "embedded-postgres";
 import { createDb } from "../src/client";
@@ -23,7 +24,7 @@ process.on("exit", () => {
   if (vitestExitCode) process.exitCode = vitestExitCode;
 });
 
-const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", `corniversity-test-pg-${TEST_PORT}`);
+const dir = resolve(tmpdir(), `corniversity-test-pg-${TEST_PORT}`);
 
 export default async function setup(): Promise<() => Promise<void>> {
   rmSync(dir, { recursive: true, force: true });

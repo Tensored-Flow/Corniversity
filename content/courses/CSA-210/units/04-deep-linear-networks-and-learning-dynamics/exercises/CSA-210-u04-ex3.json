@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u04-ex3",
+  "sequence": 3,
+  "title": "A similarity matrix that changes while the model does not",
+  "kind": "calculation",
+  "promptMarkdown": "Take row representations H=[[1,0],[1,1]] and output weights v=(1,1). Compute G=HHᵀ and the cosine-similarity matrix. Now transform H'=HR with R=diag(2,1/2) and v'=R⁻¹v. Compute predictions, new Gram matrix and off-diagonal cosine. Explain why unchanged predictions need not imply unchanged raw representation similarity, and identify transformations that do preserve G.",
+  "conceptIds": [
+    "deep-linear-network-dynamics"
+  ],
+  "hintLadder": [
+    "Compute predictions before and after rescaling.",
+    "Normalise each Gram entry by the two row norms for cosine.",
+    "Use RRᵀ to see which transforms preserve the Gram matrix."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Calculates both similarity definitions correctly",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Verifies invariant predictions and changed similarity",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Characterises preservation and inference limits",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Uses a hidden-coordinate change to test whether a representation interpretation is invariant to function-preserving reparameterisation."
+  }
+}

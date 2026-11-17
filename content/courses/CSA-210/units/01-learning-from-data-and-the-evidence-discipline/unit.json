@@ -180,6 +180,11 @@
       "name": "workload-sanity",
       "result": "pass",
       "evidence": "75 + 60 + 70 + 15 + 10 minutes of activities plus 55 minutes of preparation ≈ 4.75 hours, within the 8–12 hours per week budget alongside unit 2."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Final independent review 2026-11-12; see .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md for scope and limits."
     }
   ],
   "lessonFile": "lesson.md",
@@ -188,6 +193,7 @@
     "CSA-210-u01-ex1.grading-notes.md",
     "CSA-210-u01-ex2.reference-solution.md",
     "CSA-210-u01-ex3.grading-notes.md",
-    "lesson-notes.md"
+    "lesson-notes.md",
+    "CSA-210-u01-ex3.reference-solution.md"
   ]
 }

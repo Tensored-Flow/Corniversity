@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u08-ex2",
+  "sequence": 2,
+  "title": "A precise spike taxonomy",
+  "kind": "proof",
+  "promptMarkdown": "For $p\\ge1$ and $\\alpha>0$, put $f_n(x)=n^\\alpha1_{(0,1/n)}(x)$ on $(0,1)$. Determine pointwise convergence and $L^p$ convergence to zero. When $\\alpha p<1$, prove that these functions admit a common $L^p$ dominator. When $\\alpha p\\ge1$, show no such dominator exists.",
+  "conceptIds": [
+    "lebesgue-integral",
+    "lp-space"
+  ],
+  "hintLadder": [
+    "Compute the p-th power of the norm before taking a root.",
+    "Convert $x<1/n$ into a bound for $n^\\alpha$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Computes pointwise and norm limits for all exponent regimes.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Constructs a valid common dominator in the convergent regime.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Rules out every possible dominator in the other regimes.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

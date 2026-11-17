@@ -3,29 +3,195 @@
   "courseId": "CHE-101",
   "sequence": 9,
   "title": "Catalysis and applying chemical principles",
-  "summary": "Homogeneous and heterogeneous catalysis; enzymes as catalysts and the reaction-coordinate picture of what a catalyst changes and leaves unchanged; the course's closing lecture on applying chemical principles across the units.",
+  "summary": "Catalytic pathways, Arrhenius models, reversible relaxation and enzyme-rate derivation, with identifiability, inhibition and falsifiable experimental design.",
   "objectives": [
-    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 34–35 of 5.111SC (Unit V) with OpenStax 12.7." }
+    {
+      "id": "u09-o1",
+      "description": "Derive elementary reversible relaxation and distinguish its endpoint from timescale."
+    },
+    {
+      "id": "u09-o2",
+      "description": "Use Arrhenius analysis within a tested temperature regime."
+    },
+    {
+      "id": "u09-o3",
+      "description": "Derive the Michaelis–Menten initial-rate law with conservation and explicit approximations."
+    },
+    {
+      "id": "u09-o4",
+      "description": "Test catalysis and inhibition claims using limiting cases, identifiability and controlled measurements."
+    }
   ],
-  "prerequisiteConceptIds": ["reaction-mechanisms", "arrhenius-temperature-dependence"],
-  "teachesConceptIds": ["arrhenius-temperature-dependence"],
+  "prerequisiteConceptIds": [
+    "reaction-mechanisms",
+    "arrhenius-temperature-dependence"
+  ],
+  "teachesConceptIds": [
+    "arrhenius-temperature-dependence"
+  ],
   "preparation": [
-    { "description": "OCW Unit V page: lecture 34 (kinetics: catalysts, with the enzyme-pathway videos) and lecture 35 (applying chemical principles).", "locatorId": "chem14-unit5", "estimatedMinutes": 40 },
-    { "description": "OpenStax 12.7 Catalysis: homogeneous and heterogeneous catalysts, reaction diagrams for catalysed reactions (Example 12.15).", "locatorId": "ox-12-7", "estimatedMinutes": 30 },
-    { "description": "Lecture 33 notes page 4: reaction coordinate diagrams, the forward and reverse barriers and their difference.", "locatorId": "chem14-n33-p4", "estimatedMinutes": 10 }
+    {
+      "description": "Arrhenius slope in a constant-parameter regime",
+      "locatorId": "chem14-n33-p1",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Two-temperature relation",
+      "locatorId": "chem14-n33-p2",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Catalytic path and unchanged equilibrium",
+      "locatorId": "chem14-n34-p1",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Enzyme mechanism",
+      "locatorId": "chem14-n34-p2",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Intermediate balance and steady-state approximation",
+      "locatorId": "chem14-n34-p3",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Saturation and Michaelis–Menten limits",
+      "locatorId": "chem14-n34-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Inhibition as a model extension",
+      "locatorId": "chem14-n34-p5",
+      "estimatedMinutes": 10
+    }
   ],
   "activities": [
-    { "id": "u09-a1", "type": "reading", "title": "Lectures 34–35 and OpenStax 12.7: catalysis and synthesis of principles", "instructions": "Read the lecture pages and the OpenStax section for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["chem14-unit5", "ox-12-7", "chem14-n33-p4"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u09-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 115,
+      "sourceLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2",
+        "chem14-n34-p1",
+        "chem14-n34-p2",
+        "chem14-n34-p3",
+        "chem14-n34-p4",
+        "chem14-n34-p5"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u09-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 160,
+      "sourceLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2",
+        "chem14-n34-p1",
+        "chem14-n34-p2",
+        "chem14-n34-p3",
+        "chem14-n34-p4",
+        "chem14-n34-p5"
+      ],
+      "exerciseIds": [
+        "CHE-101-u09-ex1",
+        "CHE-101-u09-ex2",
+        "CHE-101-u09-ex3",
+        "CHE-101-u09-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u09-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2",
+        "chem14-n34-p1",
+        "chem14-n34-p2",
+        "chem14-n34-p3",
+        "chem14-n34-p4",
+        "chem14-n34-p5"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 200,
-  "status": "draft",
+  "exerciseIds": [
+    "CHE-101-u09-ex1",
+    "CHE-101-u09-ex2",
+    "CHE-101-u09-ex3",
+    "CHE-101-u09-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CHE-101-u09-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Catalysts change K because products appear faster.",
+      "correction": "At fixed conditions a new pathway changes kinetics; equilibrium for the same reaction is fixed by thermodynamics.",
+      "correctionLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2"
+      ]
+    },
+    {
+      "claim": "A steady ES concentration means the enzyme reaction is at equilibrium.",
+      "correction": "Quasi-steady intermediate abundance can coexist with continuing net product formation.",
+      "correctionLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2"
+      ]
+    },
+    {
+      "claim": "KM always measures pure substrate affinity.",
+      "correction": "KM=(k−1+k2)/k1 equals KD only with an additional rapid-equilibrium approximation.",
+      "correctionLocatorIds": [
+        "chem14-n33-p1",
+        "chem14-n33-p2"
+      ]
+    }
+  ],
+  "estimatedMinutes": 390,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit V page opened 2026-10-30 (lectures 30–35 listed with page URLs); OpenStax 12.7 opened; lecture 33 notes PDF page 4 text-extracted. Lecture pages 34–35 and their notes PDFs are not yet opened; the unit page is the verified locator for them." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read MIT 5.111 lecture34 pp.1–5: catalytic path and unchanged thermodynamics, enzyme mechanism, intermediate steady state, conservation, Michaelis–Menten saturation and inhibition. Arrhenius relation revisits verified lecture33 locators; original parameter-identifiability and experiment-design problems."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimates 390 active minutes including assigned reading, lecture work, original problems and delayed retrieval; estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CHE-101-u09-ex1.reference-solution.md",
+    "CHE-101-u09-ex2.reference-solution.md",
+    "CHE-101-u09-ex3.reference-solution.md",
+    "CHE-101-u09-ex4.reference-solution.md"
+  ]
 }

@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u09-ex1",
+  "sequence": 1,
+  "title": "Temperature interpolation and a failed extrapolation",
+  "kind": "calculation",
+  "promptMarkdown": "A first-order reaction has k=0.0150 s⁻¹ at 290 K and 0.0600 s⁻¹ at 315 K. Assuming a constant Arrhenius prefactor and activation energy, calculate E_a and k at 302 K. A measurement at 340 K is 0.0500 s⁻¹. Can the same positive-E_a model describe all three temperatures? Give two mechanistic or experimental alternatives and an experiment to distinguish one.",
+  "conceptIds": [
+    "arrhenius-temperature-dependence"
+  ],
+  "hintLadder": [
+    "Solve for Ea using the logarithm of a dimensionless rate ratio.",
+    "Check the sign: a positive Ea must make k increase with T.",
+    "A rejected model is not a uniquely identified new mechanism."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives Ea and interpolated rate with units",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Tests the model against the additional observation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Proposes falsifiable alternatives and a controlled comparison",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

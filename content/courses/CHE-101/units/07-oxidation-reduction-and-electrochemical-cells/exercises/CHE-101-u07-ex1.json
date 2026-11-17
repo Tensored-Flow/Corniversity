@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u07-ex1",
+  "sequence": 1,
+  "title": "Balance without losing the medium",
+  "kind": "calculation",
+  "promptMarkdown": "In basic aqueous solution, balance MnO₄⁻ + SO₃²⁻ → MnO₂(s) + SO₄²⁻ using half reactions. Show separate electron balances, cancel species, and check every atom and the net charge. Identify oxidant and reductant. State why formal balancing alone does not establish which manganese product dominates in a real solution.",
+  "conceptIds": [
+    "redox-electrochemistry"
+  ],
+  "hintLadder": [
+    "Find Mn and S oxidation numbers before adding water.",
+    "Balance each half in acid, then neutralise H⁺ on both sides.",
+    "Use six electrons as the common multiple; check charge after cancelling."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Constructs correct half reactions and electron count",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Obtains and independently checks the basic-medium equation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Identifies agents and the limit of formal balance",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

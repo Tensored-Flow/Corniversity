@@ -1,0 +1,109 @@
+{
+  "id": "CHE-101-u07-ex4",
+  "sequence": 4,
+  "title": "Audit an electroplating proposal",
+  "kind": "calculation",
+  "promptMarkdown": "A hypothetical Cu²⁺ plating process passes 0.800 A for 40.0 min at Faradaic efficiency 0.900. Use M(Cu)=63.546 g mol⁻¹. (a) Find charge, moles of electrons and copper deposited. (b) Its supply remains at 2.50 V. Find electrical input energy and explain why this is not the reversible chemical work from an unrelated standard cell voltage. (c) A manager doubles both time and current and predicts four times the mass and unchanged energy per gram. State the conditions under which that scaling holds and two reasons it can fail. (d) Specify a mass/charge/control measurement that would test the efficiency claim.",
+  "conceptIds": [
+    "redox-electrochemistry"
+  ],
+  "hintLadder": [
+    "Convert minutes to seconds and separate electron moles from copper moles.",
+    "Efficiency applies to the fraction of charge used for Cu²⁺ reduction.",
+    "List the assumptions hidden in a linear scale-up."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Obtains charge and deposited mass with stoichiometry",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Separates input energy from reversible work",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Gives conditional scale-up and credible failure mechanisms",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Designs a measurement that can falsify efficiency",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -3,11 +3,26 @@ import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { defaultContentRoot, loadContent } from "@corniversity/content/load";
 import { seedContent } from "@corniversity/content/seed";
+import { preparationDraft } from "@corniversity/core/preparation/pipeline.fixture";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { stopBoss } from "@corniversity/db/queue";
 import { user } from "@corniversity/db/schema/auth";
-import { instructorArtifact, providerRun, teachingUnit, unitDraft, unitExercise, unitPublication } from "@corniversity/db/schema/index";
+import {
+  extractedPage,
+  instructorArtifact,
+  locator,
+  passage,
+  providerRun,
+  resourceAsset,
+  teachingUnit,
+  unitDraft,
+  unitExercise,
+  unitPublication,
+} from "@corniversity/db/schema/index";
+import * as aiRuns from "@corniversity/db/services/ai-runs";
+import * as libraryServices from "@corniversity/db/services/library";
+import { setPermission } from "@corniversity/db/services/library";
 import { confirmPreparation, createPreparationRequest, preparationView, publishDraft } from "@corniversity/db/services/preparation";
 import {
   approvePaidUse,
@@ -16,14 +31,14 @@ import {
   saveProviderSetting,
   withdrawPaidUseApproval,
 } from "@corniversity/db/services/provider-config";
-import { eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { PgBoss } from "pg-boss";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { HandlerContext } from "./index";
 import { prepareHandler } from "./prepare";
 
 /**
- * Course preparation with a live model, through the real SDK against a local server speaking the
+ * Course preparation through the real SDK against a local server speaking the
  * documented wire format (nothing leaves the machine; nothing here says how good a real draft is).
  * It checks the budget gate, the draft and its checks, the owner's publication and that the
  * content seeder never restores the outline of a published unit.
@@ -36,35 +51,25 @@ let handle: ReturnType<typeof createDb>;
 let ctx: HandlerContext;
 let calls = 0;
 
-const lesson = `## Decoding with deep networks\n\n${"A deep network maps population activity to a decoded variable; its capacity must be controlled by held-out evaluation. ".repeat(40)}\n\nThe loss is $L(\\theta) = \\sum_i \\ell(y_i, f_\\theta(x_i))$.`;
+const PASSAGE_ID = randomUUID();
+const ASSET_ID = randomUUID();
+const SOURCE_TEXT =
+  "A neural decoder maps population activity to a predicted variable. Fit the parameters and all preprocessing on training observations only. Select model capacity using validation data. Evaluate once on an untouched test set whose held-out unit matches the intended deployment: a trial, stimulus, session or animal. A random trial split cannot establish transfer to an unseen animal. Report the information available at inference and compare against an appropriate baseline. Predictive accuracy alone does not identify a causal mechanism.";
+let received = "";
+let replyMode: "valid" | "wrong-evidence" | "repetitive" = "valid";
 const server = createServer(async (req, res) => {
-  for await (const _ of req) {
-    // drain
-  }
+  received = "";
+  for await (const chunk of req) received += chunk.toString();
   calls += 1;
-  const draft = {
-    lessonMarkdown: lesson,
-    objectives: ["Explain how a decoder is evaluated on held-out trials."],
-    sourceLocatorIds: ["nma-w1d5"],
-    exercises: [
-      {
-        title: "Held-out evaluation",
-        kind: "explanation",
-        promptMarkdown: "Explain why a decoder's training accuracy can mislead, and design a held-out evaluation for it.",
-        hintLadder: ["What does the decoder see during training that it will not see in use?"],
-        criteria: [
-          { criterion: "Identifies overfitting as the risk.", weight: 0.5 },
-          { criterion: "Proposes a split that matches the intended use.", weight: 0.5 },
-        ],
-        referenceSolution:
-          "Training accuracy rewards memorising noise; evaluation must use trials withheld from fitting, split by session if use is across sessions.",
-        stage: "independent",
-      },
-    ],
-    misconceptions: [
-      { claim: "Higher training accuracy means a better decoder.", correction: "Only held-out performance speaks to generalisation." },
-    ],
-  };
+  const draft = preparationDraft(PASSAGE_ID, "nma-w1d5");
+  if (replyMode === "wrong-evidence") {
+    draft.sourceLocatorIds = ["fa21-l1-def14"]; // registered globally, not supplied to this run
+    draft.sourcePassageIds = [randomUUID()];
+  }
+  if (replyMode === "repetitive")
+    draft.lessonMarkdown =
+      "A deep network maps population activity to a decoded variable; its capacity must be controlled by held-out evaluation. ".repeat(40);
+
   res.writeHead(200, { "content-type": "application/json" });
   res.end(
     JSON.stringify({
@@ -84,6 +89,37 @@ beforeAll(async () => {
   handle = createDb(process.env.DATABASE_URL!, { max: 3 });
   await seedContent(handle.db, bundle);
   await handle.db.insert(user).values({ id: OWNER, name: "Prepare Test", email: `${OWNER}@example.test` });
+  await handle.db
+    .update(teachingUnit)
+    .set({ objectives: preparationDraft().objectives.map((description) => ({ id: "o1", description })) })
+    .where(eq(teachingUnit.id, UNIT));
+  const [sourceLocation] = await handle.db.select().from(locator).where(eq(locator.id, "nma-w1d5"));
+  await handle.db.insert(resourceAsset).values({
+    id: ASSET_ID,
+    ownerId: OWNER,
+    filename: "permitted-decoding-notes.txt",
+    mediaType: "text/plain",
+    sizeBytes: SOURCE_TEXT.length,
+    sha256: "c".repeat(64),
+    status: "processed",
+    origin: "web_upload",
+    localOnly: false,
+    sourceVersionId: sourceLocation!.sourceVersionId,
+    confirmedTitle: "Test decoding reading",
+    courseIds: ["NEU-220"],
+  });
+  const [page] = await handle.db
+    .insert(extractedPage)
+    .values({
+      assetId: ASSET_ID,
+      physicalIndex: 0,
+      text: SOURCE_TEXT,
+      charCount: SOURCE_TEXT.length,
+      quality: { scannedSuspected: false, lowText: false, invisibleText: 0, imageCoverage: 0 },
+    })
+    .returning();
+  await handle.db.insert(passage).values({ id: PASSAGE_ID, assetId: ASSET_ID, pageId: page!.id, ordinal: 0, text: SOURCE_TEXT });
+  await setPermission(handle.db, OWNER, ASSET_ID, "external_ai", "allowed", "Authored local test fixture");
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   process.env.ANTHROPIC_BASE_URL = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   await saveBudgetLimits(handle.db, OWNER, { perRunUsd: 5, dailyUsd: 20, monthlyUsd: 100 });
@@ -101,7 +137,7 @@ afterAll(async () => {
   delete process.env.ANTHROPIC_BASE_URL;
   await handle.db.delete(unitPublication).where(eq(unitPublication.ownerId, OWNER));
   await handle.db.delete(instructorArtifact).where(eq(instructorArtifact.unitId, UNIT));
-  await handle.db.delete(unitExercise).where(inArray(unitExercise.id, [`${UNIT}-p1-ex1`]));
+  await handle.db.delete(unitExercise).where(eq(unitExercise.unitId, UNIT));
   await handle.db.delete(unitDraft).where(eq(unitDraft.ownerId, OWNER));
   await handle.db.delete(providerRun).where(eq(providerRun.ownerId, OWNER));
   await handle.db.delete(user).where(eq(user.id, OWNER));
@@ -121,7 +157,7 @@ const intake = {
   bufferUnits: 1,
 };
 
-describe("preparation with a live model", () => {
+describe("preparation with a local provider double", () => {
   it("refuses a model step whose worst case exceeds the request's budget, before anything is sent", async () => {
     const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
       courseId: "NEU-220",
@@ -201,6 +237,106 @@ describe("preparation with a live model", () => {
     }
   });
 
+  it("blocks a queued request after source consent is revoked, without creating a provider reservation", async () => {
+    const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
+      courseId: "NEU-220",
+      intake,
+      budgetUsd: 5,
+      autoPrepare: false,
+    });
+    await confirmPreparation(handle.db, OWNER, request.id);
+    await setPermission(handle.db, OWNER, ASSET_ID, "external_ai", "denied", "withdrawn before execution");
+    calls = 0;
+    try {
+      const result = await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id });
+      expect(result).toMatchObject({ status: "blocked" });
+      expect(calls).toBe(0);
+      expect(
+        await handle.db
+          .select()
+          .from(providerRun)
+          .where(eq(providerRun.purpose, `prepare:${request.id}`)),
+      ).toHaveLength(0);
+      const view = await preparationView(handle.db, OWNER, request.id);
+      expect(view!.stages.find((s) => s.stageKey === "unit_authoring")?.error).toMatch(/No permitted source passages/);
+    } finally {
+      await setPermission(handle.db, OWNER, ASSET_ID, "external_ai", "allowed", "restore test fixture consent");
+    }
+  });
+
+  it("rejects globally valid but unsupplied citations and repetitive teaching", async () => {
+    for (const mode of ["wrong-evidence", "repetitive"] as const) {
+      replyMode = mode;
+      const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
+        courseId: "NEU-220",
+        intake,
+        budgetUsd: 5,
+        autoPrepare: false,
+      });
+      await confirmPreparation(handle.db, OWNER, request.id);
+      await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id });
+      const view = await preparationView(handle.db, OWNER, request.id);
+      const draft = view!.drafts[0]!;
+      expect(draft.status).toBe("failed_checks");
+      const failed = draft.checks.filter((c) => c.result === "fail").map((c) => c.name);
+      expect(failed).toContain(mode === "wrong-evidence" ? "supplied-source-passages" : "non-repetitive-teaching");
+      if (mode === "wrong-evidence") expect(failed).toContain("verified-sources");
+      await expect(publishDraft(handle.db, OWNER, draft.id)).rejects.toThrow(/passed every automatic check/);
+    }
+    replyMode = "valid";
+  });
+
+  it.each(["permission", "local-only", "deleted", "course", "edition", "passage", "check-error"])(
+    "sends nothing when %s changes after source capture and provider admission",
+    async (change) => {
+      const [savedAsset] = await handle.db.select().from(resourceAsset).where(eq(resourceAsset.id, ASSET_ID));
+      const [savedPassage] = await handle.db.select().from(passage).where(eq(passage.id, PASSAGE_ID));
+      const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
+        courseId: "NEU-220",
+        intake,
+        budgetUsd: 5,
+        autoPrepare: false,
+      });
+      await confirmPreparation(handle.db, OWNER, request.id);
+      const original = aiRuns.planRun;
+      const admission = vi.spyOn(aiRuns, "planRun").mockImplementationOnce(async (...args) => {
+        const plan = await original(...args);
+        expect(plan.kind).toBe("live");
+        if (change === "check-error")
+          vi.spyOn(libraryServices, "sourcePassagesStillPermitted").mockRejectedValueOnce(new Error("transient query failure"));
+        if (change === "permission") await setPermission(handle.db, OWNER, ASSET_ID, "external_ai", "denied", "Withdrawn during admission");
+        if (change === "local-only") await handle.db.update(resourceAsset).set({ localOnly: true }).where(eq(resourceAsset.id, ASSET_ID));
+        if (change === "deleted")
+          await handle.db.update(resourceAsset).set({ deletedAt: new Date(), status: "deleted" }).where(eq(resourceAsset.id, ASSET_ID));
+        if (change === "course") await handle.db.update(resourceAsset).set({ courseIds: [] }).where(eq(resourceAsset.id, ASSET_ID));
+        if (change === "edition")
+          await handle.db.update(resourceAsset).set({ sourceVersionId: null }).where(eq(resourceAsset.id, ASSET_ID));
+        if (change === "passage") await handle.db.delete(passage).where(eq(passage.id, PASSAGE_ID));
+        return plan;
+      });
+      calls = 0;
+      try {
+        expect(await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id })).toMatchObject({
+          status: "blocked",
+        });
+        expect(admission).toHaveBeenCalledOnce();
+        expect(calls).toBe(0);
+        const [reserved] = await handle.db
+          .select()
+          .from(providerRun)
+          .where(eq(providerRun.purpose, `prepare:${request.id}`));
+        expect(reserved).toMatchObject({ status: "blocked", costUsd: "0.000000" });
+        expect(reserved!.finishedAt).not.toBeNull();
+      } finally {
+        admission.mockRestore();
+        vi.restoreAllMocks();
+        await handle.db.update(resourceAsset).set(savedAsset!).where(eq(resourceAsset.id, ASSET_ID));
+        await handle.db.insert(passage).values(savedPassage!).onConflictDoNothing();
+        await setPermission(handle.db, OWNER, ASSET_ID, "external_ai", "allowed", "Restore synthetic fixture");
+      }
+    },
+  );
+
   it("drafts the next outlined unit, checks it, and publishes it only when the owner does; re-seeding keeps it", async () => {
     const request = await createPreparationRequest(handle.db, getEnv(), OWNER, {
       courseId: "NEU-220",
@@ -212,6 +348,8 @@ describe("preparation with a live model", () => {
     calls = 0;
     const result = await prepareHandler(ctx, { idempotencyKey: `t:${request.id}`, ownerId: OWNER, requestId: request.id });
     expect(calls).toBe(1);
+    expect(received).toContain(SOURCE_TEXT);
+    expect(received).toContain(PASSAGE_ID);
     expect(result).toMatchObject({ status: "awaiting_review" });
     const view = await preparationView(handle.db, OWNER, request.id);
     const [draft] = view!.drafts;
@@ -223,7 +361,12 @@ describe("preparation with a live model", () => {
     await publishDraft(handle.db, OWNER, draft!.id);
     const [published] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, UNIT));
     expect(published).toMatchObject({ status: "ready" });
-    expect(published!.lessonMarkdown).toContain("Decoding with deep networks");
+    expect(published!.lessonMarkdown).toContain("What a decoder");
+
+    const exercisesBefore = await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, UNIT));
+    const referencesBefore = await handle.db.select().from(instructorArtifact).where(eq(instructorArtifact.unitId, UNIT));
+    expect(exercisesBefore).toHaveLength(3);
+    expect(referencesBefore).toHaveLength(3);
 
     // A changed course makes a new course version; the published unit keeps its content.
     const changed = {
@@ -236,7 +379,9 @@ describe("preparation with a live model", () => {
     expect(report.courseVersionsCreated).toBeGreaterThanOrEqual(1);
     const [afterSeed] = await handle.db.select().from(teachingUnit).where(eq(teachingUnit.id, UNIT));
     expect(afterSeed).toMatchObject({ status: "ready" });
-    expect(afterSeed!.lessonMarkdown).toContain("Decoding with deep networks");
+    expect(afterSeed!.lessonMarkdown).toContain("What a decoder");
+    expect(await handle.db.select().from(unitExercise).where(eq(unitExercise.unitId, UNIT))).toEqual(exercisesBefore);
+    expect(await handle.db.select().from(instructorArtifact).where(eq(instructorArtifact.unitId, UNIT))).toEqual(referencesBefore);
     // Restore the original description for other tests sharing the database.
     await seedContent(handle.db, bundle);
   });

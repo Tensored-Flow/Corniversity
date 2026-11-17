@@ -8,12 +8,26 @@ import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { stopBoss } from "@corniversity/db/queue";
 import { user } from "@corniversity/db/schema/auth";
-import { assessmentRun, attempt, evidenceEvent, instructorArtifact, providerRun, unitExercise } from "@corniversity/db/schema/index";
+import {
+  assessmentRun,
+  attempt,
+  evidenceEvent,
+  extractedPage,
+  instructorArtifact,
+  passage,
+  providerRun,
+  resourceAsset,
+  unitExercise,
+} from "@corniversity/db/schema/index";
+import * as aiRuns from "@corniversity/db/services/ai-runs";
 import { fileReview, getOrCreateAttempt, submitAttempt } from "@corniversity/db/services/learning";
+import * as libraryServices from "@corniversity/db/services/library";
+import { setPermission } from "@corniversity/db/services/library";
 import { approvePaidUse, saveBudgetLimits, saveProviderSetting } from "@corniversity/db/services/provider-config";
+import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, eq, inArray } from "drizzle-orm";
 import type { PgBoss } from "pg-boss";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { assessHandler } from "./assess";
 import type { HandlerContext } from "./index";
 
@@ -79,6 +93,37 @@ const judgement = (summary: string) => ({
 });
 
 const graderConfig = { provider: "fixture", model: "fixture", promptVersion: "test", roleVersion: "test" };
+
+async function libraryEvidence() {
+  const assetId = randomUUID();
+  const text =
+    "Continuous functions and norms: Cauchy completeness requires a complete normed space. Compare the integral and supremum norms.";
+  await handle.db.insert(resourceAsset).values({
+    id: assetId,
+    ownerId: LIVE_OWNER,
+    filename: "norms.txt",
+    mediaType: "text/plain",
+    sizeBytes: text.length,
+    sha256: randomUUID(),
+    status: "processed",
+    origin: "web_upload",
+    localOnly: false,
+    courseIds: ["MAT-230"],
+  });
+  const [page] = await handle.db
+    .insert(extractedPage)
+    .values({
+      assetId,
+      physicalIndex: 0,
+      text,
+      charCount: text.length,
+      quality: { scannedSuspected: false, lowText: false, invisibleText: 0, imageCoverage: 0 },
+    })
+    .returning();
+  const [p] = await handle.db.insert(passage).values({ assetId, pageId: page!.id, ordinal: 0, text }).returning();
+  await setPermission(handle.db, LIVE_OWNER, assetId, "external_ai", "allowed", "Synthetic review text");
+  return { assetId, passageId: p!.id };
+}
 
 async function submitAndAssess(ownerId: string, exerciseId: string, content: string) {
   const a = await getOrCreateAttempt(handle.db, { ownerId, exerciseId });
@@ -148,6 +193,63 @@ describe("assessment without a model", () => {
 });
 
 describe("assessment by a live model", () => {
+  it("preserves the exact library citation in stored feedback", async () => {
+    const ref = await libraryEvidence();
+    try {
+      const [exercise] = await handle.db.select().from(unitExercise).where(eq(unitExercise.id, EXERCISE));
+      const evidence = await buildUnitEvidence(handle.db, exercise!.unitId, {
+        ownerId: LIVE_OWNER,
+        courseId: "MAT-230",
+        query: `${exercise!.title} ${exercise!.promptMarkdown}`,
+      });
+      const tag = evidence.refs.find((r) => r.passageId === ref.passageId)!.tag;
+      mode = "answer";
+      answer = { ...judgement("Check the assumptions of the supplied library passage."), citationTags: [tag] };
+      const { submitted, payload } = await submitAndAssess(LIVE_OWNER, EXERCISE, "Consider continuous functions on the unit interval.");
+      await assessHandler(ctx, payload);
+      expect((await runOf(submitted.assessmentRunId)).run.feedback?.citations).toContainEqual(expect.objectContaining(ref));
+    } finally {
+      await handle.db.delete(resourceAsset).where(eq(resourceAsset.id, ref.assetId));
+    }
+  });
+
+  it.each(["permission", "local-only", "deleted", "check-error"])(
+    "does not dispatch captured evidence after %s changes during admission",
+    async (change) => {
+      const ref = await libraryEvidence();
+      const original = aiRuns.planRun;
+      const admission = vi.spyOn(aiRuns, "planRun").mockImplementationOnce(async (...args) => {
+        const plan = await original(...args);
+        expect(plan.kind).toBe("live");
+        if (change === "check-error")
+          vi.spyOn(libraryServices, "sourcePassagesStillPermitted").mockRejectedValueOnce(new Error("transient query failure"));
+        if (change === "permission")
+          await setPermission(handle.db, LIVE_OWNER, ref.assetId, "external_ai", "denied", "Withdrawn during admission");
+        if (change === "local-only")
+          await handle.db.update(resourceAsset).set({ localOnly: true }).where(eq(resourceAsset.id, ref.assetId));
+        if (change === "deleted") await handle.db.delete(resourceAsset).where(eq(resourceAsset.id, ref.assetId));
+        return plan;
+      });
+      received = [];
+      try {
+        const { submitted, payload } = await submitAndAssess(LIVE_OWNER, EXERCISE, "Consider continuous functions on the unit interval.");
+        expect(await assessHandler(ctx, payload)).toMatchObject({ status: "failed" });
+        expect(admission).toHaveBeenCalledOnce();
+        expect(received).toHaveLength(0);
+        const { run, recorded } = await runOf(submitted.assessmentRunId);
+        expect(run.error).toMatch(/Source availability or permission changed/);
+        expect(recorded).toMatchObject({ status: "blocked", costUsd: "0.000000" });
+        expect(recorded!.finishedAt).not.toBeNull();
+        // The version remains in the database even though automated assessment could not run.
+        expect(run.submissionVersionId).toBe(submitted.submissionVersionId);
+      } finally {
+        admission.mockRestore();
+        vi.restoreAllMocks();
+        await handle.db.delete(resourceAsset).where(eq(resourceAsset.id, ref.assetId));
+      }
+    },
+  );
+
   it("records the run at what it cost, and stores the feedback labelled with the model", async () => {
     mode = "answer";
     answer = judgement("The construction works; the unboundedness of the ratio still needs saying.");

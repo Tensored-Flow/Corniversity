@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u08-ex3",
+  "sequence": 3,
+  "title": "A photon loses energy but momentum still balances",
+  "kind": "derivation",
+  "promptMarkdown": "A photon of energy $E=m_ec^2$ along $+x$ scatters from a free electron initially at rest. The outgoing photon is rotated counterclockwise by $60^\\circ$ from $+x$ toward $+y$ in the xy plane. Derive its energy from four-momentum conservation. Find the recoil electron's kinetic energy, momentum components, speed and direction. Verify its mass shell and explain why equating photon energy loss to electron rest energy would fail.",
+  "conceptIds": [
+    "relativistic-energy-momentum"
+  ],
+  "hintLadder": [
+    "Square $p+k-k\\prime$ and use the unchanged electron mass.",
+    "Subtract momentum vectors component by component.",
+    "Use the recoil total energy in $\\mathbf v=c^2\\mathbf p/E_e$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Photon energy follows from the recoil mass shell.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Electron energy, momentum, speed and direction are consistent.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The invariant check and rest-versus-kinetic energy interpretation are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Use a non-backward scattering angle and verify energy and both spatial momentum components."
+  }
+}

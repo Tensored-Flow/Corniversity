@@ -3,27 +3,149 @@
   "courseId": "CSA-210",
   "sequence": 7,
   "title": "Regularisation: L1 and L2, dropout, data augmentation and hyperparameter search",
-  "summary": "L1 and L2 penalties as shrinkage and their effect on the optimisation problem; dropout and its implementation caveats; data augmentation; stochastic gradient descent and the learning rate as regularisers; hyperparameter tuning and its perils.",
+  "summary": "L1/L2 and proximal reasoning, weight-decay distinctions, exact/Monte Carlo dropout and task-valid augmentation studies.",
   "objectives": [
-    { "id": "u07-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D1 Tutorial 2 (Regularization techniques part 2) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u07-o1",
+      "description": "Derive L1/L2 solutions and distinguish nonsmooth thresholding from gradient shrinkage."
+    },
+    {
+      "id": "u07-o2",
+      "description": "Explain when L2 penalties and weight decay agree or differ."
+    },
+    {
+      "id": "u07-o3",
+      "description": "Calculate dropout expectations and limits under a specified mask convention."
+    },
+    {
+      "id": "u07-o4",
+      "description": "Design label-valid augmentation and validation-based regularisation studies."
+    }
   ],
-  "prerequisiteConceptIds": ["overfitting-and-early-stopping", "gradient-descent"],
-  "teachesConceptIds": ["regularisation-dl"],
+  "prerequisiteConceptIds": [
+    "overfitting-and-early-stopping",
+    "gradient-descent"
+  ],
+  "teachesConceptIds": [
+    "regularisation-dl"
+  ],
   "preparation": [
-    { "description": "Read W2D1 Tutorial 2: L1 and L2 regularisation, dropout and its caveats, data augmentation, SGD and the learning rate, hyperparameter tuning.", "locatorId": "nmadl-w2d1-t2", "estimatedMinutes": 60 }
+    {
+      "locatorId": "nmadl-w2d1-t2",
+      "description": "Read L1/L2, dropout, augmentation and hyperparameter selection; record penalty coefficient and mask conventions.",
+      "estimatedMinutes": 65
+    }
   ],
   "activities": [
-    { "id": "u07-a1", "type": "reading", "title": "W2D1 Tutorial 2: Regularization techniques part 2", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d1", "nmadl-w2d1-t2"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u07-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u07-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 185,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t2"
+      ],
+      "exerciseIds": [
+        "CSA-210-u07-ex1",
+        "CSA-210-u07-ex2",
+        "CSA-210-u07-ex3",
+        "CSA-210-u07-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u07-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w2d1-t2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u07-ex1",
+    "CSA-210-u07-ex2",
+    "CSA-210-u07-ex3",
+    "CSA-210-u07-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u07-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "L2 regularisation and weight decay are identical for every optimiser.",
+      "correction": "Their equivalence depends on the update rule; adaptive/preconditioned scaling can separate them.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t2"
+      ]
+    },
+    {
+      "claim": "Mean-preserving dropout preserves every downstream output and loss.",
+      "correction": "Nonlinear operations do not generally commute with expectation.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t2"
+      ]
+    },
+    {
+      "claim": "Augmentation creates independent samples with automatically valid labels.",
+      "correction": "Descendants share their source, and label invariance/equivariance must be checked for the task.",
+      "correctionLocatorIds": [
+        "nmadl-w2d1-t2"
+      ]
+    }
+  ],
+  "estimatedMinutes": 390,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Tutorial 2 opened 2026-10-30 (HTTP 200; title 'Tutorial 2: Regularization techniques part 2'; sections 'Section 1: L1 and L2 Regularization', 'Section 2: Dropout', 'Section 3: Data Augmentation', 'Section 4: Stochastic Gradient Descent', 'Section 5: Hyperparameter Tuning' recorded)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W2D1 Tutorial2 sections1.2,1.3,2,2.1,3,5. Original penalty/decay and dropout derivations explicitly qualify source simplifications and preserve train/validation/test separation."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 390 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u07-ex1.reference-solution.md",
+    "CSA-210-u07-ex2.reference-solution.md",
+    "CSA-210-u07-ex3.reference-solution.md",
+    "CSA-210-u07-ex4.reference-solution.md"
+  ]
 }

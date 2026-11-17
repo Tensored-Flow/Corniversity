@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u05-ex1",
+  "sequence": 1,
+  "title": "Conditioning and exact convergence",
+  "kind": "calculation",
+  "promptMarkdown": "For L=½(x²+25y²), derive the range of positive constant GD steps guaranteeing convergence from every start. Starting at(1,1), compute the first two steps for η=.04 andη=.09. Find the minimax constant step for parameter contraction and its contraction factor. Explain why observing convergence from y₀=0 would not establish stability for all starts.",
+  "conceptIds": [
+    "optimisation-methods-dl"
+  ],
+  "hintLadder": [
+    "Diagonal quadratics separate into scalar recurrences.",
+    "Require absolute multiplier less than one in both directions.",
+    "Balance the two endpoint multipliers for the minimax choice."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives strict stability and boundary behaviour",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes trajectories correctly",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Finds optimal contraction and explains hidden unstable modes",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

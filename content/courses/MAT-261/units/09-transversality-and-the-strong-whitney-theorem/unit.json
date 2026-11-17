@@ -5,26 +5,139 @@
   "title": "Transversality and the strong Whitney embedding theorem",
   "summary": "Transversality of a map to a submanifold (Definition 18.1); preimages of submanifolds; the parametric transversality theorems (18.3, 18.5, 18.8) deduced from Sard; the strong Whitney embedding theorem (Theorem 19.1): a compact n-manifold embeds in R^{2n}.",
   "objectives": [
-    { "id": "u09-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 20–22 of the 18.965 notes (Definition 18.1, Theorems 18.3, 18.5, 18.8, Theorem 19.1)." }
+    {
+      "id": "u09-o1",
+      "description": "Prove the transverse-preimage theorem and the finite-dimensional parametric transversality theorem."
+    },
+    {
+      "id": "u09-o2",
+      "description": "Explain the Fredholm parameter version and the meaning and limits of genericity."
+    },
+    {
+      "id": "u09-o3",
+      "description": "Analyse transverse double points and distinguish the proved projection bound from the additional Whitney-trick input for the strong theorem."
+    }
   ],
-  "prerequisiteConceptIds": ["sard-theorem", "whitney-embedding", "inverse-function-theorem-manifolds"],
-  "teachesConceptIds": ["transversality", "whitney-embedding"],
+  "prerequisiteConceptIds": [
+    "sard-theorem",
+    "whitney-embedding",
+    "inverse-function-theorem-manifolds"
+  ],
+  "teachesConceptIds": [
+    "transversality",
+    "whitney-embedding"
+  ],
   "preparation": [
-    { "description": "Read lecture 20: §18 parametric transversality, Definition 18.1 and Theorems 18.3, 18.5, 18.8 with proofs.", "locatorId": "gm04-l20-def18-1", "estimatedMinutes": 50 },
-    { "description": "Read lectures 21–22: §19 Theorem 19.1 (Whitney 1944) and the Whitney trick.", "locatorId": "gm04-l21-thm19-1", "estimatedMinutes": 50 }
+    {
+      "description": "Read lecture 20: §18 parametric transversality, Definition 18.1 and Theorems 18.3, 18.5, 18.8 with proofs.",
+      "locatorId": "gm04-l20-def18-1",
+      "estimatedMinutes": 50
+    },
+    {
+      "description": "Read lectures 21–22: §19 Theorem 19.1 (Whitney 1944) and the Whitney trick.",
+      "locatorId": "gm04-l21-thm19-1",
+      "estimatedMinutes": 50
+    }
   ],
   "activities": [
-    { "id": "u09-a1", "type": "reading", "title": "Lectures 20–22: transversality and the strong Whitney theorem", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["gm04-lec20", "gm04-lec21-22", "gm04-l20-def18-1", "gm04-l21-thm19-1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u09-a1",
+      "type": "reading",
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "gm04-l20-def18-1",
+        "gm04-l21-thm19-1",
+        "gm04-lec20",
+        "gm04-lec21-22"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u09-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 165,
+      "sourceLocatorIds": [
+        "gm04-l20-def18-1",
+        "gm04-l21-thm19-1",
+        "gm04-lec20",
+        "gm04-lec21-22"
+      ],
+      "exerciseIds": [
+        "MAT-261-u09-ex1",
+        "MAT-261-u09-ex2",
+        "MAT-261-u09-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u09-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "gm04-l20-def18-1",
+        "gm04-l21-thm19-1",
+        "gm04-lec20",
+        "gm04-lec21-22"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 260,
-  "status": "draft",
+  "exerciseIds": [
+    "MAT-261-u09-ex1",
+    "MAT-261-u09-ex2",
+    "MAT-261-u09-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-261-u09-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Transversality means two sets do not intersect.",
+      "correction": "It controls the tangent spaces when they meet. Transverse curves in a surface can cross.",
+      "correctionLocatorIds": [
+        "gm04-l20-def18-1"
+      ]
+    },
+    {
+      "claim": "Sard and a dimension count prove the strong Whitney embedding theorem by themselves.",
+      "correction": "They arrange controlled double points for an immersion. Removing those points requires the additional Whitney construction and its hypotheses.",
+      "correctionLocatorIds": [
+        "gm04-l20-def18-1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 390,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture 20 and 21–22 PDFs downloaded and text-extracted 2026-10-30: Definition 18.1 and Theorems 18.3, 18.5, 18.8 located in lecture20.pdf (4 pages), Theorem 19.1 on PDF page 1 of lecture21_22.pdf." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-261-u09-ex1.reference-solution.md",
+    "MAT-261-u09-ex2.reference-solution.md",
+    "MAT-261-u09-ex3.reference-solution.md"
+  ]
 }

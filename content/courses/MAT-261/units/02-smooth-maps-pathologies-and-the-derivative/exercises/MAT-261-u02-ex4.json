@@ -1,0 +1,111 @@
+{
+  "id": "MAT-261-u02-ex4",
+  "sequence": 4,
+  "title": "A smooth circle map and coordinate-independent rank",
+  "kind": "proof",
+  "promptMarkdown": "Let $F:S^1\\to S^1$ be $F(x,y)=(x^2-y^2,2xy)$. (a) Show it maps the circle to itself and compute its local expressions in angle charts. (b) Compute its differential on the tangent vector $(-y,x)$ and determine its rank everywhere. Prove why changes of source and target chart cannot change that rank. (c) Determine every fibre and decide whether it is a diffeomorphism. (d) Compare the reasons this map fails to be a diffeomorphism with the map that is the identity from the standard real line to the line charted by $x^3$, and with the line with two origins.",
+  "conceptIds": [
+    "smooth-maps-diffeomorphisms",
+    "smooth-manifold"
+  ],
+  "hintLadder": [
+    "Use the double-angle identities.",
+    "Differentiate the polynomial map on the circle tangent.",
+    "Rank is invariant under multiplication by invertible coordinate-change derivatives.",
+    "Separate a bijection issue from an inverse-smoothness issue and from a topology axiom."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Smooth local chart expressions.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Differential and invariant rank.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Fibre and diffeomorphism decision.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Precise comparison of the three obstructions.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 70,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Combines the unit methods and checks a limiting or changed-context case."
+    },
+    "knownAmbiguities": []
+  }
+}

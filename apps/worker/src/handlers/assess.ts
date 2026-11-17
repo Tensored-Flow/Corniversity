@@ -19,6 +19,7 @@ import {
   assessmentRun,
   assistanceEvent,
   attempt,
+  courseVersion,
   instructorArtifact,
   providerRun,
   submissionVersion,
@@ -29,6 +30,7 @@ import { planRun } from "@corniversity/db/services/ai-runs";
 import { recordEvidence } from "@corniversity/db/services/evidence";
 import { exerciseSnapshotOf } from "@corniversity/db/services/learning";
 import { proposeIssueFromCheck, proposeIssueFromGap, resolveIssuesFromSubmission } from "@corniversity/db/services/learning-issues";
+import { sourcePassagesStillPermitted } from "@corniversity/db/services/library";
 import { finishProviderRun, type RunStatus, recordProviderRun } from "@corniversity/db/services/provider-config";
 import { buildUnitEvidence } from "@corniversity/db/services/tutoring";
 import { and, count, eq, like, lte } from "drizzle-orm";
@@ -103,7 +105,14 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     passedCheckIds: deterministic.filter((d) => d.passed).map((d) => d.checkId),
   });
 
-  const evidence = await buildUnitEvidence(db, exercise.unitId);
+  const [version] = unit
+    ? await db.select({ courseId: courseVersion.courseId }).from(courseVersion).where(eq(courseVersion.id, unit.courseVersionId)).limit(1)
+    : [];
+  const evidence = await buildUnitEvidence(
+    db,
+    exercise.unitId,
+    version ? { ownerId: payload.ownerId, courseId: version.courseId, query: `${assessed.title} ${assessed.promptMarkdown}` } : undefined,
+  );
   const system = buildAssessorSystemPrompt({
     institutionName: ctx.env.INSTITUTION_NAME,
     courseTitle: unit?.title ?? "course",
@@ -154,6 +163,10 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
   if (plan.kind === "refused") {
     runStatus = plan.status === "duplicate" ? "blocked" : plan.status;
     errorText = plan.reason;
+  } else if (version && !(await sourcePassagesStillPermitted(db, payload.ownerId, version.courseId, evidence.refs).catch(() => false))) {
+    runStatus = "blocked";
+    errorText =
+      "Source availability or permission changed, or could not be checked before assessment. No text was sent; your submission is saved.";
   } else {
     try {
       const result = await plan.provider.generateStructured({
@@ -239,7 +252,13 @@ export async function assessHandler(ctx: HandlerContext, raw: unknown): Promise<
     nextStep: feedbackObject.nextStep,
     alternateApproachRecognised: feedbackObject.alternateApproachRecognised,
     labels: annotatedSummary.labels,
-    citations: annotatedSummary.citations.map((c) => ({ tag: c.tag, locatorId: c.locatorId, label: c.label })),
+    citations: annotatedSummary.citations.map((c) => ({
+      tag: c.tag,
+      locatorId: c.locatorId,
+      assetId: c.assetId,
+      passageId: c.passageId,
+      label: c.label,
+    })),
   };
   const status = verdict === "needs_review" ? "needs_review" : "feedback_ready";
   await db

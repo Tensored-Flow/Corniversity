@@ -1,0 +1,143 @@
+{
+  "id": "MAT-230-u06-ex4",
+  "sequence": 4,
+  "title": "Mid-course portfolio: completeness, category and separation",
+  "kind": "proof",
+  "promptMarkdown": "This is the concrete mid-course assessment for units 1–6. Work over the real scalars. Let $X$ and $Z$ be Banach spaces, let $T:X\\to Z$ be a bounded surjection, put $M=\\ker T$, and let $Q:X\\to Y=X/M$ be the quotient map. You may invoke the earlier theorems after stating and checking their hypotheses; the separate unit 5 portfolio assesses the Hahn–Banach proof itself.\n\n1. Prove $M$ is closed, that the quotient distance is a norm, and that $Y$ is Banach. Include the representative-lifting/absolutely-summable-series argument, rather than just naming quotient completeness.\n2. Prove $\\overline T:Y\\to Z$, $\\overline T(Qx)=Tx$, is a bounded linear bijection with bounded inverse. Deduce a constant $C$ for which $\\|Qx\\|\\le C\\|Tx\\|$. Explain why this gives a lift of every nonzero $z\\in Z$ with norm at most $2C\\|z\\|$, but does not claim a norm-minimizing lift exists. Name where Baire enters the theorem being used.\n3. Prove pullback by $Q$ identifies $Y^*$ isometrically with $M^\\perp=\\{\\varphi\\in X^*: \\varphi|_M=0\\}$. For $x\\notin M$, use Hahn–Banach to produce $\\varphi\\in M^\\perp$ with $\\|\\varphi\\|=1$ and $\\varphi(x)=\\operatorname{dist}(x,M)$. State why closedness matters for this positive distance.\n4. Suppose $(\\varphi_n)\\subset M^\\perp$ is pointwise bounded on $X$. Descend the family to $Y$ and prove a uniform bound on its norms. Reconstruct the closed-set/Baire/interior-ball step. Contrast with $c_{00}$ and the family $x\\mapsto nx_n$, where the completeness hypothesis fails.\n5. On $[0,1]$ construct a relatively open dense set of measure less than $1/10$ by covering the rationals with intervals of summable lengths. Show its complement is closed, nowhere dense and has measure greater than $9/10$. Explain why this is consistent with Baire and why “small in category” is not interchangeable with “measure zero”.",
+  "conceptIds": [
+    "outer-measure",
+    "sigma-algebra",
+    "lebesgue-measure",
+    "normed-space",
+    "equivalent-norms",
+    "banach-space",
+    "bounded-operator",
+    "dual-space",
+    "quotient-space",
+    "baire-category",
+    "uniform-boundedness",
+    "open-mapping",
+    "hahn-banach"
+  ],
+  "hintLadder": [
+    "Prove quotient definiteness before using the series criterion for a normed space.",
+    "Estimate Tx using every representative x−m and then take an infimum.",
+    "A functional annihilating M has a well-defined value on a coset; estimate it with all representatives too.",
+    "Apply Hahn–Banach to the single nonzero vector Qx, then pull the functional back.",
+    "The uniform-boundedness proof needs one E_k with interior; identify the complete space to which Baire applies.",
+    "Choose rational-centred intervals with a geometric total length; density and measure then come from different arguments."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Checks closed kernel, quotient norm and full lifting proof of quotient completeness.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves induced bounded inverse and controlled approximate lifts, identifying the Baire/open-mapping dependency.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves the isometric annihilator identification and the sharp distance-separating functional.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Proves the descended uniform-boundedness conclusion and correctly diagnoses the incomplete-domain counterexample.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "criterion": "Constructs the dense small-measure set and its nowhere-dense large-measure complement, distinguishing category from measure.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 170,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "An extended proof portfolio requiring explicit hypotheses, complete limit arguments, and connections among earlier results; time is a planning estimate, not empirically calibrated."
+    },
+    "knownAmbiguities": []
+  }
+}

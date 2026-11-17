@@ -1,7 +1,9 @@
 {
   "id": "mit-chem-2014",
   "title": "5.111SC Principles of Chemical Science",
-  "authors": ["Catherine Drennan (instructor)"],
+  "authors": [
+    "Catherine Drennan (instructor)"
+  ],
   "institution": "MIT OpenCourseWare",
   "kind": "course",
   "canonicalUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/",
@@ -19,111 +21,1691 @@
       "id": "mit-chem-2014-f14",
       "label": "Fall 2014 (OCW Scholar publication)",
       "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/",
-      "verifiedAt": "2026-10-30",
-      "verifiedBy": "Claude (content agent) — opened the course home, syllabus, resource index, the five unit pages, 23 lecture pages, nine resource pages and extracted text from 13 PDFs with scripts/pdf-dump.ts",
+      "verifiedAt": "2026-11-12",
+      "verifiedBy": "Claude (content agent) — opened the course home, syllabus, resource index, the five unit pages, 23 lecture pages, nine resource pages and extracted text from 13 PDFs with scripts/pdf-dump.ts; extended by Codex author and independent reviewers on 2026-11-12, with exact read scope in course manifests and quality-loop ledgers",
       "componentsSeen": [
         "course home: Prof. Catherine Drennan, Fall 2014, undergraduate; resource types Exam Solutions, Exams, Instructor Insights, Lecture Notes, Lecture Videos, Other Video, Problem Set Solutions, Problem Sets; five units, 35 lectures",
         "syllabus: 'There are no formal prerequisites for the course'; usually taken in the first year assuming one year of high-school chemistry; textbook Atkins and Jones, Chemical Principles: The Quest for Insight, 5th ed. (2010); nine problem sets on campus with problems placed in the lecture sections on OCW; four exams and practice exams with solutions; about 150 hours of student work",
         "unit pages I–V with lecture titles and links; lecture pages with topics, textbook reading assignments and links to notes, clicker questions, problems and solutions PDFs and the lecture video",
         "lecture-notes PDFs opened and text-extracted: lectures 1, 2, 8, 10, 12, 15, 16, 18, 30, 31, 32, 33 (no printed page labels; physical indices recorded)",
         "'5.111 Review Problems' PDF (problems for lecture 1): first page read to confirm scope (significant figures, moles, mass percentage, solution preparation); not copied",
-        "lecture video pages listed with archive.org MP4 downloads; videos not watched"
+        "lecture video pages listed with archive.org MP4 downloads; videos not watched",
+        "2026-11-12: actual notes for lectures 20–29, 34 and 35 read for CHE-101 completion, with physical-page locators and downloaded-file hashes; independent factual review checks exact high-risk passages listed in SCIENCE_REVIEW.md."
       ],
       "licence": "CC BY-NC-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
       "accessStatus": "open",
       "importAllowed": true,
-      "importHosts": ["ocw.mit.edu"],
+      "importHosts": [
+        "ocw.mit.edu"
+      ],
       "limitations": [
-        "Lecture pages 20–29, 34 and 35 were seen only as links on the unit pages and the resource index; they have no page-level locators yet.",
+        "The 2026-10-30 record initially listed lectures 20–29, 34 and 35 only as links. Their notes were read in the 2026-11-12 completion pass and now have physical-page locators; source-review-manifest.json records snapshots. This does not extend to unviewed videos or unopened problem/exam PDFs.",
         "Problem and solution PDFs were listed but not opened (except the first page of the review problems); exams were not opened.",
         "The lecture-notes PDFs are fill-in summaries with blanks; page indices are physical (no printed labels).",
         "Lecture videos were not watched; no timestamps are recorded."
       ],
       "locators": [
-        { "id": "chem14-home", "label": "Course home page", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/", "heading": "Principles of Chemical Science" } },
-        { "id": "chem14-syllabus", "label": "Syllabus page", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/syllabus/", "heading": "Syllabus" } },
-        { "id": "chem14-resource-index", "label": "Resource index (all PDFs and videos by lecture)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/resource-index/", "heading": "Resource Index" } },
-        { "id": "chem14-unit1", "label": "Unit I: The Atom (lectures 1–7)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/", "heading": "Unit I: The Atom" } },
-        { "id": "chem14-unit2", "label": "Unit II: Chemical Bonding & Structure (lectures 8–14)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/", "heading": "Unit II: Chemical Bonding & Structure" } },
-        { "id": "chem14-unit3", "label": "Unit III: Thermodynamics & Chemical Equilibrium (lectures 15–24)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/", "heading": "Unit III: Thermodynamics & Chemical Equilibrium" } },
-        { "id": "chem14-unit4", "label": "Unit IV: Transition Metals & Oxidation-Reduction Reactions (lectures 25–29)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/", "heading": "Unit IV: Transition Metals & Oxidation-Reduction Reactions" } },
-        { "id": "chem14-unit5", "label": "Unit V: Chemical Kinetics (lectures 30–35)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/", "heading": "Unit V: Chemical Kinetics" } },
-        { "id": "chem14-lec01", "label": "Lecture 1 page: The Importance of Chemical Principles (review reading, notes, review problems and solutions)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-1/", "heading": "Lecture 1: The Importance of Chemical Principles" } },
-        { "id": "chem14-lec02", "label": "Lecture 2 page: Atomic Structure", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-2/", "heading": "Lecture 2: Atomic Structure" } },
-        { "id": "chem14-lec03", "label": "Lecture 3 page: Wave-Particle Duality of Light", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-3-wave-particle-duality-of-light/", "heading": "Lecture 3: Wave-Particle Duality of Light" } },
-        { "id": "chem14-lec04", "label": "Lecture 4 page: Wave-Particle Duality of Matter; Schrödinger Equation", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-4-wave-particle-duality-of-matter-schrodinger-equation/", "heading": "Lecture 4: Wave-Particle Duality of Matter; Schrödinger Equation" } },
-        { "id": "chem14-lec05", "label": "Lecture 5 page: Hydrogen Atom Energy Levels", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-5/", "heading": "Lecture 5: Hydrogen Atom Energy Levels" } },
-        { "id": "chem14-lec06", "label": "Lecture 6 page: Hydrogen Atom Wavefunctions (Orbitals)", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-6-hydrogen-atom-wavefunctions-orbitals/", "heading": "Lecture 6: Hydrogen Atom Wavefunctions (Orbitals)" } },
-        { "id": "chem14-lec07", "label": "Lecture 7 page: Multi-electron Atoms", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-7/", "heading": "Lecture 7: Multi-electron Atoms" } },
-        { "id": "chem14-lec08", "label": "Lecture 8 page: The Periodic Table and Periodic Trends", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-8/", "heading": "Lecture 8: The Periodic Table and Periodic Trends" } },
-        { "id": "chem14-lec09", "label": "Lecture 9 page: Periodic Table; Ionic and Covalent Bonds", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-9-periodic-table-ionic-and-covalent-bonds/", "heading": "Lecture 9: Periodic Table; Ionic and Covalent Bonds" } },
-        { "id": "chem14-lec10", "label": "Lecture 10 page: Introduction to Lewis Structures", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-10/", "heading": "Lecture 10: Introduction to Lewis Structures" } },
-        { "id": "chem14-lec11", "label": "Lecture 11 page: Lewis Structures: Breakdown of the Octet Rule", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-11/", "heading": "Lecture 11: Lewis Structures: Breakdown of the Octet Rule" } },
-        { "id": "chem14-lec12", "label": "Lecture 12 page: The Shapes of Molecules: VSEPR Theory", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-12-the-shapes-of-molecules-vsepr-theory/", "heading": "Lecture 12: The Shapes of Molecules: VSEPR Theory" } },
-        { "id": "chem14-lec13", "label": "Lecture 13 page: Molecular Orbital Theory", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-13/", "heading": "Lecture 13: Molecular Orbital Theory" } },
-        { "id": "chem14-lec14", "label": "Lecture 14 page: Valence Bond Theory and Hybridization", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-14/", "heading": "Lecture 14: Valence Bond Theory and Hybridization" } },
-        { "id": "chem14-lec15", "label": "Lecture 15 page: Thermodynamics: Bond and Reaction Enthalpies", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-15/", "heading": "Lecture 15: Thermodynamics: Bond and Reaction Enthalpies" } },
-        { "id": "chem14-lec16", "label": "Lecture 16 page: Thermodynamics: Gibbs Free Energy and Entropy", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-16/", "heading": "Lecture 16: Thermodynamics: Gibbs Free Energy and Entropy" } },
-        { "id": "chem14-lec17", "label": "Lecture 17 page: Thermodynamics: Now What Happens When You Heat It Up?", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-17-thermodynamics-now-what-happens-when-you-heat-it-up/", "heading": "Lecture 17: Thermodynamics: Now What Happens When You Heat It Up?" } },
-        { "id": "chem14-lec18", "label": "Lecture 18 page: Introduction to Chemical Equilibrium", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-18-introduction-to-chemical-equilibrium/", "heading": "Lecture 18: Introduction to Chemical Equilibrium" } },
-        { "id": "chem14-lec19", "label": "Lecture 19 page: Chemical Equilibrium: Le Châtelier's Principle", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-19/", "heading": "Lecture 19: Chemical Equilibrium: Le Châtelier's Principle" } },
-        { "id": "chem14-lec30", "label": "Lecture 30 page: Kinetics: Rate Laws", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-30/", "heading": "Lecture 30: Kinetics: Rate Laws" } },
-        { "id": "chem14-lec31", "label": "Lecture 31 page: Nuclear Chemistry and Chemical Kinetics", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-31/", "heading": "Lecture 31: Nuclear Chemistry and Chemical Kinetics" } },
-        { "id": "chem14-lec32", "label": "Lecture 32 page: Kinetics: Reaction Mechanisms", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-32/", "heading": "Lecture 32: Kinetics: Reaction Mechanisms" } },
-        { "id": "chem14-lec33", "label": "Lecture 33 page: Kinetics and Temperature", "verifiedAt": "2026-10-30", "locator": { "kind": "web", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-33/", "heading": "Lecture 33: Kinetics and Temperature" } },
-        { "id": "chem14-review-problems", "label": "5.111 Review Problems (problems for lecture 1), PDF page 1: significant figures, moles, mass percentage, solution preparation", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/83ccdfcfa3327eda57fde82e885985b7_MIT5_111F14_ProbReview.pdf", "fileLabel": "5.111 Review Problems", "physicalPageIndex": 0, "sectionLabel": "5.111 Review Problems" }, "note": "Linked for optional self-check only; the problems are MIT's and are not copied into Corniversity exercises." },
-        { "id": "chem14-n01-p1", "label": "Lecture 1 notes, PDF page 1: Review of Fundamentals reading list; significant figures and SI prefixes", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/805ae0a4e8dc0b0fb4f2c4bd0ae68ebb_MIT5_111F14_Lec1.pdf", "fileLabel": "Lecture 1 notes (The Importance of Chemical Principles)", "physicalPageIndex": 0, "sectionLabel": "Review of Fundamentals" }, "note": "Text extracted 2026-10-30; 2 pages, no printed labels." },
-        { "id": "chem14-n02-p1", "label": "Lecture 2 notes, PDF page 1: I.A Discovery of the electron (Thomson's cathode-ray experiment)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf", "fileLabel": "Lecture 2 notes (Atomic Structure)", "physicalPageIndex": 0, "sectionLabel": "I.A Discovery of the electron" }, "note": "Text extracted 2026-10-30; 7 pages, no printed labels." },
-        { "id": "chem14-n02-p4", "label": "Lecture 2 notes, PDF page 4: interpretation of backscattering; the nucleus; charge −Ze on the electrons", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf", "fileLabel": "Lecture 2 notes (Atomic Structure)", "physicalPageIndex": 3, "sectionLabel": "I.B Discovery of the nucleus (interpretation)" } },
-        { "id": "chem14-n02-p5", "label": "Lecture 2 notes, PDF page 5: II. (Failure of) the classical description of an atom; Coulomb's force law", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf", "fileLabel": "Lecture 2 notes (Atomic Structure)", "physicalPageIndex": 4, "sectionLabel": "II. (Failure of) the classical description of an atom" } },
-        { "id": "chem14-n02-p6", "label": "Lecture 2 notes, PDF page 6: classical equation of motion predicts collapse of the electron into the nucleus; quantum mechanics needed", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf", "fileLabel": "Lecture 2 notes (Atomic Structure)", "physicalPageIndex": 5, "sectionLabel": "Classical equation of motion; quantum mechanics" } },
-        { "id": "chem14-n08-p1", "label": "Lecture 8 notes, PDF page 1: the periodic table; A. Ionization energy (definitions; IE = −E of the HOAO)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf", "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)", "physicalPageIndex": 0, "sectionLabel": "A. Ionization energy" }, "note": "Text extracted 2026-10-30; 5 pages, no printed labels." },
-        { "id": "chem14-n08-p2", "label": "Lecture 8 notes, PDF page 2: successive ionization energies; periodic trends in IE across a row and down a column; subshell glitches (Be/B, N/O)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf", "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)", "physicalPageIndex": 1, "sectionLabel": "Periodic trends in ionization energy" } },
-        { "id": "chem14-n08-p3", "label": "Lecture 8 notes, PDF page 3: photoelectron spectroscopy determines IE values; one line per occupied subshell", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf", "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)", "physicalPageIndex": 2, "sectionLabel": "Photoelectron spectroscopy" } },
-        { "id": "chem14-n08-p4", "label": "Lecture 8 notes, PDF page 4: B. Electron affinity (EA = −ΔE; Cl and N examples; trends)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf", "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)", "physicalPageIndex": 3, "sectionLabel": "B. Electron affinity" } },
-        { "id": "chem14-n10-p1", "label": "Lecture 10 notes, PDF page 1: I. Lewis structures; the octet rule; bonding and lone-pair electrons", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf", "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)", "physicalPageIndex": 0, "sectionLabel": "I. Lewis structures" }, "note": "Text extracted 2026-10-30; 6 pages, no printed labels." },
-        { "id": "chem14-n10-p2", "label": "Lecture 10 notes, PDF page 2: steps 6–8 of the Lewis procedure; HCN and CN⁻ examples; II. Formal charge introduced", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf", "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)", "physicalPageIndex": 1, "sectionLabel": "Lewis structure procedure; II. Formal charge" } },
-        { "id": "chem14-n10-p3", "label": "Lecture 10 notes, PDF page 3: FC = V − L − ½B; the formal charges sum to the total charge; thiocyanate example", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf", "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)", "physicalPageIndex": 2, "sectionLabel": "Formal charge formula" } },
-        { "id": "chem14-n10-p4", "label": "Lecture 10 notes, PDF page 4: choosing between structures by formal charge and electronegativity; III. Resonance structures (ozone)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf", "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)", "physicalPageIndex": 3, "sectionLabel": "III. Resonance structures" } },
-        { "id": "chem14-n10-p5", "label": "Lecture 10 notes, PDF page 5: the resonance hybrid; electrons delocalised over several atoms; same atoms, different electrons", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf", "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)", "physicalPageIndex": 4, "sectionLabel": "Resonance hybrid" } },
-        { "id": "chem14-n12-p1", "label": "Lecture 12 notes, PDF page 1: VSEPR principles; AXE nomenclature", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf", "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)", "physicalPageIndex": 0, "sectionLabel": "I. VSEPR theory" }, "note": "Text extracted 2026-10-30; 8 pages, no printed labels." },
-        { "id": "chem14-n12-p2", "label": "Lecture 12 notes, PDF page 2: A. Molecules without lone pairs (AX2–AX6 geometries table)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf", "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)", "physicalPageIndex": 1, "sectionLabel": "A. Molecules without lone pairs" } },
-        { "id": "chem14-n12-p3", "label": "Lecture 12 notes, PDF page 3: examples without lone pairs; B. Molecules with lone pairs; repulsion ordering lp/lp > lp/bp > bp/bp", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf", "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)", "physicalPageIndex": 2, "sectionLabel": "B. Molecules with lone pairs" } },
-        { "id": "chem14-n12-p4", "label": "Lecture 12 notes, PDF page 4: rationalising see-saw, T-shaped and square planar shapes; angle compression (NH3 vs CH4, PH3)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf", "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)", "physicalPageIndex": 3, "sectionLabel": "Rationalization of shapes and angles" } },
-        { "id": "chem14-n12-p7", "label": "Lecture 12 notes, PDF page 7: examples with lone pairs (H2O, SF4, BrF3, XeF2, XeF4); what VSEPR does not give", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf", "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)", "physicalPageIndex": 6, "sectionLabel": "Examples of molecules with lone pairs" } },
-        { "id": "chem14-n15-p1", "label": "Lecture 15 notes, PDF page 1: introduction to thermodynamics; A. Bond energy / bond enthalpy (always positive)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf", "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)", "physicalPageIndex": 0, "sectionLabel": "A. Bond energy / bond enthalpy" }, "note": "Text extracted 2026-10-30; 5 pages, no printed labels." },
-        { "id": "chem14-n15-p2", "label": "Lecture 15 notes, PDF page 2: standard state (pure form, 1 bar for gases); C–H bond enthalpies; B. Enthalpies of reaction; glucose oxidation", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf", "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)", "physicalPageIndex": 1, "sectionLabel": "B. Enthalpies of reaction" } },
-        { "id": "chem14-n15-p3", "label": "Lecture 15 notes, PDF page 3: i. ΔHr° from bond enthalpies (bonds broken minus bonds formed); ii. heats of formation (1 bar, 298.15 K)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf", "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)", "physicalPageIndex": 2, "sectionLabel": "C. Methods to calculate ΔHr (bond enthalpies; heats of formation)" } },
-        { "id": "chem14-n15-p4", "label": "Lecture 15 notes, PDF page 4: Hess's law; ΔHr° from ΔHf° of products minus reactants; enthalpy is a state function", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf", "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)", "physicalPageIndex": 3, "sectionLabel": "Hess's law" } },
-        { "id": "chem14-n16-p1", "label": "Lecture 16 notes, PDF page 1: I. Spontaneous change; endothermic spontaneous examples; ΔG = ΔH − TΔS", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf", "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)", "physicalPageIndex": 0, "sectionLabel": "I. Spontaneous change and free energy" }, "note": "Text extracted 2026-10-30; 5 pages, no printed labels." },
-        { "id": "chem14-n16-p2", "label": "Lecture 16 notes, PDF page 2: ΔG° worked examples (NH4NO3 dissolution, glucose oxidation); II. Entropy and disorder; predicting the sign of ΔS", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf", "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)", "physicalPageIndex": 1, "sectionLabel": "II. Entropy" } },
-        { "id": "chem14-n16-p3", "label": "Lecture 16 notes, PDF page 3: ΔSr° from absolute entropies; the third-law zero; H2O2 decomposition; ice melting at 298.15 K", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf", "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)", "physicalPageIndex": 2, "sectionLabel": "Entropy for reactions, ΔSr°" } },
-        { "id": "chem14-n16-p4", "label": "Lecture 16 notes, PDF page 4: III. Free energy of formation; ΔGr° from ΔGf° or from ΔHr° − TΔSr°; free energy says nothing about rate", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf", "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)", "physicalPageIndex": 3, "sectionLabel": "III. Free energy of formation" } },
-        { "id": "chem14-n18-p1", "label": "Lecture 18 notes, PDF page 1: I. Nature of chemical equilibrium (equal forward and reverse rates); ΔG = ΔG° + RT ln Q", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf", "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)", "physicalPageIndex": 0, "sectionLabel": "I. Nature of chemical equilibrium" }, "note": "Text extracted 2026-10-30; 6 pages, no printed labels." },
-        { "id": "chem14-n18-p2", "label": "Lecture 18 notes, PDF page 2: Q for gases and solutions (reference 1 bar, 1 M); at equilibrium ΔG = 0 and Q = K; ΔG° = −RT ln K; direction from Q versus K", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf", "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)", "physicalPageIndex": 1, "sectionLabel": "II. Meaning of K; relationship between K and Q" } },
-        { "id": "chem14-n18-p3", "label": "Lecture 18 notes, PDF page 3: what K tells us; ICE-table example 2NO2 ⇌ N2O4 (K = 6.84 at 298 K)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf", "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)", "physicalPageIndex": 2, "sectionLabel": "What does K tell us?" } },
-        { "id": "chem14-n18-p4", "label": "Lecture 18 notes, PDF page 4: K = exp(−ΔG°/RT); baking soda at two temperatures; Le Châtelier's principle stated", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf", "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)", "physicalPageIndex": 3, "sectionLabel": "III. External effects on K: Le Châtelier's principle" } },
-        { "id": "chem14-n18-p5", "label": "Lecture 18 notes, PDF page 5: adding and removing reagents explained through Q falling below or rising above K", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf", "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)", "physicalPageIndex": 4, "sectionLabel": "Adding and removing reagents" } },
-        { "id": "chem14-n30-p1", "label": "Lecture 30 notes, PDF page 1: kinetics versus thermodynamics; stable/labile; the oscillating clock reaction", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 0, "sectionLabel": "Kinetics versus thermodynamics" }, "note": "Text extracted 2026-10-30; 8 pages, no printed labels." },
-        { "id": "chem14-n30-p2", "label": "Lecture 30 notes, PDF page 2: I. Rates of chemical reactions: average and instantaneous rates (NO2 + CO example)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 1, "sectionLabel": "I. Rates of chemical reactions" } },
-        { "id": "chem14-n30-p3", "label": "Lecture 30 notes, PDF page 3: rate expressions with stoichiometric coefficients; II. Rate laws; rate laws come from experiment, not stoichiometry", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 2, "sectionLabel": "II. Rate laws" } },
-        { "id": "chem14-n30-p4", "label": "Lecture 30 notes, PDF page 4: reaction order and the effect of doubling concentration; overall order; units of k; integrated rate laws introduced", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 3, "sectionLabel": "Reaction order; integrated rate laws" } },
-        { "id": "chem14-n30-p5", "label": "Lecture 30 notes, PDF page 5: integrated first-order rate law derived by separation of variables; ln[A]t versus t is a straight line", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 4, "sectionLabel": "Integrated first-order rate law" } },
-        { "id": "chem14-n30-p6", "label": "Lecture 30 notes, PDF page 6: first-order half-life t½ = 0.6931/k, independent of concentration", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf", "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)", "physicalPageIndex": 5, "sectionLabel": "First-order half-life" } },
-        { "id": "chem14-n31-p1", "label": "Lecture 31 notes, PDF page 1: radioactive decay as a first-order process; N = N0 e^(−kt)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf", "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)", "physicalPageIndex": 0, "sectionLabel": "I. Radioactive decay" }, "note": "Text extracted 2026-10-30; 5 pages, no printed labels." },
-        { "id": "chem14-n31-p3", "label": "Lecture 31 notes, PDF page 3: II. Second-order integrated rate law and half-life; first- versus second-order plots; III. Relationship between k and K (equal rates at equilibrium)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf", "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)", "physicalPageIndex": 2, "sectionLabel": "II. Second-order integrated rate laws; III. Relationship between k and K" } },
-        { "id": "chem14-n31-p4", "label": "Lecture 31 notes, PDF page 4: K equals the ratio of forward and reverse rate constants for elementary steps; IV. Elementary steps and molecularity", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf", "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)", "physicalPageIndex": 3, "sectionLabel": "K = k1/k−1; IV. Elementary steps and molecularity" } },
-        { "id": "chem14-n32-p1", "label": "Lecture 32 notes, PDF page 1: I. Investigating reaction mechanisms; Example 1: 2NO + O2 → 2NO2 and the factor of 2 in the rate of NO2 formation", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf", "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)", "physicalPageIndex": 0, "sectionLabel": "I. Investigating reaction mechanisms" }, "note": "Text extracted 2026-10-30; 6 pages, no printed labels." },
-        { "id": "chem14-n32-p2", "label": "Lecture 32 notes, PDF page 2: the steady-state approximation; the rate-determining step", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf", "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)", "physicalPageIndex": 1, "sectionLabel": "Steady-state approximation; rate determining step" } },
-        { "id": "chem14-n32-p3", "label": "Lecture 32 notes, PDF page 3: a fast reversible first step approaches equilibrium; [N2O2] = K1[NO]²; kobs = 2K1k2", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf", "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)", "physicalPageIndex": 2, "sectionLabel": "Fast reversible step followed by a slow step" } },
-        { "id": "chem14-n32-p4", "label": "Lecture 32 notes, PDF page 4: Example 2: 2NO + Br2 → 2NOBr; steady state and the two limiting cases", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf", "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)", "physicalPageIndex": 3, "sectionLabel": "Example 2: NO + Br2 mechanism" } },
-        { "id": "chem14-n32-p5", "label": "Lecture 32 notes, PDF page 5: Example 3: ozone decomposition; rate law with [O2] in the denominator", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf", "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)", "physicalPageIndex": 4, "sectionLabel": "Example 3: ozone decomposition" } },
-        { "id": "chem14-n33-p1", "label": "Lecture 33 notes, PDF page 1: Arrhenius plot ln k versus 1/T; slope −Ea/R, intercept ln A", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf", "fileLabel": "Lecture 33 notes (Kinetics and Temperature)", "physicalPageIndex": 0, "sectionLabel": "I. Effect of temperature on reaction rates" }, "note": "Text extracted 2026-10-30; 7 pages, no printed labels." },
-        { "id": "chem14-n33-p2", "label": "Lecture 33 notes, PDF page 2: using Ea to predict a rate constant at another temperature (two-temperature Arrhenius form)", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf", "fileLabel": "Lecture 33 notes (Kinetics and Temperature)", "physicalPageIndex": 1, "sectionLabel": "Two-temperature Arrhenius equation" } },
-        { "id": "chem14-n33-p3", "label": "Lecture 33 notes, PDF page 3: II. The reaction coordinate and the activated complex; fraction of molecules above Ea at two temperatures", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf", "fileLabel": "Lecture 33 notes (Kinetics and Temperature)", "physicalPageIndex": 2, "sectionLabel": "II. The reaction coordinate and the activation complex" } },
-        { "id": "chem14-n33-p4", "label": "Lecture 33 notes, PDF page 4: reaction coordinate diagrams; ΔE = Ea,f − Ea,r; elementary rate constants always increase with T", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf", "fileLabel": "Lecture 33 notes (Kinetics and Temperature)", "physicalPageIndex": 3, "sectionLabel": "Reaction coordinate diagrams" } },
-        { "id": "chem14-n33-p6", "label": "Lecture 33 notes, PDF page 6: rate constants always increase with temperature; equilibrium constants increase or decrease depending on the sign of ΔH", "verifiedAt": "2026-10-30", "locator": { "kind": "pdf", "sourceVersionId": "mit-chem-2014-f14", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf", "fileLabel": "Lecture 33 notes (Kinetics and Temperature)", "physicalPageIndex": 5, "sectionLabel": "Rate constants versus equilibrium constants with temperature" } }
+        {
+          "id": "chem14-home",
+          "label": "Course home page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/",
+            "heading": "Principles of Chemical Science"
+          }
+        },
+        {
+          "id": "chem14-syllabus",
+          "label": "Syllabus page",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/syllabus/",
+            "heading": "Syllabus"
+          }
+        },
+        {
+          "id": "chem14-resource-index",
+          "label": "Resource index (all PDFs and videos by lecture)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/resource-index/",
+            "heading": "Resource Index"
+          }
+        },
+        {
+          "id": "chem14-unit1",
+          "label": "Unit I: The Atom (lectures 1–7)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/",
+            "heading": "Unit I: The Atom"
+          }
+        },
+        {
+          "id": "chem14-unit2",
+          "label": "Unit II: Chemical Bonding & Structure (lectures 8–14)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/",
+            "heading": "Unit II: Chemical Bonding & Structure"
+          }
+        },
+        {
+          "id": "chem14-unit3",
+          "label": "Unit III: Thermodynamics & Chemical Equilibrium (lectures 15–24)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/",
+            "heading": "Unit III: Thermodynamics & Chemical Equilibrium"
+          }
+        },
+        {
+          "id": "chem14-unit4",
+          "label": "Unit IV: Transition Metals & Oxidation-Reduction Reactions (lectures 25–29)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/",
+            "heading": "Unit IV: Transition Metals & Oxidation-Reduction Reactions"
+          }
+        },
+        {
+          "id": "chem14-unit5",
+          "label": "Unit V: Chemical Kinetics (lectures 30–35)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/",
+            "heading": "Unit V: Chemical Kinetics"
+          }
+        },
+        {
+          "id": "chem14-lec01",
+          "label": "Lecture 1 page: The Importance of Chemical Principles (review reading, notes, review problems and solutions)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-1/",
+            "heading": "Lecture 1: The Importance of Chemical Principles"
+          }
+        },
+        {
+          "id": "chem14-lec02",
+          "label": "Lecture 2 page: Atomic Structure",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-2/",
+            "heading": "Lecture 2: Atomic Structure"
+          }
+        },
+        {
+          "id": "chem14-lec03",
+          "label": "Lecture 3 page: Wave-Particle Duality of Light",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-3-wave-particle-duality-of-light/",
+            "heading": "Lecture 3: Wave-Particle Duality of Light"
+          }
+        },
+        {
+          "id": "chem14-lec04",
+          "label": "Lecture 4 page: Wave-Particle Duality of Matter; Schrödinger Equation",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-4-wave-particle-duality-of-matter-schrodinger-equation/",
+            "heading": "Lecture 4: Wave-Particle Duality of Matter; Schrödinger Equation"
+          }
+        },
+        {
+          "id": "chem14-lec05",
+          "label": "Lecture 5 page: Hydrogen Atom Energy Levels",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-5/",
+            "heading": "Lecture 5: Hydrogen Atom Energy Levels"
+          }
+        },
+        {
+          "id": "chem14-lec06",
+          "label": "Lecture 6 page: Hydrogen Atom Wavefunctions (Orbitals)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-6-hydrogen-atom-wavefunctions-orbitals/",
+            "heading": "Lecture 6: Hydrogen Atom Wavefunctions (Orbitals)"
+          }
+        },
+        {
+          "id": "chem14-lec07",
+          "label": "Lecture 7 page: Multi-electron Atoms",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-i-the-atom/lecture-7/",
+            "heading": "Lecture 7: Multi-electron Atoms"
+          }
+        },
+        {
+          "id": "chem14-lec08",
+          "label": "Lecture 8 page: The Periodic Table and Periodic Trends",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-8/",
+            "heading": "Lecture 8: The Periodic Table and Periodic Trends"
+          }
+        },
+        {
+          "id": "chem14-lec09",
+          "label": "Lecture 9 page: Periodic Table; Ionic and Covalent Bonds",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-9-periodic-table-ionic-and-covalent-bonds/",
+            "heading": "Lecture 9: Periodic Table; Ionic and Covalent Bonds"
+          }
+        },
+        {
+          "id": "chem14-lec10",
+          "label": "Lecture 10 page: Introduction to Lewis Structures",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-10/",
+            "heading": "Lecture 10: Introduction to Lewis Structures"
+          }
+        },
+        {
+          "id": "chem14-lec11",
+          "label": "Lecture 11 page: Lewis Structures: Breakdown of the Octet Rule",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-11/",
+            "heading": "Lecture 11: Lewis Structures: Breakdown of the Octet Rule"
+          }
+        },
+        {
+          "id": "chem14-lec12",
+          "label": "Lecture 12 page: The Shapes of Molecules: VSEPR Theory",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-12-the-shapes-of-molecules-vsepr-theory/",
+            "heading": "Lecture 12: The Shapes of Molecules: VSEPR Theory"
+          }
+        },
+        {
+          "id": "chem14-lec13",
+          "label": "Lecture 13 page: Molecular Orbital Theory",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-13/",
+            "heading": "Lecture 13: Molecular Orbital Theory"
+          }
+        },
+        {
+          "id": "chem14-lec14",
+          "label": "Lecture 14 page: Valence Bond Theory and Hybridization",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-ii-chemical-bonding-structure/lecture-14/",
+            "heading": "Lecture 14: Valence Bond Theory and Hybridization"
+          }
+        },
+        {
+          "id": "chem14-lec15",
+          "label": "Lecture 15 page: Thermodynamics: Bond and Reaction Enthalpies",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-15/",
+            "heading": "Lecture 15: Thermodynamics: Bond and Reaction Enthalpies"
+          }
+        },
+        {
+          "id": "chem14-lec16",
+          "label": "Lecture 16 page: Thermodynamics: Gibbs Free Energy and Entropy",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-16/",
+            "heading": "Lecture 16: Thermodynamics: Gibbs Free Energy and Entropy"
+          }
+        },
+        {
+          "id": "chem14-lec17",
+          "label": "Lecture 17 page: Thermodynamics: Now What Happens When You Heat It Up?",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-17-thermodynamics-now-what-happens-when-you-heat-it-up/",
+            "heading": "Lecture 17: Thermodynamics: Now What Happens When You Heat It Up?"
+          }
+        },
+        {
+          "id": "chem14-lec18",
+          "label": "Lecture 18 page: Introduction to Chemical Equilibrium",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-18-introduction-to-chemical-equilibrium/",
+            "heading": "Lecture 18: Introduction to Chemical Equilibrium"
+          }
+        },
+        {
+          "id": "chem14-lec19",
+          "label": "Lecture 19 page: Chemical Equilibrium: Le Châtelier's Principle",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-19/",
+            "heading": "Lecture 19: Chemical Equilibrium: Le Châtelier's Principle"
+          }
+        },
+        {
+          "id": "chem14-lec30",
+          "label": "Lecture 30 page: Kinetics: Rate Laws",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-30/",
+            "heading": "Lecture 30: Kinetics: Rate Laws"
+          }
+        },
+        {
+          "id": "chem14-lec31",
+          "label": "Lecture 31 page: Nuclear Chemistry and Chemical Kinetics",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-31/",
+            "heading": "Lecture 31: Nuclear Chemistry and Chemical Kinetics"
+          }
+        },
+        {
+          "id": "chem14-lec32",
+          "label": "Lecture 32 page: Kinetics: Reaction Mechanisms",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-32/",
+            "heading": "Lecture 32: Kinetics: Reaction Mechanisms"
+          }
+        },
+        {
+          "id": "chem14-lec33",
+          "label": "Lecture 33 page: Kinetics and Temperature",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "web",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-33/",
+            "heading": "Lecture 33: Kinetics and Temperature"
+          }
+        },
+        {
+          "id": "chem14-review-problems",
+          "label": "5.111 Review Problems (problems for lecture 1), PDF page 1: significant figures, moles, mass percentage, solution preparation",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/83ccdfcfa3327eda57fde82e885985b7_MIT5_111F14_ProbReview.pdf",
+            "fileLabel": "5.111 Review Problems",
+            "physicalPageIndex": 0,
+            "sectionLabel": "5.111 Review Problems"
+          },
+          "note": "Linked for optional self-check only; the problems are MIT's and are not copied into Corniversity exercises."
+        },
+        {
+          "id": "chem14-n01-p1",
+          "label": "Lecture 1 notes, PDF page 1: Review of Fundamentals reading list; significant figures and SI prefixes",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/805ae0a4e8dc0b0fb4f2c4bd0ae68ebb_MIT5_111F14_Lec1.pdf",
+            "fileLabel": "Lecture 1 notes (The Importance of Chemical Principles)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Review of Fundamentals"
+          },
+          "note": "Text extracted 2026-10-30; 2 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n02-p1",
+          "label": "Lecture 2 notes, PDF page 1: I.A Discovery of the electron (Thomson's cathode-ray experiment)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Atomic Structure)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I.A Discovery of the electron"
+          },
+          "note": "Text extracted 2026-10-30; 7 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n02-p4",
+          "label": "Lecture 2 notes, PDF page 4: interpretation of backscattering; the nucleus; charge −Ze on the electrons",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Atomic Structure)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "I.B Discovery of the nucleus (interpretation)"
+          }
+        },
+        {
+          "id": "chem14-n02-p5",
+          "label": "Lecture 2 notes, PDF page 5: II. (Failure of) the classical description of an atom; Coulomb's force law",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Atomic Structure)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "II. (Failure of) the classical description of an atom"
+          }
+        },
+        {
+          "id": "chem14-n02-p6",
+          "label": "Lecture 2 notes, PDF page 6: classical equation of motion predicts collapse of the electron into the nucleus; quantum mechanics needed",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7edbbcf5e52214af28f11743c6f5cc4_MIT5_111F14_Lec2.pdf",
+            "fileLabel": "Lecture 2 notes (Atomic Structure)",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Classical equation of motion; quantum mechanics"
+          }
+        },
+        {
+          "id": "chem14-n08-p1",
+          "label": "Lecture 8 notes, PDF page 1: the periodic table; A. Ionization energy (definitions; IE = −E of the HOAO)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf",
+            "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "A. Ionization energy"
+          },
+          "note": "Text extracted 2026-10-30; 5 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n08-p2",
+          "label": "Lecture 8 notes, PDF page 2: successive ionization energies; periodic trends in IE across a row and down a column; subshell glitches (Be/B, N/O)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf",
+            "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Periodic trends in ionization energy"
+          }
+        },
+        {
+          "id": "chem14-n08-p3",
+          "label": "Lecture 8 notes, PDF page 3: photoelectron spectroscopy determines IE values; one line per occupied subshell",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf",
+            "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Photoelectron spectroscopy"
+          }
+        },
+        {
+          "id": "chem14-n08-p4",
+          "label": "Lecture 8 notes, PDF page 4: B. Electron affinity (EA = −ΔE; Cl and N examples; trends)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/0e1c7724b4f347c81afc981e53002d3c_MIT5_111F14_Lec8.pdf",
+            "fileLabel": "Lecture 8 notes (The Periodic Table and Periodic Trends)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "B. Electron affinity"
+          }
+        },
+        {
+          "id": "chem14-n10-p1",
+          "label": "Lecture 10 notes, PDF page 1: I. Lewis structures; the octet rule; bonding and lone-pair electrons",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf",
+            "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Lewis structures"
+          },
+          "note": "Text extracted 2026-10-30; 6 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n10-p2",
+          "label": "Lecture 10 notes, PDF page 2: steps 6–8 of the Lewis procedure; HCN and CN⁻ examples; II. Formal charge introduced",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf",
+            "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Lewis structure procedure; II. Formal charge"
+          }
+        },
+        {
+          "id": "chem14-n10-p3",
+          "label": "Lecture 10 notes, PDF page 3: FC = V − L − ½B; the formal charges sum to the total charge; thiocyanate example",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf",
+            "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Formal charge formula"
+          }
+        },
+        {
+          "id": "chem14-n10-p4",
+          "label": "Lecture 10 notes, PDF page 4: choosing between structures by formal charge and electronegativity; III. Resonance structures (ozone)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf",
+            "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "III. Resonance structures"
+          }
+        },
+        {
+          "id": "chem14-n10-p5",
+          "label": "Lecture 10 notes, PDF page 5: the resonance hybrid; electrons delocalised over several atoms; same atoms, different electrons",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/3549685d450773a066a716832634203f_MIT5_111F14_Lec10.pdf",
+            "fileLabel": "Lecture 10 notes (Introduction to Lewis Structures)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Resonance hybrid"
+          }
+        },
+        {
+          "id": "chem14-n12-p1",
+          "label": "Lecture 12 notes, PDF page 1: VSEPR principles; AXE nomenclature",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf",
+            "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. VSEPR theory"
+          },
+          "note": "Text extracted 2026-10-30; 8 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n12-p2",
+          "label": "Lecture 12 notes, PDF page 2: A. Molecules without lone pairs (AX2–AX6 geometries table)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf",
+            "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "A. Molecules without lone pairs"
+          }
+        },
+        {
+          "id": "chem14-n12-p3",
+          "label": "Lecture 12 notes, PDF page 3: examples without lone pairs; B. Molecules with lone pairs; repulsion ordering lp/lp > lp/bp > bp/bp",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf",
+            "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "B. Molecules with lone pairs"
+          }
+        },
+        {
+          "id": "chem14-n12-p4",
+          "label": "Lecture 12 notes, PDF page 4: rationalising see-saw, T-shaped and square planar shapes; angle compression (NH3 vs CH4, PH3)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf",
+            "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Rationalization of shapes and angles"
+          }
+        },
+        {
+          "id": "chem14-n12-p7",
+          "label": "Lecture 12 notes, PDF page 7: examples with lone pairs (H2O, SF4, BrF3, XeF2, XeF4); what VSEPR does not give",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/223a7ba20d794cb1e06b8b02484d58e9_MIT5_111F14_Lec12.pdf",
+            "fileLabel": "Lecture 12 notes (The Shapes of Molecules: VSEPR Theory)",
+            "physicalPageIndex": 6,
+            "sectionLabel": "Examples of molecules with lone pairs"
+          }
+        },
+        {
+          "id": "chem14-n15-p1",
+          "label": "Lecture 15 notes, PDF page 1: introduction to thermodynamics; A. Bond energy / bond enthalpy (always positive)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf",
+            "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "A. Bond energy / bond enthalpy"
+          },
+          "note": "Text extracted 2026-10-30; 5 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n15-p2",
+          "label": "Lecture 15 notes, PDF page 2: standard state (pure form, 1 bar for gases); C–H bond enthalpies; B. Enthalpies of reaction; glucose oxidation",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf",
+            "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "B. Enthalpies of reaction"
+          }
+        },
+        {
+          "id": "chem14-n15-p3",
+          "label": "Lecture 15 notes, PDF page 3: i. ΔHr° from bond enthalpies (bonds broken minus bonds formed); ii. heats of formation (1 bar, 298.15 K)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf",
+            "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "C. Methods to calculate ΔHr (bond enthalpies; heats of formation)"
+          }
+        },
+        {
+          "id": "chem14-n15-p4",
+          "label": "Lecture 15 notes, PDF page 4: Hess's law; ΔHr° from ΔHf° of products minus reactants; enthalpy is a state function",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7c3f070789c90eb7c167360cd4fb6677_MIT5_111F14_Lec15.pdf",
+            "fileLabel": "Lecture 15 notes (Thermodynamics: Bond and Reaction Enthalpies)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Hess's law"
+          }
+        },
+        {
+          "id": "chem14-n16-p1",
+          "label": "Lecture 16 notes, PDF page 1: I. Spontaneous change; endothermic spontaneous examples; ΔG = ΔH − TΔS",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf",
+            "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Spontaneous change and free energy"
+          },
+          "note": "Text extracted 2026-10-30; 5 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n16-p2",
+          "label": "Lecture 16 notes, PDF page 2: ΔG° worked examples (NH4NO3 dissolution, glucose oxidation); II. Entropy and disorder; predicting the sign of ΔS",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf",
+            "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "II. Entropy"
+          }
+        },
+        {
+          "id": "chem14-n16-p3",
+          "label": "Lecture 16 notes, PDF page 3: ΔSr° from absolute entropies; the third-law zero; H2O2 decomposition; ice melting at 298.15 K",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf",
+            "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Entropy for reactions, ΔSr°"
+          }
+        },
+        {
+          "id": "chem14-n16-p4",
+          "label": "Lecture 16 notes, PDF page 4: III. Free energy of formation; ΔGr° from ΔGf° or from ΔHr° − TΔSr°; free energy says nothing about rate",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1e588ca84ce7e70c0e3cb1fc8770ad7f_MIT5_111F14_Lec16.pdf",
+            "fileLabel": "Lecture 16 notes (Thermodynamics: Gibbs Free Energy and Entropy)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "III. Free energy of formation"
+          }
+        },
+        {
+          "id": "chem14-n18-p1",
+          "label": "Lecture 18 notes, PDF page 1: I. Nature of chemical equilibrium (equal forward and reverse rates); ΔG = ΔG° + RT ln Q",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf",
+            "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Nature of chemical equilibrium"
+          },
+          "note": "Text extracted 2026-10-30; 6 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n18-p2",
+          "label": "Lecture 18 notes, PDF page 2: Q for gases and solutions (reference 1 bar, 1 M); at equilibrium ΔG = 0 and Q = K; ΔG° = −RT ln K; direction from Q versus K",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf",
+            "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "II. Meaning of K; relationship between K and Q"
+          }
+        },
+        {
+          "id": "chem14-n18-p3",
+          "label": "Lecture 18 notes, PDF page 3: what K tells us; ICE-table example 2NO2 ⇌ N2O4 (K = 6.84 at 298 K)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf",
+            "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "What does K tell us?"
+          }
+        },
+        {
+          "id": "chem14-n18-p4",
+          "label": "Lecture 18 notes, PDF page 4: K = exp(−ΔG°/RT); baking soda at two temperatures; Le Châtelier's principle stated",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf",
+            "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "III. External effects on K: Le Châtelier's principle"
+          }
+        },
+        {
+          "id": "chem14-n18-p5",
+          "label": "Lecture 18 notes, PDF page 5: adding and removing reagents explained through Q falling below or rising above K",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/ec12f084d867a5e5532b12ee99bdc767_MIT5_111F14_Lec18.pdf",
+            "fileLabel": "Lecture 18 notes (Introduction to Chemical Equilibrium)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Adding and removing reagents"
+          }
+        },
+        {
+          "id": "chem14-n30-p1",
+          "label": "Lecture 30 notes, PDF page 1: kinetics versus thermodynamics; stable/labile; the oscillating clock reaction",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Kinetics versus thermodynamics"
+          },
+          "note": "Text extracted 2026-10-30; 8 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n30-p2",
+          "label": "Lecture 30 notes, PDF page 2: I. Rates of chemical reactions: average and instantaneous rates (NO2 + CO example)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "I. Rates of chemical reactions"
+          }
+        },
+        {
+          "id": "chem14-n30-p3",
+          "label": "Lecture 30 notes, PDF page 3: rate expressions with stoichiometric coefficients; II. Rate laws; rate laws come from experiment, not stoichiometry",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "II. Rate laws"
+          }
+        },
+        {
+          "id": "chem14-n30-p4",
+          "label": "Lecture 30 notes, PDF page 4: reaction order and the effect of doubling concentration; overall order; units of k; integrated rate laws introduced",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Reaction order; integrated rate laws"
+          }
+        },
+        {
+          "id": "chem14-n30-p5",
+          "label": "Lecture 30 notes, PDF page 5: integrated first-order rate law derived by separation of variables; ln[A]t versus t is a straight line",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Integrated first-order rate law"
+          }
+        },
+        {
+          "id": "chem14-n30-p6",
+          "label": "Lecture 30 notes, PDF page 6: first-order half-life t½ = 0.6931/k, independent of concentration",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/9751e46d3f1b60428fb647aaeb7241d9_MIT5_111F14_Lecture30.pdf",
+            "fileLabel": "Lecture 30 notes (Kinetics: Rate Laws)",
+            "physicalPageIndex": 5,
+            "sectionLabel": "First-order half-life"
+          }
+        },
+        {
+          "id": "chem14-n31-p1",
+          "label": "Lecture 31 notes, PDF page 1: radioactive decay as a first-order process; N = N0 e^(−kt)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf",
+            "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Radioactive decay"
+          },
+          "note": "Text extracted 2026-10-30; 5 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n31-p3",
+          "label": "Lecture 31 notes, PDF page 3: II. Second-order integrated rate law and half-life; first- versus second-order plots; III. Relationship between k and K (equal rates at equilibrium)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf",
+            "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "II. Second-order integrated rate laws; III. Relationship between k and K"
+          }
+        },
+        {
+          "id": "chem14-n31-p4",
+          "label": "Lecture 31 notes, PDF page 4: K equals the ratio of forward and reverse rate constants for elementary steps; IV. Elementary steps and molecularity",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/72bd5fcfafd87b81e56e5b5c96e6b153_MIT5_111F14_Lecture31.pdf",
+            "fileLabel": "Lecture 31 notes (Nuclear Chemistry and Chemical Kinetics)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "K = k1/k−1; IV. Elementary steps and molecularity"
+          }
+        },
+        {
+          "id": "chem14-n32-p1",
+          "label": "Lecture 32 notes, PDF page 1: I. Investigating reaction mechanisms; Example 1: 2NO + O2 → 2NO2 and the factor of 2 in the rate of NO2 formation",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf",
+            "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Investigating reaction mechanisms"
+          },
+          "note": "Text extracted 2026-10-30; 6 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n32-p2",
+          "label": "Lecture 32 notes, PDF page 2: the steady-state approximation; the rate-determining step",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf",
+            "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Steady-state approximation; rate determining step"
+          }
+        },
+        {
+          "id": "chem14-n32-p3",
+          "label": "Lecture 32 notes, PDF page 3: a fast reversible first step approaches equilibrium; [N2O2] = K1[NO]²; kobs = 2K1k2",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf",
+            "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Fast reversible step followed by a slow step"
+          }
+        },
+        {
+          "id": "chem14-n32-p4",
+          "label": "Lecture 32 notes, PDF page 4: Example 2: 2NO + Br2 → 2NOBr; steady state and the two limiting cases",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf",
+            "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Example 2: NO + Br2 mechanism"
+          }
+        },
+        {
+          "id": "chem14-n32-p5",
+          "label": "Lecture 32 notes, PDF page 5: Example 3: ozone decomposition; rate law with [O2] in the denominator",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/cc02310e5ecddd0c1341e7ea59da3f08_MIT5_111F14_Lecture32.pdf",
+            "fileLabel": "Lecture 32 notes (Kinetics: Reaction Mechanisms)",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Example 3: ozone decomposition"
+          }
+        },
+        {
+          "id": "chem14-n33-p1",
+          "label": "Lecture 33 notes, PDF page 1: Arrhenius plot ln k versus 1/T; slope −Ea/R, intercept ln A",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf",
+            "fileLabel": "Lecture 33 notes (Kinetics and Temperature)",
+            "physicalPageIndex": 0,
+            "sectionLabel": "I. Effect of temperature on reaction rates"
+          },
+          "note": "Text extracted 2026-10-30; 7 pages, no printed labels."
+        },
+        {
+          "id": "chem14-n33-p2",
+          "label": "Lecture 33 notes, PDF page 2: using Ea to predict a rate constant at another temperature (two-temperature Arrhenius form)",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf",
+            "fileLabel": "Lecture 33 notes (Kinetics and Temperature)",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Two-temperature Arrhenius equation"
+          }
+        },
+        {
+          "id": "chem14-n33-p3",
+          "label": "Lecture 33 notes, PDF page 3: II. The reaction coordinate and the activated complex; fraction of molecules above Ea at two temperatures",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf",
+            "fileLabel": "Lecture 33 notes (Kinetics and Temperature)",
+            "physicalPageIndex": 2,
+            "sectionLabel": "II. The reaction coordinate and the activation complex"
+          }
+        },
+        {
+          "id": "chem14-n33-p4",
+          "label": "Lecture 33 notes, PDF page 4: reaction coordinate diagrams; ΔE = Ea,f − Ea,r; elementary rate constants always increase with T",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf",
+            "fileLabel": "Lecture 33 notes (Kinetics and Temperature)",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Reaction coordinate diagrams"
+          }
+        },
+        {
+          "id": "chem14-n33-p6",
+          "label": "Lecture 33 notes, PDF page 6: rate constants always increase with temperature; equilibrium constants increase or decrease depending on the sign of ΔH",
+          "verifiedAt": "2026-10-30",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/8cc04e9633b3f2e219d52f546d14e39c_MIT5_111F14_Lecture33.pdf",
+            "fileLabel": "Lecture 33 notes (Kinetics and Temperature)",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Rate constants versus equilibrium constants with temperature"
+          }
+        },
+        {
+          "id": "chem14-n21-p1",
+          "label": "Lecture 21 notes, PDF page 1: Water ionisation and Kw",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/baadb16aee67573e5c734c292c249a69_MIT5_111F14_Lec21.pdf",
+            "fileLabel": "Lecture 21 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Water ionisation and Kw"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 6e29d5aa9f777777b9350c137beff7b114de6356af9018b57d30c5aa3ee34f49. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n21-p4",
+          "label": "Lecture 21 notes, PDF page 4: Conjugate acid–base constants and weak-acid equilibria",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/baadb16aee67573e5c734c292c249a69_MIT5_111F14_Lec21.pdf",
+            "fileLabel": "Lecture 21 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Conjugate acid–base constants and weak-acid equilibria"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 6e29d5aa9f777777b9350c137beff7b114de6356af9018b57d30c5aa3ee34f49. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n21-p5",
+          "label": "Lecture 21 notes, PDF page 5: Weak-acid quadratic and approximation check",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/baadb16aee67573e5c734c292c249a69_MIT5_111F14_Lec21.pdf",
+            "fileLabel": "Lecture 21 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Weak-acid quadratic and approximation check"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 6e29d5aa9f777777b9350c137beff7b114de6356af9018b57d30c5aa3ee34f49. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n21-p6",
+          "label": "Lecture 21 notes, PDF page 6: Weak-base equilibrium",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/baadb16aee67573e5c734c292c249a69_MIT5_111F14_Lec21.pdf",
+            "fileLabel": "Lecture 21 notes",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Weak-base equilibrium"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 6e29d5aa9f777777b9350c137beff7b114de6356af9018b57d30c5aa3ee34f49. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n22-p2",
+          "label": "Lecture 22 notes, PDF page 2: Buffer composition and reaction with added acid/base",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/17db1744711644d32c46d87d4b86b3d8_MIT5_111F14_Lec22.pdf",
+            "fileLabel": "Lecture 22 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Buffer composition and reaction with added acid/base"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 311e995c483bebd3d8edeace7c965901ead7cffb3ece04679408e65e313e8eb0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n22-p4",
+          "label": "Lecture 22 notes, PDF page 4: Henderson–Hasselbalch relation and buffer design",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/17db1744711644d32c46d87d4b86b3d8_MIT5_111F14_Lec22.pdf",
+            "fileLabel": "Lecture 22 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Henderson–Hasselbalch relation and buffer design"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 311e995c483bebd3d8edeace7c965901ead7cffb3ece04679408e65e313e8eb0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n22-p5",
+          "label": "Lecture 22 notes, PDF page 5: Buffer capacity",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/17db1744711644d32c46d87d4b86b3d8_MIT5_111F14_Lec22.pdf",
+            "fileLabel": "Lecture 22 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Buffer capacity"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 311e995c483bebd3d8edeace7c965901ead7cffb3ece04679408e65e313e8eb0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n23-p2",
+          "label": "Lecture 23 notes, PDF page 2: Strong-acid/strong-base titration accounting",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1918585719e7d5b3d32535cbe4bbd451_MIT5_111F14_Lec23.pdf",
+            "fileLabel": "Lecture 23 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Strong-acid/strong-base titration accounting"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a01b298806be29122091d2f74845ee458c20ec0d0459db4c8b7cd1e0d19976f0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n23-p4",
+          "label": "Lecture 23 notes, PDF page 4: Weak-acid initial pH",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1918585719e7d5b3d32535cbe4bbd451_MIT5_111F14_Lec23.pdf",
+            "fileLabel": "Lecture 23 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Weak-acid initial pH"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a01b298806be29122091d2f74845ee458c20ec0d0459db4c8b7cd1e0d19976f0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n23-p6",
+          "label": "Lecture 23 notes, PDF page 6: Half-equivalence point",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1918585719e7d5b3d32535cbe4bbd451_MIT5_111F14_Lec23.pdf",
+            "fileLabel": "Lecture 23 notes",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Half-equivalence point"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a01b298806be29122091d2f74845ee458c20ec0d0459db4c8b7cd1e0d19976f0. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n24-p1",
+          "label": "Lecture 24 notes, PDF page 1: Weak-acid titration equivalence",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7096a4ddba3df2f41d1e565a611bfc5_MIT5_111F14_Lec24.pdf",
+            "fileLabel": "Lecture 24 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Weak-acid titration equivalence"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 1bb654798a05a2384e408ac37affc2411a08ac38456778a697c4bb2ccfb4e35d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n24-p2",
+          "label": "Lecture 24 notes, PDF page 2: After equivalence: excess titrant",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7096a4ddba3df2f41d1e565a611bfc5_MIT5_111F14_Lec24.pdf",
+            "fileLabel": "Lecture 24 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "After equivalence: excess titrant"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 1bb654798a05a2384e408ac37affc2411a08ac38456778a697c4bb2ccfb4e35d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p3",
+          "label": "Lecture 25 notes, PDF page 3: Disproportionation and oxidation states",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Disproportionation and oxidation states"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p4",
+          "label": "Lecture 25 notes, PDF page 4: Balancing redox half reactions in acid",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Balancing redox half reactions in acid"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p5",
+          "label": "Lecture 25 notes, PDF page 5: Converting a balance to basic medium",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Converting a balance to basic medium"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p6",
+          "label": "Lecture 25 notes, PDF page 6: Electrochemical cell operation",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Electrochemical cell operation"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p7",
+          "label": "Lecture 25 notes, PDF page 7: Charge and Faraday law",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 6,
+            "sectionLabel": "Charge and Faraday law"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n25-p9",
+          "label": "Lecture 25 notes, PDF page 9: Inert and reference electrodes",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+            "fileLabel": "Lecture 25 notes",
+            "physicalPageIndex": 8,
+            "sectionLabel": "Inert and reference electrodes"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 10 PDF pages; SHA256 567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n26-p1",
+          "label": "Lecture 26 notes, PDF page 1: Cell potential and Gibbs free energy",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/6b82fc0cbc1dcf5e58ed968b6d8b1882_MIT5_111F14_Lecture26.pdf",
+            "fileLabel": "Lecture 26 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Cell potential and Gibbs free energy"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a8a7a779befb76a74e7364994f8f811c343aee580221d4d9657e7afe14e93448. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n26-p3",
+          "label": "Lecture 26 notes, PDF page 3: Composition and reaction free energy",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/6b82fc0cbc1dcf5e58ed968b6d8b1882_MIT5_111F14_Lecture26.pdf",
+            "fileLabel": "Lecture 26 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Composition and reaction free energy"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a8a7a779befb76a74e7364994f8f811c343aee580221d4d9657e7afe14e93448. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n26-p4",
+          "label": "Lecture 26 notes, PDF page 4: Nernst equation",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/6b82fc0cbc1dcf5e58ed968b6d8b1882_MIT5_111F14_Lecture26.pdf",
+            "fileLabel": "Lecture 26 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Nernst equation"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a8a7a779befb76a74e7364994f8f811c343aee580221d4d9657e7afe14e93448. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n26-p5",
+          "label": "Lecture 26 notes, PDF page 5: Equilibrium constant from potential",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/6b82fc0cbc1dcf5e58ed968b6d8b1882_MIT5_111F14_Lecture26.pdf",
+            "fileLabel": "Lecture 26 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Equilibrium constant from potential"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 a8a7a779befb76a74e7364994f8f811c343aee580221d4d9657e7afe14e93448. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n27-p2",
+          "label": "Lecture 27 notes, PDF page 2: Ligands and coordination complexes",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+            "fileLabel": "Lecture 27 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Ligands and coordination complexes"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n27-p3",
+          "label": "Lecture 27 notes, PDF page 3: Coordination geometries and denticity",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+            "fileLabel": "Lecture 27 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Coordination geometries and denticity"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n27-p4",
+          "label": "Lecture 27 notes, PDF page 4: Chelation and geometric isomers",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+            "fileLabel": "Lecture 27 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Chelation and geometric isomers"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n27-p5",
+          "label": "Lecture 27 notes, PDF page 5: Formal d-electron counting",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+            "fileLabel": "Lecture 27 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Formal d-electron counting"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n27-p6",
+          "label": "Lecture 27 notes, PDF page 6: d-orbital geometry",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+            "fileLabel": "Lecture 27 notes",
+            "physicalPageIndex": 5,
+            "sectionLabel": "d-orbital geometry"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n28-p1",
+          "label": "Lecture 28 notes, PDF page 1: Crystal-field model and its scope",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+            "fileLabel": "Lecture 28 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Crystal-field model and its scope"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n28-p3",
+          "label": "Lecture 28 notes, PDF page 3: Octahedral splitting and barycentre",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+            "fileLabel": "Lecture 28 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Octahedral splitting and barycentre"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n28-p4",
+          "label": "Lecture 28 notes, PDF page 4: Spin states and pairing",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+            "fileLabel": "Lecture 28 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Spin states and pairing"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n28-p5",
+          "label": "Lecture 28 notes, PDF page 5: CFSE, magnetism and photon energies",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+            "fileLabel": "Lecture 28 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "CFSE, magnetism and photon energies"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n28-p6",
+          "label": "Lecture 28 notes, PDF page 6: Molar photon energy conversion",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+            "fileLabel": "Lecture 28 notes",
+            "physicalPageIndex": 5,
+            "sectionLabel": "Molar photon energy conversion"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 7 PDF pages; SHA256 f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n29-p2",
+          "label": "Lecture 29 notes, PDF page 2: Tetrahedral geometry",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/84db180b85507f804b7631d3e6c6a726_MIT5_111F14_Lecture29.pdf",
+            "fileLabel": "Lecture 29 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Tetrahedral geometry"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 f81af8691dd6e40bab548fce663681c6b3af97eee9c63b74ad6f306a08403863. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n29-p3",
+          "label": "Lecture 29 notes, PDF page 3: Tetrahedral splitting",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/84db180b85507f804b7631d3e6c6a726_MIT5_111F14_Lecture29.pdf",
+            "fileLabel": "Lecture 29 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Tetrahedral splitting"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 f81af8691dd6e40bab548fce663681c6b3af97eee9c63b74ad6f306a08403863. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n29-p4",
+          "label": "Lecture 29 notes, PDF page 4: Square-planar splitting",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/84db180b85507f804b7631d3e6c6a726_MIT5_111F14_Lecture29.pdf",
+            "fileLabel": "Lecture 29 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Square-planar splitting"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 f81af8691dd6e40bab548fce663681c6b3af97eee9c63b74ad6f306a08403863. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n29-p5",
+          "label": "Lecture 29 notes, PDF page 5: Magnetic evidence for geometry",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/84db180b85507f804b7631d3e6c6a726_MIT5_111F14_Lecture29.pdf",
+            "fileLabel": "Lecture 29 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Magnetic evidence for geometry"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 f81af8691dd6e40bab548fce663681c6b3af97eee9c63b74ad6f306a08403863. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n34-p1",
+          "label": "Lecture 34 notes, PDF page 1: Catalysis and equilibrium thermodynamics",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+            "fileLabel": "Lecture 34 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Catalysis and equilibrium thermodynamics"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n34-p2",
+          "label": "Lecture 34 notes, PDF page 2: Enzyme–substrate mechanism",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+            "fileLabel": "Lecture 34 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Enzyme–substrate mechanism"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n34-p3",
+          "label": "Lecture 34 notes, PDF page 3: Steady-state derivation",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+            "fileLabel": "Lecture 34 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Steady-state derivation"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n34-p4",
+          "label": "Lecture 34 notes, PDF page 4: Michaelis–Menten rate and saturation",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+            "fileLabel": "Lecture 34 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Michaelis–Menten rate and saturation"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n34-p5",
+          "label": "Lecture 34 notes, PDF page 5: Initial-rate examples and inhibition",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+            "fileLabel": "Lecture 34 notes",
+            "physicalPageIndex": 4,
+            "sectionLabel": "Initial-rate examples and inhibition"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 6 PDF pages; SHA256 6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n35-p1",
+          "label": "Lecture 35 notes, PDF page 1: Integrated chemistry case-study approach",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/d9273e872e219ac54dd99eb61ba1cfb3_MIT5_111F14_Lecture35.pdf",
+            "fileLabel": "Lecture 35 notes",
+            "physicalPageIndex": 0,
+            "sectionLabel": "Integrated chemistry case-study approach"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 5 PDF pages; SHA256 1459eb5f75c5686cd9e7bf0e23dc924b37c6cc822739f397e5b2cc7c5ca7a46f. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n35-p2",
+          "label": "Lecture 35 notes, PDF page 2: Connecting bonding, thermodynamics and acid–base chemistry",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/d9273e872e219ac54dd99eb61ba1cfb3_MIT5_111F14_Lecture35.pdf",
+            "fileLabel": "Lecture 35 notes",
+            "physicalPageIndex": 1,
+            "sectionLabel": "Connecting bonding, thermodynamics and acid–base chemistry"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 5 PDF pages; SHA256 1459eb5f75c5686cd9e7bf0e23dc924b37c6cc822739f397e5b2cc7c5ca7a46f. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n35-p3",
+          "label": "Lecture 35 notes, PDF page 3: Transition-metal electron counting in catalysis",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/d9273e872e219ac54dd99eb61ba1cfb3_MIT5_111F14_Lecture35.pdf",
+            "fileLabel": "Lecture 35 notes",
+            "physicalPageIndex": 2,
+            "sectionLabel": "Transition-metal electron counting in catalysis"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 5 PDF pages; SHA256 1459eb5f75c5686cd9e7bf0e23dc924b37c6cc822739f397e5b2cc7c5ca7a46f. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        },
+        {
+          "id": "chem14-n35-p4",
+          "label": "Lecture 35 notes, PDF page 4: Coupled conformational equilibria",
+          "verifiedAt": "2026-11-12",
+          "locator": {
+            "kind": "pdf",
+            "sourceVersionId": "mit-chem-2014-f14",
+            "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/d9273e872e219ac54dd99eb61ba1cfb3_MIT5_111F14_Lecture35.pdf",
+            "fileLabel": "Lecture 35 notes",
+            "physicalPageIndex": 3,
+            "sectionLabel": "Coupled conformational equilibria"
+          },
+          "note": "Fetched from linked MIT OCW resource and text read 2026-11-12. 5 PDF pages; SHA256 1459eb5f75c5686cd9e7bf0e23dc924b37c6cc822739f397e5b2cc7c5ca7a46f. Original notes have fill-in blanks and teaching simplifications; course states model limits and does not reproduce reserved third-party figures."
+        }
       ]
     }
   ]

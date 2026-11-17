@@ -1,0 +1,90 @@
+{
+  "id": "MAT-230-u08-ex3",
+  "sequence": 3,
+  "title": "Convergence with the quantifiers changed",
+  "kind": "proof",
+  "promptMarkdown": "Enumerate the dyadic half-open intervals of $[0,1)$ level by level: at level $k$ use $[j2^{-k},(j+1)2^{-k})$, $j=0,\\ldots,2^k-1$. Let $(h_n)$ be their indicators in that order. Prove $h_n\\to0$ in every finite $L^p$, but $h_n(x)$ fails to converge for every $x\\in[0,1)$. Explain why the subsequence consequence of Lᵖ convergence is not contradicted.",
+  "conceptIds": [
+    "lebesgue-integral",
+    "lp-space"
+  ],
+  "hintLadder": [
+    "Keep the dyadic level separate from the single enumeration index.",
+    "Count hits and misses for a fixed point at each level."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Computes the finite-p norms.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves nonconvergence at every specified point.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Identifies an a.e.-convergent subsequence and explains the quantifiers.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

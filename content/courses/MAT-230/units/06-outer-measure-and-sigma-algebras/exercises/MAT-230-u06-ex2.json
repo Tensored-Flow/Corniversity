@@ -1,0 +1,92 @@
+{
+  "id": "MAT-230-u06-ex2",
+  "sequence": 2,
+  "title": "Only finitely many visits, almost everywhere",
+  "kind": "proof",
+  "promptMarkdown": "For measurable sets $E_n\\subset\\mathbb R$, suppose $\\sum_nm(E_n)<\\infty$. Show that the set of points belonging to infinitely many $E_n$ has measure zero. Give a sequence with $\\sum_nm(E_n)=\\infty$ for which this conclusion fails, and another for which it still holds.",
+  "conceptIds": [
+    "outer-measure",
+    "sigma-algebra",
+    "lebesgue-measure"
+  ],
+  "hintLadder": [
+    "Write “infinitely many” as a countable intersection of tail unions.",
+    "Bound the measure by every tail of the convergent series."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Represents the limsup set with correct quantifiers.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves the tail estimate.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Provides and explains both divergent examples.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u07-ex2",
+  "sequence": 2,
+  "title": "Decay and preconditioning do not commute",
+  "kind": "calculation",
+  "promptMarkdown": "Let w=(2,2), g=(1,1), P=diag(1,10), η=.1 andλ=.2. Compare the coupled L2 update w−ηP(g+λw) with independent decay(1−ηλ) w−ηPg. Calculate both. Derive a condition for equality for an arbitrary w with this fixedP. Explain why the distinction can persist in an adaptive optimiser even beyond this single update.",
+  "conceptIds": [
+    "regularisation-dl"
+  ],
+  "hintLadder": [
+    "Distribute P through the penalty term.",
+    "Subtract the two symbolic updates before inserting numbers.",
+    "Ask whether the gradient accumulator sees the penalty."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Computes both updates",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Derives the equality condition",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Explains algorithm-state consequences",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

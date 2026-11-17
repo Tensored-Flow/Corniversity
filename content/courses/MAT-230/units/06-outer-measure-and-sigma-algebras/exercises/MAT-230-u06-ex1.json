@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u06-ex1",
+  "sequence": 1,
+  "title": "A cover with an adjustable budget",
+  "kind": "proof",
+  "promptMarkdown": "Let $A\\subset\\mathbb R$ be countable. Prove that for every $\\varepsilon>0$ it lies in an open set $O$ with $m(O)<\\varepsilon$. Does the same conclusion hold for every set with outer measure zero? Explain using the definition, not a named regularity theorem.",
+  "conceptIds": [
+    "outer-measure",
+    "sigma-algebra",
+    "lebesgue-measure"
+  ],
+  "hintLadder": [
+    "Assign a summable fraction of the total budget to each point.",
+    "For the second assertion, unpack the meaning of infimum zero."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Constructs an open cover and controls the total length.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Extends the argument to arbitrary outer-null sets.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Uses measurability of open sets and subadditivity correctly.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 30,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

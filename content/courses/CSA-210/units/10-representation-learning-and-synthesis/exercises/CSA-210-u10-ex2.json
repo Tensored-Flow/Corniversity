@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u10-ex2",
+  "sequence": 2,
+  "title": "Contrastive loss with the positive in the denominator",
+  "kind": "calculation",
+  "promptMarkdown": "One anchor has positive similarity1 and two negative similarities0,−1. Forτ=.5, calculate normalised candidate probabilities, contrastive loss and derivatives with respect to all three similarities. Repeat the loss when all similarities are equal. Explain why omitting the positive from the denominator changes the objective, and give an example of an augmentation that destroys downstream label information.",
+  "conceptIds": [
+    "representation-learning-unsupervised"
+  ],
+  "hintLadder": [
+    "Subtract the positive scaled score before exponentiating.",
+    "Differentiate the log-softmax expression.",
+    "A valid normalised candidate probability has a denominator containing its numerator term."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Calculates probabilities/loss/gradients",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Diagnoses the changed normalisation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Connects augmentation assumptions to task information",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

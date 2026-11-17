@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u08-ex1",
+  "sequence": 1,
+  "title": "Three counts, two geometries",
+  "kind": "calculation",
+  "promptMarkdown": "For [Co(en)₃]Cl₃ (neutral bidentate en), K₄[Fe(CN)₆], and neutral [Pt(NH₃)₂Cl₂], find complex charge, metal oxidation state, formal d count (Co group9, Fe8, Pt10) and coordination number. Sketch possible cis/trans donor arrangements for the square-planar platinum complex. Explain why counting ligand molecules would give a wrong coordination number for the cobalt complex.",
+  "conceptIds": [
+    "transition-metal-coordination"
+  ],
+  "hintLadder": [
+    "Use the counterions to find bracket charge.",
+    "Subtract ligand charges to obtain oxidation state.",
+    "en contributes two attached donor atoms."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Distinguishes ionic charge, oxidation state and d count",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Counts donor atoms correctly",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Constructs distinct cis/trans configurations",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

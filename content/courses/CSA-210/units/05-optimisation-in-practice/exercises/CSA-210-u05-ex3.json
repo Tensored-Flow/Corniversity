@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u05-ex3",
+  "sequence": 3,
+  "title": "Sampling changes the gradient you estimate",
+  "kind": "calculation",
+  "promptMarkdown": "At a fixed parameter, per-example scalar gradients are(−2,0,2,4). (a) Calculate the empirical mean and variance of one uniform draw. (b) Calculate the variance of the average of two independent draws with replacement. (c) Enumerate all six equally likely unordered batches of two without replacement and find the batch-mean variance. (d) If the last example is sampled with probability 1/2 and the other three each1/6, compute the unweighted expected gradient and explain a correction that restores the uniform empirical objective.",
+  "conceptIds": [
+    "optimisation-methods-dl"
+  ],
+  "hintLadder": [
+    "Treat the four gradients as a finite population at a fixed parameter.",
+    "Use population denominator4 rather than the sample-unbiased estimator denominator3.",
+    "For biased sampling compute the expectation before proposing importance weights."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Calculates replacement and finite-population variances",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Detects the changed objective",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Derives a valid correction and its caveat",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Changes the mini-batch sampling mechanism, requiring a fresh expectation/variance calculation rather than blindly applying σ²/b."
+  }
+}

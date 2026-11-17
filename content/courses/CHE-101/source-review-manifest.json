@@ -1,0 +1,86 @@
+[
+  {
+    "lecture": 20,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-20-solubility-and-acid-base-equilibrium/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a4df4b5867cb5898550e7aca13b34453_MIT5_111F14_Lec20.pdf",
+    "pages": 6,
+    "sha256": "41b9a37b4e8614724f5ba4bcf6dfa112eeec5f41cb15f13e92ed2dfce7f33d9f"
+  },
+  {
+    "lecture": 21,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-21/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/baadb16aee67573e5c734c292c249a69_MIT5_111F14_Lec21.pdf",
+    "pages": 7,
+    "sha256": "6e29d5aa9f777777b9350c137beff7b114de6356af9018b57d30c5aa3ee34f49"
+  },
+  {
+    "lecture": 22,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-22/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/17db1744711644d32c46d87d4b86b3d8_MIT5_111F14_Lec22.pdf",
+    "pages": 6,
+    "sha256": "311e995c483bebd3d8edeace7c965901ead7cffb3ece04679408e65e313e8eb0"
+  },
+  {
+    "lecture": 23,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-23/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/1918585719e7d5b3d32535cbe4bbd451_MIT5_111F14_Lec23.pdf",
+    "pages": 7,
+    "sha256": "a01b298806be29122091d2f74845ee458c20ec0d0459db4c8b7cd1e0d19976f0"
+  },
+  {
+    "lecture": 24,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iii-thermodynamics-chemical-equilibrium/lecture-24-acid-base-titrations-part-ii/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/e7096a4ddba3df2f41d1e565a611bfc5_MIT5_111F14_Lec24.pdf",
+    "pages": 7,
+    "sha256": "1bb654798a05a2384e408ac37affc2411a08ac38456778a697c4bb2ccfb4e35d"
+  },
+  {
+    "lecture": 25,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/lecture-25/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/7bfbd766cbfe78a2cf6b9a92b7e9b882_MIT5_111F14_Lecture25.pdf",
+    "pages": 10,
+    "sha256": "567337f444173e7964858f5e692dd41dfe31e73f796a3f3a1063f876a1c8e50d"
+  },
+  {
+    "lecture": 26,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/lecture-26-chemical-and-biological-oxidations/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/6b82fc0cbc1dcf5e58ed968b6d8b1882_MIT5_111F14_Lecture26.pdf",
+    "pages": 7,
+    "sha256": "a8a7a779befb76a74e7364994f8f811c343aee580221d4d9657e7afe14e93448"
+  },
+  {
+    "lecture": 27,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/lecture-27-introduction-to-transition-metals/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/a2f070d4000a6fc342c6a941aa9e254c_MIT5_111F14_Lecture27.pdf",
+    "pages": 7,
+    "sha256": "ca2e572176b503c095399939dd1b1a9077c3cfde6844a905afe4c3cd4d1b29c9"
+  },
+  {
+    "lecture": 28,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/lecture-28/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/dba5af481c6a48d4cf0cba53044e46eb_MIT5_111F14_Lecture28.pdf",
+    "pages": 7,
+    "sha256": "f8a77d63594c38eb24ba63560555b1ea2b6c35175cf41b342eb44e611ce2a0e4"
+  },
+  {
+    "lecture": 29,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-iv-transition-metals-oxidation-reduction-reactions/lecture-29/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/84db180b85507f804b7631d3e6c6a726_MIT5_111F14_Lecture29.pdf",
+    "pages": 6,
+    "sha256": "f81af8691dd6e40bab548fce663681c6b3af97eee9c63b74ad6f306a08403863"
+  },
+  {
+    "lecture": 34,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-34-kinetics-catalysts/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/db306ff0886a2363883287c84df23161_MIT5_111F14_Lecture34.pdf",
+    "pages": 6,
+    "sha256": "6583859d81cd0c26467738b979e8e1c2131d56befd8eebfdadd40fe2587e08f4"
+  },
+  {
+    "lecture": 35,
+    "pageUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/pages/unit-v-chemical-kinetics/lecture-35/",
+    "pdfUrl": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/d9273e872e219ac54dd99eb61ba1cfb3_MIT5_111F14_Lecture35.pdf",
+    "pages": 5,
+    "sha256": "1459eb5f75c5686cd9e7bf0e23dc924b37c6cc822739f397e5b2cc7c5ca7a46f"
+  }
+]

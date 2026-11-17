@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u11-ex2",
+  "sequence": 2,
+  "title": "Which diagonal is compact?",
+  "kind": "proof",
+  "promptMarkdown": "On $\\ell^2$ consider $A e_n=(-1)^n n^{-1/2}e_n$ and $B e_n=(1+n^{-1})e_n$. Decide compactness of each and compute each spectrum. For every spectral point say whether it is an eigenvalue.",
+  "conceptIds": [
+    "compact-operator",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Use diagonal truncation for one operator and a separated image sequence for the other.",
+    "A diagonal inverse exists boundedly exactly when the distance to all diagonal entries is positive."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Proves compactness or failure using the definition/criterion.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Computes both spectra, including limiting points.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Distinguishes eigenvalues and approximate eigenvalues and excludes extra spectral points.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

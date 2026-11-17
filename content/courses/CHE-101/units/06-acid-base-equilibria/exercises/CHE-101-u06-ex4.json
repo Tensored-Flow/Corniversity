@@ -1,0 +1,109 @@
+{
+  "id": "CHE-101-u06-ex4",
+  "sequence": 4,
+  "title": "One titration, one exact balance, four useful approximations",
+  "kind": "model_interpretation",
+  "promptMarkdown": "A hypothetical ideal acid HA has $K_a=2.00\\times10^{-5}$ at $25^\\circ\\mathrm C$. Start with $30.0\\,\\mathrm{mL}$ of $0.0800\\,\\mathrm M$ acid and consider adding $0.120\\,\\mathrm M$ sodium hydroxide. Volumes add. (1) Find the equivalence volume. (2) For an arbitrary added volume $V$, express the total acid concentration $C_T$ and sodium concentration $C_N$, then derive a single equation for $h$ using $[A^-]=C_TK_a/(K_a+h)$ and charge balance. (3) Calculate justified approximate pH values at $V=0$, $10.0$, $20.0$ and $25.0\\,\\mathrm{mL}$. (4) Explain why the four points require different approximations, why the equivalence pH is not seven, and what changes if the temperature changes. (5) Propose a numerical residual check that would detect an inaccurate approximation near equivalence without treating agreement with one formula as proof.",
+  "conceptIds": [
+    "acid-base-equilibria"
+  ],
+  "hintLadder": [
+    "The total acid amount is conserved even though its protonation changes.",
+    "The strong base contributes a sodium spectator ion, whether hydroxide remains or has reacted.",
+    "Use stoichiometry to identify each region, then test its approximation in the single balance equation."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives total-volume concentrations and a valid complete charge-balance equation.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes all four pH regimes with units and approximation checks.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Explains equivalence, temperature dependence and the limits of the simplified formulas.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Designs a meaningful mass/charge/residual check and interprets its tolerance.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 65,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

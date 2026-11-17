@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u06-ex3",
+  "sequence": 3,
+  "title": "Large topologically, small in measure",
+  "kind": "proof",
+  "promptMarkdown": "Construct a dense open subset $O\\subset[0,1]$ (open in the relative topology) with $m(O)<1/10$. Prove its complement is closed, has empty interior relative to $[0,1]$, and has positive measure. Explain why this does not contradict the Baire category theorem.",
+  "conceptIds": [
+    "outer-measure",
+    "sigma-algebra",
+    "lebesgue-measure"
+  ],
+  "hintLadder": [
+    "Use a countable dense set and the previous covering construction.",
+    "Distinguish the category statement from a statement about length."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Constructs the dense open set with a rigorous measure bound.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves all complement properties.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "States the relevant Baire conclusion without conflating category and measure.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

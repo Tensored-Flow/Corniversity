@@ -4,7 +4,10 @@
   "title": "Why the summability test is convenient",
   "kind": "explanation",
   "promptMarkdown": "In under 200 words, explain why Theorem 19 (a normed space is Banach iff every absolutely summable series is summable) is often easier to use than the definition of completeness, and point to the exact step in the proof that $B(V,W)$ is Banach where it is used.",
-  "conceptIds": ["banach-space", "bounded-operator"],
+  "conceptIds": [
+    "banach-space",
+    "bounded-operator"
+  ],
   "hintLadder": [
     "What do you have to produce when you verify completeness directly, and what extra structure does an absolutely summable series give you that a bare Cauchy sequence does not?",
     "In the proof of Theorem 27, where is a limit defined pointwise? Which completeness is being used there, and of which space?"
@@ -13,8 +16,44 @@
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "convenience", "criterion": "Explains that absolute summability supplies explicit tail bounds, so convergence can be built termwise and the limit identified directly.", "weight": 0.5, "levels": [{ "label": "met", "description": "Clear." }, { "label": "partially met", "description": "Partial." }, { "label": "not met", "description": "Missing." }] },
-      { "id": "location", "criterion": "Locates the use: defining Tv as the sum of the convergent series Σ T_n v in the Banach space W.", "weight": 0.5, "levels": [{ "label": "met", "description": "Exact step named." }, { "label": "partially met", "description": "Vague." }, { "label": "not met", "description": "Missing." }] }
+      {
+        "id": "convenience",
+        "criterion": "Explains that absolute summability supplies explicit tail bounds, so convergence can be built termwise and the limit identified directly.",
+        "weight": 0.5,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Clear."
+          },
+          {
+            "label": "partially met",
+            "description": "Partial."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      },
+      {
+        "id": "location",
+        "criterion": "Locates the use: defining Tv as the sum of the convergent series Σ T_n v in the Banach space W.",
+        "weight": 0.5,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Exact step named."
+          },
+          {
+            "label": "partially met",
+            "description": "Vague."
+          },
+          {
+            "label": "not met",
+            "description": "Missing."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false

@@ -1,0 +1,92 @@
+{
+  "id": "CHE-101-u10-ex2",
+  "sequence": 2,
+  "title": "Solubility changes without changing Ksp",
+  "kind": "calculation",
+  "promptMarkdown": "A hypothetical salt MA(s) dissociates as M⁺+A⁻ with dimensionless Ksp=1.00×10⁻⁸. HA has Ka=1.00×10⁻⁵. An external buffer maintains pH3.00; assume ideal dilute activities, c°=1M, no other complexes and excess solid. (a) Combine dissolution and protonation reactions to find K for MA+H⁺⇌M⁺+HA. (b) Derive the fraction α of dissolved A present as A⁻ and calculate total solubility s, [A⁻] and [HA]. (c) Compare with the formal α=1 limit. (d) Identify what must change in the calculation for a finite-capacity or absent buffer.",
+  "conceptIds": [
+    "kinetic-view-of-equilibrium",
+    "chemical-equilibrium-constant"
+  ],
+  "hintLadder": [
+    "Add dissolution to reverse acid dissociation.",
+    "Use total dissolved A=s and Aminus/HA=Ka/h.",
+    "Check both mass balance and the original Ksp after solving."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Combines reactions and constants consistently",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Derives and computes free/total solubility",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Verifies balances and identifies the buffer boundary",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Combines acid speciation with solubility to distinguish free-species activity from analytical concentration."
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "id": "MAT-261-u11-ex5",
+  "sequence": 5,
+  "title": "Proof portfolio: the homotopy identity and Poincaré lemma",
+  "kind": "proof",
+  "promptMarkdown": "Let $H:[0,1]\\times M\\to N$ be a smooth homotopy and $\\omega\\in\\Omega^k(N)$. Derive the homotopy identity and prove Poincaré rather than quoting the radial formula. You may use the coordinate definition of exterior differentiation, its graded product rule, and naturality $dH^*=H^*d$ proved earlier in this unit.\n\n1. Explain the unique decomposition $H^*\\omega=\\alpha(t)+dt\\wedge\\beta(t)$ into forms on $M$. Derive the formula for its exterior derivative on $[0,1]\\times M$, including the sign of $d_M\\beta$.\n2. Define a degree-minus-one operator $K$ by integrating the $dt$ component and prove $d_MK+Kd_N=H_1^*-H_0^*$ as an identity on all forms. Treat degree zero explicitly rather than introducing nonexistent negative-degree forms.\n3. Deduce homotopy invariance on de Rham cohomology. For a star-shaped open set $U\\subset\\mathbb R^n$ containing zero, use $H(t,x)=tx$ to derive the integral formula for $K\\omega$ and prove every closed positive-degree form is exact. State the correct degree-zero conclusion.\n4. Explain which parts of the proof fail if a domain is not contractible, using the angular one-form on the punctured plane. Show why it is locally exact but has no global primitive. In this example distinguish the existence of a radial deformation retraction onto a circle from a contraction to a point.\n5. Identify how this proof supplies column exactness in the Čech–de Rham double complex in the next unit, and distinguish it from the partition-of-unity argument supplying row exactness.",
+  "conceptIds": [
+    "differential-forms-de-rham"
+  ],
+  "hintLadder": [
+    "Choose the convention that dt is written first in every time-containing term.",
+    "Use d(dt wedge beta)=−dt wedge d beta, then integrate the time derivative of alpha.",
+    "For a function, Kf is zero but K(df) need not be; track the constant endpoint map.",
+    "Under H(t,x)=tx, the time vector maps to x and every spatial vector gains a factor t.",
+    "A contraction must remain in the manifold at every time, including its final endpoint.",
+    "The double complex has two differentials; identify which theorem resolves each one."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Justifies the unique time/spatial decomposition and derives the exterior-derivative sign correctly.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Constructs K and proves the full operator identity, including smoothness/differentiation under the parameter integral and degree zero.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Derives homotopy invariance and the radial primitive, proving positive-degree Poincaré and the correct degree-zero statement.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Explains the punctured-plane obstruction with a nonzero period and a valid distinction between retraction and contraction.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "criterion": "Identifies the column versus row exactness inputs without confusing local and global primitives.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 120,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "An extended proof portfolio requiring explicit hypotheses, complete limit arguments, and connections among earlier results; time is a planning estimate, not empirically calibrated."
+    },
+    "knownAmbiguities": []
+  }
+}

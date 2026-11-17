@@ -1,0 +1,131 @@
+{
+  "id": "MAT-230-u08-ex4",
+  "sequence": 4,
+  "title": "Proof portfolio: completeness of every Lp space",
+  "kind": "proof",
+  "promptMarkdown": "Let $(E,\\Sigma,\\mu)$ be a measure space, and let $L^p$ mean measurable real or complex functions modulo equality almost everywhere. Prove $L^p(E)$ is Banach for every $1\\le p\\le\\infty$. You may use the measure/integral construction, monotone convergence, Hölder and Minkowski already proved in the course, but may not quote completeness of $L^p$.\n\n1. For $1\\le p<\\infty$, start with an arbitrary $L^p$-Cauchy sequence and choose a subsequence $(f_{n_k})$ whose successive norm differences are at most $2^{-k}$. With measurable representatives, control the partial sums of the absolute differences by Minkowski and pass to their nonnegative limit with monotone convergence.\n2. Prove the resulting series converges absolutely almost everywhere. Construct a measurable limit in $L^p$, bound its difference from $f_{n_k}$ by the tail series, and prove norm convergence. Recover convergence of the whole original Cauchy sequence.\n3. Give a separate proof for $p=\\infty$: remove one common null set for all representatives and all pairwise essential-norm estimates, obtain a uniform Cauchy sequence there, and prove its limit represents an essentially bounded function with convergence in essential-supremum norm.\n4. Identify exactly where countability, equivalence classes, and completeness of the scalar field enter. Explain why neither finite measure of $E$ nor pointwise convergence of the whole sequence for finite $p$ is required.",
+  "conceptIds": [
+    "lebesgue-integral",
+    "lp-space"
+  ],
+  "hintLadder": [
+    "Extract a subsequence with geometric norm differences; Cauchy gives such indices for any prescribed summable tolerance.",
+    "Apply Minkowski only to finite sums first, then monotone convergence to their pth powers.",
+    "Bound the infinite tail by repeating the same argument starting at index k.",
+    "Use the original Cauchy property after the subsequence has a norm limit.",
+    "For infinity, count all pairs (n,m); one null set must work simultaneously for their essential bounds."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Constructs the summable subsequence and uses finite Minkowski plus monotone convergence without assuming completeness.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves almost-everywhere absolute convergence and produces a measurable Lp limit.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves the tail norm bound and recovers convergence of the full Cauchy sequence.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Provides a separate rigorous L-infinity proof with a common null set, essential boundedness, and norm convergence.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "criterion": "Explains the roles of countability, representatives, scalar completeness and the absence of finite-measure/full-sequence pointwise assumptions.",
+        "weight": 0.2,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 135,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "An extended proof portfolio requiring explicit hypotheses, complete limit arguments, and connections among earlier results; time is a planning estimate, not empirically calibrated."
+    },
+    "knownAmbiguities": []
+  }
+}

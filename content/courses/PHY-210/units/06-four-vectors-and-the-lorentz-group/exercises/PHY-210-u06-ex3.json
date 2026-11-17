@@ -1,0 +1,92 @@
+{
+  "id": "PHY-210-u06-ex3",
+  "sequence": 3,
+  "title": "Two boosts do not generally commute",
+  "kind": "derivation",
+  "promptMarkdown": "In coordinates $(ct,x,y,z)$ let $K_x$ have entries $(K_x)_{01}=(K_x)_{10}=-1$ and zero otherwise, and let $K_y$ have $(K_y)_{02}=(K_y)_{20}=-1$. Verify each obeys $K^T\\eta+\\eta K=0$. Compute $[K_x,K_y]$. Expand $e^{aK_x}e^{bK_y}e^{-aK_x}e^{-bK_y}$ to its leading nonidentity order. Interpret the result and explain why a scalar velocity-addition rule along one line cannot describe arbitrary ordered boosts.",
+  "conceptIds": [
+    "four-vectors",
+    "lorentzian-metric"
+  ],
+  "hintLadder": [
+    "Compute only the entries connected through index 0.",
+    "Terms linear inaorb cancel in the four-factor product.",
+    "Compare the surviving spatial block with an antisymmetric rotation generator."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Generator condition and commutator signs are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Expansion order and remainder are controlled.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The interpretation distinguishes infinitesimal and finite claims.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Use the Lie algebra to detect an effect absent from the collinear rapidity formula."
+  }
+}

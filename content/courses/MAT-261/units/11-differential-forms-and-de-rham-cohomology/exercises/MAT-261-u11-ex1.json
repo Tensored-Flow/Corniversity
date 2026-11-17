@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u11-ex1",
+  "sequence": 1,
+  "title": "Pullback and differentiation commute in a calculation",
+  "kind": "proof",
+  "promptMarkdown": "For $F(r,\\theta)=(r\\cos\\theta,r\\sin\\theta)$ on $(0,\\infty)\\times\\mathbb R$ and $\\eta=x\\,dy-y\\,dx$, calculate $F^*\\eta$, $d(F^*\\eta)$ and $F^*(d\\eta)$. Evaluate the integral of $\\eta$ around the positively oriented circle of radius $R$. State why the pullback calculation does not create a globally defined angle function on the punctured plane.",
+  "conceptIds": [
+    "differential-forms-de-rham"
+  ],
+  "hintLadder": [
+    "Substitute the two coordinate differentials before expanding.",
+    "Use $dy\\wedge dx=-dx\\wedge dy$.",
+    "The domain of F remembers the angle lift."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct form and derivatives.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Integral and orientation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Global-angle limitation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

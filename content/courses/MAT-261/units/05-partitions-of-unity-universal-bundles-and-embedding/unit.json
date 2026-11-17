@@ -5,27 +5,153 @@
   "title": "Connections on bundles, partitions of unity and embedding in Euclidean space",
   "summary": "Connections on vector bundles as generalised directional derivatives (a first look, taken up again in MAT-262); smooth partitions of unity and why second countability makes them exist; every finite-type bundle is pulled back from a Grassmannian; the easiest Whitney embedding theorem: a compact manifold embeds in some R^N.",
   "objectives": [
-    { "id": "u05-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 8–9 of the 18.965 notes (§8–§10, Theorem 10.1, Theorem 11.1) with Hitchin §6.2 and §10.4 on partitions of unity." }
+    {
+      "id": "u05-o1",
+      "description": "Construct and use a smooth locally finite partition of unity, identifying the role of paracompactness and compactness."
+    },
+    {
+      "id": "u05-o2",
+      "description": "Glue local metrics and connections, and verify their transformation and Leibniz properties."
+    },
+    {
+      "id": "u05-o3",
+      "description": "Prove finite-type bundles are pullbacks of a tautological bundle and prove the compact-manifold embedding construction."
+    }
   ],
-  "prerequisiteConceptIds": ["vector-bundles", "tangent-bundle-vector-fields", "manifold-topology-bridge"],
-  "teachesConceptIds": ["partitions-of-unity", "whitney-embedding"],
+  "prerequisiteConceptIds": [
+    "vector-bundles",
+    "tangent-bundle-vector-fields",
+    "manifold-topology-bridge"
+  ],
+  "teachesConceptIds": [
+    "partitions-of-unity",
+    "whitney-embedding"
+  ],
   "preparation": [
-    { "description": "Read lecture 8: §8 connections as generalised directional derivatives, §9 partitions of unity, §10 Theorem 10.1 (the Grassmannian is universal) with proof.", "locatorId": "gm04-l8-partitions", "estimatedMinutes": 35 },
-    { "description": "Read lecture 9: Theorem 11.1 (Whitney embedding, easiest version) with proof.", "locatorId": "gm04-l9-thm11-1", "estimatedMinutes": 20 },
-    { "description": "Read Hitchin §6.2 (partitions of unity) and appendix §10.4 (partitions of unity on general manifolds) for the proof of existence.", "locatorId": "hit14-s10-4", "estimatedMinutes": 30 }
+    {
+      "description": "Read lecture 8: §8 connections as generalised directional derivatives, §9 partitions of unity, §10 Theorem 10.1 (the Grassmannian is universal) with proof.",
+      "locatorId": "gm04-l8-partitions",
+      "estimatedMinutes": 35
+    },
+    {
+      "description": "Read lecture 9: Theorem 11.1 (Whitney embedding, easiest version) with proof.",
+      "locatorId": "gm04-l9-thm11-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read Hitchin §6.2 (partitions of unity) and appendix §10.4 (partitions of unity on general manifolds) for the proof of existence.",
+      "locatorId": "hit14-s10-4",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u05-a1", "type": "reading", "title": "Lectures 8–9: partitions of unity and embeddings", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec08", "gm04-lec09", "gm04-l8-connections", "gm04-l8-partitions", "gm04-l9-thm11-1", "hit14-s6-2", "hit14-s10-4"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u05-a1",
+      "type": "reading",
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "gm04-l8-partitions",
+        "gm04-l9-thm11-1",
+        "hit14-s10-4",
+        "gm04-lec08",
+        "gm04-lec09",
+        "gm04-l8-connections",
+        "hit14-s6-2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u05-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 155,
+      "sourceLocatorIds": [
+        "gm04-l8-partitions",
+        "gm04-l9-thm11-1",
+        "hit14-s10-4",
+        "gm04-lec08",
+        "gm04-lec09",
+        "gm04-l8-connections",
+        "hit14-s6-2"
+      ],
+      "exerciseIds": [
+        "MAT-261-u05-ex1",
+        "MAT-261-u05-ex2",
+        "MAT-261-u05-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u05-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "gm04-l8-partitions",
+        "gm04-l9-thm11-1",
+        "hit14-s10-4",
+        "gm04-lec08",
+        "gm04-lec09",
+        "gm04-l8-connections",
+        "hit14-s6-2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "MAT-261-u05-ex1",
+    "MAT-261-u05-ex2",
+    "MAT-261-u05-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-261-u05-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A pointwise finite sum of smooth functions is automatically smooth.",
+      "correction": "Local finiteness supplies a neighbourhood with finitely many terms and justifies differentiating the sum; pointwise finiteness alone is insufficient.",
+      "correctionLocatorIds": [
+        "gm04-l8-partitions"
+      ]
+    },
+    {
+      "claim": "An injective immersion is automatically an embedding.",
+      "correction": "One must also check the topology. Compact domain and Hausdorff target supply that step here.",
+      "correctionLocatorIds": [
+        "gm04-l8-partitions"
+      ]
+    }
+  ],
+  "estimatedMinutes": 365,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture 8 and 9 PDFs downloaded and text-extracted 2026-10-30: §8 on PDF page 1, §9 and Theorem 10.1 on pages 2–3 of lecture8.pdf; Theorem 11.1 on the single page of lecture9.pdf. Hitchin §6.2 (p. 39) and §10.4 (p. 92) verified against extracted text." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-261-u05-ex1.reference-solution.md",
+    "MAT-261-u05-ex2.reference-solution.md",
+    "MAT-261-u05-ex3.reference-solution.md"
+  ]
 }

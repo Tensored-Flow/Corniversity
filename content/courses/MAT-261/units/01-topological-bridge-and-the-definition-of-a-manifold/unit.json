@@ -5,41 +5,204 @@
   "title": "Topological bridge and the definition of a smooth manifold",
   "summary": "The point-set topology a manifold needs (Hausdorff, second countable, subspace, product and quotient topologies, compactness); charts, transition maps, compatibility, atlases and maximal atlases; the definition of a smooth manifold; the sphere with two stereographic charts, real and complex projective space, Grassmannians; why the dimension is well defined.",
   "objectives": [
-    { "id": "u01-o1", "description": "State the definition of a smooth n-manifold with all three ingredients (topological axioms, charts, smooth overlaps) and explain the role of each." },
-    { "id": "u01-o2", "description": "Verify Hausdorffness, second countability and compactness for subspaces of Euclidean space and for quotients, using open maps and saturated open sets." },
-    { "id": "u01-o3", "description": "Compute transition maps for the stereographic charts on S^n and the affine charts on RP^n and prove smooth compatibility." },
-    { "id": "u01-o4", "description": "Prove that every atlas lies in a unique maximal atlas without Zorn's lemma, and explain when two atlases define the same manifold." }
+    {
+      "id": "u01-o1",
+      "description": "State the definition of a smooth n-manifold with all three ingredients (topological axioms, charts, smooth overlaps) and explain the role of each."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Verify Hausdorffness, second countability and compactness for subspaces of Euclidean space and for quotients, using open maps and saturated open sets."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Compute transition maps for the stereographic charts on S^n and the affine charts on RP^n and prove smooth compatibility."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Prove that every atlas lies in a unique maximal atlas without Zorn's lemma, and explain when two atlases define the same manifold."
+    }
   ],
-  "prerequisiteConceptIds": ["metric-spaces", "multivariable-calculus", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["manifold-topology-bridge", "smooth-manifold"],
+  "prerequisiteConceptIds": [
+    "metric-spaces",
+    "multivariable-calculus",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "manifold-topology-bridge",
+    "smooth-manifold"
+  ],
   "preparation": [
-    { "description": "Read lecture 1 of the 18.965 notes, pages 1–2: the standing hypothesis (Hausdorff, second countable), Definition 1.1 (chart), the transition maps, Definition 1.2 (compatible charts), atlases, equivalent and maximal atlases, Exercise 1.", "locatorId": "gm04-l1-def1-1", "estimatedMinutes": 20 },
-    { "description": "Read lecture 1 pages 3–4: Definition 1.3 (smooth manifold), the examples R^n, S^n with two charts, RP^n and CP^n, Definition 1.4 (complex manifold), Exercises 2–4 (Grassmannians).", "locatorId": "gm04-l1-def1-3", "estimatedMinutes": 25 },
-    { "description": "Read Hitchin §2.1 (charts on a set; the examples of lines in the plane and R/Z) and §2.2 (the definition of a manifold, with the topology built from the charts) as a second presentation; note where Hitchin imposes Hausdorff and second countability.", "locatorId": "hit14-s2-1", "estimatedMinutes": 30 }
+    {
+      "description": "Read lecture 1 of the 18.965 notes, pages 1–2: the standing hypothesis (Hausdorff, second countable), Definition 1.1 (chart), the transition maps, Definition 1.2 (compatible charts), atlases, equivalent and maximal atlases, Exercise 1.",
+      "locatorId": "gm04-l1-def1-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read lecture 1 pages 3–4: Definition 1.3 (smooth manifold), the examples R^n, S^n with two charts, RP^n and CP^n, Definition 1.4 (complex manifold), Exercises 2–4 (Grassmannians).",
+      "locatorId": "gm04-l1-def1-3",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read Hitchin §2.1 (charts on a set; the examples of lines in the plane and R/Z) and §2.2 (the definition of a manifold, with the topology built from the charts) as a second presentation; note where Hitchin imposes Hausdorff and second countability.",
+      "locatorId": "hit14-s2-1",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u01-a1", "type": "reading", "title": "Lecture 1 with the topology bridge", "instructions": "Read the lesson alongside lecture 1 of the notes and Hitchin §2.1–2.2. For each example (R^n, S^n, RP^n, CP^n, Grassmannian) write in the notebook, in three separate lines, how the topology is specified, what the charts are, and what has to be checked about the overlaps.", "estimatedMinutes": 70, "sourceLocatorIds": ["gm04-l1-def1-1", "gm04-l1-ex1", "gm04-l1-def1-3", "gm04-l1-def1-4", "hit14-s2-1", "hit14-s2-2", "hit14-s2-3"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u01-a2", "type": "proof_workshop", "title": "Tutorial: the sphere and projective space", "instructions": "Attempt exercise 1 before asking for any hint; the transition map should be computed by hand, not recalled. Then attempt exercise 2, keeping the three checks (topology, charts, overlaps) in separate paragraphs. Submit each attempt when you believe it is complete; revise after feedback.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-l1-def1-1", "gm04-l1-def1-3", "hit14-s2-2"], "exerciseIds": ["MAT-261-u01-ex1", "MAT-261-u01-ex2"], "sessionKind": "tutorial" },
-    { "id": "u01-a3", "type": "proof_workshop", "title": "Problem class: maximal atlases without Zorn", "instructions": "Exercise 3. Compare your argument with the notes' Exercise 1, which suggests Zorn's lemma, and say in one sentence why the choice principle is not needed here.", "estimatedMinutes": 30, "sourceLocatorIds": ["gm04-l1-ex1"], "exerciseIds": ["MAT-261-u01-ex3"], "sessionKind": "problem_class" },
-    { "id": "u01-a4", "type": "explain_back", "title": "Explain: what each axiom forbids", "instructions": "Without notes, explain to the tutor in under three minutes what 'Hausdorff' and 'second countable' each rule out, and why 'locally Euclidean with smooth overlaps' does not imply them. This is an oral check, not an assessed exercise; the pathologies are proved in unit 2.", "estimatedMinutes": 15, "sourceLocatorIds": ["gm04-l2-smooth-maps", "hit14-s2-2"], "exerciseIds": [], "sessionKind": "oral" },
-    { "id": "u01-a5", "type": "retrieval_practice", "title": "Retrieval: definitions of the unit", "instructions": "From memory: chart; compatible charts; atlas; maximal atlas; smooth manifold; the two stereographic charts of S^n and their domains; the affine charts of RP^n.", "estimatedMinutes": 10, "sourceLocatorIds": ["gm04-l1-def1-1", "gm04-l1-def1-3"], "exerciseIds": [], "sessionKind": "revision" }
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "Lecture 1 with the topology bridge",
+      "instructions": "Read the lesson alongside lecture 1 of the notes and Hitchin §2.1–2.2. For each example (R^n, S^n, RP^n, CP^n, Grassmannian) write in the notebook, in three separate lines, how the topology is specified, what the charts are, and what has to be checked about the overlaps.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "gm04-l1-def1-1",
+        "gm04-l1-ex1",
+        "gm04-l1-def1-3",
+        "gm04-l1-def1-4",
+        "hit14-s2-1",
+        "hit14-s2-2",
+        "hit14-s2-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "proof_workshop",
+      "title": "Tutorial: the sphere and projective space",
+      "instructions": "Attempt exercise 1 before asking for any hint; the transition map should be computed by hand, not recalled. Then attempt exercise 2, keeping the three checks (topology, charts, overlaps) in separate paragraphs. Submit each attempt when you believe it is complete; revise after feedback.",
+      "estimatedMinutes": 90,
+      "sourceLocatorIds": [
+        "gm04-l1-def1-1",
+        "gm04-l1-def1-3",
+        "hit14-s2-2"
+      ],
+      "exerciseIds": [
+        "MAT-261-u01-ex1",
+        "MAT-261-u01-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "proof_workshop",
+      "title": "Problem class: maximal atlases without Zorn",
+      "instructions": "Exercise 3. Compare your argument with the notes' Exercise 1, which suggests Zorn's lemma, and say in one sentence why the choice principle is not needed here.",
+      "estimatedMinutes": 30,
+      "sourceLocatorIds": [
+        "gm04-l1-ex1"
+      ],
+      "exerciseIds": [
+        "MAT-261-u01-ex3"
+      ],
+      "sessionKind": "problem_class"
+    },
+    {
+      "id": "u01-a4",
+      "type": "explain_back",
+      "title": "Explain: what each axiom forbids",
+      "instructions": "Without notes, explain to the tutor in under three minutes what 'Hausdorff' and 'second countable' each rule out, and why 'locally Euclidean with smooth overlaps' does not imply them. This is an oral check, not an assessed exercise; the pathologies are proved in unit 2.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "gm04-l2-smooth-maps",
+        "hit14-s2-2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u01-a5",
+      "type": "retrieval_practice",
+      "title": "Retrieval: definitions of the unit",
+      "instructions": "From memory: chart; compatible charts; atlas; maximal atlas; smooth manifold; the two stereographic charts of S^n and their domains; the affine charts of RP^n.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "gm04-l1-def1-1",
+        "gm04-l1-def1-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": ["MAT-261-u01-ex1", "MAT-261-u01-ex2", "MAT-261-u01-ex3"],
-  "exitCheck": { "description": "Exercise 1 accepted: S^n shown Hausdorff, second countable and compact with the facts named; the inverse of a stereographic chart found; the transition map computed on the correct domain and shown to be a diffeomorphism; a reason given why one chart cannot suffice.", "exerciseId": "MAT-261-u01-ex1" },
+  "exerciseIds": [
+    "MAT-261-u01-ex1",
+    "MAT-261-u01-ex2",
+    "MAT-261-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the sphere chart task together with the projective-space and maximal-atlas proofs to sample the topology and atlas objectives. A single accepted response does not certify the whole unit.",
+    "exerciseId": "MAT-261-u01-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "If a space has an atlas with smooth transition maps, it is automatically a manifold.", "correction": "The atlas gives 'locally Euclidean with smooth overlaps'. Hausdorffness and second countability are separate hypotheses in Definition 1.3; the line with two origins and the long line have atlases and fail one each (lecture 2, §3).", "correctionLocatorIds": ["gm04-l1-def1-3", "gm04-l2-smooth-maps"] },
-    { "claim": "A quotient of a Hausdorff space is Hausdorff, so RP^n is Hausdorff because R^{n+1} minus the origin is.", "correction": "Quotients can destroy Hausdorffness (the line with two origins is a quotient of two copies of R). For RP^n one must produce disjoint saturated open sets around two distinct lines, as in exercise 2; second countability does pass to the quotient because the projection is an open map.", "correctionLocatorIds": ["gm04-l1-def1-3", "hit14-s2-2"] },
-    { "claim": "Different atlases give different manifolds.", "correction": "Equivalent atlases (union still an atlas) define the same smooth structure; what matters is the maximal atlas. Even inequivalent atlases can give diffeomorphic manifolds (R with the charts x and x^3, unit 2).", "correctionLocatorIds": ["gm04-l1-ex1", "gm04-l2-different-charts"] },
-    { "claim": "A chart is any continuous injection into R^n.", "correction": "A chart is a homeomorphism onto an open subset of R^n; the inverse must be continuous and the image open. Exercise 1 checks both for the stereographic projection.", "correctionLocatorIds": ["gm04-l1-def1-1", "hit14-s2-1"] }
+    {
+      "claim": "If a space has an atlas with smooth transition maps, it is automatically a manifold.",
+      "correction": "The atlas gives 'locally Euclidean with smooth overlaps'. Hausdorffness and second countability are separate hypotheses in Definition 1.3; the line with two origins and the long line have atlases and fail one each (lecture 2, §3).",
+      "correctionLocatorIds": [
+        "gm04-l1-def1-3",
+        "gm04-l2-smooth-maps"
+      ]
+    },
+    {
+      "claim": "A quotient of a Hausdorff space is Hausdorff, so RP^n is Hausdorff because R^{n+1} minus the origin is.",
+      "correction": "Quotients can destroy Hausdorffness (the line with two origins is a quotient of two copies of R). For RP^n one must produce disjoint saturated open sets around two distinct lines, as in exercise 2; second countability does pass to the quotient because the projection is an open map.",
+      "correctionLocatorIds": [
+        "gm04-l1-def1-3",
+        "hit14-s2-2"
+      ]
+    },
+    {
+      "claim": "Different atlases give different manifolds.",
+      "correction": "Equivalent atlases (union still an atlas) define the same smooth structure; what matters is the maximal atlas. Even inequivalent atlases can give diffeomorphic manifolds (R with the charts x and x^3, unit 2).",
+      "correctionLocatorIds": [
+        "gm04-l1-ex1",
+        "gm04-l2-different-charts"
+      ]
+    },
+    {
+      "claim": "A chart is any continuous injection into R^n.",
+      "correction": "A chart is a homeomorphism onto an open subset of R^n; the inverse must be continuous and the image open. Exercise 1 checks both for the stereographic projection.",
+      "correctionLocatorIds": [
+        "gm04-l1-def1-1",
+        "hit14-s2-1"
+      ]
+    }
   ],
   "estimatedMinutes": 290,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All lecture-1 locators opened 2026-10-30; page indices verified against text extracted from lecture1.pdf (4 pages, no printed labels): Definitions 1.1–1.2 on PDF page 1, atlases and Exercise 1 on page 2, Definition 1.3 and §1.1 examples on page 3, Definition 1.4 and Exercises 2–4 on page 4. Hitchin §2.1 on printed p. 6 (PDF index 5), §2.2 on p. 9 (index 8), §2.3 on p. 11 (index 10), verified against extracted text of manifolds2014.pdf." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived: inverse of the stereographic chart φ_+^{-1}(y) = ((|y|²−1)/(|y|²+1), 2y/(|y|²+1)); transition map φ_−∘φ_+^{-1}(y) = y/|y|² on R^n minus the origin, an involutive diffeomorphism; RP^n Hausdorff via disjoint symmetric cones over disjoint symmetric open subsets of S^n, second countable via openness of the projection, compact as the image of S^n; affine transition maps rational with nonvanishing denominator; the maximal-atlas argument via locality of smoothness." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "The lesson states the charts but not the inverse formula, the transition map, the Hausdorff argument for RP^n or the maximal-atlas proof; those live only in instructor/ files." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "70 + 90 + 30 + 15 + 10 minutes of activities plus 75 minutes of preparation ≈ 4.8 hours, within the 10–14 hours per week budget alongside unit 2." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All lecture-1 locators opened 2026-10-30; page indices verified against text extracted from lecture1.pdf (4 pages, no printed labels): Definitions 1.1–1.2 on PDF page 1, atlases and Exercise 1 on page 2, Definition 1.3 and §1.1 examples on page 3, Definition 1.4 and Exercises 2–4 on page 4. Hitchin §2.1 on printed p. 6 (PDF index 5), §2.2 on p. 9 (index 8), §2.3 on p. 11 (index 10), verified against extracted text of manifolds2014.pdf."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Build agent re-derived: inverse of the stereographic chart φ_+^{-1}(y) = ((|y|²−1)/(|y|²+1), 2y/(|y|²+1)); transition map φ_−∘φ_+^{-1}(y) = y/|y|² on R^n minus the origin, an involutive diffeomorphism; RP^n Hausdorff via disjoint symmetric cones over disjoint symmetric open subsets of S^n, second countable via openness of the projection, compact as the image of S^n; affine transition maps rational with nonvanishing denominator; the maximal-atlas argument via locality of smoothness."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "The lesson states the charts but not the inverse formula, the transition map, the Hausdorff argument for RP^n or the maximal-atlas proof; those live only in instructor/ files."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Workload is a provisional planning estimate, updated for the full problem sheet and synthesis; no empirical completion-time validation has occurred."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-261-u01-ex1.reference-solution.md", "MAT-261-u01-ex1.grading-notes.md", "MAT-261-u01-ex2.reference-solution.md", "MAT-261-u01-ex3.reference-solution.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "MAT-261-u01-ex1.reference-solution.md",
+    "MAT-261-u01-ex1.grading-notes.md",
+    "MAT-261-u01-ex2.reference-solution.md",
+    "MAT-261-u01-ex3.reference-solution.md",
+    "lesson-notes.md"
+  ]
 }

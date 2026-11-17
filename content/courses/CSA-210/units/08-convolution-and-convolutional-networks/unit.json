@@ -3,27 +3,149 @@
   "courseId": "CSA-210",
   "sequence": 8,
   "title": "Convolution as a linear operator; convolutional networks",
-  "summary": "Discrete convolution and cross-correlation as linear, translation-equivariant operators; kernels, padding, stride and output size; multiple filters, ReLU and pooling; parameter counts versus fully connected layers; a small CNN and transfer learning.",
+  "summary": "Cross-correlation as a shared linear map, adjoint gradients, shapes/receptive fields, shift counterexamples and detector verification.",
   "objectives": [
-    { "id": "u08-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is W2D2 Tutorial 1 (Introduction to CNNs) of the Neuromatch Deep Learning ebook." }
+    {
+      "id": "u08-o1",
+      "description": "Define convolution/cross-correlation and derive their linear operator and adjoint."
+    },
+    {
+      "id": "u08-o2",
+      "description": "Calculate CNN shapes, parameters and receptive fields."
+    },
+    {
+      "id": "u08-o3",
+      "description": "Prove equivariance under stated boundary rules and disprove blanket pooling invariance."
+    },
+    {
+      "id": "u08-o4",
+      "description": "Gradient-check a local detector and design fair architecture/transfer comparisons."
+    }
   ],
-  "prerequisiteConceptIds": ["multilayer-perceptron", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["convolution-operator"],
+  "prerequisiteConceptIds": [
+    "multilayer-perceptron",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "convolution-operator"
+  ],
   "preparation": [
-    { "description": "Read W2D2 Tutorial 1: convolutions and edge detection, padding and stride, kernels, pooling and subsampling, parameter counts, implementing a CNN, transfer learning.", "locatorId": "nmadl-w2d2-t1", "estimatedMinutes": 70 }
+    {
+      "locatorId": "nmadl-w2d2-t1",
+      "description": "Read convolution, padding/stride, pooling, parameter counts and transfer-learning overview. Check the limits of invariance claims.",
+      "estimatedMinutes": 70
+    }
   ],
   "activities": [
-    { "id": "u08-a1", "type": "reading", "title": "W2D2 Tutorial 1: Introduction to CNNs", "instructions": "Read the tutorial for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["nmadl-w2d2", "nmadl-w2d2-t1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u08-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 120,
+      "sourceLocatorIds": [
+        "nmadl-w2d2-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u08-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 175,
+      "sourceLocatorIds": [
+        "nmadl-w2d2-t1"
+      ],
+      "exerciseIds": [
+        "CSA-210-u08-ex1",
+        "CSA-210-u08-ex2",
+        "CSA-210-u08-ex3",
+        "CSA-210-u08-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u08-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "nmadl-w2d2-t1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "CSA-210-u08-ex1",
+    "CSA-210-u08-ex2",
+    "CSA-210-u08-ex3",
+    "CSA-210-u08-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CSA-210-u08-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A convolution with bias is a linear map.",
+      "correction": "The kernel operation is linear; a nonzero bias makes the layer affine.",
+      "correctionLocatorIds": [
+        "nmadl-w2d2-t1"
+      ]
+    },
+    {
+      "claim": "Pooling guarantees invariance to every image translation.",
+      "correction": "Window boundaries, stride and padding can change outputs under small shifts.",
+      "correctionLocatorIds": [
+        "nmadl-w2d2-t1"
+      ]
+    },
+    {
+      "claim": "A transposed convolution is the inverse of convolution.",
+      "correction": "It is the adjoint of a stated linear map; information loss often prevents inversion.",
+      "correctionLocatorIds": [
+        "nmadl-w2d2-t1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 385,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Chapter page and Tutorial 1 opened 2026-10-30 (HTTP 200; title 'Tutorial 1: Introduction to CNNs'; sections 'Section 2: Convolutions and Edge Detection', 'Section 2.2: Padding and Edge Detection', 'Section 3.3: Pooling', 'Section 4.1: Number of Parameters in Convolutional vs. Fully-connected Models' recorded)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "Read Neuromatch W2D2 Tutorial1 sections2,2.2,3.3,4.1,5. Original operator proofs and finite-difference experiment qualify the tutorial pooling-invariance simplification and fix explicit cross-correlation conventions."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 385 active minutes across source reading, lecture work, original problem sheet and delayed retrieval; estimates have not been learner-tested."
+    },
+    {
+      "name": "executable-reference",
+      "result": "pass",
+      "evidence": "Complete original Python standard-library reference program executed on Linux 2026-11-12; code and actual output embedded in instructor reference. Source/solution academic review remains a separate check."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CSA-210-u08-ex1.reference-solution.md",
+    "CSA-210-u08-ex2.reference-solution.md",
+    "CSA-210-u08-ex3.reference-solution.md",
+    "CSA-210-u08-ex4.reference-solution.md"
+  ]
 }

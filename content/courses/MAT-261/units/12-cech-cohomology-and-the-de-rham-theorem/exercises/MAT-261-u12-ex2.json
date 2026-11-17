@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u12-ex2",
+  "sequence": 2,
+  "title": "Prove the partition homotopy",
+  "kind": "proof",
+  "promptMarkdown": "For alternating smooth $q$-form cochains of positive Čech degree, define $K$ as in the lesson. Prove $\\delta K+K\\delta=I$, including the support and local-finiteness justification. Deduce that a Čech cocycle with smooth-form coefficients is a coboundary. Explain why this proof does not show that $\\check H^1(S^1;\\mathbb R)=0$.",
+  "conceptIds": [
+    "cech-de-rham-theorem"
+  ],
+  "hintLadder": [
+    "Write the j term as the first index in the coboundary expansion.",
+    "The term omitting j survives; all other terms cancel.",
+    "Check whether multiplying a constant by a partition function remains locally constant."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Correct index/sign expansion.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Well-definedness and acyclicity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Constant-sheaf limitation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

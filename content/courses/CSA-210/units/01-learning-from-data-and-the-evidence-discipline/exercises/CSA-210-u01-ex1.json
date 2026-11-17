@@ -3,7 +3,7 @@
   "sequence": 1,
   "title": "A leak in a tidy pipeline",
   "kind": "model_interpretation",
-  "promptMarkdown": "*The scenario and all its numbers are synthetic, invented for this exercise; no real organisation or dataset is described.*\n\nA team wants to predict whether a machine will fail during the coming week. They have 5,000 weekly records from 250 machines (20 consecutive weeks each) with the label `fails_next_week`, whose base rate is 6%. Their pipeline:\n\n1. Impute missing sensor values and standardise every column using the mean and standard deviation computed over all 5,000 records.\n2. Add the feature `ticket_opened_this_week`: 1 if an engineer opened a maintenance ticket during the week. Tickets are opened after a fault is detected, usually in the week the failure occurs or the week before.\n3. Shuffle the 5,000 records uniformly at random and split them 80/20 into training and test sets.\n4. Train a two-layer MLP on the training set.\n5. Try 30 hyperparameter configurations (hidden width, learning rate, weight decay) and keep the one with the highest test accuracy.\n6. Report: \"test accuracy 97.4%\".\n\n**(a)** Identify every distinct problem in steps 1–5 and classify each with the unit's taxonomy (target, preprocessing, duplicate, temporal, group, selection). For each, say in one or two sentences what information flows where it should not.\n\n**(b)** Explain why 97.4% is not evidence that the model can predict failures. Your explanation must compute the trivial baseline and must address at least two of the leaks separately: which would inflate the number, and roughly how badly.\n\n**(c)** Rank the problems by how much you expect each to inflate the reported accuracy, with a one-line justification each. Judgement is expected; defend it.\n\n**(d)** Write a corrected protocol in at most ten lines: which records go where, when preprocessing statistics are fitted, which features are admissible, how configurations are chosen, how many times the test set is touched, and what is reported alongside the final number (seeds, baseline, uncertainty). Then, separately, state the corrected protocol's information contract in the programme's ten points: observed, prediction target, history in training, history at inference, person, task, later time periods, unavailable in real use, simplest baseline, claims not tested.",
+  "promptMarkdown": "*The scenario and all numbers are synthetic; no real organisation or dataset is described.*\n\nAt the start of record week t, a team wants to predict whether a machine will fail during the following week t+1. The allowed sensor features summarise information available before that start-of-week cutoff. There are 5,000 records from 250 machines, with 20 consecutive record weeks per machine and eventual outcome label `fails_next_week`; the observed base rate is 6%. Their pipeline is:\n\n1. Fit imputation and standardisation on all 5,000 records.\n2. Add `ticket_opened_this_week`, an indicator filled retrospectively after observing the entire record week t. Tickets follow fault detection, sometimes in the failure week and sometimes the preceding week. No sensitivity, specificity or joint counts are supplied.\n3. Shuffle records and split them 80/20 into training and a named test set, without respecting machine identity or chronology.\n4. Train a two-layer MLP.\n5. Try 30 hyperparameter configurations and select the highest named-test accuracy.\n6. Report 97.4% accuracy as evidence for future failure prediction on new machines.\n\n(a) Identify the demonstrated information-boundary violations and plausible leakage risks. Use the unit taxonomy, but do not claim that literal duplicate rows or direct neighbouring-label access were established without evidence.\n(b) Compute the majority baseline. Explain what 97.4% does and does not show, including the need for per-class outcomes and an independent evaluation. Which inflation effects cannot be quantified from the supplied aggregates?\n(c) Give a conditional assessment of the most serious risks. State the extra measurements needed to compare their sizes; no unique numeric ranking is implied by this scenario.\n(d) Give a corrected protocol in at most ten lines: independent machines and appropriate time periods, prediction-time feature eligibility, training-only transforms, validation selection, outcome-availability gaps, frozen final evaluation, seeds, baselines and uncertainty. Then state its ten-point information contract: observed inputs; target; history in training; history at inference; person/entity; task; later time periods; unavailable information; simplest baseline; claims not tested.",
   "conceptIds": [
     "data-leakage",
     "evaluation-discipline",
@@ -13,8 +13,8 @@
   ],
   "hintLadder": [
     "For each feature, ask: at the moment the prediction would be used (the start of the week), is this value known yet? If not, how did it get into the training data?",
-    "The label for machine $m$ in week $t$ is whether $m$ fails in week $t+1$. Which other record in the dataset contains exactly that information, and could it be in the training set while week $t$ is in the test set?",
-    "What does a model see of a machine's identity when nineteen of its twenty weeks are in the training set? Which taxonomy entry is that?",
+    "A neighbouring record has a different prediction week. Which actual features or label access would reveal the target outcome, and which such access has the prompt established? Separate possible temporal dependence from proven direct label leakage.",
+    "An 80/20 row split can place many weeks from the same machine on both sides. What machine-specific information could carry across, and how does that differ from evaluation on entirely new machines? Do not assume all nineteen other weeks are in training.",
     "Step 5 picks the maximum of 30 test accuracies. What is the expected maximum of 30 noisy, roughly unbiased estimates compared with any one of them?",
     "The baseline is the accuracy of a model that never predicts a failure. Compute it from the base rate."
   ],
@@ -62,7 +62,7 @@
     "criteria": [
       {
         "id": "target-leak",
-        "criterion": "The ticket feature is identified as target leakage with its mechanism (opened after fault detection, so unavailable at prediction time and nearly a copy of the label).",
+        "criterion": "Identifies the retrospective ticket flag as unavailable at the specified start-of-week cutoff; does not assert a near-copy of the label or its standalone accuracy without joint data.",
         "weight": 0.25,
         "levels": [
           {
@@ -81,7 +81,7 @@
       },
       {
         "id": "split-leaks",
-        "criterion": "The random shuffle is identified as producing group leakage (same machine in both splits) and temporal leakage (later weeks, including the record that carries the test label, in training); selection on the test set in step 5 is identified; standardisation on all records is noted as a mild preprocessing leak.",
+        "criterion": "Explains group/time mismatch for new-machine future prediction, test-based selection and full-data preprocessing; distinguishes possible dependence from demonstrated literal duplicates or direct label access.",
         "weight": 0.25,
         "levels": [
           {
@@ -100,7 +100,7 @@
       },
       {
         "id": "why-not-evidence",
-        "criterion": "The 94% baseline is computed and the argument explains that the leaks and the test-set selection inflate the number, so 97.4% estimates neither risk nor skill; the inadequacy of accuracy alone on a 6% base rate is noted.",
+        "criterion": "Computes the 94% majority baseline, limits the interpretation of the selected 97.4%, requests per-class evidence and recognises that leak inflation cannot be quantified or uniquely ranked from these aggregates.",
         "weight": 0.25,
         "levels": [
           {
@@ -119,7 +119,7 @@
       },
       {
         "id": "corrected-protocol",
-        "criterion": "A protocol with group- and time-aware splitting, preprocessing fitted on training data only, inadmissible features removed, a validation split for selection, the test set touched once, and reporting of seeds, baseline and uncertainty, followed by its ten-point information contract.",
+        "criterion": "Defines machine/time-aware partitions with outcome-availability gaps, eligible features, training-only transforms, validation selection, frozen independent final evaluation and a complete information contract.",
         "weight": 0.25,
         "levels": [
           {
@@ -145,7 +145,7 @@
   "checkExamples": [
     {
       "label": "complete audit",
-      "text": "The ticket_opened_this_week feature is target leakage: tickets are opened after a fault is detected, so the feature encodes the label and is not available at the start of the week. Standardising on all 5,000 records is preprocessing leakage, probably mild. The random shuffle puts the same machine and later weeks in both splits, so there is group leakage and temporal leakage; the record for week t+1 even contains the test label for week t. Choosing among 30 configurations by test accuracy is selection leakage. The majority baseline is 94% (base rate 6%), so 97.4% is barely above predicting no failure, and after the leaks it is not evidence of skill.",
+      "text": "The retrospective ticket feature is unavailable at the prediction cutoff. Its exact relation to next-week failure is unknown, so its predictive accuracy cannot be inferred. Fitting transforms on all records violates the training boundary. Random row splitting allows machine and time overlap, which may exploit dependence and does not test future prediction on new machines; literal duplicates and direct neighbouring-label access are not established. Choosing among 30 configurations by test accuracy contaminates that test for selection. The majority baseline is 94%. The selected 97.4% requires independent, machine/time-aware evaluation and per-class outcomes; the size of each inflation effect is unknown.",
       "expect": {
         "names-ticket-leak": true,
         "baseline-94": true,

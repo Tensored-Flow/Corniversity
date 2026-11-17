@@ -681,7 +681,7 @@
         "Methods for comparing representations",
         "Limits of claims about biological similarity"
       ],
-      "prerequisiteReasoning": "CSA-210 is a launch course and the block's canonical course; units 1 and 2 are prepared. It precedes MBI-10 and the representation side of MBI-11.",
+      "prerequisiteReasoning": "CSA-210 is a launch course and the block's canonical course; all ten units are prepared, including a complete CPU capstone. It precedes MBI-10 and the representation side of MBI-11.",
       "bridges": [],
       "canStudyAlongside": [
         "MBI-04",
@@ -731,7 +731,6 @@
       "evidenceOfUnderstanding": "The learner explains the objective, what changed during training, what the comparison establishes and what it does not.",
       "tutorGuidance": "An attractive embedding plot is not evidence that a model 'thinks like a brain'.",
       "gaps": [
-        "Units 3 to 10 of CSA-210 are outlined, not prepared.",
         "CKA or CCA style representation comparison has no source yet."
       ]
     },

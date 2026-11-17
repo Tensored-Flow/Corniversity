@@ -3,11 +3,14 @@
   "sequence": 3,
   "title": "Reading an equilibrium: Q, K and Le Châtelier",
   "kind": "calculation",
-  "promptMarkdown": "Dinitrogen tetroxide dissociates: $\\ce{N2O4(g) <=> 2 NO2(g)}$. Take $K = 0.146$ at 298 K with a reference pressure of 1 bar (this is the reciprocal of the value the lecture 18 notes use for the reverse reaction), and treat the forward reaction as endothermic. $R = 8.314\\ \\text{J K}^{-1}\\text{mol}^{-1}$.\n\n1. A vessel at 298 K contains $P(\\ce{N2O4}) = 0.500$ bar and $P(\\ce{NO2}) = 0.100$ bar. Compute $Q$ and say which direction the reaction runs.\n2. A different vessel at 298 K initially contains 1.000 bar of $\\ce{N2O4}$ and no $\\ce{NO2}$. Set up an ICE table and compute the equilibrium partial pressures; check them by substituting back.\n3. Compute $\\Delta G^\\circ$ for the reaction as written at 298 K.\n4. Predict, with a reason stated in terms of $Q$ and $K$, the effect on the equilibrium amount of $\\ce{NO2}$ of: (a) compressing the equilibrium mixture to half its volume at constant temperature; (b) raising the temperature; (c) adding argon at constant volume; (d) adding a catalyst. In each case say whether $K$ changes.",
-  "conceptIds": ["chemical-equilibrium-constant", "le-chatelier"],
+  "promptMarkdown": "Dinitrogen tetroxide dissociates: $\\ce{N2O4(g) <=> 2 NO2(g)}$. Take $K = 0.146$ at 298 K with a reference pressure of 1 bar (this is the reciprocal of the value the lecture 18 notes use for the reverse reaction), and treat the forward reaction as endothermic. $R = 8.314\\ \\text{J K}^{-1}\\text{mol}^{-1}$.\n\n1. A vessel at 298 K contains $P(\\ce{N2O4}) = 0.500$ bar and $P(\\ce{NO2}) = 0.100$ bar. Compute $Q$ and say which direction the reaction runs.\n2. A different rigid vessel, held at 298 K with ideal gases throughout, initially contains 1.000 bar of $\\ce{N2O4}$ and no $\\ce{NO2}$. Set up an ICE table and compute the equilibrium partial pressures; check them by substituting back.\n3. Compute $\\Delta G^\\circ$ for the reaction as written at 298 K.\n4. Predict, with a reason stated in terms of $Q$ and $K$, the effect on the equilibrium amount of $\\ce{NO2}$ of: (a) compressing the equilibrium mixture to half its volume at constant temperature; (b) raising the temperature; (c) adding argon at constant volume; (d) adding a catalyst. In each case say whether $K$ changes.",
+  "conceptIds": [
+    "chemical-equilibrium-constant",
+    "le-chatelier"
+  ],
   "hintLadder": [
     "$Q$ has the same form as $K$ but uses the pressures you have now: $Q = P(\\ce{NO2})^2/P(\\ce{N2O4})$ with pressures in bar.",
-    "Let $x$ bar of $\\ce{N2O4}$ dissociate; then $P(\\ce{NO2}) = 2x$ and $P(\\ce{N2O4}) = 1.000 - x$. The resulting quadratic has one positive root.",
+    "At fixed volume and temperature, partial pressures change in the stoichiometric proportions. Let $x$ bar of $\\ce{N2O4}$ dissociate; then $P(\\ce{NO2}) = 2x$ and $P(\\ce{N2O4}) = 1.000 - x$. The resulting quadratic has one positive root.",
     "$\\Delta G^\\circ = -RT\\ln K$ with $R$ in J; convert to kJ at the end and keep the sign.",
     "For each stress ask: does it change $Q$ (then the system moves back towards the unchanged $K$) or does it change $K$ itself (only temperature does)?"
   ],
@@ -16,34 +19,124 @@
       "id": "quotient",
       "kind": "numeric_value",
       "description": "Q = 0.0200",
-      "params": { "expected": 0.02, "tolerance": 0.0005 }
+      "params": {
+        "expected": 0.02,
+        "tolerance": 0.0005
+      }
     },
     {
       "id": "no2-pressure",
       "kind": "numeric_value",
       "description": "equilibrium P(NO2) ≈ 0.347 bar",
-      "params": { "expected": 0.347, "tolerance": 0.004 }
+      "params": {
+        "expected": 0.347,
+        "tolerance": 0.004
+      }
     },
     {
       "id": "gibbs-standard",
       "kind": "numeric_value",
       "description": "ΔG° ≈ +4.77 kJ/mol",
-      "params": { "expected": 4.77, "tolerance": 0.05 }
+      "params": {
+        "expected": 4.77,
+        "tolerance": 0.05
+      }
     },
     {
       "id": "k-only-temperature",
       "kind": "forbidden_claim",
       "description": "claiming that K changes with pressure, volume, inert gas or a catalyst",
-      "params": { "patterns": ["k(changes|increases|decreases|isdifferent|shifts)when(the)?(pressure|volume|mixtureiscompressed)", "k(changes|increases|decreases)(with|on|upon)(compression|pressure|volume|addingargon|addinga?catalyst)", "catalyst(changes|increases|decreases|raises|lowers)k(?![a-z])", "argon(changes|increases|decreases)k(?![a-z])", "k depends on (the )?(pressure|volume)", "kdependson(the)?(pressure|volume)"] }
+      "params": {
+        "patterns": [
+          "k(changes|increases|decreases|isdifferent|shifts)when(the)?(pressure|volume|mixtureiscompressed)",
+          "k(changes|increases|decreases)(with|on|upon)(compression|pressure|volume|addingargon|addinga?catalyst)",
+          "catalyst(changes|increases|decreases|raises|lowers)k(?![a-z])",
+          "argon(changes|increases|decreases)k(?![a-z])",
+          "k depends on (the )?(pressure|volume)",
+          "kdependson(the)?(pressure|volume)"
+        ]
+      }
     }
   ],
   "rubric": {
-    "version": 1,
+    "version": 2,
     "criteria": [
-      { "id": "q-direction", "criterion": "Q = 0.100²/0.500 = 0.0200 < K, so the forward reaction runs (more NO2).", "weight": 0.15, "levels": [{ "label": "met", "description": "Value and direction." }, { "label": "partially met", "description": "Value right, direction unexplained." }, { "label": "not met", "description": "Wrong." }] },
-      { "id": "ice", "criterion": "4x² + 0.146x − 0.146 = 0, x = 0.1737 bar; P(NO2) = 0.347 bar, P(N2O4) = 0.826 bar; substitution check 0.347²/0.826 = 0.146.", "weight": 0.35, "levels": [{ "label": "met", "description": "Table, quadratic, pressures and the check." }, { "label": "partially met", "description": "Pressures right without the check, or a 2x slip with the method right." }, { "label": "not met", "description": "Wrong setup." }] },
-      { "id": "gibbs", "criterion": "ΔG° = −(8.314)(298)ln(0.146) = +4.77 kJ/mol, positive because K < 1.", "weight": 0.15, "levels": [{ "label": "met", "description": "Correct value and sign." }, { "label": "partially met", "description": "Sign or unit slip." }, { "label": "not met", "description": "Wrong." }] },
-      { "id": "stresses", "criterion": "(a) compression raises Q above K, shift to N2O4, less NO2, K unchanged; (b) heating raises K for the endothermic forward reaction, more NO2; (c) argon at constant volume changes no partial pressure, no shift, K unchanged; (d) a catalyst changes neither Q nor K, equilibrium reached faster.", "weight": 0.35, "levels": [{ "label": "met", "description": "All four with the Q/K reasoning." }, { "label": "partially met", "description": "Three correct, or correct predictions without the Q/K reasoning." }, { "label": "not met", "description": "Two or fewer." }] }
+      {
+        "id": "q-direction",
+        "criterion": "Q = 0.100²/0.500 = 0.0200 < K, so the forward reaction runs (more NO2).",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Value and direction."
+          },
+          {
+            "label": "partially met",
+            "description": "Value right, direction unexplained."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "ice",
+        "criterion": "4x² + 0.146x − 0.146 = 0, x = 0.1737 bar; P(NO2) = 0.347 bar, P(N2O4) = 0.826 bar; substitution check 0.347²/0.826 = 0.146.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Table, quadratic, pressures and the check."
+          },
+          {
+            "label": "partially met",
+            "description": "Pressures right without the check, or a 2x slip with the method right."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong setup."
+          }
+        ]
+      },
+      {
+        "id": "gibbs",
+        "criterion": "ΔG° = −(8.314)(298)ln(0.146) = +4.77 kJ/mol, positive because K < 1.",
+        "weight": 0.15,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct value and sign."
+          },
+          {
+            "label": "partially met",
+            "description": "Sign or unit slip."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong."
+          }
+        ]
+      },
+      {
+        "id": "stresses",
+        "criterion": "(a) compression raises Q above K, shift to N2O4, less NO2, K unchanged; (b) heating raises K for the endothermic forward reaction, more NO2; (c) argon at constant volume changes no partial pressure, no shift, K unchanged; (d) a catalyst changes neither Q nor K, equilibrium reached faster.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All four with the Q/K reasoning."
+          },
+          {
+            "label": "partially met",
+            "description": "Three correct, or correct predictions without the Q/K reasoning."
+          },
+          {
+            "label": "not met",
+            "description": "Two or fewer."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -54,12 +147,20 @@
     {
       "label": "correct answer",
       "text": "Q = 0.100^2/0.500 = 0.0200, below K = 0.146, so the reaction runs forward. ICE: N2O4 1.000 - x, NO2 2x; (2x)^2/(1.000 - x) = 0.146 gives 4x^2 + 0.146x - 0.146 = 0, x = 0.1737, so P(NO2) = 0.347 bar and P(N2O4) = 0.826 bar; check 0.347^2/0.826 = 0.146. ΔG° = -8.314 x 298 x ln(0.146) = +4770 J/mol = +4.77 kJ/mol. (a) Halving the volume doubles both pressures, Q doubles and exceeds K, so the system shifts towards N2O4 and the NO2 amount falls; K is unchanged. (b) Heating raises K for the endothermic forward reaction, so more NO2. (c) Argon at constant volume changes no partial pressure: no shift, K unchanged. (d) A catalyst changes neither Q nor K; equilibrium is reached faster.",
-      "expect": { "quotient": true, "no2-pressure": true, "gibbs-standard": true, "k-only-temperature": true }
+      "expect": {
+        "quotient": true,
+        "no2-pressure": true,
+        "gibbs-standard": true,
+        "k-only-temperature": true
+      }
     },
     {
       "label": "K treated as pressure dependent",
       "text": "Q = 0.2 so the reaction runs backwards. K changes when the pressure increases, so compressing gives a new equilibrium constant, and a catalyst increases K.",
-      "expect": { "k-only-temperature": false, "quotient": false }
+      "expect": {
+        "k-only-temperature": false,
+        "quotient": false
+      }
     }
   ]
 }

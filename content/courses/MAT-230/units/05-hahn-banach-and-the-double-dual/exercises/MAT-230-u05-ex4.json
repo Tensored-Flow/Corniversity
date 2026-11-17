@@ -1,0 +1,112 @@
+{
+  "id": "MAT-230-u05-ex4",
+  "sequence": 4,
+  "title": "Proof portfolio: real and complex Hahn–Banach",
+  "kind": "proof",
+  "promptMarkdown": "Prove the norm-preserving Hahn–Banach theorem: if $M$ is a linear subspace of a real or complex normed space $X$ and $f\\in M^*$, there is $F\\in X^*$ with $F|_M=f$ and $\\|F\\|=\\|f\\|$. Do not assume $M$ is closed or $X$ complete. You may use Zorn's lemma, but not Hahn–Banach itself.\n\n1. In the real case set $C=\\|f\\|$ and take $x_0\\notin M$. Derive the interval of allowable values for $a=F(x_0)$ in $F(m+tx_0)=f(m)+ta$. Prove its lower endpoint is at most its upper endpoint and both are finite. Check all signs of $t$, including zero, and recover the two-sided absolute bound.\n2. Define the partial order of extensions, prove that every chain has a compatible linear upper bound with the same estimate, and use maximality to obtain an extension on all of $X$.\n3. In a complex space apply the real result to $\\operatorname{Re}f$ and construct a complex-linear extension from the resulting real-linear map $g$. Verify both complex linearity and extension of the imaginary part. Use a unit complex phase to obtain the sharp bound rather than a larger constant.\n4. Prove equality of norms, including the case $f=0$. Deduce the norming-functional formula $\\|x\\|=\\sup_{\\|\\varphi\\|\\le1}|\\varphi(x)|$ and the isometry of the canonical map $J:X\\to X^{**}$. Explain separately why completeness is irrelevant to extension but relevant to the closedness of $J(X)$.",
+  "conceptIds": [
+    "hahn-banach",
+    "dual-space"
+  ],
+  "hintLadder": [
+    "Require the bound first on m−x 0 and n+x 0; compare the two resulting bounds using f(m+n).",
+    "For negative t write t=−s and use the lower endpoint inequality, not the upper one.",
+    "A chain makes the domains nested and their values compatible; an arbitrary union of extensions would not work.",
+    "For the complex case test F(ix) and g(ix) on the original complex subspace.",
+    "Rotate F(x) to a nonnegative real number before estimating its modulus."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Derives a finite nonempty extension interval and proves the estimate for positive, negative and zero coefficients.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Constructs the extension partial order and a valid chain upper bound, then uses Zorn/maximality without a hidden completeness assumption.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Proves complex linearity, agreement with both parts of f, and the sharp phase-rotation estimate.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Proves norm equality and the zero case, then derives the norming-functional/bidual claims with the precise completeness boundary.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Complete proof of this obligation, with its hypotheses and limit operations justified."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound route with an identifiable repairable gap; state that gap specifically."
+          },
+          {
+            "label": "not met",
+            "description": "The obligation is omitted, circular, or based on an invalid claim."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 130,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "An extended proof portfolio requiring explicit hypotheses, complete limit arguments, and connections among earlier results; time is a planning estimate, not empirically calibrated."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u08-ex4",
+  "sequence": 4,
+  "title": "A Fredholm cubic family",
+  "kind": "proof",
+  "promptMarkdown": "Let $H=\\ell^2(\\mathbb N;\\mathbb R)$, fix $a\\in H$, and define $F:H\\times\\mathbb R\\to H\\times\\mathbb R$ by $F(x,t)=(x,t^3-t+\\langle x,a\\rangle)$. Prove it is smooth Fredholm of index zero. Determine its critical-value set and the number of points in every regular fibre. Explain the finite-dimensional reduction and why the regular-value set is open dense here, without claiming an infinite-dimensional Lebesgue measure.",
+  "conceptIds": [
+    "fredholm-and-smale-sard"
+  ],
+  "hintLadder": [
+    "Eliminate the cross term in the derivative by a target-coordinate change.",
+    "Find the critical points of $t^3-t$ and evaluate the cubic there.",
+    "Draw the monotonicity intervals and count roots, including the equality boundary separately."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Smooth Fredholm derivative and index.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct critical-value hyperplanes and fibre counts.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Finite reduction and topology interpretation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 65,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

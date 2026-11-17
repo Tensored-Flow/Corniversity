@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u06-ex2",
+  "sequence": 2,
+  "title": "An accelerated body at constant speed",
+  "kind": "derivation",
+  "promptMarkdown": "A particle follows $\\mathbf x(t)=(R\\cos\\omega t,R\\sin\\omega t,0)$ with $R\\omega=3c/5$. Compute $U$ and $A$, verify $U\\cdot U=-c^2$ and $U\\cdot A=0$, and find the proper-acceleration magnitude in terms of $R$. Explain why a spacelike four-acceleration does not mean a massive particle travels faster than light.",
+  "conceptIds": [
+    "four-vectors",
+    "lorentzian-metric"
+  ],
+  "hintLadder": [
+    "The Lorentz factor is constant, but the velocity vector is not.",
+    "Convert every time derivative using $d/d\\tau=\\gamma d/dt$.",
+    "Use $\\mathbf v\\cdot\\mathbf a=0$ for circular motion."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Four-vectors and both invariant checks are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Proper acceleration includes the correct gamma factor.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Spacelike acceleration is interpreted without superluminal motion.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

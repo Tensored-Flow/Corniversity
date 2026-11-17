@@ -5,27 +5,160 @@
   "title": "Accelerated worldlines and relativistic dynamics",
   "summary": "Proper time along arbitrary worldlines; four-force and the relativistic second law; constant proper acceleration and the hyperbolic worldline; the relativistic rocket and a smooth twin paradox; work and kinetic energy; acceleration within special relativity.",
   "objectives": [
-    { "id": "u09-o1", "description": "Objectives will be finalised when the unit is prepared; the source material is Tong, Dynamics and Relativity, Sections 7.4.5–7.4.6, Spacetime Physics Sections 5.6–5.8, and MIT 8.20 Week 3 (Lecture 9.4)." }
+    {
+      "id": "u09-o1",
+      "description": "Integrate proper time along timelike paths and distinguish it from the endpoint interval."
+    },
+    {
+      "id": "u09-o2",
+      "description": "Derive four-acceleration, proper acceleration and the constant-acceleration hyperbola in one dimension."
+    },
+    {
+      "id": "u09-o3",
+      "description": "Derive the force–power relation, state its constant-mass hypothesis and handle an open subsystem."
+    },
+    {
+      "id": "u09-o4",
+      "description": "Resolve finite-acceleration and smooth twin journeys using worldline integrals."
+    }
   ],
-  "prerequisiteConceptIds": ["four-vectors", "relativistic-energy-momentum", "spacetime-causal-structure"],
-  "teachesConceptIds": ["four-vectors", "spacetime-causal-structure"],
+  "prerequisiteConceptIds": [
+    "four-vectors",
+    "relativistic-energy-momentum",
+    "spacetime-causal-structure"
+  ],
+  "teachesConceptIds": [
+    "four-vectors",
+    "spacetime-causal-structure"
+  ],
   "preparation": [
-    { "description": "Read Tong, Dynamics and Relativity, Section 7.4: 7.4.5 Newton's Laws of Motion and 7.4.6 Acceleration (reference-only).", "locatorId": "tong-dr-ch7-s4", "estimatedMinutes": 40 },
-    { "description": "Re-read Spacetime Physics Chapter 5, Sections 5.6–5.8 (pp. 148–160): wristwatch time along a worldline, kinked worldline, stretch factor.", "locatorId": "stp-ch5", "estimatedMinutes": 30 },
-    { "description": "Optional: MIT 8.20 Week 3 video, Lecture 9.4 Forces and Kinetic Energy.", "locatorId": "sr21-week3", "estimatedMinutes": 15 }
+    {
+      "description": "Read Tong, Dynamics and Relativity, Section 7.4: 7.4.5 Newton's Laws of Motion and 7.4.6 Acceleration (reference-only).",
+      "locatorId": "tong-dr-ch7-s4",
+      "estimatedMinutes": 40
+    },
+    {
+      "description": "Re-read Spacetime Physics Chapter 5, Sections 5.6–5.8 (pp. 148–160): wristwatch time along a worldline, kinked worldline, stretch factor.",
+      "locatorId": "stp-ch5",
+      "estimatedMinutes": 30
+    },
+    {
+      "description": "Optional: MIT 8.20 Week 3 video, Lecture 9.4 Forces and Kinetic Energy.",
+      "locatorId": "sr21-week3",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u09-a1", "type": "reading", "title": "Reading: accelerated worldlines", "instructions": "Read the listed material for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 100, "sourceLocatorIds": ["tong-dr-ch7-s4", "stp-ch5", "sr21-week3"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u09-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s4",
+        "stp-ch5",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u09-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 140,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s4",
+        "stp-ch5",
+        "sr21-week3"
+      ],
+      "exerciseIds": [
+        "PHY-210-u09-ex1",
+        "PHY-210-u09-ex2",
+        "PHY-210-u09-ex3",
+        "PHY-210-u09-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u09-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "tong-dr-ch7-s4",
+        "stp-ch5",
+        "sr21-week3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 220,
-  "status": "draft",
+  "exerciseIds": [
+    "PHY-210-u09-ex1",
+    "PHY-210-u09-ex2",
+    "PHY-210-u09-ex3",
+    "PHY-210-u09-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "PHY-210-u09-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Acceleration requires general relativity.",
+      "correction": "Acceleration can be described by a nonstraight timelike worldline in flat spacetime; curvature is an independent property of the metric.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s4"
+      ]
+    },
+    {
+      "claim": "Constant proper acceleration means constant laboratory acceleration.",
+      "correction": "For collinear motion, laboratory acceleration is signed proper acceleration divided by gamma cubed.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s4"
+      ]
+    },
+    {
+      "claim": "Four-force is always orthogonal to four-velocity.",
+      "correction": "For P=mU, K·U=-c² dm/dτ. Orthogonality requires constant invariant mass.",
+      "correctionLocatorIds": [
+        "tong-dr-ch7-s4"
+      ]
+    }
+  ],
+  "estimatedMinutes": 345,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Tong Sections 7.4.5 and 7.4.6 headings verified in dynrel7.pdf on 2026-10-30; Chapter 5 PDF listed on the authors' download page with section titles and pages from the contents PDF; MIT 8.20 Week 3 page opened." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: read actual Taylor–Wheeler chapter5 §§5.6–5.8 text (printed148–160), including proper-time integration and ideal clocks; Tong chapter7 §§7.4.5–7.4.6 read at the linked PDF (printed140–144). Metric-sign conversion and each derivation checked independently during authoring. No source prose copied."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimated 345 active minutes including source reading, worked reasoning, 4 substantial problems and delayed retrieval. Estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "PHY-210-u09-ex1.reference-solution.md",
+    "PHY-210-u09-ex2.reference-solution.md",
+    "PHY-210-u09-ex3.reference-solution.md",
+    "PHY-210-u09-ex4.reference-solution.md"
+  ]
 }

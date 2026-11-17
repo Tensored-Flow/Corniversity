@@ -1,0 +1,1315 @@
+{
+  "manifest": {
+    "python": "3.12.3",
+    "data_seeds": [
+      101,
+      202,
+      303,
+      404
+    ],
+    "initialisation_seeds": [
+      11,
+      23,
+      47
+    ],
+    "epochs": 250,
+    "step": 0.15,
+    "split_counts": [
+      160,
+      80,
+      160,
+      160
+    ],
+    "independent_ids": true,
+    "raw_scale": [
+      [
+        -0.05253979468514747,
+        -0.033601479640827756,
+        0.3759352706303086
+      ],
+      [
+        0.5811665203859612,
+        0.5650326662687255,
+        3.288339595541036
+      ]
+    ],
+    "pca_raw_mean_direction": [
+      [
+        -0.05253979468514747,
+        -0.033601479640827756,
+        0.3759352706303086
+      ],
+      [
+        -0.01704799714789994,
+        0.0076373726470245346,
+        0.9998255029415362
+      ]
+    ],
+    "pca_projection_scale": [
+      [
+        5.586351693731562e-17
+      ],
+      [
+        3.288895494232341
+      ]
+    ],
+    "source_sha256": "9023f48f18701fa2da2d5516e18071438b2d1379b90e537d3919105f2d6338fd",
+    "limitations": "Synthetic fixed datasets; seed summaries are not population confidence intervals."
+  },
+  "gradient_check": {
+    "epsilon": 1e-06,
+    "coordinates": [
+      0,
+      5,
+      23,
+      24,
+      31,
+      32,
+      39,
+      40
+    ],
+    "max_absolute_error": 1.5044590226387378e-10
+  },
+  "candidates": [
+    {
+      "width": 8,
+      "lambda": 0.0,
+      "mean_validation_loss": 0.6215077166304238,
+      "runs": [
+        {
+          "seed": 11,
+          "epoch": 250,
+          "validation_loss": 0.6143957324487417
+        },
+        {
+          "seed": 23,
+          "epoch": 250,
+          "validation_loss": 0.5563082681355571
+        },
+        {
+          "seed": 47,
+          "epoch": 250,
+          "validation_loss": 0.6938191493069726
+        }
+      ]
+    },
+    {
+      "width": 8,
+      "lambda": 0.01,
+      "mean_validation_loss": 0.6500700094047857,
+      "runs": [
+        {
+          "seed": 11,
+          "epoch": 250,
+          "validation_loss": 0.6571337093532611
+        },
+        {
+          "seed": 23,
+          "epoch": 250,
+          "validation_loss": 0.5990816104096173
+        },
+        {
+          "seed": 47,
+          "epoch": 36,
+          "validation_loss": 0.6939947084514787
+        }
+      ]
+    },
+    {
+      "width": 16,
+      "lambda": 0.0,
+      "mean_validation_loss": 0.5518144298938327,
+      "runs": [
+        {
+          "seed": 11,
+          "epoch": 250,
+          "validation_loss": 0.5029026745261241
+        },
+        {
+          "seed": 23,
+          "epoch": 250,
+          "validation_loss": 0.5819222541348366
+        },
+        {
+          "seed": 47,
+          "epoch": 250,
+          "validation_loss": 0.5706183610205374
+        }
+      ]
+    },
+    {
+      "width": 16,
+      "lambda": 0.01,
+      "mean_validation_loss": 0.6193019287785432,
+      "runs": [
+        {
+          "seed": 11,
+          "epoch": 250,
+          "validation_loss": 0.5821805096837929
+        },
+        {
+          "seed": 23,
+          "epoch": 250,
+          "validation_loss": 0.630529861259389
+        },
+        {
+          "seed": 47,
+          "epoch": 250,
+          "validation_loss": 0.6451954153924478
+        }
+      ]
+    }
+  ],
+  "selected_configuration": {
+    "width": 16,
+    "lambda": 0.0
+  },
+  "selected_mlp": [
+    {
+      "seed": 11,
+      "epoch": 250,
+      "validation_loss": 0.5029026745261241,
+      "parameter_count": 81,
+      "train": {
+        "loss": 0.4327981540845931,
+        "accuracy": 0.8625,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.5029026745261241,
+        "accuracy": 0.8,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.4471846177592348,
+        "accuracy": 0.85625,
+        "n": 160,
+        "failure_count": 23,
+        "first_failures": [
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.4416582447324096
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.37104502522601335
+          },
+          {
+            "id": "test-029",
+            "features_seen_by_model": [
+              -0.07961610108407795,
+              -0.4736745247679304,
+              0.2195270419488631
+            ],
+            "target": 1,
+            "probability": 0.4324299657424999
+          },
+          {
+            "id": "test-030",
+            "features_seen_by_model": [
+              -0.1818140541956799,
+              -0.5068842986016496,
+              -1.4386836914859682
+            ],
+            "target": 1,
+            "probability": 0.38820091890439207
+          },
+          {
+            "id": "test-033",
+            "features_seen_by_model": [
+              0.10478580427353901,
+              -1.1458500573691146,
+              0.3599985134939516
+            ],
+            "target": 0,
+            "probability": 0.5260898693715881
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.48442087932141636,
+        "accuracy": 0.81875,
+        "n": 160,
+        "failure_count": 29,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.6413417573846872
+          },
+          {
+            "id": "shift-005",
+            "features_seen_by_model": [
+              -2.3785464321433785,
+              0.1025533193990326,
+              -1.276905100932565
+            ],
+            "target": 0,
+            "probability": 0.7901487919559568
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.40687839295256994,
+              -2.0067285536830965,
+              0.6536158170205423
+            ],
+            "target": 0,
+            "probability": 0.6423868961732494
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.48722598175687376
+          },
+          {
+            "id": "shift-015",
+            "features_seen_by_model": [
+              0.1332386843337507,
+              -2.085280114675233,
+              1.293291378621146
+            ],
+            "target": 0,
+            "probability": 0.7290728338353049
+          }
+        ]
+      }
+    },
+    {
+      "seed": 23,
+      "epoch": 250,
+      "validation_loss": 0.5819222541348366,
+      "parameter_count": 81,
+      "train": {
+        "loss": 0.5211213018168392,
+        "accuracy": 0.80625,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.5819222541348366,
+        "accuracy": 0.7,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.5362477630259415,
+        "accuracy": 0.76875,
+        "n": 160,
+        "failure_count": 37,
+        "first_failures": [
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.38177962070993476
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.34950013689311504
+          },
+          {
+            "id": "test-009",
+            "features_seen_by_model": [
+              0.7849169409074201,
+              1.2176461852941174,
+              -0.9769006646608767
+            ],
+            "target": 1,
+            "probability": 0.4599887783689136
+          },
+          {
+            "id": "test-010",
+            "features_seen_by_model": [
+              0.7870527417203323,
+              0.6015475433962,
+              -0.13580645284009352
+            ],
+            "target": 1,
+            "probability": 0.43946893501485607
+          },
+          {
+            "id": "test-013",
+            "features_seen_by_model": [
+              1.1634436678107505,
+              0.7356088815934422,
+              -1.1835884826703327
+            ],
+            "target": 1,
+            "probability": 0.4369046278512295
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.5508246500194749,
+        "accuracy": 0.775,
+        "n": 160,
+        "failure_count": 36,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.6627796790487905
+          },
+          {
+            "id": "shift-005",
+            "features_seen_by_model": [
+              -2.3785464321433785,
+              0.1025533193990326,
+              -1.276905100932565
+            ],
+            "target": 0,
+            "probability": 0.6869806974977797
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.40687839295256994,
+              -2.0067285536830965,
+              0.6536158170205423
+            ],
+            "target": 0,
+            "probability": 0.6624692131808676
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.4296247735250002
+          },
+          {
+            "id": "shift-015",
+            "features_seen_by_model": [
+              0.1332386843337507,
+              -2.085280114675233,
+              1.293291378621146
+            ],
+            "target": 0,
+            "probability": 0.7512355331406866
+          }
+        ]
+      }
+    },
+    {
+      "seed": 47,
+      "epoch": 250,
+      "validation_loss": 0.5706183610205374,
+      "parameter_count": 81,
+      "train": {
+        "loss": 0.5116645774063862,
+        "accuracy": 0.825,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.5706183610205374,
+        "accuracy": 0.75,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.5253839066021257,
+        "accuracy": 0.7875,
+        "n": 160,
+        "failure_count": 34,
+        "first_failures": [
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.40800211838812234
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.4127314173669032
+          },
+          {
+            "id": "test-009",
+            "features_seen_by_model": [
+              0.7849169409074201,
+              1.2176461852941174,
+              -0.9769006646608767
+            ],
+            "target": 1,
+            "probability": 0.46994394715079135
+          },
+          {
+            "id": "test-010",
+            "features_seen_by_model": [
+              0.7870527417203323,
+              0.6015475433962,
+              -0.13580645284009352
+            ],
+            "target": 1,
+            "probability": 0.46088773322012266
+          },
+          {
+            "id": "test-013",
+            "features_seen_by_model": [
+              1.1634436678107505,
+              0.7356088815934422,
+              -1.1835884826703327
+            ],
+            "target": 1,
+            "probability": 0.4399950586199188
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.5313416800825179,
+        "accuracy": 0.78125,
+        "n": 160,
+        "failure_count": 35,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.5659545040657519
+          },
+          {
+            "id": "shift-005",
+            "features_seen_by_model": [
+              -2.3785464321433785,
+              0.1025533193990326,
+              -1.276905100932565
+            ],
+            "target": 0,
+            "probability": 0.6174154384185908
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.40687839295256994,
+              -2.0067285536830965,
+              0.6536158170205423
+            ],
+            "target": 0,
+            "probability": 0.5431964232850711
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.45029951620263836
+          },
+          {
+            "id": "shift-015",
+            "features_seen_by_model": [
+              0.1332386843337507,
+              -2.085280114675233,
+              1.293291378621146
+            ],
+            "target": 0,
+            "probability": 0.6506634473489978
+          }
+        ]
+      }
+    }
+  ],
+  "linear": [
+    {
+      "seed": 11,
+      "epoch": 5,
+      "validation_loss": 0.694324896347889,
+      "parameter_count": 4,
+      "train": {
+        "loss": 0.6882500559141526,
+        "accuracy": 0.5375,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.694324896347889,
+        "accuracy": 0.5375,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6945505260372022,
+        "accuracy": 0.53125,
+        "n": 160,
+        "failure_count": 75,
+        "first_failures": [
+          {
+            "id": "test-000",
+            "features_seen_by_model": [
+              -1.5213286144614535,
+              1.7188546088247847,
+              0.8825713729837736
+            ],
+            "target": 0,
+            "probability": 0.529023772258688
+          },
+          {
+            "id": "test-001",
+            "features_seen_by_model": [
+              1.6278070505157596,
+              -0.794726006503,
+              2.649513977603582
+            ],
+            "target": 0,
+            "probability": 0.5469995247861333
+          },
+          {
+            "id": "test-003",
+            "features_seen_by_model": [
+              1.218239591278562,
+              -0.8022893205272669,
+              0.7513949895873064
+            ],
+            "target": 0,
+            "probability": 0.5031931262488649
+          },
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.4797379269540353
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.4876756985534759
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.7030206657323586,
+        "accuracy": 0.45625,
+        "n": 160,
+        "failure_count": 87,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.5095893945811542
+          },
+          {
+            "id": "shift-007",
+            "features_seen_by_model": [
+              -1.0131281156463146,
+              2.2983565916059465,
+              0.44164022158789545
+            ],
+            "target": 0,
+            "probability": 0.513461634970403
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.40687839295256994,
+              -2.0067285536830965,
+              0.6536158170205423
+            ],
+            "target": 0,
+            "probability": 0.5081389097931805
+          },
+          {
+            "id": "shift-009",
+            "features_seen_by_model": [
+              3.4643866703267223,
+              1.9143566447215343,
+              0.14789259023733148
+            ],
+            "target": 1,
+            "probability": 0.4679081231220869
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.4978660847662655
+          }
+        ]
+      }
+    },
+    {
+      "seed": 23,
+      "epoch": 22,
+      "validation_loss": 0.6965096630617665,
+      "parameter_count": 4,
+      "train": {
+        "loss": 0.6865137881727441,
+        "accuracy": 0.51875,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.6965096630617665,
+        "accuracy": 0.475,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6952784187022385,
+        "accuracy": 0.5375,
+        "n": 160,
+        "failure_count": 74,
+        "first_failures": [
+          {
+            "id": "test-000",
+            "features_seen_by_model": [
+              -1.5213286144614535,
+              1.7188546088247847,
+              0.8825713729837736
+            ],
+            "target": 0,
+            "probability": 0.5303979804014772
+          },
+          {
+            "id": "test-001",
+            "features_seen_by_model": [
+              1.6278070505157596,
+              -0.794726006503,
+              2.649513977603582
+            ],
+            "target": 0,
+            "probability": 0.5498065941993068
+          },
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.46312245050060946
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.4733299131374791
+          },
+          {
+            "id": "test-006",
+            "features_seen_by_model": [
+              1.5498922404615942,
+              1.2007406720153915,
+              -0.4509053131098846
+            ],
+            "target": 1,
+            "probability": 0.4493417452850582
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.7102771783146697,
+        "accuracy": 0.45625,
+        "n": 160,
+        "failure_count": 87,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.5041162024580977
+          },
+          {
+            "id": "shift-007",
+            "features_seen_by_model": [
+              -1.0131281156463146,
+              2.2983565916059465,
+              0.44164022158789545
+            ],
+            "target": 0,
+            "probability": 0.5099837960995288
+          },
+          {
+            "id": "shift-009",
+            "features_seen_by_model": [
+              3.4643866703267223,
+              1.9143566447215343,
+              0.14789259023733148
+            ],
+            "target": 1,
+            "probability": 0.4464845746882619
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.4864008276248517
+          },
+          {
+            "id": "shift-011",
+            "features_seen_by_model": [
+              2.013339266696267,
+              2.3939686666434543,
+              -0.823891079474614
+            ],
+            "target": 1,
+            "probability": 0.43218845628702274
+          }
+        ]
+      }
+    },
+    {
+      "seed": 47,
+      "epoch": 3,
+      "validation_loss": 0.6918701805200459,
+      "parameter_count": 4,
+      "train": {
+        "loss": 0.6905475051216294,
+        "accuracy": 0.625,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.6918701805200459,
+        "accuracy": 0.6,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6914127151136693,
+        "accuracy": 0.625,
+        "n": 160,
+        "failure_count": 60,
+        "first_failures": [
+          {
+            "id": "test-000",
+            "features_seen_by_model": [
+              -1.5213286144614535,
+              1.7188546088247847,
+              0.8825713729837736
+            ],
+            "target": 0,
+            "probability": 0.507373705310482
+          },
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              0.24152273188299253,
+              0.7178700984978288,
+              -0.5001713605074269
+            ],
+            "target": 1,
+            "probability": 0.48924504604747643
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.2843095587412145,
+              0.03428283156101295,
+              -0.37254655074325577
+            ],
+            "target": 1,
+            "probability": 0.4986108949090462
+          },
+          {
+            "id": "test-006",
+            "features_seen_by_model": [
+              1.5498922404615942,
+              1.2007406720153915,
+              -0.4509053131098846
+            ],
+            "target": 1,
+            "probability": 0.47272883172697444
+          },
+          {
+            "id": "test-009",
+            "features_seen_by_model": [
+              0.7849169409074201,
+              1.2176461852941174,
+              -0.9769006646608767
+            ],
+            "target": 1,
+            "probability": 0.479672720825
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.6950687055636334,
+        "accuracy": 0.575,
+        "n": 160,
+        "failure_count": 68,
+        "first_failures": [
+          {
+            "id": "shift-004",
+            "features_seen_by_model": [
+              -2.1183677466039166,
+              0.665563030254691,
+              -0.11587218365015826
+            ],
+            "target": 0,
+            "probability": 0.516381152926695
+          },
+          {
+            "id": "shift-005",
+            "features_seen_by_model": [
+              -2.3785464321433785,
+              0.1025533193990326,
+              -1.276905100932565
+            ],
+            "target": 0,
+            "probability": 0.5189310928210898
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.40687839295256994,
+              -2.0067285536830965,
+              0.6536158170205423
+            ],
+            "target": 0,
+            "probability": 0.5034233886996345
+          },
+          {
+            "id": "shift-009",
+            "features_seen_by_model": [
+              3.4643866703267223,
+              1.9143566447215343,
+              0.14789259023733148
+            ],
+            "target": 1,
+            "probability": 0.4499888898841439
+          },
+          {
+            "id": "shift-010",
+            "features_seen_by_model": [
+              0.7940497117245564,
+              0.3932887126732969,
+              0.4100967753920155
+            ],
+            "target": 1,
+            "probability": 0.4870794206019245
+          }
+        ]
+      }
+    }
+  ],
+  "pca_linear": [
+    {
+      "seed": 11,
+      "epoch": 1,
+      "validation_loss": 0.6931937684604853,
+      "parameter_count": 2,
+      "train": {
+        "loss": 0.6931188811392586,
+        "accuracy": 0.5125,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.6931937684604853,
+        "accuracy": 0.5,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6929926778289766,
+        "accuracy": 0.5375,
+        "n": 160,
+        "failure_count": 74,
+        "first_failures": [
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              -0.4997852198123612
+            ],
+            "target": 1,
+            "probability": 0.4991565445098476
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.3715171257143604
+            ],
+            "target": 1,
+            "probability": 0.49907225728955207
+          },
+          {
+            "id": "test-006",
+            "features_seen_by_model": [
+              -0.4538439538875613
+            ],
+            "target": 1,
+            "probability": 0.49912635569034713
+          },
+          {
+            "id": "test-008",
+            "features_seen_by_model": [
+              -1.4920172775344875
+            ],
+            "target": 1,
+            "probability": 0.4998085589002112
+          },
+          {
+            "id": "test-009",
+            "features_seen_by_model": [
+              -0.9773319780658507
+            ],
+            "target": 1,
+            "probability": 0.49947034926585343
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.6931212953730875,
+        "accuracy": 0.5,
+        "n": 160,
+        "failure_count": 80,
+        "first_failures": [
+          {
+            "id": "shift-000",
+            "features_seen_by_model": [
+              0.7010405762811556
+            ],
+            "target": 1,
+            "probability": 0.49836746328602044
+          },
+          {
+            "id": "shift-002",
+            "features_seen_by_model": [
+              1.886605992042704
+            ],
+            "target": 1,
+            "probability": 0.49758841785568864
+          },
+          {
+            "id": "shift-003",
+            "features_seen_by_model": [
+              -1.9362539097193916
+            ],
+            "target": 0,
+            "probability": 0.5001004755091292
+          },
+          {
+            "id": "shift-006",
+            "features_seen_by_model": [
+              -0.16752243435904296
+            ],
+            "target": 1,
+            "probability": 0.4989382089010589
+          },
+          {
+            "id": "shift-009",
+            "features_seen_by_model": [
+              0.1399172324699646
+            ],
+            "target": 1,
+            "probability": 0.4987361853506214
+          }
+        ]
+      }
+    },
+    {
+      "seed": 23,
+      "epoch": 1,
+      "validation_loss": 0.6945542733032178,
+      "parameter_count": 2,
+      "train": {
+        "loss": 0.6901275442464416,
+        "accuracy": 0.5125,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.6945542733032178,
+        "accuracy": 0.55,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6952879449998206,
+        "accuracy": 0.50625,
+        "n": 160,
+        "failure_count": 79,
+        "first_failures": [
+          {
+            "id": "test-000",
+            "features_seen_by_model": [
+              0.8891064989177713
+            ],
+            "target": 0,
+            "probability": 0.518453484367217
+          },
+          {
+            "id": "test-001",
+            "features_seen_by_model": [
+              2.642657400665428
+            ],
+            "target": 0,
+            "probability": 0.5569367523110315
+          },
+          {
+            "id": "test-003",
+            "features_seen_by_model": [
+              0.746414287550137
+            ],
+            "target": 0,
+            "probability": 0.5153060746937413
+          },
+          {
+            "id": "test-004",
+            "features_seen_by_model": [
+              -0.4997852198123612
+            ],
+            "target": 1,
+            "probability": 0.48779399088595704
+          },
+          {
+            "id": "test-005",
+            "features_seen_by_model": [
+              -0.3715171257143604
+            ],
+            "target": 1,
+            "probability": 0.4906251538360504
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.7013714707903693,
+        "accuracy": 0.475,
+        "n": 160,
+        "failure_count": 84,
+        "first_failures": [
+          {
+            "id": "shift-006",
+            "features_seen_by_model": [
+              -0.16752243435904296
+            ],
+            "target": 1,
+            "probability": 0.49512893706354405
+          },
+          {
+            "id": "shift-007",
+            "features_seen_by_model": [
+              0.4475562258490285
+            ],
+            "target": 0,
+            "probability": 0.5087104218368647
+          },
+          {
+            "id": "shift-008",
+            "features_seen_by_model": [
+              0.6495325622824748
+            ],
+            "target": 0,
+            "probability": 0.5131684146838966
+          },
+          {
+            "id": "shift-011",
+            "features_seen_by_model": [
+              -0.8265320907878922
+            ],
+            "target": 1,
+            "probability": 0.4805859184840572
+          },
+          {
+            "id": "shift-015",
+            "features_seen_by_model": [
+              1.2897096673820934
+            ],
+            "target": 0,
+            "probability": 0.527281098390398
+          }
+        ]
+      }
+    },
+    {
+      "seed": 47,
+      "epoch": 1,
+      "validation_loss": 0.6931301866385644,
+      "parameter_count": 2,
+      "train": {
+        "loss": 0.6940219987963523,
+        "accuracy": 0.46875,
+        "n": 160
+      },
+      "validation": {
+        "loss": 0.6931301866385644,
+        "accuracy": 0.475,
+        "n": 80
+      },
+      "test": {
+        "loss": 0.6927458754011115,
+        "accuracy": 0.46875,
+        "n": 160,
+        "failure_count": 85,
+        "first_failures": [
+          {
+            "id": "test-002",
+            "features_seen_by_model": [
+              -1.4733126875952507
+            ],
+            "target": 0,
+            "probability": 0.5069240353141948
+          },
+          {
+            "id": "test-007",
+            "features_seen_by_model": [
+              -0.778831512704909
+            ],
+            "target": 0,
+            "probability": 0.5031080286216456
+          },
+          {
+            "id": "test-010",
+            "features_seen_by_model": [
+              -0.1373414921607805
+            ],
+            "target": 1,
+            "probability": 0.4995828637773626
+          },
+          {
+            "id": "test-011",
+            "features_seen_by_model": [
+              2.1823060099111102
+            ],
+            "target": 1,
+            "probability": 0.48683865588320435
+          },
+          {
+            "id": "test-012",
+            "features_seen_by_model": [
+              0.9819460077248149
+            ],
+            "target": 1,
+            "probability": 0.49343237745445057
+          }
+        ]
+      },
+      "shift": {
+        "loss": 0.6922178402414676,
+        "accuracy": 0.55625,
+        "n": 160,
+        "failure_count": 71,
+        "first_failures": [
+          {
+            "id": "shift-000",
+            "features_seen_by_model": [
+              0.7010405762811556
+            ],
+            "target": 1,
+            "probability": 0.4949758393105704
+          },
+          {
+            "id": "shift-002",
+            "features_seen_by_model": [
+              1.886605992042704
+            ],
+            "target": 1,
+            "probability": 0.4884626349447108
+          },
+          {
+            "id": "shift-003",
+            "features_seen_by_model": [
+              -1.9362539097193916
+            ],
+            "target": 0,
+            "probability": 0.5094673651416176
+          },
+          {
+            "id": "shift-005",
+            "features_seen_by_model": [
+              -1.2691666171193088
+            ],
+            "target": 0,
+            "probability": 0.505802365668169
+          },
+          {
+            "id": "shift-006",
+            "features_seen_by_model": [
+              -0.16752243435904296
+            ],
+            "target": 1,
+            "probability": 0.49974871820315486
+          }
+        ]
+      }
+    }
+  ],
+  "majority_baseline": {
+    "train": {
+      "accuracy": 0.53125,
+      "loss": 0.6911927820032008
+    },
+    "test": {
+      "accuracy": 0.525,
+      "loss": 0.6919750516466634
+    },
+    "shift": {
+      "accuracy": 0.475,
+      "loss": 0.6982332087943636
+    }
+  }
+}

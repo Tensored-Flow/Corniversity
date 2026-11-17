@@ -1,0 +1,110 @@
+{
+  "id": "PHY-210-u10-ex4",
+  "sequence": 4,
+  "title": "Final synthesis: geometry, collisions and the edge of the theory",
+  "kind": "explanation",
+  "promptMarkdown": "Write a connected account for a mathematically trained reader. Use these calculations as evidence. (1) Two events have separation $(c\\Delta t,\\Delta x)=(5L,3L)$, $L>0$. Classify it, compute the inertial connecting clock time and find the boost making them co-located. Explain why an accelerated connecting clock generally differs. (2) Two photons have four-momenta $(E/c,E/c,0,0)$ and $(2E/c,-2E/c,0,0)$. Find the system invariant mass and centre-of-momentum frame velocity; transform each energy to check your result. (3) State the Lorentz-group condition, distinguish a boost from a general Lorentz transformation, and specify the assumptions for conservation of total four-momentum. (4) Interpret controlled free-fall tidal deformation and explain why special relativity alone does not predict the gravitational metric. Include a spacetime sketch for part1 and distinguish exact statements from approximations. Suggested length1000–1600 words; complete clear reasoning matters more than word count.",
+  "conceptIds": [
+    "equivalence-principle"
+  ],
+  "hintLadder": [
+    "Square the event separation, then solve $\\Delta x\\prime=0$.",
+    "Square the total four-momentum, not the individual rest masses.",
+    "Use $v_{\\rm COM}=c^2p_{\\rm tot}/E_{\\rm tot}$ and transform each photon.",
+    "Organise the account around invariants, frame dependence and additional physical hypotheses."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Events, proper time and diagram are consistent.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Mass, centre-of-momentum frame and energies are checked.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Lorentz structure and conservation assumptions are correct.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Tidal interpretation and boundary of validity are explicit.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 120,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

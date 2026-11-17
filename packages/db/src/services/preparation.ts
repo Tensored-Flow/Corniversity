@@ -11,6 +11,7 @@ import {
   checkUnitDraft,
   PREPARATION_STAGES,
   preparationSummary,
+  renderDraftLesson,
   type StageKey,
   stageWithinBudget,
   UnitDraftSchema,
@@ -44,6 +45,7 @@ import {
   unitPublication,
 } from "../schema/index";
 import { planRun } from "./ai-runs";
+import { permittedPassagesForCourse, sourcePassagesStillPermitted } from "./library";
 import { finishProviderRun, getBudgetLimits } from "./provider-config";
 
 /**
@@ -487,7 +489,7 @@ async function executeStage(
           ownerId: request.ownerId,
           courseId: request.courseId,
           title: s.title,
-          why: `Course preparation for ${request.courseId}: this verified source is ${s.access.replace(/_/g, " ")} and its licence does not permit importing it, so units that rely on it are prepared from its locators only (pointers, not text) unless you obtain a copy and grant permissions per action.`,
+          why: `Course preparation for ${request.courseId}: this source is ${s.access.replace(/_/g, " ")} and cannot be imported automatically. Source-dependent drafting requires actual permitted passages; obtain a legitimate copy and grant permissions per action, use an appropriate open alternative, or prepare the unit directly.`,
           essential: false,
           destinationFolder: `library/${request.courseId}`,
           minPermission: "local_read",
@@ -532,7 +534,7 @@ async function authorUnit(
   if (unit.status === "ready") return { status: "skipped", artifact: { reason: "already prepared" } };
   const locators = unit.preparation.length
     ? await db
-        .select({ id: locator.id, label: locator.label })
+        .select({ id: locator.id, label: locator.label, sourceVersionId: locator.sourceVersionId })
         .from(locator)
         .where(
           inArray(
@@ -541,6 +543,32 @@ async function authorUnit(
           ),
         )
     : [];
+  const passages = (
+    await permittedPassagesForCourse(
+      db,
+      request.ownerId,
+      request.courseId,
+      `${unit.title} ${unit.summary} ${unit.objectives.map((o) => o.description).join(" ")}`,
+      8,
+      [...new Set(locators.map((l) => l.sourceVersionId))],
+    )
+  ).map((p) => ({
+    id: p.id,
+    assetId: p.asset_id,
+    sourceVersionId: p.asset.sourceVersionId,
+    label: `${p.asset.confirmedTitle ?? p.asset.filename}${p.asset.confirmedEdition ? ` (${p.asset.confirmedEdition})` : ""}, ${p.printed_label ? `p. ${p.printed_label}, ` : ""}PDF page ${p.physical_index + 1}`,
+    text: p.text.slice(0, 2400),
+    excerpted: p.text.length > 2400,
+  }));
+  // Source availability is checked before reserving a provider run. A bibliography alone must
+  // never trigger an invented textbook adaptation or a billable attempt.
+  if (!passages.length)
+    return {
+      status: "blocked",
+      artifact: { unitId, reason: "source_text_required" },
+      error:
+        "No permitted source passages are available for this unit. Import the assigned source, link its edition and allow AI processing, or prepare the unit directly in the content files. A source title or section label is not enough to generate teaching.",
+    };
   const previous = (await courseUnits(db, version.id))
     .filter((u) => u.status === "ready" && u.sequence < unit.sequence)
     .map((u) => u.title);
@@ -553,6 +581,7 @@ async function authorUnit(
     unitSummary: unit.summary,
     objectives: unit.objectives.map((o) => o.description),
     locators,
+    passages,
     intake: request.intake,
     previousUnits: previous,
   });
@@ -593,6 +622,27 @@ async function authorUnit(
     return { status: "blocked", artifact: { unitId }, error: budget.reason };
   }
   try {
+    // A queued job or budget admission cannot preserve consent after it is withdrawn.
+    const sourcesPermitted = await sourcePassagesStillPermitted(
+      db,
+      request.ownerId,
+      request.courseId,
+      passages.map((p) => ({ passageId: p.id, assetId: p.assetId, sourceVersionId: p.sourceVersionId })),
+      [...new Set(locators.map((l) => l.sourceVersionId))],
+    ).catch(() => false);
+    if (!sourcesPermitted) {
+      await finishProviderRun(db, plan.runId, {
+        status: "blocked",
+        model: plan.model,
+        error: "Source availability or permission changed, or could not be checked before generation.",
+        attempts: [],
+      });
+      return {
+        status: "blocked",
+        artifact: { unitId },
+        error: "Source availability or permission changed, or could not be checked before generation. No text was sent.",
+      };
+    }
     const result = await plan.provider.generateStructured({
       role: "convenor",
       purpose: `prepare:${request.id}`,
@@ -604,8 +654,13 @@ async function authorUnit(
       effort: plan.effort,
     });
     await finishProviderRun(db, plan.runId, { status: "ok", model: result.model, attempts: result.attempts });
-    const verified = new Set((await db.select({ id: locator.id }).from(locator)).map((l) => l.id));
-    const checks = checkUnitDraft(result.object, { verifiedLocatorIds: verified });
+    const checks = checkUnitDraft(result.object, {
+      verifiedLocatorIds: new Set(locators.map((l) => l.id)),
+      suppliedPassageIds: new Set(passages.map((p) => p.id)),
+      expectedObjectives: unit.objectives.map((o) => o.description),
+    });
+    const sourceCheck = checks.find((c) => c.name === "supplied-source-passages");
+    if (sourceCheck) sourceCheck.detail += ` Supplied: ${passages.map((p) => `${p.label} [${p.id}]`).join("; ")}.`;
     const [last] = await db
       .select({ v: unitDraft.version })
       .from(unitDraft)
@@ -672,8 +727,23 @@ export async function publishDraft(db: DbOrTx, ownerId: string, draftId: string)
       .limit(1);
     if (unit.status === "ready" && !active)
       throw new PreparationError("This unit is already prepared; a draft only fills an outlined unit.");
+    const provenance = draft.checks.find((c) => c.name === "supplied-source-passages")?.evidence;
+    const parsedDraft = UnitDraftSchema.safeParse(draft.draft);
+    if (!provenance || !parsedDraft.success)
+      throw new PreparationError(
+        "This draft predates the current evidence and teaching checks. Prepare and review a new draft before publishing.",
+      );
+    const currentChecks = checkUnitDraft(parsedDraft.data, {
+      verifiedLocatorIds: new Set(provenance.locatorIds),
+      suppliedPassageIds: new Set(provenance.passageIds),
+      expectedObjectives: provenance.expectedObjectives,
+    });
+    if (currentChecks.some((c) => c.result === "fail"))
+      throw new PreparationError(
+        "The draft does not pass the current evidence and teaching checks. Review its failed checks before publishing.",
+      );
     const existingExercises = await tx.select({ id: unitExercise.id }).from(unitExercise).where(eq(unitExercise.unitId, unit.id));
-    const d = draft.draft;
+    const d = parsedDraft.data;
     const exerciseIds = d.exercises.map((_, i) => `${unit.id}-p${draft.version}-ex${i + 1}`);
     for (const [i, e] of d.exercises.entries()) {
       await tx.insert(unitExercise).values({
@@ -744,12 +814,12 @@ export async function publishDraft(db: DbOrTx, ownerId: string, draftId: string)
       .update(teachingUnit)
       .set({
         status: "ready",
-        lessonMarkdown: d.lessonMarkdown,
+        lessonMarkdown: renderDraftLesson(d),
         objectives: d.objectives.map((o, i) => ({ id: `p-o${i + 1}`, description: o })),
         activities,
         misconceptions: d.misconceptions.map((m) => ({ ...m, correctionLocatorIds: [] })),
         checks: [
-          ...draft.checks.map((c) => ({ name: c.name, result: c.result, evidence: c.detail })),
+          ...currentChecks.map((c) => ({ name: c.name, result: c.result, evidence: c.detail })),
           {
             name: "owner-review",
             result: "pass" as const,

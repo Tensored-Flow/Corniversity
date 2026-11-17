@@ -1,0 +1,91 @@
+{
+  "id": "CSA-210-u10-ex3",
+  "sequence": 3,
+  "title": "An ELBO and a protocol boundary",
+  "kind": "derivation",
+  "promptMarkdown": "For a latent modelpθ(x, z)=p (z) pθ(x|z), derive logpθ(x)=ELBO(q)+KL(q (z|x)||pθ(z|x)) whereELBO=Eq logpθ(x|z)−KL(q||p). State support/integrability assumptions sufficient for the derivation. Explain why fitting an autoencoder on all train/validation/test inputs before a frozen linear probe is a different protocol from fitting it on training inputs only, even without test labels. Design a matched-data comparison between random, reconstruction-trained and contrastively trained encoders that keeps downstream selection and test evaluation separate.",
+  "conceptIds": [
+    "representation-learning-unsupervised"
+  ],
+  "hintLadder": [
+    "Substitute Bayes into the posterior KL and rearrange.",
+    "Name which data influenced the encoder, not just which labels influenced the probe.",
+    "Match input access and probe capacity while reporting different training costs."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives the ELBO identity with appropriate assumptions",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Distinguishes inductive and transductive data access",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Designs a controlled representation comparison",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Connects a generative mathematical objective to the data-access assumptions needed for a downstream evaluation claim."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u04-ex2",
+  "sequence": 2,
+  "title": "Three legs and a maximum-age proof",
+  "kind": "derivation",
+  "promptMarkdown": "Use years and light-years. One traveller follows $A=(0,0)$, $B=(3,0)$, $C=(8,4)$, $D=(13,0)$ with straight legs. Another goes directly from A to D. Compute both elapsed proper times. Then prove the straight route gives the largest proper time for any future-directed piecewise smooth timelike route between A and D. State the equality case and why the claim is not simply a Euclidean triangle inequality.",
+  "conceptIds": [
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Compute each segment interval before adding.",
+    "Choose the endpoint rest frame for the proof.",
+    "Analyse when the integrand equals one."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Segment calculation and direct comparison are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "The maximum-age argument has the correct hypotheses.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Equality and Lorentzian versus Euclidean geometry are explained.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u04-ex3",
+  "sequence": 3,
+  "title": "A twin journey seen through received signals",
+  "kind": "derivation",
+  "promptMarkdown": "A traveller leaves Earth at $4c/5$ and turns around at Earth-frame time 5 years, instantly taking velocity $-4c/5$, then returns at time 10 years. Use $c=1$ with years/light-years. Find the traveller's age, the Earth times assigned simultaneous with turnaround in the outgoing and incoming frames, and the time Earth first receives a signal emitted at turnaround. If the traveller emits pulses at fixed proper-time intervals small compared with a year, find the received frequency relative to the emission frequency before and after the turnaround signal. Reconcile all descriptions without saying an Earth clock physically jumps.",
+  "conceptIds": [
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Use the same turnaround event in both Lorentz time transformations.",
+    "An emitted signal travels 4 light-years back to Earth.",
+    "Derive reception spacing as emission spacing plus the change in light-travel time."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Clock ages and two simultaneity assignments are consistent.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Signal arrival and both Doppler factors are derived.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The apparent paradox is resolved with events, frames and a diagram.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 50,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Combine worldline ageing, frame-dependent simultaneity and actual received signals; these are three distinct comparisons."
+  }
+}

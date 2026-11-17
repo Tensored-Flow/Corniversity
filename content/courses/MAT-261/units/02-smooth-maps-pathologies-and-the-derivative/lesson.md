@@ -38,7 +38,9 @@ To go further we need calculus. Let $V,W$ be normed real vector spaces (for us f
 
 **Definition (differential).** Let $U\subseteq V$ be open and $f:U\to W$. Then $f$ is *differentiable at $x\in U$* if there is a continuous linear map $L_x:V\to W$ with
 $$\|f(x')-f(x)-L_x(x'-x)\|=o(\|x'-x\|)\qquad(x'\to x)$$
-(lecture 3, Definition 4.1). Here $o(\cdot)$ denotes a function $o:[0,\infty)\to[0,\infty)$, continuous at $0$ with $o(0)=0$, as in the notes.
+(lecture 3, Definition 4.1, with the source's little-o explanation corrected). Precisely,
+$$\lim_{h\to0,\ h\ne0}\frac{\|f(x+h)-f(x)-L_xh\|}{\|h\|}=0.$$
+Equivalently, for small $h$ the remainder is bounded by $\|h\|\varepsilon(\|h\|)$ for a function $\varepsilon(r)\to0$ as $r\downarrow0$. Merely requiring a remainder to be continuous and vanish at zero is insufficient: $f(t)=|t|$ with proposed derivative zero would satisfy that weaker condition at zero, but the quotient of its remainder by $|t|$ equals one. In the uniqueness argument below it is this vanishing *ratio* that permits division by $|t|$.
 
 **Proposition.** The map $L_x$ is unique; it is called the *differential* of $f$ at $x$ and written $d_xf$ or $D_xf$.
 

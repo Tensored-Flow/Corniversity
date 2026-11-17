@@ -7,7 +7,15 @@
   "objectives": [
     {
       "id": "u05-o1",
-      "description": "Objectives for this unit will be finalised when it is prepared; the source material is Lectures 5–6 (first half) of the 18.102 notes."
+      "description": "Prove the real Hahn–Banach extension theorem from the one-dimensional extension lemma and Zorn's lemma."
+    },
+    {
+      "id": "u05-o2",
+      "description": "Construct a norming functional and prove the canonical map into the double dual is an isometry."
+    },
+    {
+      "id": "u05-o3",
+      "description": "Distinguish isometric embedding from reflexivity using c₀ and its duals."
     }
   ],
   "prerequisiteConceptIds": [
@@ -29,36 +37,111 @@
     {
       "id": "u05-a1",
       "type": "reading",
-      "title": "Lectures 5–6 (first half): Hahn–Banach and the double dual",
-      "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.",
-      "estimatedMinutes": 90,
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
       "sourceLocatorIds": [
         "fa21-lec05",
         "fa21-lec06"
       ],
       "exerciseIds": [],
       "sessionKind": "lecture"
+    },
+    {
+      "id": "u05-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 125,
+      "sourceLocatorIds": [
+        "fa21-lec05",
+        "fa21-lec06"
+      ],
+      "exerciseIds": [
+        "MAT-230-u05-ex1",
+        "MAT-230-u05-ex2",
+        "MAT-230-u05-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u05-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "fa21-lec05",
+        "fa21-lec06"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    },
+    {
+      "id": "u05-proof-portfolio-4",
+      "type": "proof_workshop",
+      "title": "Proof portfolio: real and complex Hahn–Banach",
+      "instructions": "Write the complete proof portfolio with the named hypotheses visible. Start independently, use hints progressively, and retain any corrections made after source reading or feedback. Revisit the central argument without notes after a gap.",
+      "estimatedMinutes": 130,
+      "sourceLocatorIds": [
+        "fa21-lec05"
+      ],
+      "exerciseIds": [
+        "MAT-230-u05-ex4"
+      ],
+      "sessionKind": "tutorial"
     }
   ],
-  "exerciseIds": [],
+  "exerciseIds": [
+    "MAT-230-u05-ex1",
+    "MAT-230-u05-ex2",
+    "MAT-230-u05-ex3",
+    "MAT-230-u05-ex4"
+  ],
   "exitCheck": {
-    "description": "To be defined when the unit is prepared."
+    "description": "Complete the explicit proof/synthesis task and review the rest of the sheet against all objectives. Each criterion records the particular argument demonstrated; an accepted task does not certify unrelated applications or learning retention.",
+    "exerciseId": "MAT-230-u05-ex4"
   },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "commonMisconceptions": [
+    {
+      "claim": "Hahn–Banach requires the original subspace to be closed.",
+      "correction": "The extension theorem needs a bounded functional on a linear subspace; neither closedness nor completeness is required. Closedness is needed for positive distance in the separation exercise.",
+      "correctionLocatorIds": [
+        "fa21-lec05"
+      ]
+    },
+    {
+      "claim": "An isometry into the double dual proves reflexivity.",
+      "correction": "Isometry gives an injective canonical map. Reflexivity additionally requires its surjectivity.",
+      "correctionLocatorIds": [
+        "fa21-lec05"
+      ]
+    }
+  ],
+  "estimatedMinutes": 440,
+  "status": "ready",
   "checks": [
     {
       "name": "source-locators",
       "result": "pass",
-      "evidence": "Lecture-level locators opened 2026-10-30 (per-lecture PDF URLs from the OCW notes page)."
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
     },
     {
       "name": "mathematical-review",
-      "result": "needs_review",
-      "evidence": "Not yet prepared; no lesson or exercises to review."
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
     }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-230-u05-ex1.reference-solution.md",
+    "MAT-230-u05-ex2.reference-solution.md",
+    "MAT-230-u05-ex3.reference-solution.md",
+    "MAT-230-u05-ex4.reference-solution.md"
+  ]
 }

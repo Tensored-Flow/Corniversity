@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u10-ex1",
+  "sequence": 1,
+  "title": "Design an approximately inertial experiment",
+  "kind": "calculation",
+  "promptMarkdown": "Two freely falling test masses near a spherical body have initial transverse separation $L=12\\,\\mathrm m$ and zero relative velocity. Use $g=8.0\\,\\mathrm{m\\,s^{-2}}$, $R=4.0\\times10^6\\,\\mathrm m$, and regard $g/R$ as constant. Derive the leading separation change after $3.0\\,\\mathrm s$. A detector resolves $5.0\\,\\mu\\mathrm m$: is neglecting tides justified? Find the largest leading-order duration for a shift below that resolution. Repeat the sign and factor for a radial pair. Explain why neither test mass needs a nonzero accelerometer reading.",
+  "conceptIds": [
+    "equivalence-principle"
+  ],
+  "hintLadder": [
+    "Use the transverse eigenvalue of the field gradient.",
+    "Integrate relative acceleration twice, using the initial relative velocity.",
+    "Solve a displacement bound, not an acceleration bound."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Tidal sign and factor are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Dimensions, values and detector comparison are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Approximation bounds and free-fall interpretation are stated.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

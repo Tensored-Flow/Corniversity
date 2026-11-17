@@ -5,37 +5,182 @@
   "title": "Series, bounded operators and the dual",
   "summary": "Absolutely summable series as a completeness test; linear operators, boundedness equals continuity; the operator norm and the Banach space B(V,W); the dual space.",
   "objectives": [
-    { "id": "u02-o1", "description": "Prove that a normed space is Banach if and only if every absolutely summable series is summable, and use the criterion." },
-    { "id": "u02-o2", "description": "Prove that a linear operator between normed spaces is continuous if and only if it is bounded." },
-    { "id": "u02-o3", "description": "Compute or bound operator norms, including for an integral operator, and prove the submultiplicative inequality." },
-    { "id": "u02-o4", "description": "Explain why B(V,W) is a Banach space when W is, and why the dual space is always Banach." }
+    {
+      "id": "u02-o1",
+      "description": "Prove that a normed space is Banach if and only if every absolutely summable series is summable, and use the criterion."
+    },
+    {
+      "id": "u02-o2",
+      "description": "Prove that a linear operator between normed spaces is continuous if and only if it is bounded."
+    },
+    {
+      "id": "u02-o3",
+      "description": "Compute or bound operator norms, including for an integral operator, and prove the submultiplicative inequality."
+    },
+    {
+      "id": "u02-o4",
+      "description": "Explain why B(V,W) is a Banach space when W is, and why the dual space is always Banach."
+    }
   ],
-  "prerequisiteConceptIds": ["normed-space", "banach-space", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["banach-space", "bounded-operator", "dual-space"],
+  "prerequisiteConceptIds": [
+    "normed-space",
+    "banach-space",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "banach-space",
+    "bounded-operator",
+    "dual-space"
+  ],
   "preparation": [
-    { "description": "Read lecture 2 notes pages 1–2: summable and absolutely summable series, Proposition 18 and Theorem 19 with its proof.", "locatorId": "fa21-l2-thm19", "estimatedMinutes": 25 },
-    { "description": "Read Example 20, Definition 21 and Theorem 22 (continuous iff bounded) with its proof.", "locatorId": "fa21-l2-thm22", "estimatedMinutes": 20 },
-    { "description": "Read Definitions 24–25 and Theorems 26–27 (operator norm; B(V,W) is Banach when W is), then Definition 28 (dual space).", "locatorId": "fa21-l2-thm27", "estimatedMinutes": 25 }
+    {
+      "description": "Read lecture 2 notes pages 1–2: summable and absolutely summable series, Proposition 18 and Theorem 19 with its proof.",
+      "locatorId": "fa21-l2-thm19",
+      "estimatedMinutes": 25
+    },
+    {
+      "description": "Read Example 20, Definition 21 and Theorem 22 (continuous iff bounded) with its proof.",
+      "locatorId": "fa21-l2-thm22",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "Read Definitions 24–25 and Theorems 26–27 (operator norm; B(V,W) is Banach when W is), then Definition 28 (dual space).",
+      "locatorId": "fa21-l2-thm27",
+      "estimatedMinutes": 25
+    }
   ],
   "activities": [
-    { "id": "u02-a1", "type": "reading", "title": "Lecture 2: series, operators, the dual", "instructions": "Read the lesson with lecture 2 of the notes. After Theorem 22, close the notes and reprove 'bounded implies continuous' before reading the proof of the converse.", "estimatedMinutes": 70, "sourceLocatorIds": ["fa21-l2-def17", "fa21-l2-thm19", "fa21-l2-ex20", "fa21-l2-def21", "fa21-l2-thm22", "fa21-l2-def24", "fa21-l2-def25", "fa21-l2-thm26", "fa21-l2-thm27", "fa21-l2-def28"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u02-a2", "type": "proof_workshop", "title": "Tutorial: operator norms", "instructions": "Attempt exercises 1 and 2. Exercise 2 is the first operator whose norm you compute exactly; write the inequality and the attaining (or nearly attaining) function separately.", "estimatedMinutes": 80, "sourceLocatorIds": ["fa21-l2-def25", "fa21-l2-thm26", "fa21-l2-ex20"], "exerciseIds": ["MAT-230-u02-ex1", "MAT-230-u02-ex2"], "sessionKind": "tutorial" },
-    { "id": "u02-a3", "type": "explain_back", "title": "Explain: why the summability test is convenient", "instructions": "Exercise 3, written without the notes.", "estimatedMinutes": 15, "sourceLocatorIds": ["fa21-l2-thm19", "fa21-l2-thm27"], "exerciseIds": ["MAT-230-u02-ex3"], "sessionKind": "oral" }
+    {
+      "id": "u02-a1",
+      "type": "reading",
+      "title": "Lecture 2: series, operators, the dual",
+      "instructions": "Read the lesson with lecture 2 of the notes. After Theorem 22, close the notes and reprove 'bounded implies continuous' before reading the proof of the converse.",
+      "estimatedMinutes": 70,
+      "sourceLocatorIds": [
+        "fa21-l2-def17",
+        "fa21-l2-thm19",
+        "fa21-l2-ex20",
+        "fa21-l2-def21",
+        "fa21-l2-thm22",
+        "fa21-l2-def24",
+        "fa21-l2-def25",
+        "fa21-l2-thm26",
+        "fa21-l2-thm27",
+        "fa21-l2-def28"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u02-a2",
+      "type": "proof_workshop",
+      "title": "Tutorial: operator norms",
+      "instructions": "Attempt exercises 1 and 2. Exercise 2 is the first operator whose norm you compute exactly; write the inequality and the attaining (or nearly attaining) function separately.",
+      "estimatedMinutes": 80,
+      "sourceLocatorIds": [
+        "fa21-l2-def25",
+        "fa21-l2-thm26",
+        "fa21-l2-ex20"
+      ],
+      "exerciseIds": [
+        "MAT-230-u02-ex1",
+        "MAT-230-u02-ex2"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u02-a3",
+      "type": "explain_back",
+      "title": "Explain: why the summability test is convenient",
+      "instructions": "Exercise 3, written without the notes.",
+      "estimatedMinutes": 15,
+      "sourceLocatorIds": [
+        "fa21-l2-thm19",
+        "fa21-l2-thm27"
+      ],
+      "exerciseIds": [
+        "MAT-230-u02-ex3"
+      ],
+      "sessionKind": "oral"
+    },
+    {
+      "id": "u02-synthesis",
+      "type": "proof_workshop",
+      "title": "Synthesis: connect the unit methods",
+      "instructions": "Attempt the multi-part synthesis independently, then explain the hypotheses in each step. Use the whole sheet to identify remaining gaps; one accepted task is not a certificate of all course outcomes.",
+      "estimatedMinutes": 85,
+      "sourceLocatorIds": [
+        "fa21-l2-thm19",
+        "fa21-l2-thm22",
+        "fa21-l2-thm27"
+      ],
+      "exerciseIds": [
+        "MAT-230-u02-ex4"
+      ],
+      "sessionKind": "tutorial"
+    }
   ],
-  "exerciseIds": ["MAT-230-u02-ex1", "MAT-230-u02-ex2", "MAT-230-u02-ex3"],
-  "exitCheck": { "description": "Exercise 2 accepted: the operator norm of the Volterra operator computed as 1 with both the upper bound and the attaining function, and non-surjectivity argued.", "exerciseId": "MAT-230-u02-ex2" },
+  "exerciseIds": [
+    "MAT-230-u02-ex1",
+    "MAT-230-u02-ex2",
+    "MAT-230-u02-ex3",
+    "MAT-230-u02-ex4"
+  ],
+  "exitCheck": {
+    "description": "Complete this synthesis and review the whole sheet against the unit objectives. Record assistance and unresolved gaps; a single assessment samples only its stated capabilities.",
+    "exerciseId": "MAT-230-u02-ex4"
+  },
   "commonMisconceptions": [
-    { "claim": "Every linear map between normed spaces is continuous, as in finite dimensions.", "correction": "In infinite dimensions linear maps can be unbounded; differentiation on polynomials with the sup norm is the standard example. Continuity is equivalent to boundedness (Theorem 22), which is a genuine condition.", "correctionLocatorIds": ["fa21-l2-thm22"] },
-    { "claim": "The operator norm is attained by some unit vector.", "correction": "The supremum in Definition 25 need not be attained in infinite dimensions; one must argue with a sequence approaching it or show attainment explicitly.", "correctionLocatorIds": ["fa21-l2-def25"] }
+    {
+      "claim": "Every linear map between normed spaces is continuous, as in finite dimensions.",
+      "correction": "In infinite dimensions linear maps can be unbounded; differentiation on polynomials with the sup norm is the standard example. Continuity is equivalent to boundedness (Theorem 22), which is a genuine condition.",
+      "correctionLocatorIds": [
+        "fa21-l2-thm22"
+      ]
+    },
+    {
+      "claim": "The operator norm is attained by some unit vector.",
+      "correction": "The supremum in Definition 25 need not be attained in infinite dimensions; one must argue with a sequence approaching it or show attainment explicitly.",
+      "correctionLocatorIds": [
+        "fa21-l2-def25"
+      ]
+    }
   ],
-  "estimatedMinutes": 235,
+  "estimatedMinutes": 320,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All ten locators opened 2026-10-30 and page indices verified against text extracted from MIT18_102s21_lec2.pdf (8 pages, no printed labels): Theorem 19 on PDF page 1, Theorem 22 on page 2, Theorem 27 on page 5, Definition 28 on page 7." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Build agent re-derived the Volterra operator norm (upper bound ‖Tf‖_∞ ≤ ‖f‖_∞ since |∫₀ˣ f| ≤ x‖f‖_∞ ≤ ‖f‖_∞; attained by f ≡ 1 at x = 1), non-surjectivity (range inside C¹ functions vanishing at 0), and the submultiplicative inequality." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "Reference reasoning only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "About 4 hours including preparation; combined with unit 1 this is the first teaching week." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All ten locators opened 2026-10-30 and page indices verified against text extracted from MIT18_102s21_lec2.pdf (8 pages, no printed labels): Theorem 19 on PDF page 1, Theorem 22 on page 2, Theorem 27 on page 5, Definition 28 on page 7."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Build agent re-derived the Volterra operator norm (upper bound ‖Tf‖_∞ ≤ ‖f‖_∞ since |∫₀ˣ f| ≤ x‖f‖_∞ ≤ ‖f‖_∞; attained by f ≡ 1 at x = 1), non-surjectivity (range inside C¹ functions vanishing at 0), and the submultiplicative inequality."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "Reference reasoning only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Workload is a provisional planning estimate, updated for the full problem sheet and synthesis; no empirical completion-time validation has occurred."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["MAT-230-u02-ex1.reference-solution.md", "MAT-230-u02-ex2.reference-solution.md", "MAT-230-u02-ex3.grading-notes.md"]
+  "instructorFiles": [
+    "MAT-230-u02-ex1.reference-solution.md",
+    "MAT-230-u02-ex2.reference-solution.md",
+    "MAT-230-u02-ex3.grading-notes.md",
+    "MAT-230-u02-ex4.reference-solution.md",
+    "MAT-230-u02-ex3.reference-solution.md"
+  ]
 }

@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u10-ex3",
+  "sequence": 3,
+  "title": "Audit a light-bending argument",
+  "kind": "explanation",
+  "promptMarkdown": "A student says: “A horizontal light beam falls by $gL^2/(2c^2)$ across a lift accelerating upward at g. Therefore spacetime inside the lift is curved, and this predicts the full bending of starlight by a star.” Derive the local displacement with its approximations. Identify the two unjustified conclusions separately. Give a precise replacement statement connecting the equivalence principle to the result.",
+  "conceptIds": [
+    "equivalence-principle"
+  ],
+  "hintLadder": [
+    "Write both trajectories in the same initial inertial frame.",
+    "Ask whether a curved metric was used anywhere.",
+    "Identify what is missing when a small lift is replaced by an entire stellar trajectory."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Local result is derived with sign and regime.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Coordinate bending and curvature are separated.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "The missing global model is identified.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "counterexample",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

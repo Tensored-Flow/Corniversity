@@ -1,0 +1,91 @@
+{
+  "id": "MAT-230-u12-ex2",
+  "sequence": 2,
+  "title": "Resonance and a failed uniqueness claim",
+  "kind": "proof",
+  "promptMarkdown": "Assume $f\\in L^2(0,1)$ and $\\alpha\\in\\mathbb R$. Solve the compatibility question for $-u''-\\alpha u=f$, u(0)=u(1)=0. State when there is a unique L² spectral solution, what condition is necessary and sufficient when α=(kπ)², and the family of solutions in that case. For f=e_k decide solvability at resonance. Here a spectral solution is required to belong to the Dirichlet operator domain: in the sine basis its coefficients satisfy $\\sum_n(n\\pi)^4|u_n|^2<\\infty$. If $f$ is continuous, also explain why the solution is classical ($C^2$ with zero endpoint values).",
+  "conceptIds": [
+    "spectral-theorem-compact",
+    "spectrum"
+  ],
+  "hintLadder": [
+    "Expand both sides in the sine basis.",
+    "At a vanishing denominator separate compatibility from nonuniqueness."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 2,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Distinguishes resonant and nonresonant parameters.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Proves both compatibility and the full solution family.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Explains the obstruction for f=e_k and connects it to positivity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 55,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

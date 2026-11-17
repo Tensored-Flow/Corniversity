@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u06-ex1",
+  "sequence": 1,
+  "title": "Classify four transformations",
+  "kind": "proof",
+  "promptMarkdown": "Let $P=\\operatorname{diag}(1,-1,-1,-1)$,$T=\\operatorname{diag}(-1,1,1,1)$, and $B$ be an $x$ boost of rapidity $r\\in\\mathbb R$. Verify that $P,T,B,PT$ preserve $\\eta$. Compute determinant and time-orientation signs for each and determine which can be continuously connected to identity within $O(1,3)$. Prove the inverse formula and explain why a translation is not represented by an ordinary 4 by 4 Lorentz matrix acting linearly on all event positions.",
+  "conceptIds": [
+    "four-vectors",
+    "lorentzian-metric"
+  ],
+  "hintLadder": [
+    "Check the time column as well as the determinant.",
+    "Use $\\eta^2=I$ to isolate the inverse.",
+    "Test a translation at the origin."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Metric preservation and component signs are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Connection or obstruction to identity is justified.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Inverse and affine/linear distinction are proved.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

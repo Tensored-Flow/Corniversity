@@ -8,11 +8,11 @@ Lecture 2 of the source course tells the story in two experiments. Thomson (1897
 
 Light is an electromagnetic wave with $c = \lambda\nu$. It is also delivered in packets, photons, of energy
 $$E = h\nu = \frac{hc}{\lambda}, \qquad h = 6.626\times10^{-34}\ \text{J s}.$$
-The photoelectric effect forces the second view (OpenStax 6.1). Light below a threshold frequency ejects no electrons from a metal however intense it is; above the threshold, the kinetic energy of the fastest electrons grows with frequency and not at all with intensity:
+The photoelectric effect forces the second view (OpenStax 6.1). In the linear single-photon photoelectric regime, light below a threshold frequency does not eject electrons by that mechanism; above threshold the maximum kinetic energy is set by photon frequency:
 $$\text{KE}_{\max} = h\nu - \phi,$$
-where $\phi$ is the work function of the metal. Intensity sets the number of photons per second and hence the number of electrons; frequency sets the energy of each.
+where $\phi$ is the work function of the metal. With unchanged emission yield and no saturation or multiphoton effects, intensity controls photon flux and therefore emission rate, while frequency sets energy per photon.
 
-**Example.** Light of wavelength $300$ nm falls on a surface whose work function is stated as $2.0$ eV (a model value for this example). With $hc = 1240$ eV nm, the photon energy is $1240/300 = 4.13$ eV, so $\text{KE}_{\max} = 4.13 - 2.0 = 2.1$ eV. Doubling the intensity doubles the number of electrons and leaves $2.1$ eV unchanged.
+**Example.** Light of wavelength $300$ nm falls on a surface whose work function is stated as $2.0$ eV (a model value for this example). With $hc = 1240$ eV nm, the photon energy is $1240/300 = 4.13$ eV, so $\text{KE}_{\max} = 4.13 - 2.0 = 2.1$ eV. In the same linear single-photon regime with unchanged yield, doubling intensity doubles the emission rate and leaves the predicted maximum $2.1$ eV unchanged.
 
 Atoms emit and absorb light only at particular wavelengths (line spectra). That is the observation the next model must explain.
 
@@ -24,9 +24,9 @@ $$E_n = -\frac{Z^2 R_H}{n^2}, \qquad n = 1, 2, 3, \dots, \qquad R_H = 2.179\time
 
 **Example.** The $n = 4 \to 2$ transition: $\Delta E = R_H\left(\tfrac{1}{4} - \tfrac{1}{16}\right) = 0.1875\,R_H = 4.09\times10^{-19}$ J, so $\lambda = hc/\Delta E = 4.86\times10^{-7}$ m $= 486$ nm, the blue-green line of the Balmer series. Every transition ending on $n = 2$ lies in or near the visible; those ending on $n = 1$ are ultraviolet.
 
-The energies come from the Schrödinger equation, which treats the electron as a wave (de Broglie: $\lambda = h/p$). Its solutions are **orbitals**, wavefunctions $\psi$ whose square gives the probability density of finding the electron. Each is labelled by three quantum numbers: $n$ (energy and size), $l = 0, \dots, n-1$ (shape: $s, p, d, f$ for $l = 0, 1, 2, 3$) and $m_l = -l, \dots, l$ (orientation). A fourth, $m_s = \pm\tfrac12$, is the electron's spin (OpenStax 6.3; lectures 4–6). An orbital is not a path. The Pauli exclusion principle allows at most two electrons per orbital, with opposite spins.
+The energies come from the Schrödinger equation, which treats the electron as a wave (de Broglie: $\lambda = h/p$). Its solutions are **orbitals**, wavefunctions $\psi$ whose modulus squared $|\psi|^2$ gives the probability density of finding the electron. Each is labelled by three quantum numbers: $n$ (energy and size), $l = 0, \dots, n-1$ (shape: $s, p, d, f$ for $l = 0, 1, 2, 3$) and $m_l = -l, \dots, l$ (orientation). A fourth, $m_s = \pm\tfrac12$, is the electron's spin (OpenStax 6.3; lectures 4–6). An orbital is not a path. The Pauli exclusion principle allows at most two electrons per orbital, with opposite spins.
 
-**Warning.** In hydrogen all orbitals with the same $n$ have the same energy; the $2s$ and $2p$ are degenerate. This is special to one-electron atoms and fails as soon as there is a second electron.
+**Model limit.** In the nonrelativistic one-electron Coulomb model, energies depend only on $n$, so $2s$ and $2p$ are degenerate. This description neglects fine structure, hyperfine structure, Lamb shifts and nuclear-motion corrections beyond any reduced-mass convention in the supplied constant. Electron–electron interactions in multielectron atoms generally remove the simple $n$-only pattern.
 
 ## Multi-electron atoms and configurations
 
@@ -34,11 +34,11 @@ With several electrons, each one feels the nucleus and the repulsion of the othe
 
 **Example.** Phosphorus ($Z = 15$): $1s^2\,2s^2\,2p^6\,3s^2\,3p^3$, written $[\text{Ne}]\,3s^2\,3p^3$, with three unpaired $3p$ electrons. Zinc(II): zinc is $[\text{Ar}]\,3d^{10}\,4s^2$, and $\ce{Zn^2+}$ loses the two $4s$ electrons to give $[\text{Ar}]\,3d^{10}$. Cobalt(II): $\ce{Co}$ is $[\text{Ar}]\,3d^7\,4s^2$, so $\ce{Co^2+}$ is $[\text{Ar}]\,3d^7$ with three unpaired electrons. In a neutral transition metal the occupied $3d$ orbitals lie below $4s$, so ionisation removes $4s$ first even though $4s$ filled first; this is the single most common slip in configurations. Chromium and copper are the standard exceptions to aufbau ($[\text{Ar}]\,3d^5\,4s^1$ and $[\text{Ar}]\,3d^{10}\,4s^1$); OpenStax 6.4 lists them.
 
-How do we know orbital energies in a multi-electron atom? **Photoelectron spectroscopy** (lecture 8, page 3) shines X-rays of known energy $h\nu$ on a sample and measures the kinetic energies of ejected electrons: $h\nu = \text{IE} + \text{KE}$, exactly the photoelectric relation applied to atoms. Each occupied subshell gives one peak. Lithium gives two peaks ($1s$, $2s$); neon gives three ($1s$, $2s$, $2p$). The spectrum is the measurement; the configuration is the model that explains it.
+How do we know orbital energies in a multi-electron atom? **Photoelectron spectroscopy** (lecture 8, page 3) shines X-rays of known energy $h\nu$ on a sample and measures the kinetic energies of ejected electrons: $h\nu = \text{IE} + \text{KE}$, exactly the photoelectric relation applied to atoms. In a simplified unresolved-subshell model, each occupied subshell gives one peak; resolved spin–orbit structure, multiplets and other spectral effects are omitted. Lithium gives two peaks ($1s$, $2s$); neon gives three ($1s$, $2s$, $2p$). The spectrum is the measurement; the configuration is the model that explains it.
 
 ## Periodic trends
 
-**Definition (ionisation energy).** The minimum energy to remove an electron from a gaseous atom, $\ce{X(g) -> X+(g) + e-}$; the first IE refers to the most weakly bound electron, so $\text{IE} = -E$ of the highest occupied atomic orbital (lecture 8, page 1). It is always positive.
+**Definition (ionisation energy).** The minimum energy to remove an electron from a gaseous atom, $\ce{X(g) -> X+(g) + e-}$; the first IE is the total-energy difference between the ground-state ion plus a free electron and the neutral ground-state atom. Approximating it by the negative of a highest occupied orbital energy uses an additional frozen-orbital model and neglects relaxation/correlation changes. Ground-state ionisation of a stable neutral atom requires positive energy.
 
 **Definition (electron affinity).** For $\ce{X(g) + e- -> X-(g)}$ with energy change $\Delta E$, the notes define $\text{EA} = -\Delta E$: positive when attaching an electron releases energy (Cl, $\text{EA} = +349$ kJ/mol), negative when it costs energy (N, $-7$ kJ/mol) (lecture 8, page 4). Check the sign convention of any source before comparing numbers.
 

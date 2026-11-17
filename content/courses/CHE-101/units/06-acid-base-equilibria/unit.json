@@ -3,29 +3,195 @@
   "courseId": "CHE-101",
   "sequence": 6,
   "title": "Acid–base equilibria",
-  "summary": "Brønsted–Lowry acids and bases and conjugate pairs; the autoionisation of water and pH; Ka, Kb and the strength of acids and bases; weak-acid and weak-base equilibrium calculations; salt hydrolysis, buffers and the Henderson–Hasselbalch relation; titration curves and indicators.",
+  "summary": "Weak-acid and weak-base models, water autoionisation, buffer capacity and all four titration regimes, with approximation checks and a synthesis titration.",
   "objectives": [
-    { "id": "u06-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 20–24 of 5.111SC (Unit III) with OpenStax chapter 14." }
+    {
+      "id": "u06-o1",
+      "description": "Derive acid–base concentrations from mass balance, charge balance and equilibrium activities, stating dilute-solution assumptions."
+    },
+    {
+      "id": "u06-o2",
+      "description": "Calculate weak-acid and conjugate-base pH with checked approximations, including water ionisation when needed."
+    },
+    {
+      "id": "u06-o3",
+      "description": "Explain buffer pH and capacity separately, and calculate a post-neutralisation buffer composition."
+    },
+    {
+      "id": "u06-o4",
+      "description": "Analyse the four regions of a weak-acid/strong-base titration and validate them against a common balance equation."
+    }
   ],
-  "prerequisiteConceptIds": ["chemical-equilibrium-constant", "le-chatelier"],
-  "teachesConceptIds": ["acid-base-equilibria"],
+  "prerequisiteConceptIds": [
+    "chemical-equilibrium-constant",
+    "le-chatelier"
+  ],
+  "teachesConceptIds": [
+    "acid-base-equilibria"
+  ],
   "preparation": [
-    { "description": "OCW Unit III page: lectures 20 (solubility and acid–base equilibrium), 21 (is MIT water safe to drink?), 22 (salt solutions and buffers), 23–24 (titrations), each with notes, problems and solutions.", "locatorId": "chem14-unit3", "estimatedMinutes": 60 },
-    { "description": "OpenStax 14.1 Brønsted-Lowry Acids and Bases, 14.2 pH and pOH, 14.3 Relative Strengths of Acids and Bases.", "locatorId": "ox-14-1", "estimatedMinutes": 60 },
-    { "description": "OpenStax 14.6 Buffers and 14.7 Acid-Base Titrations.", "locatorId": "ox-14-6", "estimatedMinutes": 40 }
+    {
+      "description": "Water ionisation, Kw and pH",
+      "locatorId": "chem14-n21-p1",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Conjugate constants and weak acids",
+      "locatorId": "chem14-n21-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Weak-acid quadratic and approximation check",
+      "locatorId": "chem14-n21-p5",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Buffer relation and its assumptions",
+      "locatorId": "chem14-n22-p4",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Buffer capacity",
+      "locatorId": "chem14-n22-p5",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Half-equivalence reasoning",
+      "locatorId": "chem14-n23-p6",
+      "estimatedMinutes": 10
+    },
+    {
+      "description": "Equivalence hydrolysis",
+      "locatorId": "chem14-n24-p1",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "Excess titrant after equivalence",
+      "locatorId": "chem14-n24-p2",
+      "estimatedMinutes": 10
+    }
   ],
   "activities": [
-    { "id": "u06-a1", "type": "reading", "title": "Lectures 20–24 and OpenStax chapter 14: acid–base equilibria", "instructions": "Read the lecture pages and the OpenStax sections for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 120, "sourceLocatorIds": ["chem14-unit3", "ox-14-intro", "ox-14-1", "ox-14-2", "ox-14-3", "ox-14-6", "ox-14-7"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u06-a1",
+      "type": "reading",
+      "title": "Lecture notes and primary reading",
+      "instructions": "Work through the notes with the assigned source open. Reproduce each worked calculation or derivation on paper, including its assumptions, before reading the next step. Write one question that remains unresolved.",
+      "estimatedMinutes": 110,
+      "sourceLocatorIds": [
+        "chem14-n21-p1",
+        "chem14-n21-p4",
+        "chem14-n21-p5",
+        "chem14-n22-p4",
+        "chem14-n22-p5",
+        "chem14-n23-p6",
+        "chem14-n24-p1",
+        "chem14-n24-p2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u06-a2",
+      "type": "problem",
+      "title": "Problem sheet: calculation, explanation and transfer",
+      "instructions": "Attempt the problems independently first. Use one hint at a time if useful, and record which help you used. Show the reasoning that connects the model and its assumptions to each answer; compare the reference only after a substantial attempt.",
+      "estimatedMinutes": 170,
+      "sourceLocatorIds": [
+        "chem14-n21-p1",
+        "chem14-n21-p4",
+        "chem14-n21-p5",
+        "chem14-n22-p4",
+        "chem14-n22-p5",
+        "chem14-n23-p6",
+        "chem14-n24-p1",
+        "chem14-n24-p2"
+      ],
+      "exerciseIds": [
+        "CHE-101-u06-ex1",
+        "CHE-101-u06-ex2",
+        "CHE-101-u06-ex3",
+        "CHE-101-u06-ex4"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u06-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the notes",
+      "instructions": "On a later study day, close the notes and reconstruct the core relation and its assumptions, then explain the failure case from the last problem. Compare with your saved work and correct one gap. This practice does not itself certify mastery.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "chem14-n21-p1",
+        "chem14-n21-p4",
+        "chem14-n21-p5",
+        "chem14-n22-p4",
+        "chem14-n22-p5",
+        "chem14-n23-p6",
+        "chem14-n24-p1",
+        "chem14-n24-p2"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 300,
-  "status": "draft",
+  "exerciseIds": [
+    "CHE-101-u06-ex1",
+    "CHE-101-u06-ex2",
+    "CHE-101-u06-ex3",
+    "CHE-101-u06-ex4"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to judge the objectives: explain assumptions, complete the independent calculations and justify the final transfer/synthesis. The final exercise is the recorded checkpoint; its acceptance alone is not a claim that all course outcomes are mastered.",
+    "exerciseId": "CHE-101-u06-ex4"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "Every equivalence point has pH seven.",
+      "correction": "Equivalence is a stoichiometric condition; the conjugate ion can hydrolyse. Neutral pH itself depends on temperature.",
+      "correctionLocatorIds": [
+        "chem14-n21-p1",
+        "chem14-n21-p4"
+      ]
+    },
+    {
+      "claim": "The Henderson–Hasselbalch expression works after either buffer component is exhausted.",
+      "correction": "The equilibrium activity relation remains true, but using analytical amounts as a buffer ratio fails when a component is exhausted or equilibrium corrections are significant.",
+      "correctionLocatorIds": [
+        "chem14-n21-p1",
+        "chem14-n21-p4"
+      ]
+    }
+  ],
+  "estimatedMinutes": 400,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "OCW Unit III page opened 2026-10-30 (lectures 20–24 listed with their page URLs); OpenStax chapter 14 introduction and sections 14.1, 14.2, 14.3, 14.6, 14.7 opened. Individual lecture pages 20–24 and their notes PDFs are not yet opened; the unit page is the verified locator." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "MIT 5.111SC lectures 21–24 notes downloaded and read on 2026-11-12; PDF page extents 7, 6, 7 and 7, including water/weak-acid balance, buffers and the titration regions. Exact URLs and SHA-256 hashes are in the source-review manifest. OpenStax was not imported or used by the authoring model."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Author check on 2026-11-12: equations, units, limiting cases and original reference solutions re-derived during authoring. This is self-review, not independent academic verification; independent review is tracked separately."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "Estimates 400 active minutes including assigned reading, lecture work, original problems and delayed retrieval; estimate is not learner-tested."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "CHE-101-u06-ex1.reference-solution.md",
+    "CHE-101-u06-ex2.reference-solution.md",
+    "CHE-101-u06-ex3.reference-solution.md",
+    "CHE-101-u06-ex4.reference-solution.md"
+  ]
 }

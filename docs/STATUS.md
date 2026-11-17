@@ -1,12 +1,21 @@
 # Status
 
-Last updated: 17 November 2026. Milestone 20, the Corniversity Library (the owner's brief
-*Corniversity Library*; plan, contract and decision log in [RESEARCH_LIBRARY.md](RESEARCH_LIBRARY.md)),
-is built on the branch `milestone-20-research-library`: find, preview and paper pages, Discover,
-the PDF reader with annotations and reading positions, shelves, trails, library notes and the
-optional reading companion. Its final independent reviews (security, correctness, completeness
-against the brief, reader quality, design and accessibility) are done and their confirmed findings
-fixed. It is neither pushed nor released; the hosted site does not carry migration 0016.
+Last updated: 17 November 2026. The hosted site is https://corniversity.up.railway.app, in the
+Railway project `corniversity`; the generated address it had before 14 November 2026 is retired, and
+the owner's account and database stayed in place.
+
+Milestone 20, the Corniversity Library (the owner's brief *Corniversity Library*; plan, contract and
+decision log in [RESEARCH_LIBRARY.md](RESEARCH_LIBRARY.md)), is on `main`: find, preview and paper
+pages, Discover, the PDF reader with annotations and reading positions, shelves, trails, library notes
+and the optional reading companion. Its final independent reviews (security, correctness,
+completeness against the brief, reader quality, design and accessibility) are done and their
+confirmed findings fixed. It adds migration 0016.
+
+The five complete courses and evidence-grounded teaching (branch `codex/university-teaching-quality`,
+PR #1, released on 12 November 2026 and merged into `main` with the Library) complete CHE-101,
+PHY-210, MAT-230, MAT-261 and CSA-210 (54 units, 195 original exercises, independently reviewed) and
+strengthen source-grounded preparation and tutorial context; the owner is enrolled in all five. The
+live tutor was last verified in scripted-demo mode on 12 November 2026.
 
 Before it (Milestones 0–19 complete: the teaching-experience brief
 (`brief/CORNIVERSITY_CLAUDE_CODE_NEXT_BUILD.md`, Milestones 11–17), the owner's final
@@ -16,7 +25,7 @@ format (Milestone 19: courses as notes, problem sheets, tutorials and timed exam
 still to be created on the hosted site, so the checks behind sign-in, live tutoring and the plan
 connection wait for the owner's acceptance journey, USER_ACTIONS 4).
 
-## Implemented / tested / blocked
+## Current teaching
 
 | Area | Implemented | Tested | Notes |
 |---|---|---|---|
@@ -65,17 +74,21 @@ connection wait for the owner's acceptance journey, USER_ACTIONS 4).
 | Production build | pass on 11 Nov 2026; built again on 17 Nov 2026 for the Milestone 20 journeys | 11 Nov: 109 journeys pass at both sizes against the production build on a new, empty database (10 skipped: hidden features, and journey 16, which runs on its rehearsal stack). Milestone 20 (17 Nov): journey 22 first, then every journey (01–22) at both sizes on a new, empty database in fixture mode pass, the four journeys touched by the last fixes (05, 08, 19, 20) rerun on the rebuilt code; skipped are phone- or desktop-only tests, hidden features, journey 16 (its rehearsal stack) and the empty-library test once the owner has papers. Unit 654 + 60, integration 382 | `pnpm build`; on 17 Nov `next build` reported that Next.js 16.4.3 is affected by a known security vulnerability (USER_ACTIONS 9) |
 | Deployment (Dockerfiles, Railway config, deploy script) | deployed 1 Nov 2026; Milestone 10 released on 9 Nov 2026; the audit's fixes released on 10 Nov 2026 to the Railway project `corniversity` (worker and web from `40c2624`, migration 0007 applied); the teaching-experience brief released on 10 Nov 2026 (worker, then web, from `6850ec9`; migrations 0008–0012 applied); final acceptance released on 10 Nov 2026 (worker, then web, from `88e7ece`; migration 0013 applied) at https://web-production-4c692.up.railway.app | live: health with the asset diagnostic, the worker's log, production headers, robots, the public pages at both sizes, private routes refusing anonymous requests and a forged session cookie, a non-owner sign-up refused; nothing behind sign-in (QA_REPORT.md, "After the release") | images build on Railway (no Docker here); the owner account is still to be created; scripted demo until a key is added and paid use approved; Milestone 20 is not released |
 
-## Environment facts (verified 9 Nov 2026)
+The five complete courses (released 12 November 2026):
 
-- Windows 11, Node v24.19.0, pnpm 12.16.1, Python 3.11.9 (no image library). Docker and psql absent; Railway builds the images.
-- GitHub CLI authenticated (account Tensored-Flow); creating the private repository was blocked by approval controls, see USER_ACTIONS.md. The repository has no git remote.
-- Railway CLI 5.66.0, signed in to the owner's Railway account; the repository folder is linked to the project `corniversity` (environment `production`; services `web`, `worker`, `Postgres`). No provider key; scripted demo only.
-- Running a command inside a Railway container (`railway ssh`) was refused by this machine's approval controls; the deployed service is checked through its health route and logs instead.
-- The Bash tool on this machine halves backslashes in command text and fails on heredocs with many apostrophes; files are written with the Write tool. Python's `write_text` writes CRLF here; files are written as bytes.
-- Next's Turbopack development server reloads pages in a loop on this machine, so `pnpm dev` runs the webpack development server.
-- Vitest ignores `fileParallelism` in a project's own config, so the root scripts pass `--no-file-parallelism` for the worker and database projects, whose files share one database.
+| Course | Complete units | Original exercises | Source edition |
+|---|---:|---:|---:|
+| CHE-101 Principles of Chemical Science | 10 | 37 | 3 |
+| PHY-210 Special Relativity and Minkowski Geometry | 10 | 33 | 2 |
+| MAT-230 Functional Analysis I | 12 | 44 | 3 |
+| MAT-261 Smooth Manifolds | 12 | 43 | 4 |
+| CSA-210 Deep Learning Foundations | 10 | 38 | 3 |
 
-## Blocked (owner action required)
+All 54 units have substantive lessons, original assessed work, progressive hints, rubrics, complete instructor reference reasoning and cumulative synthesis. All 195 solutions received independent reasoning checks; source/factual and post-repair reviews have separate ledgers under `.codex/quality-loop/university-teaching-quality/`. The CS course includes a complete executable CPU capstone; its output was independently reproduced. These are AI-assisted reviews, not human expert certification, accreditation or measured learning gains. Workload estimates are provisional.
+
+Catalogue totals: 86 courses; 12 teaching-ready launch courses; 141 units, 72 ready; 250 original exercises; 59 sources and 1,166 verified locators. Other catalogue courses retain their actual readiness.
+
+## Generation and tutor
 
 See [USER_ACTIONS.md](USER_ACTIONS.md): creating the owner account on the hosted site, then
 retiring the bootstrap code; choosing who teaches (an Anthropic key on the hosted site, or the
@@ -85,7 +98,9 @@ and the hosted backup schedule (item 5). The source is on GitHub (item 7). The r
 optional choices (an OpenAlex API key, a Crossref contact address, private copies, whether the AI
 subject also includes arXiv `cs.LG`) and the Next.js upgrade are the owner's (item 9).
 
-## Resume checkpoint
+Preparation requires actual permissioned source passages before any draft model call. Structural gates check objective alignment, substantive worked reasoning, exercise progression, citation scope and repetitive filler; they do not prove factual correctness. Evidence permissions are rechecked immediately before provider calls, including deletion, private-cloud withdrawal and external-AI withdrawal. Failure blocks the call and settles the reservation without an attempt. Tutor history omits replies whose recorded source identities are no longer permitted; uncited historical paraphrases cannot be reliably attributed by this guard.
+
+The tutor receives the current learner-facing lesson and a bounded, substantially complete current attempt, with disclosed omissions. Full explanations have room for complete reasoning. Alternate correct arguments remain admissible; self-test and reference-release boundaries remain enforced. Whole-document Markdown rendering preserves lists, reference links, footnotes, code and mathematical accessibility.
 
 Local stack: `pnpm db:local` (window 1), `pnpm dev` (window 2). Owner account on the local
 database was created by the e2e tests with the test password in `tests/e2e/helpers.ts`; run
@@ -99,16 +114,23 @@ provider responses; arxiv.org is answered by Playwright route interception) and 
 live mode. Journey 22's empty-library test runs only on a fresh database, so after a new stack run
 journey 22 first, then the rest.
 
-Live site: https://web-production-4c692.up.railway.app. To ship a change, commit it and run
-`railway up --service worker --ci`, wait for its migrations and seed, then
-`railway up --service web --ci`, from the repository root, which is linked to the
-`corniversity` project. `pnpm deploy:railway` creates a new project with new secrets and refuses
-to run in a linked folder; it is for a first deployment only.
+No Corniversity runtime model, ChatGPT-plan subscription or paid model API was used to author, review or test these courses. The hosted teacher configuration was verified as `fixture` after deployment. Real tutoring and marking require an owner-configured live teacher; their runtime quality has not been measured in this task. Scripted-demo tests are explicitly labelled.
 
-The teaching-experience brief is complete (Milestones 11–17) and released on 10 Nov 2026 from
-`6850ec9`; the plan and gates are in PLAN.md, the requirement rows in TRACEABILITY.md (second table).
+## Validation and environment
 
-Owner actions: the steps in USER_ACTIONS.md. When the owner reports the checklist's results,
-record them in QA_REPORT.md as checks the owner ran on the live site; check from outside that a
-sign-up answers "Sign-up is closed" and that `OWNER_BOOTSTRAP_CODE` is gone from both services
-(variable names only); and read the worker's log for the assessment runs.
+- 601 distinct regression cases pass across core/AI/content/companion/web, worker, database and academic evaluations; the two stale coverage/enum expectations were repaired and rerun.
+- Seven-package typecheck, lint and production build pass. Content validation reports zero errors or warnings; strict KaTeX renders 8,116 expressions without error.
+- All 53 distinct targeted desktop/mobile browser cases pass after repairs. The final reruns passed 18 of 19 cases, then all 3 setup/mobile accessibility cases after the remaining diagram fix. Long lesson formulas are horizontally contained with keyboard access; the tutor Send hit target remains usable. Axe reports no violations on the tested pages.
+- Linux checkout: `/home/leon/work/Corniversity`, branch `codex/university-teaching-quality`; Node 24.18.1, pnpm 12.16.1. GitHub origin: `https://github.com/Tensored-Flow/Corniversity.git` (public).
+- QA used a separate local-only fixture database on port 5547 and web port 3330; temporary QA services and the port-forward were stopped after release. Its account and records are disposable test data, not the hosted owner. Never run Playwright journeys against production.
+- The existing Railway project `corniversity` has web, worker and Postgres services. CLI authentication is refreshed and the checkout is linked to that existing project. No new project or owner was created. The existing hosted owner was verified read-only in Railway on 12 November; its current sign-in session is not available in the browser.
+
+## Release and remaining owner setup
+
+Code release `36ae0c3baf61bc139b9b6bf76f12d6f3b53fabc7` is live. Current worker deployment `3eef63c1-2560-4035-b5cd-3824b3fe0c18` and web deployment `520dc417-6688-476a-94d0-019ee60877b4` both report SUCCESS. These are redeployments of the existing release with the updated public URL; the 12 November deployment evidence remains in QA_REPORT.md. Public health reports a healthy database, current migrations, all seven scripted assets and tutor/assessor prompts 1.4/1.3.
+
+All five current database content hashes match the deployed source before enrolment. The normal enrolment service created five active enrolled records in one transaction for the existing owner; the prior enrolment list was empty. Source edition numbers above are distinct from database revision sequence numbers: CHE-101=3, PHY-210=2, MAT-230=3, MAT-261=2, CSA-210=2. Existing account, preferences and learning records were not reset.
+
+Open https://corniversity.up.railway.app/campus and sign in with the existing account. Both services use `BETTER_AUTH_URL=https://corniversity.up.railway.app`. HTTPS health, sign-in form and anonymous private-route protection pass; an authenticated owner sign-in is not claimed. Old bookmarks must use the new address. Previously paired companion clients or external calendar subscriptions, if any, need their stored server URL updated; no private client configuration was inspected. The remaining owner choice is whether to configure a live teacher in Settings; the courses are already available without it. Provider configuration and live-model evaluation are not claimed complete. The source branch is `codex/university-teaching-quality`, with draft PR #1; main has not been merged. Keep `.env`, source-download caches and credentials out of git.
+
+Historical release evidence remains in QA_REPORT.md and prior milestones in PLAN.md. The old Windows owner installation is separate from this Linux QA checkout. `pnpm deploy:railway` is a first-deployment script and must not be used for this existing project.

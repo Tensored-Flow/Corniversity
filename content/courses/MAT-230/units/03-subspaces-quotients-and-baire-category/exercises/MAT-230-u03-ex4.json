@@ -1,0 +1,112 @@
+{
+  "id": "MAT-230-u03-ex4",
+  "sequence": 4,
+  "title": "A quotient norm and an infinite-dimensional Banach space",
+  "kind": "proof",
+  "promptMarkdown": "In $\\ell^\\infty$ let $c_0$ be the sequences tending to zero. (a) Prove $c_0$ is closed. (b) Prove $\\|x+c_0\\|=\\limsup_{n\\to\\infty}|x_n|$ for the quotient norm. (c) Show $\\ell^\\infty/c_0$ is infinite-dimensional by constructing arbitrarily many independent cosets, and explain why it is Banach. (d) Apply Baire to prove it has no countable Hamel basis, stating each hypothesis. Contrast the quotient by $c_{00}$, whose quotient distance is only a seminorm.",
+  "conceptIds": [
+    "quotient-space",
+    "baire-category",
+    "uniform-boundedness"
+  ],
+  "hintLadder": [
+    "Use one approximating sequence to control the tail of the uniform limit.",
+    "Truncate x for the upper bound; take a limsup for the lower bound.",
+    "Indicators of disjoint infinite sets survive modulo c 0.",
+    "Identify the closure of c 00 before calling its quotient distance a norm."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Closedness and quotient formula.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Infinite dimension and quotient completeness.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Baire with all hypotheses.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Nonclosed quotient counterexample.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 75,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Combines the unit methods and checks a limiting or changed-context case."
+    },
+    "knownAmbiguities": []
+  }
+}

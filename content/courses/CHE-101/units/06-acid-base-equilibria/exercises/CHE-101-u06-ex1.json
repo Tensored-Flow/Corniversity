@@ -1,0 +1,90 @@
+{
+  "id": "CHE-101-u06-ex1",
+  "sequence": 1,
+  "title": "When the square-root shortcut fails",
+  "kind": "calculation",
+  "promptMarkdown": "A hypothetical monoprotic acid has $K_a=1.00\\times10^{-4}$ at $25^\\circ\\mathrm C$. Its analytical concentration is $0.0100\\,\\mathrm M$. Derive the mass and charge balances under the approximation that water ionisation is negligible. Compute $h$ using both $\\sqrt{K_aC}$ and the positive quadratic root, then pH and percentage ionisation. Quantify the error in the shortcut and justify whether neglect of water was consistent.",
+  "conceptIds": [
+    "acid-base-equilibria"
+  ],
+  "hintLadder": [
+    "Write both conserved acid concentration and electrical neutrality.",
+    "Solve the quadratic before deciding which root is physical.",
+    "Compare the computed dissociation with the original analytical concentration."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Derives the balance-based equation rather than applying a formula without assumptions.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Computes both estimates, pH and percentage ionisation consistently.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Quantifies approximation error and separately checks water ionisation.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

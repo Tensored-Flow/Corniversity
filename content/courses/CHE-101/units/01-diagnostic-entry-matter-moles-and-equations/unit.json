@@ -5,44 +5,212 @@
   "title": "Diagnostic entry: matter, moles and balanced equations",
   "summary": "The chemist's bookkeeping, tested before anything new is taught: the mole and molar mass, atomic symbols and isotopes, formulas, balancing for mass and charge, reaction stoichiometry with a mass-balance check, limiting reactant and yield, molarity and dilution. Accepted attempts here are the readiness evidence for the course; advanced mathematics is not.",
   "objectives": [
-    { "id": "u01-o1", "description": "Convert between mass, amount and number of particles using molar mass and Avogadro's number, carrying units and significant figures." },
-    { "id": "u01-o2", "description": "Balance a chemical equation for atoms and charge, with phase labels, and read its coefficients as mole ratios." },
-    { "id": "u01-o3", "description": "Identify a limiting reactant by comparing amounts, compute theoretical and percent yield and the excess remaining." },
-    { "id": "u01-o4", "description": "Read an atomic symbol (protons, neutrons, electrons), compute an average atomic mass from isotopic abundances, and compute molarity through a dilution." },
-    { "id": "u01-o5", "description": "State the assumptions behind every numerical answer (purity, completeness, phases, additive volumes)." }
+    {
+      "id": "u01-o1",
+      "description": "Convert between mass, amount and number of particles using molar mass and Avogadro's number, carrying units and significant figures."
+    },
+    {
+      "id": "u01-o2",
+      "description": "Balance a chemical equation for atoms and charge, with phase labels, and read its coefficients as mole ratios."
+    },
+    {
+      "id": "u01-o3",
+      "description": "Identify a limiting reactant by comparing amounts, compute theoretical and percent yield and the excess remaining."
+    },
+    {
+      "id": "u01-o4",
+      "description": "Read an atomic symbol (protons, neutrons, electrons), compute an average atomic mass from isotopic abundances, and compute molarity through a dilution."
+    },
+    {
+      "id": "u01-o5",
+      "description": "State the assumptions behind every numerical answer (purity, completeness, phases, additive volumes)."
+    }
   ],
   "prerequisiteConceptIds": [],
-  "teachesConceptIds": ["school-chemistry-foundations", "mole-and-molar-mass", "chemical-formulas-nomenclature", "balancing-chemical-equations", "reaction-stoichiometry", "limiting-reactant-yield", "solution-molarity"],
+  "teachesConceptIds": [
+    "school-chemistry-foundations",
+    "mole-and-molar-mass",
+    "chemical-formulas-nomenclature",
+    "balancing-chemical-equations",
+    "reaction-stoichiometry",
+    "limiting-reactant-yield",
+    "solution-molarity"
+  ],
   "preparation": [
-    { "description": "Read the source's own framing: lecture 1 assigns a 'Review of Fundamentals' as home reading rather than lecture material (notes page 1).", "locatorId": "chem14-n01-p1", "estimatedMinutes": 5 },
-    { "description": "OpenStax 3.1 Formula Mass and the Mole Concept: the mole, Avogadro's number, molar mass; read Examples 3.3–3.6 as worked patterns.", "locatorId": "ox-3-1", "estimatedMinutes": 20 },
-    { "description": "OpenStax 2.3 Atomic Structure and Symbolism: symbols, isotopes, average atomic mass (Examples 2.3–2.4).", "locatorId": "ox-2-3", "estimatedMinutes": 15 },
-    { "description": "OpenStax 4.1 Writing and Balancing Chemical Equations: atom conservation, phase labels, ionic equations (Example 4.1).", "locatorId": "ox-4-1", "estimatedMinutes": 15 },
-    { "description": "OpenStax 4.3 Reaction Stoichiometry and 4.4 Reaction Yields: stoichiometric factors, limiting reactant, percent yield (Examples 4.10–4.13).", "locatorId": "ox-4-3", "estimatedMinutes": 20 },
-    { "description": "OpenStax 3.3 Molarity: definition and dilution (Examples 3.14, 3.19).", "locatorId": "ox-3-3", "estimatedMinutes": 15 }
+    {
+      "description": "Read the source's own framing: lecture 1 assigns a 'Review of Fundamentals' as home reading rather than lecture material (notes page 1).",
+      "locatorId": "chem14-n01-p1",
+      "estimatedMinutes": 5
+    },
+    {
+      "description": "OpenStax 3.1 Formula Mass and the Mole Concept: the mole, Avogadro's number, molar mass; read Examples 3.3–3.6 as worked patterns.",
+      "locatorId": "ox-3-1",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "OpenStax 2.3 Atomic Structure and Symbolism: symbols, isotopes, average atomic mass (Examples 2.3–2.4).",
+      "locatorId": "ox-2-3",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "OpenStax 4.1 Writing and Balancing Chemical Equations: atom conservation, phase labels, ionic equations (Example 4.1).",
+      "locatorId": "ox-4-1",
+      "estimatedMinutes": 15
+    },
+    {
+      "description": "OpenStax 4.3 Reaction Stoichiometry and 4.4 Reaction Yields: stoichiometric factors, limiting reactant, percent yield (Examples 4.10–4.13).",
+      "locatorId": "ox-4-3",
+      "estimatedMinutes": 20
+    },
+    {
+      "description": "OpenStax 3.3 Molarity: definition and dilution (Examples 3.14, 3.19).",
+      "locatorId": "ox-3-3",
+      "estimatedMinutes": 15
+    }
   ],
   "activities": [
-    { "id": "u01-a1", "type": "reading", "title": "The diagnostic lesson and the review sections", "instructions": "Read the lesson first. For each definition, write it in your own words in the notebook with one example of your own. Then open only the OpenStax sections for the topics you did not already know; the others can wait until an exercise sends you back to them. OpenStax is read in the browser (reference-only licence); nothing from it is pasted into Corniversity.", "estimatedMinutes": 45, "sourceLocatorIds": ["chem14-lec01", "chem14-n01-p1", "ox-3-1", "ox-2-3", "ox-2-4", "ox-4-1", "ox-4-3", "ox-4-4", "ox-3-3"], "exerciseIds": [], "sessionKind": "lecture" },
-    { "id": "u01-a2", "type": "problem", "title": "Diagnostic: three exercises", "instructions": "Attempt all three exercises before asking for hints; this is a diagnostic, so an honest unaided attempt is the useful one. Write units on every quantity, state the phase of every substance and finish each exercise with the assumptions you made. Submit each attempt when complete; revise after feedback.", "estimatedMinutes": 75, "sourceLocatorIds": ["ox-4-1", "ox-4-3", "ox-4-4", "ox-3-1", "ox-3-3", "ox-2-3"], "exerciseIds": ["CHE-101-u01-ex1", "CHE-101-u01-ex2", "CHE-101-u01-ex3"], "sessionKind": "tutorial" },
-    { "id": "u01-a3", "type": "retrieval_practice", "title": "Optional self-check: MIT's review problems", "instructions": "If you want more practice after the diagnostic, MIT's own '5.111 Review Problems' PDF (significant figures, moles, mass percentage, solution preparation) is linked here with its solutions on the lecture 1 page. These are MIT's problems under CC BY-NC-SA; they are linked, not copied, and are not assessed by Corniversity.", "estimatedMinutes": 20, "sourceLocatorIds": ["chem14-review-problems", "chem14-lec01"], "exerciseIds": [], "sessionKind": "revision" },
-    { "id": "u01-a4", "type": "explain_back", "title": "Say what you assumed", "instructions": "Without the lesson open, list in the notebook the assumptions behind a mass-to-mass stoichiometry calculation and behind a dilution calculation, then say what would change in each if one assumption failed. The tutor will compare your list with the lesson's.", "estimatedMinutes": 10, "sourceLocatorIds": ["ox-4-4", "ox-3-3"], "exerciseIds": [], "sessionKind": "oral" }
+    {
+      "id": "u01-a1",
+      "type": "reading",
+      "title": "The diagnostic lesson and the review sections",
+      "instructions": "Read the lesson first. For each definition, write it in your own words in the notebook with one example of your own. Then open only the OpenStax sections for the topics you did not already know; the others can wait until an exercise sends you back to them. OpenStax is read in the browser (reference-only licence); nothing from it is pasted into Corniversity.",
+      "estimatedMinutes": 45,
+      "sourceLocatorIds": [
+        "chem14-lec01",
+        "chem14-n01-p1",
+        "ox-3-1",
+        "ox-2-3",
+        "ox-2-4",
+        "ox-4-1",
+        "ox-4-3",
+        "ox-4-4",
+        "ox-3-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u01-a2",
+      "type": "problem",
+      "title": "Diagnostic: three exercises",
+      "instructions": "Attempt all three exercises before asking for hints; this is a diagnostic, so an honest unaided attempt is the useful one. Write units on every quantity, state the phase of every substance and finish each exercise with the assumptions you made. Submit each attempt when complete; revise after feedback.",
+      "estimatedMinutes": 75,
+      "sourceLocatorIds": [
+        "ox-4-1",
+        "ox-4-3",
+        "ox-4-4",
+        "ox-3-1",
+        "ox-3-3",
+        "ox-2-3"
+      ],
+      "exerciseIds": [
+        "CHE-101-u01-ex1",
+        "CHE-101-u01-ex2",
+        "CHE-101-u01-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u01-a3",
+      "type": "retrieval_practice",
+      "title": "Optional self-check: MIT's review problems",
+      "instructions": "If you want more practice after the diagnostic, MIT's own '5.111 Review Problems' PDF (significant figures, moles, mass percentage, solution preparation) is linked here with its solutions on the lecture 1 page. These are MIT's problems under CC BY-NC-SA; they are linked, not copied, and are not assessed by Corniversity.",
+      "estimatedMinutes": 20,
+      "sourceLocatorIds": [
+        "chem14-review-problems",
+        "chem14-lec01"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    },
+    {
+      "id": "u01-a4",
+      "type": "explain_back",
+      "title": "Say what you assumed",
+      "instructions": "Without the lesson open, list in the notebook the assumptions behind a mass-to-mass stoichiometry calculation and behind a dilution calculation, then say what would change in each if one assumption failed. The tutor will compare your list with the lesson's.",
+      "estimatedMinutes": 10,
+      "sourceLocatorIds": [
+        "ox-4-4",
+        "ox-3-3"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "oral"
+    }
   ],
-  "exerciseIds": ["CHE-101-u01-ex1", "CHE-101-u01-ex2", "CHE-101-u01-ex3"],
-  "exitCheck": { "description": "All three diagnostic exercises accepted: a balanced equation with a mass-balance check, a correct limiting-reactant and yield analysis, and correct isotope and molarity results, each with assumptions stated. Exercise 1 is the anchor; the course's entry rule is satisfied when all three are accepted.", "exerciseId": "CHE-101-u01-ex1" },
+  "exerciseIds": [
+    "CHE-101-u01-ex1",
+    "CHE-101-u01-ex2",
+    "CHE-101-u01-ex3"
+  ],
+  "exitCheck": {
+    "description": "All three diagnostic exercises accepted: a balanced equation with a mass-balance check, a correct limiting-reactant and yield analysis, and correct isotope and molarity results, each with assumptions stated. Exercise 1 is the anchor; the course's entry rule is satisfied when all three are accepted.",
+    "exerciseId": "CHE-101-u01-ex1"
+  },
   "commonMisconceptions": [
-    { "claim": "An equation can be balanced by changing a subscript.", "correction": "Subscripts define the substance; changing one changes which compound is meant. Only coefficients are adjusted, and both atoms and charge must balance.", "correctionLocatorIds": ["ox-4-1"] },
-    { "claim": "The reactant present in the smaller mass is the limiting reactant.", "correction": "Limiting is decided by amounts compared with the stoichiometric ratio, never by masses. A small mass of a light reactant can be in large excess.", "correctionLocatorIds": ["ox-4-4"] },
-    { "claim": "Molarity is moles of solute per litre of solvent added.", "correction": "Molarity is moles of solute per litre of final solution. Dilution conserves the amount of solute (c1V1 = c2V2) and assumes the final volume is as stated.", "correctionLocatorIds": ["ox-3-3"] },
-    { "claim": "The mass number is the number of neutrons, and an anion has fewer electrons than the neutral atom.", "correction": "Mass number A = protons + neutrons, so neutrons = A − Z; an anion has gained electrons (Z − q with q negative gives more than Z).", "correctionLocatorIds": ["ox-2-3"] }
+    {
+      "claim": "An equation can be balanced by changing a subscript.",
+      "correction": "Subscripts define the substance; changing one changes which compound is meant. Only coefficients are adjusted, and both atoms and charge must balance.",
+      "correctionLocatorIds": [
+        "ox-4-1"
+      ]
+    },
+    {
+      "claim": "The reactant present in the smaller mass is the limiting reactant.",
+      "correction": "Limiting is decided by amounts compared with the stoichiometric ratio, never by masses. A small mass of a light reactant can be in large excess.",
+      "correctionLocatorIds": [
+        "ox-4-4"
+      ]
+    },
+    {
+      "claim": "Molarity is moles of solute per litre of solvent added.",
+      "correction": "Molarity is moles of solute per litre of final solution. Dilution conserves the amount of solute (c1V1 = c2V2) and assumes the final volume is as stated.",
+      "correctionLocatorIds": [
+        "ox-3-3"
+      ]
+    },
+    {
+      "claim": "The mass number is the number of neutrons, and an anion has fewer electrons than the neutral atom.",
+      "correction": "Mass number A = protons + neutrons, so neutrons = A − Z; an anion has gained electrons (Z − q with q negative gives more than Z).",
+      "correctionLocatorIds": [
+        "ox-2-3"
+      ]
+    }
   ],
   "estimatedMinutes": 240,
   "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "All locators opened 2026-10-30: OCW lecture 1 page and notes PDF page 1 (text extracted: 'Review of Fundamentals' assigned as reading); OpenStax sections 2.3, 2.4, 3.1, 3.3, 4.1, 4.3, 4.4 with their learning objectives and Example titles read; the MIT review problems PDF page 1 opened to confirm scope only." },
-    { "name": "mathematical-review", "result": "pass", "evidence": "Content agent re-derived numerically: M(C2H5OH) = 46.07 g/mol; 11.5 g → 0.2496 mol → 0.4993 mol CO2 = 21.97 g; O2 consumed 23.96 g, H2O formed 13.49 g, totals 35.46 g both sides. Fe2O3/CO: 0.15654 mol Fe2O3 needs 0.46963 mol CO < 0.53552 mol available, so Fe2O3 limits; Fe theoretical 17.49 g; 15.2 g is 86.9%; excess CO 1.85 g. Cl: 17 p, 20 n, 18 e; average mass 35.45 u; NaCl 0.1001 mol in 0.2500 L = 0.400 M; diluted 0.100 M." },
-    { "name": "answer-leakage", "result": "pass", "evidence": "Lesson examples use propane, copper, Al/Cl2 and KNO3; the exercises use ethanol, Fe2O3/CO and chlorine/NaCl. Reference values live only in instructor/." },
-    { "name": "workload-sanity", "result": "pass", "evidence": "90 minutes of preparation plus 45 + 75 + 20 + 10 minutes of activities = 4 hours; a diagnostic that a prepared learner finishes in one evening and an unprepared learner spreads over the first week." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "All locators opened 2026-10-30: OCW lecture 1 page and notes PDF page 1 (text extracted: 'Review of Fundamentals' assigned as reading); OpenStax sections 2.3, 2.4, 3.1, 3.3, 4.1, 4.3, 4.4 with their learning objectives and Example titles read; the MIT review problems PDF page 1 opened to confirm scope only."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "Content agent re-derived numerically: M(C2H5OH) = 46.07 g/mol; 11.5 g → 0.2496 mol → 0.4993 mol CO2 = 21.97 g; O2 consumed 23.96 g, H2O formed 13.49 g, totals 35.46 g both sides. Fe2O3/CO: 0.15654 mol Fe2O3 needs 0.46963 mol CO < 0.53552 mol available, so Fe2O3 limits; Fe theoretical 17.49 g; 15.2 g is 86.9%; excess CO 1.85 g. Cl: 17 p, 20 n, 18 e; average mass 35.45 u; NaCl 0.1001 mol in 0.2500 L = 0.400 M; diluted 0.100 M."
+    },
+    {
+      "name": "answer-leakage",
+      "result": "pass",
+      "evidence": "Lesson examples use propane, copper, Al/Cl2 and KNO3; the exercises use ethanol, Fe2O3/CO and chlorine/NaCl. Reference values live only in instructor/."
+    },
+    {
+      "name": "workload-sanity",
+      "result": "pass",
+      "evidence": "90 minutes of preparation plus 45 + 75 + 20 + 10 minutes of activities = 4 hours; a diagnostic that a prepared learner finishes in one evening and an unprepared learner spreads over the first week."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Final independent review 2026-11-12; see .codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md plus LEAD_ACADEMIC_REVIEW.md for scope and limits."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": ["CHE-101-u01-ex1.reference-solution.md", "CHE-101-u01-ex1.grading-notes.md", "CHE-101-u01-ex2.reference-solution.md", "CHE-101-u01-ex3.reference-solution.md", "lesson-notes.md"]
+  "instructorFiles": [
+    "CHE-101-u01-ex1.reference-solution.md",
+    "CHE-101-u01-ex1.grading-notes.md",
+    "CHE-101-u01-ex2.reference-solution.md",
+    "CHE-101-u01-ex3.reference-solution.md",
+    "lesson-notes.md"
+  ]
 }

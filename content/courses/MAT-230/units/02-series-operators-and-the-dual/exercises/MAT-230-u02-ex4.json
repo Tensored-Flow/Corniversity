@@ -1,0 +1,112 @@
+{
+  "id": "MAT-230-u02-ex4",
+  "sequence": 4,
+  "title": "Solve an integral equation by an operator series",
+  "kind": "proof",
+  "promptMarkdown": "On $X=C([0,1])$ with the sup norm let $(Tf)(x)=\\int_0^x f(t)dt$. (a) Prove for $n\\ge1$ that $(T^nf)(x)=\\frac1{(n-1)!}\\int_0^x(x-t)^{n-1}f(t)dt$ and $\\|T^n\\|=1/n!$. (b) For every real or complex $\\lambda$, prove $\\sum_{n=0}^\\infty\\lambda^nT^n$ converges in operator norm and is a two-sided inverse of $I-\\lambda T$. State the completeness used. (c) Deduce existence, uniqueness and the bound $\\|f\\|_\\infty\\le e^{|\\lambda|}\\|g\\|_\\infty$ for $f-\\lambda Tf=g$. (d) Show evaluation at a point is a bounded functional of norm 1 on $X$, and use it to bound $|f(x_0)|$. Why does the same evaluation fail to be bounded for the integral norm on continuous functions?",
+  "conceptIds": [
+    "banach-space",
+    "bounded-operator",
+    "dual-space"
+  ],
+  "hintLadder": [
+    "Compute $T^2$ first on a triangular integration region.",
+    "Retain the factorial when estimating the operator series.",
+    "Multiply finite partial sums before passing to the norm limit.",
+    "For evaluation in the integral norm, concentrate a continuous tent at the fixed point."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Iterate formula and sharp norm.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Convergence and both inverse identities with completeness.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Solution and bound.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "criterion": "Dual norm and changed-norm counterexample.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and hypotheses."
+          },
+          {
+            "label": "partial",
+            "description": "Sound method with a repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 85,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Combines the unit methods and checks a limiting or changed-context case."
+    },
+    "knownAmbiguities": []
+  }
+}

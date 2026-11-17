@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u04-ex1",
+  "sequence": 1,
+  "title": "Factorisation, gradients and a rank obstruction",
+  "kind": "calculation",
+  "promptMarkdown": "Let T=diag(3,1), X=I₂, W₁=diag(0.5,1), W₂=diag(1,0.5), and L=½||W₂W₁−T||²_F. Calculate product, loss and both matrix gradients. Show an invertible hidden rescaling that preserves the product. Prove that a hidden width 1 cannot exactly represent T, and justify a minimum rank-one squared error of1.",
+  "conceptIds": [
+    "deep-linear-network-dynamics"
+  ],
+  "hintLadder": [
+    "Differentiate the product through each factor while holding the other fixed.",
+    "Insert RR⁻¹ between factors.",
+    "Use a null vector of a rank-one2×2 matrix."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Computes product/loss/gradients with correct convention",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Demonstrates factor nonuniqueness",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Proves the rank and approximation claims",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

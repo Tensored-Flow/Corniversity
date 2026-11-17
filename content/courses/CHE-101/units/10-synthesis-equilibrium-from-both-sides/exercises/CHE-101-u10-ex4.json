@@ -1,0 +1,149 @@
+{
+  "id": "CHE-101-u10-ex4",
+  "sequence": 4,
+  "title": "Cumulative capstone: audit a carbon-conversion proposal",
+  "kind": "model_interpretation",
+  "promptMarkdown": "Write a coherent 1200–1800-word report (equations/tables excluded; a comparably complete annotated calculation is acceptable) on this stipulated educational model, not a claim about a real device. At298.15K a cell reduces CO₂+2H⁺+2e⁻→HCOOH. Take its illustrative E°red=−0.200V, a(CO₂)=1.00, a(HCOOH)=0.0100 and pH2.00. The other half cell has reduction potential+0.100V under its maintained conditions and is used as the anode. A supply operates at1.50V,0.500A for60.0min with product Faradaic efficiency0.800. Use R=8.31446Jmol⁻¹K⁻¹, F=96485Cmol⁻¹, M(HCOOH)=46.025gmol⁻¹, pKa(HCOOH)=3.75; activities are ideal approximations. A candidate catalyst has a group-10 M²⁺ centre with four neutral monodentate donors and is diamagnetic. A manager claims “the catalyst changes K, heating always raises equilibrium yield, and current proves carbon conversion.”\n\n(a) Balance atoms/charge and carbon oxidation states; describe Lewis/VSEPR CO₂ shape and polarity. (b) Derive Q and Ered, Ecell, and ΔrG per mole of the cell reaction; state the minimum reversible electrical energy needed for forward conversion under these conditions and why a real supply may exceed it. (c) At the stated pH calculate the formate/neutral-acid ratio; distinguish free neutral product from total product and explain the limitations of holding all supplied activities fixed during the full run. (d) Calculate charge, neutral-acid-equivalent product amount/mass, supplied energy and energy per mole of intended product. (e) Infer d count and compare plausible square-planar/tetrahedral models with limits. (f) Correct each managerial claim and design a controlled measurement plan covering product identification/amount, catalyst activity, mass/charge consistency and an equilibrium-versus-rate comparison. Include one consistency check and one unresolved real-device limitation.",
+  "conceptIds": [
+    "kinetic-view-of-equilibrium",
+    "chemical-equilibrium-constant"
+  ],
+  "hintLadder": [
+    "Begin with a species/charge table and identify which potential is a reduction potential.",
+    "Keep Ecell=Ecathode,red−Eanode,red even for an externally driven unfavourable forward reaction.",
+    "Use pH and pKa to distinguish neutral acid from acid equivalents; current efficiency concerns total formed equivalents.",
+    "Track charge, useful product amount and supply energy separately, then test each managerial claim with a discriminating measurement."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Balances matter/electrons and explains bonding geometry",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Derives thermodynamic direction, potential and reversible-work convention",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Handles acid speciation and reservoir assumptions",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-4",
+        "criterion": "Calculates charge, product and energy with independent checks",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-5",
+        "criterion": "Uses coordination evidence with explicit model limits",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-6",
+        "criterion": "Integrates kinetic/equilibrium reasoning into a falsifiable measurement plan",
+        "weight": 0.16666666666666666,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 150,
+  "progression": {
+    "stage": "synthesis",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

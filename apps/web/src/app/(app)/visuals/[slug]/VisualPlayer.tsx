@@ -65,7 +65,14 @@ export function VisualPlayer({ title, scenes }: { title: string; scenes: PlayerS
           </span>{" "}
           {scene.title}
         </h2>
-        <div className="mt-3 overflow-x-auto">{scene.body}</div>
+        <section
+          aria-label={`${scene.title} diagram`}
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: the diagram scrolls sideways and must be reachable by keyboard (axe: scrollable-region-focusable)
+          tabIndex={0}
+          className="mt-3 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
+          {scene.body}
+        </section>
         <p className="mt-3 max-w-prose text-base text-ink" data-testid="scene-caption">
           {scene.caption}
         </p>

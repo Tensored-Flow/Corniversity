@@ -1,0 +1,92 @@
+{
+  "id": "MAT-261-u07-ex2",
+  "sequence": 2,
+  "title": "When is a plane curve projection an immersion?",
+  "kind": "proof",
+  "promptMarkdown": "Let $\\gamma(t)=(\\cos t,\\sin t,\\sin2t)$ for $t\\in\\mathbb R/2\\pi\\mathbb Z$. Show it is an embedding in $\\mathbb R^3$. Compare its projections to the $xy$- and $xz$-planes: determine whether each is injective and whether each is an immersion, and locate all failures.",
+  "conceptIds": [
+    "fibre-bundles",
+    "whitney-embedding"
+  ],
+  "hintLadder": [
+    "Use the first two coordinates to recognise the space curve.",
+    "A plane derivative vanishes only if both components vanish.",
+    "Equality of cosines reduces possible double points to $s=\\pm t$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Embedding and topology proof.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Correct derivative and immersion checks.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Complete fibre/crossing analysis.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

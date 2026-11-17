@@ -2,6 +2,7 @@
 // package's tests can run at the same time (CORNIVERSITY_WORKER_TEST_PG_PORT, default 5439; the
 // cluster folder carries the port). Migrations are applied once per run.
 import { mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { createDb } from "@corniversity/db/client";
 import { runMigrations } from "@corniversity/db/migrate";
@@ -22,7 +23,7 @@ process.on("exit", () => {
   if (vitestExitCode) process.exitCode = vitestExitCode;
 });
 
-const dir = resolve(process.env.TEMP ?? process.env.TMPDIR ?? ".", `corniversity-test-pg-worker-${TEST_PORT}`);
+const dir = resolve(tmpdir(), `corniversity-test-pg-worker-${TEST_PORT}`);
 
 export default async function setup(): Promise<() => Promise<void>> {
   rmSync(dir, { recursive: true, force: true });

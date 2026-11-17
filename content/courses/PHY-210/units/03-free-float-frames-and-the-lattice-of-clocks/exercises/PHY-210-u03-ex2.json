@@ -1,0 +1,90 @@
+{
+  "id": "PHY-210-u03-ex2",
+  "sequence": 2,
+  "title": "Two moving clocks and one simultaneity slice",
+  "kind": "derivation",
+  "promptMarkdown": "Two clocks at rest in $S\\prime$ are synchronised there and separated by $L\\prime=120\\,\\mathrm m$ along their direction of motion. The frame moves at $v=3c/5$ relative to $S$. Derive the simultaneous-in-$S$ separation and the difference of their displayed times, leading minus trailing. Then determine how much each display advances during $1\\,\\mu\\mathrm s$ of $S$ time. Explain why an offset does not imply different clock rates.",
+  "conceptIds": [
+    "minkowski-spacetime"
+  ],
+  "hintLadder": [
+    "Apply both Lorentz equations to the same two simultaneous-in-$S$ events.",
+    "For a clock rate use $dx=vdt$, not $dx=0$.",
+    "Draw both parallel clock worldlines and a horizontal $S$ slice."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Same event pair is used for length and offset.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Offset sign and dimensions are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Clock rates are derived separately and explained.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

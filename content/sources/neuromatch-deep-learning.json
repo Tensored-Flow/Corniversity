@@ -21,15 +21,16 @@
       "id": "nma-dl-web-2026",
       "label": "Online ebook, rolling publication (opened 2026-10-30)",
       "url": "https://deeplearning.neuromatch.io/tutorials/intro.html",
-      "verifiedAt": "2026-10-30",
-      "verifiedBy": "Claude (content author agent) — opened the introduction, schedule, prerequisites, every cited chapter page and tutorial page with WebFetch, and checked every cited URL returned HTTP 200 with the stated title",
+      "verifiedAt": "2026-11-12",
+      "verifiedBy": "Claude (content author agent) — opened the introduction, schedule, prerequisites, every cited chapter page and tutorial page with WebFetch, and checked every cited URL returned HTTP 200 with the stated title; extended by Codex author and independent reviewers on 2026-11-12, with exact read scope in course manifests and quality-loop ledgers",
       "componentsSeen": [
         "Introduction page (concept map, sponsors, footer licence statement) and sidebar listing W1D1–W3D5 plus Bonus: Deploy Models, wrap-ups and the project booklet",
         "General schedule page: three weeks; standard day of two 90-minute tutorial blocks plus pod discussions, with three hours of project time per day; W1D5, W3D2 and W3D5 are project/discussion days",
         "Prerequisites page: Python (variables, lists, dicts, NumPy, SciPy, Matplotlib), linear algebra, basic statistics, calculus including derivatives and ODEs, with named preparatory resources",
         "Chapter pages for W1D1, W1D2, W1D3, W1D4, W2D1, W2D2, W2D3, W2D5, W3D1, W3D3 (each lists its tutorials; no descriptive text)",
         "Tutorial pages opened in full or via their contents list: W1D1 T1, W1D2 T1–T3, W1D3 T1–T2, W1D4 T1, W2D1 T1–T2, W2D2 T1, W2D3 T1, W2D5 T2, W3D1 T1, W3D3 T1",
-        "GitHub repository NeuromatchAcademy/course-content-dl: README licence sentences, LICENSE.md (CC BY 4.0) and LICENSE-CODE.md (BSD 3-Clause)"
+        "GitHub repository NeuromatchAcademy/course-content-dl: README licence sentences, LICENSE.md (CC BY 4.0) and LICENSE-CODE.md (BSD 3-Clause)",
+        "2026-11-12: actual tutorial text for the completed CSA-210 sequence read and mapped in source-review-manifest.json; independent checks of deep-linear, attention, PCA, ELBO and contrastive assumptions are recorded in SCIENCE_REVIEW.md. Only Corniversity original standard-library reference programs were executed."
       ],
       "licence": "CC BY 4.0 (content); BSD 3-Clause (software)",
       "licenceUrl": "https://github.com/NeuromatchAcademy/course-content-dl/blob/main/LICENSE.md",
@@ -41,7 +42,7 @@
       "limitations": [
         "Rolling publication without version stamps: tutorial section numbering and titles may change; every locator records the title and anchor seen on 2026-10-30 and should be re-verified before each term.",
         "Embedded lecture videos were not watched; no video locators are recorded. Tutorials are cited by page and section anchor.",
-        "W1D2 Tutorial 2, W2D3 Tutorial 1 and W3D3 Tutorial 1 were confirmed to load with the stated titles, but their full contents were truncated in the fetch; only page-level locators exist for them.",
+        "The original 2026-10-30 fetch of W1D2 T2, W2D3 T1 and W3D3 T1 was truncated. Actual tutorial text used for the 2026-11-12 completion pass is recorded in CSA-210/source-review-manifest.json; W2D3 T1 and W3D3 T1 sections were read for PCA, ELBO, contrastive objectives and representation limits. Do not infer video viewing or execution of upstream notebooks.",
         "The Neuromatch schedule is a three-week intensive; it is not an evening-study workload estimate. Corniversity re-paces the material.",
         "The ebook offers Colab and Kaggle launch buttons; running notebooks requires those third-party services or a local PyTorch installation, which Corniversity does not provide."
       ],

@@ -3,8 +3,11 @@
   "sequence": 2,
   "title": "Electron configurations and a photoelectron spectrum",
   "kind": "short_answer",
-  "promptMarkdown": "1. Write the ground-state electron configurations of sulfur ($Z = 16$), iron ($Z = 26$) and the $\\ce{Fe^3+}$ ion, using noble-gas cores. How many unpaired electrons does $\\ce{Fe^3+}$ have, and which rule decides it?\n2. An unknown element's X-ray photoelectron spectrum shows exactly four distinct electron kinetic energies, one for each occupied subshell. Which neutral elements are consistent with this spectrum? Explain how you decided, naming the subshells.\n3. In the aufbau order $4s$ fills before $3d$, yet when iron is ionised the $4s$ electrons leave first. Explain in two or three sentences why both statements are true.",
-  "conceptIds": ["electron-configuration", "periodic-trends"],
+  "promptMarkdown": "1. Write the ground-state electron configurations of sulfur ($Z = 16$), iron ($Z = 26$) and the isolated gas-phase ground-state $\\ce{Fe^3+}$ ion, using noble-gas cores. How many unpaired electrons does $\\ce{Fe^3+}$ have, and which rule decides it?\n2. In a simplified unresolved-subshell PES model (spin–orbit splitting and multiplet structure omitted), an unknown element shows exactly four peaks, one per occupied subshell. Which neutral elements are consistent with this spectrum? Explain how you decided, naming the subshells.\n3. In the aufbau order $4s$ fills before $3d$, yet when iron is ionised the $4s$ electrons leave first. Explain in two or three sentences why both statements are true.",
+  "conceptIds": [
+    "electron-configuration",
+    "periodic-trends"
+  ],
   "hintLadder": [
     "Count electrons up to the preceding noble gas, then fill $3s$, $3p$, $4s$, $3d$ in order; for the ion, remove electrons from the neutral atom's configuration.",
     "Hund's rule puts electrons into separate degenerate orbitals with parallel spins before pairing; apply it to the $d$ electrons that remain.",
@@ -16,27 +19,101 @@
       "id": "fe3-config",
       "kind": "expression_present",
       "description": "Fe³⁺ written as [Ar]3d⁵ (or the full 1s²…3d⁵ form)",
-      "params": { "patterns": ["\\[ar\\]3d\\^?5(?![0-9])", "3s\\^?23p\\^?63d\\^?5(?![0-9])"] }
+      "params": {
+        "patterns": [
+          "\\[ar\\]3d\\^?5(?![0-9])",
+          "3s\\^?23p\\^?63d\\^?5(?![0-9])"
+        ]
+      }
     },
     {
       "id": "no-4s-retained",
       "kind": "forbidden_claim",
       "description": "giving Fe³⁺ as [Ar]3d³4s² (removing 3d electrons before 4s)",
-      "params": { "patterns": ["3d\\^?34s\\^?2"] }
+      "params": {
+        "patterns": [
+          "3d\\^?34s\\^?2"
+        ]
+      }
     },
     {
       "id": "pes-elements",
       "kind": "expression_present",
       "description": "sodium or magnesium named as the elements with four occupied subshells",
-      "params": { "patterns": ["sodium", "magnesium", "na\\(z=11\\)", "mg\\(z=12\\)", "naandmg", "naormg", "na,mg", "mg,na"] }
+      "params": {
+        "patterns": [
+          "sodium",
+          "magnesium",
+          "na\\(z=11\\)",
+          "mg\\(z=12\\)",
+          "naandmg",
+          "naormg",
+          "na,mg",
+          "mg,na"
+        ]
+      }
     }
   ],
   "rubric": {
     "version": 1,
     "criteria": [
-      { "id": "configurations", "criterion": "S = [Ne]3s²3p⁴, Fe = [Ar]3d⁶4s², Fe³⁺ = [Ar]3d⁵; five unpaired electrons by Hund's rule.", "weight": 0.4, "levels": [{ "label": "met", "description": "All three configurations and the unpaired count with Hund's rule named." }, { "label": "partially met", "description": "Neutral atoms right, ion wrong or unpaired count wrong." }, { "label": "not met", "description": "Two or more configurations wrong." }] },
-      { "id": "pes", "criterion": "Four peaks ⇒ 1s, 2s, 2p, 3s occupied ⇒ Na or Mg, with the subshells named.", "weight": 0.35, "levels": [{ "label": "met", "description": "Both elements and the reasoning." }, { "label": "partially met", "description": "One element, or elements without the subshell reasoning." }, { "label": "not met", "description": "Wrong elements." }] },
-      { "id": "ordering", "criterion": "Explains that orbital energies depend on Z and occupancy: 4s is below 3d at K and Ca, but once 3d is occupied in a transition metal it lies below 4s, so ionisation removes 4s first.", "weight": 0.25, "levels": [{ "label": "met", "description": "Clear and correct." }, { "label": "partially met", "description": "States the fact without the energy-ordering reason." }, { "label": "not met", "description": "Missing or asserts 3d is removed first." }] }
+      {
+        "id": "configurations",
+        "criterion": "S = [Ne]3s²3p⁴, Fe = [Ar]3d⁶4s², Fe³⁺ = [Ar]3d⁵; five unpaired electrons by Hund's rule.",
+        "weight": 0.4,
+        "levels": [
+          {
+            "label": "met",
+            "description": "All three configurations and the unpaired count with Hund's rule named."
+          },
+          {
+            "label": "partially met",
+            "description": "Neutral atoms right, ion wrong or unpaired count wrong."
+          },
+          {
+            "label": "not met",
+            "description": "Two or more configurations wrong."
+          }
+        ]
+      },
+      {
+        "id": "pes",
+        "criterion": "Within the stipulated unresolved-subshell model, four peaks mean occupied 1s, 2s, 2p, 3s: Na or Mg; name the subshells and model assumption.",
+        "weight": 0.35,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Both elements and the reasoning."
+          },
+          {
+            "label": "partially met",
+            "description": "One element, or elements without the subshell reasoning."
+          },
+          {
+            "label": "not met",
+            "description": "Wrong elements."
+          }
+        ]
+      },
+      {
+        "id": "ordering",
+        "criterion": "Explains that orbital energies depend on Z and occupancy: 4s is below 3d at K and Ca, but once 3d is occupied in a transition metal it lies below 4s, so ionisation removes 4s first.",
+        "weight": 0.25,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Clear and correct."
+          },
+          {
+            "label": "partially met",
+            "description": "States the fact without the energy-ordering reason."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or asserts 3d is removed first."
+          }
+        ]
+      }
     ],
     "acceptAlternateApproaches": true,
     "referenceIsExhaustive": false
@@ -47,12 +124,20 @@
     {
       "label": "correct answer",
       "text": "S: [Ne]3s^2 3p^4. Fe: [Ar]3d^6 4s^2. Fe^3+: [Ar]3d^5 with five unpaired electrons by Hund's rule. Four kinetic energies means four occupied subshells, 1s, 2s, 2p and 3s, so the element is sodium (Na, Z = 11) or magnesium (Mg, Z = 12). 4s fills first in K and Ca because it lies below 3d there, but in the neutral transition metal the occupied 3d orbitals are lower in energy, so the 4s electrons are removed first.",
-      "expect": { "fe3-config": true, "no-4s-retained": true, "pes-elements": true }
+      "expect": {
+        "fe3-config": true,
+        "no-4s-retained": true,
+        "pes-elements": true
+      }
     },
     {
       "label": "3d removed first and wrong elements",
       "text": "Fe^3+ is [Ar]3d^3 4s^2 with three unpaired electrons. Four peaks means four electrons, so the element is beryllium.",
-      "expect": { "fe3-config": false, "no-4s-retained": false, "pes-elements": false }
+      "expect": {
+        "fe3-config": false,
+        "no-4s-retained": false,
+        "pes-elements": false
+      }
     }
   ]
 }

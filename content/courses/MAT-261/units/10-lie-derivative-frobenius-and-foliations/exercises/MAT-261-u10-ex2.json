@@ -1,0 +1,91 @@
+{
+  "id": "MAT-261-u10-ex2",
+  "sequence": 2,
+  "title": "A foliation by curved graphs",
+  "kind": "proof",
+  "promptMarkdown": "Let $q(x,y,z)=z/(1+x^2+y^2)$ and $D=\\ker dq$. Produce a global frame for $D$, verify its bracket vanishes, and identify its leaves. Then compare with $\\eta=dz-y\\,dx$: compute $\\eta\\wedge d\\eta$ and relate the answer to the preceding exercise.",
+  "conceptIds": [
+    "lie-derivative-frobenius"
+  ],
+  "hintLadder": [
+    "Use the nonzero z derivative to solve for a frame with horizontal components (1,0) and (0,1).",
+    "A vertical bracket in the kernel must be zero.",
+    "Keep wedge order explicit when changing signs."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Frame and rank.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Bracket proof and connected leaves.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Correct exterior calculation and comparison.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "unfamiliar",
+    "difficulty": {
+      "level": "challenging",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": [],
+    "transferNote": "Apply the unit method to the changed setting and justify precisely which hypotheses survive."
+  }
+}

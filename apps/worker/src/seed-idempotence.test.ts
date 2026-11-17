@@ -96,8 +96,8 @@ describe("Mind, Brain and AI against the seeded catalogue", () => {
     expect(detail?.blocks).toHaveLength(12);
     expect(detail?.programme.electives).toHaveLength(8);
     const byId = new Map(detail!.blocks.map((b) => [b.block.id, b.report.readiness]));
-    // MBI-07 maps prepared and unprepared CSA-210 units; MBI-02 maps only proposed courses.
-    expect(byId.get("MBI-07")).toBe("partly_prepared");
+    // All mapped CSA-210 units are prepared; MBI-02 maps only proposed courses.
+    expect(byId.get("MBI-07")).toBe("teaching_available");
     expect(byId.get("MBI-02")).toBe("proposed");
     // A unit that serves two blocks is one work item.
     const shared = detail!.workItems.find((w) => w.unitId === "CSA-210-u01");

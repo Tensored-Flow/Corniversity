@@ -1,0 +1,91 @@
+{
+  "id": "PHY-210-u09-ex1",
+  "sequence": 1,
+  "title": "A braking force is not a constant coordinate deceleration",
+  "kind": "calculation",
+  "promptMarkdown": "A particle of invariant mass $m$ moves initially at $3c/5$ along $+x$ in laboratory $S$. A constant force $f_x=-F$ ($F>0$) acts until it first stops. Find its laboratory stopping time and stopping distance, the elapsed proper time, and the magnitude of proper acceleration. Check the work–energy relation and compare with the low-speed formula using a general initial speed $v_0\\ll c$.",
+  "conceptIds": [
+    "four-vectors",
+    "spacetime-causal-structure"
+  ],
+  "hintLadder": [
+    "Solve $dp/dt=-F$ before trying to solve for $v(t)$.",
+    "Use $E_f-E_i=-Fx_s$ and express momentum as $mc\\sinh\\theta$.",
+    "The chain rule cancels the factor $\\cosh\\theta$ in $dp/dt$ when $dt/d\\tau=\\cosh\\theta$."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Initial four-momentum and stopping time are correct.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Distance follows from work and its sign is checked.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Proper time and proper acceleration are derived, with a low-speed check.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

@@ -2,10 +2,14 @@
 
 Machine-readable records live in `content/sources/*.json` (title, authors/institution,
 edition/year, canonical URL, licence, access status, components seen, verification date, verified
-locators, limitations, rights notes). This file is generated from them and summarises status.
+locators, limitations, rights notes). The table below summarises those records; course manifests
+and review ledgers record the narrower passages actually used and checked for teaching.
 "Verified" means an agent opened the page on the stated date and recorded what it saw; it never
 means every sub-resource was audited. The `limitations` array of each record lists exactly what
-was not opened.
+was not opened. The current registry has 59 academic sources and 1,166 verified locators.
+A locator is not a source-body retrieval: runtime drafting requires actual permissioned library
+passages, and preparation, assessment and tutoring recheck availability and consent before
+dispatch. Permission to import is separate from permission to send text to an external model.
 
 ## Framework references
 
@@ -16,8 +20,10 @@ was not opened.
 ## Academic sources (59 records)
 
 "Import" means the worker may fetch the files named by verified locators from the listed hosts
-and the items are permitted for tutors under the recorded licence; everything else is
-reference-only until the owner grants permissions per item in the Library.
+under the recorded licence. External-AI use also requires the item's recorded action permission.
+Other records remain reference-only unless their rights and item permissions allow more; an
+owner toggle is not a substitute for rights that the source explicitly withholds.
+
 | ID | Source | Version used | Licence as recorded | Access | Import | Verified | Locators | Used by |
 |---|---|---|---|---|---|---|---|---|
 | `bayes-rules` | Bayes Rules! An Introduction to Applied Bayesian Modeling | Online edition (build dated 2021-12-01 on the home page) | CC BY-NC-SA 4.0 | open | yes: www.bayesrulesbook.com | 2026-10-31 | 4 | shelf MBI-04 |
@@ -46,7 +52,7 @@ reference-only until the owner grants permissions per item in the Library.
 | `lee-riemannian` | Introduction to Riemannian Manifolds (Second Edition) | 2nd edition (2018), Springer GTM 176 | All rights reserved (Springer International Publishing AG 2018); comm… | commercial; reference-only | no | 2026-10-30 | 19 | MAT-262 (suppl.) |
 | `mit-algebra-2010` | 18.701 Algebra I | Fall 2010 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 4 | MAT-270 (suppl.) |
 | `mit-algebra-notes-2021` | RES.18-011 Algebra I Student Notes | Fall 2021 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 15 | MAT-270 (suppl.) |
-| `mit-chem-2014` | 5.111SC Principles of Chemical Science | Fall 2014 (OCW Scholar publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 83 | CHE-101 (primary) |
+| `mit-chem-2014` | 5.111SC Principles of Chemical Science | Fall 2014 (OCW Scholar publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-11-12 | 128 | CHE-101 (primary) |
 | `mit-cm3-2014` | 8.09 Classical Mechanics III | Fall 2014 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 28 | PHY-201 (primary) |
 | `mit-cocosci-2004` | 9.66J Computational Cognitive Science (Fall 2004) | Fall 2004 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 102 | COG-201 (primary), shelf MBI-01, MBI-03 |
 | `mit-cognitive-science` | Computational Cognitive Science (9.66J / 9.660 / 6.804J) — CBMM course entry page | CBMM course page as published (semester shown: Fall 2021; opened 2026-10-30) | Not stated; CBMM copyright notice and Terms of Use | readable online; reference-only | no | 2026-10-30 | 1 | COG-201 (suppl.) |
@@ -58,7 +64,7 @@ reference-only until the owner grants permissions per item in the Library.
 | `mit-neural-computation-2018` | 9.40 Introduction to Neural Computation (Spring 2018) | Spring 2018 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-31 | 4 | shelf MBI-02, MBI-08 |
 | `mit-sr-2021` | 8.20 Introduction to Special Relativity | January IAP 2021 (OCW publication) | CC BY-NC-SA 4.0 | open | yes: ocw.mit.edu | 2026-10-30 | 7 | PHY-210 (suppl.) |
 | `neuromatch-compneuro` | Neuromatch Academy: Computational Neuroscience (course book) | Course book as published online (repository syllabus dated July 7–25, 2025; book marked 'under continuous dev… | CC BY 4.0 (content); code separately BSD-3-Clause | open | yes: compneuro.neuromatch.io | 2026-10-30 | 36 | NEU-220 (primary), shelf MBI-01, MBI-02, MBI-04, MBI-06, MBI-08 |
-| `neuromatch-deep-learning` | Neuromatch Academy: Deep Learning (course ebook) | Online ebook, rolling publication (opened 2026-10-30) | CC BY 4.0 (content); BSD 3-Clause (software) | open | yes: deeplearning.neuromatch.io | 2026-10-30 | 39 | CSA-210 (primary), shelf MBI-07 |
+| `neuromatch-deep-learning` | Neuromatch Academy: Deep Learning (course ebook) | Online ebook, rolling publication (opened 2026-10-30) | CC BY 4.0 (content); BSD 3-Clause (software) | open | yes: deeplearning.neuromatch.io | 2026-11-12 | 39 | CSA-210 (primary), shelf MBI-07 |
 | `neuromatch-neuroai` | Neuromatch Academy: NeuroAI (course book) | Course book as published online (MyST build; repository syllabus dated July 14-25, 2025; marked 'under contin… | CC BY 4.0 (content, per repository README and LICENSE.md); code separ… | open | yes: neuroai.neuromatch.io | 2026-10-31 | 4 | COG-260 (suppl.), shelf MBI-07, MBI-08, MBI-11 |
 | `neuroscience-online` | Neuroscience Online: An Electronic Textbook for the Neurosciences | Online edition (home page 'Last Revision or Edit: 13 January 2026'; chapters carry their own revision dates;… | No licence stated; 'Contents © 1997-Present - McGovern Medical School… | readable online; reference-only | no | 2026-10-31 | 4 | shelf MBI-02, MBI-08 |
 | `noba-psychology` | Noba textbook series: Psychology (modules) | Modules as published online (module citations dated 2026; '© 2026 Diener Education Fund'; viewed 2026-10-31) | CC BY-NC-SA 4.0 | open | yes: nobaproject.com | 2026-10-31 | 4 | shelf MBI-03 |
@@ -71,7 +77,7 @@ reference-only until the owner grants permissions per item in the Library.
 | `sternberg-semi-riemannian` | Semi-Riemann Geometry and General Relativity | 24 September 2003 (author-hosted PDF) | CC BY-NC-SA 2.0 (stated on the author's books page) | open | yes: people.math.harvard.edu | 2026-10-30 | 19 | MAT-262 (primary) |
 | `sutton-barto-rl-2e` | Reinforcement Learning: An Introduction (second edition) | Second edition (MIT Press, 2018), author-hosted full PDF RLbook2020.pdf: copyright page '© 2018, 2020'; 548 P… | Creative Commons Attribution-NonCommercial-NoDerivs 2.0 Generic (CC B… | open | yes: incompleteideas.net | 2026-10-31 | 22 | COG-250 (primary), shelf MBI-06, MBI-09 |
 | `tao-measure-theory` | An Introduction to Measure Theory | 2011 (GSM 126) with author-hosted online draft (PDF uploaded December 2012) | No licence stated on the author's pages; copyright in the printed boo… | readable online; reference-only | no | 2026-10-30 | 2 | MAT-210 (suppl.) |
-| `taylor-wheeler-spacetime-physics` | Spacetime Physics: Introduction to Special Relativity (Second Edition) | Second edition (W. H. Freeman, 1992), authors' CC BY 4.0 scans on eftaylor.com | CC BY 4.0 | open | yes: www.eftaylor.com | 2026-10-30 | 46 | PHY-210 (primary) |
+| `taylor-wheeler-spacetime-physics` | Spacetime Physics: Introduction to Special Relativity (Second Edition) | Second edition (W. H. Freeman, 1992), authors' CC BY 4.0 scans on eftaylor.com | CC BY 4.0 | open | yes: www.eftaylor.com | 2026-11-12 | 46 | PHY-210 (primary) |
 | `tolman-1948-cognitive-maps` | Cognitive maps in rats and men | Web transcription at Classics in the History of Psychology (original: Psychological Review 55(4), 189-208, 19… | Public domain, as stated in the host's site-wide copyright note (no s… | readable online; reference-only | no | 2026-10-31 | 10 | COG-250 (suppl.), shelf MBI-09 |
 | `tong-classical-dynamics` | Classical Dynamics (lecture notes) | Web edition on davidtong.org (undated; HTML version generated 2022-03-24) | No licence stated; author copyright (free to read on the author's pag… | readable online; reference-only | no | 2026-10-30 | 17 | PHY-201 (suppl.) |
 | `tong-dynamics-relativity` | Dynamics and Relativity (lecture notes) | Web edition on davidtong.org (undated) | No licence stated; author copyright (free to read on the author's pag… | readable online; reference-only | no | 2026-10-30 | 13 | PHY-201 (suppl.), PHY-210 (suppl.) |
@@ -79,6 +85,28 @@ reference-only until the owner grants permissions per item in the Library.
 | `turing-way` | The Turing Way | Online handbook, rolling community publication (MyST build; no version number shown; viewed 2026-10-31) | CC BY 4.0 (content); MIT (code) | open | yes: book.the-turing-way.org | 2026-10-31 | 4 | shelf MBI-12 |
 | `wendl-connections-2008` | Lecture Notes on Bundles and Connections | Draft of 26 September 2008 (chapter PDFs) | Author's explicit statement: free use and copying for any non-commerc… | open | yes: www.mathematik.hu-berlin.de | 2026-10-30 | 12 | MAT-262 (suppl.) |
 | `wilson-collins-2019-ten-rules` | Ten simple rules for the computational modeling of behavioral data | Version of Record, eLife 8:e49547, published 26 November 2019 (received 26 June 2019, accepted 9 October 2019… | CC BY 4.0 (Creative Commons Attribution License) | open | yes: elifesciences.org, cdn.elifesciences.org | 2026-10-31 | 29 | COG-260 (primary), shelf MBI-04, MBI-06, MBI-11, MBI-12 |
+
+## Source evidence for the five complete courses
+
+The 54-unit, 195-exercise package has separate author/source records, independent solution
+checks and final repair review. These records describe actual inspected passages; they do not
+claim a line-by-line audit of whole books or optional readings. Source bodies stay outside git.
+
+| Course | Working source and current evidence | Boundary |
+|---|---|---|
+| CHE-101 | MIT 5.111SC notes, including actual lectures 20–29 and 34–35 bodies and 45 added page locators; [manifest](../content/courses/CHE-101/source-review-manifest.json), [science review](../.codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md) | Fill-in notes need explanatory derivations; third-party figures are not copied. OpenStax remains human reference-only and supplies no AI-ingested body. |
+| PHY-210 | Taylor–Wheeler second-edition chapters and Lorentz special topic; selected Tong chapter 7 passages; [manifest](../content/courses/PHY-210/source-review-manifest.json), [physics review](../.codex/quality-loop/university-teaching-quality/PHYSICS_REVIEW.md) | OCR needs visual care; the independent pass does not reread all of chapter 3 or watch whole MIT videos. The old neutrino/null examples and Tong Higgs branching claim are explicitly corrected. |
+| MAT-230 | MIT 18.102 lecture text; complete independent reasoning for all 44 exercises, including Hahn–Banach, Lp completeness and spectral proof portfolios; [maths review](../.codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md) | Source inspection is passage-specific; the Green-kernel sign is corrected and classical regularity is distinguished from L2 convergence. |
+| MAT-261 | MIT 18.965 actual lecture notes with repaired download URLs; targeted Hitchin homotopy/Stokes passages; all 43 exercise solutions independently checked | Terse/unfinished source proofs receive explicit teaching detail. Strong Whitney, global Reeb and general good-cover inputs retain stated proof boundaries; optional sources are not all audited. |
+| CSA-210 | Actual Neuromatch tutorial passages and code; [manifest](../content/courses/CSA-210/source-review-manifest.json), [science review](../.codex/quality-loop/university-teaching-quality/SCIENCE_REVIEW.md) | Videos, source datasets and pretrained models are not imported or claimed as reviewed. Original CPU examples and the capstone are executed; synthetic observations do not establish real-world performance. |
+
+The lead's [independent solution record](../.codex/quality-loop/university-teaching-quality/LEAD_ACADEMIC_REVIEW.md)
+covers all 75 chemistry/CS answers and the executed CS code. The separate science reviewer reads
+all 20 lessons and the specified assessment samples; it does not claim a second fresh solution of
+every one of those 75 exercises. Maths and physics coverage and post-repair scope are recorded in
+their own reports. These are independent agent checks, not external expert certification or
+empirical learning validation. Older dated locator notes describe their original inspection;
+newer manifests and review records give the additional inspected scope.
 
 ## Findings that changed the plan
 

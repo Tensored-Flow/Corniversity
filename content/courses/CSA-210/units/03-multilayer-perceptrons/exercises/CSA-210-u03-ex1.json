@@ -1,0 +1,90 @@
+{
+  "id": "CSA-210-u03-ex1",
+  "sequence": 1,
+  "title": "A ReLU spline and its error",
+  "kind": "calculation",
+  "promptMarkdown": "Construct the piecewise-linear interpolant to f (x)=x² at knots0,1/2,1 on[0,1] as a constant+linear term+shifted ReLU. Calculate its error at 1/4 and3/4, prove the maximum absolute error, and state its predictions at−1 and2. Explain why a good interpolation bound on[0,1] does not justify extrapolation.",
+  "conceptIds": [
+    "multilayer-perceptron"
+  ],
+  "hintLadder": [
+    "Compute consecutive secant slopes.",
+    "A ReLU coefficient changes the slope after its knot.",
+    "Factor the error on each interval rather than relying only on grid samples."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "criterion-1",
+        "criterion": "Constructs the exact spline representation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-2",
+        "criterion": "Proves the error and calculates values",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      },
+      {
+        "id": "criterion-3",
+        "criterion": "Distinguishes interval approximation from extrapolation",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct reasoning and conclusion, with the stated assumptions."
+          },
+          {
+            "label": "partially met",
+            "description": "A relevant method with an identifiable gap or computational error."
+          },
+          {
+            "label": "not met",
+            "description": "The required reasoning is absent or contradicted."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 35,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires connecting assumptions to a calculation or argument; the reference solution gives one valid route."
+    },
+    "knownAmbiguities": []
+  }
+}

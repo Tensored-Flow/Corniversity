@@ -1,0 +1,90 @@
+{
+  "id": "MAT-261-u06-ex2",
+  "sequence": 2,
+  "title": "The shape of a rank stratum",
+  "kind": "proof",
+  "promptMarkdown": "Prove the rank-$r$ codimension formula for $n\\times k$ matrices using the Schur complement. Specialise to $3\\times2$ matrices of rank 1. Find their tangent space at $B_0=\\begin{pmatrix}1&0\\\\0&0\\\\0&0\\end{pmatrix}$ and show that the full-rank locus is open.",
+  "conceptIds": [
+    "sard-theorem"
+  ],
+  "hintLadder": [
+    "Perform invertible row operations to eliminate $Q$.",
+    "At the displayed matrix the quadratic term $QA^{-1}P$ has zero derivative.",
+    "Use nonvanishing of a maximal minor for openness."
+  ],
+  "deterministicChecks": [],
+  "rubric": {
+    "version": 1,
+    "criteria": [
+      {
+        "id": "c1",
+        "criterion": "Schur-complement rank identity.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "criterion": "Regular equations and dimension.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "criterion": "Explicit tangent space and openness.",
+        "weight": 0.3333333333333333,
+        "levels": [
+          {
+            "label": "met",
+            "description": "Correct justification, including necessary hypotheses."
+          },
+          {
+            "label": "partially met",
+            "description": "A sound strategy with a specific repairable gap."
+          },
+          {
+            "label": "not met",
+            "description": "Missing or mathematically invalid reasoning."
+          }
+        ]
+      }
+    ],
+    "acceptAlternateApproaches": true,
+    "referenceIsExhaustive": false
+  },
+  "origin": "original",
+  "estimatedMinutes": 45,
+  "progression": {
+    "stage": "independent",
+    "difficulty": {
+      "level": "standard",
+      "basis": "Requires the stated derivation or proof, with hypotheses and the changed context justified; estimates are provisional until learner use."
+    },
+    "knownAmbiguities": []
+  }
+}

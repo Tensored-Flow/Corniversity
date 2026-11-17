@@ -5,26 +5,147 @@
   "title": "Inverse and implicit function theorems; submanifolds",
   "summary": "The inverse function theorem with its contraction-mapping proof; the implicit function theorem in Banach form; critical points and regular values; submanifolds and the regular-value theorem; the orthogonal group as a manifold; existence and uniqueness for ODEs via the inverse function theorem.",
   "objectives": [
-    { "id": "u03-o1", "description": "Objectives for this unit will be finalised when it is prepared; the source material is lectures 4–5 of the 18.965 notes (Theorems 5.1–5.2, Definition 5.3, Corollary 5.4, §6) with Hitchin §10.1 as a second proof of the inverse function theorem." }
+    {
+      "id": "u03-o1",
+      "description": "Prove the local inverse theorem by contraction, and derive the implicit theorem with the split-kernel hypothesis in Banach spaces."
+    },
+    {
+      "id": "u03-o2",
+      "description": "Use a regular-value computation to identify a submanifold and its tangent spaces, including the orthogonal group."
+    },
+    {
+      "id": "u03-o3",
+      "description": "Explain why local invertibility and local ODE existence do not assert global invertibility or existence."
+    }
   ],
-  "prerequisiteConceptIds": ["smooth-maps-diffeomorphisms", "multivariable-calculus", "linear-algebra-vector-spaces"],
-  "teachesConceptIds": ["inverse-function-theorem-manifolds"],
+  "prerequisiteConceptIds": [
+    "smooth-maps-diffeomorphisms",
+    "multivariable-calculus",
+    "linear-algebra-vector-spaces"
+  ],
+  "teachesConceptIds": [
+    "inverse-function-theorem-manifolds"
+  ],
   "preparation": [
-    { "description": "Read lecture 4: Theorem 5.1 (inverse function theorem) and its contraction-mapping proof, Theorem 5.2 (implicit function theorem), Definition 5.3 (submanifold), Corollary 5.4.", "locatorId": "gm04-l4-thm5-1", "estimatedMinutes": 45 },
-    { "description": "Read lecture 5 §6: O(n) as the preimage of a regular value; the ODE existence argument. Compare with Hitchin's appendix §10.1.", "locatorId": "gm04-l5-orthogonal-group", "estimatedMinutes": 30 }
+    {
+      "description": "Read lecture 4: Theorem 5.1 (inverse function theorem) and its contraction-mapping proof, Theorem 5.2 (implicit function theorem), Definition 5.3 (submanifold), Corollary 5.4.",
+      "locatorId": "gm04-l4-thm5-1",
+      "estimatedMinutes": 45
+    },
+    {
+      "description": "Read lecture 5 §6: O(n) as the preimage of a regular value; the ODE existence argument. Compare with Hitchin's appendix §10.1.",
+      "locatorId": "gm04-l5-orthogonal-group",
+      "estimatedMinutes": 30
+    }
   ],
   "activities": [
-    { "id": "u03-a1", "type": "reading", "title": "Lectures 4–5: inverse and implicit function theorems", "instructions": "Read the notes for this unit. The prepared lesson, tutorial and exercises are not yet written; this outline shows exactly what the unit will cover.", "estimatedMinutes": 90, "sourceLocatorIds": ["gm04-lec04", "gm04-lec05", "gm04-l4-thm5-1", "gm04-l4-thm5-2", "gm04-l4-def5-3", "gm04-l5-orthogonal-group", "hit14-s10-1"], "exerciseIds": [], "sessionKind": "lecture" }
+    {
+      "id": "u03-a1",
+      "type": "reading",
+      "title": "Lecture and exact source reading",
+      "instructions": "Work through the prepared lecture together with its named source sections. Reconstruct the displayed derivations before looking back. The source reading is part of this unit, including the proof obligations identified in the notes.",
+      "estimatedMinutes": 100,
+      "sourceLocatorIds": [
+        "gm04-l4-thm5-1",
+        "gm04-l5-orthogonal-group",
+        "gm04-lec04",
+        "gm04-lec05",
+        "gm04-l4-thm5-2",
+        "gm04-l4-def5-3",
+        "hit14-s10-1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "lecture"
+    },
+    {
+      "id": "u03-a2",
+      "type": "problem",
+      "title": "Problem sheet and discussion",
+      "instructions": "Write an independent attempt at each problem. Use one hint at a time if needed; preserve the original attempt and record what assistance changed. Explain the hypotheses aloud before requesting a step check.",
+      "estimatedMinutes": 155,
+      "sourceLocatorIds": [
+        "gm04-l4-thm5-1",
+        "gm04-l5-orthogonal-group",
+        "gm04-lec04",
+        "gm04-lec05",
+        "gm04-l4-thm5-2",
+        "gm04-l4-def5-3",
+        "hit14-s10-1"
+      ],
+      "exerciseIds": [
+        "MAT-261-u03-ex1",
+        "MAT-261-u03-ex2",
+        "MAT-261-u03-ex3"
+      ],
+      "sessionKind": "tutorial"
+    },
+    {
+      "id": "u03-a3",
+      "type": "retrieval_practice",
+      "title": "Return without the scaffolding",
+      "instructions": "After a gap, reconstruct the central argument without notes and revisit the transfer or synthesis problem. Compare against your previous work only afterwards. Record what remains unresolved; reading or recall alone does not certify mastery.",
+      "estimatedMinutes": 25,
+      "sourceLocatorIds": [
+        "gm04-l4-thm5-1",
+        "gm04-l5-orthogonal-group",
+        "gm04-lec04",
+        "gm04-lec05",
+        "gm04-l4-thm5-2",
+        "gm04-l4-def5-3",
+        "hit14-s10-1"
+      ],
+      "exerciseIds": [],
+      "sessionKind": "revision"
+    }
   ],
-  "exerciseIds": [],
-  "exitCheck": { "description": "To be defined when the unit is prepared." },
-  "commonMisconceptions": [],
-  "estimatedMinutes": 240,
-  "status": "draft",
+  "exerciseIds": [
+    "MAT-261-u03-ex1",
+    "MAT-261-u03-ex2",
+    "MAT-261-u03-ex3"
+  ],
+  "exitCheck": {
+    "description": "Use the whole problem sheet to sample the listed objectives. Give an independent account of the main theorem and its hypotheses, and solve the transfer/synthesis task. An accepted single exercise is evidence only for its tested capabilities, not whole-unit mastery.",
+    "exerciseId": "MAT-261-u03-ex3"
+  },
+  "commonMisconceptions": [
+    {
+      "claim": "A critical value cannot have a manifold as its inverse image.",
+      "correction": "Regularity is sufficient, not necessary. The zero level of the squared Euclidean norm is a single point, despite its zero derivative.",
+      "correctionLocatorIds": [
+        "gm04-l4-thm5-1"
+      ]
+    },
+    {
+      "claim": "An everywhere invertible derivative makes a map globally invertible.",
+      "correction": "The inverse theorem is local; the exponential-polar map has an invertible derivative and periodic fibres.",
+      "correctionLocatorIds": [
+        "gm04-l4-thm5-1"
+      ]
+    }
+  ],
+  "estimatedMinutes": 355,
+  "status": "ready",
   "checks": [
-    { "name": "source-locators", "result": "pass", "evidence": "Lecture 4 and 5 PDFs downloaded and text-extracted 2026-10-30: Theorem 5.1 on PDF page 1, Theorem 5.2 on page 3, Definition 5.3 and Corollary 5.4 on page 4 of lecture4.pdf; §6 on page 1 of lecture5.pdf. Hitchin §10.1 on printed p. 86 (PDF index 85)." },
-    { "name": "mathematical-review", "result": "needs_review", "evidence": "Not yet prepared; no lesson or exercises to review." }
+    {
+      "name": "source-locators",
+      "result": "pass",
+      "evidence": "2026-11-12: author opened and extracted the assigned MIT OCW lecture PDFs; source inventory and hashes recorded in the course source-map. Original exposition; exact primary readings remain part of the course."
+    },
+    {
+      "name": "mathematical-review",
+      "result": "pass",
+      "evidence": "2026-11-12: author re-derived the displayed arguments and all original reference solutions. This is author self-review, not independent verification. Independent review is tracked separately in the task ledger."
+    },
+    {
+      "name": "independent-academic-review",
+      "result": "pass",
+      "evidence": "Independent source/factual and solution reasoning passes, followed by post-repair review, completed 2026-11-12. Exact scopes and limitations: .codex/quality-loop/university-teaching-quality/MATHS_REVIEW.md. AI-assisted review, not human expert certification or learner-tested effectiveness."
+    }
   ],
   "lessonFile": "lesson.md",
-  "instructorFiles": []
+  "instructorFiles": [
+    "MAT-261-u03-ex1.reference-solution.md",
+    "MAT-261-u03-ex2.reference-solution.md",
+    "MAT-261-u03-ex3.reference-solution.md"
+  ]
 }
