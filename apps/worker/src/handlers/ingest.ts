@@ -2,8 +2,8 @@ import { UNPDF_PINNED_OPTIONS } from "@corniversity/core/pdf/unpdf";
 import { createBlobStore } from "@corniversity/db/blob";
 import { IngestAssetPayload } from "@corniversity/db/jobs";
 import { extractedPage, passage, resourceAsset } from "@corniversity/db/schema/index";
-import { getAsset, isAllowed, MAX_PDF_PAGES, reconcileAnnotations } from "@corniversity/db/services/library";
-import { eq } from "drizzle-orm";
+import { type AssetRow, getAsset, isAllowed, MAX_PDF_PAGES, reconcileAnnotations } from "@corniversity/db/services/library";
+import { and, eq, isNull, notInArray } from "drizzle-orm";
 import { extractText, getDocumentProxy, getMeta, inspectPages } from "unpdf";
 import { type HandlerContext, NonRetryableError } from "./index";
 import { reportProgress } from "./job-record";
@@ -20,7 +20,9 @@ export const EXTRACTION_PDF_OPTIONS = { ...UNPDF_PINNED_OPTIONS, maxImageSize: 1
  * printed label → structural passages → full-text index. Permission is re-checked at the start
  * and before writing extracted text, so a revocation while the job was queued stops it. OCR is
  * never run automatically; pages with little native text are flagged for the reader to show the
- * source view instead of pretending garbled text is reliable.
+ * source view instead of pretending garbled text is reliable. Every write is conditional on the row
+ * still standing for the file this job read (see `sameFile`): a file removed, or a stored arXiv copy
+ * reverted to arXiv's, while the job ran keeps no text and no status from it.
  */
 export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<Record<string, unknown>> {
   const payload = IngestAssetPayload.parse(raw);
@@ -28,17 +30,20 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
   const asset = await getAsset(db, payload.ownerId, payload.assetId);
   if (!asset) return { skipped: true, reason: "asset missing or deleted" };
   if (!asset.storageKey) return { skipped: true, reason: "no stored bytes" };
+  const unchanged = sameFile(asset, asset.storageKey);
   if (!(await isAllowed(db, payload.ownerId, asset.id, "local_extract"))) {
-    await db.update(resourceAsset).set({ status: "validated" }).where(eq(resourceAsset.id, asset.id));
+    await db.update(resourceAsset).set({ status: "validated" }).where(unchanged);
     return { skipped: true, reason: "extraction not permitted" };
   }
   const blobs = createBlobStore(ctx.env.BLOB_STORE, db, ctx.env.CORNIVERSITY_DATA_ROOT);
   const data = await blobs.get(asset.storageKey);
   if (!data) {
-    await db
+    const marked = await db
       .update(resourceAsset)
       .set({ status: "rejected", rejectionReason: "stored bytes missing" })
-      .where(eq(resourceAsset.id, asset.id));
+      .where(unchanged)
+      .returning({ id: resourceAsset.id });
+    if (!marked.length) return FILE_CHANGED;
     return { failed: true, reason: "stored bytes missing" };
   }
 
@@ -77,7 +82,12 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
       // A file that cannot be parsed will not parse better on retry: record why, keep the
       // original bytes (the owner may still read them in the source view) and stop.
       const reason = `The PDF could not be parsed: ${error instanceof Error ? error.message : String(error)}`;
-      await db.update(resourceAsset).set({ status: "rejected", rejectionReason: reason }).where(eq(resourceAsset.id, asset.id));
+      const marked = await db
+        .update(resourceAsset)
+        .set({ status: "rejected", rejectionReason: reason })
+        .where(unchanged)
+        .returning({ id: resourceAsset.id });
+      if (!marked.length) return FILE_CHANGED;
       throw new NonRetryableError(reason);
     }
   } else {
@@ -90,12 +100,16 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
 
   // Permission may have been revoked while parsing.
   if (!(await isAllowed(db, payload.ownerId, asset.id, "local_extract"))) {
-    await db.update(resourceAsset).set({ status: "validated" }).where(eq(resourceAsset.id, asset.id));
+    await db.update(resourceAsset).set({ status: "validated" }).where(unchanged);
     return { skipped: true, reason: "extraction permission revoked during processing" };
   }
 
   await reportProgress(db, raw, { stage: "indexing", percent: 60 });
-  await db.transaction(async (tx) => {
+  const written = await db.transaction(async (tx) => {
+    // Held until commit, so a removal waits for this write (and then deletes its text) or wins and
+    // this job writes nothing.
+    const [current] = await tx.select({ id: resourceAsset.id }).from(resourceAsset).where(unchanged).for("update");
+    if (!current) return false;
     await tx.delete(passage).where(eq(passage.assetId, asset.id));
     await tx.delete(extractedPage).where(eq(extractedPage.assetId, asset.id));
     let scanned = 0;
@@ -146,7 +160,9 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
         rejectionReason: scanned > 0 ? `${scanned} page(s) look scanned; their text is unreliable and OCR was not run` : null,
       })
       .where(eq(resourceAsset.id, asset.id));
+    return true;
   });
+  if (!written) return FILE_CHANGED;
   // Annotations keep their locators across re-extraction; re-check each against the new text, and
   // rects measured on another file of this Document (arXiv's, before a promotion) against this
   // file's page geometry.
@@ -160,7 +176,24 @@ export async function ingestHandler(ctx: HandlerContext, raw: unknown): Promise<
   return { pages: pagesText.length, printedLabels: Boolean(labels), annotationsNeedingRepair: reconciled.needsRepair };
 }
 
-const HEADING = /^(definition|theorem|proposition|lemma|corollary|example|remark|exercise|proof|chapter|section|§)\b.{0,80}$/i;
+const FILE_CHANGED = { skipped: true, reason: "file changed or removed during processing" } as const;
+
+/**
+ * The row still stands for the file this job read: the same stored bytes and key, not deleted, and
+ * not reverted to arXiv's file (a removed copy of an arXiv version keeps its id but loses its bytes).
+ */
+function sameFile(asset: AssetRow, storageKey: string) {
+  return and(
+    eq(resourceAsset.id, asset.id),
+    eq(resourceAsset.storageKey, storageKey),
+    eq(resourceAsset.sha256, asset.sha256),
+    isNull(resourceAsset.deletedAt),
+    notInArray(resourceAsset.status, ["linked_remote", "deleted"]),
+  );
+}
+
+// "Proof." opens a passage but is not a heading: listed in the contents it would repeat on almost every page.
+const HEADING = /^(definition|theorem|proposition|lemma|corollary|example|remark|exercise|chapter|section|§)\b.{0,80}$/i;
 
 /** Splits a page into passages at blank lines and mathematical headings; keeps theorem labels with their statements. */
 export function segmentPage(

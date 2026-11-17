@@ -1,13 +1,15 @@
 import type { AnnotationKind } from "@corniversity/db/schema/library";
+import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { listReadingNotes, type ReadingNote } from "@corniversity/db/services/library";
 import { libraryNoteSubjects, notesPaper, OPENALEX_FIELD_ID, type PaperNote, paperNotes } from "@corniversity/db/services/notebook";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Markdown } from "@/components/Markdown";
-import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select, Textarea } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select } from "@/components/ui";
 import { db } from "@/lib/db";
 import { errorNotice } from "@/lib/notices";
-import { createPaperNoteAction } from "./actions";
+import { createPaperNoteAction, deleteReadingNoteAction } from "./actions";
+import { NoteBodyField } from "./NoteBodyField";
 import { KIND_OPTIONS } from "./shared";
 
 /** How many notes the library view lists; older ones are reached by search or a filter. */
@@ -36,7 +38,8 @@ type Item = { type: "annotation"; at: Date; note: ReadingNote } | { type: "paper
 
 /**
  * The notebook's library view (`/notebook?library=1`, contract §2): every library note, newest
- * first: highlights, page and area notes and bookmarks made in the reader (each reopens its page),
+ * first: highlights, page and area notes and bookmarks made in the reader (each reopens its page,
+ * where it is edited, and can be deleted here, even when its file was removed),
  * and paper notes (notebook entries linked to a paper). Filters: one paper, a kind, the paper's
  * OpenAlex field, and words. With a paper chosen, *New note for this paper* writes a paper note.
  */
@@ -60,7 +63,7 @@ export async function LibraryNotes({
   if (paper && paper.id !== workParam) redirect(libraryHref({ work: paper.id, kind, subject, q }));
   const unknownPaper = Boolean(workParam) && !paper;
   const workId = paper?.id;
-  const [annotations, papers, subjects] = await Promise.all([
+  const [annotations, papers, subjects, enrolments] = await Promise.all([
     unknownPaper || kind === "paper"
       ? Promise.resolve([] as ReadingNote[])
       : listReadingNotes(database, ownerId, {
@@ -74,7 +77,10 @@ export async function LibraryNotes({
       ? Promise.resolve([] as PaperNote[])
       : paperNotes(database, ownerId, { workId, subject, query: q || undefined, limit: LIMIT }),
     libraryNoteSubjects(database, ownerId),
+    // The optional course of a new note for this paper (brief §20.3): the courses the owner takes.
+    paper ? listEnrolments(database, ownerId) : Promise.resolve([]),
   ]);
+  const courses = enrolments.filter((e, i, all) => all.findIndex((o) => o.course.id === e.course.id) === i);
   const items: Item[] = [
     ...annotations.map((note) => ({ type: "annotation" as const, at: note.updatedAt, note })),
     ...papers.map((note) => ({ type: "paper" as const, at: note.entry.updatedAt, note })),
@@ -241,7 +247,11 @@ export async function LibraryNotes({
               <ul className="mt-3 flex flex-col gap-3">
                 {items.map((item) =>
                   item.type === "annotation" ? (
-                    <AnnotationItem key={`a-${item.note.id}`} note={item.note} />
+                    <AnnotationItem
+                      key={`a-${item.note.id}`}
+                      note={item.note}
+                      filters={{ work: workId, kind, subject, q: q || undefined }}
+                    />
                   ) : (
                     <PaperNoteItem key={`p-${item.note.entry.id}`} note={item.note} />
                   ),
@@ -276,11 +286,20 @@ export async function LibraryNotes({
                     ))}
                   </Select>
                 </Field>
-                <div className="sm:col-span-2">
-                  {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
-                  <Field label="Note (Markdown with LaTeX)" htmlFor="paper-note-body" hint="Up to 50,000 characters.">
-                    <Textarea id="paper-note-body" name="body" rows={8} required maxLength={50_000} />
+                {courses.length ? (
+                  <Field label="Course (optional)" htmlFor="paper-note-course">
+                    <Select id="paper-note-course" name="courseId" defaultValue="">
+                      <option value="">None</option>
+                      {courses.map((e) => (
+                        <option key={e.course.id} value={e.course.id}>
+                          {e.course.id} · {e.course.title}
+                        </option>
+                      ))}
+                    </Select>
                   </Field>
+                ) : null}
+                <div className="sm:col-span-2">
+                  <NoteBodyField id="paper-note-body" label="Note (Markdown with LaTeX)" rows={8} required />
                 </div>
                 <div className="sm:col-span-2">
                   <Button type="submit">Save note</Button>
@@ -311,8 +330,16 @@ export function libraryHref(filters: { work?: string; kind?: string; subject?: s
   return `/notebook?${params.toString()}`;
 }
 
-async function AnnotationItem({ note }: { note: ReadingNote }) {
+async function AnnotationItem({
+  note,
+  filters,
+}: {
+  note: ReadingNote;
+  /** The view's filters, so a deletion returns to the same list. */
+  filters: { work?: string; kind?: string; subject?: string; q?: string };
+}) {
   const removed = note.documentDeleted || !note.assetId;
+  const label = ANNOTATION_LABEL[note.kind].toLowerCase();
   const readerHref = note.assetId ? `/library/read/${note.assetId}${note.page ? `?page=${note.page}` : ""}` : null;
   return (
     <Card as="li">
@@ -367,6 +394,24 @@ async function AnnotationItem({ note }: { note: ReadingNote }) {
           ) : null}
         </p>
       ) : null}
+      {/* Deleting asks for the box first; it is the only way to delete a note whose file was removed. */}
+      <details className="mt-1 text-sm">
+        <summary className="inline-flex min-h-6 cursor-pointer items-center text-brass underline underline-offset-4">
+          Delete<span className="sr-only"> this {label}</span>
+        </summary>
+        <form action={deleteReadingNoteAction} className="mt-2 flex flex-wrap items-center gap-3">
+          <input type="hidden" name="id" value={note.id} />
+          {(["work", "kind", "subject", "q"] as const).map((key) =>
+            filters[key] ? <input key={key} type="hidden" name={key} value={filters[key]} /> : null,
+          )}
+          <label className="flex min-h-6 items-center gap-2 text-sm text-ink">
+            <input type="checkbox" name="confirm" value="1" /> I want to delete this {label}
+          </label>
+          <Button type="submit" variant="danger">
+            Delete {label}
+          </Button>
+        </form>
+      </details>
     </Card>
   );
 }

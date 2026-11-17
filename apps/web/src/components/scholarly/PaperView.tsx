@@ -183,7 +183,7 @@ function Authors({ authors }: { authors: { name: string }[] }) {
   if (authors.length <= 12) return <span>{authors.map((a) => a.name).join(", ")}</span>;
   return (
     <details>
-      <summary className="cursor-pointer">
+      <summary className="min-h-6 cursor-pointer">
         {authorLine(authors, 10)} <span className="text-ink-3">({count(authors.length)} authors; show all)</span>
       </summary>
       <p className="mt-1">{authors.map((a) => a.name).join(", ")}</p>
@@ -233,13 +233,34 @@ export function IntegrityNotices({ notices }: { notices: PaperSummary["integrity
   );
 }
 
-/** A provider failure as it happened: the registered sentence, the reset time when there is one. Never "no results". */
-export function ProviderFailure({ message, resetAt, title }: { message: string; resetAt?: Date | string | null; title?: string }) {
+/**
+ * A provider failure as it happened: the registered sentence, the reset time when there is one. Never
+ * "no results". With `retryHref` (the page's own address) it offers *Try again*, a real navigation.
+ */
+export function ProviderFailure({
+  message,
+  resetAt,
+  title,
+  retryHref,
+}: {
+  message: string;
+  resetAt?: Date | string | null;
+  title?: string;
+  retryHref?: string;
+}) {
   const reset = resetSentence(resetAt ?? null);
   return (
     <Notice tone="brass" title={title}>
       {message}
       {reset ? ` ${reset}` : ""}
+      {retryHref ? (
+        <>
+          {" "}
+          <a href={retryHref} className="text-brass underline underline-offset-4">
+            Try again
+          </a>
+        </>
+      ) : null}
     </Notice>
   );
 }

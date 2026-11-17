@@ -393,6 +393,32 @@ test.describe("library home, shelves, trails and notes", () => {
     await expect(notes.getByText("keeps the softmax away from saturation")).toHaveCount(0);
   });
 
+  test("library notes: a note whose file was removed is kept and can still be deleted there, behind its box", async ({
+    page,
+  }, testInfo) => {
+    const text = `Kept after its file went ${run} ${testInfo.project.name}`;
+    // A note left without its file (the file's row is gone, so the note's link to it is empty).
+    await sql(
+      `insert into annotation (owner_id, locator, note_markdown, kind)
+       select owner_id, locator, $2, 'note' from annotation where asset_id = $1 limit 1`,
+      [attentionDocument, text],
+    );
+    await page.goto(`/notebook?library=1&kind=note&q=${encodeURIComponent(text)}`);
+    const notes = page.getByRole("region", { name: /^Library notes/ });
+    const item = notes.locator(":scope > ul > li", { hasText: text });
+    await expect(item).toContainText("The file this note was made on was removed; the note is kept.");
+    await item.getByText("Delete this note", { exact: true }).click();
+    await item.getByRole("button", { name: "Delete note" }).click();
+    await expect(page).toHaveURL(/error=tick-box-delete-note/);
+    await expect(page.getByText("Tick the box to delete this note.")).toBeVisible();
+    await item.getByText("Delete this note", { exact: true }).click();
+    await item.getByRole("checkbox", { name: "I want to delete this note" }).check();
+    await item.getByRole("button", { name: "Delete note" }).click();
+    await expect(page).toHaveURL(/kind=note&q=.*&deleted=note$/);
+    await expect(page.getByText("Note deleted.")).toBeVisible();
+    await expect(notes.locator(":scope > ul > li", { hasText: text })).toHaveCount(0);
+  });
+
   test("a shelf: created, filled from the library, ordered, annotated, searched, renamed, emptied and deleted", async ({
     page,
   }, testInfo) => {

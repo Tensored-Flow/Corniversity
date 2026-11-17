@@ -118,12 +118,12 @@ export function SavedPapers({
         {page > 1 || hasNext ? (
           <nav aria-label="Saved papers pages" className="mt-3 flex flex-wrap gap-3 text-sm">
             {page > 1 ? (
-              <Link href={href(view, page - 1)} className="text-brass underline underline-offset-4">
+              <Link href={href(view, page - 1)} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
                 Previous page
               </Link>
             ) : null}
             {hasNext ? (
-              <Link href={href(view, page + 1)} className="text-brass underline underline-offset-4">
+              <Link href={href(view, page + 1)} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
                 Next page
               </Link>
             ) : null}

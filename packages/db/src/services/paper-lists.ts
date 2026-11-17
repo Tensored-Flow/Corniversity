@@ -12,13 +12,19 @@ import type { DbOrTx } from "../client";
 import { scholarlyIdentifier, scholarlyWork } from "../schema/index";
 import type { ScholarlyClient } from "../scholarly/client";
 import { ScholarlyProviderError } from "../scholarly/errors";
-import { OPENALEX_MAX_RESULTS, OPENALEX_WORK_TYPES, type OpenAlexFilters, type OpenAlexWorkType } from "../scholarly/openalex";
+import {
+  isOpenAlexAuthorText,
+  OPENALEX_MAX_RESULTS,
+  OPENALEX_WORK_TYPES,
+  type OpenAlexFilters,
+  type OpenAlexWorkType,
+} from "../scholarly/openalex";
 import type { CrossrefWork, OpenAlexWorkRecord, Provenance } from "../scholarly/types";
 import { getWorkByIdentifier, ownerWorkIndex, providerFailure, resolveWorkId, ScholarlyError } from "./scholarly-works";
 
 /**
  * What Find papers, the paper preview and the paper page read from OpenAlex and Crossref
- * (contract docs/RESEARCH_LIBRARY.md §2, §5, §9): word searches with filters, a paper by identifier
+ * (contract docs/RESEARCH_LIBRARY.md §2, §5, §9): word and author searches with filters, a paper by identifier
  * before it is saved, a saved paper's OpenAlex record, and its references, cited-by and related
  * lists. Every list item carries the owner's work holding any of its identifiers (the "in your
  * library" marker, from `ownerWorkIndex`). Provider failures become the service's registered
@@ -40,6 +46,7 @@ const PAGE_OUT_OF_RANGE = "OpenAlex pages stop at 10,000 results.";
 const YEARS_INVALID = "Give the years as whole numbers between 1000 and 2100, the first no later than the second.";
 const TYPE_UNKNOWN = "Choose a type from the list.";
 const SUBJECT_UNKNOWN = "Choose a field from the list.";
+const AUTHOR_INVALID = "Give the author's name in letters, at most 100 characters.";
 const DOI_UNKNOWN_EVERYWHERE = "Neither OpenAlex nor Crossref has a record of this DOI.";
 
 export interface PaperFilters {
@@ -50,6 +57,8 @@ export interface PaperFilters {
   freeToRead?: boolean;
   /** A subject slug (core subjects.ts): an OpenAlex field or subfield. */
   subject?: string;
+  /** Words of author names, each matched among the names printed on the paper (OpenAlex's byline search). */
+  author?: string;
 }
 
 /** The OpenAlex filters for Find's filters; anything outside the lists is refused before a request. */
@@ -76,6 +85,10 @@ export function openAlexFiltersFor(filters: PaperFilters): OpenAlexFilters {
     const subject = subjectBySlug(filters.subject);
     if (!subject) throw new ScholarlyError("invalid_state", SUBJECT_UNKNOWN);
     Object.assign(out, openAlexSubjectFilter(subject));
+  }
+  if (filters.author !== undefined) {
+    if (!isOpenAlexAuthorText(filters.author)) throw new ScholarlyError("invalid_state", AUTHOR_INVALID);
+    out.author = filters.author;
   }
   return out;
 }
@@ -146,7 +159,7 @@ export interface PaperPage {
   items: FoundPaper[];
 }
 
-/** A Find page of OpenAlex's word search, with the filters and "in your library" markers. */
+/** A Find page of OpenAlex's word search (or an author alone), with the filters and "in your library" markers. */
 export async function searchPapers(
   db: DbOrTx,
   ownerId: string,
@@ -154,7 +167,7 @@ export async function searchPapers(
   input: { query: string; filters?: PaperFilters; page?: number },
 ): Promise<PaperPage> {
   const query = input.query.trim().slice(0, 300);
-  if (!query) throw new ScholarlyError("invalid_state", QUERY_MISSING);
+  if (!query && input.filters?.author === undefined) throw new ScholarlyError("invalid_state", QUERY_MISSING);
   const page = input.page ?? 1;
   if (!Number.isInteger(page) || page < 1 || page > FIND_MAX_PAGE) throw new ScholarlyError("invalid_state", PAGE_OUT_OF_RANGE);
   const filters = openAlexFiltersFor(input.filters ?? {});

@@ -5,11 +5,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LocatorLink } from "@/components/LocatorLink";
 import { Markdown } from "@/components/Markdown";
-import { Badge, Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
+import { Badge, Button, Card, Field, Input, Notice, Select } from "@/components/ui";
 import { db } from "@/lib/db";
 import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { deleteEntryAction, toggleResolvedAction, updateEntryAction } from "../actions";
+import { NoteBodyField } from "../NoteBodyField";
 import { excerpt, KIND_OPTIONS, KindBadge } from "../shared";
 
 export const metadata = { title: "Notebook entry" };
@@ -167,10 +168,7 @@ export default async function EntryPage({
             </Select>
           </Field>
           <div className="sm:col-span-2">
-            {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
-            <Field label="Body (Markdown with LaTeX)" htmlFor="edit-body" hint="Up to 50,000 characters.">
-              <Textarea id="edit-body" name="body" rows={12} defaultValue={entry.bodyMarkdown} maxLength={50_000} />
-            </Field>
+            <NoteBodyField id="edit-body" label="Body (Markdown with LaTeX)" rows={12} defaultValue={entry.bodyMarkdown} />
           </div>
           <div className="sm:col-span-2">
             <Button type="submit">Save changes</Button>

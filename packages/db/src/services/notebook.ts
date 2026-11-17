@@ -26,12 +26,21 @@ export class NotebookError extends Error {
   }
 }
 
+/** The longest entry body kept, in characters (a line break counts once, as in the browser's text box). */
+export const NOTEBOOK_BODY_LIMIT = 50_000;
+
 function clean(input: { title: string; bodyMarkdown: string; kind: string; tags?: string[] }) {
   const title = input.title.trim().slice(0, 200);
   if (!title) throw new NotebookError("invalid", "A title is required.");
   if (!NOTEBOOK_KINDS.includes(input.kind as NotebookKind)) throw new NotebookError("invalid", "Unknown entry kind.");
   const tags = [...new Set((input.tags ?? []).map((t) => t.trim().toLowerCase().slice(0, 40)).filter(Boolean))].slice(0, 20);
-  return { title, bodyMarkdown: input.bodyMarkdown.slice(0, 50_000), kind: input.kind as NotebookKind, tags };
+  // A form sends line breaks as CRLF; counted as the browser counts them, and an over-long body is
+  // refused whole rather than cut short.
+  const bodyMarkdown = input.bodyMarkdown.replace(/\r\n/g, "\n");
+  if (bodyMarkdown.length > NOTEBOOK_BODY_LIMIT) {
+    throw new NotebookError("invalid", "The entry is longer than 50,000 characters; shorten it, or split it into two entries.");
+  }
+  return { title, bodyMarkdown, kind: input.kind as NotebookKind, tags };
 }
 
 /**
@@ -58,26 +67,30 @@ export async function createEntry(
   },
 ): Promise<NotebookEntryRow> {
   const fields = clean(input);
-  let scholarlyWorkId: string | null = null;
-  if (input.scholarlyWorkId) {
-    const paper = await notesPaper(db, ownerId, input.scholarlyWorkId);
-    if (!paper) throw new NotebookError("not_found", "Paper not found.");
-    scholarlyWorkId = paper.id;
-  }
-  const [row] = await db
-    .insert(notebookEntry)
-    .values({
-      ownerId,
-      ...fields,
-      sourceLinks: input.sourceLinks ?? [],
-      courseId: input.courseId ?? null,
-      unitId: input.unitId ?? null,
-      learningSessionId: input.learningSessionId ?? null,
-      anchor: input.anchor ?? null,
-      scholarlyWorkId,
-    })
-    .returning();
-  return row!;
+  // A paper note holds its paper's row FOR SHARE until the insert commits, so an owner merge cannot
+  // leave the note on a tombstone (a merge that committed first is followed to the survivor).
+  return db.transaction(async (tx) => {
+    let scholarlyWorkId: string | null = null;
+    if (input.scholarlyWorkId) {
+      const paper = await notesPaper(tx, ownerId, input.scholarlyWorkId, { lock: true });
+      if (!paper) throw new NotebookError("not_found", "Paper not found.");
+      scholarlyWorkId = paper.id;
+    }
+    const [row] = await tx
+      .insert(notebookEntry)
+      .values({
+        ownerId,
+        ...fields,
+        sourceLinks: input.sourceLinks ?? [],
+        courseId: input.courseId ?? null,
+        unitId: input.unitId ?? null,
+        learningSessionId: input.learningSessionId ?? null,
+        anchor: input.anchor ?? null,
+        scholarlyWorkId,
+      })
+      .returning();
+    return row!;
+  });
 }
 
 /** The tag a laboratory gives a saved prediction, a dated record of what was expected before the results. */
@@ -238,16 +251,25 @@ export async function countEntries(db: DbOrTx, ownerId: string): Promise<{ total
 // ---------------------------------------------------------------------------------------------
 // Paper notes (research library, contract §2 and §3): notebook entries with `scholarly_work_id`
 
-/** The paper a note is (or would be) about: the owner's work, merges followed to the survivor; null for any other id. */
-export async function notesPaper(db: DbOrTx, ownerId: string, workId: string): Promise<{ id: string; title: string | null } | null> {
+/**
+ * The paper a note is (or would be) about: the owner's work, merges followed to the survivor; null
+ * for any other id. With `lock` (inside a transaction) each row read is held FOR SHARE.
+ */
+export async function notesPaper(
+  db: DbOrTx,
+  ownerId: string,
+  workId: string,
+  options: { lock?: boolean } = {},
+): Promise<{ id: string; title: string | null } | null> {
   if (!isUuid(workId)) return null;
   let current = workId;
   for (let hop = 0; hop < 10; hop++) {
-    const [row] = await db
+    const query = db
       .select({ id: scholarlyWork.id, title: scholarlyWork.title, mergedIntoId: scholarlyWork.mergedIntoId })
       .from(scholarlyWork)
       .where(and(eq(scholarlyWork.id, current), eq(scholarlyWork.ownerId, ownerId)))
       .limit(1);
+    const [row] = await (options.lock ? query.for("share") : query);
     if (!row) return null;
     if (!row.mergedIntoId) return { id: row.id, title: row.title };
     current = row.mergedIntoId;

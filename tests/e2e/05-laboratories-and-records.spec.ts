@@ -115,7 +115,7 @@ test.describe("laboratories, notebook and records", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Notebook" })).toBeVisible();
     await expect(page.getByRole("link", { name: /Laboratory: Virtual laboratory: reversible first-order reaction/ }).first()).toBeVisible();
     await page.getByLabel("Title").fill(`Why does completeness matter for operators? ${run}`);
-    await page.getByLabel("Kind").selectOption("question");
+    await page.getByLabel("Kind", { exact: true }).selectOption("question");
     await page.getByLabel("Tags (comma or space separated)").fill("functional-analysis, carry-forward");
     await page
       .getByLabel("Body (Markdown with LaTeX)")
@@ -148,7 +148,9 @@ test.describe("laboratories, notebook and records", () => {
       .getByRole("button", { name: "Build" })
       .click();
     await expect(page.getByText("Export queued")).toBeVisible();
-    const download = page.getByRole("link", { name: "Download" }).first();
+    // The newest Markdown record is the one just built (the list is newest first); earlier exports of
+    // other kinds, or earlier runs, may already show their own Download links.
+    const download = page.getByRole("listitem").filter({ hasText: "Markdown record ·" }).first().getByRole("link", { name: "Download" });
     await expect(download).toBeVisible({ timeout: 60_000 });
     const href = await download.getAttribute("href");
     const response = await page.request.get(href!);

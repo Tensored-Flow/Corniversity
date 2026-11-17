@@ -81,6 +81,7 @@ export const ERROR_NOTICES = {
   "title-required": "A title is required.",
   "unknown-entry-kind": "Unknown entry kind.",
   "saved-prediction-dated-record-cannot": "A saved prediction is a dated record and cannot be deleted.",
+  "entry-longer-than-limit": "The entry is longer than 50,000 characters; shorten it, or split it into two entries.",
   // paper-work
   "page-not-found": "Page not found.",
   "page-file-missing": "The page's file is missing.",
@@ -256,6 +257,7 @@ export const ERROR_NOTICES = {
   "file-in-library-as-other-item":
     "This file is already in your library as another item. Delete that item first, then attach the file here; its notes come with it.",
   "linked-key-taken": "Another file in your library already stands for this arXiv version, so this copy was not removed.",
+  "copy-changed": "This file changed since the page was opened, so nothing was removed. The page now shows it as it is.",
   "item-changed-while-arriving": "The item changed while the file was arriving; nothing was stored.",
   "paper-file-details-on-paper-page": "This file belongs to a paper in your library; its details are edited on the paper's page.",
   "linked-keep-copy-on-paper-page": "This paper is read from arxiv.org; keep a private copy from its paper page instead.",
@@ -347,6 +349,7 @@ export const ERROR_NOTICES = {
   "find-years-invalid": "Give the years as whole numbers between 1000 and 2100, the first no later than the second.",
   "find-type-unknown": "Choose a type from the list.",
   "find-field-unknown": "Choose a field from the list.",
+  "find-author-invalid": "Give the author's name in letters, at most 100 characters.",
   "doi-unknown-everywhere": "Neither OpenAlex nor Crossref has a record of this DOI.",
   // web-papers (paper page, attaching a file, adding a paper without an identifier)
   "attach-choose-file": "Choose a PDF file to attach.",
@@ -373,6 +376,8 @@ export const ERROR_NOTICES = {
   "tick-box-remove-file": "Tick the box to remove this file.",
   "tick-box-merge-papers": "Tick the box to merge these papers.",
   "tick-box-delete-paper": "Tick the box to delete this paper and its notes.",
+  // notebook/actions.ts: deleting a reading note from the library notes view
+  "tick-box-delete-note": "Tick the box to delete this note.",
   // library-collections.ts (shelves and trails)
   "collection-give-name": "Give it a name.",
   "collection-name-length": "Keep the name under 120 characters.",

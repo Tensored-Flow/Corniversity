@@ -1,8 +1,10 @@
 import { MAX_FIND_INPUT_LENGTH } from "@corniversity/core";
+import { isOpenAlexAuthorText, OPENALEX_AUTHOR_MAX_LENGTH } from "@corniversity/db/scholarly/openalex";
 
 /**
  * Find papers' address: `q` (the box), `scope` (`all` OpenAlex, `mine` the owner's works), the
- * filters (`from`, `to` years, `type`, `free` for free to read, `field` a subject slug) and `page`.
+ * filters (`from`, `to` years, `type`, `free` for free to read, `field` a subject slug, `author`
+ * words of author names, All papers only) and `page`.
  * Anything malformed is dropped with a note rather than sent on; the services validate again.
  */
 
@@ -16,6 +18,7 @@ export interface FindParams {
   type: string | undefined;
   freeToRead: boolean;
   field: string | undefined;
+  author: string | undefined;
   page: number;
 }
 
@@ -26,6 +29,23 @@ function year(raw: string): number | undefined {
   if (!/^\d{4}$/.test(text)) return undefined;
   const n = Number(text);
   return n >= 1000 && n <= 2100 ? n : undefined;
+}
+
+/**
+ * The Author filter: anything but letters, full stops, apostrophes and hyphens (commas, pipes,
+ * colons, quotes…) becomes a space, each word starts with a letter, and the text is cut to
+ * OPENALEX_AUTHOR_MAX_LENGTH characters. Nothing left is no author.
+ */
+function author(raw: string): string | undefined {
+  const words = raw
+    .slice(0, 1000)
+    .normalize("NFC")
+    .replace(/[^\p{L}\p{M}.'’-]+/gu, " ")
+    .split(" ")
+    .map((word) => word.replace(/^[^\p{L}\p{M}]+/u, ""))
+    .filter(Boolean);
+  const text = [...words.join(" ")].slice(0, OPENALEX_AUTHOR_MAX_LENGTH).join("").trim();
+  return text && isOpenAlexAuthorText(text) ? text : undefined;
 }
 
 export function parseFindParams(search: Record<string, string | string[] | undefined>): FindParams {
@@ -44,6 +64,7 @@ export function parseFindParams(search: Record<string, string | string[] | undef
     type: /^[a-z-]{1,40}$/.test(type) ? type : undefined,
     freeToRead: one(search.free) === "1",
     field: /^[a-z-]{1,60}$/.test(field) ? field : undefined,
+    author: author(one(search.author)),
     page,
   };
 }
@@ -58,6 +79,7 @@ export function findHref(params: Partial<FindParams>): string {
   if (params.type) query.set("type", params.type);
   if (params.freeToRead) query.set("free", "1");
   if (params.field) query.set("field", params.field);
+  if (params.author) query.set("author", params.author);
   if (params.page && params.page > 1) query.set("page", String(params.page));
   const text = query.toString();
   return text ? `/library/find?${text}` : "/library/find";
@@ -65,5 +87,12 @@ export function findHref(params: Partial<FindParams>): string {
 
 /** Whether any filter is set (they are shown open then). */
 export function hasFilters(params: FindParams): boolean {
-  return params.yearFrom !== undefined || params.yearTo !== undefined || Boolean(params.type) || params.freeToRead || Boolean(params.field);
+  return (
+    params.yearFrom !== undefined ||
+    params.yearTo !== undefined ||
+    Boolean(params.type) ||
+    params.freeToRead ||
+    Boolean(params.field) ||
+    Boolean(params.author)
+  );
 }

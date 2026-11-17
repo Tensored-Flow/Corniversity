@@ -115,7 +115,7 @@ export async function IssuesSection({ ownerId }: { ownerId: string }) {
                 <form action={respondIssueAction} className="mt-1 inline-block">
                   <input type="hidden" name="id" value={issue.id} />
                   <input type="hidden" name="kind" value="reopen" />
-                  <button type="submit" className="underline">
+                  <button type="submit" className="inline-flex min-h-6 items-center underline">
                     Reopen
                   </button>
                 </form>

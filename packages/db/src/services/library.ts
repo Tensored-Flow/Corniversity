@@ -748,7 +748,10 @@ export async function arxivVersionOf(db: DbOrTx, asset: AssetRow): Promise<{ arx
  * the stored bytes are the very bytes the reader last received from arXiv (`observed_sha256`);
  * otherwise they keep the stored file's hash and the reader's drift check decides (accepting it
  * re-keys them). Another row already holding this version's linked key is refused with a notice.
- * The blob is deleted after the row no longer refers to it.
+ * The row is locked and re-read first: a copy that changed since the caller read it (removed in
+ * another tab, or its bytes replaced) is refused with a notice, and an extraction finishing at the
+ * same moment either commits before this (its text is then deleted here) or writes nothing. The
+ * blob is deleted after the row no longer refers to it.
  */
 export async function revertToLinked(
   db: DbOrTx,
@@ -759,6 +762,15 @@ export async function revertToLinked(
 ): Promise<AssetRow> {
   const key = linkedDocumentKey(arxiv.arxivId, arxiv.arxivVersion);
   const reverted = await db.transaction(async (tx) => {
+    const [locked] = await tx.select().from(resourceAsset).where(eq(resourceAsset.id, asset.id)).for("update");
+    if (
+      !locked ||
+      locked.deletedAt !== null ||
+      locked.status === "linked_remote" ||
+      locked.storageKey !== asset.storageKey ||
+      locked.sha256 !== asset.sha256
+    )
+      throw new LibraryError("invalid_state", COPY_CHANGED);
     const [holder] = await tx
       .select({ id: resourceAsset.id })
       .from(resourceAsset)
@@ -767,7 +779,7 @@ export async function revertToLinked(
     if (holder) throw new LibraryError("invalid_state", LINKED_KEY_TAKEN);
     await tx.delete(passage).where(eq(passage.assetId, asset.id));
     await tx.delete(extractedPage).where(eq(extractedPage.assetId, asset.id));
-    const sameAsObserved = asset.observedSha256 !== null && asset.observedSha256 === asset.sha256;
+    const sameAsObserved = locked.observedSha256 !== null && locked.observedSha256 === locked.sha256;
     const anchorsRekeyed = sameAsObserved ? await rekeyAnchors(tx, asset.id, asset.sha256, key) : 0;
     const [row] = await tx
       .update(resourceAsset)
@@ -798,6 +810,7 @@ export async function revertToLinked(
 }
 
 const LINKED_KEY_TAKEN = "Another file in your library already stands for this arXiv version, so this copy was not removed.";
+const COPY_CHANGED = "This file changed since the page was opened, so nothing was removed. The page now shows it as it is.";
 
 export async function listAssets(db: DbOrTx, ownerId: string): Promise<AssetRow[]> {
   return db

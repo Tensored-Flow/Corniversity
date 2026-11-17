@@ -146,6 +146,14 @@ export function keyAction(
   return null;
 }
 
+/**
+ * Ctrl+F (Cmd+F on a Mac) opens the reader's own Find, which searches every page: the browser's find
+ * sees only the pages PDF.js has drawn. It is not a single-letter shortcut; Shift and Alt variants are left alone.
+ */
+export function isFindShortcut(key: string, modifiers: { ctrl: boolean; alt: boolean; meta: boolean; shift: boolean }): boolean {
+  return (modifiers.ctrl || modifiers.meta) && !modifiers.alt && !modifiers.shift && key.toLowerCase() === "f";
+}
+
 /** Where the reader was before following an internal link or a contents entry. */
 export interface BackEntry {
   pageNumber: number;

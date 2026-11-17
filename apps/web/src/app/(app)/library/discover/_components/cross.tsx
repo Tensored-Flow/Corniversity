@@ -196,7 +196,7 @@ export function FromYourCourses({ view }: { view: { items: CourseSourceItem[]; t
                   <Link
                     href={workHref(item)}
                     prefetch={false}
-                    className="text-ink underline-offset-4 [overflow-wrap:anywhere] hover:underline"
+                    className="inline-flex min-h-6 items-center text-ink underline-offset-4 [overflow-wrap:anywhere] hover:underline"
                   >
                     {item.title}
                   </Link>
@@ -267,7 +267,7 @@ function SurpriseBody({ view, n }: { view: SurpriseView; n: number }) {
       <p className="text-xs text-ink-2">{view.reason.text}.</p>
       <ProvenanceLine provenance={pick.provenance} provider="openalex" />
       <h4 id="surprise-title" className="mt-2 text-lg text-ink [overflow-wrap:anywhere]">
-        <Link href={workHref(pick.item)} prefetch={false} className="underline-offset-4 hover:underline">
+        <Link href={workHref(pick.item)} prefetch={false} className="inline-flex min-h-6 items-center underline-offset-4 hover:underline">
           {pick.item.title ?? `Untitled (OpenAlex ${pick.item.ref.value})`}
         </Link>
       </h4>

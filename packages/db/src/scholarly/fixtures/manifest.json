@@ -1,5 +1,5 @@
 {
-  "description": "Responses recorded from the live providers by `pnpm library:live-check --record` and `--record-group` (2026-11-15). Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
+  "description": "Responses recorded from the live providers by `pnpm library:live-check --record` and `--record-group` (2026-11-17). Recorded provider data, not verified by opening; used only by the fixture provider and contract tests.",
   "entries": [
     {
       "request": "GET https://api.crossref.org/works/10.1016%2Fs0140-6736(97)11096-0",
@@ -476,6 +476,20 @@
       "contentType": "application/json",
       "file": "openalex/works_filter_primary_topic.subfield.id_3A1702_page_1_per_page_10_select_id_2Cdoi-96891c097f.json",
       "retrievedAt": "2026-11-15T05:58:44.311Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=publication_year%3A2023-2024%2Craw_author_name.search%3ARafailov&page=1&per_page=25&search=direct+preference+optimization&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_publication_year_3A2023-2024_2Craw_author_name.search_3ARafailov_pa-2d854f19e3.json",
+      "retrievedAt": "2026-11-17T01:42:12.140Z"
+    },
+    {
+      "request": "GET https://api.openalex.org/works?filter=raw_author_name.search%3AClaude+Shannon&page=1&per_page=25&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",
+      "status": 200,
+      "contentType": "application/json",
+      "file": "openalex/works_filter_raw_author_name.search_3AClaude_Shannon_page_1_per_page_25_select_i-023e138210.json",
+      "retrievedAt": "2026-11-17T01:42:11.802Z"
     },
     {
       "request": "GET https://api.openalex.org/works?filter=related_to%3AW2086957099&page=1&per_page=10&select=id%2Cdoi%2Cdisplay_name%2Cpublication_year%2Cpublication_date%2Cids%2Ctype%2Clanguage%2Cprimary_location%2Cbest_oa_location%2Clocations%2Copen_access%2Cauthorships%2Cprimary_topic%2Ccited_by_count%2Cis_retracted",

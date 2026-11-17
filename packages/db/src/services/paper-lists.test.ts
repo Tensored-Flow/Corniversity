@@ -24,7 +24,7 @@ import { importByIdentifier, ScholarlyError, unsaveWork } from "./scholarly-work
 /**
  * Integration tests for what Find papers, the preview and the paper page read, against the
  * embedded PostgreSQL and the fixture provider (responses recorded from the live providers on
- * 2026-11-15, labelled `fixture`; the find group's recordings among them). Where no recording shows
+ * 2026-11-15, labelled `fixture`; the find group's recordings among them, and the find-author group's of 2026-11-17). Where no recording shows
  * a situation (OpenAlex unreachable for an arXiv id), a scripted client says so in its name. None of
  * this is a live call.
  */
@@ -94,6 +94,21 @@ describe("Find papers: OpenAlex word search (recorded)", () => {
     expect((missing as Error).message).toBe("No recorded provider response exists for this request (fixture mode), so it is unavailable.");
   });
 
+  it("searches by author with or without words, as recorded (the find-author group)", async () => {
+    const shannon = await searchPapers(handle.db, OWNER, fixture, { query: "", filters: { author: "Claude Shannon" } });
+    expect(shannon).toMatchObject({ count: 268, page: 1, lastPage: 11 });
+    expect(shannon.items).toHaveLength(FIND_PAGE_SIZE);
+    const rafailov = await searchPapers(handle.db, OWNER, fixture, {
+      query: "direct preference optimization",
+      filters: { yearFrom: 2023, yearTo: 2024, author: "Rafailov" },
+    });
+    expect(rafailov.count).toBe(15);
+    expect(rafailov.items.map((i) => i.record.openalexId)).toContain("W7133208539");
+    await expect(searchPapers(handle.db, OWNER, fixture, { query: "", filters: { author: "Shannon,is_oa:false" } })).rejects.toThrow(
+      "Give the author's name in letters, at most 100 characters.",
+    );
+  });
+
   it("a page past OpenAlex's last has no items while OpenAlex still counts results (test-only client, not a recording)", async () => {
     // TEST-ONLY TRANSPORT: no fixture recording holds a page past OpenAlex's last, and none is written.
     // This double answers every search with an empty page and the count it is given.
@@ -138,6 +153,8 @@ describe("Find papers: OpenAlex word search (recorded)", () => {
     expect(() => openAlexFiltersFor({ yearFrom: 99 })).toThrow(ScholarlyError);
     expect(() => openAlexFiltersFor({ type: "article|book" })).toThrow("Choose a type from the list.");
     expect(() => openAlexFiltersFor({ subject: "astrology" })).toThrow("Choose a field from the list.");
+    expect(openAlexFiltersFor({ author: "Rafailov", yearFrom: 2023 })).toEqual({ publicationYear: { from: 2023 }, author: "Rafailov" });
+    expect(() => openAlexFiltersFor({ author: "Rafailov|Finn" })).toThrow("Give the author's name in letters, at most 100 characters.");
     const live = { mode: "live" as const };
     expect(openAlexBrowsingRefusal({ DEPLOYMENT_MODE: "production", OPENALEX_API_KEY: undefined }, live)).toBe(OPENALEX_BROWSING_NEEDS_KEY);
     expect(openAlexBrowsingRefusal({ DEPLOYMENT_MODE: "production", OPENALEX_API_KEY: "a-real-key-1234" }, live)).toBeNull();

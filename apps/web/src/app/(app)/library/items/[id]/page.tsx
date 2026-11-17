@@ -7,6 +7,7 @@ import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
+import { pages } from "@/components/scholarly/format";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -79,7 +80,7 @@ export default async function ItemPage({
         <Badge tone="neutral">{asset.origin.replace("_", " ")}</Badge>
         <span className="text-ink-3">
           <span className="break-all">{asset.filename}</span> · {(asset.sizeBytes / 1_048_576).toFixed(2)} MB
-          {asset.pageCount ? ` · ${asset.pageCount} pages` : ""} · sha256 {asset.sha256.slice(0, 12)}…
+          {asset.pageCount ? ` · ${pages(asset.pageCount)}` : ""} · sha256 {asset.sha256.slice(0, 12)}…
         </span>
       </div>
       <p className="mb-6 max-w-prose text-sm text-ink-2">{ASSET_STATUS[asset.status].help}</p>
@@ -250,7 +251,7 @@ export default async function ItemPage({
           {processBlocker ? <p className="mt-2 text-xs text-ink-3">{processBlocker}</p> : null}
           {asset.status === "processed" ? (
             <p className="mt-2 text-xs text-ink-3">
-              {asset.pageCount} pages indexed
+              {pages(asset.pageCount ?? 0)} indexed
               {asset.printedLabelsPresent
                 ? " with printed page labels"
                 : "; the PDF carries no printed page labels, so citations use the physical page index"}

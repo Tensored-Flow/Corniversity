@@ -23,8 +23,11 @@
   --rust-soft: #f0d9cf;
   --slate: #3b5668;
   --slate-soft: #d6e1e8;
-  --focus: #b4862f;
+  /* At least 3:1 on every light surface the ring is drawn over (paper, paper-2, paper-3, brass-soft; WCAG 1.4.11). */
+  --focus: #8f6c28;
   --shadow: 0 1px 0 var(--stone);
+  /* Behind a modal dialog: always dims, in both themes (ink is light in the dark theme). */
+  --scrim: rgb(31 27 22 / 0.3);
   color-scheme: light;
 }
 
@@ -47,6 +50,7 @@
   --slate: #93b6cf;
   --slate-soft: #1f2a32;
   --focus: #e3bb63;
+  --scrim: rgb(0 0 0 / 0.55);
   color-scheme: dark;
 }
 
@@ -59,6 +63,7 @@
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
+  --color-scrim: var(--scrim);
   --color-brass: var(--brass);
   --color-brass-strong: var(--brass-strong);
   --color-brass-soft: var(--brass-soft);
@@ -249,6 +254,12 @@ math {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Native checkboxes and radios take the accent, not the browser's default blue, in both themes. */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--brass);
 }
 
 .skip-link {

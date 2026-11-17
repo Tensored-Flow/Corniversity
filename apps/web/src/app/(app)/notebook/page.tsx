@@ -2,13 +2,14 @@ import { listEnrolments } from "@corniversity/db/services/enrolment";
 import { listReadingNotes } from "@corniversity/db/services/library";
 import { countEntries, listEntries, listTags, type NotebookKind, questionsShelf, searchEntries } from "@corniversity/db/services/notebook";
 import Link from "next/link";
-import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select, Textarea } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, Field, Input, Notice, Select } from "@/components/ui";
 import { db } from "@/lib/db";
 import { errorNotice } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { createEntryAction, toggleResolvedAction } from "./actions";
 import { IssuesSection } from "./IssuesSection";
 import { LibraryNotes } from "./LibraryNotes";
+import { NoteBodyField } from "./NoteBodyField";
 import { excerpt, KIND_LABEL, KIND_OPTIONS, KindBadge } from "./shared";
 
 export const metadata = { title: "Notebook" };
@@ -86,7 +87,7 @@ export default async function NotebookPage({
         ) : null}
         {params.deleted ? (
           <div className="mb-4">
-            <Notice tone="moss">Entry deleted.</Notice>
+            <Notice tone="moss">{one(params.deleted) === "note" ? "Note deleted." : "Entry deleted."}</Notice>
           </div>
         ) : null}
         <LibraryNotes
@@ -386,10 +387,7 @@ export default async function NotebookPage({
                 </Select>
               </Field>
               <div className="sm:col-span-2">
-                {/* The notebook keeps 50,000 characters of a body; the box holds no more, so what is shown is what is saved. */}
-                <Field label="Body (Markdown with LaTeX)" htmlFor="nb-body" hint="Up to 50,000 characters.">
-                  <Textarea id="nb-body" name="body" rows={8} maxLength={50_000} />
-                </Field>
+                <NoteBodyField id="nb-body" label="Body (Markdown with LaTeX)" rows={8} />
               </div>
               <div className="sm:col-span-2">
                 <Button type="submit">Save entry</Button>

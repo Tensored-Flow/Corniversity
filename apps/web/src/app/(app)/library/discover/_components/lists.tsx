@@ -54,7 +54,11 @@ export function WorkRow({ item, returnTo, anchor }: { item: DiscoverItem; return
   return (
     <li className="flex items-start justify-between gap-3 border-t border-stone py-3 first:border-t-0">
       <div className="min-w-0">
-        <Link href={workHref(item)} prefetch={false} className="text-ink underline-offset-4 [overflow-wrap:anywhere] hover:underline">
+        <Link
+          href={workHref(item)}
+          prefetch={false}
+          className="inline-flex min-h-6 items-center text-ink underline-offset-4 [overflow-wrap:anywhere] hover:underline"
+        >
           {itemTitle(item)}
         </Link>
         <p className="mt-0.5 text-xs text-ink-2 [overflow-wrap:anywhere]">

@@ -6,17 +6,20 @@ import { getDocumentProxy, getMeta } from "unpdf";
 import { blobs } from "@/lib/blobs";
 import { db } from "@/lib/db";
 import { requireApiSession } from "@/lib/session";
+import { fromThisSite, refusedCrossSite } from "../papers/_form";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Web upload: the file goes straight into quarantine after signature and size validation.
  * Candidate metadata is read from a PDF's information dictionary so the confirmation form is
- * pre-filled; nothing is processed until the owner confirms it and grants extraction.
+ * pre-filled; nothing is processed until the owner confirms it and grants extraction. Like the
+ * other Library posts, it refuses requests from other sites before reading the body.
  */
 export async function POST(request: Request): Promise<Response> {
   const authed = await requireApiSession(request);
   if ("response" in authed) return authed.response;
+  if (!fromThisSite(request)) return refusedCrossSite();
   const env = getEnv();
   const maxBytes = env.MAX_UPLOAD_MB * 1_048_576;
   const form = await request.formData().catch(() => null);

@@ -41,14 +41,17 @@ export function HomeCollections({
           list.length ? (
             <div key={kind} className="mt-3">
               <h3 className="text-sm font-medium text-ink">
-                <Link href={KIND_TEXT[kind].path} className="hover:underline">
+                <Link href={KIND_TEXT[kind].path} className="inline-flex min-h-6 items-center hover:underline">
                   {KIND_TEXT[kind].plural}
                 </Link>
               </h3>
               <ul className="mt-1 flex flex-col gap-1 text-sm">
                 {list.map((c) => (
                   <li key={c.id} className="flex flex-wrap items-baseline justify-between gap-x-3 [overflow-wrap:anywhere]">
-                    <Link href={`${KIND_TEXT[kind].path}/${c.id}`} className="min-w-0 text-brass underline underline-offset-4">
+                    <Link
+                      href={`${KIND_TEXT[kind].path}/${c.id}`}
+                      className="inline-flex min-h-6 items-center min-w-0 text-brass underline underline-offset-4"
+                    >
                       {c.name}
                     </Link>
                     <span className="text-xs text-ink-3">{collectionCount(kind, c.itemCount)}</span>

@@ -40,7 +40,7 @@ export function WorkSummaryRow({
     <li className="flex flex-col gap-2 border-t border-stone py-3 first:border-t-0 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0 [overflow-wrap:anywhere]">
         <Heading className="text-base text-ink">
-          <Link href={href} className="hover:underline">
+          <Link href={href} className="inline-flex min-h-6 items-center hover:underline">
             {record.title ?? "Untitled (no title reported)"}
           </Link>
         </Heading>

@@ -6,15 +6,27 @@ type Variant = "primary" | "secondary" | "quiet" | "danger";
 const variantClass: Record<Variant, string> = {
   primary: "bg-brass text-paper-2 hover:bg-brass-strong border border-transparent disabled:opacity-60 disabled:cursor-not-allowed",
   secondary: "bg-paper-2 text-ink border border-stone-2 hover:bg-paper-3 disabled:opacity-60",
-  quiet: "bg-transparent text-brass hover:underline underline-offset-4 border border-transparent px-1",
+  quiet: "bg-transparent text-brass hover:underline underline-offset-4 border border-transparent",
   danger: "bg-paper-2 text-rust border border-rust hover:bg-rust-soft disabled:opacity-60",
 };
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] px-4 py-2 text-sm font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-focus";
+  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] text-sm font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-focus";
+
+/**
+ * Each variant's padding, given once: two padding utilities in one class list are applied in the
+ * stylesheet's order, not the list's, so a variant's or a caller's padding would otherwise be lost.
+ * Padding in `className` replaces the variant's.
+ */
+const variantPadding: Record<Variant, string> = { primary: "px-4 py-2", secondary: "px-4 py-2", quiet: "px-1 py-2", danger: "px-4 py-2" };
+
+function buttonClass(variant: Variant, className?: string): string {
+  const padding = /(^|\s)p[xytblrse]?-/.test(className ?? "") ? null : variantPadding[variant];
+  return [base, padding, variantClass[variant], className].filter(Boolean).join(" ");
+}
 
 export function Button({ variant = "primary", className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
-  return <button className={[base, variantClass[variant], className].filter(Boolean).join(" ")} {...props} />;
+  return <button className={buttonClass(variant, className)} {...props} />;
 }
 
 export function LinkButton({
@@ -29,7 +41,7 @@ export function LinkButton({
   children: ReactNode;
 }) {
   return (
-    <Link href={href} className={[base, variantClass[variant], className].filter(Boolean).join(" ")}>
+    <Link href={href} className={buttonClass(variant, className)}>
       {children}
     </Link>
   );
@@ -121,7 +133,8 @@ export function Badge({ children, tone = "neutral", title }: { children: ReactNo
     <span
       title={title}
       className={[
-        "inline-flex items-center rounded-full border px-2 py-0.5 text-[0.7rem] font-medium uppercase tracking-wide",
+        // The line height is set with the size, so a badge is the same height in any text around it.
+        "inline-flex items-center rounded-full border px-2 py-0.5 text-[0.7rem]/4 font-medium uppercase tracking-wide",
         toneClass[tone],
       ].join(" ")}
     >

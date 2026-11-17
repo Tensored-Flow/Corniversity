@@ -6,10 +6,20 @@ import { FsBlobStore } from "@corniversity/db/blob";
 import { createDb } from "@corniversity/db/client";
 import { getEnv } from "@corniversity/db/env";
 import { user } from "@corniversity/db/schema/auth";
-import { annotation, resourceAsset, scholarlyIdentifier, scholarlyVersion, scholarlyWork } from "@corniversity/db/schema/index";
+import {
+  annotation,
+  extractedPage,
+  jobRecord,
+  passage,
+  resourceAsset,
+  scholarlyIdentifier,
+  scholarlyVersion,
+  scholarlyWork,
+} from "@corniversity/db/schema/index";
 import {
   confirmMetadata,
   createAnnotation,
+  deleteAsset,
   getAsset,
   listPages,
   permittedPassagesForCourse,
@@ -283,6 +293,66 @@ describe("ingestHandler", () => {
     expect(outcomes["same geometry"]!.key).toBe(outcomes["same geometry"]!.assetKey);
     expect(outcomes["other geometry"]!.status).toBe("needs_repair");
     expect(outcomes["other geometry"]!.key).toBe("arxiv:2509.50002v1");
+  });
+
+  it("a stored arXiv copy removed while its extraction runs keeps no text: the Document stays read from arxiv.org", async () => {
+    const arxivId = "2509.50003";
+    const [work] = await handle.db
+      .insert(scholarlyWork)
+      .values({ ownerId: OWNER, title: `Paper ${arxivId}` })
+      .returning();
+    await handle.db
+      .insert(scholarlyIdentifier)
+      .values({ ownerId: OWNER, workId: work!.id, scheme: "arxiv", value: arxivId, source: "fixture" });
+    const [version] = await handle.db
+      .insert(scholarlyVersion)
+      .values({ ownerId: OWNER, workId: work!.id, kind: "preprint", label: "arXiv v1", arxivId, arxivVersion: 1, source: "fixture" })
+      .returning();
+    const linked = await openArxivVersion(handle.db, OWNER, work!.id, arxivId, 1);
+    await attachUploadToWork(handle.db, blobs, {
+      ownerId: OWNER,
+      workId: work!.id,
+      versionId: version!.id,
+      filename: `${arxivId}.pdf`,
+      mediaType: "application/pdf",
+      data: makePdf(["A Banach space is a complete normed space; this copy is removed while it is read."], false),
+      maxBytes: 50_000_000,
+    });
+    await setPermission(handle.db, OWNER, linked.id, "local_extract", "allowed", "test");
+    await handle.db.update(resourceAsset).set({ status: "processing" }).where(eq(resourceAsset.id, linked.id));
+    const [job] = await handle.db
+      .insert(jobRecord)
+      .values({ ownerId: OWNER, kind: "ingest-asset", queue: "ingest", idempotencyKey: `ingest:race:${linked.id}`, payload: {} })
+      .returning();
+    // A raw connection holds the job's record, so the handler (bytes already read) waits at its
+    // first progress report; the owner removes the copy meanwhile.
+    const c = await handle.pool.connect();
+    let result: Record<string, unknown>;
+    try {
+      await c.query("begin");
+      const holder = ((await c.query("select pg_backend_pid() as pid")).rows[0] as { pid: number }).pid;
+      await c.query("select id from job_record where id = $1 for update", [job!.id]);
+      const pending = ingestHandler(ctx, { ...payload(linked.id), jobRecordId: job!.id });
+      let blocked = false;
+      for (let i = 0; i < 200 && !blocked; i++) {
+        const waiting = await handle.pool.query("select count(*)::int as n from pg_stat_activity where $1 = any(pg_blocking_pids(pid))", [
+          holder,
+        ]);
+        blocked = (waiting.rows[0] as { n: number }).n > 0;
+        if (!blocked) await new Promise((r) => setTimeout(r, 25));
+      }
+      expect(blocked).toBe(true);
+      await deleteAsset(handle.db, blobs, OWNER, linked.id);
+      await c.query("commit");
+      result = await pending;
+    } finally {
+      c.release();
+    }
+    expect(result).toEqual({ skipped: true, reason: "file changed or removed during processing" });
+    const after = (await getAsset(handle.db, OWNER, linked.id))!;
+    expect(after).toMatchObject({ status: "linked_remote", storageKey: null, sha256: `arxiv:${arxivId}v1` });
+    expect(await handle.db.select().from(extractedPage).where(eq(extractedPage.assetId, linked.id))).toEqual([]);
+    expect(await handle.db.select().from(passage).where(eq(passage.assetId, linked.id))).toEqual([]);
   });
 
   it("pins unpdf's engine options so installing pdfjs-dist does not change extracted text", () => {

@@ -794,6 +794,68 @@ scripted demo (no model provider).
     (before this milestone; seen from outside with a forged cookie). They now redirect to the
     configured public address.
 
+## Milestone 20: the Corniversity Library (15–17 November 2026)
+
+The owner's brief *Corniversity Library*; contract and decision log in RESEARCH_LIBRARY.md (§10
+names the checks and what each journey covers). Windows 11, local embedded PostgreSQL 17, scripted
+demo (no model provider), scholarly providers in fixture mode (recorded responses). Test counts and
+the journeys' results are recorded in the PR; this section says what is tested and how.
+
+| Check | Command | What it covers |
+|---|---|---|
+| Type check, lint | `pnpm typecheck`, `pnpm lint` | all packages; Biome |
+| Unit tests | `pnpm test` | core rules (`packages/core/src/scholarly/`: identifiers, licences and the private-copy decision, permissions, duplicates, anchors, drift, positions, subjects, Discover, the companion's gates, text); provider adapters, the HTTP client and the recorded-response transport (`packages/db/src/scholarly/`); the reader (`components/reader/`: loader, engine version parity, annotations, positions, rules, document info, ask); page helpers (`edit-form`, `saved-text`, Discover's failure sentences, collection text, `describeJob`); route handlers (`attach`, `ask`, the annotation guard); the exact production CSP (`csp.test.ts`); the offline test (`connection.test.ts`); the notices allowlist; worker handlers (`scholarly`, `scholarly-lists`) |
+| Integration tests | `pnpm test:integration` | services against throw-away PostgreSQL clusters: `scholarly-works`, `paper-lists`, `discover`, `reader`, `companion`, `library`, `library-documents` (Document transitions with both blob drivers, attach rules, rect anchors when a file changes), `library-reading`, `library-home`, `library-collections`, `notebook`, `records` (the export carries the library), the provider cache and the schema's composite keys |
+| Production build | `pnpm --filter @corniversity/web build` | built on 17 Nov 2026; `next build` reported that Next.js 16.4.3 is affected by a known security vulnerability (USER_ACTIONS 9) |
+| Journeys, production build on a new, empty database | journey 22 alone first, then 04, 07, 08, 15 and 17–22 at both sizes: desktop (Desktop Chrome, 1440 × 900) and phone (Pixel 7, 390 × 844) | see the PR |
+
+- **How the journeys run.** Against a production build, so the tested pages carry the production
+  CSP. The stack must report `scholarlyProviders: fixture` on `/api/health`, or every
+  research-library journey stops. arxiv.org is answered by Playwright route interception with
+  generated PDFs whose own text says they are not the paper. The companion answers in the labelled
+  scripted demo. Journey 22's empty-library test needs a new owner with no papers or collections:
+  it runs first after a fresh stack, and on any other database it skips and says why.
+- **What each journey covers.**
+  - **22**: the core loop as one session, from an empty library to the records export. It deletes
+    what it made.
+  - **17**: find, preview, Save and the paper page; reading an arXiv version; *Attach your copy*;
+    a private copy through the worker; shelves; corrections; a paper without an identifier merged
+    after confirmation; signed-out refusals.
+  - **18**: Discover's lists from the worker, subjects, a subject room, *Surprise me*.
+  - **19**: the reader: highlights and notes after a reload, an edit conflict, positions, panels
+    and the phone dialog, arxiv.org unreachable, drift, versions.
+  - **20**: the home, saved views, *Continue reading*, library notes, a shelf and a trail from
+    creation to deletion, the records export.
+  - **21**: the companion: closed by default, the owner's permission, refusals with reasons, a
+    labelled scripted answer, the Text view's *Ask* without JavaScript, a linked paper's selection
+    labelled as unchecked.
+  - **04**: Files, the Text view and the Jobs page in words.
+  - **07**: every Library, reader, notebook and records page and `api/library/**` route refuses a
+    request without a session; another owner's ids are not found, including a repeated position
+    save.
+  - **08**: axe in light and dark on every Library page and the reader with each panel; the
+    reader by keyboard; touch targets; reduced motion.
+  - **15**: the registered notices.
+- **Not covered by automation.** Live provider behaviour beyond the recorded responses (the
+  recordings were captured once by the opt-in live recording script); a real arxiv.org download in
+  the browser; live companion answers (no key).
+- **Defects found after the stage 4 merge, fixed** (commit `ede5099`):
+  - *Keep my notes on the new file* re-keyed more notes than it had checked; it now re-keys only the
+    checked notes and those measured on the new bytes, and a refusal marks only the checked notes
+    for repair.
+  - The reading-position route kept a tab's sequence after refusing a save for a Document that is
+    not the owner's, so a repeated forged save was answered differently; the sequence is now
+    forgotten and journey 07 asserts the repeat is not found.
+  - A refused shelf or trail creation lost the typed name; it is kept.
+  - Library help text, Discover's saved-paper lookup (the owner's own keys only) and journey 04's
+    Jobs wording.
+- **Earlier in the milestone, fixed.** `notFound()` in an app page drew the root 404's `main` inside
+  the app layout's `main` (each route group now has its own not-found file); images from other sites
+  in owner Markdown were blocked by the CSP and logged violations (they are now links).
+- **Still to run.** Stage 5: five independent reviews (security, correctness, completeness against
+  the brief, reader quality, design and accessibility), each finding challenged by a second
+  reviewer, then the fixes.
+
 ## Remaining defects
 
 - The companion's `watch` mode has unit tests and a manual rehearsal against the development
@@ -842,3 +904,15 @@ scripted demo (no model provider).
 - One saved prediction opens a laboratory for its whole unit, so the choice-model activity asks
   for both cases' predictions before saving rather than enforcing one per case; *Predict again*
   resets the laboratory for the whole unit.
+- Research library (Milestone 20): the journeys use recorded provider responses and intercepted
+  arxiv.org requests, so live OpenAlex, Crossref and arXiv behaviour and a real download from
+  arxiv.org in the browser are not exercised by them; the reading companion is checked in the
+  scripted demo only.
+- The reader loads a stored PDF whole (ranged delivery is deferred); stored files over 40 MB or 400
+  pages open in the Text view when their text is extracted.
+- The per-tab reading-position sequence lives in the web process's memory; with the single web
+  process the deployment runs it is exact, and a second web process would need shared state.
+- A paper links to a course only through a paper note's course and unit; a direct paper-to-course
+  link needs a migration of its own and is deferred.
+- Selecting text in the reader's pages needs a pointer or caret browsing; the page note is the
+  keyboard alternative to a highlight, and *Mark area* needs a pointer.

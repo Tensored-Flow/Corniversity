@@ -1,4 +1,4 @@
-import { and, asc, count, eq, inArray, max, sql } from "drizzle-orm";
+import { and, asc, count, eq, inArray, isNull, max, sql } from "drizzle-orm";
 import type { DbOrTx } from "../client";
 import { isUuid } from "../ids";
 import { type CollectionKind, libraryCollection, libraryCollectionItem, scholarlyWork } from "../schema/index";
@@ -56,7 +56,11 @@ async function requireCollection(db: DbOrTx, ownerId: string, id: string): Promi
   return row;
 }
 
-/** The work that stands now for this id (a merged work's survivor), or a not-found error. */
+/**
+ * The work that stands now for this id (a merged work's survivor), or a not-found error. Called in
+ * a transaction, it holds the survivor's row FOR SHARE, so an owner merge cannot turn it into a
+ * tombstone before the caller's insert commits (a merge that committed while this waited is followed).
+ */
 async function requireWorkId(db: DbOrTx, ownerId: string, workId: string): Promise<string> {
   if (!isUuid(workId)) throw new CollectionError("not_found", "Paper not found.");
   let current = workId;
@@ -65,7 +69,8 @@ async function requireWorkId(db: DbOrTx, ownerId: string, workId: string): Promi
       .select({ id: scholarlyWork.id, mergedIntoId: scholarlyWork.mergedIntoId })
       .from(scholarlyWork)
       .where(and(eq(scholarlyWork.id, current), eq(scholarlyWork.ownerId, ownerId)))
-      .limit(1);
+      .limit(1)
+      .for("share");
     if (!row) break;
     if (!row.mergedIntoId) return row.id;
     current = row.mergedIntoId;
@@ -152,7 +157,7 @@ export async function getCollection(db: DbOrTx, ownerId: string, id: string, vie
   const rows = await db
     .select({ item: libraryCollectionItem, work: scholarlyWork })
     .from(libraryCollectionItem)
-    .innerJoin(scholarlyWork, eq(scholarlyWork.id, libraryCollectionItem.workId))
+    .innerJoin(scholarlyWork, and(eq(scholarlyWork.id, libraryCollectionItem.workId), isNull(scholarlyWork.mergedIntoId)))
     .where(and(eq(libraryCollectionItem.collectionId, collection.id), eq(libraryCollectionItem.ownerId, ownerId)))
     .orderBy(asc(libraryCollectionItem.position), asc(libraryCollectionItem.addedAt), asc(libraryCollectionItem.workId));
   const query = view.query?.trim().slice(0, 300) ?? "";
@@ -225,8 +230,8 @@ export async function addToCollection(
   reason?: string | null,
 ): Promise<{ added: boolean; item: CollectionItemRow }> {
   const collection = await requireCollection(db, ownerId, id);
-  const work = await requireWorkId(db, ownerId, workId);
   return db.transaction(async (tx) => {
+    const work = await requireWorkId(tx, ownerId, workId);
     await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${`collection:${collection.id}`}, 0))`);
     const [last] = await tx
       .select({ position: max(libraryCollectionItem.position) })

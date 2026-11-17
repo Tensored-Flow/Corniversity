@@ -168,3 +168,33 @@ never in a commit. Push new commits with `git push`.
   fetched.
 - **Books to obtain:** *Library → Books to obtain* lists the sources still missing from the
   programme you follow. Nothing is fetched.
+
+## 9. The research library: optional choices and one decision
+
+The research library (Milestone 20) works without any of these. Variables go in Railway on both
+service `web` and service `worker` for the hosted site (once Milestone 20 is released there), or in
+your `.env` for the local installation. Never paste a key into a chat.
+
+- **An OpenAlex API key (optional).** Without one, the server shares a small daily allowance per IP
+  address with everyone else on it. On the hosted site, word searches in *Find papers*, Discover's
+  lists, and a paper's references, cited by and related papers are then not requested; they say
+  *OpenAlex browsing needs an API key on this server*. Looking a paper up by DOI or arXiv id still
+  works. Creating a key ties these requests to your OpenAlex account. To add one: create it in your
+  OpenAlex account's API settings (openalex.org/settings/api), then set `OPENALEX_API_KEY`. It is
+  sent only in a request header, never in an address.
+- **A Crossref contact address (optional).** Crossref is asked whether a paper has been corrected
+  or retracted. Without `CROSSREF_MAILTO` it uses Crossref's public pool. Set it to an address you
+  choose if you want requests to carry it; it is never taken from `OWNER_EMAIL`.
+- **Private copies (optional, per paper).** arXiv papers are read by your browser straight from
+  arxiv.org, and nothing is stored. On a paper page, *Keep a private copy of vN* appears only for a
+  version that arXiv reports under CC BY, CC BY-SA, CC0 or public domain. Most papers carry arXiv's
+  non-exclusive licence instead and stay read from arxiv.org. Keeping private copies of those for
+  personal use is your decision, and would need a code change. Meanwhile *Attach your copy* on any
+  paper page stores a copy you provide.
+- **Decision: arXiv `cs.LG` in the AI subject.** Discover's *Artificial intelligence* subject takes
+  its *New on arXiv* list from arXiv's `cs.AI` category only; much machine-learning work is posted
+  under `cs.LG`. Say whether the AI subject should also include `cs.LG`. (*Computer science* already
+  covers every `cs` category.)
+- **Decision: upgrading Next.js.** `next build` on 17 Nov 2026 reported that Next.js 16.4.3 is
+  affected by a known security vulnerability (SecurityFatalError). Upgrading Next.js is your
+  decision.

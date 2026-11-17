@@ -4,6 +4,7 @@ import { continueReading, documentsForWorks } from "@corniversity/db/services/li
 import { listWorks, type WorkListView } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
 import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
+import { pages } from "@/components/scholarly/format";
 import { Badge, Button, Card, EmptyState, Input, LinkButton, Notice } from "@/components/ui";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/session";
@@ -83,13 +84,13 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
           </div>
         </form>
         <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-          <Link href="/library/find" className="text-brass underline underline-offset-4">
+          <Link href="/library/find" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Add a paper
           </Link>
-          <Link href="/library/discover" className="text-brass underline underline-offset-4">
+          <Link href="/library/discover" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Discover
           </Link>
-          <Link href="/notebook?library=1" className="text-brass underline underline-offset-4">
+          <Link href="/notebook?library=1" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Library notes
           </Link>
         </p>
@@ -126,13 +127,13 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-xl text-ink">Files</h2>
         <p className="flex flex-wrap gap-3 text-sm">
-          <Link href="/library/upload" className="text-brass underline underline-offset-4">
+          <Link href="/library/upload" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Upload
           </Link>
-          <Link href="/library/sync" className="text-brass underline underline-offset-4">
+          <Link href="/library/sync" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Desktop sync
           </Link>
-          <Link href="/library/jobs" className="text-brass underline underline-offset-4">
+          <Link href="/library/jobs" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
             Jobs
           </Link>
         </p>
@@ -160,7 +161,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <h3 className="text-lg text-ink">
-                    <Link href={`/library/items/${asset.id}`} className="hover:underline">
+                    <Link href={`/library/items/${asset.id}`} className="inline-flex min-h-6 items-center hover:underline">
                       {assetTitle(asset)}
                     </Link>
                   </h3>
@@ -168,7 +169,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
                     {[
                       asset.confirmedAuthors?.join(", ") ?? asset.candidateMetadata.author,
                       asset.confirmedEdition,
-                      asset.pageCount ? `${asset.pageCount} pages` : null,
+                      asset.pageCount ? pages(asset.pageCount) : null,
                     ]
                       .filter(Boolean)
                       .join(" · ") || "Metadata not confirmed yet"}

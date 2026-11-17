@@ -19,7 +19,7 @@ import { type ReactNode, Suspense } from "react";
 import { Markdown } from "@/components/Markdown";
 import { pageViewAvailable, textViewAvailable } from "@/components/reader/rules";
 import { browsingRefusal, scholarly } from "@/components/scholarly/client";
-import { count, paperHref, rejectionText, reportedBy } from "@/components/scholarly/format";
+import { count, pages, paperHref, rejectionText, reportedBy } from "@/components/scholarly/format";
 import { paperFromWork } from "@/components/scholarly/model";
 import { FixtureBadge, PaperView } from "@/components/scholarly/PaperView";
 import { Badge, Button, Card, Field, Input, LinkButton, Notice, Select, Textarea } from "@/components/ui";
@@ -161,7 +161,7 @@ export default async function PaperPage({
         {errorText ? <Notice tone="rust">{errorText}</Notice> : null}
         {other ? (
           <p className="text-sm">
-            <Link href={paperHref(other)} className="text-brass underline underline-offset-4">
+            <Link href={paperHref(other)} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
               Open the paper that file belongs to
             </Link>
           </p>
@@ -290,10 +290,16 @@ export default async function PaperPage({
                   </form>
                 </>
               )}
-              <Link href={`/notebook?library=1&work=${work.id}`} className="text-brass underline underline-offset-4">
+              <Link
+                href={`/notebook?library=1&work=${work.id}`}
+                className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+              >
                 Notes for this paper
               </Link>
-              <Link href={`/notebook?library=1&work=${work.id}#new-note`} className="text-brass underline underline-offset-4">
+              <Link
+                href={`/notebook?library=1&work=${work.id}#new-note`}
+                className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+              >
                 New note for this paper
               </Link>
             </div>
@@ -527,7 +533,7 @@ function Files({
                 </div>
                 <p className="text-xs text-ink-3">
                   <span className="break-all">{d.asset.filename}</span> · {(d.asset.sizeBytes / 1_048_576).toFixed(2)} MB
-                  {d.asset.pageCount ? ` · ${count(d.asset.pageCount)} pages` : ""}
+                  {d.asset.pageCount ? ` · ${pages(d.asset.pageCount)}` : ""}
                 </p>
                 <PermissionSummary permissions={d.permissions} />
                 {rejection ? (
@@ -556,7 +562,7 @@ function Files({
                   ) : null}
                 </div>
                 <details>
-                  <summary className="cursor-pointer text-sm text-brass">Permissions and removal</summary>
+                  <summary className="cursor-pointer py-1 text-sm text-brass">Permissions and removal</summary>
                   <ul className="mt-3 flex flex-col gap-3">
                     {PERMISSIONS.map((p) => {
                       const current = d.permissions[p.action];
@@ -600,7 +606,7 @@ function Files({
                   <form action={removeCopyAction} className="mt-4 flex flex-wrap items-center gap-3 border-t border-stone pt-3">
                     <input type="hidden" name="workId" value={workId} />
                     <input type="hidden" name="assetId" value={d.asset.id} />
-                    <label className="flex items-center gap-2 text-sm text-ink">
+                    <label className="flex min-h-6 items-center gap-2 text-sm text-ink">
                       <input type="checkbox" name="confirm" value="1" />{" "}
                       {d.version?.arxivId
                         ? "Remove this copy; the version is read from arxiv.org again"
@@ -740,7 +746,10 @@ function Collections({
                       {KIND_TEXT[m.kind].removeConfirm}
                       <span className="sr-only"> on {m.name}</span>
                     </Button>
-                    <Link href={`${paperHref(workId)}#collection-${m.id}`} className="text-brass underline underline-offset-4">
+                    <Link
+                      href={`${paperHref(workId)}#collection-${m.id}`}
+                      className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+                    >
                       Keep it
                     </Link>
                   </form>
@@ -838,7 +847,7 @@ function Duplicates({
             <form action={mergeAction} className="flex flex-wrap items-center gap-3">
               <input type="hidden" name="workId" value={workId} />
               <input type="hidden" name="mergeId" value={d.workId} />
-              <label className="flex items-center gap-2 text-sm text-ink">
+              <label className="flex min-h-6 items-center gap-2 text-sm text-ink">
                 <input type="checkbox" name="confirm" value="1" /> They are the same paper
               </label>
               <Button type="submit" variant="secondary">
@@ -939,14 +948,14 @@ function Delete({
           <p className="text-sm text-ink-2">
             Notebook entries linked to it ({count(summary.notebookEntries)}) stay, without the link. This cannot be undone.
           </p>
-          <label className="flex items-center gap-2 text-sm text-ink">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-ink">
             <input type="checkbox" name="confirm" value="1" /> Delete this paper and its notes
           </label>
           <div className="flex flex-wrap items-center gap-3">
             <Button type="submit" variant="danger">
               Delete permanently
             </Button>
-            <Link href={paperHref(workId)} className="text-sm text-brass underline underline-offset-4">
+            <Link href={paperHref(workId)} className="inline-flex min-h-6 items-center text-sm text-brass underline underline-offset-4">
               Cancel
             </Link>
           </div>

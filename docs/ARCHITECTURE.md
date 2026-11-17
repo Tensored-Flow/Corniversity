@@ -6,12 +6,13 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 ## Topology
 
 ```
- Browser ──HTTPS──▶ apps/web (Next.js 16, Node runtime)
-                        │  services (packages/db)        ▲ SSE tutoring stream
-                        │  enqueue (pg-boss, same tx)    │
-                        ▼                                 │
-                  PostgreSQL ◀──── apps/worker (pg-boss: ingest, prepare, assess, embed, maintain)
-                        ▲
+ Browser ──HTTPS──▶ apps/web (Next.js 16, Node runtime) ──▶ OpenAlex, Crossref (through the provider cache)
+    │                   │  services (packages/db)        ▲ SSE tutoring stream
+    │                   │  enqueue (pg-boss, same tx)    │
+    │                   ▼                                 │
+    │             PostgreSQL ◀──── apps/worker (pg-boss: ingest, prepare, assess, export, transcribe,
+    │                   ▲                         maintain, scholarly) ──▶ arXiv (only caller), OpenAlex, Crossref
+    └─▶ arxiv.org/pdf (the reader fetches a linked arXiv PDF in the owner's browser; nothing stored)
  Desktop ── apps/companion ──outbound HTTPS (device token)──▶ apps/web /api/companion/*
 ```
 
@@ -53,6 +54,15 @@ typed packages and one PostgreSQL database. No microservices, no separate vector
 studio's `createProject`, `setShelf`, `saveDraft`, `saveVersion`, `addProvenance`, `addArtifact`,
 `requestFeedback`, `requestOralDiscussion`, `holdOralDiscussion` and `projectReport`. UI and model tools both call these; models never write. (`prepareUnit`
 is reserved for the content pipeline; units are currently prepared in `content/` and validated.)
+The research library adds, among others, `resolveInput`, `importByIdentifier`, `saveWork`,
+`setWorkFlags`, `editWorkFields`, `openArxivVersion`, `recordObservedHash`, `requestPrivateCopy`,
+`attachUploadToWork`, `createWorkFromUpload`, `mergeWorks` and `deleteWorkCompletely`
+(`services/scholarly-works.ts`); `searchPapers` and `previewPaper` (`services/paper-lists.ts`);
+`discoverPage` and `subjectRoom` (`services/discover.ts`); `continueReading` (`services/library-home.ts`);
+`createCollection`, `addToCollection`, `moveInCollection` and `setItemReason`
+(`services/library-collections.ts`); `saveReadingPosition`, `createAnnotation`, `updateAnnotation`
+and `listReadingNotes` (`services/library.ts`); `readerDocument` (`services/reader.ts`); and
+`prepareCompanionTurn` and `recordCompanionPermission` (`services/companion.ts`).
 
 ## Data model (areas → tables)
 
@@ -199,6 +209,64 @@ enrolment, assessment, ingestion and ICS UIDs; proposed vs confirmed plans are d
 - Prompt-injection: retrieved text, uploads and persona messages are data; tools are allow-listed
   server functions; outbound fetches are host-allow-listed with SSRF guards.
 
+## Research library and the reader
+
+The contract, decision log and every route's behaviour are in
+[RESEARCH_LIBRARY.md](RESEARCH_LIBRARY.md); this section names the parts.
+
+- **Routes** (all under `/library`; main navigation unchanged): `/library` (the home, database
+  only: find box, *Continue reading*, saved views, shelves and trails, the Files list),
+  `/library/find`, `/library/works/[scheme]/[...value]` (preview of a paper not in the library),
+  `/library/papers/[workId]`, `/library/papers/new`, `/library/discover`,
+  `/library/subjects/[slug]`, `/library/shelves`, `/library/shelves/[id]`, `/library/trails`,
+  `/library/trails/[id]`, the reader `/library/read/[id]` in its own route group `(reader)` with a
+  full-height layout, and the existing items, sources, requests, sync, jobs and upload pages.
+  Library notes are `/notebook?library=1` with filters by paper, kind, subject and words. Route
+  handlers: `/api/library/papers/new` and `/api/library/papers/[workId]/attach` (multipart PDF
+  uploads answering with 303 redirects), `/api/library/annotations`, `/api/library/position` and
+  `/api/library/ask` (JSON from this site's own pages only, through the annotation routes' guard),
+  and the existing upload, requests and owner-only file routes. Each route group has its own
+  `not-found.tsx`, so every 404 has exactly one `main`.
+- **Providers** (`packages/db/src/scholarly/`): OpenAlex, arXiv and Crossref adapters behind one
+  HTTP client (https to fixed hosts, identifiers parsed and encoded, no redirects followed, timeouts,
+  bounded retries, zod-validated responses, URLs and keys redacted from errors). No URL is fetched
+  from user input. Responses are cached in `scholarly_cache.provider_cache`. Only the worker calls
+  arXiv. `SCHOLARLY_PROVIDER=fixture` answers from recorded responses for tests and journeys;
+  production and `pnpm local:owner` refuse it.
+- **Pure rules** (`packages/core/src/scholarly/`): identifiers, licence classification and the
+  private-copy decision (`storageDecision`: only an open licence that arXiv OAI-PMH reported for
+  that exact version), permissions, duplicates, anchors, drift, positions, Discover and the
+  companion's gates.
+- **The reader stack.** `pdfjs-dist` 6.4.299 (pinned exactly; the version unpdf bundles for server
+  extraction, asserted equal by a test), legacy build, loaded only in the browser
+  (`components/reader/engine.ts`) and wrapped by `PdfReader.tsx` around the official `PDFViewer`,
+  `EventBus`, `PDFLinkService` and `PDFFindController`. The worker, WebAssembly decoders, CMaps,
+  standard fonts and ICC profiles are copied into `apps/web/public/pdfjs/6.4.299/` by
+  `apps/web/scripts/vendor-pdfjs.mjs`, run by the web `dev` and `build` scripts and by
+  `scripts/local-owner.ts`, so they load from this origin. Scripting, XFA, forms and annotation
+  editors are off. A stored Document is fetched from the owner-only file route; a linked arXiv
+  Document is fetched by the browser from `https://arxiv.org/pdf/{id}v{n}` without credentials or
+  referrer, checked to be a PDF and hashed, and the hash reported (`recordObservedHash`). The
+  production CSP (`apps/web/src/lib/csp.ts`) allows `connect-src` to this site and
+  `https://arxiv.org` only, and `'wasm-unsafe-eval'` only on responses under `/pdfjs/`. Panels
+  (*Contents*, *Notes*, *Paper*, *Ask*) are an aside on the desktop and a native `<dialog>` on
+  phones. Annotations are anchored by rects in PDF user space with the owner's selected quote;
+  positions are saved to the server and ordered on its clock.
+- **`packages/db/src/services/reader.ts`**: `readerDocument` loads, for its owner only, everything
+  the reader shows about one Document: the asset, its paper (merges followed), identifiers, its
+  scholarly version and arXiv id, every recorded version of the same arXiv paper, the reading
+  position and the annotations. Another owner's id, or an id that is not a UUID, is not found.
+- **`packages/db/src/services/companion.ts`**: the reading companion's server side.
+  `prepareCompanionTurn` decides in a fixed order (the owner's Document; its state; `external_ai`
+  allowed on that Document; what the action needs, through core `decideCompanionAction`) and builds
+  bounded evidence (a selection of at most 4,000 characters, page text of at most 6,000; never the
+  whole PDF; quoted text neutralised and carried in the owner's message as data). A selection from a
+  linked arXiv Document is labelled as not checked against the paper. `recordCompanionPermission`
+  records the owner's basis with the licence shown; `appendCompanionRequest` stores the request and
+  its evidence before the model runs. `/api/library/ask` streams one answer through
+  `streamPersonaTurn`; each request is its own conversation, and a refused run is never replaced by
+  scripted text.
+
 ## Jobs
 
 The worker applies pending migrations on start and, when the deployment sets
@@ -206,11 +274,14 @@ The worker applies pending migrations on start and, when the deployment sets
 pg-boss 12 (`schema: pgboss`), queues: `transcribe-pages` (one per consent; no retry, since a retry
 would be a new billable call; consent and pages re-checked when it runs), `ingest-asset` (singletonKey = sha256), `prepare-unit`
 (one job per confirmed or resumed preparation request; stages hold leases so a duplicate run skips finished work), `assess-submission` (singletonKey = submission version id),
-`embed-passages`, `export-records`, `scholarly-arxiv` (every arXiv request: works' arXiv records,
+`embed-passages` (defined, with no handler: pgvector is optional and full-text search serves),
+`export-records`, `scholarly-arxiv` (every arXiv request: works' arXiv records,
 private copies of openly licensed versions, newest-submission listings; one active job across all
 processes through a shared singleton key, at least 3.1 s between requests, Retry-After honoured),
 `scholarly-refresh` (a work's OpenAlex metadata and Crossref integrity notices), `scholarly-lists`
-(subject-list refreshes; defined, handler pending), `maintenance` (cron; each task under its own
+(Discover's subject lists from OpenAlex into the provider cache, daily for the owner's subjects and
+whenever a page finds a list missing or out of date; it then queues those subjects' arXiv listings
+on `scholarly-arxiv`), `maintenance` (cron; each task under its own
 schedule key, including the daily provider-cache purge). Retries with backoff, expiry,
 heartbeats for ingestion, dead-letter queues. `job_record` mirrors state for the UI.
 
@@ -226,7 +297,11 @@ calls `requireSession`; files served only through authorized handlers; companion
 device tokens; Markdown sanitised (`rehype-sanitize` with KaTeX allow-list); uploads validated
 (type, size, page count, decompression limits); secrets redacted from logs. `Permissions-Policy`
 allows the microphone to this origin only (`microphone=(self)`), for dictation, which is offered
-only after the learner's recorded permission; camera and geolocation stay off.
+only after the learner's recorded permission; camera and geolocation stay off. The
+Content-Security-Policy is asserted exactly by `csp.test.ts`; images from other sites in owner
+Markdown and model output become links. The annotation, position and companion routes accept only
+JSON from this site's own pages (`api/library/annotations/guard.ts`), and the paper upload routes
+refuse other sites.
 
 ## Significant decisions
 

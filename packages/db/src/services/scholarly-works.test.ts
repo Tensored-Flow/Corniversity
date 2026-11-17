@@ -15,8 +15,10 @@ import { auditEvent, jobRecord } from "../schema/operations";
 import { libraryCollection, libraryCollectionItem, scholarlyIdentifier, scholarlyVersion, scholarlyWork } from "../schema/scholarly";
 import { createFixtureScholarlyClient, type ScholarlyClient } from "../scholarly/client";
 import { ScholarlyProviderError } from "../scholarly/errors";
-import type { ArxivEntry, OpenAlexWorkRecord, OpenAlexWorkResult } from "../scholarly/types";
+import type { ArxivEntry, IntegrityNotice, OpenAlexWorkRecord, OpenAlexWorkResult } from "../scholarly/types";
 import { createAnnotation, markDocumentOpened, setPermission } from "./library";
+import { addToCollection, getCollection } from "./library-collections";
+import { createEntry } from "./notebook";
 import {
   acceptNewFile,
   applyArxivRecord,
@@ -1153,5 +1155,141 @@ describe("find and paper pages: library search filters, document jobs, deletion 
     ).rejects.toThrow("The file does not start with a PDF signature; it was not stored.");
     expect(await handle.db.select().from(resourceAsset).where(eq(resourceAsset.ownerId, owner))).toEqual([]);
     expect((await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.ownerId, owner))).map((w) => w.id)).toEqual([workId]);
+  });
+});
+
+describe("writes racing an owner merge or a newer notice", () => {
+  /** A Crossref double whose answers wait until `release` is called; `asked` resolves at the first call. */
+  function heldCrossref(notice: (doi: string) => IntegrityNotice) {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let markAsked!: () => void;
+    const asked = new Promise<void>((resolve) => {
+      markAsked = resolve;
+    });
+    const client = scripted(
+      {},
+      {
+        crossrefWork: async (doi: string) => {
+          markAsked();
+          await gate;
+          return { integrityNotices: [notice(doi)] } as never;
+        },
+      },
+    );
+    return { client, asked, release };
+  }
+  const retraction = (doi: string): IntegrityNotice => ({
+    type: "retraction",
+    source: "crossref",
+    concerns: doi,
+    label: "Retraction",
+    retrievedAt: "2026-11-17T00:00:00.000Z",
+  });
+
+  it("an arXiv withdrawal notice written during the Crossref check is kept beside Crossref's notice", async () => {
+    const owner = await freshOwner("integrity-race");
+    const [work] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Racing notices" }).returning();
+    await handle.db
+      .insert(scholarlyIdentifier)
+      .values({ ownerId: owner, workId: work!.id, scheme: "doi", value: "10.9999/race-notice", source: "fixture" });
+    const held = heldCrossref(retraction);
+    const pending = refreshIntegrity(handle.db, owner, held.client, work!.id);
+    await held.asked;
+    // The arXiv record job commits its withdrawal notice meanwhile.
+    const withdrawn: IntegrityNotice = {
+      type: "withdrawal",
+      source: "arxiv",
+      concerns: "arXiv:2509.40010v2",
+      label: "Withdrawn on arXiv",
+      retrievedAt: "2026-11-17T00:00:00.000Z",
+    };
+    await handle.db
+      .update(scholarlyWork)
+      .set({ integrityNotices: [withdrawn] })
+      .where(eq(scholarlyWork.id, work!.id));
+    held.release();
+    await pending;
+    const [after] = await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, work!.id));
+    expect(after!.integrityNotices).toEqual(expect.arrayContaining([withdrawn, retraction("10.9999/race-notice")]));
+    expect(after!.integrityNotices).toHaveLength(2);
+    expect(after!.integrityCheckedAt).toBeInstanceOf(Date);
+  });
+
+  it("a Crossref check that finishes after an owner merge writes its notices on the survivor, never the tombstone", async () => {
+    const owner = await freshOwner("integrity-merge");
+    const [a] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Survivor", savedAt: new Date() }).returning();
+    const [b] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Merged away", savedAt: new Date() }).returning();
+    await handle.db
+      .insert(scholarlyIdentifier)
+      .values({ ownerId: owner, workId: b!.id, scheme: "doi", value: "10.9999/race-merge", source: "fixture" });
+    const held = heldCrossref(retraction);
+    const pending = refreshIntegrity(handle.db, owner, held.client, b!.id);
+    await held.asked;
+    await mergeWorks(handle.db, owner, a!.id, b!.id);
+    held.release();
+    await pending;
+    const [survivor] = await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, a!.id));
+    const [tombstone] = await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, b!.id));
+    expect(survivor!.integrityNotices).toEqual([retraction("10.9999/race-merge")]);
+    expect(tombstone!.integrityNotices).toEqual([]);
+    expect(tombstone!.integrityCheckedAt).toBeNull();
+  });
+
+  it("a merge that brought DOIs the check did not ask about leaves the survivor not checked", async () => {
+    const owner = await freshOwner("integrity-merge-dois");
+    const [a] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Survivor", savedAt: new Date() }).returning();
+    const [b] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Merged away", savedAt: new Date() }).returning();
+    await handle.db.insert(scholarlyIdentifier).values([
+      { ownerId: owner, workId: a!.id, scheme: "doi", value: "10.9999/survivor-own", source: "fixture" },
+      { ownerId: owner, workId: b!.id, scheme: "doi", value: "10.9999/merged-own", source: "fixture" },
+    ]);
+    const held = heldCrossref(retraction);
+    const pending = refreshIntegrity(handle.db, owner, held.client, b!.id);
+    await held.asked;
+    await mergeWorks(handle.db, owner, a!.id, b!.id);
+    held.release();
+    await pending;
+    const [survivor] = await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, a!.id));
+    expect(survivor!.integrityNotices).toEqual([retraction("10.9999/merged-own")]);
+    expect(survivor!.integrityCheckedAt).toBeNull();
+  });
+
+  it("an edit that waited behind an owner merge is refused and writes nothing on the tombstone", async () => {
+    const owner = await freshOwner("edit-merge-race");
+    const [a] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Survivor", savedAt: new Date() }).returning();
+    const [b] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Merged away", savedAt: new Date() }).returning();
+    await expect(
+      mergeWhileBlocked(owner, a!.id, b!.id, () => editWorkFields(handle.db, owner, b!.id, { title: "Corrected title" })),
+    ).rejects.toThrow("These details changed after you opened the form, so nothing was saved.");
+    const [tombstone] = await handle.db.select().from(scholarlyWork).where(eq(scholarlyWork.id, b!.id));
+    expect(tombstone!.title).toBe("Merged away");
+    expect(tombstone!.ownerEditedFields).toEqual([]);
+  });
+
+  it("a shelf item or a paper note that waited behind an owner merge goes to the survivor; a shelf never lists a tombstone", async () => {
+    const owner = await freshOwner("add-merge-race");
+    const [a] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Survivor", savedAt: new Date() }).returning();
+    const [b] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Merged away", savedAt: new Date() }).returning();
+    const [shelf] = await handle.db.insert(libraryCollection).values({ ownerId: owner, kind: "shelf", name: "Race" }).returning();
+    const added = (await mergeWhileBlocked(owner, a!.id, b!.id, () => addToCollection(handle.db, owner, shelf!.id, b!.id))) as {
+      item: { workId: string };
+    };
+    expect(added.item.workId).toBe(a!.id);
+
+    const [c] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Survivor 2", savedAt: new Date() }).returning();
+    const [d] = await handle.db.insert(scholarlyWork).values({ ownerId: owner, title: "Merged away 2", savedAt: new Date() }).returning();
+    const entry = (await mergeWhileBlocked(owner, c!.id, d!.id, () =>
+      createEntry(handle.db, owner, { title: "Paper note", bodyMarkdown: "", kind: "note", scholarlyWorkId: d!.id }),
+    )) as { scholarlyWorkId: string | null };
+    expect(entry.scholarlyWorkId).toBe(c!.id);
+
+    // An item that still names a tombstone (written before this guard) is not listed.
+    await handle.db.insert(libraryCollectionItem).values({ collectionId: shelf!.id, ownerId: owner, workId: b!.id, position: 2 });
+    const detail = (await getCollection(handle.db, owner, shelf!.id))!;
+    expect(detail.items.map((i) => i.work.id)).toEqual([a!.id]);
+    expect(detail.total).toBe(1);
   });
 });

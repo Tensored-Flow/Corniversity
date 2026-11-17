@@ -380,6 +380,11 @@ export default async function ReadPage({
                     <Notice tone="neutral">Little text on this page (a figure, title page or sparse content).</Notice>
                   </div>
                 ) : null}
+                {asset.mediaType === "application/pdf" ? (
+                  <p className="mb-3 text-xs text-ink-3">
+                    Extracted text; mathematical notation may be missing. The Page view shows the original.
+                  </p>
+                ) : null}
                 <div id="page-text" className="reading-text whitespace-pre-wrap font-serif text-[1.02rem] leading-relaxed text-ink">
                   {page.text || "(no text on this page)"}
                 </div>

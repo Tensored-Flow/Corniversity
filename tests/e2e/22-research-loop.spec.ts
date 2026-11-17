@@ -183,6 +183,7 @@ test.describe("research loop", () => {
     await expect(reading).toContainText(
       "Nothing opened yet. Papers and files you open in the reader appear here with the page you were on.",
     );
+    await expect(reading.getByRole("link", { name: "Find a paper to read" })).toHaveAttribute("href", "/library/find");
     const saved = page.getByRole("region", { name: "Saved papers" });
     await expect(saved).toContainText("No saved papers yet. Find a paper by its DOI, arXiv id, OpenAlex id or words, or browse Discover.");
     await expect(saved.getByRole("link", { name: "Find papers" })).toHaveAttribute("href", "/library/find");
@@ -428,9 +429,15 @@ test.describe("research loop", () => {
       await page.getByRole("link", { name: "New note for this paper" }).click();
       await expect(page.getByRole("heading", { level: 2, name: TITLE })).toBeVisible();
       await page.getByLabel("Title").fill(loop.note);
-      // The box holds what the notebook keeps (50,000 characters), so nothing is cut off unseen or lost to an oversized request.
-      await expect(page.getByLabel("Note (Markdown with LaTeX)")).toHaveAttribute("maxlength", "50000");
+      // A body longer than the notebook keeps (50,000 characters) is refused where it was typed, and kept: nothing is cut off unseen.
       await expect(page.getByText("Up to 50,000 characters.")).toBeVisible();
+      const formUrl = page.url();
+      const tooLong = "x".repeat(50_001);
+      await page.getByLabel("Note (Markdown with LaTeX)").fill(tooLong);
+      await expect(page.getByText("The entry is longer than 50,000 characters; shorten it, or split it into two entries.")).toBeVisible();
+      await page.getByRole("button", { name: "Save note", exact: true }).click();
+      await expect(page).toHaveURL(formUrl);
+      await expect(page.getByLabel("Note (Markdown with LaTeX)")).toHaveValue(tooLong);
       await page.getByLabel("Note (Markdown with LaTeX)").fill("Why $AdS_5 \\times S^5$? The near-horizon geometry of the branes.");
       await page.getByRole("button", { name: "Save note", exact: true }).click();
       await expect(page).toHaveURL(/\/notebook\/[0-9a-f-]{36}\?saved=created$/);

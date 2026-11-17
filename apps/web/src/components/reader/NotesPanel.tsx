@@ -33,8 +33,15 @@ export interface NotesPanelProps {
   busy: boolean;
   bookmarked: boolean;
   composer: PendingAnchor | null;
+  /** The composer's text, held by the reader so switching or hiding the panel keeps it. */
+  composerText: string;
+  onComposerText: (text: string) => void;
   composerColor: AnnotationColor;
   onComposerColor: (color: AnnotationColor) => void;
+  /** Edits of saved notes in progress, by annotation id (held by the reader, like the composer's text). */
+  editDrafts: Record<string, string>;
+  /** Starts (text), changes or ends (null) the edit of one note. */
+  onEditDraft: (id: string, text: string | null) => void;
   onToggleBookmark: () => void;
   onPageNote: () => void;
   onMarkArea: () => void;
@@ -94,6 +101,8 @@ export function NotesPanel(props: NotesPanelProps) {
           key={`${composer.source}-${composer.pageIndex}-${composer.anchor.rects.join(";")}`}
           pending={composer}
           pageLabel={pageLabel}
+          value={props.composerText}
+          onChange={props.onComposerText}
           color={props.composerColor}
           onColor={props.onComposerColor}
           onSave={async (note) => {
@@ -113,13 +122,19 @@ export function NotesPanel(props: NotesPanelProps) {
           All notes ({notes.length})
         </h3>
         {notes.length === 0 ? (
-          <p className="text-ink-3">Nothing yet. Select text in the pages to highlight it or note it.</p>
+          <p className="text-ink-3">
+            {repair.length
+              ? "None can be drawn on this file; see Needs repair below."
+              : "Nothing yet. Select text in the pages to highlight it or note it."}
+          </p>
         ) : (
           <ul className="flex flex-col gap-3">
             {notes.map((a) => (
               <NoteItem
                 key={a.id}
                 annotation={a}
+                draft={props.editDrafts[a.id]}
+                onDraft={(text) => props.onEditDraft(a.id, text)}
                 pageLabel={pageLabel}
                 onJump={props.onJump}
                 onChanged={props.onChanged}
@@ -153,6 +168,8 @@ export function NotesPanel(props: NotesPanelProps) {
               <NoteItem
                 key={a.id}
                 annotation={a}
+                draft={props.editDrafts[a.id]}
+                onDraft={(text) => props.onEditDraft(a.id, text)}
                 pageLabel={pageLabel}
                 onJump={props.onJump}
                 onChanged={props.onChanged}
@@ -173,6 +190,8 @@ export function NotesPanel(props: NotesPanelProps) {
 function Composer({
   pending,
   pageLabel,
+  value: note,
+  onChange: setNote,
   color,
   onColor,
   onSave,
@@ -180,12 +199,13 @@ function Composer({
 }: {
   pending: PendingAnchor;
   pageLabel: (pageIndex: number) => string;
+  value: string;
+  onChange: (text: string) => void;
   color: AnnotationColor;
   onColor: (color: AnnotationColor) => void;
   onSave: (note: string) => Promise<string | null>;
   onCancel: () => void;
 }) {
-  const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -231,8 +251,12 @@ function Composer({
         value={note}
         onChange={(event) => setNote(event.target.value)}
         placeholder="Markdown and LaTeX are fine"
+        aria-describedby="reader-composer-state"
         className={field}
       />
+      <p id="reader-composer-state" className="text-xs text-ink-3">
+        Not saved yet.
+      </p>
       {pending.anchor.rects.length ? <ColorSelect id="reader-composer-colour" value={color} onChange={onColor} /> : null}
       {error ? (
         <p role="alert" className="text-rust">
@@ -275,6 +299,8 @@ function ColorSelect({ id, value, onChange }: { id: string; value: AnnotationCol
 
 function NoteItem({
   annotation: a,
+  draft,
+  onDraft,
   pageLabel,
   onJump,
   onChanged,
@@ -282,14 +308,18 @@ function NoteItem({
   repair = false,
 }: {
   annotation: ReaderAnnotation;
+  /** The edit in progress; undefined when the note is not being edited. */
+  draft: string | undefined;
+  onDraft: (text: string | null) => void;
   pageLabel: (pageIndex: number) => string;
   onJump: (annotation: ReaderAnnotation) => void;
   onChanged: (annotation: ReaderAnnotation) => void;
   onDeleted: (id: string) => void;
   repair?: boolean;
 }) {
-  const [mode, setMode] = useState<"view" | "edit" | "confirm-delete">("view");
-  const [draft, setDraft] = useState(a.noteMarkdown);
+  // The note is being edited while the reader holds a draft for it, so the edit survives the panel closing.
+  const editing = draft !== undefined;
+  const [mode, setMode] = useState<"view" | "confirm-delete">("view");
   const [color, setColor] = useState<AnnotationColor>(a.color ?? "brass");
   const [conflict, setConflict] = useState<ReaderAnnotation | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -312,15 +342,16 @@ function NoteItem({
   const confirmId = `reader-note-delete-${a.id}`;
 
   function startEdit() {
-    setDraft(a.noteMarkdown);
+    onDraft(a.noteMarkdown);
     setColor(a.color ?? "brass");
     setConflict(null);
     setError(null);
-    setMode("edit");
+    setMode("view");
     setFocusNext("draft");
   }
 
   function backToView() {
+    onDraft(null);
     setMode("view");
     setFocusNext("edit");
   }
@@ -330,7 +361,7 @@ function NoteItem({
     setError(null);
     const result = await updateAnnotationRequest({
       id: a.id,
-      noteMarkdown: draft,
+      noteMarkdown: draft ?? "",
       ...(coloured ? { color } : {}),
       expectedUpdatedAt,
     });
@@ -374,19 +405,13 @@ function NoteItem({
       ) : null}
       {a.quoteMatched === false ? <p className="text-xs text-ink-3">This text was not found in the extracted text of that page.</p> : null}
 
-      {mode === "edit" ? (
+      {editing ? (
         <div className="flex flex-col gap-2">
           <label htmlFor={editId} className="text-ink-2">
             {conflict ? "Your draft" : "Note"}
           </label>
-          <textarea
-            id={editId}
-            ref={draftRef}
-            rows={3}
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            className={field}
-          />
+          <textarea id={editId} ref={draftRef} rows={3} value={draft} onChange={(event) => onDraft(event.target.value)} className={field} />
+          {draft !== a.noteMarkdown ? <p className="text-xs text-ink-3">Not saved yet.</p> : null}
           {coloured ? <ColorSelect id={`${editId}-colour`} value={color} onChange={setColor} /> : null}
           {conflict ? (
             <div

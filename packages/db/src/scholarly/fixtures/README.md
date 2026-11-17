@@ -63,3 +63,14 @@ again because nothing requests them.
 
 The group answers requests that are already recorded from the fixtures and calls the providers only
 for the rest, so running it again records nothing that exists.
+
+## Recording group `find-author` (2026-11-17, 01:42 UTC)
+
+Recorded live by `scripts/scholarly-record/find-author.ts` through the recording transport, as
+`pnpm library:live-check --record-group find-author` runs it: 2 OpenAlex requests, no OpenAlex key,
+no email address, no Crossref or arXiv request. They are the requests Find papers sends for its
+Author filter (OpenAlex's byline search, `raw_author_name.search`), in pages of 25.
+
+| Provider | Recorded |
+|---|---|
+| OpenAlex | the author `Claude Shannon` with no words (page 1; 268 results); the words `direct preference optimization` with the author `Rafailov`, 2023 to 2024 (15 results, DPO `W7133208539` among them) |

@@ -82,6 +82,31 @@ const FAILURE_TEXT: Record<Exclude<PdfLoadFailure, "network">, string> = {
   signature: "The file does not start with a PDF signature",
 };
 
+const ARXIV_UNREACHABLE = "Your browser could not fetch the PDF from arXiv (network or arXiv's access policy).";
+
+/**
+ * The reader's sentence for a PDF that could not be shown: a load failure (from arXiv, said in
+ * arXiv's terms; from storage, with the loader's own message), or PDF.js refusing the file.
+ */
+export function failureText(error: unknown, arxiv: boolean): string {
+  if (error instanceof PdfLoadError) {
+    if (!arxiv) return `The PDF could not be loaded. ${error.message}`;
+    if (error.reason === "network") return ARXIV_UNREACHABLE;
+    if (error.reason === "status") return `arXiv answered with status ${error.status ?? "unknown"}, so the PDF could not be shown.`;
+    return "arXiv's answer was not a PDF, so nothing was shown.";
+  }
+  const name = error instanceof Error ? error.name : "";
+  if (name === "InvalidPDFException") return "The file could not be read as a PDF.";
+  if (name === "PasswordException") return "This PDF is password-protected and cannot be shown here.";
+  return "The PDF could not be shown.";
+}
+
+/** PDF.js refused the file itself (unreadable, or protected by a password): loading it again cannot succeed. */
+export function isPermanentFailure(error: unknown): boolean {
+  const name = error instanceof Error ? error.name : "";
+  return name === "InvalidPDFException" || name === "PasswordException";
+}
+
 export async function loadPdfBytes(source: PdfSource, signal: AbortSignal): Promise<LoadedPdf> {
   const url = source.kind === "stored" ? source.url : arxivPdfUrl(source.id, source.version);
   const init: RequestInit =

@@ -246,3 +246,22 @@ research studio, laboratories and review are hidden, their records kept. Site te
 and assessor's replies are shorter. Gate: unit, integration and journey suites; exam rules and
 service tests; nothing claimed live that was not run.
 
+### Milestone 20 — The Corniversity Library — in_progress (stages 1–4 done; final reviews to run)
+
+The owner's brief *Corniversity Library*: a personal library of research papers inside the existing
+Library, around the loop discover → find → read → understand → follow. The plan, data and service
+contract and decision log are [RESEARCH_LIBRARY.md](RESEARCH_LIBRARY.md). One additive migration
+(0016); everything stays under `/library`, main navigation unchanged. Find papers by DOI, arXiv id,
+OpenAlex id or words; a preview and a paper page with integrity notices, versions and licences,
+references, cited by and related as OpenAlex reports them; Discover by the owner's subjects; the PDF
+reader (PDF.js) with highlights, notes, bookmarks and reading positions, reading arXiv versions from
+arxiv.org in the owner's browser; private copies only for openly licensed arXiv versions; shelves,
+trails and library notes in the notebook; the records export carrying the library; an optional
+reading companion behind the owner's external-AI permission. Built in four stages (foundation and
+reader core; find, paper and reader features; home, collections, notes and the companion;
+integration journeys and the brief's important states), each merged after its checks. Gate: lint,
+type checks, unit and integration suites, the production build, journeys 04, 07, 08, 15 and 17–22
+at both viewports in fixture mode on a new, empty database, five independent reviews (security,
+correctness, completeness against the brief, reader quality, design and accessibility) with each
+finding challenged by a second reviewer, and their fixes; nothing claimed live that was not run.
+

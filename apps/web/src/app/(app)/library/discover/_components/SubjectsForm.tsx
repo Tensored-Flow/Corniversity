@@ -29,7 +29,7 @@ export function SubjectsForm({ chosen }: { chosen: readonly string[] }) {
       </h2>
       <p className="mt-1 text-sm text-ink-2">{names.length > 0 ? names.join(", ") : "None chosen."}</p>
       <details className="mt-2" open={chosen.length === 0}>
-        <summary className="cursor-pointer text-sm text-brass underline underline-offset-4">Choose subjects</summary>
+        <summary className="cursor-pointer py-1 text-sm text-brass underline underline-offset-4">Choose subjects</summary>
         <form action={setSubjectsAction} className="mt-3 flex flex-col gap-4">
           <fieldset>
             <legend className="text-sm font-medium text-ink">Primary subjects (with New on arXiv)</legend>

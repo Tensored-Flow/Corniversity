@@ -375,6 +375,10 @@ test.describe("paper reader (linked arXiv Document)", () => {
     test.setTimeout(120_000);
     await serveArxiv(page, FILE_A);
     await openReader(page, linkedId);
+    // Ctrl+F opens the reader's Find, which searches every page (the browser's find sees only the pages drawn).
+    await page.getByRole("region", { name: /^Pages of / }).focus();
+    await page.keyboard.press("Control+f");
+    await expect(page.getByLabel("Find in this PDF")).toBeFocused();
     const paper = await openPanel(page, "Paper");
     await expect(paper.getByText("Fixture data")).toBeVisible();
     await expect(paper.getByText("Details as reported by recorded fixtures")).toBeVisible();
@@ -382,14 +386,30 @@ test.describe("paper reader (linked arXiv Document)", () => {
     await expect(paper.getByText(/^arXiv v1/)).toBeVisible();
     await expect(paper.getByRole("link", { name: DPO, exact: true })).toHaveAttribute("href", `https://arxiv.org/abs/${DPO}`);
     await openPanel(page, "Contents");
-    await openPanel(page, "Notes");
+    let notes = await openPanel(page, "Notes");
     const noHorizontalScroll = () => page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
+
+    // A note being written is kept while other panels are open, and a new note does not replace it.
+    const DRAFT = "A derivation in progress, not saved yet.";
+    await notes.getByRole("button", { name: "Page note", exact: true }).click();
+    await notes.getByLabel("Note", { exact: true }).fill(DRAFT);
+    await expect(notes.getByText("Not saved yet.", { exact: true })).toBeVisible();
+    await openPanel(page, "Contents");
+    notes = await openPanel(page, "Notes");
+    await expect(notes.getByLabel("Note", { exact: true })).toHaveValue(DRAFT);
+    await notes.getByRole("button", { name: "Page note", exact: true }).click();
+    await expect(notes.getByRole("alert")).toHaveText("Save or cancel the note you are writing before starting another.");
+    await expect(notes.getByLabel("Note", { exact: true })).toHaveValue(DRAFT);
 
     if (!compact(page)) {
       await page.getByRole("button", { name: "Hide panel" }).click();
       await expect(page.getByRole("complementary")).toHaveCount(0);
       await page.getByRole("button", { name: "Show panel" }).click();
-      await expect(page.getByRole("complementary", { name: "Notes" })).toBeVisible();
+      notes = page.getByRole("complementary", { name: "Notes" });
+      await expect(notes).toBeVisible();
+      await expect(notes.getByLabel("Note", { exact: true })).toHaveValue(DRAFT);
+      await notes.getByRole("button", { name: "Cancel" }).click();
+      await expect(notes.getByLabel("Note", { exact: true })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Full screen" })).toBeVisible();
       expect(await noHorizontalScroll()).toBe(true);
       expect(await seriousAxe(page)).toEqual([]);
@@ -397,6 +417,8 @@ test.describe("paper reader (linked arXiv Document)", () => {
       return;
     }
     const dialog = page.getByRole("dialog", { name: "Notes" });
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(dialog.getByLabel("Note", { exact: true })).toHaveCount(0);
     await expect(dialog.getByRole("button", { name: "Close" })).toBeVisible();
     await screenshot(page, "62-paper-reader-panel");
     await dialog.getByRole("button", { name: "Close" }).click();
@@ -436,6 +458,21 @@ test.describe("paper reader (linked arXiv Document)", () => {
     await expect(marks(page, 1, "highlight")).toHaveCount(1);
   });
 
+  test("a file PDF.js cannot read: no Try again, and Contents say why instead of loading for ever", async ({ page }) => {
+    test.setTimeout(120_000);
+    await serveArxiv(page, Buffer.from("%PDF-1.7\nNot a PDF body: no objects and no cross-reference table.\n"));
+    await page.goto(`/library/read/${linkedId}`);
+    const failure = page.getByRole("alert").filter({ hasText: "The file could not be read as a PDF." });
+    await expect(failure).toBeVisible({ timeout: 30_000 });
+    await expect(failure.getByRole("button", { name: "Try again" })).toHaveCount(0);
+    await expect(failure.getByRole("link", { name: "Open on arXiv" })).toBeVisible();
+    await expect(page.getByText("of …")).toHaveCount(0);
+    const contents = await openPanel(page, "Contents");
+    await expect(contents.getByText("Contents are not available, because the PDF could not be shown.")).toBeVisible();
+    await expect(contents.getByText("Reading the contents…")).toHaveCount(0);
+    await closePanel(page);
+  });
+
   test("drift: a changed file with the same pages keeps the notes on request; one with other pages lists them for repair", async ({
     page,
   }) => {
@@ -455,8 +492,15 @@ test.describe("paper reader (linked arXiv Document)", () => {
 
     await serveArxiv(page, FILE_C);
     await openReader(page, linkedId);
-    const panel = await openPanel(page, "Notes");
+    // Outside the Notes panel the reader says why the notes are missing from the pages, and opens the panel.
+    const repairLine = page
+      .getByRole("status")
+      .filter({ hasText: /cannot be drawn on this file; (it is|they are) listed under Needs repair\./ });
+    await expect(repairLine).toBeVisible({ timeout: 30_000 });
+    await repairLine.getByRole("button", { name: "Open Notes" }).click();
+    const panel = compact(page) ? page.getByRole("dialog", { name: "Notes" }) : page.getByRole("complementary", { name: "Notes" });
     await expect(panel.getByRole("heading", { name: /^Needs repair \(\d+\)$/ })).toBeVisible({ timeout: 30_000 });
+    await expect(panel.getByText("Nothing yet. Select text in the pages to highlight it or note it.")).toHaveCount(0);
     await expect(panel.getByText("The page count changed from 6 to 7.")).toBeVisible();
     // Every page's layer is redrawn when the placement changes (rendered or not), so these counts are final.
     await expect(page.locator(".reader-mark")).toHaveCount(0);
@@ -489,12 +533,13 @@ test.describe("paper reader (linked arXiv Document)", () => {
 
   test("versions: a newer version is offered and opens; a withdrawn later version is named, not linked", async ({ page }) => {
     test.setTimeout(120_000);
-    await serveArxiv(page, FILE_A);
+    const fetched = await serveArxiv(page, FILE_A);
     await openReader(page, linkedId);
     await expect(page.getByText("A newer version exists:")).toBeVisible();
 
-    // arXiv withdrew v3 meanwhile (test data, restored below): the refusal comes back to this reader and
-    // is shown. The reader then offers v2; withdrawn too, the same refusal is shown again after Dismiss.
+    // arXiv withdrew v3 meanwhile (test data, restored below): the refusal is shown beside the button, in
+    // place; the reader is not loaded again, so the PDF is not fetched from arXiv a second time. Reopened,
+    // the reader names v3 as withdrawn and offers v2; withdrawn too, it is refused the same way.
     const withdraw = (versions: number[], withdrawn: boolean) =>
       sql("update scholarly_version set withdrawn = $1 where owner_id = $2 and arxiv_id = $3 and arxiv_version = any($4::int[])", [
         withdrawn,
@@ -505,12 +550,14 @@ test.describe("paper reader (linked arXiv Document)", () => {
     const refusal = page.getByRole("alert").filter({ hasText: "This arXiv version was withdrawn, so it is not opened here." });
     await withdraw([3], true);
     try {
+      const fetchedBefore = fetched.length;
       await page.getByRole("button", { name: "Open arXiv v3" }).click();
       await expect(refusal).toBeVisible({ timeout: 30_000 });
+      await expect(page).toHaveURL(new RegExp(`/library/read/${linkedId}$`));
+      await expect(page.getByLabel("Page", { exact: true })).toBeEnabled();
+      expect(fetched.length).toBe(fetchedBefore);
+      await openReader(page, linkedId);
       await expect(page.getByText("arXiv v3: Withdrawn on arXiv")).toBeVisible();
-      await refusal.getByRole("button", { name: "Dismiss" }).click();
-      await expect(refusal).toBeHidden();
-      await expect(page).not.toHaveURL(/error=/);
       await withdraw([2], true);
       await page.getByRole("button", { name: "Open arXiv v2" }).click();
       await expect(refusal).toBeVisible({ timeout: 30_000 });

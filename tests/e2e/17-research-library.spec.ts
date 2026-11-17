@@ -134,12 +134,47 @@ test.describe("research library: find and paper", () => {
     await expect(page).toHaveURL(/from=2023&to=2024/);
     await expect(rows.first()).toContainText("Free to read according to OpenAlex");
 
+    // Author (All papers only, OpenAlex's byline search): with words and years, then alone (the find-author recordings).
+    await find(page, "direct preference optimization");
+    await page.getByText("Filters", { exact: true }).click();
+    await page.getByLabel("Published from (year)").fill("2023");
+    await page.getByLabel("Published to (year)").fill("2024");
+    await page.getByLabel("Author (All papers only)").fill("Rafailov");
+    await page.getByRole("button", { name: "Find", exact: true }).click();
+    await expect(page).toHaveURL(/author=Rafailov/);
+    await expect(page.getByText(/^Results 1–15 of 15 according to OpenAlex/)).toBeVisible();
+    await expect(rows.filter({ hasText: DPO })).toHaveCount(1);
+    await page.goto("/library/find?author=Claude+Shannon");
+    await expect(page.getByLabel("Author (All papers only)")).toHaveValue("Claude Shannon");
+    await expect(page.getByText(/^Results 1–25 of 268 according to OpenAlex/)).toBeVisible();
+    await expect(rows.filter({ hasText: "A Mathematical Theory of Communications" })).toHaveCount(1);
+
     // A combination nobody recorded says so; it is never shown as "no results".
     await find(page, "an unrecorded search");
     await expect(
       page.getByText("No recorded provider response exists for this request (fixture mode), so it is unavailable."),
     ).toBeVisible();
     await expect(page.locator("ol > li")).toHaveCount(0);
+    // What each scope searches: All papers matches author names only in the Author filter.
+    await expect(
+      page.getByText(
+        "All papers matches words in titles, abstracts and full text, and author names in the Author filter; My library matches author names among the words too.",
+      ),
+    ).toBeVisible();
+
+    // A valid DOI whose providers did not answer (nothing recorded): the sentence, Try again, and the PDF route.
+    await page.goto("/library/works/doi/10.5555/corniversity-unrecorded");
+    await expect(
+      page.getByText("No recorded provider response exists for this request (fixture mode), so it is unavailable."),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Try again" })).toHaveAttribute(
+      "href",
+      "/library/works/doi/10.5555/corniversity-unrecorded",
+    );
+    await expect(page.getByRole("link", { name: "add the paper from its PDF without an identifier" })).toHaveAttribute(
+      "href",
+      "/library/papers/new",
+    );
 
     // Text shaped like a DOI that is not a valid one: said so, nothing searched.
     await find(page, "10.12/peerj");
@@ -433,6 +468,12 @@ test.describe("research library: find and paper", () => {
 
   test("a confirmed PDF in Files opens in the reading room before its text is extracted", async ({ page }) => {
     test.setTimeout(120_000);
+    // The web upload refuses a post from another site even with the owner's session; the page's own
+    // uploader below (a same-origin fetch) still works.
+    const crossSite = await page.request.post("/api/library/upload", {
+      multipart: { file: { name: "x.pdf", mimeType: "application/pdf", buffer: makePdf(["x"], false) } },
+    });
+    expect(crossSite.status()).toBe(403);
     await page.goto("/library/upload");
     await page.getByLabel(/^File \(PDF, Markdown or plain text/).setInputFiles({
       name: `unextracted-${run}.pdf`,

@@ -380,6 +380,21 @@ export interface OpenAlexFilters {
   /** Works OpenAlex considers related to this W (similarity). */
   relatedTo?: string;
   language?: string;
+  /**
+   * Words of author names (`raw_author_name.search`, OpenAlex's byline search): every word must
+   * appear among the author names as printed on the work, in any order. Checked by `isOpenAlexAuthorText`.
+   */
+  author?: string;
+}
+
+/** Longest author text sent as `raw_author_name.search`, in characters. */
+export const OPENALEX_AUTHOR_MAX_LENGTH = 100;
+/** Words of letters (with full stops, apostrophes and hyphens after the first letter), one space apart. */
+const AUTHOR_TEXT = /^[\p{L}\p{M}][\p{L}\p{M}.'’-]*(?: [\p{L}\p{M}][\p{L}\p{M}.'’-]*)*$/u;
+
+/** Whether text can be sent as an author filter: nothing in it can end, extend or negate the filter. */
+export function isOpenAlexAuthorText(text: string): boolean {
+  return [...text].length <= OPENALEX_AUTHOR_MAX_LENGTH && AUTHOR_TEXT.test(text);
 }
 
 export type OpenAlexSort = "cited_by_count:desc" | "publication_date:desc" | "relevance_score:desc";
@@ -440,6 +455,10 @@ export function filterParam(filters: OpenAlexFilters): string | null {
   if (filters.language !== undefined) {
     if (!/^[a-z]{2}$/.test(filters.language)) throw invalid("Not a valid language code.");
     parts.push(`language:${filters.language}`);
+  }
+  if (filters.author !== undefined) {
+    if (!isOpenAlexAuthorText(filters.author)) throw invalid("Not a valid author name.");
+    parts.push(`raw_author_name.search:${filters.author}`);
   }
   return parts.length > 0 ? parts.join(",") : null;
 }

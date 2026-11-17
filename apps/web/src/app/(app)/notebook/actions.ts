@@ -1,4 +1,5 @@
 "use server";
+import { deleteAnnotation } from "@corniversity/db/services/library";
 import { createEntry, deleteEntry, getEntry, NotebookError, setResolved, updateEntry } from "@corniversity/db/services/notebook";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -51,6 +52,7 @@ export async function createPaperNoteAction(form: FormData): Promise<void> {
     redirect(errorHref(`/notebook?library=1&work=${workId}&at=new-note`, errorCode(message), "#new-note"));
   const body = String(form.get("body") ?? "").trim();
   if (!body) refuse("Write the entry itself; a title on its own is not kept.");
+  const courseId = text(form, "courseId");
   let id = "";
   try {
     const entry = await createEntry(db(), session.user.id, {
@@ -58,6 +60,7 @@ export async function createPaperNoteAction(form: FormData): Promise<void> {
       bodyMarkdown: body,
       kind: text(form, "kind") || "note",
       scholarlyWorkId: workId,
+      courseId: /^[A-Z]{3}-\d{3}$/.test(courseId) ? courseId : null,
     });
     id = entry.id;
   } catch (error) {
@@ -114,4 +117,25 @@ export async function deleteEntryAction(form: FormData): Promise<void> {
   }
   revalidatePath("/notebook");
   redirect(paperId ? `/notebook?library=1&work=${paperId}&deleted=1` : "/notebook?deleted=1");
+}
+
+/**
+ * Deletes one reading note (a highlight, page or area note, or bookmark) from the library notes
+ * view, once the box is ticked; also the only way to delete one whose file was removed. Returns to
+ * the same filters. Another owner's note is not found.
+ */
+export async function deleteReadingNoteAction(form: FormData): Promise<void> {
+  const session = await requireSession("/notebook");
+  const params = new URLSearchParams({ library: "1" });
+  for (const key of ["work", "kind", "subject", "q"] as const) {
+    const value = text(form, key).slice(0, 300);
+    if (value) params.set(key, value);
+  }
+  const back = `/notebook?${params.toString()}`;
+  const id = text(form, "id");
+  if (!UUID.test(id)) redirect(back);
+  if (form.get("confirm") !== "1") fail(back, "Tick the box to delete this note.");
+  if (!(await deleteAnnotation(db(), session.user.id, id))) fail(back, "Annotation not found.");
+  revalidatePath("/notebook");
+  redirect(`${back}&deleted=note`);
 }

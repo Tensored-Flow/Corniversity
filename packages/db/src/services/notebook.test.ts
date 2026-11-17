@@ -157,3 +157,18 @@ describe("paper notes", () => {
     await handle.db.delete(notebookEntry).where(eq(notebookEntry.ownerId, owner));
   });
 });
+
+describe("entry bodies", () => {
+  it("refuses a body over 50,000 characters whole instead of cutting it, counting a form's line breaks once", async () => {
+    const tooLong = "x".repeat(50_001);
+    await expect(createEntry(handle.db, owner, { title: "Too long", bodyMarkdown: tooLong, kind: "note" })).rejects.toThrow(
+      new NotebookError("invalid", "The entry is longer than 50,000 characters; shorten it, or split it into two entries."),
+    );
+    // A form sends CRLF: 25,000 lines of "a" and a break are 50,000 characters in the box, as they are kept.
+    const kept = await createEntry(handle.db, owner, { title: "At the limit", bodyMarkdown: "a\r\n".repeat(25_000), kind: "note" });
+    expect(kept.bodyMarkdown).toBe("a\n".repeat(25_000));
+    await expect(updateEntry(handle.db, owner, kept.id, { bodyMarkdown: `${kept.bodyMarkdown}!` })).rejects.toThrow(NotebookError);
+    expect((await getEntry(handle.db, owner, kept.id))?.bodyMarkdown).toBe(kept.bodyMarkdown);
+    await handle.db.delete(notebookEntry).where(eq(notebookEntry.ownerId, owner));
+  });
+});

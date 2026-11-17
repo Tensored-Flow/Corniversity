@@ -23,9 +23,11 @@ import {
   upsertAnnotation,
 } from "./annotations";
 import { createAnnotationRequest, deleteAnnotationRequest } from "./api";
+import { draftKey, hasDrafts, NO_DRAFTS, parseDrafts, type ReaderDrafts, serializeDrafts, unsavedDrafts } from "./drafts";
 import { documentOptions, loadPdfjs, pdfjsAssets } from "./engine";
 import type { ReaderDocumentInfo } from "./info";
-import { loadPdfBytes, PdfLoadError, type PdfSource } from "./loader";
+import { failureText, isPermanentFailure, loadPdfBytes, type PdfSource } from "./loader";
+import { NewerVersionForm, type OpenArxivVersion } from "./NewerVersionForm";
 import { NotesPanel } from "./NotesPanel";
 import { PaperPanel } from "./PaperPanel";
 import { drawPageAnnotations, type PageViewLike, pageAnchor, pointOnPage, readSelection } from "./page-dom";
@@ -46,6 +48,7 @@ import {
   clampPage,
   DEFAULT_ZOOM,
   findStatus,
+  isFindShortcut,
   isPresetZoom,
   keyAction,
   popBack,
@@ -106,8 +109,8 @@ export interface ReaderActions {
     assetId: string,
     file: { observedSha256: string; pageCount: number; pageViews: [number, number][] },
   ) => Promise<{ accepted: boolean; problems: string[] } | { error: string }>;
-  /** The form action that opens another arXiv version of the paper (fields `assetId`, `version`). */
-  openArxivVersion: (form: FormData) => Promise<void>;
+  /** Opens another arXiv version of the paper (fields `assetId`, `version`), or returns its refusal. */
+  openArxivVersion: OpenArxivVersion;
 }
 
 export interface PdfReaderProps {
@@ -151,12 +154,14 @@ interface RawOutline {
 }
 
 type Section = "contents" | "find" | "notes" | "paper" | (string & {});
-type LoadState = { state: "loading" } | { state: "ready" } | { state: "error"; message: string; arxiv: boolean };
+/** `permanent`: PDF.js refused the file itself (unreadable, password-protected), so loading it again cannot help. */
+type LoadState = { state: "loading" } | { state: "ready" } | { state: "error"; message: string; arxiv: boolean; permanent: boolean };
 
 const PANEL_KEY = "corniversity-reader-panel";
 /** Phones, and short landscape screens: panels open in a dialog and the bar is compact. */
 const COMPACT = "(max-width: 640px), (max-height: 500px)";
-const ARXIV_UNREACHABLE = "Your browser could not fetch the PDF from arXiv (network or arXiv's access policy).";
+/** Shown when a new note would replace one being written: the draft is kept, never replaced silently. */
+const KEEP_DRAFT = "Save or cancel the note you are writing before starting another.";
 
 /** The position this tab last sent for this Document, when recent (position.ts); used once. */
 function takeLastSent(assetId: string): SavedPosition | null {
@@ -185,6 +190,25 @@ function readPanelHidden(): boolean {
   }
 }
 
+/** The drafts this tab kept for this Document (drafts.ts); none when storage is unavailable. */
+function readDrafts(assetId: string, annotations: ReaderAnnotation[]): ReaderDrafts {
+  try {
+    return parseDrafts(window.sessionStorage.getItem(draftKey(assetId)), new Set(annotations.map((a) => a.id)));
+  } catch {
+    return NO_DRAFTS;
+  }
+}
+
+function writeDrafts(assetId: string, drafts: ReaderDrafts): void {
+  try {
+    const stored = serializeDrafts(drafts);
+    if (stored) window.sessionStorage.setItem(draftKey(assetId), stored);
+    else window.sessionStorage.removeItem(draftKey(assetId));
+  } catch {
+    // Storage may be unavailable; the drafts then last while the reader is open, and leaving asks first.
+  }
+}
+
 function writePanelHidden(hidden: boolean): void {
   try {
     window.localStorage.setItem(PANEL_KEY, hidden ? "hidden" : "shown");
@@ -202,21 +226,8 @@ function toOutline(items: RawOutline[]): OutlineNode[] {
   }));
 }
 
-function failureText(error: unknown, arxiv: boolean): string {
-  if (error instanceof PdfLoadError) {
-    if (!arxiv) return `The PDF could not be loaded. ${error.message}`;
-    if (error.reason === "network") return ARXIV_UNREACHABLE;
-    if (error.reason === "status") return `arXiv answered with status ${error.status ?? "unknown"}, so the PDF could not be shown.`;
-    return "arXiv's answer was not a PDF, so nothing was shown.";
-  }
-  const name = error instanceof Error ? error.name : "";
-  if (name === "InvalidPDFException") return "The file could not be read as a PDF.";
-  if (name === "PasswordException") return "This PDF is password-protected and cannot be shown here.";
-  return "The PDF could not be shown.";
-}
-
 const control =
-  "inline-flex items-center justify-center gap-1 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 sm:px-2.5 sm:py-1";
+  "inline-flex items-center justify-center gap-1 rounded-[var(--radius-control)] border border-stone-2 bg-paper-2 px-2 py-0.5 text-sm text-ink hover:bg-paper-3 aria-pressed:border-brass aria-pressed:bg-brass-soft disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 sm:px-2.5 sm:py-1";
 
 /**
  * The Page view: the official PDF.js viewer (rendering only visible pages, text and link layers,
@@ -263,9 +274,13 @@ export default function PdfReader(props: PdfReaderProps) {
     total: 0,
     previous: false,
   });
-  const [section, setSection] = useState<Section>("contents");
+  /** What this tab kept unsaved for this Document before a reload (drafts.ts); read once. */
+  const [restored] = useState(() => readDrafts(assetId, props.annotations));
+  const [section, setSection] = useState<Section>(() => (hasDrafts(restored) ? "notes" : "contents"));
   /** Counts the owner's requests to open a panel, so focus can move into it (see the effect after `openSection`). */
   const [panelFocus, setPanelFocus] = useState(0);
+  /** Counts Ctrl+F presses, so Find's box takes focus even when Find is already open. */
+  const [findFocus, setFindFocus] = useState(0);
   const [panelHidden, setPanelHidden] = useState(readPanelHidden);
   const [compact, setCompact] = useState(() => window.matchMedia(COMPACT).matches);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -277,7 +292,15 @@ export default function PdfReader(props: PdfReaderProps) {
   const [facts, setFacts] = useState<FileFacts | null>(null);
   const [selection, setSelection] = useState<PendingAnchor | null>(null);
   const [selectionError, setSelectionError] = useState<string | null>(null);
-  const [composer, setComposer] = useState<PendingAnchor | null>(null);
+  const [composer, setComposer] = useState<PendingAnchor | null>(restored.composer?.pending ?? null);
+  // The composer's text and the edits of saved notes live here, not in the Notes panel, so switching or
+  // hiding a panel keeps them; they are mirrored into this tab's sessionStorage (see `unsaved` below).
+  const [composerText, setComposerText] = useState(restored.composer?.text ?? "");
+  /** The hash of the bytes the composer's anchor was measured on: a draft kept over a reload names its file. */
+  const composerShaRef = useRef<string | null>(restored.composer?.measuredOn ?? null);
+  const composerDraftRef = useRef(false);
+  composerDraftRef.current = composer !== null && composerText.trim() !== "";
+  const [editDrafts, setEditDrafts] = useState<Record<string, string>>(restored.edits);
   const [color, setColor] = useState<AnnotationColor>(DEFAULT_HIGHLIGHT_COLOR);
   const [noteError, setNoteError] = useState<string | null>(null);
   const [marking, setMarking] = useState<{ first: { pageNumber: number; point: [number, number] } | null } | null>(null);
@@ -296,6 +319,24 @@ export default function PdfReader(props: PdfReaderProps) {
   useEffect(() => {
     latest.current = props;
   });
+
+  // Only what would be lost is kept in this tab (a reload brings it back); while there is any, leaving asks first.
+  const unsaved = useMemo(
+    () =>
+      unsavedDrafts(
+        { composer: composer ? { pending: composer, measuredOn: composerShaRef.current, text: composerText } : null, edits: editDrafts },
+        (id) => annotations.find((a) => a.id === id)?.noteMarkdown,
+      ),
+    [composer, composerText, editDrafts, annotations],
+  );
+  useEffect(() => writeDrafts(assetId, unsaved), [assetId, unsaved]);
+  const dirty = hasDrafts(unsaved);
+  useEffect(() => {
+    if (!dirty) return;
+    const onBeforeUnload = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [dirty]);
 
   const placement = useMemo(
     () =>
@@ -594,7 +635,7 @@ export default function PdfReader(props: PdfReaderProps) {
       setLoad({ state: "ready" });
     })().catch((error: unknown) => {
       if (disposed) return;
-      setLoad({ state: "error", message: failureText(error, arxiv), arxiv });
+      setLoad({ state: "error", message: failureText(error, arxiv), arxiv, permanent: isPermanentFailure(error) });
     });
 
     return () => {
@@ -691,8 +732,8 @@ export default function PdfReader(props: PdfReaderProps) {
       const anchor = pageAnchor(hit.pageView);
       if (!rect || !anchor) return;
       setMarking(null);
-      setComposer({ pageIndex: hit.pageNumber - 1, anchor: { ...anchor, rects: [rect] }, quote: null, source: "area" });
-      openSection("notes");
+      if (startComposer({ pageIndex: hit.pageNumber - 1, anchor: { ...anchor, rects: [rect] }, quote: null, source: "area" }))
+        openSection("notes");
     };
     const onKey = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") setMarking(null);
@@ -720,6 +761,22 @@ export default function PdfReader(props: PdfReaderProps) {
     (compact ? dialogTitleRef : panelTitleRef).current?.focus();
   }, [panelFocus]);
 
+  // Ctrl+F (Cmd+F) opens the reader's Find: the browser's own find sees only the pages PDF.js has drawn.
+  const openFindRef = useRef<() => boolean>(() => false);
+  useEffect(() => {
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      if (!isFindShortcut(event.key, { ctrl: event.ctrlKey, alt: event.altKey, meta: event.metaKey, shift: event.shiftKey })) return;
+      if (openFindRef.current()) event.preventDefault();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  useEffect(() => {
+    if (!findFocus) return;
+    findInputRef.current?.focus();
+    findInputRef.current?.select();
+  }, [findFocus]);
+
   function openSection(next: Section, focus = false) {
     setSection(next);
     if (focus) setPanelFocus((n) => n + 1);
@@ -731,6 +788,14 @@ export default function PdfReader(props: PdfReaderProps) {
       writePanelHidden(false);
     }
   }
+
+  // While the PDF is not shown, Ctrl+F is left to the browser.
+  openFindRef.current = () => {
+    if (load.state !== "ready") return false;
+    openSection("find");
+    setFindFocus((n) => n + 1);
+    return true;
+  };
 
   function openPanels() {
     if (!dialogRef.current?.open) dialogRef.current?.showModal();
@@ -926,8 +991,8 @@ export default function PdfReader(props: PdfReaderProps) {
 
   function noteSelection() {
     if (!selection) return;
-    setComposer(selection);
-    setNoteError(null);
+    // A note already being written is kept; the selection stays, to be noted once that one is saved or cancelled.
+    if (!startComposer(selection)) return;
     clearSelection();
     openSection("notes", true);
   }
@@ -943,6 +1008,7 @@ export default function PdfReader(props: PdfReaderProps) {
 
   async function saveComposer(note: string): Promise<string | null> {
     if (!composer) return null;
+    const measuredOn = composerShaRef.current ?? loadedShaRef.current;
     const result = await createAnnotationRequest({
       assetId,
       kind: "note",
@@ -950,12 +1016,20 @@ export default function PdfReader(props: PdfReaderProps) {
       noteMarkdown: note,
       ...(composer.anchor.rects.length ? { color } : {}),
       anchor: composer.anchor,
-      ...(loadedShaRef.current ? { loadedSha256: loadedShaRef.current } : {}),
+      ...(measuredOn ? { loadedSha256: measuredOn } : {}),
     });
     if (!result.ok) return result.message;
     setAnnotations((list) => upsertAnnotation(list, result.value));
-    setComposer(null);
+    closeComposer();
     return null;
+  }
+
+  /** Keeps (text) or drops (null) the edit of a saved note. */
+  function setEditDraft(id: string, text: string | null) {
+    setEditDrafts((all) => {
+      const rest = Object.fromEntries(Object.entries(all).filter(([key]) => key !== id));
+      return text === null ? rest : { ...rest, [id]: text };
+    });
   }
 
   async function toggleBookmark() {
@@ -985,15 +1059,41 @@ export default function PdfReader(props: PdfReaderProps) {
     });
   }
 
+  /**
+   * Starts a note on `pending`, unless one with text is being written: that one is kept (never replaced
+   * silently), the Notes panel shows it with the reason, and false is returned.
+   */
+  function startComposer(pending: PendingAnchor): boolean {
+    if (composerDraftRef.current) {
+      setNoteError(KEEP_DRAFT);
+      openSection("notes", true);
+      return false;
+    }
+    composerShaRef.current = loadedShaRef.current;
+    setComposer(pending);
+    setComposerText("");
+    setNoteError(null);
+    return true;
+  }
+
+  function closeComposer() {
+    setComposer(null);
+    setComposerText("");
+    composerShaRef.current = null;
+  }
+
   function startPageNote() {
     const pageView = pageViewFor(page.number);
     const anchor = pageView ? pageAnchor(pageView) : null;
     if (!anchor) return;
-    setNoteError(null);
-    setComposer({ pageIndex: page.number - 1, anchor, quote: null, source: "page" });
+    startComposer({ pageIndex: page.number - 1, anchor, quote: null, source: "page" });
   }
 
   function startMarkArea() {
+    if (composerDraftRef.current) {
+      setNoteError(KEEP_DRAFT);
+      return;
+    }
     setNoteError(null);
     clearSelection();
     if (compact) closeDialog();
@@ -1043,21 +1143,22 @@ export default function PdfReader(props: PdfReaderProps) {
           </span>
         ) : null,
         version.newest ? (
-          <form key="newest" action={props.actions.openArxivVersion} className="flex items-center gap-2">
-            <input type="hidden" name="assetId" value={assetId} />
-            <input type="hidden" name="version" value={version.newest.version} />
-            <span>A newer version exists:</span>
-            <button type="submit" className="text-brass underline underline-offset-4">
-              Open {version.newest.label}
-            </button>
-          </form>
+          <NewerVersionForm
+            key="newest"
+            action={props.actions.openArxivVersion}
+            assetId={assetId}
+            version={version.newest.version}
+            label={version.newest.label}
+          />
         ) : null,
         ...version.withdrawnLater.map((v) => <span key={`withdrawn-${v.version}`}>{v.label}: Withdrawn on arXiv</span>),
       ].filter(Boolean)
     : [];
 
   const contents: ReactNode =
-    outline === null ? (
+    load.state === "error" ? (
+      <p className="text-sm text-ink-3">Contents are not available, because the PDF could not be shown.</p>
+    ) : outline === null ? (
       <p className="text-sm text-ink-3">Reading the contents…</p>
     ) : outline.length > 0 ? (
       <OutlineList nodes={outline} onFollow={followOutline} />
@@ -1119,6 +1220,7 @@ export default function PdfReader(props: PdfReaderProps) {
       <p className="min-h-5 text-sm text-ink-2" role="status">
         {status}
       </p>
+      <p className="text-xs text-ink-3">Ctrl+F (Cmd+F on a Mac) opens this box. It searches every page, including those not drawn yet.</p>
     </form>
   );
 
@@ -1133,16 +1235,23 @@ export default function PdfReader(props: PdfReaderProps) {
       busy={creating}
       bookmarked={bookmarks.has(page.number - 1)}
       composer={composer}
+      composerText={composerText}
+      onComposerText={setComposerText}
       composerColor={color}
       onComposerColor={setColor}
+      editDrafts={editDrafts}
+      onEditDraft={setEditDraft}
       onToggleBookmark={() => void toggleBookmark()}
       onPageNote={startPageNote}
       onMarkArea={startMarkArea}
       onSaveComposer={saveComposer}
-      onCancelComposer={() => setComposer(null)}
+      onCancelComposer={closeComposer}
       onJump={jumpToAnnotation}
       onChanged={(row) => setAnnotations((list) => upsertAnnotation(list, row))}
-      onDeleted={(id) => setAnnotations((list) => list.filter((a) => a.id !== id))}
+      onDeleted={(id) => {
+        setAnnotations((list) => list.filter((a) => a.id !== id));
+        setEditDraft(id, null);
+      }}
       error={noteError}
     />
   );
@@ -1228,7 +1337,7 @@ export default function PdfReader(props: PdfReaderProps) {
                 className="w-12 rounded-[var(--radius-control)] border border-stone-2 bg-paper px-2 py-1 text-sm text-ink sm:w-14"
                 disabled={!ready}
               />
-              <span>of {pagesCount || "…"}</span>
+              {load.state === "error" ? null : <span>of {pagesCount || "…"}</span>}
               {label && !compact ? <span className="text-ink-3">printed p. {label}</span> : null}
             </form>
             <button
@@ -1341,6 +1450,22 @@ export default function PdfReader(props: PdfReaderProps) {
           Corniversity could not record which file your browser received from arXiv, so it cannot tell whether the file changed since your
           notes were made. The pages have the same sizes, so the notes are drawn.
         </p>
+      ) : null}
+      {ready && placement.repair.length > 0 && placement.drift.length === 0 && !keepRefusal ? (
+        // Otherwise only the Notes panel would say why notes are missing from the pages.
+        <div
+          role="status"
+          className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-stone bg-paper-2 px-3 py-1.5 text-sm text-ink-2 sm:px-4"
+        >
+          <p>
+            {placement.repair.length === 1
+              ? "1 note cannot be drawn on this file; it is listed under Needs repair."
+              : `${placement.repair.length} notes cannot be drawn on this file; they are listed under Needs repair.`}
+          </p>
+          <button type="button" className={control} onClick={() => openSection("notes", true)}>
+            Open Notes
+          </button>
+        </div>
       ) : null}
       {keepRefusal ? (
         <p role="status" className="border-b border-rust/30 bg-rust-soft px-3 py-1.5 text-sm text-rust sm:px-4">
@@ -1457,9 +1582,18 @@ export default function PdfReader(props: PdfReaderProps) {
                         Open on arXiv
                       </a>
                     ) : null}
-                    <button type="button" className={control} onClick={() => setAttempt((n) => n + 1)}>
-                      Try again
-                    </button>
+                    {load.permanent ? (
+                      // The file itself was refused, so loading it again cannot help; another PDF reader may open it.
+                      source.kind === "stored" ? (
+                        <a href={source.url} download className={control}>
+                          Download the file
+                        </a>
+                      ) : null
+                    ) : (
+                      <button type="button" className={control} onClick={() => setAttempt((n) => n + 1)}>
+                        Try again
+                      </button>
+                    )}
                     {textHref ? (
                       <Link href={`${textHref}&page=${page.number}`} prefetch={false} className={control}>
                         Text view
@@ -1489,7 +1623,7 @@ export default function PdfReader(props: PdfReaderProps) {
         ref={dialogRef}
         aria-labelledby="reader-dialog-title"
         onClose={onDialogClose}
-        className="mx-0 mt-auto mb-0 w-full max-w-none overflow-hidden rounded-t-[var(--radius-panel)] border border-stone bg-paper-2 p-0 text-ink backdrop:bg-ink/30"
+        className="mx-0 mt-auto mb-0 w-full max-w-none overflow-hidden rounded-t-[var(--radius-panel)] border border-stone bg-paper-2 p-0 text-ink backdrop:bg-scrim"
       >
         {/* The heading, the section switches and Close stay in view while a long list scrolls. */}
         <div className="flex max-h-[80dvh] flex-col">

@@ -6,7 +6,7 @@ import { acceptNewFile, openArxivVersion, recordObservedHash, ScholarlyError } f
 import { redirect } from "next/navigation";
 import type { CompanionAnswerView, PermissionFormState } from "@/components/reader/ask";
 import { db } from "@/lib/db";
-import { ERROR_NOTICES, errorCode, errorHref } from "@/lib/notices";
+import { ERROR_NOTICES, errorCode } from "@/lib/notices";
 import { requireSession } from "@/lib/session";
 import { companionAnswerView } from "./companion-data";
 
@@ -69,8 +69,15 @@ export async function keepNotesOnNewFileAction(
 ): Promise<{ accepted: boolean; problems: string[] } | ActionRefusal> {
   const session = await requireSession("/library");
   if (typeof assetId !== "string" || !UUID.test(assetId)) return { error: ERROR_NOTICES["asset-not-found"] };
+  // Any client can call an action with any arguments: the shape is checked here, the page geometry by the service.
+  if (typeof file !== "object" || file === null || typeof file.observedSha256 !== "string" || !SHA256.test(file.observedSha256))
+    return { error: ERROR_NOTICES["observed-hash-invalid"] };
   try {
-    const result = await acceptNewFile(db(), session.user.id, assetId, file);
+    const result = await acceptNewFile(db(), session.user.id, assetId, {
+      observedSha256: file.observedSha256,
+      pageCount: file.pageCount,
+      pageViews: file.pageViews,
+    });
     return { accepted: result.accepted, problems: result.accepted ? [] : result.problems };
   } catch (error) {
     return refusal(error);
@@ -80,24 +87,23 @@ export async function keepNotesOnNewFileAction(
 /**
  * Opens another arXiv version of the paper this Document belongs to (the reader's "newer version"
  * link). The paper and the arXiv id come from the owner's own Document, never from the form; only the
- * version number is read from it.
+ * version number is read from it. A refusal is returned to the form, which shows it in place, so the
+ * reader (and the PDF it fetched) is not loaded again.
  */
-export async function openArxivVersionAction(form: FormData): Promise<void> {
+export async function openArxivVersionAction(_state: ActionRefusal | null, form: FormData): Promise<ActionRefusal | null> {
   const session = await requireSession("/library");
   const assetId = String(form.get("assetId") ?? "");
   if (!UUID.test(assetId)) redirect("/library");
   const version = Number(form.get("version"));
-  const back = `/library/read/${assetId}`;
   const doc = await readerDocument(db(), session.user.id, assetId);
   if (!doc) redirect("/library");
-  if (!doc.work || !doc.arxiv || !Number.isInteger(version) || version < 1) redirect(errorHref(back, "identifier-not-valid"));
+  if (!doc.work || !doc.arxiv || !Number.isInteger(version) || version < 1) return { error: ERROR_NOTICES["identifier-not-valid"] };
   let target: string;
   try {
     const opened = await openArxivVersion(db(), session.user.id, doc.work.id, doc.arxiv.id, version);
     target = `/library/read/${opened.id}`;
   } catch (error) {
-    if (!(error instanceof LibraryError) && !(error instanceof ScholarlyError)) throw error;
-    redirect(errorHref(back, errorCode(error.message)));
+    return refusal(error);
   }
   redirect(target);
 }

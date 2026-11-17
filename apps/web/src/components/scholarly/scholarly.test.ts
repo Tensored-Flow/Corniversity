@@ -8,6 +8,7 @@ import {
   identifierHref,
   listCountSentence,
   locationLabel,
+  pages,
   previewHref,
   readElsewhereNote,
   rejectionText,
@@ -20,6 +21,12 @@ import {
 import { commonStamp, namedSubjects, paperFromRecord, sameStamp } from "./model";
 
 describe("paper wording", () => {
+  it("counts pages in the singular for one page", () => {
+    expect(pages(1)).toBe("1 page");
+    expect(pages(2)).toBe("2 pages");
+    expect(pages(1204)).toBe("1,204 pages");
+  });
+
   it("states what OpenAlex counted and returned for a list longer than the fifty shown", () => {
     // hep-th/9711200: 77 references, a record for each, the first 50 listed.
     const long = { total: 77, returned: 77, listed: 50, missing: 0 };
@@ -111,6 +118,22 @@ describe("Find's address", () => {
     expect(hasFilters(odd)).toBe(false);
     expect(findHref({ q: "direct preference", page: 2, freeToRead: true })).toBe("/library/find?q=direct+preference&free=1&page=2");
     expect(findHref({})).toBe("/library/find");
+  });
+
+  it("carries an author as words only: separators become spaces, each word starts with a letter, at most 100 characters", () => {
+    const author = (text: string | string[]) => parseFindParams({ author: text }).author;
+    expect(author("  Claude   Shannon ")).toBe("Claude Shannon");
+    expect(author("Jean-Pierre O’Brien")).toBe("Jean-Pierre O’Brien");
+    expect(author("C. E. Shannon")).toBe("C. E. Shannon");
+    // Nothing that could end, extend or negate the OpenAlex filter survives.
+    expect(author("Shannon, Claude|x:y+z")).toBe("Shannon Claude x y z");
+    expect(author('!Shannon -Jones "Finn" (Levine)*')).toBe("Shannon Jones Finn Levine");
+    expect(author(",|:!-")).toBeUndefined();
+    expect(author(["Shannon", "Finn"])).toBeUndefined();
+    expect(author("a".repeat(150))).toBe("a".repeat(100));
+    const params = parseFindParams({ author: "Claude Shannon", page: "2" });
+    expect(hasFilters(params)).toBe(true);
+    expect(findHref(params)).toBe("/library/find?author=Claude+Shannon&page=2");
   });
 });
 

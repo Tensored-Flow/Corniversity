@@ -16,7 +16,7 @@ export function LibraryWorkRow({ work }: { work: WorkRow }) {
   return (
     <li className="border-t border-stone py-3 [overflow-wrap:anywhere] first:border-t-0">
       <h3 className="text-base text-ink">
-        <Link href={paperHref(work.id)} className="hover:underline">
+        <Link href={paperHref(work.id)} className="inline-flex min-h-6 items-center hover:underline">
           {work.title ?? "Untitled (no title yet)"}
         </Link>
       </h3>

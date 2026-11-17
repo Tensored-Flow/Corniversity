@@ -65,23 +65,30 @@ export async function StepMeet({ userId, profile }: StepProps) {
         >
           <div className="grid gap-2 sm:grid-cols-3">
             {peers.map((p) => (
-              <label
+              // The AI label (a button with its explanation) stays outside the checkbox's labels, so opening
+              // or tapping the explanation never toggles the classmate.
+              <div
                 key={p.id}
                 className="flex flex-col gap-1 rounded-[var(--radius-panel)] border border-stone bg-paper-2 p-3 text-sm has-[:checked]:border-brass"
               >
-                <span className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="peerPersonaIds"
-                    value={p.id}
-                    defaultChecked={enabled.has(p.id)}
-                    className="accent-[var(--brass)]"
-                  />
-                  <span className="font-medium text-ink">{p.name}</span>
+                <span className="flex flex-wrap items-center gap-2">
+                  <label className="flex min-h-6 items-center gap-2">
+                    <input
+                      id={`peer-${p.id}`}
+                      type="checkbox"
+                      name="peerPersonaIds"
+                      value={p.id}
+                      defaultChecked={enabled.has(p.id)}
+                      className="accent-[var(--brass)]"
+                    />
+                    <span className="font-medium text-ink">{p.name}</span>
+                  </label>
                   <AiLabel kind="classmate" />
                 </span>
-                <span className="text-xs text-ink-2">{p.style.approach}</span>
-              </label>
+                <label htmlFor={`peer-${p.id}`} className="text-xs text-ink-2">
+                  {p.style.approach}
+                </label>
+              </div>
             ))}
           </div>
         </Fieldset>

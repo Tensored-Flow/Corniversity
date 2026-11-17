@@ -72,7 +72,10 @@ export default async function DiscoverPage({
               <h2 id={`${lists.subject.slug}-heading`} className="text-xl text-ink">
                 {lists.subject.name}
               </h2>
-              <Link href={`/library/subjects/${lists.subject.slug}`} className="text-sm text-brass underline underline-offset-4">
+              <Link
+                href={`/library/subjects/${lists.subject.slug}`}
+                className="inline-flex min-h-6 items-center text-sm text-brass underline underline-offset-4"
+              >
                 {lists.subject.name}: subject room
               </Link>
             </div>

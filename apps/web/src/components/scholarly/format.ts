@@ -176,6 +176,11 @@ export function count(n: number): string {
   return n.toLocaleString("en-GB");
 }
 
+/** "1 page", "12 pages", "1,204 pages". */
+export function pages(n: number): string {
+  return n === 1 ? "1 page" : `${count(n)} pages`;
+}
+
 /**
  * What OpenAlex counted for a paper's list, how many records it returned, and how many of them
  * are listed (at most fifty): never presented as complete.

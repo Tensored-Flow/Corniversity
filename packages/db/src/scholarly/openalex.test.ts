@@ -201,6 +201,24 @@ describe("OpenAlex lists and batches (recorded)", () => {
     );
     expect(list.items).toHaveLength(5);
   });
+
+  it("searches by author (OpenAlex's byline search), alone and with words and years", async () => {
+    // Recorded 2026-11-17 by the find-author group: the requests Find sends, pages of 25.
+    const shannon = await client.openalexSearch({ filters: { author: "Claude Shannon" }, page: 1, perPage: 25 });
+    expect(shannon.count).toBe(268);
+    expect(shannon.items).toHaveLength(25);
+    expect(shannon.items.every((w) => w.authors.some((a) => /Shannon/.test(a.name)))).toBe(true);
+    expect(shannon.items.map((w) => w.title)).toContain("A Mathematical Theory of Communications");
+    const dpo = await client.openalexSearch({
+      search: "direct preference optimization",
+      filters: { publicationYear: { from: 2023, to: 2024 }, author: "Rafailov" },
+      page: 1,
+      perPage: 25,
+    });
+    expect(dpo.count).toBe(15);
+    expect(dpo.items.map((w) => w.openalexId)).toContain("W7133208539");
+    expect(dpo.items.every((w) => w.publicationYear === 2023 || w.publicationYear === 2024)).toBe(true);
+  });
 });
 
 describe("OpenAlex request building", () => {
@@ -233,6 +251,38 @@ describe("OpenAlex request building", () => {
     ];
     for (const filters of injections)
       expect(() => filterParam(filters), JSON.stringify(filters)).toThrow(expect.objectContaining({ code: "invalid_identifier" }));
+  });
+
+  it("sends an author as OpenAlex's byline search, last, and refuses anything that could change the filter", () => {
+    expect(filterParam({ author: "Claude Shannon" })).toBe("raw_author_name.search:Claude Shannon");
+    expect(filterParam({ author: "Rafailov", publicationYear: { from: 2023, to: 2024 } })).toBe(
+      "publication_year:2023-2024,raw_author_name.search:Rafailov",
+    );
+    expect(filterParam({ author: "Jean-Pierre O’Brien" })).toBe("raw_author_name.search:Jean-Pierre O’Brien");
+    expect(filterParam({ author: "C. E. Shannon" })).toBe("raw_author_name.search:C. E. Shannon");
+    expect(filterParam({ author: "Paul Erdős" })).toBe("raw_author_name.search:Paul Erdős");
+    expect(filterParam({ author: "a".repeat(100) })).toBe(`raw_author_name.search:${"a".repeat(100)}`);
+    const injections = [
+      "Shannon,is_oa:false",
+      "Shannon|Finn",
+      "Shannon+Finn",
+      "Shannon:x",
+      "!Shannon",
+      "Smith -Jones",
+      '"Claude Shannon"',
+      "Shannon*",
+      " Shannon",
+      "Claude  Shannon",
+      "",
+      "a".repeat(101),
+    ];
+    for (const author of injections)
+      expect(() => filterParam({ author }), author).toThrow(expect.objectContaining({ code: "invalid_identifier" }));
+    // With no words, the author is the whole request: no `search` parameter.
+    expect(searchQuery({ filters: { author: "Claude Shannon" } }).slice(0, 2)).toEqual([
+      ["filter", "raw_author_name.search:Claude Shannon"],
+      ["page", "1"],
+    ]);
   });
 
   it("pages within OpenAlex's limits and cleans search text", () => {

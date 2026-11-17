@@ -5,7 +5,7 @@ import { ScholarlyError } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { scholarly } from "@/components/scholarly/client";
-import { displayIdentifier, locationLabel, paperHref, resetSentence } from "@/components/scholarly/format";
+import { displayIdentifier, locationLabel, paperHref, previewHref, resetSentence } from "@/components/scholarly/format";
 import { paperFromRecord } from "@/components/scholarly/model";
 import { PaperView, ProviderFailure } from "@/components/scholarly/PaperView";
 import { saveWorkAction } from "@/components/scholarly/save-action";
@@ -44,14 +44,14 @@ export default async function PaperPreviewPage({
   const { error } = await searchParams;
   const raw = identifierValue(value);
   let preview: PaperPreview | null = null;
-  let failure: { message: string; resetAt: Date | null } | null = null;
+  let failure: { message: string; resetAt: Date | null; code: ScholarlyError["code"] } | null = null;
   let ref: { scheme: string; value: string } | null = null;
   try {
     ref = previewIdentifier(scheme, raw);
     preview = await previewPaper(db(), session.user.id, scholarly(), scheme, raw);
   } catch (caught) {
     if (!(caught instanceof ScholarlyError)) throw caught;
-    failure = { message: caught.message, resetAt: caught.details.resetAt ?? null };
+    failure = { message: caught.message, resetAt: caught.details.resetAt ?? null, code: caught.code };
   }
   if (preview?.kind === "owned") redirect(paperHref(preview.workId));
 
@@ -64,6 +64,13 @@ export default async function PaperPreviewPage({
           ? displayIdentifier(ref.scheme, ref.value)
           : "Paper preview";
   const save = ref ? <SaveForm scheme={ref.scheme} value={ref.value} /> : null;
+  // The next step after a failure for a valid identifier: *Try again* when the provider did not answer
+  // (the sentence already says nothing changed), and the PDF route, which needs no provider record.
+  const retryHref =
+    failure?.code === "provider" && ref && (ref.scheme === "doi" || ref.scheme === "arxiv" || ref.scheme === "openalex")
+      ? previewHref(ref.scheme, ref.value)
+      : null;
+  const offerPdf = Boolean(ref) && (failure?.code === "provider" || failure?.code === "not_found");
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -76,7 +83,16 @@ export default async function PaperPreviewPage({
       <FlashNotices error={error} />
       {failure ? (
         <div className="flex flex-col gap-4">
-          <ProviderFailure message={failure.message} resetAt={failure.resetAt} />
+          <ProviderFailure message={failure.message} resetAt={failure.resetAt} retryHref={retryHref ?? undefined} />
+          {offerPdf ? (
+            <p className="text-sm text-ink-2">
+              Or{" "}
+              <Link href="/library/papers/new" className="text-brass underline underline-offset-4">
+                add the paper from its PDF without an identifier
+              </Link>
+              .
+            </p>
+          ) : null}
         </div>
       ) : null}
       {preview?.kind === "openalex" ? (

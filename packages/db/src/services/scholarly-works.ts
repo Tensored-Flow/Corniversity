@@ -1034,6 +1034,9 @@ export async function editWorkFields(db: DbOrTx, ownerId: string, workId: string
   return db.transaction(async (tx) => {
     const [work] = await tx.select().from(scholarlyWork).where(eq(scholarlyWork.id, found.id)).for("update");
     if (!work) throw new ScholarlyError("not_found", "Paper not found.");
+    // An owner merge committed while this waited for the row lock: the details shown are the
+    // tombstone's, so nothing is written and the page shows the paper it was merged into.
+    if (work.mergedIntoId) throw new ScholarlyError("conflict", EDIT_CONFLICT);
     if (expected) {
       const edited = (Object.keys(edit) as EditField[]).filter((field) => edit[field] !== undefined);
       if (edited.some((field) => field in expected && formValue(expected, field) !== shownValue(work, field)))
@@ -1544,7 +1547,8 @@ export async function acceptNewFile(
   assetId: string,
   input: { observedSha256: string; pageCount: number; pageViews: [number, number][] },
 ): Promise<{ accepted: boolean; problems: string[] }> {
-  if (!SHA256_HEX.test(input.observedSha256)) throw new ScholarlyError("invalid_state", "The reported file hash is not valid.");
+  if (typeof input?.observedSha256 !== "string" || !SHA256_HEX.test(input.observedSha256))
+    throw new ScholarlyError("invalid_state", "The reported file hash is not valid.");
   if (
     !Number.isInteger(input.pageCount) ||
     input.pageCount < 1 ||
@@ -1554,22 +1558,27 @@ export async function acceptNewFile(
     input.pageViews.some((v) => !Array.isArray(v) || v.length !== 2 || !v.every((n) => Number.isFinite(n) && n > 0))
   )
     throw new ScholarlyError("invalid_state", "The reported page geometry is not valid.");
-  const asset = await requireLinked(db, ownerId, assetId);
-  const anchored = await db
-    .select({ id: annotation.id, anchor: annotation.anchor, mappingStatus: annotation.mappingStatus })
-    .from(annotation)
-    .where(and(eq(annotation.ownerId, ownerId), eq(annotation.assetId, asset.id), isNotNull(annotation.anchor)));
-  // Checked: drawn as resolved and measured on another file. Measured on the new bytes: already on it.
-  const checked = anchored.filter((a) => a.mappingStatus === "resolved" && a.anchor!.documentSha256 !== input.observedSha256);
-  const onNewBytes = anchored.filter((a) => a.anchor!.documentSha256 === input.observedSha256);
-  const drift = checkDrift({
-    anchors: checked.map((a) => ({ pageIndex: a.anchor!.pageIndex, pageView: a.anchor!.pageView })),
-    pageCount: input.pageCount,
-    pageViews: input.pageViews,
-    previousPageCount: asset.pageCount,
-  });
+  const found = await requireLinked(db, ownerId, assetId);
   const keep = sql`"annotation"."updated_at"`;
   return db.transaction(async (tx) => {
+    // Locked and read again: a private copy promoted meanwhile is no longer read from arxiv.org, and
+    // its anchors are the extraction's to re-check, so nothing is re-keyed to a stale key.
+    const [asset] = await tx.select().from(resourceAsset).where(eq(resourceAsset.id, found.id)).for("update");
+    if (!asset || asset.deletedAt !== null || asset.status !== "linked_remote")
+      throw new ScholarlyError("invalid_state", "Only a paper read from arxiv.org reports what the browser received.");
+    const anchored = await tx
+      .select({ id: annotation.id, anchor: annotation.anchor, mappingStatus: annotation.mappingStatus })
+      .from(annotation)
+      .where(and(eq(annotation.ownerId, ownerId), eq(annotation.assetId, asset.id), isNotNull(annotation.anchor)));
+    // Checked: drawn as resolved and measured on another file. Measured on the new bytes: already on it.
+    const checked = anchored.filter((a) => a.mappingStatus === "resolved" && a.anchor!.documentSha256 !== input.observedSha256);
+    const onNewBytes = anchored.filter((a) => a.anchor!.documentSha256 === input.observedSha256);
+    const drift = checkDrift({
+      anchors: checked.map((a) => ({ pageIndex: a.anchor!.pageIndex, pageView: a.anchor!.pageView })),
+      pageCount: input.pageCount,
+      pageViews: input.pageViews,
+      previousPageCount: asset.pageCount,
+    });
     if (drift.geometryMatches) {
       await tx
         .update(resourceAsset)
@@ -2280,7 +2289,10 @@ export async function refreshWork(
  * Retraction Watch notices for the DOIs checked; a DOI Crossref does not know counts as checked
  * with no notices. In fixture mode a DOI with no recorded Crossref response is `unrecorded`: it is
  * not checked, its earlier notices stay, and the work is not marked checked (nothing is invented
- * for it). A provider failure changes nothing.
+ * for it). A provider failure changes nothing. The provider calls happen first; the write then
+ * locks the work as it stands now (merges followed) and merges into its current notices, so a
+ * notice written meanwhile (arXiv's withdrawal) is kept and nothing lands on a tombstone. When a
+ * merge brought DOIs this check did not ask about, the work is not marked checked.
  */
 export async function refreshIntegrity(
   db: DbOrTx,
@@ -2289,15 +2301,8 @@ export async function refreshIntegrity(
   workId: string,
 ): Promise<{ checked: string[]; notices: number; unrecorded: string[] }> {
   const work = await requireWork(db, ownerId, workId);
-  const dois = (
-    await db
-      .select({ value: scholarlyIdentifier.value })
-      .from(scholarlyIdentifier)
-      .where(and(eq(scholarlyIdentifier.ownerId, ownerId), eq(scholarlyIdentifier.workId, work.id), eq(scholarlyIdentifier.scheme, "doi")))
-  )
-    .map((r) => r.value)
-    .filter((doi) => !isArxivDoi(doi))
-    .slice(0, 5);
+  const known = await crossrefDois(db, ownerId, work.id);
+  const dois = known.slice(0, 5);
   const incoming: IntegrityNotice[] = [];
   const checked: string[] = [];
   const unrecorded: string[] = [];
@@ -2312,12 +2317,37 @@ export async function refreshIntegrity(
       else providerFailure(error);
     }
   }
-  const notices = mergeNotices(work.integrityNotices, incoming, ["crossref", "retraction-watch"], new Set(checked));
-  await db
-    .update(scholarlyWork)
-    .set({ integrityNotices: notices, ...(unrecorded.length ? {} : { integrityCheckedAt: new Date() }) })
-    .where(eq(scholarlyWork.id, work.id));
+  await db.transaction(async (tx) => {
+    // The work as it stands now: a merge that committed during the provider calls (or while this
+    // waits for the row lock) moves the write to the survivor.
+    for (let hop = 0; hop < 10; hop++) {
+      const id = await resolveWorkId(tx, ownerId, work.id);
+      if (!id) return;
+      const [current] = await tx.select().from(scholarlyWork).where(eq(scholarlyWork.id, id)).for("update");
+      if (!current) return;
+      if (current.mergedIntoId) continue;
+      const notices = mergeNotices(current.integrityNotices, incoming, ["crossref", "retraction-watch"], new Set(checked));
+      const complete = unrecorded.length === 0 && (await crossrefDois(tx, ownerId, id)).every((doi) => known.includes(doi));
+      await tx
+        .update(scholarlyWork)
+        .set({ integrityNotices: notices, ...(complete ? { integrityCheckedAt: new Date() } : {}) })
+        .where(eq(scholarlyWork.id, id));
+      return;
+    }
+  });
   return { checked, notices: incoming.length, unrecorded };
+}
+
+/** The work's Crossref-registered DOIs (arXiv's DataCite DOIs left out). */
+async function crossrefDois(db: DbOrTx, ownerId: string, workId: string): Promise<string[]> {
+  return (
+    await db
+      .select({ value: scholarlyIdentifier.value })
+      .from(scholarlyIdentifier)
+      .where(and(eq(scholarlyIdentifier.ownerId, ownerId), eq(scholarlyIdentifier.workId, workId), eq(scholarlyIdentifier.scheme, "doi")))
+  )
+    .map((r) => r.value)
+    .filter((doi) => !isArxivDoi(doi));
 }
 
 /**

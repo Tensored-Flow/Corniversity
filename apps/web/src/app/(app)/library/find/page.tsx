@@ -1,6 +1,6 @@
 import { SUBJECTS, subjectBySlug } from "@corniversity/core";
 import { isUuid } from "@corniversity/db/ids";
-import { OPENALEX_WORK_TYPES } from "@corniversity/db/scholarly/openalex";
+import { OPENALEX_AUTHOR_MAX_LENGTH, OPENALEX_WORK_TYPES } from "@corniversity/db/scholarly/openalex";
 import { FIND_PAGE_SIZE, type PaperPage, searchPapers } from "@corniversity/db/services/paper-lists";
 import { resolveInput, ScholarlyError, searchMyLibrary, type WorkRow } from "@corniversity/db/services/scholarly-works";
 import Link from "next/link";
@@ -29,7 +29,8 @@ type Results =
  * Find papers (contract §2): one box for a DOI (also inside any link), an arXiv id or link, an
  * OpenAlex id or link, or words. An exact identifier goes straight to the paper page when the
  * owner has the paper, else to its preview with Save. Words search OpenAlex (All papers) or the
- * owner's own works (My library), with filters and pages up to OpenAlex's 10,000 results. No link
+ * owner's own works (My library), with filters and pages up to OpenAlex's 10,000 results; the
+ * Author filter (All papers only, OpenAlex's byline search) works with or without words. No link
  * typed here is ever fetched: identifiers are read out of it as text.
  */
 export default async function FindPapersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -50,10 +51,13 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
   // Text shaped like a DOI that is not a valid one: said so, and not searched as words.
   const invalidDoi = input.kind === "search" && input.invalidDoi === true;
   let results: Results = { kind: "none" };
-  if (input.kind === "search" && !emptyLink && !invalidDoi) {
+  const words = input.kind === "search" && !emptyLink && !invalidDoi ? input.query : null;
+  // Author searches All papers without words too; My library matches author names among its words.
+  const authorOnly = input.kind === "empty" && params.scope === "all" && params.author !== undefined;
+  if (words !== null || authorOnly) {
     const subject = params.field ? subjectBySlug(params.field) : null;
-    if (params.scope === "mine") {
-      const rows = await searchMyLibrary(database, ownerId, input.query, {
+    if (params.scope === "mine" && words !== null) {
+      const rows = await searchMyLibrary(database, ownerId, words, {
         limit: FIND_PAGE_SIZE + 1,
         offset: (params.page - 1) * FIND_PAGE_SIZE,
         yearFrom: params.yearFrom,
@@ -68,7 +72,7 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
       else {
         try {
           const page = await searchPapers(database, ownerId, scholarly(), {
-            query: input.query,
+            query: words ?? "",
             page: params.page,
             filters: {
               yearFrom: params.yearFrom,
@@ -76,6 +80,7 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
               type: params.type,
               freeToRead: params.freeToRead,
               subject: subject ? subject.slug : undefined,
+              author: params.author,
             },
           });
           results = { kind: "openalex", page };
@@ -129,21 +134,26 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
           </div>
           <fieldset className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink">
             <legend className="mb-1 text-sm font-medium text-ink">Search words in</legend>
-            <label className="flex items-center gap-2">
+            <label className="flex min-h-6 items-center gap-2">
               <input type="radio" name="scope" value="all" defaultChecked={params.scope === "all"} /> All papers (OpenAlex)
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex min-h-6 items-center gap-2">
               <input type="radio" name="scope" value="mine" defaultChecked={params.scope === "mine"} /> My library
             </label>
+            {/* OpenAlex's word search covers no authorships; the Author filter is its byline search (raw_author_name.search). */}
+            <p className="basis-full text-xs text-ink-3">
+              All papers matches words in titles, abstracts and full text, and author names in the Author filter; My library matches author
+              names among the words too.
+            </p>
           </fieldset>
           <Filters params={params} />
         </form>
       </Card>
       <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-        <Link href="/library/papers/new" className="text-brass underline underline-offset-4">
+        <Link href="/library/papers/new" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
           Add a paper without an identifier (PDF)
         </Link>
-        <Link href="/library/upload" className="text-brass underline underline-offset-4">
+        <Link href="/library/upload" className="inline-flex min-h-6 items-center text-brass underline underline-offset-4">
           Upload a file to Files
         </Link>
       </p>
@@ -184,7 +194,7 @@ export default async function FindPapersPage({ searchParams }: { searchParams: P
 function Filters({ params }: { params: FindParams }) {
   return (
     <details open={hasFilters(params)} className="rounded-[var(--radius-control)] border border-stone px-3 py-2">
-      <summary className="cursor-pointer text-sm font-medium text-ink">Filters</summary>
+      <summary className="cursor-pointer py-1 text-sm font-medium text-ink">Filters</summary>
       <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="find-from" className="text-sm text-ink">
@@ -224,7 +234,24 @@ function Filters({ params }: { params: FindParams }) {
             ))}
           </Select>
         </div>
-        <label className="flex items-center gap-2 text-sm text-ink sm:col-span-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="find-author" className="text-sm text-ink">
+            Author (All papers only)
+          </label>
+          <Input
+            id="find-author"
+            name="author"
+            maxLength={OPENALEX_AUTHOR_MAX_LENGTH}
+            autoComplete="off"
+            spellCheck={false}
+            aria-describedby="find-author-hint"
+            defaultValue={params.author ?? ""}
+          />
+          <p id="find-author-hint" className="text-xs text-ink-3">
+            As printed on the paper; every word, in any order.
+          </p>
+        </div>
+        <label className="flex min-h-6 items-center gap-2 text-sm text-ink sm:col-span-2">
           <input type="checkbox" name="free" value="1" defaultChecked={params.freeToRead} /> Free to read (according to OpenAlex; All papers
           only)
         </label>
@@ -240,7 +267,10 @@ function Pager({ params, page, hasNext, lastPage }: { params: FindParams; page: 
   return (
     <nav aria-label="Result pages" className="mt-4 flex flex-wrap items-center gap-3 text-sm">
       {page > 1 ? (
-        <Link href={findHref({ ...params, page: page - 1 })} className="text-brass underline underline-offset-4">
+        <Link
+          href={findHref({ ...params, page: page - 1 })}
+          className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+        >
           Previous page
         </Link>
       ) : null}
@@ -249,7 +279,10 @@ function Pager({ params, page, hasNext, lastPage }: { params: FindParams; page: 
         {lastPage !== null ? ` of ${count(lastPage)}` : ""}
       </span>
       {hasNext ? (
-        <Link href={findHref({ ...params, page: page + 1 })} className="text-brass underline underline-offset-4">
+        <Link
+          href={findHref({ ...params, page: page + 1 })}
+          className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+        >
           Next page
         </Link>
       ) : null}
@@ -293,7 +326,10 @@ function OpenAlexResults({ page, params, back }: { page: PaperPage; params: Find
         <Pager params={params} page={page.page} hasNext={page.page < page.lastPage} lastPage={page.lastPage} />
       ) : summary.goTo !== null ? (
         <p className="mt-4 text-sm">
-          <Link href={findHref({ ...params, page: summary.goTo })} className="text-brass underline underline-offset-4">
+          <Link
+            href={findHref({ ...params, page: summary.goTo })}
+            className="inline-flex min-h-6 items-center text-brass underline underline-offset-4"
+          >
             Go to page {count(summary.goTo)}
           </Link>
         </p>

@@ -137,13 +137,11 @@ export async function getVisit(db: DbOrTx, ownerId: string, visitId: string) {
 export async function answerBridgeCheck(db: DbOrTx, ownerId: string, visitId: string, answer: string): Promise<void> {
   const visit = await getVisit(db, ownerId, visitId);
   if (!visit) throw new BridgeError("Visit not found.");
-  const text = answer.trim();
+  // The note keeps the answer as the visit does, so it stays within the notebook's limit.
+  const text = answer.trim().slice(0, 10_000);
   if (text.length < 10) throw new BridgeError("Write an answer of at least a sentence before seeing the guidance.");
   const bridge = await getBridge(db, visit.conceptId);
-  await db
-    .update(bridgeVisit)
-    .set({ checkAnswer: text.slice(0, 10_000) })
-    .where(eq(bridgeVisit.id, visit.id));
+  await db.update(bridgeVisit).set({ checkAnswer: text }).where(eq(bridgeVisit.id, visit.id));
   await createEntry(db, ownerId, {
     title: `Bridge self-check: ${bridge?.title ?? visit.conceptId}`,
     bodyMarkdown: `${bridge?.check ? `**Question.** ${bridge.check.prompt}\n\n` : ""}**My answer.** ${text}`,

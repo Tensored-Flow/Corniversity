@@ -1,6 +1,16 @@
 import { createHash } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { arxivAbstractUrl, arxivPdfUrl, checkPdfResponse, isArxivId, loadPdfBytes, PdfLoadError, sha256Hex } from "./loader";
+import {
+  arxivAbstractUrl,
+  arxivPdfUrl,
+  checkPdfResponse,
+  failureText,
+  isArxivId,
+  isPermanentFailure,
+  loadPdfBytes,
+  PdfLoadError,
+  sha256Hex,
+} from "./loader";
 
 const pdfBytes = new TextEncoder().encode("%PDF-1.7\n%test fixture, not a real paper\n");
 const ok = { ok: true, status: 200, contentType: "application/pdf" };
@@ -112,5 +122,46 @@ describe("loading", () => {
     const aborted = await loadPdfBytes({ kind: "stored", url: "/x" }, controller.signal).catch((e) => e);
     expect(aborted).not.toBeInstanceOf(PdfLoadError);
     expect((aborted as Error).name).toBe("AbortError");
+  });
+});
+
+describe("failureText", () => {
+  const named = (name: string) => Object.assign(new Error("pdf.js"), { name });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("says an arXiv failure in arXiv's terms: unreachable, the status it answered, or not a PDF", () => {
+    expect(failureText(new PdfLoadError("network", "arxiv", "The PDF could not be fetched."), true)).toBe(
+      "Your browser could not fetch the PDF from arXiv (network or arXiv's access policy).",
+    );
+    expect(failureText(new PdfLoadError("status", "arxiv", "x", 403), true)).toBe(
+      "arXiv answered with status 403, so the PDF could not be shown.",
+    );
+    expect(failureText(new PdfLoadError("status", "arxiv", "x"), true)).toBe(
+      "arXiv answered with status unknown, so the PDF could not be shown.",
+    );
+    for (const reason of ["content_type", "signature"] as const) {
+      expect(failureText(new PdfLoadError(reason, "arxiv", "x"), true)).toBe("arXiv's answer was not a PDF, so nothing was shown.");
+    }
+  });
+
+  it("gives a stored file's failure with the loader's own message", async () => {
+    vi.stubGlobal("fetch", async () => new Response("missing", { status: 404, headers: { "content-type": "text/plain" } }));
+    const error = await loadPdfBytes({ kind: "stored", url: "/x" }, new AbortController().signal).catch((e) => e);
+    expect(failureText(error, false)).toBe("The PDF could not be loaded. The server did not return the file (status 404).");
+  });
+
+  it("names the files PDF.js refuses, and says nothing it does not know about anything else", () => {
+    expect(failureText(named("InvalidPDFException"), false)).toBe("The file could not be read as a PDF.");
+    expect(failureText(named("PasswordException"), true)).toBe("This PDF is password-protected and cannot be shown here.");
+    expect(failureText(new Error("boom"), false)).toBe("The PDF could not be shown.");
+    expect(failureText("not an error", true)).toBe("The PDF could not be shown.");
+  });
+
+  it("treats only a file PDF.js refuses as permanent, so Try again is offered for everything else", () => {
+    expect(isPermanentFailure(named("InvalidPDFException"))).toBe(true);
+    expect(isPermanentFailure(named("PasswordException"))).toBe(true);
+    expect(isPermanentFailure(new PdfLoadError("network", "arxiv", "x"))).toBe(false);
+    expect(isPermanentFailure(new Error("boom"))).toBe(false);
+    expect(isPermanentFailure("not an error")).toBe(false);
   });
 });

@@ -49,7 +49,8 @@ export default async function SyncPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* grid-cols-1 is minmax(0, 1fr): a wide <pre> scrolls inside its card instead of widening the page. */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card as="section" aria-labelledby="pair-heading">
           <h2 id="pair-heading" className="text-lg text-ink">
             Pair a computer

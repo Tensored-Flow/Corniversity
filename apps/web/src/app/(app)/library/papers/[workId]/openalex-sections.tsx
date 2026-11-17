@@ -71,7 +71,7 @@ export async function ReadElsewhere({ recordPromise, dois }: { recordPromise: Pr
     publisher: Boolean(publisher),
     failed: Boolean(failure),
   });
-  const link = "text-brass underline underline-offset-4";
+  const link = "inline-flex min-h-6 items-center text-brass underline underline-offset-4";
   return (
     <div className="flex flex-col gap-1 text-sm">
       {open && location ? (
@@ -212,14 +212,14 @@ export async function PaperListSection({
           ) : null}
           {!more && list.items.length > PAPER_LIST_SHORT ? (
             <p className="mt-2 text-sm">
-              <Link href={href(true)} className="text-brass underline underline-offset-4" scroll={false}>
+              <Link href={href(true)} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4" scroll={false}>
                 {showMoreLabel(kind, counts)}
               </Link>
             </p>
           ) : null}
           {more && list.items.length > PAPER_LIST_SHORT ? (
             <p className="mt-2 text-sm">
-              <Link href={href(false)} className="text-brass underline underline-offset-4" scroll={false}>
+              <Link href={href(false)} className="inline-flex min-h-6 items-center text-brass underline underline-offset-4" scroll={false}>
                 Show fewer
               </Link>
             </p>

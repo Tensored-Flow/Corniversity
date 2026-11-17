@@ -33,7 +33,7 @@ Everything stays under `/library`. Main navigation is unchanged.
 | Route | Screen |
 |---|---|
 | `/library` | **Library home**, database only (no provider call): a find box (a GET form to Find papers) with *Add a paper*, *Discover* and *Library notes* links; *Continue reading* (`continueReading`: at most 3 Documents by `reading_progress.last_opened_at`, newest first, each named by its paper, or the file, with its version and the saved page; the link opens the reader, which restores the place); *Saved papers* with views *All saved · Read later · Favourites · Read · Recently opened* (`?view=`, `listWorks`, 20 a page with `?page=`; a page past the last says so), rows with title, first authors, year, venue, *Fixture data* and an integrity label where recorded, and *Read* where a Document of the paper can be opened (`documentsForWorks`: the most recently opened readable one, else the newest); *Shelves and trails* with their counts, links and a create form (kind, name; a refusal keeps both, without JavaScript too); and the existing **Files** list with its markup, links, sync badge and `?deleted` notice (Upload, Desktop sync and Jobs are links in the Files header; *Read* where `pageViewAvailable` or `textViewAvailable`). Every view has a plain empty state saying what fills it. h1 stays "Library" |
-| `/library/find` | **Find papers**: one box (DOI, DOI inside any URL, arXiv id or URL, OpenAlex id or URL, or words; identifiers are parsed out of links as text, nothing is fetched). An exact identifier opens the paper page when the owner has the paper, else its preview. Words search OpenAlex (*All papers*, 25 a page, pages up to OpenAlex's 10,000 results) or the owner's works (*My library*); filters: published from/to (year), type, field (the subjects of §4), free to read (All papers only). Rows: title, first authors, year, venue, type, *cited by N according to OpenAlex*, *Free to read according to OpenAlex*, *In your library* (`ownerWorkIndex`; a paper the owner removed from the library says *Not in your saved papers* and offers Save again), Save (returns to the same page). A page past the last says so and links back; a link with no identifier and no words says that, and nothing is searched; so does text shaped like a DOI that is not a valid one (`doi:…`, or `10.` with a slash and no spaces). Provider failures say what happened (fixture recording missing, unavailable, allowance used up with its reset time), never "no results"; in production without `OPENALEX_API_KEY` word search says *OpenAlex browsing needs an API key on this server*. Links to *Add a paper without an identifier* and to Upload |
+| `/library/find` | **Find papers**: one box (DOI, DOI inside any URL, arXiv id or URL, OpenAlex id or URL, or words; identifiers are parsed out of links as text, nothing is fetched). An exact identifier opens the paper page when the owner has the paper, else its preview. Words search OpenAlex (*All papers*, 25 a page, pages up to OpenAlex's 10,000 results) or the owner's works (*My library*); filters: published from/to (year), type, field (the subjects of §4), free to read (All papers only), author (All papers only: OpenAlex's byline search `raw_author_name.search`, with or without words; every word must appear among the author names as printed on the paper, in any order and across co-authors, so initials do not match a full first name; `?author=`, up to 100 characters, where anything but letters, full stops, apostrophes and hyphens becomes a space and each word starts with a letter; OpenAlex's word search covers titles, abstracts and full text but no author names, and Find says so; My library matches author names among its words). Rows: title, first authors, year, venue, type, *cited by N according to OpenAlex*, *Free to read according to OpenAlex*, *In your library* (`ownerWorkIndex`; a paper the owner removed from the library says *Not in your saved papers* and offers Save again), Save (returns to the same page). A page past the last says so and links back; a link with no identifier and no words says that, and nothing is searched; so does text shaped like a DOI that is not a valid one (`doi:…`, or `10.` with a slash and no spaces). Provider failures say what happened (fixture recording missing, unavailable, allowance used up with its reset time), never "no results"; in production without `OPENALEX_API_KEY` word search says *OpenAlex browsing needs an API key on this server*. Links to *Add a paper without an identifier* and to Upload |
 | `/library/papers/new` | a PDF becomes a new, unidentified paper (`createWorkFromUpload`, optional title, nothing read from the file; other files are refused); the form posts to `/api/library/papers/new` |
 | `/library/discover` | **Discover**: your subjects, per subject *New on arXiv*, *Reviews and surveys*, *Most cited*, *Earlier work*; *Cited by 2 or more of your papers*; *Similar to …* ; *From your courses*; *Surprise me* |
 | `/library/subjects/[slug]` | subject room: subfields and the same three or four lists |
@@ -42,7 +42,7 @@ Everything stays under `/library`. Main navigation is unchanged.
 | `/library/read/[assetId]` | the reader, in its own route group `(reader)` with a full-height layout |
 | `/library/shelves`, `/library/trails` | the owner's shelves (or trails) with how many papers each holds, and a form for a new one (name, optional description) |
 | `/library/shelves/[id]`, `/library/trails/[id]` | one collection (one table, two kinds; an id of the other kind redirects to its page): the description (owner Markdown and LaTeX through the sanitiser; a trail's holds its question, prerequisites and links to other trails or papers); the papers in the collection's order, each with its note (shelf) or numbered step and reason (trail), both Markdown and LaTeX, *Read* where a Document can be opened, *Move up* and *Move down* (offered in the collection's own order with nothing filtered) and *Remove* (the paper, its notes and files stay; a paper with a note or reason written here asks first on its row, since that text goes with it); a shelf also searches its papers (every word in the title, an author, the venue or the year) and filters by the owner's flags, and orders by *Recently added*; *Add from your library* (`searchMyLibrary` for words, else the recently saved papers not on it; when every match is already there it says so; a trail step takes an optional reason); rename and describe; *Delete* behind a confirmation box that says the papers, their notes and files are kept. Each form returns to its own section (`#…`, named again as `at=`) and its notice is shown inside that section, in view; so do the create forms of `/library` and the list pages and the notebook's *New note for this paper*. No AI-built trails |
-| `/notebook?library=1&work=<id>&kind=…&subject=…&q=…` | every library note, newest first (the 100 most recent of each kind; search or filters reach older ones): highlights, page and area notes and bookmarks (`listReadingNotes`; the quote as text, the note through the sanitiser, colour, the paper and version, *Open page N in the reader*; an anchor that needs repair says so and opens the page it was made on; a removed file says so) and paper notes (`paperNotes`: notebook entries with `scholarly_work_id`). Filters: `work`, `kind` (highlight, note, bookmark, paper), `subject` (an OpenAlex field of the papers that carry notes, as OpenAlex classified them), `q` (both searches). With a paper: its title and *New note for this paper* (title, kind, Markdown with LaTeX); a merged paper's id redirects to its survivor's notes; an id that is not the owner's paper says so. `/notebook` keeps every entry (free notes included); a paper note's page names its paper |
+| `/notebook?library=1&work=<id>&kind=…&subject=…&q=…` | every library note, newest first (the 100 most recent of each kind; search or filters reach older ones): highlights, page and area notes and bookmarks (`listReadingNotes`; the quote as text, the note through the sanitiser, colour, the paper and version, *Open page N in the reader*, where it is edited; an anchor that needs repair says so and opens the page it was made on; a removed file says so; *Delete* behind a confirmation box, returning to the same filters with *Note deleted.*, the one way to delete a note whose file was removed; another owner's id is not found) and paper notes (`paperNotes`: notebook entries with `scholarly_work_id`). Filters: `work`, `kind` (highlight, note, bookmark, paper), `subject` (an OpenAlex field of the papers that carry notes, as OpenAlex classified them), `q` (both searches). With a paper: its title and *New note for this paper* (title, kind, an optional course, Markdown with LaTeX; a body over 50,000 characters is refused where it was typed and kept, never cut short); a merged paper's id redirects to its survivor's notes; an id that is not the owner's paper says so. `/notebook` keeps every entry (free notes included); a paper note's page names its paper |
 | existing `/library/items/[id]`, `/sources`, `/requests`, `/sync`, `/jobs`, `/upload` | unchanged (an item with a scholarly version redirects to its paper page), except that `/jobs` describes each job in words (`describeJob`: kind and payload, with a link to its paper while it exists, else *That paper is no longer in your library.* and no *Retry*, or its item) and no longer shows idempotency keys, which can carry the account id; its Progress column shows a stage only while a job is queued or running, and a completed Crossref check that had no recorded response in fixture mode names its DOIs (`jobProgress`) |
 | any 404 | exactly one `main`: the root `not-found.tsx` has its own for an address no route matches; `(app)/not-found.tsx` and `(reader)/not-found.tsx` render inside their layout's `main` (the reader's says the address names no file or paper of the owner's, with links to the Library and the library notes) |
 
@@ -58,7 +58,7 @@ never ends.
 |---|---|---|---|
 | New, empty library | each home section says what fills it, with Find papers, Discover, the create form and Upload | `/library`, `_home/*` | `library-home.test.ts` (empty owner); journeys 20, 22 |
 | No search results | *OpenAlex found no papers…* only when it counts none; past the last page *No results on page N; OpenAlex counts X…* with *Go to page*; *No paper in your library matches…* | `find/page.tsx`, `resultsSummary` | `scholarly.test.ts` and `paper-lists.test.ts` (test-only data, no recording); journey 17 |
-| Provider unavailable | the provider's registered sentence (unreachable, rate limited, allowance used with its reset time, not recorded in fixture mode), never "no results"; a failed or unrecorded Crossref check on the paper page | `paper-lists.ts`, `discover.ts`, paper page | `paper-lists.test.ts`, `scholarly-works.test.ts`, `failure.test.ts`, `scholarly.handler.test.ts`; journeys 17, 18 |
+| Provider unavailable | the provider's registered sentence (unreachable, rate limited, allowance used with its reset time, not recorded in fixture mode), never "no results"; a failed or unrecorded Crossref check on the paper page; on a preview whose valid identifier the provider did not answer for, *Try again* (the same address) and *add the paper from its PDF without an identifier* (also offered when no provider has a record of the DOI) | `paper-lists.ts`, `discover.ts`, paper page, preview (`ProviderFailure` with `retryHref`) | `paper-lists.test.ts`, `scholarly-works.test.ts`, `failure.test.ts`, `scholarly.handler.test.ts`; journeys 17, 18 |
 | PDF unavailable | the reader's reason with *Open on arXiv* and *Try again*; a DOI-only paper's open location or publisher page, *OpenAlex reports no free-to-read copy*, or that where it can be read is not known; a withdrawn version is not opened | reader, `ReadElsewhere`, `openArxivVersion` | `loader.test.ts`, `scholarly.test.ts`, `scholarly-works.test.ts`; journey 19 |
 | Invalid DOI | *That is not a valid DOI…*, nothing searched; a link without an identifier says so; a preview address with a bad identifier *That identifier is not valid.* | core `recogniseInput`, `find/page.tsx`, preview | `identifiers.test.ts`, `scholarly-works.test.ts`, `paper-lists.test.ts`; journey 17 |
 | Broken PDF | refused by its signature before anything is stored; a corrupt PDF's extraction fails once, its file is *Rejected* and the paper page says it could not be read as a PDF and what to do (a PDF over the page limit or with a password is named as such, not as unreadable); the reader names an unreadable or password-protected file | `validateUpload`, ingest, `rejectionText`, reader | `library.test.ts`, `ingest.handler.test.ts`, `scholarly.test.ts`; journeys 04, 17 |
@@ -68,7 +68,7 @@ never ends.
 | Missing metadata | *None reported*, *Not reported*, *Untitled paper*, *Not identified*, *Fetching the arXiv record* while the worker runs; an open *Edit details* never blanks details that arrive meanwhile | `PaperView`, paper page | `scholarly-works.test.ts`, `edit-form.test.ts`; journey 17 |
 | Offline, network interruption | the reader keeps unsent positions for 30 s and says a note or *Keep* did not reach the server and nothing changed; an upload cut short says so; a form sent while offline shows *The server could not be reached* (what was last sent may not have arrived; reload once online), never a server error or a claim that nothing was lost | reader, attach routes, `app/error.tsx` (`isConnectionFailure`) | `position.test.ts`, `attach/route.test.ts`, `connection.test.ts`; journeys 15, 19 |
 | Saving conflict | a note edited elsewhere: both versions, nothing overwritten (409); *Edit details* whose field changed meanwhile: refused, current details shown | annotation routes, `editWorkFields` | `library-reading.test.ts`, `scholarly-works.test.ts`; journey 19 |
-| Deleted or inaccessible document | the reader's 404 says the address names no file or paper of the owner's; notes on a deleted file are kept, marked for repair, and the notebook says the file was removed; another owner's ids are not found | `readerDocument`, `(reader)/not-found.tsx`, notebook | `reader.test.ts`, `library.test.ts`, `library-documents.test.ts`; journeys 15, 17 |
+| Deleted or inaccessible document | the reader's 404 says the address names no file or paper of the owner's; notes on a deleted file are kept, marked for repair, and the notebook says the file was removed and offers *Delete* (behind its box); another owner's ids are not found | `readerDocument`, `(reader)/not-found.tsx`, notebook (`deleteReadingNoteAction`) | `reader.test.ts`, `library.test.ts`, `library-documents.test.ts`; journeys 15, 17, 20 |
 | Unsupported format | *A paper's file must be a PDF; nothing was stored.*; Files take PDF, Markdown and plain text only | `requirePdfUpload`, `validateUpload` | `scholarly-works.test.ts`, `library.test.ts`; journey 17 |
 | AI service unavailable | a refused run (a limit: 402; a blocked provider: 409) with the registered sentence, the planner's reason and Settings; nothing scripted replaces it | `/api/library/ask` | `route.test.ts`, `companion-response.test.ts`, `ask.test.ts`; journey 21 |
 
@@ -121,7 +121,7 @@ the blob):
 |---|---|---|
 | — | open an arXiv version | `linked_remote` (insert on conflict do nothing, reselect) |
 | `linked_remote` | *Keep a private copy* (open licence) or the owner uploads a copy for that version | same row: real sha256, `storage_key`, `quarantined` → `validated` → existing flow |
-| stored arXiv-version Document | withdraw private storage / remove copy | same row back to `linked_remote` (blob and derived text deleted; annotations, position, permissions kept) |
+| stored arXiv-version Document | withdraw private storage / remove copy | same row back to `linked_remote` (blob and derived text deleted; annotations, position, permissions kept); the row is locked and re-read first, and a copy changed since the page read it is refused (`copy-changed`) |
 | soft-deleted row, same bytes uploaded | revive | `quarantined`; `private_cloud_store` allowed ("re-added by the owner"), every other earlier decision revoked, metadata and course ids from the new upload (a paper's file: from its work, `validated`), annotations re-attached, audit `asset:revive` |
 | soft-deleted row, same bytes arrive for a `linked_remote` Document | owner's copy or private copy | the deleted row is folded into the linked row (annotations and, if the linked row has none, the position move; the empty row and its old decisions go; audit `asset:fold`), then promoted as above |
 | stored row, same bytes | upload | duplicate (existing behaviour) |
@@ -306,8 +306,14 @@ parameter so tests use fixtures. Every service has a test that another owner's i
   (owner-initiated; `SELECT … FOR UPDATE` both works; collection items `ON CONFLICT DO NOTHING`;
   trail steps, versions, Documents and notebook links re-pointed; flags combined (earliest
   `saved_at`, OR of favourite and read later, latest `read_at`); A's owner edits win; B becomes a
-  tombstone; the full mapping goes to `audit_event`), `refreshWork`, `refreshIntegrity` (in fixture mode a DOI with no
-  recording is `unrecorded`, not checked, and the work stays unchecked), `deleteWorkCompletely`. Beside it, `paper-lists.ts` reads providers for the pages and writes
+  tombstone; the full mapping goes to `audit_event`; an edit, a shelf item or a paper note that waited
+  behind the merge's row locks does not land on the tombstone: the edit is refused (`EDIT_CONFLICT`),
+  and the item or note locks its paper `FOR SHARE` and follows the merge to the survivor; a shelf
+  or trail never lists a tombstone), `refreshWork`, `refreshIntegrity` (in fixture mode a DOI with no
+  recording is `unrecorded`, not checked, and the work stays unchecked; the Crossref calls come first,
+  then the work as it stands now, merges followed, is locked and Crossref's notices merge into its
+  current notices, so a notice written meanwhile stays and nothing lands on a tombstone; a merge that
+  brought DOIs the check did not ask about leaves the work unchecked), `deleteWorkCompletely`. Beside it, `paper-lists.ts` reads providers for the pages and writes
   nothing: `searchPapers` (Find's OpenAlex page with filters and markers; a marker says whether the owner's work is saved), `previewPaper` (the owner's
   work, OpenAlex's or Crossref's record, or an arXiv id with the reason OpenAlex did not answer),
   `openAlexRecordForWork`, `paperList` (references, cited by, related), `openAlexBrowsingRefusal`.
@@ -376,7 +382,10 @@ does not change extracted text, and a test asserts both engines are the same ver
   status, content type and `%PDF-`, hash; then hand the bytes to PDF.js, and once every page is known
   report the hash and page count (`recordObservedHash`: first, same or changed). A network failure
   says *Your browser could not fetch the PDF from arXiv (network or arXiv's access policy)*; an error
-  status or a response that is not a PDF says so; each with *Open on arXiv* and *Try again*. Stored
+  status or a response that is not a PDF says so; each with *Open on arXiv* and *Try again*. A file
+  PDF.js refuses (unreadable, or protected by a password) is not offered *Try again*, since loading it
+  again cannot succeed; a stored one offers *Download the file*; the bar drops *of N*, and Contents say
+  *Contents are not available, because the PDF could not be shown* instead of waiting for ever. Stored
   Documents over 40 MB or 400 pages open in Text view (if extracted) with *Open page view (N MB)*. A
   linked Document has no Text view. The page loader is `readerDocument` (services/reader.ts: the
   Document with its version, paper (merges followed), identifiers, sibling arXiv versions, position
@@ -387,13 +396,15 @@ does not change extracted text, and a test asserts both engines are the same ver
 - **Views**: `?view=page|text`, `?page=N` (1-based physical page; overrides the remembered
   position) in both; a repeated parameter counts by its first value. The Text view keeps every
   existing label, id (`#page-text`) and parameter; asked for on a linked Document it says *No Text view
-  for this paper*.
+  for this paper*. A PDF's Text view says *Extracted text; mathematical notation may be missing. The
+  Page view shows the original.* Extraction does not take *Proof.* lines as headings.
 - **Bar**: *Back to paper* (`/library/papers/<workId>`; *Back* to the item for a Document of no paper)
   · title · version · page n of N (printed label) · previous/next · go to page · zoom select (fit
   width, fit page, percentages; ctrl+wheel and pinch) · Contents · Find · Notes · Paper · Ask · Hide
   panel · Full screen (and *Text view* when the text is extracted). No single-letter shortcuts;
   PageUp, PageDown, Home and End work while the viewer (focusable, named "Pages of <title>") has
-  focus. Desktop panel is an aside. On phones and short landscape screens (at most 640 px wide or
+  focus. Once the PDF is shown, Ctrl+F (Cmd+F) anywhere on the page opens Find with its box focused,
+  because the browser's own find sees only the pages PDF.js has drawn (Find says so). Desktop panel is an aside. On phones and short landscape screens (at most 640 px wide or
   500 px high) the bar is compact: *Back* · title · *Panels*, then previous/next · page · zoom (two
   rows at 390 px, one row at 844 × 390); *Panels* opens a native `<dialog>` with the section switches,
   a visible Close, *Text view* and *Full screen*. Paper panel: title, authors, year and venue as
@@ -418,7 +429,13 @@ does not change extracted text, and a test asserts both engines are the same ver
   body of the right shape (400); these refusals carry a code, and for an annotation the reader says
   it was refused and nothing changed. A service refusal carries its code and the registered sentence.
   A PATCH whose `expectedUpdatedAt` is stale answers 409 with the current row, which the panel shows
-  beside the owner's draft (*Save my draft over it* or *Use the saved version*). *Ask* is not part of the reader itself: the companion adds it through the reader's
+  beside the owner's draft (*Save my draft over it* or *Use the saved version*). What the owner has
+  written and not saved (the note being started, and edits of saved notes) is held by the reader, not
+  the panel, so switching or hiding a panel keeps it; it is marked *Not saved yet*, kept in the tab's
+  `sessionStorage` per Document (`drafts.ts`: a reload brings it back, with the hash of the bytes the
+  note's anchor was measured on, which its save then names), and while any exists, leaving the page
+  asks first (`beforeunload`). A new *Note*, *Page note* or *Mark area* never replaces a note with text:
+  the panel says *Save or cancel the note you are writing before starting another.* *Ask* is not part of the reader itself: the companion adds it through the reader's
   `selectionActions` and `panels` extension points, and nothing is shown without them. A selection
   action receives the selection and may name a panel to open (`opens`; the selection is then cleared,
   as *Note* does); a panel's `render` receives the selection, the page in view and the hash of the
@@ -448,16 +465,45 @@ does not change extracted text, and a test asserts both engines are the same ver
   When the report failed, anchors on the Document key are drawn without the banner or the offer, and
   the reader says it could not record which file arXiv sent. Not equal → listed as needing repair with
   the reasons, in the reader only, so nothing is stored until the owner acts. If the server refuses
-  *Keep*, it marks the notes it checked for repair and the reader lists them with its reasons. An annotation made
+  *Keep*, it marks the notes it checked for repair and the reader lists them with its reasons. While
+  notes are listed under *Needs repair* and neither the drift banner nor a refusal says so, a line under
+  the bar says how many cannot be drawn on this file, with *Open Notes*; an empty list of drawn notes
+  then says *None can be drawn on this file; see Needs repair below.* An annotation made
   while a change is unaccepted, or before any file is recorded, names the bytes it was measured on
   (the reader reports them; the server keys the anchor with them instead of the Document key and does
   not check its page against the recorded page count, which is another file's). On a stored Document,
   anchors made on another file wait for the server's re-check after extraction.
 - **Versions**: the reader names the exact version; the newest later arXiv version that was not
   withdrawn is offered (*A newer version exists: Open arXiv vN*, a server action calling
-  `openArxivVersion`); annotations stay where they were made; withdrawn versions, the open one or a
-  later one, say *Withdrawn on arXiv* (arXiv's administrators withdraw versions too, so the reader
-  does not say who withdrew it).
+  `openArxivVersion`; its refusal, such as a version withdrawn meanwhile, is shown beside the button
+  in place, so the reader is not loaded again and the PDF is not fetched from arXiv a second time);
+  annotations stay where they were made; withdrawn versions, the open one or a later one, say
+  *Withdrawn on arXiv* (arXiv's administrators withdraw versions too, so the reader does not say who
+  withdrew it).
+- **Accessibility** (checked by journey 08 beside axe in both themes; a check of the relevant WCAG 2.2
+  criteria, not a certification):
+  - *Keyboard*: every bar control and link is reached by Tab with a visible focus ring; the pages
+    (focusable, named "Pages of <title>") take PageUp, PageDown, Home and End; the selection bar is
+    reached by Tab from the pages; Ctrl+F (Cmd+F) opens Find; there are no single-letter shortcuts.
+  - *Focus*: a panel the owner opens takes focus (its title, or Find's box); the phone's *Panels*
+    dialog returns focus to what had it when it closes (to *Panels* when that is gone), and Escape
+    closes it in one press, also from Find's box; a Contents entry moves focus to the page it opens;
+    when a saved or deleted note, a highlight or the selection bar's action takes its control away,
+    focus moves to the notes list or back to the pages instead of being lost.
+  - *Drawers*: the panels are an aside on the desktop (*Hide panel* keeps the choice) and a native
+    modal `<dialog>` on phones and short landscape screens, with a visible Close.
+  - *Touch targets*: controls are at least 24 × 24 CSS pixels on the phone in the reader (bar,
+    panels, selection bar), the Library home, Find, the paper page and its OpenAlex sections,
+    Discover, shelves, trails, the notebook and records; links inside a sentence follow WCAG's inline
+    exception.
+  - *Reduced motion*: under `prefers-reduced-motion: reduce` every transition and animation is
+    switched off (globals.css).
+  - *Without JavaScript*: the Page view says it needs JavaScript and links back, to the Text view
+    and to the original; the paper page's streamed sections and Discover's cross-subject lists offer
+    a link or a reload; the Ask panel says asking needs JavaScript.
+  - *Offline*: a page that fails because the browser could not reach the server says so (*The server
+    could not be reached*), that what was last sent may not have arrived, and offers Reload
+    (app/error.tsx); it never claims that nothing was lost.
 
 ## 8. The reading companion
 
@@ -529,6 +575,14 @@ heading names the action; its citations are the blocks sent). The
 panel names who answers now (*AI reading companion · scripted demo*, or the model). The scripted demo
 has one labelled scripted response per action (`fixtures/lecturer/companion-<action>.json`), each
 saying it is scripted and claiming nothing about the paper.
+
+**Accessibility** (journey 08): a selection handed to *Ask* moves keyboard focus into the panel once;
+while a request runs *Send* keeps focus (`aria-disabled`) and a second press is ignored; a status
+line read by screen readers says *Asking…*, *Answer ready.*, *Refused.* or *Not sent.*, and a refusal
+is shown as an alert; a recorded permission decision replaces the form's buttons and focus moves to
+the heading that states it, while a refused one returns focus to the basis field; without JavaScript
+the panel says asking needs it. The §7 keyboard, focus, touch-target and reduced-motion behaviours
+apply to the panel as to every reader panel.
 
 Deferred: compare papers, multi-turn conversations, *Find the relevant reference*, AI-built trails.
 
@@ -603,8 +657,18 @@ interception with generated PDFs whose text says they are not the paper):
 | 17, 18, 19, 20, 21 | find, preview and paper; Discover; the reader's annotations, positions, phones, drift and versions; home, shelves, trails and library notes; the companion |
 | 04 | Files through the desktop companion, the Text view and its remembered pages |
 | 07 | every page and route of the Library, the reader, the notebook, records and `api/library/**`/`api/records/**` refuse a request without a session (with their methods); signed in, an id the owner does not have is not found and returns nothing, a repeated position save for it included |
-| 08 | axe (WCAG 2.2 A/AA, serious and critical) in light and dark on every Library page (each address showing its own page, not a redirect), a notebook entry, and the reader with each panel, the Text view, the phone's *Panels* dialog, the selection bar and the companion's permission form; the reader by keyboard on the desktop (the bar's controls and links, *Contents*, *Find*, *Notes* with *Go to*, *Paper*, *Ask* and *Send*, the selection bar reached by Tab from the pages, *Hide panel*, *Full screen*) with a visible focus ring at each stop; focus moving into an opened panel and back out of the dialog (Escape closes it); a *Contents* entry moving focus to its page, and nothing moving it later; focus kept when a note or a decision replaces its controls; the Page view without JavaScript saying so and offering the Text view, the original file and the way back; touch targets of at least 24 × 24 CSS pixels on the phone in the reader, shelves, trails, notebook and records; named navigation; no transitions under reduced motion. Selecting text in the pages needs a pointer or the browser's caret browsing; the page note is the keyboard alternative to a highlight, and *Mark area* needs a pointer |
+| 08 | axe (WCAG 2.2 A/AA, serious and critical) in light and dark on every Library page (each address showing its own page, not a redirect, and none scrolling sideways), a notebook entry, and the reader with each panel, the Text view, the phone's *Panels* dialog, the selection bar and the companion's permission form; the reader by keyboard on the desktop (the bar's controls and links, *Contents*, *Find*, *Notes* with *Go to*, *Paper*, *Ask* and *Send*, the selection bar reached by Tab from the pages, *Hide panel*, *Full screen*) with a visible focus ring at each stop, at least 3:1 against the surface it is drawn over; the open panel's button visibly pressed in both themes; focus moving into an opened panel and back out of the dialog (Escape closes it); a *Contents* entry moving focus to its page, and nothing moving it later; focus kept when a note or a decision replaces its controls; the Page view without JavaScript saying so and offering the Text view, the original file and the way back; touch targets of at least 24 × 24 CSS pixels on the phone in the reader, shelves, trails, notebook and records; named navigation; no transitions under reduced motion. Selecting text in the pages needs a pointer or the browser's caret browsing; the page note is the keyboard alternative to a highlight, and *Mark area* needs a pointer |
 | 15 | the registered notices |
+
+### Risks (brief §2.3)
+
+| Risk | Mitigation |
+|---|---|
+| The per-tab reading-position sequence lives in one web process's memory | exact with the single web process deployed; a second web process needs shared state first (decision log) |
+| The journeys run in Chromium only (Desktop Chrome and Pixel 7): Safari's pinch zoom, native `<dialog>` and cross-origin arXiv fetch are untested | the reader uses standard APIs only; WebKit and iOS testing is deferred (decision log) |
+| OpenAlex without a key shares an anonymous daily allowance and is metered | the provider cache, one budget per day with its reset time shown, and *OpenAlex's daily allowance … is used up* instead of "no results"; production sets `OPENALEX_API_KEY` (USER_ACTIONS) |
+| Linked PDFs depend on arxiv.org being up and keeping `Access-Control-Allow-Origin: *` and its access policy | the reader names the failure with *Open on arXiv* and *Try again*; open-licence versions can be kept as private copies |
+| Provider responses change shape | loose zod parsing that keeps only the fields used, recorded fixtures in tests, and the opt-in live provider check |
 
 ## 11. Decision log
 
@@ -637,6 +701,8 @@ interception with generated PDFs whose text says they are not the paper):
 | Reader in its own route group without app chrome; *Hide panel* and *Full screen* instead of a focus mode | a full-height viewer inside the padded app layout fights page scroll |
 | Ranged PDF delivery deferred; large stored books open in Text view by default | papers are small; whole-file delivery is simple and correct |
 | The companion also offers *Explain the background* and *Question this argument* | the owner's brief lists them among its core capabilities; they use the same gates, evidence and labels (background marked as background; weaknesses put as questions to check) |
+| `/api/library/upload` takes the paper upload routes' same-site guard (`fromThisSite`) after its session check | the session cookie is `SameSite=Lax`, so this is defence in depth (a sibling subdomain, a browser without SameSite); every Library post now refuses other sites alike, and the session-first order keeps an anonymous request's 401 |
+| An extraction writes only while its Document still stands for the file it read (same storage key and hash, not deleted, not back to `linked_remote`), checked under a row lock in its final transaction and on each status it sets; removing a copy while it is being extracted is allowed, not refused | a copy removed (or reverted to arXiv's file) during extraction must not come back as *processed* with the removed file's text; refusing removal while `processing` would leave a copy stuck behind a job that never finishes |
 | `/api/library/ask` takes the annotation routes' same-origin guard, and its evidence moves into the owner's message | a request can spend money on a live model; quoted text is data, never instructions |
 | A changed arXiv file stops the companion only while notes still drawn as resolved stand on another file | with no such notes there is nothing to resolve; the reader's *Keep* resolves the rest, and a refused *Keep* marks them for repair |
 | Each companion request is its own conversation | single-turn: nothing earlier reaches the model, and the last request and answer are what the panel shows again |
@@ -645,6 +711,12 @@ interception with generated PDFs whose text says they are not the paper):
 | Fixture mode with no recorded response ends in a visible state: the Crossref check completes, names the unrecorded DOIs and leaves the work unchecked | a fixture recording must be a real provider response; a failed job seen only on the Jobs page said nothing on the paper |
 | Images in owner Markdown and model output from other sites are links named by their alternative text (plain text when the address is not http or https); relative images stay, judged against two bases with different schemes and hosts so `https:host/x` counts as another site; a link whose address the sanitiser removes is left as its text | the production CSP allows images from this site only (each blocked image logged a violation), and model output could carry an image that calls out; no seeded content uses Markdown images; a link that goes nowhere still looked like one |
 | The per-tab reading-position sequence lives in the web process's memory (bounded) | there is no column for it and migration 0016 is closed; with the single web process the deployment runs this is exact. A second web process would need shared state, else a stale save from one tab could land after a later one through the other process (the server-clock rule still orders saves across tabs) |
-| Course connections (brief §20.3) stay as they are: a paper note carries a course and unit (its notebook page's *Course*; the notebook filters by course), a file's Document carries course ids confirmed with its metadata, and Discover's *From your courses* lists registry sources of taken courses; a direct paper-to-course, module or lecture link is deferred | no table links a paper to a course and migration 0016 is closed; a link table needs a migration of its own. Shelves and trails serve as research topics; nothing requires a paper to be part of a course |
+| Course connections (brief §20.3) use what exists: a paper note can carry a course (an optional *Course* on *New note for this paper*, listing the courses the owner takes, and on its notebook page; the notebook filters by course; no form sets a unit), a file's Document carries course ids confirmed with its metadata, and Discover's *From your courses* lists registry sources of taken courses; a direct paper-to-course, module or lecture link is deferred | no table links a paper to a course and migration 0016 is closed; a link table needs a migration of its own. Shelves and trails serve as research topics; nothing requires a paper to be part of a course |
 | Every 404 has exactly one `main`: a not-found file per route group, rendered inside its layout's `main`; the root's has its own | `notFound()` in an app page rendered the root 404's `main#main` inside the app layout's `main` |
-| Deferred: BibTeX/RIS/Zotero import, browser extension, compare papers, multi-turn companion, *Find the relevant reference*, AI-built trails, embeddings, reflowed view of linked papers, followed authors, iOS-specific testing beyond the WebKit project | outside the core loop of discover → read → understand → follow |
+| Unsaved reader drafts live in the reader's state and the tab's `sessionStorage`, never on the server, and leaving asks first | brief §11.3 asks for a clear line between saved content and unsaved local drafts; a panel switch, *Hide panel*, a second note or a reload no longer drops a derivation, and nothing unsaved is sent anywhere |
+| Ctrl+F (Cmd+F) is the reader's one modified shortcut: it opens Find | PDF.js draws text layers only near the view, so the browser's find silently misses most pages; single-letter shortcuts stay out, and zoom keys stay the browser's |
+| *Proof.* no longer makes a heading in extraction | it filled the contents with one *Proof* entry per page and hid the real headings; proof passages keep their kind. Documents extracted earlier keep their old headings until they are extracted again |
+| Provider lists (Discover, subject rooms, *Surprise me*, Find's *Field* filter) classify papers by OpenAlex's primary topic only (`primary_topic.field.id`, `primary_topic.subfield.id`); saved papers carry every OpenAlex topic, and My library and the notes' subject filter match any of them | ranked provider lists stay on their subject instead of filling with papers whose minor topics touch it; in the library an interdisciplinary paper appears under each of its subjects (brief §5.1, §5.3) |
+| Find's *Author* filter is OpenAlex's byline search (`raw_author_name.search`) over the names as printed on the paper, not an OpenAlex author id; My library keeps matching author names among its words | one name can be several OpenAlex author records (four for "Claude Shannon" when the filter was chosen, one of them a split of the same person), so resolving a name to one id would hide papers or need a picker; the printed byline is what the data reliably holds (brief §6.1, §6.3) |
+| A reading note (highlight, page or area note, bookmark) is edited in the reader, with the conflict check; the notebook's library view reopens its page and deletes it behind a box (`deleteReadingNoteAction`), the one way to delete a note whose file was removed; editing a note on a removed file is deferred | the reader is where a note's place and the 409 conflict view live; a note on a removed file can no longer be opened, but its owner can always delete it |
+| Deferred: BibTeX/RIS/Zotero import, browser extension, compare papers, multi-turn companion, *Find the relevant reference*, AI-built trails, embeddings, reflowed view of linked papers, followed authors, WebKit/Safari and iOS testing (the journeys run in Chromium only: Desktop Chrome and Pixel 7) | outside the core loop of discover → read → understand → follow; WebKit needs its browsers installed and a passing run |

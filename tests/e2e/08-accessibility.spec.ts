@@ -19,7 +19,8 @@ import { expectFixtureProviders } from "./scholarly";
  * each stop; focus moving into a panel and back out of a dialog (Escape closes it); focus going to the
  * page a Contents entry opens and staying where the owner puts it afterwards; focus kept when a note or
  * a decision replaces the control that made it; the Page view without JavaScript; touch targets of at
- * least 24 × 24 CSS pixels on the phone (reader, shelves, trails, notebook, records); named navigation
+ * least 24 × 24 CSS pixels on the phone (Library home, Find, the paper page, Discover, reader, shelves, trails, notebook,
+ * records); named navigation
  * landmarks; and transitions switched off under reduced motion. Selecting text in a PDF needs a pointer
  * or the browser's caret browsing (F7); the keyboard alternative to a highlight is a page note, and
  * Mark area needs a pointer.
@@ -213,13 +214,40 @@ async function tabTo(page: Page, target: Locator, max = 60): Promise<void> {
   await expect(target).toBeFocused();
 }
 
-/** The focused element draws the 2 px focus ring. */
+/**
+ * The focused element draws the 2 px focus ring, at least 3:1 against the surface it is drawn over
+ * (WCAG 1.4.11): the ring sits outside the element (outline-offset), so that is the nearest opaque
+ * background around it.
+ */
 async function focusRingShown(page: Page): Promise<void> {
   const ring = await page.evaluate(() => {
-    const style = getComputedStyle(document.activeElement!);
-    return { style: style.outlineStyle, width: style.outlineWidth };
+    const element = document.activeElement!;
+    const style = getComputedStyle(element);
+    // Only an opaque rgb() colour counts as a surface; transparent and mixed ones show what is behind them.
+    const opaque = (colour: string) => {
+      const match = /^rgb\((\d+), (\d+), (\d+)\)$/.exec(colour);
+      return match ? [Number(match[1]), Number(match[2]), Number(match[3])] : null;
+    };
+    const luminance = (rgb: number[]) => {
+      const [r, g, b] = rgb.map((v) => {
+        const s = v / 255;
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
+    };
+    let surface: number[] | null = null;
+    for (let node = element.parentElement; node && !surface; node = node.parentElement)
+      surface = opaque(getComputedStyle(node).backgroundColor);
+    const colour = opaque(style.outlineColor);
+    const [a, b] = [luminance(colour ?? [0, 0, 0]), luminance(surface ?? [255, 255, 255])];
+    return {
+      style: style.outlineStyle,
+      width: style.outlineWidth,
+      contrast: colour ? (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) : 0,
+    };
   });
-  expect(ring).toEqual({ style: "solid", width: "2px" });
+  expect({ style: ring.style, width: ring.width }).toEqual({ style: "solid", width: "2px" });
+  expect(ring.contrast, "focus ring contrast against its surface").toBeGreaterThanOrEqual(3);
 }
 
 /**
@@ -434,6 +462,9 @@ test.describe("research library accessibility", () => {
         // Each address shows the page it names: no redirect (a saved paper's preview goes to its paper page).
         expect(new URL(page.url()).pathname, path).toBe(path.split("?")[0]);
         await check(`${theme} ${path}`);
+        // No page scrolls sideways; wide content (a <pre>, a table) scrolls inside its own region.
+        const widths = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+        if (widths[0]! > widths[1]!) failures.push(`${theme} ${path}: scrolls sideways (${widths[0]} > ${widths[1]})`);
       }
       // The Text view's Ask, opened.
       await page.locator("details#ask > summary").click();
@@ -452,6 +483,13 @@ test.describe("research library accessibility", () => {
         }
         if (name === "Ask") await expect(panel.getByRole("heading", { name: "External AI: not decided" })).toBeVisible();
         await check(`${theme} reader, ${name} ${compact(page) ? "dialog" : "panel"}`);
+        // The open panel's button looks pressed, not only to screen readers (aria-pressed).
+        const switches = compact(page) ? page.getByRole("dialog") : page;
+        const background = (button: Locator) => button.evaluate((el) => getComputedStyle(el).backgroundColor);
+        const other = name === "Paper" ? "Contents" : "Paper";
+        expect(await background(switches.getByRole("button", { name, exact: true, pressed: true })), `${theme} ${name} pressed`).not.toBe(
+          await background(switches.getByRole("button", { name: other, exact: true, pressed: false })),
+        );
         await closePanel(page);
       }
       // Find left page 3 in view: a line there is selected (a page out of view has no laid-out text).
@@ -793,17 +831,23 @@ test.describe("research library accessibility", () => {
     expect(normal).toBeGreaterThan(0.05);
   });
 
-  test("touch targets on the phone are at least 24 × 24 CSS pixels in the reader, shelves, trails, notebook and records", async ({
+  test("touch targets on the phone are at least 24 × 24 CSS pixels in the Library home, Find, the paper page, Discover, the reader, shelves, trails, notebook and records", async ({
     page,
   }) => {
     test.skip(!compact(page), "Touch targets are measured on the phone.");
-    test.setTimeout(240_000);
+    test.setTimeout(300_000);
     const report: string[] = [];
     const measure = async (label: string, scope: Locator) => {
       for (const small of await smallTargets(scope)) report.push(`${label}: ${small}`);
     };
     const work = state.paper.split("/").pop();
     for (const path of [
+      "/library",
+      // Find's results (rows with Save) in both scopes, and the paper page with its OpenAlex lists.
+      "/library/find?q=direct+preference+optimization",
+      "/library/find?q=preference&scope=mine",
+      state.paper,
+      "/library/discover",
       state.shelf,
       state.trail,
       "/library/shelves",
@@ -813,8 +857,14 @@ test.describe("research library accessibility", () => {
       "/records",
     ]) {
       await page.goto(path);
+      // Streamed parts (the paper page's lists, Discover's cross-subject lists) arrive before they are measured.
+      await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
+      await expect(page.getByText(/^Loading from OpenAlex/)).toHaveCount(0, { timeout: 30_000 });
       await measure(path, page.locator("body"));
     }
+    await page.goto("/library/find?q=direct+preference+optimization");
+    await page.getByText("Filters", { exact: true }).click();
+    await measure("Find, filters open", page.locator("body"));
     await page.goto(`/library/read/${state.copy}?view=text&page=1`);
     await page.locator("details#ask > summary").click();
     await measure("Text view", page.locator("body"));

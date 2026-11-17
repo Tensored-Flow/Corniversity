@@ -9,6 +9,7 @@ import {
   findStatus,
   firstParam,
   formatMegabytes,
+  isFindShortcut,
   isLargeDocument,
   isPresetZoom,
   keyAction,
@@ -190,6 +191,16 @@ describe("keys while the pages have focus", () => {
     for (const key of ["n", "p", "j", "k", "f", "+", "-", " "]) expect(keyAction(key, none, "page-fit")).toBeNull();
     expect(keyAction("Home", { ...none, ctrl: true }, "page-fit")).toBeNull();
     expect(keyAction("End", { ...none, shift: true }, "page-fit")).toBeNull();
+  });
+
+  it("opens Find on Ctrl+F or Cmd+F only, never on a bare letter or another combination", () => {
+    expect(isFindShortcut("f", { ...none, ctrl: true })).toBe(true);
+    expect(isFindShortcut("f", { ...none, meta: true })).toBe(true);
+    expect(isFindShortcut("F", { ...none, ctrl: true })).toBe(true);
+    expect(isFindShortcut("f", none)).toBe(false);
+    expect(isFindShortcut("f", { ...none, ctrl: true, shift: true })).toBe(false);
+    expect(isFindShortcut("f", { ...none, ctrl: true, alt: true })).toBe(false);
+    expect(isFindShortcut("g", { ...none, ctrl: true })).toBe(false);
   });
 });
 
