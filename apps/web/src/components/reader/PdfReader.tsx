@@ -1012,8 +1012,8 @@ export default function PdfReader(props: PdfReaderProps) {
       setKeep({ busy: false, error: result.error });
       return;
     }
-    // Refused, the server marked every anchored note for repair; the reader shows the same, and why.
-    setAnnotations((list) => keptOnNewFile(list, info.documentKey, result.accepted));
+    // Refused, the server marked the notes it checked for repair; the reader shows the same, and why.
+    setAnnotations((list) => keptOnNewFile(list, info.documentKey, result.accepted, loaded));
     if (result.accepted) setFacts({ ...current, observed: "same" });
     setKeepRefusal(result.accepted ? null : result.problems);
     setKeep({ busy: false, error: null });

@@ -19,12 +19,14 @@ export async function CollectionsIndex({
   searchParams,
 }: {
   kind: CollectionKind;
-  searchParams: Promise<{ error?: string; deleted?: string; at?: string }>;
+  searchParams: Promise<{ error?: string; deleted?: string; at?: string; name?: string }>;
 }) {
   const text = KIND_TEXT[kind];
   const session = await requireSession(text.path);
-  const { error, deleted, at } = await searchParams;
+  const { error, deleted, at, name } = await searchParams;
   const formError = at === "new" ? error : undefined;
+  // A refused name comes back as `name=` (createCollectionAction), so the form shows what was typed.
+  const typedName = formError && typeof name === "string" ? name.slice(0, 120) : "";
   const collections = await listCollections(db(), session.user.id, kind);
 
   return (
@@ -68,11 +70,11 @@ export async function CollectionsIndex({
               <Notice tone="rust">{errorNotice(formError)}</Notice>
             </div>
           ) : null}
-          <form action={createCollectionAction} className="mt-3 flex flex-col gap-3">
+          <form key={typedName} action={createCollectionAction} className="mt-3 flex flex-col gap-3">
             <input type="hidden" name="kind" value={kind} />
             <input type="hidden" name="from" value={kind === "trail" ? "trails" : "shelves"} />
             <Field label="Name" htmlFor="collection-name">
-              <Input id="collection-name" name="name" required maxLength={120} />
+              <Input id="collection-name" name="name" required maxLength={120} defaultValue={typedName} />
             </Field>
             <Field label="Description (optional)" htmlFor="collection-description" hint={text.descriptionHint}>
               <Textarea id="collection-description" name="description" rows={4} maxLength={2000} />

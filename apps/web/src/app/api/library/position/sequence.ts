@@ -23,4 +23,9 @@ export class TabSequences {
     }
     return true;
   }
+
+  /** Forgets a tab's sequence: its save was refused (not the owner's Document), so nothing about it is kept. */
+  forget(key: string): void {
+    this.last.delete(key);
+  }
 }

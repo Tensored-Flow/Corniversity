@@ -93,7 +93,7 @@ export const ASSET_STATUS: Record<AssetStatus, { label: string; tone: "neutral" 
     tone: "moss",
     help: "Indexed: readable and searchable. Tutors see passages only if you allow external AI processing.",
   },
-  rejected: { label: "Rejected", tone: "rust", help: "The file could not be processed; the reason is on the item page." },
+  rejected: { label: "Rejected", tone: "rust", help: "The file could not be processed; the reason is on its item or paper page." },
   deleted: { label: "Deleted", tone: "neutral", help: "Removed." },
   linked_remote: {
     label: "Read from arXiv",

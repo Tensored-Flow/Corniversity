@@ -130,17 +130,22 @@ describe("which annotations are drawn (the drift rule)", () => {
     expect(ids(placed.unverified)).toEqual(["h"]);
   });
 
-  it("does not offer to keep the notes when the server's check, over every anchored note, would refuse", () => {
-    // acceptNewFile also checks anchors already marked for repair: one on a page that changed size refuses it.
+  it("offers to keep the notes when the server's check, over the resolved notes measured on other bytes, would pass", () => {
+    // acceptNewFile leaves notes already marked for repair out of its check: one on a page that changed size does not block.
     const placed = placeAnnotations(
       [note("h", { pageIndex: 0 }), note("broken", { pageIndex: 1, mappingStatus: "needs_repair" })],
       facts({ observed: "changed", pageViews: [VIEWS[0]!, [595, 842], VIEWS[2]!] }),
     );
     expect(ids(placed.drawn)).toEqual(["h"]);
     expect(ids(placed.drift)).toEqual(["h"]);
-    expect(placed.keepProblems).toEqual(["Page 2 changed size."]);
-    const keepable = placeAnnotations([note("h", { pageIndex: 0 })], facts({ observed: "changed" }));
-    expect(keepable.keepProblems).toEqual([]);
+    expect(placed.keepProblems).toEqual([]);
+    // A resolved note on another file whose page changed size: listed for repair with the reason, nothing offered.
+    const blocked = placeAnnotations(
+      [note("h", { pageIndex: 0 }), note("other", { pageIndex: 1 }, { documentSha256: EARLIER })],
+      facts({ observed: "changed", pageViews: [VIEWS[0]!, [595, 842], VIEWS[2]!] }),
+    );
+    expect(blocked.problems).toEqual(["Page 2 changed size."]);
+    expect(blocked.drift).toEqual([]);
   });
 
   it("on a stored Document draws its own anchors and leaves anchors from another file for the server's re-check", () => {
@@ -244,11 +249,19 @@ describe("lists", () => {
     expect(ids(upsertAnnotation(list, note("c")))).toEqual(["a", "b", "c"]);
   });
 
-  it("after keeping the notes on the new file, every anchor takes the Document key; refused, they need repair", () => {
-    const list = [note("a", {}, { documentSha256: LOADED }), note("t", { anchor: null })];
-    const kept = keptOnNewFile(list, KEY, true);
-    expect(kept[0]!.anchor!.documentSha256).toBe(KEY);
-    expect(kept[1]).toEqual(list[1]);
-    expect(keptOnNewFile(list, KEY, false)[0]!.mappingStatus).toBe("needs_repair");
+  it("after keeping the notes on the new file, the checked and the loaded-bytes anchors take the Document key; refused, only the checked ones need repair", () => {
+    const list = [
+      note("loaded", {}, { documentSha256: LOADED }),
+      note("earlier", {}, { documentSha256: EARLIER }),
+      note("broken", { mappingStatus: "needs_repair" }, { documentSha256: EARLIER }),
+      note("t", { anchor: null }),
+    ];
+    const kept = keptOnNewFile(list, KEY, true, LOADED);
+    expect(kept.map((a) => a.anchor?.documentSha256 ?? null)).toEqual([KEY, KEY, EARLIER, null]);
+    expect(kept[2]!.mappingStatus).toBe("needs_repair");
+    expect(kept[3]).toEqual(list[3]);
+    const refused = keptOnNewFile(list, KEY, false, LOADED);
+    expect(refused.map((a) => a.mappingStatus)).toEqual(["resolved", "needs_repair", "needs_repair", list[3]!.mappingStatus]);
+    expect(refused[0]!.anchor!.documentSha256).toBe(LOADED);
   });
 });

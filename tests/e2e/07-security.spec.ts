@@ -234,6 +234,9 @@ test.describe("signed in: an id the owner does not have", () => {
       const response = await page.request[method](path, { data, headers: { origin } });
       expect(response.status(), `${method} ${path}`).toBe(404);
     }
+    // The same forged save again: the refused save left no sequence behind, so it is not found again.
+    const again = await page.request.post("/api/library/position", { data: json[1]![2], headers: { origin } });
+    expect(again.status(), "repeated position save").toBe(404);
     // A paper's upload form for a paper the owner does not have: back to Find with the refusal; nothing is stored.
     const attach = await page.request.post(`/api/library/papers/${NO_ID}/attach`, {
       multipart: { file: { name: "x.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4\n%%EOF\n") } },

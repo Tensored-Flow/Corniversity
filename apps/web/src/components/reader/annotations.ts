@@ -99,7 +99,7 @@ export interface Placement {
   problems: string[];
   /**
    * Why "Keep my notes on the new file" is not offered although `drift` is not empty: the server's
-   * check (`acceptNewFile`) covers every anchored annotation, those already marked for repair included.
+   * check (`acceptNewFile`) covers the resolved anchors not measured on the bytes just loaded.
    */
   keepProblems: string[];
   /**
@@ -176,9 +176,10 @@ export function placeAnnotations(annotations: readonly ReaderAnnotation[], facts
   placement.unverified = candidates.filter(unknown);
   placement.drift = candidates.filter((a) => !unknown(a));
   if (placement.drift.length > 0) {
-    // Keeping the notes on this file re-keys them (acceptNewFile), which checks every anchored annotation.
+    // Keeping the notes on this file re-keys them (acceptNewFile), which checks the resolved anchors
+    // not measured on these bytes; notes already marked for repair neither block it nor change.
     placement.keepProblems = checkDrift({
-      anchors: pageViewsOf(annotations.filter((a) => a.anchor)),
+      anchors: pageViewsOf(annotations.filter((a) => keepChecks(a, facts.loadedSha256))),
       pageCount: facts.pageCount,
       pageViews: facts.pageViews,
       previousPageCount: facts.previousPageCount,
@@ -286,11 +287,27 @@ export function upsertAnnotation(list: readonly ReaderAnnotation[], row: ReaderA
   return list.some((a) => a.id === row.id) ? list.map((a) => (a.id === row.id ? row : a)) : [...list, row];
 }
 
-/** After "Keep my notes on the new file": every anchor takes the Document key and is drawable again. */
-export function keptOnNewFile(list: readonly ReaderAnnotation[], documentKey: string, accepted: boolean): ReaderAnnotation[] {
+/** Whether `acceptNewFile` checks this annotation: drawn as resolved and measured on other bytes than `loaded`. */
+function keepChecks(a: ReaderAnnotation, loaded: string | null): boolean {
+  return Boolean(a.anchor) && a.mappingStatus === "resolved" && a.anchor!.documentSha256 !== loaded;
+}
+
+/**
+ * After "Keep my notes on the new file", as `acceptNewFile` left them: accepted, the checked anchors
+ * and those measured on the loaded bytes take the Document key; refused, only the checked ones need
+ * repair. Notes already marked for repair are left as they are.
+ */
+export function keptOnNewFile(
+  list: readonly ReaderAnnotation[],
+  documentKey: string,
+  accepted: boolean,
+  loaded: string,
+): ReaderAnnotation[] {
   return list.map((a) => {
     if (!a.anchor) return a;
-    if (!accepted) return { ...a, mappingStatus: "needs_repair" };
-    return { ...a, mappingStatus: "resolved", anchor: { ...a.anchor, documentSha256: documentKey } };
+    const checked = keepChecks(a, loaded);
+    if (!accepted) return checked ? { ...a, mappingStatus: "needs_repair" } : a;
+    if (checked || a.anchor.documentSha256 === loaded) return { ...a, anchor: { ...a.anchor, documentSha256: documentKey } };
+    return a;
   });
 }

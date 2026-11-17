@@ -277,9 +277,9 @@ test.describe("library, companion and reading room", () => {
     await expect(page.getByText("Note saved.")).toBeVisible();
     await expect(page.getByText("Completeness is the whole point here.")).toBeVisible();
 
-    // Jobs page shows the ingestion with its idempotency key.
+    // Jobs page shows the ingestion, described in words (its idempotency key is not shown).
     await page.goto("/library/jobs");
-    await expect(page.getByText(/^ingest:/).first()).toBeVisible();
+    await expect(page.getByText("Extract and index the text of a file").first()).toBeVisible();
     await expect(page.getByText("completed").first()).toBeVisible();
     await screenshot(page, "25-library-jobs");
   });
@@ -396,7 +396,7 @@ test.describe("library, companion and reading room", () => {
     await screenshot(page, "26-library-corrupt-rejected");
 
     await page.goto("/library/jobs");
-    const row = page.locator("tr", { hasText: `ingest:` }).filter({ hasText: "failed" }).first();
+    const row = page.locator("tr", { hasText: "Extract and index the text of a file" }).filter({ hasText: "failed" }).first();
     await expect(row).toBeVisible();
     await expect(row.getByRole("button", { name: "Retry" })).toBeVisible();
   });

@@ -52,7 +52,7 @@ export default async function DiscoverPage({
     <div className="mx-auto w-full max-w-6xl">
       <LibraryHeader title="Discover" active="/library/discover" />
       <FlashNotices error={notice ? undefined : error} />
-      {saved && SAVED[saved] ? (
+      {saved && Object.hasOwn(SAVED, saved) ? (
         <div className="mb-4">
           <Notice tone="moss">{SAVED[saved]}</Notice>
         </div>

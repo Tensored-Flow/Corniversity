@@ -35,12 +35,16 @@ export async function POST(request: Request): Promise<Response> {
   if (!parsed.success) return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   const ownerId = authed.session.user.id;
   const { assetId, position, changedAgoMs, tab, seq } = parsed.data;
-  if (!sequences.accept(`${ownerId}:${assetId}:${tab}`, seq)) return NextResponse.json({ accepted: false, reason: "out_of_order" });
+  // Accepted before the save, synchronously, so two requests of one tab cannot both pass; forgotten
+  // again when the Document is not the owner's, so a repeated forged save is refused as not found too.
+  const key = `${ownerId}:${assetId}:${tab}`;
+  if (!sequences.accept(key, seq)) return NextResponse.json({ accepted: false, reason: "out_of_order" });
   try {
     const saved = await saveReadingPosition(db(), ownerId, assetId, { position, changedAgoMs });
     return NextResponse.json({ accepted: saved.accepted });
   } catch (error) {
     if (!(error instanceof LibraryError)) throw error;
+    if (error.code === "not_found") sequences.forget(key);
     const status = error.code === "not_found" ? 404 : 400;
     return NextResponse.json({ error: error.code, message: ERROR_NOTICES[errorCode(error.message)] }, { status });
   }
