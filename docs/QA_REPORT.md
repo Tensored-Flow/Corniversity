@@ -858,9 +858,29 @@ demo (no model provider), scholarly providers in fixture mode (recorded response
 - **Earlier in the milestone, fixed.** `notFound()` in an app page drew the root 404's `main` inside
   the app layout's `main` (each route group now has its own not-found file); images from other sites
   in owner Markdown were blocked by the CSP and logged violations (they are now links).
-- **Still to run.** Stage 5: five independent reviews (security, correctness, completeness against
-  the brief, reader quality, design and accessibility), each finding challenged by a second
-  reviewer, then the fixes.
+- **Stage 5, done.** Five independent reviews (security, correctness, completeness against the brief,
+  reader quality, design and accessibility), each finding challenged by a second reviewer: 31
+  findings, 24 confirmed and fixed, 7 refuted; author search in *All papers* was added for the
+  brief's §6.1.
+
+**Release (17 November 2026).** Production had run `codex/university-teaching-quality` since 12
+November, so `main` was merged with it (`019010b`; conflicts in Markdown, the test setups and docs
+kept both sides) and checked: typecheck, lint, unit 681 + 74, integration 396, content validator 0
+errors and 0 warnings, the production build, and an independent review of the three seams where the
+two lines of work meet (Markdown, AI calls and evidence, database services and content), which
+confirmed no merge defect. A first worker deployment from `82329cd`, before the merge was found,
+seeded five course versions from the older content (current from the 15:31 UTC deployment until the
+merged one at 15:57 UTC); enrolments keep their
+own version, so the owner's five enrolments were unaffected, and the merged worker made the reviewed
+content current again. Then `railway up --service worker --ci` from `014ccf0`: migrations ok,
+prompts tutor-1.4, assessor-1.3 and reading-2.0, the three scholarly queues listening; then
+`railway up --service web --ci`. Checked live from outside (24 of 24): health ok with migrations
+current and those prompts; CSP, HSTS and nosniff; the public pages answer; every Library, reader,
+notebook and course page sends an anonymous request or a forged session cookie to sign-in; a route
+handler's redirect stays on the public domain; `/api/library/ask`, `annotations`, `position` and
+`papers/new` refuse an anonymous request, and a cross-site upload answers 403. Nothing behind
+sign-in was checked live, and live OpenAlex, Crossref and arXiv answers wait for the owner's first
+signed-in use.
 
 ## Remaining defects
 
